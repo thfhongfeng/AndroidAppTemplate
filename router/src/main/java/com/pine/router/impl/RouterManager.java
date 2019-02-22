@@ -11,7 +11,7 @@ import com.pine.router.impl.arouter.ARouterManagerFactory;
 public class RouterManager {
     public static IRouterManager getInstance(String bundleKey) {
         switch (BuildConfig.APP_THIRD_ROUTER_PROVIDER) {
-            case "aRouter":
+            case "arouter":
                 return ARouterManagerFactory.getManager(bundleKey);
             default:
                 return ARouterManagerFactory.getManager(bundleKey);
