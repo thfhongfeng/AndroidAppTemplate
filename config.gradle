@@ -75,7 +75,7 @@ ext.build_app_key = build_app_key
  */
 def app_third_sdk_provider = [:]
 
-// 路由提供者，默认使用aRouter(目前可供选择项：arouter)
+// 路由提供者，默认使用arouter(目前可供选择项：arouter)
 app_third_sdk_provider.router_provider = "arouter"
 // 第三方地图提供者，默认使用baidu地图(目前可供选择项：baidu)
 app_third_sdk_provider.map_provider = "baidu"
