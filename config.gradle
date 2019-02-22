@@ -1,0 +1,124 @@
+/**
+ * 编译打包参数
+ */
+def build_versions = [:]
+build_versions.compileSdkVersion = 28
+build_versions.buildToolsVersion = "28.0.3"
+build_versions.minSdkVersion = 21
+build_versions.targetSdkVersion = 28
+
+// 多渠道配置：默认渠道
+build_versions.storeFile = "../template.jks"
+build_versions.storePassword = "pine123"
+build_versions.keyAlias = "AppTemplate"
+build_versions.keyPassword = "pine123"
+build_versions.applicationId = "com.pine.template"
+build_versions.versionCode = 1
+build_versions.versionName = "1.0.1"
+build_versions.apk_head_name = "pine_app_template"
+build_versions.app_name = "App模板"
+
+//// 多渠道配置：project1渠道
+//build_versions.storeFile = "../project1.jks"
+//build_versions.storePassword = "pine123"
+//build_versions.keyAlias = "AppProject1"
+//build_versions.keyPassword = "pine123"
+//build_versions.applicationId = "com.pine.project1"
+//build_versions.versionCode = 1
+//build_versions.versionName = "1.0.1"
+//build_versions.apk_head_name = "pine_app_project1"
+//build_versions.app_name = "AppProject1"
+
+ext.build_versions = build_versions
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * url地址
+ */
+def build_url = [:]
+
+build_url.base_url = "https://suggest.taobao.com/sug?code=utf-8&q=android"
+
+build_url.wei_bo_redirect_url = "https://api.weibo.com/oauth2/default.html"
+
+ext.build_url = build_url
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * 第三方KEY
+ */
+def build_app_key = [:]
+
+build_app_key.qq_for_app_id = "1107820499"
+build_app_key.wx_for_app_id = "wxa1785555bc28855b"
+build_app_key.wx_secret_key = "faf7a17b7ef08adf96d6d19372b0895c"
+
+build_app_key.baidu_for_app_key = "eaR8Y8d2cAxelTNIVTAWkIGEgF22XHL3"
+
+build_app_key.wei_bo_for_app_key = "1125184506"
+build_app_key.wei_bo_secret_key = "15256daac5dc83e0b0aec9dabafc3620"
+
+ext.build_app_key = build_app_key
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * app第三方SDK提供者
+ */
+def app_third_sdk_provider = [:]
+
+// 路由提供者，默认使用aRouter(目前可供选择项：aRouter)
+app_third_sdk_provider.router_provider = "aRouter"
+// 第三方地图提供者，默认使用baidu地图(目前可供选择项：baidu)
+app_third_sdk_provider.map_provider = "baidu"
+// 第三方图片加载器提供者，默认使用glide(目前可供选择项：glide)
+app_third_sdk_provider.image_loader_provider = "glide"
+// 第三方http请求框架提供者，默认使用nohttp(目前可供选择项：nohttp)
+app_third_sdk_provider.http_request_provider = "nohttp"
+
+ext.app_third_sdk_provider = app_third_sdk_provider
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * 依赖
+ */
+def build_dependency = [
+        // android官方 dependency
+        "appcompat_v7"           : 'com.android.support:appcompat-v7:28.+',
+        "support_design"         : 'com.android.support:design:28.+',
+        "constraint_layout"      : 'com.android.support.constraint:constraint-layout:1.1.3',
+
+        // 阿里ARouter dependency
+        "arouter_api"             : 'com.alibaba:arouter-api:1.4.1',
+        "arouter_compiler"             : 'com.alibaba:arouter-compiler:1.2.2',
+
+        // google官方 dependency
+        "google_gson"            : 'com.google.code.gson:gson:2.6.2',
+
+        // 第三方 dependency
+        "nohttp_okhttp"          : 'com.yanzhenjie.nohttp:okhttp:1.1.1',
+        "aigestudio_wheelpicker" : 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2',
+        "safewebviewbridge"      : 'cn.pedant.safewebviewbridge:library:1.4',
+        "bumptech_glide"         : 'com.github.bumptech.glide:glide:4.8.0',
+        "bumptech_glide_compiler": 'com.github.bumptech.glide:compiler:4.8.0',
+        "vdurmont_emoji"         : 'com.vdurmont:emoji-java:4.0.0',
+
+        // 第三方 sdk
+        "sina_weibo_sdk"         : 'core-4.3.1-openDefaultRelease',
+
+        // 测试 dependency
+        "test_espresso_core"     : 'com.android.support.test.espresso:espresso-core:3.0.2',
+        "test_junit"             : 'junit:junit:4.12'
+]
+ext.build_dependency = build_dependency

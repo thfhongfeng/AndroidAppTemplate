@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="base_network_err">网络错误，请检查网络后重试</string>
+    <string name="base_server_err">服务器错误，请稍后重试</string>
+    <string name="base_json_data_err">获取数据错误，请重试</string>
+
+    <string name="base_loading">加载中...</string>
+    <string name="base_downloading">正在下载...</string>
+    <string name="base_uploading">正在上传...</string>
+    <string name="base_upload_fail">上传失败</string>
+
+    <string name="base_no_item">暂无数据哦</string>
+    <string name="base_item_more">正在加载...</string>
+    <string name="base_item_complete">没有更多了</string>
+
+    <string name="base_share_to">分享至</string>
+
+    <string name="base_cancel">取消</string>
+    <string name="base_done">完成</string>
+    <string name="base_confirm">确定</string>
+    <string name="base_submit">提交</string>
+    <string name="base_update">升级</string>
+
+    <string name="base_text">文字</string>
+    <string name="base_image">图片</string>
+    <string name="base_add_label">添加：</string>
+    <string name="base_delete_content_confirm_msg">是否确认删除此段内容？</string>
+
+
+    <string name="base_image_select">选择图片</string>
+    <string name="base_choose">选择</string>
+    <string name="base_all_image">所有图片</string>
+    <string name="base_preview">预览</string>
+    <string name="base_preview_format">预览(%1$d)</string>
+    <string name="base_upload_file_count_exceeding_msg">上传文件数量已超过%1$d张</string>
+    <string name="base_error_no_permission">没有权限</string>
+
+    <string name="base_file_upload_file_is_uploading">文件正在上传中</string>
+    <string name="base_file_upload_file_null">文件不存在</string>
+    <string name="base_file_upload_compress_file_null">文件压缩失败</string>
+
+    <string name="base_input_hint">点击输入</string>
+    <string name="base_text_max_length">最多允许输入%1d个字符</string>
+    <string name="base_number_max_length">最多允许输入%1d个非小数</string>
+
+    <string name="base_date_year">%1$s年</string>
+    <string name="base_date_month">%1$s月</string>
+    <string name="base_date_day">%1$s日</string>
+    <string name="base_time_hour">%1$s时</string>
+    <string name="base_time_minute">%1$s分</string>
+    <string name="base_time_second">%1$s秒</string>
+
+    <string name="base_province_select_title">请选择省市区</string>
+
+    <string name="base_ui_access_login_forbidden">您需要登陆</string>
+    <string name="base_ui_access_vip_level_forbidden">您需要成为%s级会员</string>
+
+    <string name="base_rationale_ask">没有授予相应权限，应用无法可能无法正常运行。</string>
+    <string name="base_rationale_ask_again">没有授予相应权限，应用无法可能无法正常运行。请打开应用设置允许相应权限。</string>
+    <string name="base_title_settings_dialog">权限需求</string>
+    <string name="base_rationale_need">需要授予相应权限(点击确定进行权限授予)</string>
+
+    <string name="base_baidu_map_title">百度地图</string>
+    <string name="base_baidu_map_marker_need">请在地图上选择一个地点</string>
+
+    <string name="base_main_tab_home">首页</string>
+    <string name="base_main_tab_mine">我的</string>
+</resources>

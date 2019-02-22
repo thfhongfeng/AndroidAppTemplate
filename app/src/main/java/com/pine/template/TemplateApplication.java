@@ -1,0 +1,43 @@
+package com.pine.template;
+
+import android.app.Application;
+import android.content.Context;
+import android.os.Build;
+import android.os.StrictMode;
+
+import com.pine.base.BaseApplication;
+import com.pine.login.LoginApplication;
+import com.pine.main.MainApplication;
+import com.pine.tool.util.AppUtils;
+import com.pine.tool.util.LogUtils;
+
+/**
+ * Created by tanghongfeng on 2018/7/3.
+ */
+
+public class TemplateApplication extends Application {
+    private static final String TAG = LogUtils.makeLogTag(TemplateApplication.class);
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // android 7.0系统解决拍照的问题
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            builder.detectFileUriExposure();
+        }
+
+        LogUtils.setDebuggable(AppUtils.isApkDebuggable(this));
+
+        BaseApplication.init(this);
+        LoginApplication.init(this);
+        MainApplication.init(this);
+    }
+
+    @Override
+    public void attachBaseContext(Context baseContext) {
+        super.attachBaseContext(baseContext);
+    }
+}

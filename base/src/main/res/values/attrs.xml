@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BaseBottomTabNavigationBar">
+        <attr name="baseSelectedItem" format="integer"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="BaseFileUploadView">
+        <attr name="baseMaxFileCount" format="integer"></attr>
+        <attr name="baseColumnSize" format="integer"></attr>
+        <attr name="baseMaxFileSize" format="integer"></attr>
+    </declare-styleable>
+</resources>
