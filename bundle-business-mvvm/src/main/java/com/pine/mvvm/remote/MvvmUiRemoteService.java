@@ -1,10 +1,10 @@
 package com.pine.mvvm.remote;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import com.pine.base.BaseApplication;
 import com.pine.router.IServiceCallback;
 import com.pine.router.annotation.RouterAnnotation;
 import com.pine.router.command.RouterMvvmCommand;
@@ -16,9 +16,9 @@ import com.pine.router.command.RouterMvvmCommand;
 public class MvvmUiRemoteService {
 
     @RouterAnnotation(CommandName = RouterMvvmCommand.goMvvmHomeActivity)
-    public void goBusinessHomeActivity(Bundle args, @NonNull final IServiceCallback callback) {
+    public void goBusinessHomeActivity(@NonNull Activity activity, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
-        Toast.makeText(BaseApplication.mCurResumedActivity, "暂无内容", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, "暂无内容", Toast.LENGTH_SHORT).show();
         callback.onResponse(responseBundle);
     }
 }

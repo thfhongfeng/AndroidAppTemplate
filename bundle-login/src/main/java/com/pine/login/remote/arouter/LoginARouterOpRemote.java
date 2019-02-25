@@ -32,6 +32,6 @@ public class LoginARouterOpRemote extends ARouterBundleRemote<LoginOpRemoteServi
     public void callCommand(final Activity activity, final String commandName,
                             final Bundle args, final IRouterCallback callback) {
         LogUtils.d(TAG, "callCommand execute");
-        call(mRemoteService, mMethods, commandName, args, callback);
+        call(mRemoteService, mMethods, activity, commandName, args, callback);
     }
 }

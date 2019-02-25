@@ -1,5 +1,6 @@
 package com.pine.login.remote;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,11 +18,11 @@ import com.pine.tool.util.AppUtils;
 public class LoginUiRemoteService {
 
     @RouterAnnotation(CommandName = RouterLoginCommand.goLoginActivity)
-    public void goLoginActivity(Bundle args, @NonNull final IServiceCallback callback) {
+    public void goLoginActivity(@NonNull Activity activity, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
         Intent intent = new Intent(AppUtils.getApplicationByReflect(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        AppUtils.getApplicationByReflect().startActivity(intent);
+        activity.startActivity(intent);
         callback.onResponse(responseBundle);
     }
 }

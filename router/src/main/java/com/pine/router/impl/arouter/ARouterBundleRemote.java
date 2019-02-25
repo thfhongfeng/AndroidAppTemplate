@@ -1,5 +1,6 @@
 package com.pine.router.impl.arouter;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.pine.router.IRouterCallback;
@@ -19,7 +20,7 @@ import java.lang.reflect.Method;
 public abstract class ARouterBundleRemote<T> {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
 
-    public void call(T t, Method[] methods, String commandName,
+    public void call(T t, Method[] methods, Activity activity, String commandName,
                      Bundle args, final IRouterCallback callback) {
         for (int i = 0; i < methods.length; i++) {
             RouterAnnotation annotation = methods[i].getAnnotation(RouterAnnotation.class);
@@ -28,7 +29,7 @@ public abstract class ARouterBundleRemote<T> {
                 final Bundle responseBundle = new Bundle();
                 try {
                     responseBundle.putString(RouterConstants.REMOTE_CALL_STATE_KEY, RouterConstants.ON_SUCCEED);
-                    methods[i].invoke(t, args, new IServiceCallback() {
+                    methods[i].invoke(t, activity, args, new IServiceCallback() {
                         @Override
                         public void onResponse(Bundle bundle) {
                             if (bundle == null) {
