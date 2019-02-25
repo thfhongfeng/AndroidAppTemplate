@@ -32,8 +32,9 @@ dependencies {
     // 测试 dependency end
 
     // android官方 dependency begin
-    implementation build_dependency["appcompat_v7"]
-    implementation build_dependency["support_design"]
+    api build_dependency["appcompat_v7"]
+    api build_dependency["constraint_layout"]
+    api build_dependency["support_design"]
     // android官方 dependency end
 
     implementation  build_dependency["vdurmont_emoji"]
