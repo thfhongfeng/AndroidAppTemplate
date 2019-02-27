@@ -44,22 +44,19 @@ android {
     }
 
     applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                // 显示app名称+当前版本号
-                def fileName = "${build_versions.apk_head_name}-V${variant.versionName}"
+        variant.outputs.all {
+            // 显示app名称+当前版本号
+            def fileName = "${build_versions.apk_head_name}-V${variant.versionName}"
 //                // 加入打包时间
 //                fileName = fileName + "-${releaseTime()}"
-                // 如果是debug版本，加入beta版本号
-                if ('debug'.equals(variant.buildType.name)) {
-                    fileName = fileName + "-beta.apk"
-                } else {
-                    // 如果是release版本，直接显示
-                    fileName = fileName + "-release.apk"
-                }
-                outputFileName = fileName
+            // 如果是debug版本，加入beta版本号
+            if ('debug'.equals(variant.buildType.name)) {
+                fileName = fileName + "-beta.apk"
+            } else {
+                // 如果是release版本，直接显示
+                fileName = fileName + "-release.apk"
             }
+            outputFileName = fileName
         }
     }
 }
