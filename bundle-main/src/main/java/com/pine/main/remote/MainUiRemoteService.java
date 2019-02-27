@@ -9,7 +9,6 @@ import com.pine.main.ui.activity.MainHomeActivity;
 import com.pine.router.IServiceCallback;
 import com.pine.router.annotation.RouterAnnotation;
 import com.pine.router.command.RouterMainCommand;
-import com.pine.tool.util.AppUtils;
 
 /**
  * Created by tanghongfeng on 2018/9/13
