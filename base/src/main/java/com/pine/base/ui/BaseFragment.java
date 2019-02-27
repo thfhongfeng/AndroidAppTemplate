@@ -101,7 +101,7 @@ public abstract class BaseFragment extends Fragment
         super.onActivityResult(requestCode, resultCode, data);
         LogUtils.d(TAG, "onActivityResult requestCode:" + requestCode +
                 ", resultCode:" + resultCode);
-        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE && data != null) {
             int permRequestCode = data.getIntExtra(AppSettingsDialogHolderActivity.REQUEST_CODE_KEY, -1);
             if (permRequestCode != -1) {
                 String[] permissions = data.getStringArrayExtra(AppSettingsDialogHolderActivity.REQUEST_PERMISSIONS_KEY);
