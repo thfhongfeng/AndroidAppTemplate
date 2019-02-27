@@ -20,7 +20,7 @@ public class DemoUiRemoteService {
     @RouterAnnotation(CommandName = RouterDemoCommand.goDemoHomeActivity)
     public void goBusinessHomeActivity(@NonNull Activity activity, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
-        Intent intent = new Intent(AppUtils.getApplicationByReflect(), DemoHomeActivity.class);
+        Intent intent = new Intent(activity, DemoHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
         callback.onResponse(responseBundle);

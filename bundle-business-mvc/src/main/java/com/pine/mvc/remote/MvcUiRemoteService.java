@@ -20,7 +20,7 @@ public class MvcUiRemoteService {
     @RouterAnnotation(CommandName = RouterMvcCommand.goMvcHomeActivity)
     public void goBusinessHomeActivity(@NonNull Activity activity, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
-        Intent intent = new Intent(AppUtils.getApplicationByReflect(), MvcHomeActivity.class);
+        Intent intent = new Intent(activity, MvcHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
         callback.onResponse(responseBundle);

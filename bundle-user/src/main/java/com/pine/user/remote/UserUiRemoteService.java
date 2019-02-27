@@ -20,7 +20,7 @@ public class UserUiRemoteService {
     @RouterAnnotation(CommandName = RouterUserCommand.goUserHomeActivity)
     public void goUserCenterActivity(@NonNull Activity activity, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
-        Intent intent = new Intent(AppUtils.getApplicationByReflect(), UserHomeActivity.class);
+        Intent intent = new Intent(activity, UserHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
         callback.onResponse(responseBundle);
