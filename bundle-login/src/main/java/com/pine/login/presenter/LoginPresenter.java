@@ -41,12 +41,12 @@ public class LoginPresenter extends BasePresenter<ILoginContract.Ui> implements 
                 !mobileBean.checkIsPhone(R.string.login_mobile_incorrect_format)) {
             return;
         }
-        getUi().startLoadingUi();
+        setUiLoading(true);
         LoginManager.login(mobileBean.getValue(), pwdBean.getValue(), new LoginManager.Callback() {
             @Override
             public boolean onLoginResponse(boolean isSuccess, String msg) {
                 if (isUiAlive()) {
-                    getUi().finishLoadingUi();
+                    setUiLoading(false);
                     if (!isSuccess) {
                         if (TextUtils.isEmpty(msg)) {
                             return false;

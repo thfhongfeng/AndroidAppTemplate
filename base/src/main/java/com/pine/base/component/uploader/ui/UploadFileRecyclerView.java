@@ -40,7 +40,7 @@ import java.util.Map;
  */
 
 public abstract class UploadFileRecyclerView extends RecyclerView implements ILifeCircleView {
-    private static final String TAG = LogUtils.makeLogTag(UploadFileRecyclerView.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     private int mRequestCodeCrop = 90200;
     private int mRequestCodeSelectImage = 90201;
     // 每次选择文件最大允数

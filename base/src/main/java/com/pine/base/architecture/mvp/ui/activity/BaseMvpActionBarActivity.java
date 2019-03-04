@@ -1,5 +1,6 @@
 package com.pine.base.architecture.mvp.ui.activity;
 
+import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.view.View;
 import android.view.ViewStub;
@@ -21,7 +22,7 @@ public abstract class BaseMvpActionBarActivity<V extends IBaseContract.Ui, P ext
     private ImmersionBar mImmersionBar;
 
     @Override
-    protected final void setContentView() {
+    protected final void setContentView(Bundle savedInstanceState) {
         if ((getActionBarTag() & ACTION_BAR_CENTER_TITLE_TAG) == ACTION_BAR_CENTER_TITLE_TAG) {
             setContentView(R.layout.base_activity_actionbar_center_title);
         } else {

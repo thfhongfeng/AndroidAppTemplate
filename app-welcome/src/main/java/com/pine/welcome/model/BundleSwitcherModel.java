@@ -23,7 +23,7 @@ import java.util.HashMap;
  */
 
 public class BundleSwitcherModel {
-    private static final String TAG = LogUtils.makeLogTag(BundleSwitcherModel.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int HTTP_REQUEST_QUERY_BUNDLE_SWITCHER = 1;
 
     public boolean requestBundleSwitcherData(@NonNull IModelAsyncResponse<ArrayList<BundleSwitcherEntity>> callback) {

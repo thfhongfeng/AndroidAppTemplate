@@ -14,12 +14,18 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     sourceSets {
         main {
             res.srcDirs += [
@@ -54,6 +60,10 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // android官方 dependency begin
+    api build_dependency["lifecycle_extensions"]
+    // android官方 dependency end
 
     // google官方 dependency begin
     api build_dependency["google_gson"]

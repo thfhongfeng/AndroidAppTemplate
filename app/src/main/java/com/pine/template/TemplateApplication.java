@@ -16,7 +16,7 @@ import com.pine.tool.util.LogUtils;
  */
 
 public class TemplateApplication extends Application {
-    private static final String TAG = LogUtils.makeLogTag(TemplateApplication.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     @Override
     public void onCreate() {

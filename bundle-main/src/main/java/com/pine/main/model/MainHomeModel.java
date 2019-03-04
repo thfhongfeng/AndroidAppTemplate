@@ -28,7 +28,7 @@ import java.util.HashMap;
  */
 
 public class MainHomeModel {
-    private static final String TAG = LogUtils.makeLogTag(MainHomeModel.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int HTTP_QUERY_BUSINESS_LIST = 1;
 
     public boolean requestBusinessListData(@NonNull final IModelAsyncResponse<ArrayList<MainBusinessItemEntity>> callback) {

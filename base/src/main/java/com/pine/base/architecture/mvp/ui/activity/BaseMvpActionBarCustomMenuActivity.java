@@ -1,5 +1,6 @@
 package com.pine.base.architecture.mvp.ui.activity;
 
+import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.view.View;
 import android.view.ViewStub;
@@ -17,7 +18,7 @@ public abstract class BaseMvpActionBarCustomMenuActivity<V extends IBaseContract
     private ImmersionBar mImmersionBar;
 
     @Override
-    protected final void setContentView() {
+    protected final void setContentView(Bundle savedInstanceState) {
         setContentView(R.layout.base_activity_actionbar_custom_menu);
 
         ViewStub base_content_layout = findViewById(R.id.base_content_layout);

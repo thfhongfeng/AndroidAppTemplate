@@ -20,6 +20,11 @@ android {
         }
         // ARouter配置 end
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false

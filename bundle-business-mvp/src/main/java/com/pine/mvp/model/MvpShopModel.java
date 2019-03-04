@@ -30,7 +30,7 @@ import java.util.Random;
  */
 
 public class MvpShopModel {
-    private static final String TAG = LogUtils.makeLogTag(MvpShopModel.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int HTTP_ADD_SHOP = 1;
     private static final int HTTP_QUERY_SHOP_DETAIL = 2;
     private static final int HTTP_QUERY_SHOP_LIST = 3;

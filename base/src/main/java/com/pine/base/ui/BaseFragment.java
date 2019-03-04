@@ -37,9 +37,10 @@ public abstract class BaseFragment extends Fragment
     private HashMap<Integer, PermissionBean> mPermissionRequestMap = new HashMap<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        beforeInitOnCreateView();
-        View layout = inflater.inflate(getFragmentLayoutResId(), container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        beforeInitOnCreateView(savedInstanceState);
+        View layout = setContentView(inflater, container, savedInstanceState);
 
         findViewOnCreateView(layout);
 
@@ -53,12 +54,17 @@ public abstract class BaseFragment extends Fragment
         return layout;
     }
 
+    protected View setContentView(LayoutInflater inflater, @Nullable ViewGroup container,
+                                  @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(getFragmentLayoutResId(), container, false);
+    }
+
     protected abstract int getFragmentLayoutResId();
 
     /**
      * onCreateView中前置初始化
      */
-    protected void beforeInitOnCreateView() {
+    protected void beforeInitOnCreateView(@Nullable Bundle savedInstanceState) {
 
     }
 

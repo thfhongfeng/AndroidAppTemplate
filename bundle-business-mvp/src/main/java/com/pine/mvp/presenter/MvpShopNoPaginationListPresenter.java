@@ -16,7 +16,6 @@ import java.util.HashMap;
 
 public class MvpShopNoPaginationListPresenter extends BasePresenter<IMvpShopNoPaginationListContract.Ui>
         implements IMvpShopNoPaginationListContract.Presenter {
-    private String mId;
     private MvpShopModel mModel;
     private MvpShopListNoPaginationAdapter mMvpHomeItemAdapter;
     private boolean mIsLoadProcessing;
@@ -27,7 +26,6 @@ public class MvpShopNoPaginationListPresenter extends BasePresenter<IMvpShopNoPa
 
     @Override
     public boolean parseIntentData() {
-        mId = getStringExtra("id", "");
         return false;
     }
 
@@ -51,7 +49,6 @@ public class MvpShopNoPaginationListPresenter extends BasePresenter<IMvpShopNoPa
             return;
         }
         HashMap<String, String> params = new HashMap<>();
-        params.put("id", mId);
         startDataLoadUi();
         if (!mModel.requestShopListData(params, new IModelAsyncResponse<ArrayList<MvpShopItemEntity>>() {
             @Override

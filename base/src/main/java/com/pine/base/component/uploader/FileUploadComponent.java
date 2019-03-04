@@ -36,7 +36,7 @@ public class FileUploadComponent {
     public static final int TYPE_IMAGE = 1;
     public static final int TYPE_WORD_DOC = 2;
     public static final int TYPE_TXT = 3;
-    private static final String TAG = LogUtils.makeLogTag(FileUploadComponent.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     private WeakReference<Context> mContext;
     private Map<Integer, Object> mRequestMap;
     private long mMaxFileSize = 1024 * 1024;

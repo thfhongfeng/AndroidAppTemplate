@@ -36,7 +36,7 @@ import java.util.List;
  */
 
 public class ImageUploadView extends UploadFileRecyclerView {
-    private static final String TAG = LogUtils.makeLogTag(ImageUploadView.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     private UploadImageAdapter mUploadImageAdapter;
     // RecyclerView列数（一行可容纳image数量）
     private int mColumnSize = 5;

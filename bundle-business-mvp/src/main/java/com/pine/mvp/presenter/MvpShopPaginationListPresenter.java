@@ -24,7 +24,6 @@ import java.util.HashMap;
 
 public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPaginationContract.Ui>
         implements IMvpShopPaginationContract.Presenter {
-    private String mId;
     private MvpShopModel mModel;
     private MvpShopListPaginationAdapter mMvpHomeItemAdapter;
     private boolean mIsLoadProcessing;
@@ -48,7 +47,6 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
 
     @Override
     public boolean parseIntentData() {
-        mId = getStringExtra("id", "");
         return false;
     }
 
@@ -95,7 +93,6 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
         }
         params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
         params.put(MvpConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));
-        params.put("id", mId);
         LocationInfo location = MapSdkManager.getInstance().getLocation();
         if (location != null) {
             params.put("latitude", String.valueOf(location.getLatitude()));

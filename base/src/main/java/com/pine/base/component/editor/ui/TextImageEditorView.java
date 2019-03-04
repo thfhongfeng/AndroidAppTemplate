@@ -38,7 +38,7 @@ public class TextImageEditorView extends UploadFileLinearLayout {
     public final static String TYPE_TEXT = "text";
     // 子编辑条目类型image 图片加图片描述输入条目
     public final static String TYPE_IMAGE = "image";
-    private static final String TAG = LogUtils.makeLogTag(TextImageEditorView.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     // 编辑器索引
     private int mIndex;

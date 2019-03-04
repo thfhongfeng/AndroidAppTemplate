@@ -23,16 +23,6 @@ import java.util.ArrayList;
  */
 
 public abstract class BasePresenter<V extends IBaseContract.Ui> {
-    public enum UiState {
-        UI_STATE_UNDEFINE,
-        UI_STATE_ON_CREATE,
-        UI_STATE_ON_START,
-        UI_STATE_ON_RESUME,
-        UI_STATE_ON_PAUSE,
-        UI_STATE_ON_STOP,
-        UI_STATE_ON_DETACH
-    }
-
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     /**
      * UI的弱引用
@@ -127,6 +117,17 @@ public abstract class BasePresenter<V extends IBaseContract.Ui> {
     public final void finishUi() {
         if (mUiRef.get() != null && mUiRef.get() instanceof Activity) {
             ((Activity) mUiRef.get()).finish();
+        }
+    }
+
+    public void setUiLoading(boolean uiLoading) {
+        if (!isUiAlive()) {
+            return;
+        }
+        if (uiLoading) {
+            getUi().startLoadingUi();
+        } else {
+            getUi().finishLoadingUi();
         }
     }
 
@@ -422,5 +423,15 @@ public abstract class BasePresenter<V extends IBaseContract.Ui> {
             }
         }
         return null;
+    }
+
+    public enum UiState {
+        UI_STATE_UNDEFINE,
+        UI_STATE_ON_CREATE,
+        UI_STATE_ON_START,
+        UI_STATE_ON_RESUME,
+        UI_STATE_ON_PAUSE,
+        UI_STATE_ON_STOP,
+        UI_STATE_ON_DETACH
     }
 }

@@ -22,7 +22,7 @@ import java.util.HashMap;
  */
 
 public class VersionModel {
-    private static final String TAG = LogUtils.makeLogTag(VersionModel.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int HTTP_QUERY_VERSION_INFO = 1;
 
     public boolean requestUpdateVersionData(@NonNull IModelAsyncResponse<VersionEntity> callback) {

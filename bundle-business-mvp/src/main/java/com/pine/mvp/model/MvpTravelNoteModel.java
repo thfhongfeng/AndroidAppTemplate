@@ -27,7 +27,7 @@ import java.util.Random;
  */
 
 public class MvpTravelNoteModel {
-    private static final String TAG = LogUtils.makeLogTag(MvpTravelNoteModel.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int HTTP_ADD_TRAVEL_NOTE = 1;
     private static final int HTTP_QUERY_TRAVEL_NOTE_DETAIL = 2;
     private static final int HTTP_QUERY_TRAVEL_NOTE_LIST = 3;

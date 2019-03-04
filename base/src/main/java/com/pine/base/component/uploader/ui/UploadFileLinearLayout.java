@@ -40,7 +40,7 @@ import java.util.Map;
  */
 
 public abstract class UploadFileLinearLayout extends LinearLayout implements ILifeCircleView {
-    private static final String TAG = LogUtils.makeLogTag(UploadFileLinearLayout.class);
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
     // 每次选择文件最大允数
     private final int MAX_PER_UPLOAD_FILE_COUNT = 10;
     protected BaseActivity mActivity;

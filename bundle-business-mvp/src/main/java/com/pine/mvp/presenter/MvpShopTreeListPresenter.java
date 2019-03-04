@@ -17,7 +17,6 @@ import java.util.HashMap;
 
 public class MvpShopTreeListPresenter extends BasePresenter<IMvpShopTreeListContract.Ui>
         implements IMvpShopTreeListContract.Presenter {
-    private String mId;
     private MvpShopModel mModel;
     private MvpShopListPaginationTreeAdapter mMvpHomeItemAdapter;
     private boolean mIsLoadProcessing;
@@ -28,7 +27,6 @@ public class MvpShopTreeListPresenter extends BasePresenter<IMvpShopTreeListCont
 
     @Override
     public boolean parseIntentData() {
-        mId = getStringExtra("id", "");
         return false;
     }
 
@@ -57,7 +55,6 @@ public class MvpShopTreeListPresenter extends BasePresenter<IMvpShopTreeListCont
         }
         params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
         params.put(MvpConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));
-        params.put("id", mId);
         startDataLoadUi();
         if (!mModel.requestShopAndProductListData(params, new IModelAsyncResponse<ArrayList<MvpShopAndProductEntity>>() {
             @Override
