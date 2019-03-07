@@ -108,6 +108,11 @@ public class ImageUploadView extends UploadFileRecyclerView {
     }
 
     @Override
+    public void onFileUploadCancel(FileUploadBean uploadBean) {
+        mUploadImageAdapter.notifyItemChanged(uploadBean.getOrderIndex());
+    }
+
+    @Override
     public void onFileUploadFail(FileUploadBean uploadBean) {
         mUploadImageAdapter.notifyItemChanged(uploadBean.getOrderIndex());
     }
@@ -369,6 +374,10 @@ public class ImageUploadView extends UploadFileRecyclerView {
                             loading_iv.setVisibility(View.VISIBLE);
                             loading_tv.setVisibility(VISIBLE);
                             loading_tv.setText(imageBean.getUploadProgress() + "%");
+                            break;
+                        case UPLOAD_STATE_CANCEL:
+                            state_rl.setVisibility(View.VISIBLE);
+                            fail_tv.setVisibility(View.VISIBLE);
                             break;
                         case UPLOAD_STATE_FAIL:
                             state_rl.setVisibility(View.VISIBLE);

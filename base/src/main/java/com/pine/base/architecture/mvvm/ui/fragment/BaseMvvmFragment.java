@@ -1,5 +1,6 @@
 package com.pine.base.architecture.mvvm.ui.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.base.ui.BaseFragment;
@@ -33,7 +35,7 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
             if (type instanceof ParameterizedType) {
                 Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
                 mViewModel = (VM) ViewModelProviders.of(getActivity()).get(presenterClazz);
-                mViewModel.getUiLoading().setValue(false);
+                mViewModel.getUiLoadingData().setValue(false);
             }
         }
     }
@@ -51,6 +53,14 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
     }
 
     @Override
+    protected boolean parseArguments() {
+        if (mViewModel != null) {
+            return mViewModel.parseInitData(getArguments());
+        }
+        return false;
+    }
+
+    @Override
     protected void init() {
 
     }
@@ -61,6 +71,26 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
         if (mViewModel != null) {
             mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_CREATE);
         }
+        mViewModel.getUiLoadingData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                setLoadingUiVisibility(aBoolean);
+            }
+        });
+        mViewModel.getToastStrData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                Toast.makeText(getContext(),
+                        mViewModel.getToastStrData().getCustomData(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        mViewModel.getToastResIdData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                Toast.makeText(getContext(),
+                        mViewModel.getToastResIdData().getCustomData(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -101,5 +131,9 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
             mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_DETACH);
         }
         super.onDestroyView();
+    }
+
+    public void setLoadingUiVisibility(boolean visibility) {
+
     }
 }

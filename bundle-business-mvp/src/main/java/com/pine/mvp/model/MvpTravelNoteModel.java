@@ -33,35 +33,35 @@ public class MvpTravelNoteModel {
     private static final int HTTP_QUERY_TRAVEL_NOTE_LIST = 3;
     private static final int HTTP_QUERY_TRAVEL_NOTE_COMMENT_LIST = 4;
 
-    public boolean requestAddTravelNote(final Map<String, String> params,
-                                        @NonNull final IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {
+    public void requestAddTravelNote(final Map<String, String> params,
+                                     @NonNull final IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {
         String url = MvpUrlConstants.Add_TravelNote;
         HttpJsonCallback httpStringCallback = handleHttpResponse(callback);
-        return HttpRequestManager.setJsonRequest(url, params, TAG,
+        HttpRequestManager.setJsonRequest(url, params, TAG,
                 HTTP_ADD_TRAVEL_NOTE, httpStringCallback);
     }
 
-    public boolean requestTravelNoteDetailData(final Map<String, String> params,
-                                               @NonNull final IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {
+    public void requestTravelNoteDetailData(final Map<String, String> params,
+                                            @NonNull final IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {
         String url = MvpUrlConstants.Query_TravelNoteDetail;
         HttpJsonCallback httpStringCallback = handleHttpResponse(callback);
-        return HttpRequestManager.setJsonRequest(url, params, TAG,
+        HttpRequestManager.setJsonRequest(url, params, TAG,
                 HTTP_QUERY_TRAVEL_NOTE_DETAIL, httpStringCallback);
     }
 
-    public boolean requestTravelNoteListData(final Map<String, String> params,
-                                             @NonNull final IModelAsyncResponse<ArrayList<MvpTravelNoteItemEntity>> callback) {
+    public void requestTravelNoteListData(final Map<String, String> params,
+                                          @NonNull final IModelAsyncResponse<ArrayList<MvpTravelNoteItemEntity>> callback) {
         String url = MvpUrlConstants.Query_TravelNoteList;
         HttpJsonCallback httpStringCallback = handleHttpResponse(callback);
-        return HttpRequestManager.setJsonRequest(url, params, TAG,
+        HttpRequestManager.setJsonRequest(url, params, TAG,
                 HTTP_QUERY_TRAVEL_NOTE_LIST, httpStringCallback);
     }
 
-    public boolean requestTravelNoteCommentData(final Map<String, String> params,
-                                                @NonNull final IModelAsyncResponse<ArrayList<MvpTravelNoteCommentEntity>> callback) {
+    public void requestTravelNoteCommentData(final Map<String, String> params,
+                                             @NonNull final IModelAsyncResponse<ArrayList<MvpTravelNoteCommentEntity>> callback) {
         String url = MvpUrlConstants.Query_TravelNoteCommentList;
         HttpJsonCallback httpStringCallback = handleHttpResponse(callback);
-        return HttpRequestManager.setJsonRequest(url, params, TAG,
+        HttpRequestManager.setJsonRequest(url, params, TAG,
                 HTTP_QUERY_TRAVEL_NOTE_COMMENT_LIST, httpStringCallback);
     }
 
@@ -119,6 +119,11 @@ public class MvpTravelNoteModel {
             @Override
             public boolean onFail(int what, Exception e) {
                 return callback.onFail(e);
+            }
+
+            @Override
+            public void onCancel(int what) {
+                callback.onCancel();
             }
         };
     }

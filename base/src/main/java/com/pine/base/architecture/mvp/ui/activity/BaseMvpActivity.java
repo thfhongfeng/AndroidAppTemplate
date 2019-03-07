@@ -49,7 +49,7 @@ public abstract class BaseMvpActivity<V extends IBaseContract.Ui, P extends Base
     @Override
     protected final boolean parseIntentData() {
         if (mPresenter != null) {
-            return mPresenter.parseIntentData();
+            return mPresenter.parseInitData(getIntent().getExtras());
         }
         return false;
     }

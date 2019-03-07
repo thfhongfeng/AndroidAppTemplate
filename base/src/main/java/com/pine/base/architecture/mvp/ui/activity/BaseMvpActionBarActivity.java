@@ -112,12 +112,8 @@ public abstract class BaseMvpActionBarActivity<V extends IBaseContract.Ui, P ext
         return R.layout.base_loading;
     }
 
-    public void startLoadingUi() {
+    public void setLoadingUiVisibility(boolean visibility) {
         hideSoftInputFromWindow();
-        findViewById(R.id.base_loading_layout).setVisibility(View.VISIBLE);
-    }
-
-    public void finishLoadingUi() {
-        findViewById(R.id.base_loading_layout).setVisibility(View.GONE);
+        findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 }

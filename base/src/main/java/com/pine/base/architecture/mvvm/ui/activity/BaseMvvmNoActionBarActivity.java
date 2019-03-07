@@ -41,17 +41,10 @@ public abstract class BaseMvvmNoActionBarActivity<T extends ViewDataBinding, VM 
 
         initImmersionBar();
 
-        mViewModel.getUiLoading().observe(this, new Observer<Boolean>() {
+        mViewModel.getUiLoadingData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if (isFinishing()) {
-                    return;
-                }
-                if (aBoolean) {
-                    startLoadingUi();
-                } else {
-                    finishLoadingUi();
-                }
+                setLoadingUiVisibility(aBoolean);
             }
         });
     }
@@ -90,18 +83,9 @@ public abstract class BaseMvvmNoActionBarActivity<T extends ViewDataBinding, VM 
         return R.layout.base_loading;
     }
 
-    public void startLoadingUi() {
+    public void setLoadingUiVisibility(boolean visibility) {
         hideSoftInputFromWindow();
-        findViewById(R.id.base_loading_layout).setVisibility(View.VISIBLE);
-    }
-
-    public void finishLoadingUi() {
-        findViewById(R.id.base_loading_layout).setVisibility(View.GONE);
-    }
-
-    @Override
-    protected boolean parseIntentData() {
-        return false;
+        findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -111,6 +95,6 @@ public abstract class BaseMvvmNoActionBarActivity<T extends ViewDataBinding, VM 
 
     @Override
     protected void afterInit() {
-
+        super.afterInit();
     }
 }

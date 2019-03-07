@@ -47,7 +47,7 @@ public abstract class BaseMvpFragment<V extends IBaseContract.Ui, P extends Base
     @Override
     protected final boolean parseArguments() {
         if (mPresenter != null) {
-            return mPresenter.parseIntentData();
+            return mPresenter.parseInitData(getArguments());
         }
         return false;
     }
@@ -104,5 +104,9 @@ public abstract class BaseMvpFragment<V extends IBaseContract.Ui, P extends Base
     @Override
     public Activity getContextActivity() {
         return getActivity();
+    }
+
+    public void setLoadingUiVisibility(boolean visibility) {
+        hideSoftInputFromWindow();
     }
 }

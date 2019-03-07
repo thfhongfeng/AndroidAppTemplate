@@ -54,6 +54,11 @@ public class VersionModel {
             public boolean onFail(int what, Exception e) {
                 return callback.onFail(e);
             }
+
+            @Override
+            public void onCancel(int what) {
+                callback.onCancel();
+            }
         };
     }
 
@@ -63,7 +68,7 @@ public class VersionModel {
                 "{package:'com.pine.template', 'versionCode':2," +
                 "versionName:'1.0.2',minSupportedVersion:1," +
                 "force:false, fileName:'pine_app_template-V1.0.2-release.apk', " +
-                "path:'https://yanyangtian.purang.com/download/bsd_purang.apk'}}";
+                "path:'http://yanyangtian.purang.com/download/bsd_purang.apk'}}";
         try {
             return new JSONObject(res);
         } catch (JSONException e) {

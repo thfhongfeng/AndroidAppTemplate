@@ -1,11 +1,13 @@
 package com.pine.base.architecture.mvvm.ui.activity;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.base.ui.BaseActivity;
@@ -30,13 +32,22 @@ public abstract class BaseMvvmActivity<T extends ViewDataBinding, VM extends Bas
             if (type instanceof ParameterizedType) {
                 Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
                 mViewModel = (VM) ViewModelProviders.of(this).get(presenterClazz);
-                mViewModel.getUiLoading().setValue(false);
+                mViewModel.getUiLoadingData().setValue(false);
             }
         }
     }
 
     protected void setContentView(Bundle savedInstanceState) {
         mBinding = DataBindingUtil.setContentView(this, getActivityLayoutResId());
+
+        mViewModel.getFinishData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (aBoolean) {
+                    finish();
+                }
+            }
+        });
     }
 
     @Override
@@ -45,7 +56,10 @@ public abstract class BaseMvvmActivity<T extends ViewDataBinding, VM extends Bas
     }
 
     @Override
-    protected boolean parseIntentData() {
+    protected final boolean parseIntentData() {
+        if (mViewModel != null) {
+            return mViewModel.parseInitData(getIntent().getExtras());
+        }
         return false;
     }
 
@@ -60,6 +74,20 @@ public abstract class BaseMvvmActivity<T extends ViewDataBinding, VM extends Bas
         if (mViewModel != null) {
             mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_CREATE);
         }
+        mViewModel.getToastStrData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                Toast.makeText(BaseMvvmActivity.this,
+                        mViewModel.getToastStrData().getCustomData(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        mViewModel.getToastResIdData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                Toast.makeText(BaseMvvmActivity.this,
+                        mViewModel.getToastResIdData().getCustomData(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

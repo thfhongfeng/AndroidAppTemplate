@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data class="MvvmShopDetailBinding">
+
+        <variable
+            name="shopDetail"
+            type="com.pine.mvvm.bean.MvvmShopDetailEntity"></variable>
+
+        <variable
+            name="presenter"
+            type="com.pine.mvvm.ui.activity.MvvmShopDetailActivity.Presenter"></variable>
+    </data>
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="@dimen/dp_30"
+                android:text="Shop Detail" />
+
+            <TextView
+                android:id="@+id/description_tv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/dp_20"
+                android:text="@{shopDetail.description}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0.5"
+                android:background="#999999"></View>
+
+            <TextView
+                android:id="@+id/go_shop_h5_btn_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:onClick="@{presenter.goShopH5Ui}"
+                android:padding="@dimen/dp_20"
+                android:text="Go To Shop H5 Detail" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0.5"
+                android:background="#999999"></View>
+
+            <TextView
+                android:id="@+id/go_travel_note_list_btn_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:onClick="@{presenter.goTravelNoteListUi}"
+                android:padding="@dimen/dp_20"
+                android:text="Go To Travel Note List" />
+
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</layout>

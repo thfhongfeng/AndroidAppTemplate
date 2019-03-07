@@ -13,7 +13,10 @@ import com.pine.base.permission.PermissionsAnnotation;
 import com.pine.config.switcher.ConfigFuncSwitcher;
 import com.pine.mvvm.R;
 import com.pine.mvvm.databinding.MvvmHomeActivityBinding;
+import com.pine.mvvm.ui.fragment.MvvmShopNoPaginationListFragment;
 import com.pine.mvvm.ui.fragment.MvvmShopPaginationListFragment;
+import com.pine.mvvm.ui.fragment.MvvmShopTreeListFragment;
+import com.pine.mvvm.ui.fragment.MvvmWebViewFragment;
 import com.pine.mvvm.vm.MvvmHomeViewModel;
 import com.pine.tool.adapter.TabFragmentPagerAdapter;
 
@@ -45,8 +48,8 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
     private void setupViewPage() {
         mBinding.viewPager.setAdapter(new TabFragmentPagerAdapter(getSupportFragmentManager(),
                 new Fragment[]{
-                        new MvvmShopPaginationListFragment(), new MvvmShopPaginationListFragment(),
-                        new MvvmShopPaginationListFragment(), new MvvmShopPaginationListFragment()},
+                        new MvvmShopPaginationListFragment(), new MvvmShopTreeListFragment(),
+                        new MvvmShopNoPaginationListFragment(), new MvvmWebViewFragment()},
                 new String[]{"PartA", "PartB", "PartC", "PartD"}));
         mBinding.viewPagerTabLayout.setupWithViewPager(mBinding.viewPager);
     }

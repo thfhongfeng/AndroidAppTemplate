@@ -1,5 +1,7 @@
 package com.pine.mvvm.vm;
 
+import android.os.Bundle;
+
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 
 /**
@@ -8,4 +10,8 @@ import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 
 public class MvvmHomeViewModel extends BaseViewModel {
 
+    @Override
+    public boolean parseInitData(Bundle bundle) {
+        return false;
+    }
 }

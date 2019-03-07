@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.base.http.HttpRequestManager;
 import com.pine.base.http.callback.HttpJsonCallback;
 import com.pine.mvvm.MvvmConstants;
@@ -36,31 +36,31 @@ public class MvvmShopModel {
     private static final int HTTP_QUERY_SHOP_AND_PRODUCT_LIST = 4;
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
-    public boolean requestAddShop(final HashMap<String, String> params,
-                                  @NonNull final IModelAsyncResponse<MvvmShopDetailEntity> callback) {
+    public void requestAddShop(final HashMap<String, String> params,
+                               @NonNull final IModelAsyncResponse<MvvmShopDetailEntity> callback) {
         String url = MvvmUrlConstants.Add_Shop;
-        return HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_ADD_SHOP,
+        HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_ADD_SHOP,
                 handleHttpResponse(callback));
     }
 
-    public boolean requestShopDetailData(final Map<String, String> params,
-                                         @NonNull final IModelAsyncResponse<MvvmShopDetailEntity> callback) {
+    public void requestShopDetailData(final Map<String, String> params,
+                                      @NonNull final IModelAsyncResponse<MvvmShopDetailEntity> callback) {
         String url = MvvmUrlConstants.Query_ShopDetail;
-        return HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_DETAIL,
+        HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_DETAIL,
                 handleHttpResponse(callback));
     }
 
-    public boolean requestShopListData(final Map<String, String> params,
-                                       @NonNull final IModelAsyncResponse<ArrayList<MvvmShopItemEntity>> callback) {
+    public void requestShopListData(final Map<String, String> params,
+                                    @NonNull final IModelAsyncResponse<ArrayList<MvvmShopItemEntity>> callback) {
         String url = MvvmUrlConstants.Query_ShopList;
-        return HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_LIST,
+        HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_LIST,
                 handleHttpResponse(callback));
     }
 
-    public boolean requestShopAndProductListData(Map<String, String> params,
-                                                 @NonNull final IModelAsyncResponse<ArrayList<MvvmShopAndProductEntity>> callback) {
+    public void requestShopAndProductListData(Map<String, String> params,
+                                              @NonNull final IModelAsyncResponse<ArrayList<MvvmShopAndProductEntity>> callback) {
         String url = MvvmUrlConstants.Query_ShopAndProductList;
-        return HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_AND_PRODUCT_LIST,
+        HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_AND_PRODUCT_LIST,
                 handleHttpResponse(callback));
     }
 
@@ -118,6 +118,11 @@ public class MvvmShopModel {
             @Override
             public boolean onFail(int what, Exception e) {
                 return callback.onFail(e);
+            }
+
+            @Override
+            public void onCancel(int what) {
+                callback.onCancel();
             }
         };
     }

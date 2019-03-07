@@ -1,6 +1,7 @@
 package com.pine.mvvm.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.pine.base.list.bean.BaseListAdapterItemPropertyEntity;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.databinding.ShopItemBinding;
+import com.pine.mvvm.ui.activity.MvvmShopDetailActivity;
 import com.pine.tool.util.DecimalUtils;
 
 //import com.pine.mvvm.ui.activity.MvvmShopDetailActivity;
@@ -69,9 +71,9 @@ public class MvvmShopListPaginationAdapter extends BasePaginationListAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(mContext, MvvmShopDetailActivity.class);
-//                    intent.putExtra("id", content.getId());
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, MvvmShopDetailActivity.class);
+                    intent.putExtra("id", content.getId());
+                    mContext.startActivity(intent);
                 }
             });
         }

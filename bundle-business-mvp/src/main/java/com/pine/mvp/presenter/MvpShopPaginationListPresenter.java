@@ -1,6 +1,6 @@
 package com.pine.mvp.presenter;
 
-import android.widget.Toast;
+import android.os.Bundle;
 
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
@@ -13,8 +13,6 @@ import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpShopPaginationContract;
 import com.pine.mvp.model.MvpShopModel;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,7 +24,6 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
         implements IMvpShopPaginationContract.Presenter {
     private MvpShopModel mModel;
     private MvpShopListPaginationAdapter mMvpHomeItemAdapter;
-    private boolean mIsLoadProcessing;
 
     private ILocationListener mLocationListener = new ILocationListener() {
         @Override
@@ -46,7 +43,7 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
 
 
     @Override
-    public boolean parseIntentData() {
+    public boolean parseInitData(Bundle bundle) {
         return false;
     }
 
@@ -98,11 +95,11 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
             params.put("latitude", String.valueOf(location.getLatitude()));
             params.put("longitude", String.valueOf(location.getLongitude()));
         }
-        startDataLoadUi();
-        if (!mModel.requestShopListData(params, new IModelAsyncResponse<ArrayList<MvpShopItemEntity>>() {
+        setUiLoading(true);
+        mModel.requestShopListData(params, new IModelAsyncResponse<ArrayList<MvpShopItemEntity>>() {
             @Override
             public void onResponse(ArrayList<MvpShopItemEntity> list) {
-                finishDataLoadUi();
+                setUiLoading(false);
                 if (isUiAlive()) {
                     if (refresh) {
                         mMvpHomeItemAdapter.setData(list);
@@ -114,30 +111,14 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
 
             @Override
             public boolean onFail(Exception e) {
-                finishDataLoadUi();
-                if (e instanceof JSONException) {
-                    if (isUiAlive()) {
-                        Toast.makeText(getContext(), "", Toast.LENGTH_SHORT);
-                    }
-                }
+                setUiLoading(false);
                 return false;
             }
-        })) {
-            finishDataLoadUi();
-        }
-    }
 
-    private void startDataLoadUi() {
-        mIsLoadProcessing = true;
-        if (isUiAlive()) {
-            getUi().setSwipeRefreshLayoutRefresh(true);
-        }
-    }
-
-    private void finishDataLoadUi() {
-        mIsLoadProcessing = false;
-        if (isUiAlive()) {
-            getUi().setSwipeRefreshLayoutRefresh(false);
-        }
+            @Override
+            public void onCancel() {
+                setUiLoading(false);
+            }
+        });
     }
 }

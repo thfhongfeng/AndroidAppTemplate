@@ -29,7 +29,7 @@ public class MvvmShopPaginationListFragment extends
 
     @Override
     protected int getFragmentLayoutResId() {
-        return R.layout.mvvm_fragment_shop_no_pagination_list;
+        return R.layout.mvvm_fragment_shop_pagination_list;
     }
 
     @Override
@@ -74,12 +74,6 @@ public class MvvmShopPaginationListFragment extends
     @Override
     protected void afterInit() {
         super.afterInit();
-        mViewModel.getUiLoading().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                mBinding.swipeRefreshLayout.setRefreshing(aBoolean);
-            }
-        });
         mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
@@ -128,5 +122,11 @@ public class MvvmShopPaginationListFragment extends
     public void onLoadingMore() {
         mViewModel.loadShopPaginationListData(false, mMvvmHomeItemAdapter.getPageNo() + 1,
                 mMvvmHomeItemAdapter.getPageSize());
+    }
+
+    @Override
+    public void setLoadingUiVisibility(boolean visibility) {
+        hideSoftInputFromWindow();
+        mBinding.swipeRefreshLayout.setRefreshing(visibility);
     }
 }

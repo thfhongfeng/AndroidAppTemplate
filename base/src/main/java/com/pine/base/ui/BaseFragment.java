@@ -1,5 +1,6 @@
 package com.pine.base.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.pine.base.access.UiAccessManager;
 import com.pine.base.permission.IPermissionCallback;
@@ -206,9 +208,11 @@ public abstract class BaseFragment extends Fragment
         PermissionManager.requestPermission(this, bean);
     }
 
-    public void startLoadingUi() {
-    }
-
-    public void finishLoadingUi() {
+    public void hideSoftInputFromWindow() {
+        //如果软键盘已弹出，收回软键盘
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
+        }
     }
 }
