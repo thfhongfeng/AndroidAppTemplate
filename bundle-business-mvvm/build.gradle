@@ -34,11 +34,11 @@ android {
     sourceSets {
         main {
             res.srcDirs += [
-                    'src/main/res/layout/activity',
-                    'src/main/res/layout/fragment',
-                    'src/main/res/layout/widget',
-                    'src/main/res/layout/dialog',
-                    'src/main/res/layout/item'
+                    'src/main/res/layouts/activity',
+                    'src/main/res/layouts/fragment',
+                    'src/main/res/layouts/widget',
+                    'src/main/res/layouts/dialog',
+                    'src/main/res/layouts/item'
             ]
             jniLibs.srcDir 'libs'
             jni.srcDirs = []    //disable automatic ndk-build
