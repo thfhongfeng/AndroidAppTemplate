@@ -10,13 +10,13 @@ public class MvpShopItemEntity {
      * id :
      * name :
      * distance :
-     * imgUrl :
+     * mainImgUrl :
      */
 
     private String id;
     private String name;
     private String distance;
-    private String imgUrl;
+    private String mainImgUrl;
 
     public String getId() {
         return id;
@@ -42,11 +42,11 @@ public class MvpShopItemEntity {
         this.distance = distance;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getMainImgUrl() {
+        return mainImgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setMainImgUrl(String mainImgUrl) {
+        this.mainImgUrl = mainImgUrl;
     }
 }

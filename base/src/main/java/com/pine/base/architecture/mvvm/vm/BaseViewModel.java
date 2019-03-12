@@ -1,12 +1,12 @@
 package com.pine.base.architecture.mvvm.vm;
 
+import android.app.Activity;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.IdRes;
-
-import com.pine.base.architecture.mvvm.data.BaseMvvmLiveData;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 /**
  * Created by tanghongfeng on 2019/3/1
@@ -14,47 +14,14 @@ import com.pine.base.architecture.mvvm.data.BaseMvvmLiveData;
 
 public abstract class BaseViewModel extends ViewModel {
     private UiState mUiState = UiState.UI_STATE_UNDEFINE;
+    private Activity mUi;
 
-    MutableLiveData<Boolean> finishData = new MutableLiveData<>();
-
-    public MutableLiveData<Boolean> getFinishData() {
-        return finishData;
+    public Activity getUi() {
+        return mUi;
     }
 
-    public void setFinishData(boolean finish) {
-        finishData.setValue(finish);
-    }
-
-    MutableLiveData<Boolean> uiLoadingData = new MutableLiveData<>();
-
-    public MutableLiveData<Boolean> getUiLoadingData() {
-        return uiLoadingData;
-    }
-
-    public void setUiLoadingData(boolean isLoading) {
-        uiLoadingData.setValue(isLoading);
-    }
-
-    private int toastCount = 0;
-
-    BaseMvvmLiveData<Integer, String> toastStrData = new BaseMvvmLiveData<>();
-
-    public BaseMvvmLiveData<Integer, String> getToastStrData() {
-        return toastStrData;
-    }
-
-    public void setToastData(String msg) {
-        toastStrData.setValue(++toastCount, msg);
-    }
-
-    BaseMvvmLiveData<Integer, Integer> toastResIdData = new BaseMvvmLiveData<>();
-
-    public BaseMvvmLiveData<Integer, Integer> getToastResIdData() {
-        return toastResIdData;
-    }
-
-    public void setToastData(@IdRes Integer id) {
-        toastResIdData.setValue(++toastCount, id);
+    public void setUi(Activity ui) {
+        mUi = ui;
     }
 
     /**
@@ -68,6 +35,10 @@ public abstract class BaseViewModel extends ViewModel {
         mUiState = state;
     }
 
+    public UiState getUiState() {
+        return mUiState;
+    }
+
     public enum UiState {
         UI_STATE_UNDEFINE,
         UI_STATE_ON_CREATE,
@@ -79,9 +50,78 @@ public abstract class BaseViewModel extends ViewModel {
     }
 
     /**
-     * 用于分析传入参数是否非法
+     * 用于分析传入参数是否非法，在View init之前调用
      *
      * @return true表示非法， false表示合法
      */
-    public abstract boolean parseInitData(Bundle bundle);
+    public boolean parseIntentData(@NonNull Bundle bundle) {
+        return false;
+    }
+
+    /**
+     * 用于分析传入参数是否非法，在View init之后调用
+     *
+     * @return
+     */
+    public void afterViewInit() {
+
+    }
+
+    protected void onCleared() {
+        mUi = null;
+    }
+
+    // 重置UI
+    MutableLiveData<Boolean> resetUiData = new MutableLiveData<>();
+
+    public MutableLiveData<Boolean> getResetUiData() {
+        return resetUiData;
+    }
+
+    public void resetUi() {
+        resetUiData.setValue(true);
+    }
+
+    // 结束UI
+    MutableLiveData<Boolean> finishData = new MutableLiveData<>();
+
+    public MutableLiveData<Boolean> getFinishData() {
+        return finishData;
+    }
+
+    public void finishUi() {
+        finishData.setValue(true);
+    }
+
+    // 加载中ui显示状态
+    MutableLiveData<Boolean> uiLoadingData = new MutableLiveData<>();
+
+    public MutableLiveData<Boolean> getUiLoadingData() {
+        return uiLoadingData;
+    }
+
+    public void setUiLoadingData(boolean isLoading) {
+        uiLoadingData.setValue(isLoading);
+    }
+
+    // Toast ui显示
+    MutableLiveData<String> toastStrData = new MutableLiveData<>();
+
+    public MutableLiveData<String> getToastStrData() {
+        return toastStrData;
+    }
+
+    public void setToastData(String msg) {
+        toastStrData.setValue(msg);
+    }
+
+    MutableLiveData<Integer> toastResIdData = new MutableLiveData<>();
+
+    public MutableLiveData<Integer> getToastResIdData() {
+        return toastResIdData;
+    }
+
+    public void setToastData(@StringRes Integer id) {
+        toastResIdData.setValue(id);
+    }
 }

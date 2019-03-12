@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data class="ShopProductItemBinding">
 
@@ -10,9 +10,13 @@
         <variable
             name="product"
             type="com.pine.mvvm.bean.MvvmShopAndProductEntity.ProductsBean"></variable>
+
+        <variable
+            name="shopProperty"
+            type="com.pine.base.list.bean.BaseListAdapterItemProperty"></variable>
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,7 +26,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/dp_10">
+            android:paddingLeft="@dimen/dp_10"
+            android:visibility="@{shopProperty.isItemViewNeedShow ? View.VISIBLE: View.GONE}">
 
             <TextView
                 android:id="@+id/title_tv"

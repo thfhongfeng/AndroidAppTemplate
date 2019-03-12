@@ -1,12 +1,14 @@
 package com.pine.mvvm.bean;
 
+import com.pine.base.bean.BaseBean;
+
 import java.util.List;
 
 /**
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvvmTravelNoteDetailEntity {
+public class MvvmTravelNoteDetailEntity extends BaseBean {
     /**
      * id : 1
      * title : Travel Note Title

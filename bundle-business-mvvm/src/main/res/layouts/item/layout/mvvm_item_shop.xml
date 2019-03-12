@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data class="ShopItemBinding">
 
@@ -12,7 +13,7 @@
             type="com.pine.mvvm.bean.MvvmShopItemEntity"></variable>
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -28,7 +29,8 @@
                 android:id="@+id/photo_iv"
                 android:layout_width="@dimen/dp_66"
                 android:layout_height="@dimen/dp_60"
-                android:layout_margin="@dimen/dp_10" />
+                android:layout_margin="@dimen/dp_10"
+                app:imageUrl="@{shop.mainImgUrl}" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -51,7 +53,7 @@
                     android:gravity="center_vertical|right"
                     android:orientation="horizontal"
                     android:padding="@dimen/dp_5"
-                    android:visibility="@{TextUtils.isEmpty(shop.distance) ? View.GONE:View.VISIBLE}">
+                    android:visibility="@{TextUtils.isEmpty(shop.location) ? View.GONE:View.VISIBLE}">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -64,6 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dp_5"
+                        android:text="@{shop.location}"
                         android:textSize="@dimen/sp_13" />
                 </LinearLayout>
             </LinearLayout>

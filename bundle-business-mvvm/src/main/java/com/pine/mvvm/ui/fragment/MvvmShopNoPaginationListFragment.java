@@ -12,8 +12,8 @@ import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmShopListNoPaginationAdapter;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
-import com.pine.mvvm.databinding.MvvmShopNoPaginationListBinding;
-import com.pine.mvvm.vm.MvvmShopNoPaginationListViewModel;
+import com.pine.mvvm.databinding.MvvmShopNoPaginationListFragmentBinding;
+import com.pine.mvvm.vm.MvvmShopNoPaginationListVm;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class MvvmShopNoPaginationListFragment extends
-        BaseMvvmFragment<MvvmShopNoPaginationListBinding, MvvmShopNoPaginationListViewModel>
+        BaseMvvmFragment<MvvmShopNoPaginationListFragmentBinding, MvvmShopNoPaginationListVm>
         implements SwipeRefreshLayout.OnRefreshListener {
     private MvvmShopListNoPaginationAdapter mMvvmHomeItemAdapter;
 
@@ -32,12 +32,21 @@ public class MvvmShopNoPaginationListFragment extends
     }
 
     @Override
-    protected boolean parseArguments() {
-        return false;
+    protected void init() {
+        initBindingAndVm();
+        initView();
     }
 
-    @Override
-    protected void init() {
+    private void initBindingAndVm() {
+        mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
+                mMvvmHomeItemAdapter.setData(mvvmShopItemEntities);
+            }
+        });
+    }
+
+    private void initView() {
         mBinding.swipeRefreshLayout.setOnRefreshListener(this);
         mBinding.swipeRefreshLayout.setColorSchemeResources(
                 R.color.red,
@@ -58,17 +67,6 @@ public class MvvmShopNoPaginationListFragment extends
             @Override
             public void run() {
                 onRefresh();
-            }
-        });
-    }
-
-    @Override
-    protected void afterInit() {
-        super.afterInit();
-        mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
-                mMvvmHomeItemAdapter.setData(mvvmShopItemEntities);
             }
         });
     }

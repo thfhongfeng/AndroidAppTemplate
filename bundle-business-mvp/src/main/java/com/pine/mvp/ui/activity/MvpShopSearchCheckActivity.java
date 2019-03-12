@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
-import com.pine.base.bean.InputParamBean;
+import com.pine.base.bean.BaseInputParam;
 import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpShopListPaginationAdapter;
 import com.pine.mvp.contract.IMvpShopSearchCheckContract;
@@ -133,8 +133,8 @@ public class MvpShopSearchCheckActivity extends
     }
 
     @Override
-    public InputParamBean getSearchKey(String key) {
-        return new InputParamBean(this, key, search_key_et.getText().toString());
+    public BaseInputParam getSearchKey(String key) {
+        return new BaseInputParam(this, key, search_key_et.getText().toString());
     }
 
     @Override

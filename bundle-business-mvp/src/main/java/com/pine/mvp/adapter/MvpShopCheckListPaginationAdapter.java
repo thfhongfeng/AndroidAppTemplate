@@ -15,7 +15,7 @@ import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.list.BaseListViewHolder;
 import com.pine.base.list.adapter.BasePaginationListAdapter;
 import com.pine.base.list.bean.BaseListAdapterItemEntity;
-import com.pine.base.list.bean.BaseListAdapterItemPropertyEntity;
+import com.pine.base.list.bean.BaseListAdapterItemProperty;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.tool.util.DecimalUtils;
@@ -121,12 +121,12 @@ public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter
         }
 
         @Override
-        public void updateData(final MvpShopItemEntity content, BaseListAdapterItemPropertyEntity propertyEntity, final int position) {
+        public void updateData(final MvpShopItemEntity content, BaseListAdapterItemProperty propertyEntity, final int position) {
             item_cb.setChecked(mAllCheckedMap.containsKey(content.getId()));
             if (mIsSearchMode && item_cb.isChecked()) {
                 mSearchModeCheckedMap.put(content.getId(), content);
             }
-            ImageLoaderManager.getInstance().loadImage(mContext, content.getImgUrl(), photo_iv);
+            ImageLoaderManager.getInstance().loadImage(mContext, content.getMainImgUrl(), photo_iv);
             title_tv.setText(content.getName());
             String distanceStr = content.getDistance();
             if (TextUtils.isEmpty(distanceStr)) {

@@ -1,14 +1,13 @@
 package com.pine.mvp.presenter;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.pine.base.BaseConstants;
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
-import com.pine.base.bean.InputParamBean;
+import com.pine.base.bean.BaseInputParam;
 import com.pine.base.component.editor.bean.EditorItemData;
 import com.pine.base.component.editor.ui.TextImageEditorView;
 import com.pine.base.component.uploader.bean.FileUploadBean;
@@ -41,16 +40,6 @@ public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteR
 
     public MvpTravelNoteReleasePresenter() {
         mModel = new MvpTravelNoteModel();
-    }
-
-    @Override
-    public boolean parseInitData(Bundle bundle) {
-        return false;
-    }
-
-    @Override
-    public void onUiState(BasePresenter.UiState state) {
-
     }
 
     @NonNull
@@ -126,21 +115,21 @@ public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteR
         }
         HashMap<String, String> params = new HashMap<>();
 
-        InputParamBean<String> title = getUi().getNoteTitleParam("title");
+        BaseInputParam<String> title = getUi().getNoteTitleParam("title");
         if (title.checkIsEmpty(R.string.mvp_note_release_title_need)) {
             return;
         } else {
             params.put(title.getKey(), title.getValue());
         }
 
-        InputParamBean<String> setOutDate = getUi().getNoteSetOutDateParam("setOutDate");
+        BaseInputParam<String> setOutDate = getUi().getNoteSetOutDateParam("setOutDate");
         if (setOutDate.checkIsEmpty(R.string.mvp_note_release_set_out_date_need)) {
             return;
         } else {
             params.put(setOutDate.getKey(), setOutDate.getValue());
         }
 
-        InputParamBean<String> dayCount = getUi().getNoteTravelDayCountParam("dayCount");
+        BaseInputParam<String> dayCount = getUi().getNoteTravelDayCountParam("dayCount");
         if (dayCount.checkIsEmpty(R.string.mvp_note_release_day_count_need) ||
                 !dayCount.checkNumberRange(R.string.mvp_note_release_day_count_incorrect,
                         1, Integer.MAX_VALUE)) {
@@ -149,28 +138,28 @@ public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteR
             params.put(dayCount.getKey(), dayCount.getValue());
         }
 
-        InputParamBean<String> belongShops = getUi().getNoteBelongShopsParam("belongShops");
+        BaseInputParam<String> belongShops = getUi().getNoteBelongShopsParam("belongShops");
         if (belongShops.checkIsEmpty(R.string.mvp_note_release_belong_shops_need)) {
             return;
         } else {
             params.put(belongShops.getKey(), belongShops.getValue());
         }
 
-        InputParamBean<String> belongShopNames = getUi().getNoteBelongShopNamesParam("belongShopNames");
+        BaseInputParam<String> belongShopNames = getUi().getNoteBelongShopNamesParam("belongShopNames");
         if (belongShops.checkIsEmpty(R.string.mvp_note_release_belong_shops_need)) {
             return;
         } else {
             params.put(belongShopNames.getKey(), belongShopNames.getValue());
         }
 
-        InputParamBean<String> preface = getUi().getNotePrefaceParam("preface");
+        BaseInputParam<String> preface = getUi().getNotePrefaceParam("preface");
         if (preface.checkIsEmpty(R.string.mvp_note_release_preface_need)) {
             return;
         } else {
             params.put(preface.getKey(), preface.getValue());
         }
 
-        InputParamBean<List<List<EditorItemData>>> contentBean = getUi().getNoteContentParam("content");
+        BaseInputParam<List<List<EditorItemData>>> contentBean = getUi().getNoteContentParam("content");
         if (contentBean.checkIsEmpty(R.string.mvp_note_release_note_content_need)) {
             return;
         } else {

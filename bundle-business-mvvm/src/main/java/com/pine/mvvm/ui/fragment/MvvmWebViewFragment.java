@@ -1,9 +1,11 @@
 package com.pine.mvvm.ui.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -15,8 +17,8 @@ import android.webkit.WebViewClient;
 import com.pine.base.architecture.mvvm.ui.fragment.BaseMvvmFragment;
 import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.R;
-import com.pine.mvvm.databinding.MvvmWebViewBinding;
-import com.pine.mvvm.vm.MvvmWebViewModel;
+import com.pine.mvvm.databinding.MvvmWebViewFragmentBinding;
+import com.pine.mvvm.vm.MvvmWebViewVm;
 import com.pine.tool.util.WebViewUtils;
 
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
@@ -26,23 +28,30 @@ import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
  */
 
 public class MvvmWebViewFragment extends
-        BaseMvvmFragment<MvvmWebViewBinding, MvvmWebViewModel> {
+        BaseMvvmFragment<MvvmWebViewFragmentBinding, MvvmWebViewVm> {
     @Override
     protected int getFragmentLayoutResId() {
         return R.layout.mvvm_fragment_web_view;
     }
 
     @Override
-    protected boolean parseArguments() {
-        return false;
+    protected void init() {
+        initBindingAndVm();
+        initView();
     }
 
-    @Override
-    protected void init() {
+    private void initBindingAndVm() {
         mBinding.setPresenter(new Presenter());
+        mViewModel.getH5UrlData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                loadUrl();
+            }
+        });
+    }
 
+    private void initView() {
         initWebView();
-        loadUrl();
     }
 
     private void initWebView() {
@@ -104,10 +113,8 @@ public class MvvmWebViewFragment extends
     }
 
     public class Presenter {
-        public void onClick(View view) {
-            if (view.getId() == R.id.refresh_btn_tv) {
-                loadUrl();
-            }
+        public void onRefreshBtnClick(View view) {
+            loadUrl();
         }
     }
 

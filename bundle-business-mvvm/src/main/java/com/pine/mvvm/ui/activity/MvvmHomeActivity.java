@@ -1,6 +1,7 @@
 package com.pine.mvvm.ui.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,7 @@ import com.pine.mvvm.ui.fragment.MvvmShopNoPaginationListFragment;
 import com.pine.mvvm.ui.fragment.MvvmShopPaginationListFragment;
 import com.pine.mvvm.ui.fragment.MvvmShopTreeListFragment;
 import com.pine.mvvm.ui.fragment.MvvmWebViewFragment;
-import com.pine.mvvm.vm.MvvmHomeViewModel;
+import com.pine.mvvm.vm.MvvmHomeVm;
 import com.pine.tool.adapter.TabFragmentPagerAdapter;
 
 /**
@@ -25,7 +26,7 @@ import com.pine.tool.adapter.TabFragmentPagerAdapter;
  */
 
 @PermissionsAnnotation(Permissions = {Manifest.permission.ACCESS_FINE_LOCATION})
-public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHomeActivityBinding, MvvmHomeViewModel> {
+public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHomeActivityBinding, MvvmHomeVm> {
 
     @Override
     protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
@@ -40,12 +41,15 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
 
     @Override
     protected void init() {
-        mBinding.setPresenter(new Presenter());
-
-        setupViewPage();
+        initBindingAndVm();
+        initView();
     }
 
-    private void setupViewPage() {
+    private void initBindingAndVm() {
+        mBinding.setPresenter(new Presenter());
+    }
+
+    private void initView() {
         mBinding.viewPager.setAdapter(new TabFragmentPagerAdapter(getSupportFragmentManager(),
                 new Fragment[]{
                         new MvvmShopPaginationListFragment(), new MvvmShopTreeListFragment(),
@@ -62,7 +66,8 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
             menuBtnIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(MvvmHomeActivity.this, MvvmShopReleaseActivity.class);
+                    startActivity(intent);
                 }
             });
             menuBtnIv.setVisibility(View.VISIBLE);

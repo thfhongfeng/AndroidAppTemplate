@@ -1,10 +1,8 @@
 package com.pine.mvvm.vm;
 
-import android.os.Bundle;
-
-import com.pine.base.architecture.mvvm.data.BaseMvvmLiveData;
 import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
+import com.pine.base.binding.data.BaseLiveData;
 import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvvm.MvvmConstants;
@@ -14,23 +12,8 @@ import com.pine.mvvm.model.MvvmShopModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MvvmShopPaginationListViewModel extends BaseViewModel {
+public class MvvmShopPaginationListVm extends BaseViewModel {
     private MvvmShopModel mShopModel = new MvvmShopModel();
-
-    BaseMvvmLiveData<ArrayList<MvvmShopItemEntity>, Boolean> shopListData = new BaseMvvmLiveData<>();
-
-    public BaseMvvmLiveData<ArrayList<MvvmShopItemEntity>, Boolean> getShopListData() {
-        return shopListData;
-    }
-
-    public void setShopListData(ArrayList<MvvmShopItemEntity> shopList, boolean refresh) {
-        shopListData.setValue(shopList, refresh);
-    }
-
-    @Override
-    public boolean parseInitData(Bundle bundle) {
-        return false;
-    }
 
     public void loadShopPaginationListData(final boolean refresh, int pageNo, int pageSize) {
         if (getUiLoadingData().getValue()) {
@@ -64,4 +47,15 @@ public class MvvmShopPaginationListViewModel extends BaseViewModel {
             }
         });
     }
+
+    BaseLiveData<ArrayList<MvvmShopItemEntity>, Boolean> shopListData = new BaseLiveData<>();
+
+    public BaseLiveData<ArrayList<MvvmShopItemEntity>, Boolean> getShopListData() {
+        return shopListData;
+    }
+
+    public void setShopListData(ArrayList<MvvmShopItemEntity> shopList, boolean refresh) {
+        shopListData.setValue(shopList, refresh);
+    }
+
 }

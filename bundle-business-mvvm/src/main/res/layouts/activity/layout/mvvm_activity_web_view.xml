@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data class="MvvmWebViewActivityBinding">
+
+        <variable
+            name="presenter"
+            type="com.pine.mvvm.ui.activity.MvvmWebViewActivity.Presenter"></variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/refresh_btn_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:onClick="@{presenter::onRefreshBtnClick}"
+            android:padding="@dimen/dp_20"
+            android:text="Business Mvvm Item Detail(Click To Refresh)" />
+
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></WebView>
+
+    </LinearLayout>
+</layout>

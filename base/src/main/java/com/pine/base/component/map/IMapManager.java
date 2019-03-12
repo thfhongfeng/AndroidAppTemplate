@@ -25,8 +25,8 @@ public interface IMapManager {
     /**
      * @param context
      * @param type
-     * @param latitude  Gcj_02坐标系
-     * @param longitude Gcj_02坐标系
+     * @param latitude  Gcj_02坐标系 纬度
+     * @param longitude Gcj_02坐标系 经度
      * @return
      */
     Intent getMapActivityIntent(Context context, MapSdkManager.MapType type,

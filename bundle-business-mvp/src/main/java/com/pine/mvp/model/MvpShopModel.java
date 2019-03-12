@@ -140,7 +140,7 @@ public class MvpShopModel {
         int startIndex = new Random().nextInt(10000);
         String res = "{success:true,code:200,message:'',data:" +
                 "{id:'" + startIndex + "',name:'Shop Item " + startIndex +
-                "', distance:'" + distanceStr + "',imgUrl:''," +
+                "', distance:'" + distanceStr + "',mainImgUrl:''," + "',imgUrls:''," +
                 "description:'Shop Detail description Shop Detail description Shop Detail description Shop Detail description Shop Detail description'}}";
         try {
             return new JSONObject(res);
@@ -170,12 +170,12 @@ public class MvpShopModel {
         int startIndex = new Random().nextInt(10000);
         String res = "{success:true,code:200,message:'',data:" +
                 "[{id:'" + startIndex + "',name:'Shop Item " + startIndex +
-                "', distance:'" + distanceStr + "',imgUrl:''}";
+                "', distance:'" + distanceStr + "',mainImgUrl:''}";
         for (int i = 1; i < 10; i++) {
             distance += 1333;
             distanceStr = String.valueOf(distance);
             res += ",{id:'" + (startIndex + i) + "',name:'Shop Item " + (startIndex + i) +
-                    "', distance:'" + distanceStr + "',imgUrl:''}";
+                    "', distance:'" + distanceStr + "',mainImgUrl:''}";
         }
         res += "]}";
         try {
@@ -206,14 +206,14 @@ public class MvpShopModel {
         int startIndex = new Random().nextInt(10000);
         String res = "{success:true,code:200,message:'',data:" +
                 "[{id:'" + startIndex + "',name:'Shop Item " + startIndex + "', distance:'" + distanceStr +
-                "',imgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +
+                "',mainImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +
                 "products:[{name:'Product Item 1'}, " +
                 "{name:'Product Item 2'},{name:'Product Item 3'}]}";
         for (int i = 1; i < 10; i++) {
             distance += 1333;
             distanceStr = String.valueOf(distance);
             res += ",{id:'" + (startIndex + i) + "',name:'Shop Item " + (startIndex + i) +
-                    "', distance:'" + distanceStr + "',imgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp', " +
+                    "', distance:'" + distanceStr + "',mainImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp', " +
                     "products:[{name:'Product Item 1'}, {name:'Product Item 2'}]}";
         }
         res += "]}";

@@ -24,7 +24,7 @@ import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.list.BaseListViewHolder;
 import com.pine.base.list.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.list.bean.BaseListAdapterItemEntity;
-import com.pine.base.list.bean.BaseListAdapterItemPropertyEntity;
+import com.pine.base.list.bean.BaseListAdapterItemProperty;
 import com.pine.base.ui.BaseActivity;
 import com.pine.tool.util.LogUtils;
 
@@ -353,7 +353,7 @@ public class ImageUploadView extends UploadFileRecyclerView {
 
             @Override
             public void updateData(final FileUploadBean imageBean,
-                                   BaseListAdapterItemPropertyEntity propertyEntity, final int position) {
+                                   BaseListAdapterItemProperty propertyEntity, final int position) {
                 if (position < mData.size() && position > 0) {
                     imageBean.setOrderIndex(position);
                     // 代表+号之前的需要正常显示图片

@@ -12,7 +12,7 @@ public class MvvmShopAndProductEntity extends MvvmShopItemEntity {
      * id :
      * name : Shop Item 1
      * distance :
-     * imgUrl :
+     * mainImgUrl :
      * products : [{"name":"Product Item 1"},{"name":"Product Item 1"}]
      */
 

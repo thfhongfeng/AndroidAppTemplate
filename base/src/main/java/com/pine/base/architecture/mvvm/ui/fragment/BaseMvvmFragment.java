@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.base.ui.BaseFragment;
@@ -36,6 +35,7 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
                 Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
                 mViewModel = (VM) ViewModelProviders.of(getActivity()).get(presenterClazz);
                 mViewModel.getUiLoadingData().setValue(false);
+                mViewModel.setUi(getActivity());
             }
         }
     }
@@ -49,13 +49,48 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
 
     @Override
     protected final void findViewOnCreateView(View layout) {
-
+        mViewModel.getResetUiData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (aBoolean && getActivity() != null && !getActivity().isFinishing()) {
+                    getActivity().finish();
+                    startActivity(getActivity().getIntent());
+                }
+            }
+        });
+        mViewModel.getFinishData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (aBoolean && getActivity() != null && !getActivity().isFinishing()) {
+                    getActivity().finish();
+                }
+            }
+        });
+        mViewModel.getUiLoadingData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                setLoadingUiVisibility(aBoolean);
+            }
+        });
+        mViewModel.getToastStrData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String msg) {
+                showShortToast(msg);
+            }
+        });
+        mViewModel.getToastResIdData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer resId) {
+                showShortToast(resId);
+            }
+        });
     }
 
+    @CallSuper
     @Override
     protected boolean parseArguments() {
         if (mViewModel != null) {
-            return mViewModel.parseInitData(getArguments());
+            return mViewModel.parseIntentData(getArguments() == null ? new Bundle() : getArguments());
         }
         return false;
     }
@@ -71,26 +106,9 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
         if (mViewModel != null) {
             mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_CREATE);
         }
-        mViewModel.getUiLoadingData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                setLoadingUiVisibility(aBoolean);
-            }
-        });
-        mViewModel.getToastStrData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer integer) {
-                Toast.makeText(getContext(),
-                        mViewModel.getToastStrData().getCustomData(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        mViewModel.getToastResIdData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer integer) {
-                Toast.makeText(getContext(),
-                        mViewModel.getToastResIdData().getCustomData(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (mViewModel != null) {
+            mViewModel.afterViewInit();
+        }
     }
 
     @Override

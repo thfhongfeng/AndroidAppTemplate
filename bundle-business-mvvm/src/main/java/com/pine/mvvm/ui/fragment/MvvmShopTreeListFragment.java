@@ -13,8 +13,8 @@ import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmShopListPaginationTreeAdapter;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
-import com.pine.mvvm.databinding.MvvmShopTreeListBinding;
-import com.pine.mvvm.vm.MvvmShopTreeListViewModel;
+import com.pine.mvvm.databinding.MvvmShopTreeListFragmentBinding;
+import com.pine.mvvm.vm.MvvmShopTreeListVm;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvvmShopTreeListFragment extends BaseMvvmFragment<MvvmShopTreeListBinding, MvvmShopTreeListViewModel>
+public class MvvmShopTreeListFragment extends BaseMvvmFragment<MvvmShopTreeListFragmentBinding, MvvmShopTreeListVm>
         implements SwipeRefreshLayout.OnRefreshListener {
     private MvvmShopListPaginationTreeAdapter mMvvmHomeItemAdapter;
 
@@ -32,12 +32,25 @@ public class MvvmShopTreeListFragment extends BaseMvvmFragment<MvvmShopTreeListB
     }
 
     @Override
-    protected boolean parseArguments() {
-        return false;
+    protected void init() {
+        initBindingAndVm();
+        initView();
     }
 
-    @Override
-    protected void init() {
+    private void initBindingAndVm() {
+        mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopAndProductEntity>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<MvvmShopAndProductEntity> mvvmShopAndProductEntity) {
+                if (mViewModel.getShopListData().getCustomData()) {
+                    mMvvmHomeItemAdapter.setData(mvvmShopAndProductEntity);
+                } else {
+                    mMvvmHomeItemAdapter.addData(mvvmShopAndProductEntity);
+                }
+            }
+        });
+    }
+
+    private void initView() {
         mBinding.swipeRefreshLayout.setOnRefreshListener(this);
         mBinding.swipeRefreshLayout.setColorSchemeResources(
                 R.color.red,
@@ -66,21 +79,6 @@ public class MvvmShopTreeListFragment extends BaseMvvmFragment<MvvmShopTreeListB
             @Override
             public void run() {
                 onRefresh();
-            }
-        });
-    }
-
-    @Override
-    protected void afterInit() {
-        super.afterInit();
-        mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopAndProductEntity>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<MvvmShopAndProductEntity> mvvmShopAndProductEntity) {
-                if (mViewModel.getShopListData().getCustomData()) {
-                    mMvvmHomeItemAdapter.setData(mvvmShopAndProductEntity);
-                } else {
-                    mMvvmHomeItemAdapter.addData(mvvmShopAndProductEntity);
-                }
             }
         });
     }

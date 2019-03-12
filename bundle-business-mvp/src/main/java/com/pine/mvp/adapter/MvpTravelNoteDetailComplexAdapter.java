@@ -11,7 +11,7 @@ import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.list.BaseListViewHolder;
 import com.pine.base.list.adapter.BaseComplexListAdapter;
 import com.pine.base.list.bean.BaseListAdapterItemEntity;
-import com.pine.base.list.bean.BaseListAdapterItemPropertyEntity;
+import com.pine.base.list.bean.BaseListAdapterItemProperty;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpTravelNoteCommentEntity;
 import com.pine.mvp.bean.MvpTravelNoteDetailEntity;
@@ -124,7 +124,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
         }
 
         @Override
-        public void updateData(MvpTravelNoteDetailEntity content, BaseListAdapterItemPropertyEntity propertyEntity, int position) {
+        public void updateData(MvpTravelNoteDetailEntity content, BaseListAdapterItemProperty propertyEntity, int position) {
             ImageLoaderManager.getInstance().loadImage(mContext, content.getImgUrl(), person_civ);
             title_tv.setText(content.getTitle());
             sub_title_tv.setText(content.getSubTitle());
@@ -149,7 +149,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
         }
 
         @Override
-        public void updateData(MvpTravelNoteDetailEntity.DaysBean content, BaseListAdapterItemPropertyEntity propertyEntity, int position) {
+        public void updateData(MvpTravelNoteDetailEntity.DaysBean content, BaseListAdapterItemProperty propertyEntity, int position) {
             day_tv.setText(content.getDay());
             content_tv.setText(content.getContent());
         }
@@ -164,7 +164,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
         }
 
         @Override
-        public void updateData(String content, BaseListAdapterItemPropertyEntity propertyEntity, int position) {
+        public void updateData(String content, BaseListAdapterItemProperty propertyEntity, int position) {
         }
     }
 
@@ -183,7 +183,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
         }
 
         @Override
-        public void updateData(MvpTravelNoteCommentEntity content, BaseListAdapterItemPropertyEntity propertyEntity, int position) {
+        public void updateData(MvpTravelNoteCommentEntity content, BaseListAdapterItemProperty propertyEntity, int position) {
             ImageLoaderManager.getInstance().loadImage(mContext, content.getImgUrl(), person_civ);
             name_tv.setText(content.getName());
             create_time_tv.setText(content.getCreateTime());

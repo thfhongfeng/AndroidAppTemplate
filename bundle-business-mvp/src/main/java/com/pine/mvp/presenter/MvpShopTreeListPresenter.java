@@ -1,7 +1,5 @@
 package com.pine.mvp.presenter;
 
-import android.os.Bundle;
-
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.mvp.MvpConstants;
@@ -24,16 +22,6 @@ public class MvpShopTreeListPresenter extends BasePresenter<IMvpShopTreeListCont
 
     public MvpShopTreeListPresenter() {
         mModel = new MvpShopModel();
-    }
-
-    @Override
-    public boolean parseInitData(Bundle bundle) {
-        return false;
-    }
-
-    @Override
-    public void onUiState(BasePresenter.UiState state) {
-
     }
 
     @Override

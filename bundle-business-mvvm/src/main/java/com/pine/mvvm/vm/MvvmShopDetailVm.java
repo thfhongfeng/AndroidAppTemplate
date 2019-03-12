@@ -15,25 +15,15 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2019/3/1
  */
 
-public class MvvmShopDetailViewModel extends BaseViewModel {
+public class MvvmShopDetailVm extends BaseViewModel {
     private String mId;
     private MvvmShopModel mModel = new MvvmShopModel();
 
-    private MutableLiveData<MvvmShopDetailEntity> shopDetailData = new MutableLiveData<>();
-
-    public MutableLiveData<MvvmShopDetailEntity> getShopDetailData() {
-        return shopDetailData;
-    }
-
-    public void setShopDetailData(MvvmShopDetailEntity shopDetail) {
-        shopDetailData.setValue(shopDetail);
-    }
-
     @Override
-    public boolean parseInitData(Bundle bundle) {
+    public boolean parseIntentData(Bundle bundle) {
         mId = bundle.getString("id", "");
         if (TextUtils.isEmpty(mId)) {
-            setFinishData(true);
+            finishUi();
             return true;
         }
         return false;
@@ -64,5 +54,15 @@ public class MvvmShopDetailViewModel extends BaseViewModel {
                 setUiLoadingData(false);
             }
         });
+    }
+
+    private MutableLiveData<MvvmShopDetailEntity> shopDetailData = new MutableLiveData<>();
+
+    public MutableLiveData<MvvmShopDetailEntity> getShopDetailData() {
+        return shopDetailData;
+    }
+
+    public void setShopDetailData(MvvmShopDetailEntity shopDetail) {
+        shopDetailData.setValue(shopDetail);
     }
 }

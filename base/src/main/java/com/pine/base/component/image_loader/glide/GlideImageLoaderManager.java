@@ -1,5 +1,6 @@
 package com.pine.base.component.image_loader.glide;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -42,16 +43,16 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
     }
 
     @Override
-    public IImageLoaderManager initConfig(@NonNull int emptyImageResId) {
-        mDefaultOption.error(emptyImageResId)    //错误加载
+    public IImageLoaderManager initConfig(@NonNull int errorImageResId) {
+        mDefaultOption.error(errorImageResId)    //错误加载
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
         return mInstance;
     }
 
     @Override
-    public IImageLoaderManager initConfig(@NonNull int emptyImageResId, @NonNull int loadingImageResId) {
-        mDefaultOption.error(emptyImageResId)    //错误加载
+    public IImageLoaderManager initConfig(@NonNull int errorImageResId, @NonNull int loadingImageResId) {
+        mDefaultOption.error(errorImageResId)    //错误加载
                 .placeholder(loadingImageResId)   //加载图
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -74,9 +75,24 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
     @Override
     public void loadImage(@NonNull Context context, @DrawableRes int res,
                           @NonNull ImageView imageView) {
+        loadImage(context, res, -1, -1, imageView);
+    }
+
+    @SuppressLint("ResourceType")
+    @Override
+    public void loadImage(@NonNull Context context, int res, int error, int placeholder,
+                          @NonNull ImageView imageView) {
+        RequestOptions options = mDefaultOption.clone()
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
+        if (error > 0) {
+            options.error(error);
+        }
+        if (placeholder > 0) {
+            options.placeholder(placeholder);
+        }
         Glide.with(context)
                 .load(res)
-                .apply(mDefaultOption.clone().diskCacheStrategy(DiskCacheStrategy.NONE))
+                .apply(options)
                 .into(imageView);
     }
 
@@ -90,10 +106,14 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
     @Override
     public void loadImage(@NonNull Context context,
                           @NonNull String url, @NonNull ImageView imageView) {
-        Glide.with(context)
-                .load(url)
-                .apply(mDefaultOption.clone().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                .into(imageView);
+        loadImage(context, url, -1, -1, imageView);
+    }
+
+    @SuppressLint("ResourceType")
+    @Override
+    public void loadImage(@NonNull Context context, @NonNull String url, int error,
+                          int placeholder, @NonNull ImageView imageView) {
+        loadImage(context, url, -1, -1, imageView, null);
     }
 
     /**
@@ -107,30 +127,45 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
     @Override
     public void loadImage(@NonNull Context context, @NonNull String url,
                           @NonNull ImageView imageView, ImageCacheStrategy cacheStrategy) {
-        RequestOptions options = mDefaultOption.clone();
-        switch (cacheStrategy) {
-            case NONE:
-                options.diskCacheStrategy(DiskCacheStrategy.NONE);
-                break;
-            case DATA:
-                options.diskCacheStrategy(DiskCacheStrategy.DATA);
-                break;
-            case RESOURCE:
-                options.diskCacheStrategy(DiskCacheStrategy.DATA);
-                break;
-            case ALL:
-                options.diskCacheStrategy(DiskCacheStrategy.ALL);
-                break;
-            case AUTOMATIC:
-                options.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-                break;
+        loadImage(context, url, -1, -1, imageView, cacheStrategy);
+    }
+
+    @SuppressLint("ResourceType")
+    @Override
+    public void loadImage(@NonNull Context context, @NonNull String url, int error,
+                          int placeholder, @NonNull ImageView imageView, ImageCacheStrategy cacheStrategy) {
+        RequestOptions options = mDefaultOption.clone()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        if (error > 0) {
+            options.error(error);
+        }
+        if (placeholder > 0) {
+            options.placeholder(placeholder);
+        }
+        if (cacheStrategy != null) {
+            switch (cacheStrategy) {
+                case NONE:
+                    options.diskCacheStrategy(DiskCacheStrategy.NONE);
+                    break;
+                case DATA:
+                    options.diskCacheStrategy(DiskCacheStrategy.DATA);
+                    break;
+                case RESOURCE:
+                    options.diskCacheStrategy(DiskCacheStrategy.DATA);
+                    break;
+                case ALL:
+                    options.diskCacheStrategy(DiskCacheStrategy.ALL);
+                    break;
+                case AUTOMATIC:
+                    options.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+                    break;
+            }
         }
         Glide.with(context)
                 .load(url)
                 .apply(options)
                 .into(imageView);
     }
-
 
     /**
      * 加载本地File图片
@@ -142,9 +177,24 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
     @Override
     public void loadImage(@NonNull Context context, @NonNull File file,
                           @NonNull ImageView imageView) {
+        loadImage(context, file, -1, -1, imageView);
+    }
+
+    @SuppressLint("ResourceType")
+    @Override
+    public void loadImage(@NonNull Context context, @NonNull File file, int error,
+                          int placeholder, @NonNull ImageView imageView) {
+        RequestOptions options = mDefaultOption.clone()
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
+        if (error > 0) {
+            options.error(error);
+        }
+        if (placeholder > 0) {
+            options.placeholder(placeholder);
+        }
         Glide.with(context)
                 .load(file)
-                .apply(mDefaultOption.clone().diskCacheStrategy(DiskCacheStrategy.NONE))
+                .apply(options)
                 .into(imageView);
     }
 

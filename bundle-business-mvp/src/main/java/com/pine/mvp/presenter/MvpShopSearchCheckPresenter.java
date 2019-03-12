@@ -7,7 +7,7 @@ import android.text.TextUtils;
 
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
-import com.pine.base.bean.InputParamBean;
+import com.pine.base.bean.BaseInputParam;
 import com.pine.mvp.MvpConstants;
 import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpShopCheckListPaginationAdapter;
@@ -39,14 +39,9 @@ public class MvpShopSearchCheckPresenter extends BasePresenter<IMvpShopSearchChe
     }
 
     @Override
-    public boolean parseInitData(Bundle bundle) {
+    public boolean parseIntentData(Bundle bundle) {
         mBelongShopIds = bundle.getStringArrayList(REQUEST_CHECKED_IDS_KEY);
         return false;
-    }
-
-    @Override
-    public void onUiState(BasePresenter.UiState state) {
-
     }
 
     @Override
@@ -71,7 +66,7 @@ public class MvpShopSearchCheckPresenter extends BasePresenter<IMvpShopSearchChe
         params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
         params.put(MvpConstants.PAGE_SIZE, String.valueOf(mAdapter.getPageSize()));
 
-        InputParamBean<String> searchKey = getUi().getSearchKey("searchKey");
+        BaseInputParam<String> searchKey = getUi().getSearchKey("searchKey");
         if (TextUtils.isEmpty(searchKey.getValue())) {
             mSearchMode = false;
         } else {

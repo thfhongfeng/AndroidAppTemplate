@@ -1,9 +1,9 @@
 <resources>
     <string name="mvvm_home_title">Business Mvvm</string>
 
-    <string name="mvvm_share_wei_bo_success">分享成功</string>
-    <string name="mvvm_share_wei_bo_cancel">分享取消</string>
-    <string name="mvvm_share_wei_bo_fail">分享失败</string>
+    <string name="mvvm_share_success">分享成功</string>
+    <string name="mvvm_share_cancel">分享取消</string>
+    <string name="mvvm_share_fail">分享失败</string>
 
     <string name="mvvm_spread">展开</string>
     <string name="mvvm_fold">折叠</string>

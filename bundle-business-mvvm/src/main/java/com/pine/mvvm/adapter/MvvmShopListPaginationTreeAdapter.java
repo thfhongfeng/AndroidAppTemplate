@@ -7,16 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.list.BaseListViewHolder;
 import com.pine.base.list.adapter.BasePaginationTreeListAdapter;
 import com.pine.base.list.bean.BaseListAdapterItemEntity;
-import com.pine.base.list.bean.BaseListAdapterItemPropertyEntity;
+import com.pine.base.list.bean.BaseListAdapterItemProperty;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
-import com.pine.mvvm.databinding.ShopItemTreeBinding;
 import com.pine.mvvm.databinding.ShopProductItemBinding;
+import com.pine.mvvm.databinding.ShopTreeItemBinding;
 import com.pine.mvvm.ui.activity.MvvmShopDetailActivity;
 
 import java.util.ArrayList;
@@ -75,7 +74,7 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
 
     public class ShopViewHolder extends BaseListViewHolder<MvvmShopItemEntity> {
         private Context mContext;
-        private ShopItemTreeBinding mBinding;
+        private ShopTreeItemBinding mBinding;
 
         public ShopViewHolder(Context context, View itemView) {
             super(itemView);
@@ -84,16 +83,10 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
         }
 
         @Override
-        public void updateData(final MvvmShopItemEntity content, final BaseListAdapterItemPropertyEntity propertyEntity, final int position) {
+        public void updateData(final MvvmShopItemEntity content, final BaseListAdapterItemProperty propertyEntity, final int position) {
             mBinding.setShop(content);
-
-            ImageLoaderManager.getInstance().loadImage(mContext, content.getImgUrl(), mBinding.photoIv);
-            if (!propertyEntity.isItemViewNeedShow()) {
-                mBinding.container.setVisibility(View.GONE);
-                return;
-            }
-            mBinding.container.setVisibility(View.VISIBLE);
-            mBinding.toggleBtnTv.setText(propertyEntity.isItemViewSpread() ? R.string.mvvm_fold : R.string.mvvm_spread);
+            mBinding.setShopProperty(propertyEntity);
+            mBinding.setPosition(position);
             mBinding.toggleBtnTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -113,6 +106,7 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
                     mContext.startActivity(intent);
                 }
             });
+
         }
     }
 
@@ -128,13 +122,9 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
 
         @Override
         public void updateData(final MvvmShopAndProductEntity.ProductsBean content,
-                               BaseListAdapterItemPropertyEntity propertyEntity, int position) {
+                               BaseListAdapterItemProperty propertyEntity, int position) {
             mBinding.setProduct(content);
-            if (!propertyEntity.isItemViewNeedShow()) {
-                mBinding.container.setVisibility(View.GONE);
-                return;
-            }
-            mBinding.container.setVisibility(View.VISIBLE);
+            mBinding.setShopProperty(propertyEntity);
         }
     }
 }

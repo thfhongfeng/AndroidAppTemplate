@@ -1,10 +1,12 @@
 package com.pine.mvvm.bean;
 
+import com.pine.base.bean.BaseBean;
+
 /**
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvvmShopDetailEntity {
+public class MvvmShopDetailEntity extends BaseBean {
 
     /**
      * id :
@@ -18,7 +20,8 @@ public class MvvmShopDetailEntity {
      * address :
      * addressZipCode :
      * distance :
-     * imgUrl :
+     * mainImgUrl :
+     * imgUrls :
      * description :
      * remark :
      */
@@ -29,12 +32,13 @@ public class MvvmShopDetailEntity {
     private String typeName;
     private String onlineDate;
     private String mobile;
-    private double latitude;
-    private double longitude;
+    private String latitude;
+    private String longitude;
     private String address;
     private String addressZipCode;
     private String distance;
-    private String imgUrl;
+    private String mainImgUrl;
+    private String imgUrls;
     private String description;
     private String remark;
 
@@ -86,19 +90,19 @@ public class MvvmShopDetailEntity {
         this.mobile = mobile;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
@@ -126,12 +130,20 @@ public class MvvmShopDetailEntity {
         this.distance = distance;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getMainImgUrl() {
+        return mainImgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setMainImgUrl(String mainImgUrl) {
+        this.mainImgUrl = mainImgUrl;
+    }
+
+    public String getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String imgUrls) {
+        this.imgUrls = imgUrls;
     }
 
     public String getDescription() {

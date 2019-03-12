@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.pine.base.architecture.mvp.contract.IBaseContract;
-import com.pine.base.bean.InputParamBean;
+import com.pine.base.bean.BaseInputParam;
 import com.pine.base.component.editor.bean.EditorItemData;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
 
@@ -21,25 +21,25 @@ public interface IMvpTravelNoteReleaseContract {
         void setBelongShop(String ids, String names);
 
         @NonNull
-        InputParamBean getNoteTitleParam(String key);
+        BaseInputParam getNoteTitleParam(String key);
 
         @NonNull
-        InputParamBean getNoteSetOutDateParam(String key);
+        BaseInputParam getNoteSetOutDateParam(String key);
 
         @NonNull
-        InputParamBean getNoteTravelDayCountParam(String key);
+        BaseInputParam getNoteTravelDayCountParam(String key);
 
         @NonNull
-        InputParamBean getNoteBelongShopsParam(String key);
+        BaseInputParam getNoteBelongShopsParam(String key);
 
         @NonNull
-        InputParamBean getNoteBelongShopNamesParam(String key);
+        BaseInputParam getNoteBelongShopNamesParam(String key);
 
         @NonNull
-        InputParamBean getNotePrefaceParam(String key);
+        BaseInputParam getNotePrefaceParam(String key);
 
         @NonNull
-        InputParamBean getNoteContentParam(String key);
+        BaseInputParam getNoteContentParam(String key);
     }
 
     interface Presenter extends IBaseContract.Presenter {

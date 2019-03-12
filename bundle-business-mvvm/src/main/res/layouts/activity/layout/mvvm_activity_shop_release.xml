@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data class="MvvmShopReleaseActivityBinding">
+
+        <import type="android.text.TextUtils"></import>
+
+        <variable
+            name="presenter"
+            type="com.pine.mvvm.ui.activity.MvvmShopReleaseActivity.Presenter"></variable>
+
+        <variable
+            name="shopDetail"
+            type="com.pine.mvvm.bean.MvvmShopDetailEntity"></variable>
+    </data>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="@dimen/dp_10">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_10"
+                    android:shrinkColumns="1">
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_name_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <EditText
+                            android:id="@+id/name_et"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:ellipsize="end"
+                            android:maxLength="20"
+                            android:maxLines="2"
+                            android:padding="@dimen/dp_10"
+                            android:text="@={shopDetail.name}"
+                            android:textColor="#929292"
+                            android:textSize="@dimen/sp_15" />
+                    </TableRow>
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_type_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <LinearLayout
+                            android:id="@+id/type_ll"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:gravity="center_vertical"
+                            android:onClick="@{presenter::onTypeSelectorClick}"
+                            android:orientation="horizontal">
+
+                            <com.pine.base.binding.widget.android.view.BindingTextView
+                                android:id="@+id/type_tv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="@dimen/dp_10"
+                                android:text="@={shopDetail.typeName}"
+                                bind:data="@={shopDetail.type}"
+                                android:textColor="#929292"
+                                android:textSize="@dimen/sp_15" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp_10"
+                                android:padding="@dimen/dp_5"
+                                android:src="@mipmap/base_ic_solid_down" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_online_date_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <LinearLayout
+                            android:id="@+id/online_date_ll"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:gravity="center_vertical"
+                            android:onClick="@{presenter::onOnlineDateSelectorClick}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/online_date_tv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="@dimen/dp_10"
+                                android:text="@={shopDetail.onlineDate}"
+                                android:textColor="#929292"
+                                android:textSize="@dimen/sp_15" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp_10"
+                                android:padding="@dimen/dp_5"
+                                android:src="@mipmap/base_ic_date_select" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_contact_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <TextView
+                            android:id="@+id/contact_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:maxLines="1"
+                            android:onClick="@{presenter::onContactTvClick}"
+                            android:padding="@dimen/dp_10"
+                            android:text="@={shopDetail.mobile}"
+                            android:textColor="#929292"
+                            android:textSize="@dimen/sp_15" />
+                    </TableRow>
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_address_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <com.pine.base.binding.widget.android.view.BindingTextView
+                            android:id="@+id/address_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:maxLines="1"
+                            android:onClick="@{presenter::onAddressSelectorClick}"
+                            android:padding="@dimen/dp_10"
+                            android:text="@={shopDetail.address}"
+                            bind:data="@={shopDetail.addressZipCode}"
+                            android:textColor="#929292"
+                            android:textSize="@dimen/sp_15" />
+                    </TableRow>
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_address_marker_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <com.pine.base.binding.widget.android.view.BindingTextView
+                            android:id="@+id/address_marker_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:maxLines="1"
+                            android:onClick="@{presenter::onAddressMarkerTvClick}"
+                            android:padding="@dimen/dp_10"
+                            android:text='@{(TextUtils.isEmpty(shopDetail.latitude) || TextUtils.isEmpty(shopDetail.longitude)) ? "":(shopDetail.latitude + ","+shopDetail.longitude)}'
+                            android:textColor="#929292"
+                            android:textSize="@dimen/sp_15"
+                            bind:data1="@={shopDetail.latitude}"
+                            bind:data2="@={shopDetail.longitude}"/>
+                    </TableRow>
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_address_detail_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <EditText
+                            android:id="@+id/address_detail_et"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:gravity="top"
+                            android:lines="2"
+                            android:padding="@dimen/dp_10"
+                            android:textColor="#929292"
+                            android:textSize="@dimen/sp_15" />
+                    </TableRow>
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="top"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_description_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <EditText
+                            android:id="@+id/description_et"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:gravity="top"
+                            android:lines="3"
+                            android:padding="@dimen/dp_10"
+                            android:textColor="#929292"
+                            android:textSize="@dimen/sp_15" />
+                    </TableRow>
+
+                    <TableRow android:layout_margin="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="top"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_10"
+                            android:text="@string/mvvm_shop_release_remark_label"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/sp_15" />
+
+                        <EditText
+                            android:id="@+id/remark_et"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:gravity="top"
+                            android:lines="3"
+                            android:padding="@dimen/dp_10"
+                            android:textColor="#929292"
+                            android:textSize="@dimen/sp_15" />
+                    </TableRow>
+                </TableLayout>
+
+                <com.pine.base.component.uploader.ui.ImageUploadView
+                    android:id="@+id/photo_iuv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_10"></com.pine.base.component.uploader.ui.ImageUploadView>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</layout>

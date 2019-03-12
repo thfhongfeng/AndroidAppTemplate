@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.pine.base.access.UiAccessAnnotation;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
-import com.pine.base.bean.InputParamBean;
+import com.pine.base.bean.BaseInputParam;
 import com.pine.base.component.editor.bean.EditorItemData;
 import com.pine.base.component.editor.ui.TextImageEditorView;
 import com.pine.base.util.DialogUtils;
@@ -205,55 +205,55 @@ public class MvpTravelNoteReleaseActivity extends
 
     @NonNull
     @Override
-    public InputParamBean getNoteTitleParam(String key) {
-        return new InputParamBean(this, key, title_et.getText().toString(),
+    public BaseInputParam getNoteTitleParam(String key) {
+        return new BaseInputParam(this, key, title_et.getText().toString(),
                 nested_scroll_view, title_et);
     }
 
     @NonNull
     @Override
-    public InputParamBean getNoteSetOutDateParam(String key) {
-        return new InputParamBean(this, key, set_out_date_tv.getText().toString(),
+    public BaseInputParam getNoteSetOutDateParam(String key) {
+        return new BaseInputParam(this, key, set_out_date_tv.getText().toString(),
                 nested_scroll_view, set_out_date_tv);
     }
 
     @NonNull
     @Override
-    public InputParamBean getNoteTravelDayCountParam(String key) {
-        return new InputParamBean(this, key, day_count_tv.getText().toString(),
+    public BaseInputParam getNoteTravelDayCountParam(String key) {
+        return new BaseInputParam(this, key, day_count_tv.getText().toString(),
                 nested_scroll_view, day_count_tv);
     }
 
     @NonNull
     @Override
-    public InputParamBean getNoteBelongShopsParam(String key) {
-        return new InputParamBean(this,
+    public BaseInputParam getNoteBelongShopsParam(String key) {
+        return new BaseInputParam(this,
                 key, belong_shop_tv.getTag() == null ? "" : belong_shop_tv.getTag().toString(),
                 nested_scroll_view, belong_shop_tv);
     }
 
     @NonNull
     @Override
-    public InputParamBean getNoteBelongShopNamesParam(String key) {
-        return new InputParamBean(this, key, belong_shop_tv.getText().toString(),
+    public BaseInputParam getNoteBelongShopNamesParam(String key) {
+        return new BaseInputParam(this, key, belong_shop_tv.getText().toString(),
                 nested_scroll_view, belong_shop_tv);
     }
 
     @NonNull
     @Override
-    public InputParamBean getNotePrefaceParam(String key) {
-        return new InputParamBean(this, key, preface_et.getText().toString(),
+    public BaseInputParam getNotePrefaceParam(String key) {
+        return new BaseInputParam(this, key, preface_et.getText().toString(),
                 nested_scroll_view, preface_et);
     }
 
     @NonNull
     @Override
-    public InputParamBean getNoteContentParam(String key) {
+    public BaseInputParam getNoteContentParam(String key) {
         List<List<EditorItemData>> list = new ArrayList<>();
         for (int i = 0; i < day_note_ll.getChildCount(); i++) {
             list.add(((TextImageEditorView) day_note_ll.getChildAt(i)).getData());
         }
-        return new InputParamBean(this, key, list);
+        return new BaseInputParam(this, key, list);
     }
 
     @Override

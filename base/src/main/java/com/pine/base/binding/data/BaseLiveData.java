@@ -1,8 +1,8 @@
-package com.pine.base.architecture.mvvm.data;
+package com.pine.base.binding.data;
 
 import android.arch.lifecycle.MutableLiveData;
 
-public class BaseMvvmLiveData<T, O> extends MutableLiveData<T> {
+public class BaseLiveData<T, O> extends MutableLiveData<T> {
     private O customData;
 
     public O getCustomData() {

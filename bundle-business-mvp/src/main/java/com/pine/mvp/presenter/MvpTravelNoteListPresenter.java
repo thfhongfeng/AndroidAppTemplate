@@ -31,18 +31,13 @@ public class MvpTravelNoteListPresenter extends BasePresenter<IMvpTravelNoteList
     }
 
     @Override
-    public boolean parseInitData(Bundle bundle) {
+    public boolean parseIntentData(Bundle bundle) {
         mId = bundle.getString("id", "");
         if (TextUtils.isEmpty(mId)) {
             finishUi();
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void onUiState(BasePresenter.UiState state) {
-
     }
 
     @Override

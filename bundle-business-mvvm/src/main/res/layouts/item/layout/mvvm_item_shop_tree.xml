@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
-    <data class="ShopItemTreeBinding">
+    <data class="ShopTreeItemBinding">
 
         <import type="android.text.TextUtils"></import>
 
@@ -10,9 +11,17 @@
         <variable
             name="shop"
             type="com.pine.mvvm.bean.MvvmShopItemEntity"></variable>
+
+        <variable
+            name="shopProperty"
+            type="com.pine.base.list.bean.BaseListAdapterItemProperty"></variable>
+
+        <variable
+            name="position"
+            type="int"></variable>
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="@{shopProperty.isItemViewNeedShow ? View.VISIBLE: View.GONE}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,6 +41,7 @@
 
                 <ImageView
                     android:id="@+id/photo_iv"
+                    bind:imageUrl="@{shop.mainImgUrl}"
                     android:layout_width="@dimen/dp_66"
                     android:layout_height="@dimen/dp_60"
                     android:layout_margin="@dimen/dp_10" />
@@ -54,7 +65,7 @@
                     android:paddingRight="@dimen/dp_10"
                     android:paddingBottom="@dimen/dp_5"
                     android:src="@mipmap/base_ic_location"
-                    android:text="@string/mvvm_spread" />
+                    android:text="@{shopProperty.isItemViewSpread ? @string/mvvm_fold : @string/mvvm_spread}" />
 
             </LinearLayout>
 

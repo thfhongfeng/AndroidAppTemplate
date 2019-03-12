@@ -13,8 +13,8 @@ import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmShopListPaginationAdapter;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
-import com.pine.mvvm.databinding.MvvmShopPaginationListBinding;
-import com.pine.mvvm.vm.MvvmShopPaginationListViewModel;
+import com.pine.mvvm.databinding.MvvmShopPaginationListFragmentBinding;
+import com.pine.mvvm.vm.MvvmShopPaginationListVm;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 
 public class MvvmShopPaginationListFragment extends
-        BaseMvvmFragment<MvvmShopPaginationListBinding, MvvmShopPaginationListViewModel>
+        BaseMvvmFragment<MvvmShopPaginationListFragmentBinding, MvvmShopPaginationListVm>
         implements SwipeRefreshLayout.OnRefreshListener {
     private MvvmShopListPaginationAdapter mMvvmHomeItemAdapter;
 
@@ -33,12 +33,25 @@ public class MvvmShopPaginationListFragment extends
     }
 
     @Override
-    protected boolean parseArguments() {
-        return false;
+    protected void init() {
+        initBindingAndVm();
+        initView();
     }
 
-    @Override
-    protected void init() {
+    private void initBindingAndVm() {
+        mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
+                if (mViewModel.getShopListData().getCustomData()) {
+                    mMvvmHomeItemAdapter.setData(mvvmShopItemEntities);
+                } else {
+                    mMvvmHomeItemAdapter.addData(mvvmShopItemEntities);
+                }
+            }
+        });
+    }
+
+    private void initView() {
         mBinding.swipeRefreshLayout.setOnRefreshListener(this);
         mBinding.swipeRefreshLayout.setColorSchemeResources(
                 R.color.red,
@@ -67,21 +80,6 @@ public class MvvmShopPaginationListFragment extends
             @Override
             public void run() {
                 onRefresh();
-            }
-        });
-    }
-
-    @Override
-    protected void afterInit() {
-        super.afterInit();
-        mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
-                if (mViewModel.getShopListData().getCustomData()) {
-                    mMvvmHomeItemAdapter.setData(mvvmShopItemEntities);
-                } else {
-                    mMvvmHomeItemAdapter.addData(mvvmShopItemEntities);
-                }
             }
         });
     }
