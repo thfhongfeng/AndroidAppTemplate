@@ -36,19 +36,19 @@ public class BindingTextView extends AppCompatTextView {
         return data;
     }
 
-    @BindingAdapter(value = {"bind:data"}, requireAll = false)
+    @BindingAdapter(value = {"data"}, requireAll = false)
     public static void setData(BindingTextView view, Object data) {
         if (data != view.getData()) {
             view.setData(data);
         }
     }
 
-    @InverseBindingAdapter(attribute = "bind:data", event = "bind:dataAttrChanged")
+    @InverseBindingAdapter(attribute = "data", event = "dataAttrChanged")
     public static Object getData(BindingTextView view) {
         return view.getData();
     }
 
-    @BindingAdapter(value = {"bind:dataAttrChanged"}, requireAll = false)
+    @BindingAdapter(value = {"dataAttrChanged"}, requireAll = false)
     public static void setDataAttrChanged(BindingTextView view, InverseBindingListener listener) {
         mBindingDataListener = listener;
     }
@@ -64,19 +64,19 @@ public class BindingTextView extends AppCompatTextView {
         return data1;
     }
 
-    @BindingAdapter(value = {"bind:data1"}, requireAll = false)
+    @BindingAdapter(value = {"data1"}, requireAll = false)
     public static void setData1(BindingTextView view, Object data1) {
         if (data1 != view.getData1()) {
             view.setData1(data1);
         }
     }
 
-    @InverseBindingAdapter(attribute = "bind:data1", event = "bind:data1AttrChanged")
+    @InverseBindingAdapter(attribute = "data1", event = "data1AttrChanged")
     public static Object getData1(BindingTextView view) {
         return view.getData1();
     }
 
-    @BindingAdapter(value = {"bind:data1AttrChanged"}, requireAll = false)
+    @BindingAdapter(value = {"data1AttrChanged"}, requireAll = false)
     public static void setData1AttrChanged(BindingTextView view, InverseBindingListener listener) {
         mBindingData1Listener = listener;
     }
@@ -92,19 +92,19 @@ public class BindingTextView extends AppCompatTextView {
         return data2;
     }
 
-    @BindingAdapter(value = {"bind:data2"}, requireAll = false)
+    @BindingAdapter(value = {"data2"}, requireAll = false)
     public static void setData2(BindingTextView view, Object data2) {
         if (data2 != view.getData2()) {
             view.setData2(data2);
         }
     }
 
-    @InverseBindingAdapter(attribute = "bind:data2", event = "bind:data2AttrChanged")
+    @InverseBindingAdapter(attribute = "data2", event = "data2AttrChanged")
     public static Object getData2(BindingTextView view) {
         return view.getData2();
     }
 
-    @BindingAdapter(value = {"bind:data2AttrChanged"}, requireAll = false)
+    @BindingAdapter(value = {"data2AttrChanged"}, requireAll = false)
     public static void setData2AttrChanged(BindingTextView view, InverseBindingListener listener) {
         mBindingData2Listener = listener;
     }
@@ -120,19 +120,19 @@ public class BindingTextView extends AppCompatTextView {
         return data3;
     }
 
-    @BindingAdapter(value = {"bind:data3"}, requireAll = false)
+    @BindingAdapter(value = {"data3"}, requireAll = false)
     public static void setData3(BindingTextView view, Object data3) {
         if (data3 != view.getData3()) {
             view.setData3(data3);
         }
     }
 
-    @InverseBindingAdapter(attribute = "bind:data3", event = "bind:data3AttrChanged")
+    @InverseBindingAdapter(attribute = "data3", event = "data3AttrChanged")
     public static Object getData3(BindingTextView view) {
         return view.getData3();
     }
 
-    @BindingAdapter(value = {"bind:data3AttrChanged"}, requireAll = false)
+    @BindingAdapter(value = {"data3AttrChanged"}, requireAll = false)
     public static void setData3AttrChanged(BindingTextView view, InverseBindingListener listener) {
         mBindingData3Listener = listener;
     }

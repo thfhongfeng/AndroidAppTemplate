@@ -17,7 +17,7 @@ public class BaseBindingAdapter {
     // 则会调用被注解的方法，并将aaa,bbb,...依次传给方法的第一个参数之后的参数（参数类型需要一致），
     // 被注解的方法的第一个参数则是与属性关联的View类型
     // requireAll值：true表示必须所有参数均被设置才会调用；false则不用全部设置也会调用。
-    @BindingAdapter(value = {"bind:imageUrl", "bind:emptySrc", "bind:errorSrc"},
+    @BindingAdapter(value = {"imageUrl", "emptySrc", "errorSrc"},
             requireAll = false)
     public static void setImageRemoteUrl(ImageView view, String url,
                                          @DrawableRes int error, @DrawableRes int placeholder) {

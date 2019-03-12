@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data class="MvvmShopReleaseActivityBinding">
 
@@ -95,7 +94,7 @@
                                 android:layout_weight="1"
                                 android:padding="@dimen/dp_10"
                                 android:text="@={shopDetail.typeName}"
-                                bind:data="@={shopDetail.type}"
+                                data="@={shopDetail.type}"
                                 android:textColor="#929292"
                                 android:textSize="@dimen/sp_15" />
 
@@ -195,7 +194,7 @@
                             android:onClick="@{presenter::onAddressSelectorClick}"
                             android:padding="@dimen/dp_10"
                             android:text="@={shopDetail.address}"
-                            bind:data="@={shopDetail.addressZipCode}"
+                            data="@={shopDetail.addressZipCode}"
                             android:textColor="#929292"
                             android:textSize="@dimen/sp_15" />
                     </TableRow>
@@ -223,8 +222,8 @@
                             android:text='@{(TextUtils.isEmpty(shopDetail.latitude) || TextUtils.isEmpty(shopDetail.longitude)) ? "":(shopDetail.latitude + ","+shopDetail.longitude)}'
                             android:textColor="#929292"
                             android:textSize="@dimen/sp_15"
-                            bind:data1="@={shopDetail.latitude}"
-                            bind:data2="@={shopDetail.longitude}"/>
+                            data1="@={shopDetail.latitude}"
+                            data2="@={shopDetail.longitude}" />
                     </TableRow>
 
                     <TableRow android:layout_margin="@dimen/dp_10">
