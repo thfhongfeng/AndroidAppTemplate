@@ -138,15 +138,29 @@ public class ImageUploadView extends UploadFileRecyclerView {
         mUploadImageAdapter.notifyDataSetChanged();
     }
 
+    public void setRemoteImages(String remoteImages, String joinStr) {
+        if (TextUtils.isEmpty(remoteImages)) {
+            return;
+        }
+        setRemoteImages(remoteImages.split(joinStr));
+    }
+
     public void setRemoteImageList(List<String> remoteImageList) {
         if (remoteImageList == null && remoteImageList.size() < 1) {
             return;
         }
+        setRemoteImages(remoteImageList.toArray(new String[0]));
+    }
+
+    public void setRemoteImages(String[] remoteImageArr) {
+        if (remoteImageArr == null && remoteImageArr.length < 1) {
+            return;
+        }
         List<FileUploadBean> uploadImageList = new ArrayList<>();
         FileUploadBean fileUploadBean = null;
-        for (int i = 0; i < remoteImageList.size(); i++) {
+        for (int i = 0; i < remoteImageArr.length; i++) {
             fileUploadBean = new FileUploadBean();
-            fileUploadBean.setRemoteFilePath(remoteImageList.get(i));
+            fileUploadBean.setRemoteFilePath(remoteImageArr[i]);
             fileUploadBean.setOrderIndex(i);
             fileUploadBean.setUploadState(FileUploadState.UPLOAD_STATE_SUCCESS);
             uploadImageList.add(fileUploadBean);
@@ -314,8 +328,8 @@ public class ImageUploadView extends UploadFileRecyclerView {
                 return "";
             }
             String reStr = list.get(0);
-            for (String str : list) {
-                reStr += joinStr + str;
+            for (int i = 1; i < list.size(); i++) {
+                reStr += joinStr + list.get(i);
             }
             return reStr;
         }

@@ -144,9 +144,6 @@ public class MvvmShopReleaseActivity extends
     }
 
     private void onAddShopBtnClicked() {
-        mViewModel.getShopDetailData()
-                .getValue()
-                .setImgUrls(mBinding.photoIuv.getNewUploadImageRemoteString(","));
         mViewModel.addShop();
     }
 

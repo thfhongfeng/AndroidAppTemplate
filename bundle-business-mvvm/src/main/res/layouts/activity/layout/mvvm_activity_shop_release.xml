@@ -89,12 +89,12 @@
 
                             <com.pine.base.binding.widget.android.view.BindingTextView
                                 android:id="@+id/type_tv"
+                                data="@={shopDetail.type}"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:padding="@dimen/dp_10"
                                 android:text="@={shopDetail.typeName}"
-                                data="@={shopDetail.type}"
                                 android:textColor="#929292"
                                 android:textSize="@dimen/sp_15" />
 
@@ -186,6 +186,7 @@
 
                         <com.pine.base.binding.widget.android.view.BindingTextView
                             android:id="@+id/address_tv"
+                            data="@={shopDetail.addressZipCode}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -194,7 +195,6 @@
                             android:onClick="@{presenter::onAddressSelectorClick}"
                             android:padding="@dimen/dp_10"
                             android:text="@={shopDetail.address}"
-                            data="@={shopDetail.addressZipCode}"
                             android:textColor="#929292"
                             android:textSize="@dimen/sp_15" />
                     </TableRow>
@@ -212,6 +212,8 @@
 
                         <com.pine.base.binding.widget.android.view.BindingTextView
                             android:id="@+id/address_marker_tv"
+                            data1="@={shopDetail.latitude}"
+                            data2="@={shopDetail.longitude}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -221,9 +223,7 @@
                             android:padding="@dimen/dp_10"
                             android:text='@{(TextUtils.isEmpty(shopDetail.latitude) || TextUtils.isEmpty(shopDetail.longitude)) ? "":(shopDetail.latitude + ","+shopDetail.longitude)}'
                             android:textColor="#929292"
-                            android:textSize="@dimen/sp_15"
-                            data1="@={shopDetail.latitude}"
-                            data2="@={shopDetail.longitude}" />
+                            android:textSize="@dimen/sp_15" />
                     </TableRow>
 
                     <TableRow android:layout_margin="@dimen/dp_10">
@@ -301,11 +301,14 @@
                     </TableRow>
                 </TableLayout>
 
-                <com.pine.base.component.uploader.ui.ImageUploadView
+                <com.pine.base.binding.widget.custom.view.BindingImageUploadView
                     android:id="@+id/photo_iuv"
+                    imgUrlsJoinStr='@{","}'
+                    initImgUrls="@{shopDetail.imgUrls}"
+                    newAddImgUrls="@={shopDetail.imgUrls}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_10"></com.pine.base.component.uploader.ui.ImageUploadView>
+                    android:layout_margin="@dimen/dp_10"></com.pine.base.binding.widget.custom.view.BindingImageUploadView>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
