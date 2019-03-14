@@ -68,7 +68,7 @@ public class MvvmShopReleaseVm extends BaseViewModel {
             setToastData(R.string.mvvm_shop_release_mobile_incorrect_format);
             return;
         }
-        if (TextUtils.isEmpty(entity.getAddress()) || TextUtils.isEmpty(entity.getAddressZipCode())) {
+        if (TextUtils.isEmpty(entity.getAddressDistrict()) || TextUtils.isEmpty(entity.getAddressZipCode())) {
             setToastData(R.string.mvvm_shop_release_address_need);
             return;
         }

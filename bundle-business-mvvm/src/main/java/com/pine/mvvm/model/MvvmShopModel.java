@@ -143,7 +143,9 @@ public class MvvmShopModel {
                 "',type:'2',typeName:'食品',mainImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'" +
                 ",distance:'" + distanceStr + "',latitude:'" + endLatBd + "',longitude:'" + endLonBd +
                 "',imgUrls:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp,https://hellorfimg.zcool.cn/preview/70789213.jpg'" +
-                ",address:'上海市浦东新区浦东新区',addressZipCode:'310115'" +
+                ",onlineDate:'2019-03-01',mobile:'18672943566'" +
+                ",addressDistrict:'上海市浦东新区浦东新区',addressZipCode:'310115'" +
+                ",addressStreet:'盛夏路888号'" +
                 ",description:'Shop Detail description'}}";
         try {
             return new JSONObject(res);

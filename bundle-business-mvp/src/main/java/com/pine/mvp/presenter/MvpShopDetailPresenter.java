@@ -6,12 +6,14 @@ import android.text.TextUtils;
 
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
+import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.bean.MvpShopDetailEntity;
 import com.pine.mvp.contract.IMvpShopDetailContract;
 import com.pine.mvp.model.MvpShopModel;
 import com.pine.mvp.ui.activity.MvpTravelNoteListActivity;
 import com.pine.mvp.ui.activity.MvpWebViewActivity;
+import com.pine.tool.util.DecimalUtils;
 
 import java.util.HashMap;
 
@@ -23,6 +25,7 @@ public class MvpShopDetailPresenter extends BasePresenter<IMvpShopDetailContract
         implements IMvpShopDetailContract.Presenter {
     private String mId;
     private MvpShopModel mModel;
+    private MvpShopDetailEntity mShopDetailEntity;
 
     public MvpShopDetailPresenter() {
         mModel = new MvpShopModel();
@@ -51,6 +54,7 @@ public class MvpShopDetailPresenter extends BasePresenter<IMvpShopDetailContract
             public void onResponse(MvpShopDetailEntity entity) {
                 setUiLoading(false);
                 if (isUiAlive()) {
+                    mShopDetailEntity = entity;
                     getUi().setupShopDetail(entity);
                 }
             }
@@ -66,6 +70,19 @@ public class MvpShopDetailPresenter extends BasePresenter<IMvpShopDetailContract
                 setUiLoading(false);
             }
         });
+    }
+
+    @Override
+    public void showMarkerInMap() {
+        if (mShopDetailEntity == null ||
+                TextUtils.isEmpty(mShopDetailEntity.getLatitude()) ||
+                TextUtils.isEmpty(mShopDetailEntity.getLongitude())) {
+            return;
+        }
+        getContext().startActivity(MapSdkManager.getInstance().getMarkMapActivityIntent(
+                getContext(),
+                DecimalUtils.format(mShopDetailEntity.getLatitude().trim(), 6),
+                DecimalUtils.format(mShopDetailEntity.getLongitude().trim(), 6), false));
     }
 
     @Override

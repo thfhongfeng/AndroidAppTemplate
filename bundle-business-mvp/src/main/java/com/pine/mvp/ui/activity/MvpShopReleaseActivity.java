@@ -51,8 +51,8 @@ public class MvpShopReleaseActivity extends
     private SwipeRefreshLayout swipe_refresh_layout;
     private NestedScrollView nested_scroll_view;
     private LinearLayout type_ll, online_date_ll;
-    private EditText name_et, address_detail_et, description_et, remark_et;
-    private TextView type_tv, online_date_tv, contact_tv, address_tv, address_marker_tv;
+    private EditText name_et, address_street_et, description_et, remark_et;
+    private TextView type_tv, online_date_tv, contact_tv, address_district_tv, address_marker_tv;
     private ImageUploadView photo_iuv;
     private InputTextDialog mContactInputDialog;
     private DateSelectDialog mOnLineDateSelectDialog;
@@ -74,9 +74,9 @@ public class MvpShopReleaseActivity extends
         type_tv = findViewById(R.id.type_tv);
         online_date_tv = findViewById(R.id.online_date_tv);
         contact_tv = findViewById(R.id.contact_tv);
-        address_tv = findViewById(R.id.address_tv);
+        address_district_tv = findViewById(R.id.address_district_tv);
         address_marker_tv = findViewById(R.id.address_marker_tv);
-        address_detail_et = findViewById(R.id.address_detail_et);
+        address_street_et = findViewById(R.id.address_street_et);
         description_et = findViewById(R.id.description_et);
         remark_et = findViewById(R.id.remark_et);
         photo_iuv = findViewById(R.id.photo_iuv);
@@ -87,7 +87,7 @@ public class MvpShopReleaseActivity extends
         type_ll.setOnClickListener(this);
         online_date_ll.setOnClickListener(this);
         contact_tv.setOnClickListener(this);
-        address_tv.setOnClickListener(this);
+        address_district_tv.setOnClickListener(this);
         address_marker_tv.setOnClickListener(this);
 
         swipe_refresh_layout.setColorSchemeResources(
@@ -219,15 +219,15 @@ public class MvpShopReleaseActivity extends
                         });
             }
             mContactInputDialog.show();
-        } else if (v.getId() == R.id.address_tv) {
+        } else if (v.getId() == R.id.address_district_tv) {
             if (mProvinceSelectDialog == null) {
                 mProvinceSelectDialog = DialogUtils.createProvinceSelectDialog(this,
                         new ProvinceSelectDialog.IDialogDateSelected() {
                             @Override
                             public void onSelected(String provinceName, String cityName,
                                                    String districtName, String zipCode) {
-                                address_tv.setText(provinceName + cityName + districtName);
-                                address_tv.setTag(zipCode);
+                                address_district_tv.setText(provinceName + cityName + districtName);
+                                address_district_tv.setTag(zipCode);
                             }
                         });
             }
@@ -244,8 +244,8 @@ public class MvpShopReleaseActivity extends
                     latLng[1] = DecimalUtils.format(latLngStr[1].trim(), 6);
                 }
             }
-            startActivityForResult(MapSdkManager.getInstance().getMapActivityIntent(this,
-                    MapSdkManager.MapType.MAP_TYPE_NORMAL, latLng[0], latLng[1]),
+            startActivityForResult(MapSdkManager.getInstance().getMarkMapActivityIntent(this,
+                    MapSdkManager.MapType.MAP_TYPE_NORMAL, latLng[0], latLng[1], true),
                     REQUEST_CODE_BAIDU_MAP);
         }
     }
@@ -292,16 +292,16 @@ public class MvpShopReleaseActivity extends
     @NonNull
     @Override
     public BaseInputParam getShopAddressParam(String key) {
-        return new BaseInputParam(this, key, address_tv.getText().toString(),
-                nested_scroll_view, address_tv);
+        return new BaseInputParam(this, key, address_district_tv.getText().toString(),
+                nested_scroll_view, address_district_tv);
     }
 
     @NonNull
     @Override
     public BaseInputParam getShopAddressZipCodeParam(String key) {
         return new BaseInputParam(this,
-                key, address_tv.getTag() == null ? "" : address_tv.getTag().toString(),
-                nested_scroll_view, address_tv);
+                key, address_district_tv.getTag() == null ? "" : address_district_tv.getTag().toString(),
+                nested_scroll_view, address_district_tv);
     }
 
     @NonNull
@@ -331,8 +331,8 @@ public class MvpShopReleaseActivity extends
     @NonNull
     @Override
     public BaseInputParam getShopDetailAddressParam(String key) {
-        return new BaseInputParam(this, key, address_detail_et.getText().toString(),
-                nested_scroll_view, address_detail_et);
+        return new BaseInputParam(this, key, address_street_et.getText().toString(),
+                nested_scroll_view, address_street_et);
     }
 
     @NonNull

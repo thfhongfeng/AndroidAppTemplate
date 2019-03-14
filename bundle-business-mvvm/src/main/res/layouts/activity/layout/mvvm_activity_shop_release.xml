@@ -185,7 +185,7 @@
                             android:textSize="@dimen/sp_15" />
 
                         <com.pine.base.binding.widget.android.view.BindingTextView
-                            android:id="@+id/address_tv"
+                            android:id="@+id/address_district_tv"
                             data="@={shopDetail.addressZipCode}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -194,7 +194,7 @@
                             android:maxLines="1"
                             android:onClick="@{presenter::onAddressSelectorClick}"
                             android:padding="@dimen/dp_10"
-                            android:text="@={shopDetail.address}"
+                            android:text="@={shopDetail.addressDistrict}"
                             android:textColor="#929292"
                             android:textSize="@dimen/sp_15" />
                     </TableRow>
@@ -238,7 +238,7 @@
                             android:textSize="@dimen/sp_15" />
 
                         <EditText
-                            android:id="@+id/address_detail_et"
+                            android:id="@+id/address_street_et"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -246,6 +246,7 @@
                             android:gravity="top"
                             android:lines="2"
                             android:padding="@dimen/dp_10"
+                            android:text="@={shopDetail.addressStreet}"
                             android:textColor="#929292"
                             android:textSize="@dimen/sp_15" />
                     </TableRow>
@@ -271,6 +272,7 @@
                             android:gravity="top"
                             android:lines="3"
                             android:padding="@dimen/dp_10"
+                            android:text="@={shopDetail.description}"
                             android:textColor="#929292"
                             android:textSize="@dimen/sp_15" />
                     </TableRow>
@@ -296,6 +298,7 @@
                             android:gravity="top"
                             android:lines="3"
                             android:padding="@dimen/dp_10"
+                            android:text="@={shopDetail.remark}"
                             android:textColor="#929292"
                             android:textSize="@dimen/sp_15" />
                     </TableRow>

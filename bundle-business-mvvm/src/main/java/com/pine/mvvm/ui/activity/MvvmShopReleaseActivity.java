@@ -229,8 +229,8 @@ public class MvvmShopReleaseActivity extends
                             @Override
                             public void onSelected(String provinceName, String cityName,
                                                    String districtName, String zipCode) {
-                                mBinding.addressTv.setText(provinceName + cityName + districtName);
-                                mBinding.addressTv.setData(zipCode);
+                                mBinding.addressDistrictTv.setText(provinceName + cityName + districtName);
+                                mBinding.addressDistrictTv.setData(zipCode);
                             }
                         });
             }
@@ -249,8 +249,8 @@ public class MvvmShopReleaseActivity extends
                     latLng[1] = DecimalUtils.format(latLngStr[1].trim(), 6);
                 }
             }
-            startActivityForResult(MapSdkManager.getInstance().getMapActivityIntent(MvvmShopReleaseActivity.this,
-                    MapSdkManager.MapType.MAP_TYPE_NORMAL, latLng[0], latLng[1]),
+            startActivityForResult(MapSdkManager.getInstance().getMarkMapActivityIntent(
+                    MvvmShopReleaseActivity.this, latLng[0], latLng[1], true),
                     REQUEST_CODE_BAIDU_MAP);
         }
     }
