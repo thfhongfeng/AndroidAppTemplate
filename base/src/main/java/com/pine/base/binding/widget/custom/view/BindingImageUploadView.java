@@ -13,8 +13,8 @@ import com.pine.base.component.uploader.ui.ImageUploadView;
 import java.util.List;
 
 public class BindingImageUploadView extends ImageUploadView {
-    private static InverseBindingListener mBindingDataListener;
-    protected String imgUrlsJoinStr = ",";
+    private InverseBindingListener bindingDataListener;
+    private String imgUrlsJoinStr = ",";
 
     public BindingImageUploadView(Context context) {
         super(context);
@@ -31,32 +31,32 @@ public class BindingImageUploadView extends ImageUploadView {
     @Override
     public void onFileUploadFail(FileUploadBean uploadBean) {
         super.onFileUploadFail(uploadBean);
-        if (mBindingDataListener != null) {
-            mBindingDataListener.onChange();
+        if (bindingDataListener != null) {
+            bindingDataListener.onChange();
         }
     }
 
     @Override
     public void onFileUploadSuccess(FileUploadBean uploadBean) {
         super.onFileUploadSuccess(uploadBean);
-        if (mBindingDataListener != null) {
-            mBindingDataListener.onChange();
+        if (bindingDataListener != null) {
+            bindingDataListener.onChange();
         }
     }
 
     @Override
     public void onFileUploadFail(List<FileUploadBean> uploadBeanList) {
         super.onFileUploadFail(uploadBeanList);
-        if (mBindingDataListener != null) {
-            mBindingDataListener.onChange();
+        if (bindingDataListener != null) {
+            bindingDataListener.onChange();
         }
     }
 
     @Override
     public void onFileUploadSuccess(List<FileUploadBean> uploadBeanList) {
         super.onFileUploadSuccess(uploadBeanList);
-        if (mBindingDataListener != null) {
-            mBindingDataListener.onChange();
+        if (bindingDataListener != null) {
+            bindingDataListener.onChange();
         }
     }
 
@@ -77,7 +77,7 @@ public class BindingImageUploadView extends ImageUploadView {
 
     @BindingAdapter(value = {"newAddImgUrlsAttrChanged"}, requireAll = false)
     public static void setNewAddImgUrlsAttrChanged(BindingImageUploadView view, InverseBindingListener listener) {
-        mBindingDataListener = listener;
+        view.bindingDataListener = listener;
     }
 
     @BindingAdapter(value = {"initImgUrls"})

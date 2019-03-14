@@ -8,9 +8,9 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 public class BindingTextView extends AppCompatTextView {
-    private static InverseBindingListener mBindingDataListener;
-    private static InverseBindingListener mBindingData1Listener,
-            mBindingData2Listener, mBindingData3Listener;
+    private InverseBindingListener bindingDataListener;
+    private InverseBindingListener bindingData1Listener,
+            bindingData2Listener, bindingData3Listener;
     private Object data, data1, data2, data3;
 
     public BindingTextView(Context context) {
@@ -27,8 +27,8 @@ public class BindingTextView extends AppCompatTextView {
 
     public void setData(final Object data) {
         this.data = data;
-        if (mBindingDataListener != null) {
-            mBindingDataListener.onChange();
+        if (bindingDataListener != null) {
+            bindingDataListener.onChange();
         }
     }
 
@@ -50,13 +50,13 @@ public class BindingTextView extends AppCompatTextView {
 
     @BindingAdapter(value = {"dataAttrChanged"}, requireAll = false)
     public static void setDataAttrChanged(BindingTextView view, InverseBindingListener listener) {
-        mBindingDataListener = listener;
+        view.bindingDataListener = listener;
     }
 
     public void setData1(final Object data1) {
         this.data1 = data1;
-        if (mBindingData1Listener != null) {
-            mBindingData1Listener.onChange();
+        if (bindingData1Listener != null) {
+            bindingData1Listener.onChange();
         }
     }
 
@@ -78,13 +78,13 @@ public class BindingTextView extends AppCompatTextView {
 
     @BindingAdapter(value = {"data1AttrChanged"}, requireAll = false)
     public static void setData1AttrChanged(BindingTextView view, InverseBindingListener listener) {
-        mBindingData1Listener = listener;
+        view.bindingData1Listener = listener;
     }
 
     public void setData2(final Object data2) {
         this.data2 = data2;
-        if (mBindingData2Listener != null) {
-            mBindingData2Listener.onChange();
+        if (bindingData2Listener != null) {
+            bindingData2Listener.onChange();
         }
     }
 
@@ -106,13 +106,13 @@ public class BindingTextView extends AppCompatTextView {
 
     @BindingAdapter(value = {"data2AttrChanged"}, requireAll = false)
     public static void setData2AttrChanged(BindingTextView view, InverseBindingListener listener) {
-        mBindingData2Listener = listener;
+        view.bindingData2Listener = listener;
     }
 
     public void setData3(final Object data3) {
         this.data3 = data3;
-        if (mBindingData3Listener != null) {
-            mBindingData3Listener.onChange();
+        if (bindingData3Listener != null) {
+            bindingData3Listener.onChange();
         }
     }
 
@@ -134,6 +134,6 @@ public class BindingTextView extends AppCompatTextView {
 
     @BindingAdapter(value = {"data3AttrChanged"}, requireAll = false)
     public static void setData3AttrChanged(BindingTextView view, InverseBindingListener listener) {
-        mBindingData3Listener = listener;
+        view.bindingData3Listener = listener;
     }
 }

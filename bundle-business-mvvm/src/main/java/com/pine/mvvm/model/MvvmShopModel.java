@@ -140,8 +140,11 @@ public class MvvmShopModel {
         int startIndex = new Random().nextInt(10000);
         String res = "{success:true,code:200,message:'',data:" +
                 "{id:'" + startIndex + "',name:'Shop Item " + startIndex +
-                "', distance:'" + distanceStr + "',mainImgUrl:''," + "',imgUrls:''," +
-                "description:'Shop Detail description Shop Detail description Shop Detail description Shop Detail description Shop Detail description'}}";
+                "',type:'2',typeName:'食品',mainImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'" +
+                ",distance:'" + distanceStr + "',latitude:'" + endLatBd + "',longitude:'" + endLonBd +
+                "',imgUrls:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp,https://hellorfimg.zcool.cn/preview/70789213.jpg'" +
+                ",address:'上海市浦东新区浦东新区',addressZipCode:'310115'" +
+                ",description:'Shop Detail description'}}";
         try {
             return new JSONObject(res);
         } catch (JSONException e) {

@@ -12,6 +12,9 @@ public class BaseBean {
         Field[] fields = clazz.getDeclaredFields();
         try {
             for (Field field : fields) {
+                if (field.getName().equals("serialVersionUID")) {
+                    continue;
+                }
                 field.setAccessible(true);
                 Object obj = field.get(this);
                 if (obj != null && obj instanceof BaseBean) {
@@ -32,36 +35,48 @@ public class BaseBean {
         Field[] fields = clazz.getDeclaredFields();
         try {
             for (Field field : fields) {
+                if (field.getName().equals("serialVersionUID")) {
+                    continue;
+                }
                 field.setAccessible(true);
                 Object obj = field.get(this);
-                if (obj != null && TextUtils.isEmpty(String.valueOf(obj))) {
-                    if (obj instanceof Integer) {
-                        if ((int) obj == Integer.MAX_VALUE) {
-                            continue;
-                        }
-                    } else if (obj instanceof Short) {
-                        if ((short) obj == Short.MAX_VALUE) {
-                            continue;
-                        }
-                    } else if (obj instanceof Long) {
-                        if ((long) obj == Long.MAX_VALUE) {
-                            continue;
-                        }
-                    } else if (obj instanceof Float) {
-                        if ((float) obj == Float.MAX_VALUE) {
-                            continue;
-                        }
-                    } else if (obj instanceof Double) {
-                        if ((double) obj == Double.MAX_VALUE) {
-                            continue;
-                        }
-                    }
-                    map.put(field.getName(), obj.toString());
+                if (obj != null && obj instanceof BaseBean) {
+                    map.putAll(((BaseBean) obj).toMapIgnoreEmpty());
+                } else if (!isNullObj(obj)) {
+                    map.put(field.getName(), String.valueOf(obj));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return map;
+    }
+
+    private boolean isNullObj(Object obj) {
+        if (obj == null) {
+            return true;
+        }
+        if (obj instanceof Integer) {
+            if ((int) obj == Integer.MAX_VALUE) {
+                return true;
+            }
+        } else if (obj instanceof Short) {
+            if ((short) obj == Short.MAX_VALUE) {
+                return true;
+            }
+        } else if (obj instanceof Long) {
+            if ((long) obj == Long.MAX_VALUE) {
+                return true;
+            }
+        } else if (obj instanceof Float) {
+            if ((float) obj == Float.MAX_VALUE) {
+                return true;
+            }
+        } else if (obj instanceof Double) {
+            if ((double) obj == Double.MAX_VALUE) {
+                return true;
+            }
+        }
+        return TextUtils.isEmpty(obj.toString());
     }
 }
