@@ -30,28 +30,28 @@ public class MvvmShopDetailVm extends BaseViewModel {
     }
 
     public void loadShopDetailData() {
-        if (getUiLoadingData().getValue()) {
+        if (isUiLoading()) {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
         params.put("id", mId);
-        setUiLoadingData(true);
+        setUiLoading(true);
         mModel.requestShopDetailData(params, new IModelAsyncResponse<MvvmShopDetailEntity>() {
             @Override
             public void onResponse(MvvmShopDetailEntity entity) {
-                setUiLoadingData(false);
-                setShopDetailData(entity);
+                setUiLoading(false);
+                setShopDetail(entity);
             }
 
             @Override
             public boolean onFail(Exception e) {
-                setUiLoadingData(false);
+                setUiLoading(false);
                 return false;
             }
 
             @Override
             public void onCancel() {
-                setUiLoadingData(false);
+                setUiLoading(false);
             }
         });
     }
@@ -62,7 +62,7 @@ public class MvvmShopDetailVm extends BaseViewModel {
         return shopDetailData;
     }
 
-    public void setShopDetailData(MvvmShopDetailEntity shopDetail) {
+    public void setShopDetail(MvvmShopDetailEntity shopDetail) {
         shopDetailData.setValue(shopDetail);
     }
 }

@@ -16,7 +16,7 @@ public class MvvmShopNoPaginationListVm extends BaseViewModel {
     private MvvmShopModel mShopModel = new MvvmShopModel();
 
     public void loadShopNoPaginationListData() {
-        if (getUiLoadingData().getValue()) {
+        if (isUiLoading()) {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
@@ -25,23 +25,23 @@ public class MvvmShopNoPaginationListVm extends BaseViewModel {
             params.put("latitude", String.valueOf(location.getLatitude()));
             params.put("longitude", String.valueOf(location.getLongitude()));
         }
-        setUiLoadingData(true);
+        setUiLoading(true);
         mShopModel.requestShopListData(params, new IModelAsyncResponse<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onResponse(ArrayList<MvvmShopItemEntity> list) {
-                setUiLoadingData(false);
-                setShopListData(list);
+                setUiLoading(false);
+                setShopList(list);
             }
 
             @Override
             public boolean onFail(Exception e) {
-                setUiLoadingData(false);
+                setUiLoading(false);
                 return false;
             }
 
             @Override
             public void onCancel() {
-                setUiLoadingData(false);
+                setUiLoading(false);
             }
         });
     }
@@ -52,7 +52,7 @@ public class MvvmShopNoPaginationListVm extends BaseViewModel {
         return shopListData;
     }
 
-    public void setShopListData(ArrayList<MvvmShopItemEntity> shopList) {
+    public void setShopList(ArrayList<MvvmShopItemEntity> shopList) {
         shopListData.setValue(shopList);
     }
 }

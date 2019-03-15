@@ -100,19 +100,23 @@ public abstract class BaseViewModel extends ViewModel {
         return uiLoadingData;
     }
 
-    public void setUiLoadingData(boolean isLoading) {
+    public boolean isUiLoading() {
+        return uiLoadingData.getValue();
+    }
+
+    public void setUiLoading(boolean isLoading) {
         uiLoadingData.setValue(isLoading);
     }
 
     // Toast ui显示
-    MutableLiveData<String> toastStrData = new MutableLiveData<>();
+    MutableLiveData<String> toastMsgData = new MutableLiveData<>();
 
-    public MutableLiveData<String> getToastStrData() {
-        return toastStrData;
+    public MutableLiveData<String> getToastMsgData() {
+        return toastMsgData;
     }
 
-    public void setToastData(String msg) {
-        toastStrData.setValue(msg);
+    public void setToastMsgData(String msg) {
+        toastMsgData.setValue(msg);
     }
 
     MutableLiveData<Integer> toastResIdData = new MutableLiveData<>();
@@ -121,7 +125,7 @@ public abstract class BaseViewModel extends ViewModel {
         return toastResIdData;
     }
 
-    public void setToastData(@StringRes Integer id) {
+    public void setToastResId(@StringRes Integer id) {
         toastResIdData.setValue(id);
     }
 }

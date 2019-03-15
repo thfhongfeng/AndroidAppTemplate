@@ -22,9 +22,9 @@ public class MvvmShopReleaseVm extends BaseViewModel {
 
     @Override
     public void afterViewInit() {
-        setShopTypeArrData(AppUtils.getApplicationContext().getResources().getStringArray(R.array.mvvm_shop_type));
-        setShopTypeNameArrData(AppUtils.getApplicationContext().getResources().getStringArray(R.array.mvvm_shop_name_type));
-        setShopDetailData(new MvvmShopDetailEntity());
+        setShopTypeArr(AppUtils.getApplicationContext().getResources().getStringArray(R.array.mvvm_shop_type));
+        setShopTypeNameArr(AppUtils.getApplicationContext().getResources().getStringArray(R.array.mvvm_shop_name_type));
+        setShopDetail(new MvvmShopDetailEntity());
     }
 
     public HashMap<String, String> makeUploadDefaultParams() {
@@ -40,64 +40,64 @@ public class MvvmShopReleaseVm extends BaseViewModel {
     }
 
     public void addShop() {
-        if (getUiLoadingData().getValue()) {
+        if (isUiLoading()) {
             return;
         }
         MvvmShopDetailEntity entity = shopDetailData.getValue();
         if (TextUtils.isEmpty(entity.getName())) {
-            setToastData(R.string.mvvm_shop_release_name_need);
+            setToastResId(R.string.mvvm_shop_release_name_need);
             return;
         }
         if (TextUtils.isEmpty(entity.getType())) {
-            setToastData(R.string.mvvm_shop_release_type_need);
+            setToastResId(R.string.mvvm_shop_release_type_need);
             return;
         }
         if (TextUtils.isEmpty(entity.getTypeName())) {
-            setToastData(R.string.mvvm_shop_release_type_need);
+            setToastResId(R.string.mvvm_shop_release_type_need);
             return;
         }
         if (TextUtils.isEmpty(entity.getOnlineDate())) {
-            setToastData(R.string.mvvm_shop_release_online_date_need);
+            setToastResId(R.string.mvvm_shop_release_online_date_need);
             return;
         }
         if (TextUtils.isEmpty(entity.getMobile())) {
-            setToastData(R.string.mvvm_shop_release_contact_need);
+            setToastResId(R.string.mvvm_shop_release_contact_need);
             return;
         }
         if (!RegexUtils.isMobilePhoneNumber(entity.getMobile())) {
-            setToastData(R.string.mvvm_shop_release_mobile_incorrect_format);
+            setToastResId(R.string.mvvm_shop_release_mobile_incorrect_format);
             return;
         }
         if (TextUtils.isEmpty(entity.getAddressDistrict()) || TextUtils.isEmpty(entity.getAddressZipCode())) {
-            setToastData(R.string.mvvm_shop_release_address_need);
+            setToastResId(R.string.mvvm_shop_release_address_need);
             return;
         }
         if (TextUtils.isEmpty(entity.getLatitude()) || TextUtils.isEmpty(entity.getLongitude())) {
-            setToastData(R.string.mvvm_shop_release_address_location_need);
+            setToastResId(R.string.mvvm_shop_release_address_location_need);
             return;
         }
         if (TextUtils.isEmpty(entity.getImgUrls())) {
-            setToastData(R.string.mvvm_shop_release_photo_image_need);
+            setToastResId(R.string.mvvm_shop_release_photo_image_need);
             return;
         }
-        setUiLoadingData(true);
+        setUiLoading(true);
         mModel.requestAddShop(entity.toMapIgnoreEmpty(), new IModelAsyncResponse<MvvmShopDetailEntity>() {
             @Override
             public void onResponse(MvvmShopDetailEntity entity) {
-                setUiLoadingData(false);
+                setUiLoading(false);
                 resetUi();
-                setToastData(R.string.mvvm_shop_release_success);
+                setToastResId(R.string.mvvm_shop_release_success);
             }
 
             @Override
             public boolean onFail(Exception e) {
-                setUiLoadingData(false);
+                setUiLoading(false);
                 return false;
             }
 
             @Override
             public void onCancel() {
-                setUiLoadingData(false);
+                setUiLoading(false);
             }
         });
     }
@@ -108,7 +108,7 @@ public class MvvmShopReleaseVm extends BaseViewModel {
         return shopTypeArrData;
     }
 
-    public void setShopTypeArrData(String[] shopTypeArr) {
+    public void setShopTypeArr(String[] shopTypeArr) {
         shopTypeArrData.setValue(shopTypeArr);
     }
 
@@ -118,7 +118,7 @@ public class MvvmShopReleaseVm extends BaseViewModel {
         return shopTypeNameArrData;
     }
 
-    public void setShopTypeNameArrData(String[] shopTypeNameArr) {
+    public void setShopTypeNameArr(String[] shopTypeNameArr) {
         shopTypeNameArrData.setValue(shopTypeNameArr);
     }
 
@@ -128,7 +128,7 @@ public class MvvmShopReleaseVm extends BaseViewModel {
         return shopDetailData;
     }
 
-    public void setShopDetailData(MvvmShopDetailEntity shopDetail) {
+    public void setShopDetail(MvvmShopDetailEntity shopDetail) {
         shopDetailData.setValue(shopDetail);
     }
 }

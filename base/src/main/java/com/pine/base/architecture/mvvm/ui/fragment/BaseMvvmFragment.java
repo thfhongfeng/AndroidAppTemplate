@@ -72,7 +72,7 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
                 setLoadingUiVisibility(aBoolean);
             }
         });
-        mViewModel.getToastStrData().observe(this, new Observer<String>() {
+        mViewModel.getToastMsgData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String msg) {
                 showShortToast(msg);

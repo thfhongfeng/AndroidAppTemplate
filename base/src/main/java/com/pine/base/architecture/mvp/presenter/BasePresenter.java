@@ -118,9 +118,14 @@ public abstract class BasePresenter<V extends IBaseContract.Ui> {
     }
 
     public final void finishUi() {
-        if (mUiRef.get() != null && mUiRef.get() instanceof Activity) {
-            ((Activity) mUiRef.get()).finish();
-        }
+        if (mUiRef.get() != null)
+            if (mUiRef.get() instanceof Activity) {
+                ((Activity) mUiRef.get()).finish();
+            } else if (mUiRef.get() instanceof Fragment) {
+                ((Fragment) mUiRef.get()).getActivity().finish();
+            } else if (mUiRef.get() instanceof android.support.v4.app.Fragment) {
+                ((android.support.v4.app.Fragment) mUiRef.get()).getActivity().finish();
+            }
     }
 
     public void setUiLoading(boolean uiLoading) {

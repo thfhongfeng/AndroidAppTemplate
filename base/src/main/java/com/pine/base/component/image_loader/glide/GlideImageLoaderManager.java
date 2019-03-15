@@ -2,6 +2,7 @@ package com.pine.base.component.image_loader.glide;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
@@ -96,6 +97,23 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
                 .into(imageView);
     }
 
+    @Override
+    public void loadImage(@NonNull Context context, int res, Drawable error,
+                          Drawable placeholder, @NonNull ImageView imageView) {
+        RequestOptions options = mDefaultOption.clone()
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
+        if (error != null) {
+            options.error(error);
+        }
+        if (placeholder != null) {
+            options.placeholder(placeholder);
+        }
+        Glide.with(context)
+                .load(res)
+                .apply(options)
+                .into(imageView);
+    }
+
     /**
      * 加载网络图片
      *
@@ -113,7 +131,13 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
     @Override
     public void loadImage(@NonNull Context context, @NonNull String url, int error,
                           int placeholder, @NonNull ImageView imageView) {
-        loadImage(context, url, -1, -1, imageView, null);
+        loadImage(context, url, error, placeholder, imageView, null);
+    }
+
+    @Override
+    public void loadImage(@NonNull Context context, @NonNull String url,
+                          Drawable error, Drawable placeholder, @NonNull ImageView imageView) {
+        loadImage(context, url, error, placeholder, imageView, null);
     }
 
     /**
@@ -167,6 +191,42 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
                 .into(imageView);
     }
 
+    @Override
+    public void loadImage(@NonNull Context context, @NonNull String url, Drawable error,
+                          Drawable placeholder, @NonNull ImageView imageView, ImageCacheStrategy cacheStrategy) {
+        RequestOptions options = mDefaultOption.clone()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        if (error != null) {
+            options.error(error);
+        }
+        if (placeholder != null) {
+            options.placeholder(placeholder);
+        }
+        if (cacheStrategy != null) {
+            switch (cacheStrategy) {
+                case NONE:
+                    options.diskCacheStrategy(DiskCacheStrategy.NONE);
+                    break;
+                case DATA:
+                    options.diskCacheStrategy(DiskCacheStrategy.DATA);
+                    break;
+                case RESOURCE:
+                    options.diskCacheStrategy(DiskCacheStrategy.DATA);
+                    break;
+                case ALL:
+                    options.diskCacheStrategy(DiskCacheStrategy.ALL);
+                    break;
+                case AUTOMATIC:
+                    options.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+                    break;
+            }
+        }
+        Glide.with(context)
+                .load(url)
+                .apply(options)
+                .into(imageView);
+    }
+
     /**
      * 加载本地File图片
      *
@@ -190,6 +250,23 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
             options.error(error);
         }
         if (placeholder > 0) {
+            options.placeholder(placeholder);
+        }
+        Glide.with(context)
+                .load(file)
+                .apply(options)
+                .into(imageView);
+    }
+
+    @Override
+    public void loadImage(@NonNull Context context, @NonNull File file,
+                          Drawable error, Drawable placeholder, @NonNull ImageView imageView) {
+        RequestOptions options = mDefaultOption.clone()
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
+        if (error != null) {
+            options.error(error);
+        }
+        if (placeholder != null) {
             options.placeholder(placeholder);
         }
         Glide.with(context)

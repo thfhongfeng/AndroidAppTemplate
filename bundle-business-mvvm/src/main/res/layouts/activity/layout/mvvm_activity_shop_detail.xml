@@ -312,7 +312,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:onClick="@{presenter::goTravelNoteListUi}"
+                android:onClick="@{(view)->presenter.goTravelNoteListUi(view,shopDetail.id)}"
                 android:padding="@dimen/dp_20"
                 android:text="Go To Travel Note List" />
 

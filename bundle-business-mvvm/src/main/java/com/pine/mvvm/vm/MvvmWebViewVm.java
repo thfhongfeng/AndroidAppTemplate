@@ -24,8 +24,8 @@ public class MvvmWebViewVm extends BaseViewModel {
 
     @Override
     public void afterViewInit() {
-        setH5UrlData(mH5Url);
-        setShareBeanListData(getShareBeanList());
+        setH5Url(mH5Url);
+        setShareBeanList(getShareBeanList());
     }
 
     private ArrayList<ShareBean> getShareBeanList() {
@@ -55,13 +55,13 @@ public class MvvmWebViewVm extends BaseViewModel {
         return h5UrlData;
     }
 
-    public void setH5UrlData(String h5Url) {
+    public void setH5Url(String h5Url) {
         h5UrlData.setValue(h5Url);
     }
 
     private MutableLiveData<ArrayList<ShareBean>> shareBeanListData = new MutableLiveData<>();
 
-    public void setShareBeanListData(ArrayList<ShareBean> shareBeanList) {
+    public void setShareBeanList(ArrayList<ShareBean> shareBeanList) {
         shareBeanListData.setValue(shareBeanList);
     }
 

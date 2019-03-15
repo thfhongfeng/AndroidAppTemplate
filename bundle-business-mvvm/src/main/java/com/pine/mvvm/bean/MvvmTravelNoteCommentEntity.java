@@ -10,14 +10,14 @@ public class MvvmTravelNoteCommentEntity extends BaseBean {
 
     /**
      * id :
-     * name :
+     * author :
      * imgUrl :
      * createTime :
      * content :
      */
 
     private String id;
-    private String name;
+    private String author;
     private String imgUrl;
     private String createTime;
     private String content;
@@ -30,12 +30,12 @@ public class MvvmTravelNoteCommentEntity extends BaseBean {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getImgUrl() {

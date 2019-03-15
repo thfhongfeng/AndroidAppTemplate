@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.base.component.map.MapSdkManager;
@@ -107,8 +106,10 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
             startActivity(intent);
         }
 
-        public void goTravelNoteListUi(View v) {
-            Toast.makeText(MvvmShopDetailActivity.this, "goTravelNoteListUi", Toast.LENGTH_SHORT).show();
+        public void goTravelNoteListUi(View v, String id) {
+            Intent intent = new Intent(MvvmShopDetailActivity.this, MvvmTravelNoteListActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
         }
     }
 }

@@ -132,8 +132,8 @@ public class MvvmTravelNoteModel {
     private JSONObject getTravelNoteDetailData() {
         String res = "{success:true,code:200,message:'',data:" +
                 "{id:'1',title:'Travel Note Title', subTitle:'sub title',imgUrl:''," +
-                "name:'作者',createTime:'2018-10-10 10:10',likeCount:100," +
-                "isLike:true,readCount:10000," +
+                "author:'作者',createTime:'2018-10-10 10:10',likeCount:100," +
+                "isLike:" + (new Random().nextInt(10) > 5) + ",readCount:10000," +
                 "preface:'这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言',";
         res += "days:[{id:'1',day:'第1天',content:'第1天的内容第1天的内容第1天的内容第1天的内容第1天的内容第1天的内容第1天的内容第1天的内容第1天的内容'}";
         for (int i = 1; i < 10; i++) {
@@ -193,12 +193,12 @@ public class MvvmTravelNoteModel {
         int startIndex = new Random().nextInt(10000);
         String res = "{success:true,code:200,message:'',data:" +
                 "[{id:'" + startIndex + "',content:'Comment Item " + startIndex + "'," +
-                "name:'评论人员1',imgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +
+                "author:'评论人员1',imgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +
                 "createTime:'2018-10-10 10:10'}";
         for (int i = 1; i < 10; i++) {
             res += ",{id:'" + (startIndex + i) + "'," +
                     "content:'Comment Item " + (startIndex + i) + "'," +
-                    "name:'评论人员" + (startIndex + i) + "'," +
+                    "author:'评论人员" + (startIndex + i) + "'," +
                     "imgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +
                     "createTime:'2018-10-10 10:10'}";
         }

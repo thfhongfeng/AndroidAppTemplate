@@ -14,7 +14,7 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
      * title : Travel Note Title
      * subTitle : Travel Note Title
      * imgUrl :
-     * name : 作者
+     * author : 作者
      * createTime : 2018-10-10 10:10:10
      * likeCount : 100
      * isLike : true
@@ -27,7 +27,7 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
     private String title;
     private String subTitle;
     private String imgUrl;
-    private String name;
+    private String author;
     private String createTime;
     private int likeCount;
     private boolean isLike;
@@ -67,12 +67,12 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
         this.imgUrl = imgUrl;
     }
 
-    public String getName() {
-        return name;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getCreateTime() {
@@ -91,12 +91,12 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
         this.likeCount = likeCount;
     }
 
-    public boolean isIsLike() {
+    public boolean isLike() {
         return isLike;
     }
 
-    public void setIsLike(boolean isLike) {
-        this.isLike = isLike;
+    public void setLike(boolean like) {
+        isLike = like;
     }
 
     public int getReadCount() {

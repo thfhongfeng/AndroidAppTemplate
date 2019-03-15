@@ -1,6 +1,7 @@
 package com.pine.base.binding.adapter;
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 

@@ -49,7 +49,7 @@ public class MvpTravelNoteDetailPresenter extends BasePresenter<IMvpTravelNoteDe
     }
 
     @Override
-    public void loadTravelNoteDetailData(final boolean refresh) {
+    public void loadTravelNoteDetailData() {
         if (mIsLoadProcessing) {
             return;
         }
@@ -60,14 +60,12 @@ public class MvpTravelNoteDetailPresenter extends BasePresenter<IMvpTravelNoteDe
             @Override
             public void onResponse(MvpTravelNoteDetailEntity entity) {
                 setUiLoading(false);
-                if (refresh) {
-                    if (isUiAlive()) {
-                        List<MvpTravelNoteDetailEntity> list = new ArrayList<>();
-                        list.add(entity);
-                        mTravelNoteDetailAdapter.setHeadData(list);
-                    }
-                    loadTravelNoteCommentData(true);
+                if (isUiAlive()) {
+                    List<MvpTravelNoteDetailEntity> list = new ArrayList<>();
+                    list.add(entity);
+                    mTravelNoteDetailAdapter.setHeadData(list);
                 }
+                loadTravelNoteCommentData(true);
             }
 
             @Override
