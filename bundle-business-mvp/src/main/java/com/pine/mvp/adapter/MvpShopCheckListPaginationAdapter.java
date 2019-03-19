@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,11 +31,11 @@ import java.util.Map;
 public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter<MvpShopItemEntity> {
     public static final int SHOP_CHECK_VIEW_HOLDER = 1;
     private boolean mIsSearchMode;
-    private ArrayList<String> mInitCheckedList;
+    private ArrayList<MvpShopItemEntity> mInitCheckedList;
     private Map<String, MvpShopItemEntity> mAllCheckedMap = new HashMap<>();
     private Map<String, MvpShopItemEntity> mSearchModeCheckedMap = new HashMap<>();
 
-    public MvpShopCheckListPaginationAdapter(ArrayList<String> initCheckedIds, int defaultItemViewType) {
+    public MvpShopCheckListPaginationAdapter(ArrayList<MvpShopItemEntity> initCheckedIds, int defaultItemViewType) {
         super(defaultItemViewType);
         mInitCheckedList = initCheckedIds;
     }
@@ -72,7 +71,7 @@ public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter
                 adapterData.add(adapterEntity);
                 if (mInitCheckedList != null) {
                     for (int j = mInitCheckedList.size() - 1; j >= 0; j--) {
-                        if (entity.getId().equals(mInitCheckedList.get(j))) {
+                        if (entity.getId().equals(mInitCheckedList.get(j).getId())) {
                             mAllCheckedMap.put(entity.getId(), entity);
                             mInitCheckedList.remove(j);
                         }
@@ -141,10 +140,10 @@ public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter
                 }
                 location_ll.setVisibility(View.VISIBLE);
             }
-            item_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            item_cb.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
+                public void onClick(View view) {
+                    if (item_cb.isChecked()) {
                         mAllCheckedMap.put(content.getId(), content);
                         if (mIsSearchMode) {
                             mSearchModeCheckedMap.put(content.getId(), content);

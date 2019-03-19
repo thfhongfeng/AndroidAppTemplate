@@ -69,7 +69,7 @@ public class MvvmShopTreeListFragment extends BaseMvvmFragment<MvvmShopTreeListF
         mBinding.recycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (MvvmShopListPaginationTreeAdapter.isLastViewMoreView(recyclerView)) {
+                if (mMvvmHomeItemAdapter.isLastViewMoreView(recyclerView)) {
                     onLoadingMore();
                 }
             }
@@ -118,7 +118,7 @@ public class MvvmShopTreeListFragment extends BaseMvvmFragment<MvvmShopTreeListF
 
     public void onLoadingMore() {
         mViewModel.loadShopTreeListData(false,
-                mMvvmHomeItemAdapter.getPageNo() + 1, mMvvmHomeItemAdapter.getPageSize());
+                mMvvmHomeItemAdapter.getNextPageNo(), mMvvmHomeItemAdapter.getPageSize());
     }
 
     @Override

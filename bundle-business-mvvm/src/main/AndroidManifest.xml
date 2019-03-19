@@ -30,6 +30,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
+            android:name=".ui.activity.MvvmTravelNoteReleaseActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <activity
+            android:name=".ui.activity.MvvmShopSearchCheckActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <activity
             android:name=".ui.activity.MvvmWebViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

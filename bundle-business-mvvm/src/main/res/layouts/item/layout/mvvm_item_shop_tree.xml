@@ -9,7 +9,7 @@
 
         <variable
             name="shop"
-            type="com.pine.mvvm.bean.MvvmShopItemEntity"></variable>
+            type="com.pine.mvvm.bean.MvvmShopAndProductEntity"></variable>
 
         <variable
             name="shopProperty"

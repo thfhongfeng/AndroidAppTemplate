@@ -213,6 +213,10 @@ public abstract class BaseComplexListAdapter<T, B> extends RecyclerView.Adapter<
         return mPageNo.get();
     }
 
+    public int getNextPageNo() {
+        return mPageNo.get() + 1;
+    }
+
     public int getPageSize() {
         return mPageSize.get();
     }

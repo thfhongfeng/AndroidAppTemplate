@@ -13,7 +13,6 @@ import com.pine.base.list.bean.BaseListAdapterItemEntity;
 import com.pine.base.list.bean.BaseListAdapterItemProperty;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
-import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.databinding.ShopProductItemBinding;
 import com.pine.mvvm.databinding.ShopTreeItemBinding;
 import com.pine.mvvm.ui.activity.MvvmShopDetailActivity;
@@ -72,7 +71,7 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
         return viewHolder;
     }
 
-    public class ShopViewHolder extends BaseListViewHolder<MvvmShopItemEntity> {
+    public class ShopViewHolder extends BaseListViewHolder<MvvmShopAndProductEntity> {
         private Context mContext;
         private ShopTreeItemBinding mBinding;
 
@@ -83,7 +82,7 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
         }
 
         @Override
-        public void updateData(final MvvmShopItemEntity content, final BaseListAdapterItemProperty propertyEntity, final int position) {
+        public void updateData(final MvvmShopAndProductEntity content, final BaseListAdapterItemProperty propertyEntity, final int position) {
             mBinding.setShop(content);
             mBinding.setShopProperty(propertyEntity);
             mBinding.setPosition(position);

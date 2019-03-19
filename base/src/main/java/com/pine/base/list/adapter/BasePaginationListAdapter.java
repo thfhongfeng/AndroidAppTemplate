@@ -208,6 +208,10 @@ public abstract class BasePaginationListAdapter<T> extends RecyclerView.Adapter<
         return mPageNo.get();
     }
 
+    public int getNextPageNo() {
+        return mPageNo.get() + 1;
+    }
+
     public int getPageSize() {
         return mPageSize.get();
     }

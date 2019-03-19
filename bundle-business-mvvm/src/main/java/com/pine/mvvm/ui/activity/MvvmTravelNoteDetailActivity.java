@@ -108,7 +108,7 @@ public class MvvmTravelNoteDetailActivity extends
     }
 
     public void onLoadingMore() {
-        mViewModel.loadTravelNoteCommentData(false, mTravelNoteDetailAdapter.getPageNo(),
+        mViewModel.loadTravelNoteCommentData(false, mTravelNoteDetailAdapter.getNextPageNo(),
                 mTravelNoteDetailAdapter.getPageSize());
     }
 

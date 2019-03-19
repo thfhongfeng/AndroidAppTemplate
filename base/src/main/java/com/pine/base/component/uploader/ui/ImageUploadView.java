@@ -76,7 +76,7 @@ public class ImageUploadView extends UploadFileRecyclerView {
         setLayoutManager(layoutManager);
         setAdapter(mUploadImageAdapter);
         mUploadImageAdapter.setData(null);
-        mUploadImageAdapter.notifyDataSetChanged();
+        notifyAdapterDataChanged();
     }
 
 
@@ -90,7 +90,7 @@ public class ImageUploadView extends UploadFileRecyclerView {
         setLayoutManager(layoutManager);
         setAdapter(mUploadImageAdapter);
         mUploadImageAdapter.setData(null);
-        mUploadImageAdapter.notifyDataSetChanged();
+        notifyAdapterDataChanged();
     }
 
     public void init(@NonNull BaseActivity activity, @NonNull String uploadUrl,
@@ -103,7 +103,7 @@ public class ImageUploadView extends UploadFileRecyclerView {
         setLayoutManager(layoutManager);
         setAdapter(mUploadImageAdapter);
         mUploadImageAdapter.setData(null);
-        mUploadImageAdapter.notifyDataSetChanged();
+        notifyAdapterDataChanged();
     }
 
     @Override
@@ -116,43 +116,43 @@ public class ImageUploadView extends UploadFileRecyclerView {
     public void onFileUploadPrepare(List<FileUploadBean> uploadBeanList) {
         int startIndex = mUploadImageAdapter.getAdapterData().size();
         mUploadImageAdapter.addData(uploadBeanList);
-        mUploadImageAdapter.notifyItemRangeChanged(startIndex, mUploadImageAdapter.getAdapterData().size());
+        notifyAdapterItemRangeChanged(startIndex, mUploadImageAdapter.getAdapterData().size());
     }
 
     @Override
     public void onFileUploadProgress(FileUploadBean uploadBean) {
-        mUploadImageAdapter.notifyItemChanged(uploadBean.getOrderIndex());
+        notifyAdapterItemChanged(uploadBean.getOrderIndex());
     }
 
     @Override
     public void onFileUploadCancel(FileUploadBean uploadBean) {
-        mUploadImageAdapter.notifyItemChanged(uploadBean.getOrderIndex());
+        notifyAdapterItemChanged(uploadBean.getOrderIndex());
     }
 
     @Override
     public void onFileUploadFail(FileUploadBean uploadBean) {
-        mUploadImageAdapter.notifyItemChanged(uploadBean.getOrderIndex());
+        notifyAdapterItemChanged(uploadBean.getOrderIndex());
     }
 
     @Override
     public void onFileUploadSuccess(FileUploadBean uploadBean) {
-        mUploadImageAdapter.notifyItemChanged(uploadBean.getOrderIndex());
-        mUploadImageAdapter.notifyItemChanged(0);
+        notifyAdapterItemChanged(uploadBean.getOrderIndex());
+        notifyAdapterItemChanged(0);
     }
 
     @Override
     public void onFileUploadProgress(List<FileUploadBean> uploadBeanList) {
-        mUploadImageAdapter.notifyDataSetChanged();
+        notifyAdapterDataChanged();
     }
 
     @Override
     public void onFileUploadFail(List<FileUploadBean> uploadBeanList) {
-        mUploadImageAdapter.notifyDataSetChanged();
+        notifyAdapterDataChanged();
     }
 
     @Override
     public void onFileUploadSuccess(List<FileUploadBean> uploadBeanList) {
-        mUploadImageAdapter.notifyDataSetChanged();
+        notifyAdapterDataChanged();
     }
 
     public void setRemoteImages(String remoteImages, String joinStr) {
@@ -186,7 +186,7 @@ public class ImageUploadView extends UploadFileRecyclerView {
             return;
         }
         mUploadImageAdapter.setData(uploadImageList);
-        mUploadImageAdapter.notifyDataSetChanged();
+        notifyAdapterDataChanged();
     }
 
     private ArrayList<String> getImageShowList() {
@@ -437,7 +437,7 @@ public class ImageUploadView extends UploadFileRecyclerView {
                             public void onClick(View v) {
                                 mData.remove(position);
                                 mFileUploadComponent.cancel(imageBean);
-                                notifyDataSetChanged();
+                                notifyAdapterDataChanged();
                             }
                         });
                     } else {
@@ -459,6 +459,18 @@ public class ImageUploadView extends UploadFileRecyclerView {
                 }
             }
         }
+    }
+
+    protected void notifyAdapterDataChanged() {
+        mUploadImageAdapter.notifyDataSetChanged();
+    }
+
+    protected void notifyAdapterItemChanged(int index) {
+        mUploadImageAdapter.notifyItemChanged(index);
+    }
+
+    protected void notifyAdapterItemRangeChanged(int start, int end) {
+        mUploadImageAdapter.notifyItemRangeChanged(start, end);
     }
 
     class SpaceItemDecoration extends RecyclerView.ItemDecoration {

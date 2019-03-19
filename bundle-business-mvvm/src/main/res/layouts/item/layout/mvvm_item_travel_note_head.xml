@@ -32,13 +32,13 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/sub_title_tv"
+            android:id="@+id/set_out_date_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingTop="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_5"
-            android:text="@{travelNoteDetail.subTitle}"
+            android:text="@{travelNoteDetail.setOutDate + @string/mvvm_travel_note_detail_set_out_date}"
             android:textColor="#585858"
             android:textSize="@dimen/sp_12" />
 
@@ -51,7 +51,7 @@
             <com.pine.tool.widget.CircleImageView
                 android:id="@+id/person_civ"
                 emptySrc="@{R.mipmap.base_iv_portrait_default}"
-                imageUrl="@{travelNoteDetail.imgUrl}"
+                imageUrl="@{travelNoteDetail.headImg}"
                 android:layout_width="@dimen/dp_22"
                 android:layout_height="@dimen/dp_22"
                 app:civ_border_color="@color/white"

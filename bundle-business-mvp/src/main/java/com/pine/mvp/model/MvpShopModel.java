@@ -40,31 +40,32 @@ public class MvpShopModel {
                                @NonNull final IModelAsyncResponse<MvpShopDetailEntity> callback) {
         String url = MvpUrlConstants.Add_Shop;
         HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_ADD_SHOP,
-                handleHttpResponse(callback));
+                handleHttpResponse(callback, null));
     }
 
     public void requestShopDetailData(final Map<String, String> params,
                                       @NonNull final IModelAsyncResponse<MvpShopDetailEntity> callback) {
         String url = MvpUrlConstants.Query_ShopDetail;
         HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_DETAIL,
-                handleHttpResponse(callback));
+                handleHttpResponse(callback, null));
     }
 
     public void requestShopListData(final Map<String, String> params,
                                     @NonNull final IModelAsyncResponse<ArrayList<MvpShopItemEntity>> callback) {
         String url = MvpUrlConstants.Query_ShopList;
         HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_LIST,
-                handleHttpResponse(callback));
+                handleHttpResponse(callback, params.get(MvpConstants.PAGE_NO)));
     }
 
     public void requestShopAndProductListData(Map<String, String> params,
                                               @NonNull final IModelAsyncResponse<ArrayList<MvpShopAndProductEntity>> callback) {
         String url = MvpUrlConstants.Query_ShopAndProductList;
         HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_AND_PRODUCT_LIST,
-                handleHttpResponse(callback));
+                handleHttpResponse(callback, params.get(MvpConstants.PAGE_NO)));
     }
 
-    private <T> HttpJsonCallback handleHttpResponse(final IModelAsyncResponse<T> callback) {
+    private <T> HttpJsonCallback handleHttpResponse(final IModelAsyncResponse<T> callback,
+                                                    final Object carryData) {
         return new HttpJsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject) {
@@ -92,7 +93,7 @@ public class MvpShopModel {
                     }
                 } else if (what == HTTP_QUERY_SHOP_LIST) {
                     // Test code begin
-                    jsonObject = getShopListData();
+                    jsonObject = getShopListData(carryData != null ? Integer.parseInt(carryData.toString()) : 1);
                     // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<List<MvpShopItemEntity>>() {
@@ -103,7 +104,7 @@ public class MvpShopModel {
                     }
                 } else if (what == HTTP_QUERY_SHOP_AND_PRODUCT_LIST) {
                     // Test code begin
-                    jsonObject = getShopAndProductListData();
+                    jsonObject = getShopAndProductListData(carryData != null ? Integer.parseInt(carryData.toString()) : 1);
                     // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<List<MvpShopAndProductEntity>>() {
@@ -155,7 +156,7 @@ public class MvpShopModel {
         return new JSONObject();
     }
 
-    private JSONObject getShopListData() {
+    private JSONObject getShopListData(int pageNo) {
         if (new Random().nextInt(10) == 9) {
             try {
                 return new JSONObject("{success:true,code:200,message:'',data:[]}");
@@ -172,7 +173,7 @@ public class MvpShopModel {
         double distance = GPSUtils.getDistance(locations[0], locations[1],
                 startLatBd, startLonBd);
         String distanceStr = String.valueOf(distance);
-        int startIndex = new Random().nextInt(10000);
+        int startIndex = (pageNo - 1) * 10 + 1;
         String res = "{success:true,code:200,message:'',data:" +
                 "[{id:'" + startIndex + "',name:'Shop Item " + startIndex +
                 "', distance:'" + distanceStr + "',mainImgUrl:''}";
@@ -191,7 +192,7 @@ public class MvpShopModel {
         return new JSONObject();
     }
 
-    private JSONObject getShopAndProductListData() {
+    private JSONObject getShopAndProductListData(int pageNo) {
         if (new Random().nextInt(5) == 4) {
             try {
                 return new JSONObject("{success:true,code:200,message:'',data:[]}");
@@ -208,7 +209,7 @@ public class MvpShopModel {
         double distance = GPSUtils.getDistance(locations[0], locations[1],
                 startLatBd, startLonBd);
         String distanceStr = String.valueOf(distance);
-        int startIndex = new Random().nextInt(10000);
+        int startIndex = (pageNo - 1) * 10 + 1;
         String res = "{success:true,code:200,message:'',data:" +
                 "[{id:'" + startIndex + "',name:'Shop Item " + startIndex + "', distance:'" + distanceStr +
                 "',mainImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +

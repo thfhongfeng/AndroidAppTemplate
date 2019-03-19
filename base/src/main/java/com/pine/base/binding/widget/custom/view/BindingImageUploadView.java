@@ -7,10 +7,7 @@ import android.databinding.InverseBindingListener;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.ui.ImageUploadView;
-
-import java.util.List;
 
 public class BindingImageUploadView extends ImageUploadView {
     private InverseBindingListener bindingDataListener;
@@ -28,33 +25,22 @@ public class BindingImageUploadView extends ImageUploadView {
         super(context, attrs, defStyle);
     }
 
-    @Override
-    public void onFileUploadFail(FileUploadBean uploadBean) {
-        super.onFileUploadFail(uploadBean);
+    protected void notifyAdapterDataChanged() {
+        super.notifyAdapterDataChanged();
         if (bindingDataListener != null) {
             bindingDataListener.onChange();
         }
     }
 
-    @Override
-    public void onFileUploadSuccess(FileUploadBean uploadBean) {
-        super.onFileUploadSuccess(uploadBean);
+    protected void notifyAdapterItemChanged(int index) {
+        super.notifyAdapterItemChanged(index);
         if (bindingDataListener != null) {
             bindingDataListener.onChange();
         }
     }
 
-    @Override
-    public void onFileUploadFail(List<FileUploadBean> uploadBeanList) {
-        super.onFileUploadFail(uploadBeanList);
-        if (bindingDataListener != null) {
-            bindingDataListener.onChange();
-        }
-    }
-
-    @Override
-    public void onFileUploadSuccess(List<FileUploadBean> uploadBeanList) {
-        super.onFileUploadSuccess(uploadBeanList);
+    protected void notifyAdapterItemRangeChanged(int start, int end) {
+        super.notifyAdapterItemRangeChanged(start, end);
         if (bindingDataListener != null) {
             bindingDataListener.onChange();
         }

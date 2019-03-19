@@ -5,7 +5,7 @@
 
         <variable
             name="travelNoteDayDetail"
-            type="com.pine.mvvm.bean.MvvmTravelNoteDetailEntity.DaysBean"></variable>
+            type="com.pine.mvvm.bean.MvvmTravelNoteDetailEntity.DayBean"></variable>
     </data>
 
     <LinearLayout
@@ -16,22 +16,11 @@
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10">
 
-        <TextView
-            android:id="@+id/day_tv"
+        <com.pine.base.component.editor.ui.TextImageDisplayView
+            android:id="@+id/day_content_tidv"
+            contentList="@{travelNoteDayDetail.getTextImageContentList()}"
+            title="@{travelNoteDayDetail.day}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dp_5"
-            android:paddingBottom="@dimen/dp_5"
-            android:text="@{travelNoteDayDetail.day}"
-            android:textColor="#992328"
-            android:textSize="@dimen/sp_15" />
-
-        <TextView
-            android:id="@+id/content_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{travelNoteDayDetail.content}"
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_14" />
+            android:layout_height="wrap_content"></com.pine.base.component.editor.ui.TextImageDisplayView>
     </LinearLayout>
 </layout>

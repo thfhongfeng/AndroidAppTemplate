@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.base.bean.BaseInputParam;
 import com.pine.mvp.R;
-import com.pine.mvp.adapter.MvpShopListPaginationAdapter;
+import com.pine.mvp.adapter.MvpShopCheckListPaginationAdapter;
 import com.pine.mvp.contract.IMvpShopSearchCheckContract;
 import com.pine.mvp.presenter.MvpShopSearchCheckPresenter;
 import com.pine.tool.util.KeyboardUtils;
@@ -96,7 +96,7 @@ public class MvpShopSearchCheckActivity extends
         recycle_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (MvpShopListPaginationAdapter.isLastViewMoreView(recyclerView)) {
+                if (MvpShopCheckListPaginationAdapter.isLastViewMoreView(recyclerView)) {
                     onLoadingMore();
                 }
             }

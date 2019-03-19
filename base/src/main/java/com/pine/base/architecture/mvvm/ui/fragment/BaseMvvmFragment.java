@@ -95,11 +95,6 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
         return false;
     }
 
-    @Override
-    protected void init() {
-
-    }
-
     @CallSuper
     @Override
     protected void afterInit() {

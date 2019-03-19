@@ -79,7 +79,7 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
         HashMap<String, String> params = new HashMap<>();
         int pageNo = 1;
         if (!refresh) {
-            pageNo = mMvpHomeItemAdapter.getPageNo() + 1;
+            pageNo = mMvpHomeItemAdapter.getNextPageNo();
         }
         params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
         params.put(MvpConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));

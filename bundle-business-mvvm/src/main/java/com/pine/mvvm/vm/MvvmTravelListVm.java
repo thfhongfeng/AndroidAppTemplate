@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MvvmTravelListVm extends BaseViewModel {
-    private String mId;
+    public String mId;
     MvvmTravelNoteModel mModel = new MvvmTravelNoteModel();
 
     @Override
@@ -27,17 +27,13 @@ public class MvvmTravelListVm extends BaseViewModel {
         return false;
     }
 
-    public void goToAddTravelNoteActivity() {
-
-    }
-
     public void loadTravelNoteListData(final boolean refresh, int pageNo, int pageSize) {
         if (isUiLoading()) {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
         params.put(MvvmConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvvmConstants.PAGE_NO, String.valueOf(pageSize));
+        params.put(MvvmConstants.PAGE_SIZE, String.valueOf(pageSize));
         params.put("id", mId);
         setUiLoading(true);
         mModel.requestTravelNoteListData(params, new IModelAsyncResponse<ArrayList<MvvmTravelNoteItemEntity>>() {

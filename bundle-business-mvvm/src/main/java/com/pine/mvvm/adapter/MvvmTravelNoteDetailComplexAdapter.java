@@ -45,7 +45,7 @@ public class MvvmTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<M
                 adapterEntity = new BaseListAdapterItemEntity();
                 adapterEntity.setData(entity);
                 adapterEntity.getPropertyEntity().setItemViewType(TRAVEL_NOTE_HEAD_VIEW_HOLDER);
-                List<MvvmTravelNoteDetailEntity.DaysBean> dayList = entity.getDays();
+                List<MvvmTravelNoteDetailEntity.DayBean> dayList = entity.getDays();
                 adapterData.add(adapterEntity);
                 if (dayList != null) {
                     for (int j = 0; j < dayList.size(); j++) {
@@ -119,7 +119,7 @@ public class MvvmTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<M
         }
     }
 
-    public class TravelNoteDayViewHolder extends BaseListViewHolder<MvvmTravelNoteDetailEntity.DaysBean> {
+    public class TravelNoteDayViewHolder extends BaseListViewHolder<MvvmTravelNoteDetailEntity.DayBean> {
         private Context mContext;
         private MvvmTravelNoteDayItemBinding mBinding;
 
@@ -130,7 +130,7 @@ public class MvvmTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<M
         }
 
         @Override
-        public void updateData(MvvmTravelNoteDetailEntity.DaysBean content, BaseListAdapterItemProperty propertyEntity, int position) {
+        public void updateData(MvvmTravelNoteDetailEntity.DayBean content, BaseListAdapterItemProperty propertyEntity, int position) {
             mBinding.setTravelNoteDayDetail(content);
         }
     }

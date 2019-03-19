@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,16 +17,14 @@ import com.pine.base.access.UiAccessAnnotation;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.base.bean.BaseInputParam;
-import com.pine.base.component.editor.bean.EditorItemData;
-import com.pine.base.component.editor.ui.TextImageEditorView;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
-import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.R;
+import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpTravelNoteReleaseContract;
 import com.pine.mvp.presenter.MvpTravelNoteReleasePresenter;
-import com.pine.tool.util.StringUtils;
+import com.pine.mvp.widget.view.MvpNoteEditorView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +43,7 @@ public class MvpTravelNoteReleaseActivity extends
     private SwipeRefreshLayout swipe_refresh_layout;
     private NestedScrollView nested_scroll_view;
     private RelativeLayout set_out_date_ll, day_count_ll, belong_shop_ll;
-    private LinearLayout day_note_ll;
+    private MvpNoteEditorView mnev_view;
     private EditText title_et, preface_et;
     private TextView set_out_date_tv, day_count_tv, belong_shop_tv;
     private InputTextDialog mDayCountInputDialog;
@@ -64,7 +61,7 @@ public class MvpTravelNoteReleaseActivity extends
         set_out_date_ll = findViewById(R.id.set_out_date_ll);
         day_count_ll = findViewById(R.id.day_count_ll);
         belong_shop_ll = findViewById(R.id.belong_shop_ll);
-        day_note_ll = findViewById(R.id.day_note_ll);
+        mnev_view = findViewById(R.id.mnev_view);
         title_et = findViewById(R.id.title_et);
         preface_et = findViewById(R.id.preface_et);
         set_out_date_tv = findViewById(R.id.set_out_date_tv);
@@ -147,7 +144,10 @@ public class MvpTravelNoteReleaseActivity extends
                                 if (textList != null && textList.size() > 0 &&
                                         !TextUtils.isEmpty(textList.get(0))) {
                                     day_count_tv.setText(textList.get(0));
-                                    onDayCountSet(Integer.parseInt(textList.get(0)), null);
+                                    mnev_view.setDayCount(MvpTravelNoteReleaseActivity.this,
+                                            Integer.parseInt(textList.get(0)),
+                                            null,
+                                            mPresenter.getUploadAdapter());
                                 }
                             }
 
@@ -163,38 +163,8 @@ public class MvpTravelNoteReleaseActivity extends
         }
     }
 
-    private void addDayView(List<EditorItemData> data, int day) {
-        TextImageEditorView view = new TextImageEditorView(this);
-        String title = getString(R.string.mvp_note_release_day_note_title, StringUtils.toChineseNumber(day));
-        view.init(this, MvpUrlConstants.Upload_File, day, title,
-                mPresenter.getUploadAdapter(), 100 + day);
-        if (data != null) {
-            view.setData(data);
-        }
-        day_note_ll.addView(view);
-    }
-
     private void onAddNoteBtnClicked() {
         mPresenter.addNote();
-    }
-
-    @Override
-    public void onDayCountSet(int dayCount, List<List<EditorItemData>> dayList) {
-        int childCount = day_note_ll.getChildCount();
-        if (dayCount > childCount) {
-            for (int i = childCount; i < dayCount; i++) {
-                addDayView(dayList == null ? null : dayList.get(i + 1), i + 1);
-            }
-        } else if (dayCount < childCount) {
-            day_note_ll.removeViews(dayCount, childCount - dayCount);
-        }
-        if (dayCount == 1) {
-            ((TextImageEditorView) day_note_ll.getChildAt(0)).setTitle("");
-        } else if (dayCount > 1) {
-            ((TextImageEditorView) day_note_ll.getChildAt(0))
-                    .setTitle(getString(R.string.mvp_note_release_day_note_title,
-                            StringUtils.toChineseNumber(1)));
-        }
     }
 
     @Override
@@ -226,16 +196,8 @@ public class MvpTravelNoteReleaseActivity extends
 
     @NonNull
     @Override
-    public BaseInputParam getNoteBelongShopsParam(String key) {
-        return new BaseInputParam(this,
-                key, belong_shop_tv.getTag() == null ? "" : belong_shop_tv.getTag().toString(),
-                nested_scroll_view, belong_shop_tv);
-    }
-
-    @NonNull
-    @Override
-    public BaseInputParam getNoteBelongShopNamesParam(String key) {
-        return new BaseInputParam(this, key, belong_shop_tv.getText().toString(),
+    public BaseInputParam getNoteBelongShopsParam(String key, ArrayList<MvpShopItemEntity> list) {
+        return new BaseInputParam(this, key, list,
                 nested_scroll_view, belong_shop_tv);
     }
 
@@ -249,11 +211,7 @@ public class MvpTravelNoteReleaseActivity extends
     @NonNull
     @Override
     public BaseInputParam getNoteContentParam(String key) {
-        List<List<EditorItemData>> list = new ArrayList<>();
-        for (int i = 0; i < day_note_ll.getChildCount(); i++) {
-            list.add(((TextImageEditorView) day_note_ll.getChildAt(i)).getData());
-        }
-        return new BaseInputParam(this, key, list);
+        return new BaseInputParam(this, key, mnev_view.getNoteDayList());
     }
 
     @Override

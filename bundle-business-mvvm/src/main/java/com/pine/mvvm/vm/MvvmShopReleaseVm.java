@@ -81,7 +81,7 @@ public class MvvmShopReleaseVm extends BaseViewModel {
             return;
         }
         setUiLoading(true);
-        mModel.requestAddShop(entity.toMapIgnoreEmpty(), new IModelAsyncResponse<MvvmShopDetailEntity>() {
+        mModel.requestAddShop(entity.toMapJsonIgnoreEmpty(), new IModelAsyncResponse<MvvmShopDetailEntity>() {
             @Override
             public void onResponse(MvvmShopDetailEntity entity) {
                 setUiLoading(false);

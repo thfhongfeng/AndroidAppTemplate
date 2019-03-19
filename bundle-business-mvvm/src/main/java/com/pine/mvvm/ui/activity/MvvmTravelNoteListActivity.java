@@ -1,6 +1,7 @@
 package com.pine.mvvm.ui.activity;
 
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -101,7 +102,9 @@ public class MvvmTravelNoteListActivity extends
         menuContainer.findViewById(R.id.menu_iv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.goToAddTravelNoteActivity();
+                Intent intent = new Intent(MvvmTravelNoteListActivity.this, MvvmTravelNoteReleaseActivity.class);
+                intent.putExtra("id", mViewModel.mId);
+                startActivity(intent);
             }
         });
     }
@@ -114,7 +117,7 @@ public class MvvmTravelNoteListActivity extends
 
     public void onLoadingMore() {
         mViewModel.loadTravelNoteListData(false,
-                mMvvmTravelListItemAdapter.getPageNo(), mMvvmTravelListItemAdapter.getPageSize());
+                mMvvmTravelListItemAdapter.getNextPageNo(), mMvvmTravelListItemAdapter.getPageSize());
     }
 
     @Override

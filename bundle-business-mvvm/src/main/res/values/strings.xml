@@ -40,6 +40,7 @@
     <string name="mvvm_travel_note_list_title">Business Mvvm Travel Note List</string>
 
     <string name="mvvm_travel_note_detail_title">Business Mvvm Travel Note Detail</string>
+    <string name="mvvm_travel_note_detail_set_out_date">出发</string>
 
     <string name="mvvm_note_release_title">Business Mvvm Travel Note Release</string>
     <string name="mvvm_note_release_confirm_menu">确认添加</string>

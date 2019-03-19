@@ -71,7 +71,7 @@ public class MvvmShopPaginationListFragment extends
         mBinding.recycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (MvvmShopListPaginationAdapter.isLastViewMoreView(recyclerView)) {
+                if (mMvvmHomeItemAdapter.isLastViewMoreView(recyclerView)) {
                     onLoadingMore();
                 }
             }
@@ -118,7 +118,7 @@ public class MvvmShopPaginationListFragment extends
     }
 
     public void onLoadingMore() {
-        mViewModel.loadShopPaginationListData(false, mMvvmHomeItemAdapter.getPageNo() + 1,
+        mViewModel.loadShopPaginationListData(false, mMvvmHomeItemAdapter.getNextPageNo(),
                 mMvvmHomeItemAdapter.getPageSize());
     }
 

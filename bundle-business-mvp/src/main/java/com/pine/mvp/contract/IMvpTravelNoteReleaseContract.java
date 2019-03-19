@@ -5,10 +5,10 @@ import android.support.annotation.NonNull;
 
 import com.pine.base.architecture.mvp.contract.IBaseContract;
 import com.pine.base.bean.BaseInputParam;
-import com.pine.base.component.editor.bean.EditorItemData;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
+import com.pine.mvp.bean.MvpShopItemEntity;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by tanghongfeng on 2018/9/14
@@ -16,7 +16,6 @@ import java.util.List;
 
 public interface IMvpTravelNoteReleaseContract {
     interface Ui extends IBaseContract.Ui {
-        void onDayCountSet(int dayCount, List<List<EditorItemData>> dayList);
 
         void setBelongShop(String ids, String names);
 
@@ -30,10 +29,7 @@ public interface IMvpTravelNoteReleaseContract {
         BaseInputParam getNoteTravelDayCountParam(String key);
 
         @NonNull
-        BaseInputParam getNoteBelongShopsParam(String key);
-
-        @NonNull
-        BaseInputParam getNoteBelongShopNamesParam(String key);
+        BaseInputParam getNoteBelongShopsParam(String key, ArrayList<MvpShopItemEntity> list);
 
         @NonNull
         BaseInputParam getNotePrefaceParam(String key);
