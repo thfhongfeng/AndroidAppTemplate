@@ -7,13 +7,14 @@ import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
-import com.pine.mvvm.model.MvvmShopModel;
+import com.pine.mvvm.model.IMvvmShopModel;
+import com.pine.mvvm.model.MvvmModelFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MvvmShopTreeListVm extends BaseViewModel {
-    private MvvmShopModel mShopModel = new MvvmShopModel();
+    private IMvvmShopModel mShopModel = MvvmModelFactory.getMvvmShopModel();
 
     public void loadShopTreeListData(final boolean refresh, int pageNo, int pageSize) {
         if (isUiLoading()) {

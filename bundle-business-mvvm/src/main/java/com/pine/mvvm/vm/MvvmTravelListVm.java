@@ -8,14 +8,15 @@ import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.base.binding.data.BaseLiveData;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
-import com.pine.mvvm.model.MvvmTravelNoteModel;
+import com.pine.mvvm.model.IMvvmTravelNoteModel;
+import com.pine.mvvm.model.MvvmModelFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MvvmTravelListVm extends BaseViewModel {
     public String mId;
-    MvvmTravelNoteModel mModel = new MvvmTravelNoteModel();
+    IMvvmTravelNoteModel mTravelNoteModel = MvvmModelFactory.getMvvmTravelNoteModel();
 
     @Override
     public boolean parseIntentData(Bundle bundle) {
@@ -36,7 +37,7 @@ public class MvvmTravelListVm extends BaseViewModel {
         params.put(MvvmConstants.PAGE_SIZE, String.valueOf(pageSize));
         params.put("id", mId);
         setUiLoading(true);
-        mModel.requestTravelNoteListData(params, new IModelAsyncResponse<ArrayList<MvvmTravelNoteItemEntity>>() {
+        mTravelNoteModel.requestTravelNoteListData(params, new IModelAsyncResponse<ArrayList<MvvmTravelNoteItemEntity>>() {
             @Override
             public void onResponse(ArrayList<MvvmTravelNoteItemEntity> list) {
                 setUiLoading(false);

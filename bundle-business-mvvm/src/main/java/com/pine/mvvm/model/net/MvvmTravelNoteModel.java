@@ -1,4 +1,4 @@
-package com.pine.mvvm.model;
+package com.pine.mvvm.model.net;
 
 import android.support.annotation.NonNull;
 
@@ -12,6 +12,7 @@ import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.bean.MvvmTravelNoteCommentEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
+import com.pine.mvvm.model.IMvvmTravelNoteModel;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONException;
@@ -26,13 +27,18 @@ import java.util.Random;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvvmTravelNoteModel {
+public class MvvmTravelNoteModel implements IMvvmTravelNoteModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int HTTP_ADD_TRAVEL_NOTE = 1;
     private static final int HTTP_QUERY_TRAVEL_NOTE_DETAIL = 2;
     private static final int HTTP_QUERY_TRAVEL_NOTE_LIST = 3;
     private static final int HTTP_QUERY_TRAVEL_NOTE_COMMENT_LIST = 4;
 
+    protected MvvmTravelNoteModel() {
+
+    }
+
+    @Override
     public void requestAddTravelNote(final Map<String, String> params,
                                      @NonNull final IModelAsyncResponse<MvvmTravelNoteDetailEntity> callback) {
         String url = MvvmUrlConstants.Add_TravelNote;
@@ -41,6 +47,7 @@ public class MvvmTravelNoteModel {
                 HTTP_ADD_TRAVEL_NOTE, httpStringCallback);
     }
 
+    @Override
     public void requestTravelNoteDetailData(final Map<String, String> params,
                                             @NonNull final IModelAsyncResponse<MvvmTravelNoteDetailEntity> callback) {
         String url = MvvmUrlConstants.Query_TravelNoteDetail;
@@ -49,6 +56,7 @@ public class MvvmTravelNoteModel {
                 HTTP_QUERY_TRAVEL_NOTE_DETAIL, httpStringCallback);
     }
 
+    @Override
     public void requestTravelNoteListData(final Map<String, String> params,
                                           @NonNull final IModelAsyncResponse<ArrayList<MvvmTravelNoteItemEntity>> callback) {
         String url = MvvmUrlConstants.Query_TravelNoteList;
@@ -57,6 +65,7 @@ public class MvvmTravelNoteModel {
                 HTTP_QUERY_TRAVEL_NOTE_LIST, httpStringCallback);
     }
 
+    @Override
     public void requestTravelNoteCommentData(final Map<String, String> params,
                                              @NonNull final IModelAsyncResponse<ArrayList<MvvmTravelNoteCommentEntity>> callback) {
         String url = MvvmUrlConstants.Query_TravelNoteCommentList;

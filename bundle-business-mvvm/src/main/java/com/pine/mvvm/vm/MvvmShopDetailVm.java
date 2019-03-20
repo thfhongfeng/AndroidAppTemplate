@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
-import com.pine.mvvm.model.MvvmShopModel;
+import com.pine.mvvm.model.IMvvmShopModel;
+import com.pine.mvvm.model.MvvmModelFactory;
+import com.pine.mvvm.model.net.MvvmShopModel;
 
 import java.util.HashMap;
 
@@ -17,7 +19,7 @@ import java.util.HashMap;
 
 public class MvvmShopDetailVm extends BaseViewModel {
     private String mId;
-    private MvvmShopModel mModel = new MvvmShopModel();
+    private IMvvmShopModel mShopModel = MvvmModelFactory.getMvvmShopModel();
 
     @Override
     public boolean parseIntentData(Bundle bundle) {
@@ -36,7 +38,7 @@ public class MvvmShopDetailVm extends BaseViewModel {
         HashMap<String, String> params = new HashMap<>();
         params.put("id", mId);
         setUiLoading(true);
-        mModel.requestShopDetailData(params, new IModelAsyncResponse<MvvmShopDetailEntity>() {
+        mShopModel.requestShopDetailData(params, new IModelAsyncResponse<MvvmShopDetailEntity>() {
             @Override
             public void onResponse(MvvmShopDetailEntity entity) {
                 setUiLoading(false);

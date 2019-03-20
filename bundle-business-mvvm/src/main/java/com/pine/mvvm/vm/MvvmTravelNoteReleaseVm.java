@@ -11,7 +11,8 @@ import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
-import com.pine.mvvm.model.MvvmTravelNoteModel;
+import com.pine.mvvm.model.IMvvmTravelNoteModel;
+import com.pine.mvvm.model.MvvmModelFactory;
 import com.pine.mvvm.ui.activity.MvvmShopSearchCheckActivity;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 
 public class MvvmTravelNoteReleaseVm extends BaseViewModel {
-    private MvvmTravelNoteModel mModel = new MvvmTravelNoteModel();
+    IMvvmTravelNoteModel mTravelNoteModel = MvvmModelFactory.getMvvmTravelNoteModel();
 
     @Override
     public void afterViewInit() {
@@ -103,7 +104,7 @@ public class MvvmTravelNoteReleaseVm extends BaseViewModel {
         }
         entity.setDays(days);
         setUiLoading(true);
-        mModel.requestAddTravelNote(entity.toMapJsonIgnoreEmpty(), new IModelAsyncResponse<MvvmTravelNoteDetailEntity>() {
+        mTravelNoteModel.requestAddTravelNote(entity.toMapJsonIgnoreEmpty(), new IModelAsyncResponse<MvvmTravelNoteDetailEntity>() {
             @Override
             public void onResponse(MvvmTravelNoteDetailEntity entity) {
                 setUiLoading(false);

@@ -7,7 +7,8 @@ import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
-import com.pine.mvvm.model.MvvmShopModel;
+import com.pine.mvvm.model.IMvvmShopModel;
+import com.pine.mvvm.model.MvvmModelFactory;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.RegexUtils;
 
@@ -18,7 +19,7 @@ import java.util.HashMap;
  */
 
 public class MvvmShopReleaseVm extends BaseViewModel {
-    private MvvmShopModel mModel = new MvvmShopModel();
+    private IMvvmShopModel mShopModel = MvvmModelFactory.getMvvmShopModel();
 
     @Override
     public void afterViewInit() {
@@ -81,7 +82,7 @@ public class MvvmShopReleaseVm extends BaseViewModel {
             return;
         }
         setUiLoading(true);
-        mModel.requestAddShop(entity.toMapJsonIgnoreEmpty(), new IModelAsyncResponse<MvvmShopDetailEntity>() {
+        mShopModel.requestAddShop(entity.toMapJsonIgnoreEmpty(), new IModelAsyncResponse<MvvmShopDetailEntity>() {
             @Override
             public void onResponse(MvvmShopDetailEntity entity) {
                 setUiLoading(false);
