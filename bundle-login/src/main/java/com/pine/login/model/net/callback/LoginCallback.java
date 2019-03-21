@@ -1,4 +1,4 @@
-package com.pine.login.callback;
+package com.pine.login.model.net.callback;
 
 import android.content.Intent;
 import android.widget.Toast;
@@ -9,6 +9,7 @@ import com.pine.base.http.HttpResponse;
 import com.pine.base.http.callback.HttpJsonCallback;
 import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
+import com.pine.login.model.ILoginResponse;
 import com.pine.login.ui.activity.LoginActivity;
 import com.pine.tool.util.AppUtils;
 
@@ -28,13 +29,13 @@ public class LoginCallback extends HttpJsonCallback {
     public static final int LOGOUT_CODE = 2;
     public static final int AUTO_LOGIN_CODE = 3;
     public static final int RE_LOGIN_CODE = 4;
-    private LoginManager.Callback mCallback;
+    private ILoginResponse mCallback;
 
     public LoginCallback() {
 
     }
 
-    public LoginCallback(LoginManager.Callback callback) {
+    public LoginCallback(ILoginResponse callback) {
         mCallback = callback;
     }
 
@@ -72,9 +73,6 @@ public class LoginCallback extends HttpJsonCallback {
             }
             LoginManager.saveLoginInfo(jsonObject);
             BaseApplication.setLogin(true);
-            if (RE_LOGIN_CODE == what) {
-                LoginManager.reloadAllNoAuthRequest();
-            }
             if (mCallback != null) {
                 if (mCallback.onLoginResponse(true, "") && LOGIN_CODE == what) {
                     Toast.makeText(AppUtils.getApplication(), "登陆成功！", Toast.LENGTH_SHORT).show();

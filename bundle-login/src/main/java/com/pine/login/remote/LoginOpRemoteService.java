@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.pine.base.BaseApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
+import com.pine.login.model.ILoginResponse;
 import com.pine.router.IServiceCallback;
 import com.pine.router.annotation.RouterAnnotation;
 import com.pine.router.command.RouterLoginCommand;
@@ -35,7 +36,7 @@ public class LoginOpRemoteService {
             callback.onResponse(responseBundle);
             return;
         }
-        LoginManager.autoLogin(mobile, password, new LoginManager.Callback() {
+        LoginManager.autoLogin(mobile, password, new ILoginResponse() {
             @Override
             public boolean onLoginResponse(boolean isSuccess, String msg) {
                 responseBundle.putBoolean("success", isSuccess);

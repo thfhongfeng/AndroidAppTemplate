@@ -3,7 +3,7 @@ package com.pine.login;
 import android.app.Application;
 
 import com.pine.config.BuildConfig;
-import com.pine.login.model.local.LoginDBHelper;
+import com.pine.login.model.local.LoginDbHelper;
 import com.pine.tool.util.LogUtils;
 
 /**
@@ -19,7 +19,7 @@ public class LoginApplication {
 
         switch (BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
             case "local":
-                new LoginDBHelper(mApplication).getReadableDatabase();
+                new LoginDbHelper(mApplication).getReadableDatabase();
                 break;
             default:
                 break;

@@ -11,6 +11,7 @@ import com.pine.login.LoginConstants;
 import com.pine.login.R;
 import com.pine.login.contract.ILoginContract;
 import com.pine.login.manager.LoginManager;
+import com.pine.login.model.ILoginResponse;
 import com.pine.login.ui.activity.RegisterActivity;
 
 /**
@@ -37,7 +38,7 @@ public class LoginPresenter extends BasePresenter<ILoginContract.Ui> implements 
             return;
         }
         setUiLoading(true);
-        LoginManager.login(mobileBean.getValue(), pwdBean.getValue(), new LoginManager.Callback() {
+        LoginManager.login(mobileBean.getValue(), pwdBean.getValue(), new ILoginResponse() {
             @Override
             public boolean onLoginResponse(boolean isSuccess, String msg) {
                 if (isUiAlive()) {

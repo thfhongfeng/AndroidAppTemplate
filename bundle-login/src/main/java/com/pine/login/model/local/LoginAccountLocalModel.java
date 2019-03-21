@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.login.bean.AccountBean;
 import com.pine.login.model.ILoginAccountModel;
+import com.pine.login.model.ILoginResponse;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -13,8 +14,18 @@ import java.util.HashMap;
 
 public class LoginAccountLocalModel implements ILoginAccountModel {
     @Override
+    public boolean requestLogin(HashMap<String, String> params, int requestCode, ILoginResponse callback) {
+        return false;
+    }
+
+    @Override
+    public void requestLogout() {
+
+    }
+
+    @Override
     public void requestRegister(HashMap<String, String> params, @NonNull IModelAsyncResponse<AccountBean> callback) {
-        Cursor cursor = new LoginDBHelper(AppUtils.getApplicationContext()).getReadableDatabase().query(LoginDBHelper.ACCOUNT_TABLE_NAME,
+        Cursor cursor = new LoginDbHelper(AppUtils.getApplicationContext()).getReadableDatabase().query(LoginDbHelper.ACCOUNT_TABLE_NAME,
                 new String[]{"_id,account,password,state,create_time,update_time"}, null, null, null, null, null);
         while (cursor.moveToNext()) {
             int id = cursor.getInt(0);
@@ -23,7 +34,7 @@ public class LoginAccountLocalModel implements ILoginAccountModel {
             int state = cursor.getInt(3);
             String create_time = cursor.getString(4);
             String update_time = cursor.getString(5);
-            LogUtils.d("LoginDBHelper", "id:" + id + ", account:" + account + ", password:" + password + ", state:" + state + ", create_time:" + create_time + ", update_time:" + update_time);
+            LogUtils.d("LoginDbHelper", "id:" + id + ", account:" + account + ", password:" + password + ", state:" + state + ", create_time:" + create_time + ", update_time:" + update_time);
         }
         cursor.close();
     }

@@ -11,6 +11,8 @@ import com.pine.login.LoginConstants;
 import com.pine.login.LoginUrlConstants;
 import com.pine.login.bean.AccountBean;
 import com.pine.login.model.ILoginAccountModel;
+import com.pine.login.model.ILoginResponse;
+import com.pine.login.model.net.callback.LoginCallback;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONException;
@@ -24,6 +26,22 @@ public class LoginAccountModel implements ILoginAccountModel {
 
     protected LoginAccountModel() {
 
+    }
+
+    @Override
+    public boolean requestLogin(final HashMap<String, String> params, int requestCode, ILoginResponse callback) {
+        String url = LoginUrlConstants.Login;
+        HttpRequestManager.clearCookie();
+        return HttpRequestManager.setJsonRequest(url, params, TAG,
+                requestCode, new LoginCallback(callback));
+    }
+
+    @Override
+    public void requestLogout() {
+        String url = LoginUrlConstants.Logout;
+        HttpRequestManager.clearCookie();
+        HttpRequestManager.setJsonRequest(url, new HashMap<String, String>(), TAG,
+                LoginCallback.LOGOUT_CODE, new LoginCallback());
     }
 
     @Override

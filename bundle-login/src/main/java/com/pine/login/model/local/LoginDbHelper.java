@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LoginDBHelper extends SQLiteOpenHelper {
+public class LoginDbHelper extends SQLiteOpenHelper {
     // 数据库名
     private static final String DATABASE_NAME = "pine.db";
     // 数据库版本
@@ -23,7 +23,7 @@ public class LoginDBHelper extends SQLiteOpenHelper {
     public static final String SHOP_TYPE_TABLE_NAME = "shop_type";
     public static final String TRAVEL_NOTE_TABLE_NAME = "travel_note";
 
-    public LoginDBHelper(@Nullable Context context) {
+    public LoginDbHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

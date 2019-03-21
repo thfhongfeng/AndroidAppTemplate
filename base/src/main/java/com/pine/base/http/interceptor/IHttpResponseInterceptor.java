@@ -1,4 +1,4 @@
-package com.pine.base.http.Interceptor;
+package com.pine.base.http.interceptor;
 
 import com.pine.base.http.HttpRequestBean;
 import com.pine.base.http.HttpResponse;
