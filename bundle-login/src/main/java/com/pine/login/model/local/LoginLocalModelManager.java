@@ -19,6 +19,6 @@ public class LoginLocalModelManager implements ILoginModelManager {
 
     @Override
     public ILoginAccountModel getLoginAccountModel() {
-        return null;
+        return new LoginAccountLocalModel();
     }
 }

@@ -11,7 +11,7 @@ import com.pine.mvp.model.IMvpTravelNoteModel;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class MvpLocalTravelNoteModel implements IMvpTravelNoteModel {
+public class MvpTravelNoteLocalModel implements IMvpTravelNoteModel {
     @Override
     public void requestAddTravelNote(Map<String, String> params,
                                      @NonNull IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {

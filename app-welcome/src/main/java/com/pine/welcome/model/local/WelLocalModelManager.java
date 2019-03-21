@@ -20,11 +20,11 @@ public class WelLocalModelManager implements IWelModelManager {
 
     @Override
     public IBundleSwitcherModel getBundleSwitcherModel() {
-        return null;
+        return new BundleSwitcherLocalModel();
     }
 
     @Override
     public IVersionModel getVersionModel() {
-        return null;
+        return new VersionLocalModel();
     }
 }

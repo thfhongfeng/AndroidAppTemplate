@@ -2,6 +2,8 @@ package com.pine.login;
 
 import android.app.Application;
 
+import com.pine.config.BuildConfig;
+import com.pine.login.model.local.LoginDBHelper;
 import com.pine.tool.util.LogUtils;
 
 /**
@@ -14,5 +16,13 @@ public class LoginApplication {
 
     public static void init(Application application) {
         mApplication = application;
+
+        switch (BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
+            case "local":
+                new LoginDBHelper(mApplication).getReadableDatabase();
+                break;
+            default:
+                break;
+        }
     }
 }

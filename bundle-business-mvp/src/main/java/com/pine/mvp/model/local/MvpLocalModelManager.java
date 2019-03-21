@@ -20,11 +20,11 @@ public class MvpLocalModelManager implements IMvpModelManager {
 
     @Override
     public IMvpShopModel getMvpShopModel() {
-        return null;
+        return new MvpShopLocalModel();
     }
 
     @Override
     public IMvpTravelNoteModel getMvpTravelNoteModel() {
-        return null;
+        return new MvpTravelNoteLocalModel();
     }
 }

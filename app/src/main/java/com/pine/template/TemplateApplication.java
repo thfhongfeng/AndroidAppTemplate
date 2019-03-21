@@ -6,10 +6,16 @@ import android.os.Build;
 import android.os.StrictMode;
 
 import com.pine.base.BaseApplication;
+import com.pine.demo.DemoApplication;
 import com.pine.login.LoginApplication;
 import com.pine.main.MainApplication;
+import com.pine.mvc.MvcApplication;
+import com.pine.mvp.MvpApplication;
+import com.pine.mvvm.MvvmApplication;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
+import com.pine.user.UserApplication;
+import com.pine.welcome.WelcomeApplication;
 
 /**
  * Created by tanghongfeng on 2018/7/3.
@@ -32,8 +38,14 @@ public class TemplateApplication extends Application {
         LogUtils.setDebuggable(AppUtils.isApkDebuggable(this));
 
         BaseApplication.init(this);
+        WelcomeApplication.init(this);
         LoginApplication.init(this);
         MainApplication.init(this);
+        UserApplication.init(this);
+        MvcApplication.init(this);
+        MvpApplication.init(this);
+        MvvmApplication.init(this);
+        DemoApplication.init(this);
     }
 
     @Override

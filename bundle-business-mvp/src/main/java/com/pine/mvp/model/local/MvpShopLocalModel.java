@@ -11,7 +11,7 @@ import com.pine.mvp.model.IMvpShopModel;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class MvpLocalShopModel implements IMvpShopModel {
+public class MvpShopLocalModel implements IMvpShopModel {
     @Override
     public void requestAddShop(Map<String, String> params,
                                @NonNull IModelAsyncResponse<MvpShopDetailEntity> callback) {
