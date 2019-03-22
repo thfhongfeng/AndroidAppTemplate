@@ -28,15 +28,15 @@ public class LoginOpRemoteService {
             callback.onResponse(responseBundle);
             return;
         }
-        String mobile = SharePreferenceUtils.readStringFromCache(LoginConstants.LOGIN_MOBILE, "");
+        String account = SharePreferenceUtils.readStringFromCache(LoginConstants.LOGIN_ACCOUNT, "");
         String password = SharePreferenceUtils.readStringFromCache(LoginConstants.LOGIN_PASSWORD, "");
-        if (mobile.length() == 0 || password.length() == 0) {
+        if (account.length() == 0 || password.length() == 0) {
             responseBundle.putBoolean("success", false);
             responseBundle.putString("msg", "no account on local");
             callback.onResponse(responseBundle);
             return;
         }
-        LoginManager.autoLogin(mobile, password, new ILoginResponse() {
+        LoginManager.autoLogin(account, password, new ILoginResponse() {
             @Override
             public boolean onLoginResponse(boolean isSuccess, String msg) {
                 responseBundle.putBoolean("success", isSuccess);

@@ -7,19 +7,19 @@ package com.pine.welcome.bean;
 public class BundleSwitcherEntity {
 
     /**
-     * bundleKey : login_bundle
+     * configKey : login_bundle
      * open : true
      */
 
-    private String bundleKey;
+    private String configKey;
     private boolean open;
 
-    public String getBundleKey() {
-        return bundleKey;
+    public String getConfigKey() {
+        return configKey;
     }
 
-    public void setBundleKey(String bundleKey) {
-        this.bundleKey = bundleKey;
+    public void setConfigKey(String configKey) {
+        this.configKey = configKey;
     }
 
     public boolean isOpen() {

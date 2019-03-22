@@ -2,8 +2,8 @@ package com.pine.login.bean;
 
 public class AccountBean {
     private int id;
-    private String mobile;
-    private String pwd;
+    private String account;
+    private String password;
 
     public int getId() {
         return id;
@@ -13,19 +13,19 @@ public class AccountBean {
         this.id = id;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getAccount() {
+        return account;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

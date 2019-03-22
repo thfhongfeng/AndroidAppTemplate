@@ -24,7 +24,7 @@ public class HttpRequestBean {
     private Object sign;
     private boolean needLogin;
     private RequestType requestType;
-    private HttpAbstractBaseCallback callBack;
+    private HttpAbstractBaseCallback callback;
 
     // for download
     private String saveFolder;
@@ -40,9 +40,9 @@ public class HttpRequestBean {
 
     private HttpResponse response;
 
-    public HttpRequestBean(int what, HttpAbstractBaseCallback callBack) {
+    public HttpRequestBean(int what, HttpAbstractBaseCallback callback) {
         this.what = what;
-        this.callBack = callBack;
+        this.callback = callback;
         this.key = hashCode() + "_ " + what;
     }
 
@@ -114,12 +114,12 @@ public class HttpRequestBean {
         this.requestType = requestType;
     }
 
-    public HttpAbstractBaseCallback getCallBack() {
-        return callBack;
+    public HttpAbstractBaseCallback getCallback() {
+        return callback;
     }
 
-    protected void setCallBack(HttpAbstractBaseCallback callBack) {
-        this.callBack = callBack;
+    public void setCallback(HttpAbstractBaseCallback callback) {
+        this.callback = callback;
     }
 
     public ActionType getActionType() {

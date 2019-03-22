@@ -9,8 +9,5 @@ import com.pine.main.model.IMainHomeModel;
 import java.util.ArrayList;
 
 public class MainHomeLocalModel implements IMainHomeModel {
-    @Override
-    public void requestBusinessListData(@NonNull IModelAsyncResponse<ArrayList<MainBusinessItemEntity>> callback) {
 
-    }
 }

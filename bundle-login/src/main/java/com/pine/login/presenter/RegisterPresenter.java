@@ -25,15 +25,15 @@ public class RegisterPresenter extends BasePresenter<IRegisterContract.Ui>
         if (mIsLoadProcessing) {
             return;
         }
-        BaseInputParam<String> mobileBean = getUi().getUserMobileParam(LoginConstants.LOGIN_MOBILE);
+        BaseInputParam<String> accountBean = getUi().getUserMobileParam(LoginConstants.LOGIN_ACCOUNT);
         BaseInputParam<String> pwdBean = getUi().getUserPasswordParam(LoginConstants.LOGIN_PASSWORD);
-        if (mobileBean.checkIsEmpty(R.string.login_input_empty_msg) ||
+        if (accountBean.checkIsEmpty(R.string.login_input_empty_msg) ||
                 pwdBean.checkIsEmpty(R.string.login_input_empty_msg) ||
-                !mobileBean.checkIsPhone(R.string.login_mobile_incorrect_format)) {
+                !accountBean.checkIsPhone(R.string.login_mobile_incorrect_format)) {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
-        params.put(mobileBean.getKey(), mobileBean.getValue());
+        params.put(accountBean.getKey(), accountBean.getValue());
         params.put(pwdBean.getKey(), pwdBean.getValue());
         setUiLoading(true);
         mAccountModel.requestRegister(params, new IModelAsyncResponse<AccountBean>() {

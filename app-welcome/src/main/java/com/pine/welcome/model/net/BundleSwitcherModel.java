@@ -73,10 +73,10 @@ public class BundleSwitcherModel implements IBundleSwitcherModel {
     // Test code begin
     private JSONObject getBundleSwitcherData() {
         String res = "{success:true,code:200,message:'',data:" +
-                "[{bundleKey:'login_bundle', open:true},{bundleKey:'main_bundle', open:true}," +
-                "{bundleKey:'user_bundle', open:true},{bundleKey:'business_mvc_bundle', open:true}," +
-                "{bundleKey:'business_mvp_bundle', open:true},{bundleKey:'business_mvvm_bundle', open:true}," +
-                "{bundleKey:'business_demo_bundle', open:true}]}";
+                "[{configKey:'login_bundle', open:true},{configKey:'main_bundle', open:true}," +
+                "{configKey:'user_bundle', open:true},{configKey:'business_mvc_bundle', open:true}," +
+                "{configKey:'business_mvp_bundle', open:true},{configKey:'business_mvvm_bundle', open:true}," +
+                "{configKey:'business_demo_bundle', open:true}]}";
         try {
             return new JSONObject(res);
         } catch (JSONException e) {

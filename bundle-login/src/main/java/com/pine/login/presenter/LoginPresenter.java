@@ -30,15 +30,15 @@ public class LoginPresenter extends BasePresenter<ILoginContract.Ui> implements 
         if (BaseApplication.isLogin() || mIsLoadProcessing) {
             return;
         }
-        BaseInputParam<String> mobileBean = getUi().getUserMobileParam(LoginConstants.LOGIN_MOBILE);
+        BaseInputParam<String> accountBean = getUi().getUserMobileParam(LoginConstants.LOGIN_ACCOUNT);
         BaseInputParam<String> pwdBean = getUi().getUserPasswordParam(LoginConstants.LOGIN_PASSWORD);
-        if (mobileBean.checkIsEmpty(R.string.login_input_empty_msg) ||
+        if (accountBean.checkIsEmpty(R.string.login_input_empty_msg) ||
                 pwdBean.checkIsEmpty(R.string.login_input_empty_msg) ||
-                !mobileBean.checkIsPhone(R.string.login_mobile_incorrect_format)) {
+                !accountBean.checkIsPhone(R.string.login_mobile_incorrect_format)) {
             return;
         }
         setUiLoading(true);
-        LoginManager.login(mobileBean.getValue(), pwdBean.getValue(), new ILoginResponse() {
+        LoginManager.login(accountBean.getValue(), pwdBean.getValue(), new ILoginResponse() {
             @Override
             public boolean onLoginResponse(boolean isSuccess, String msg) {
                 if (isUiAlive()) {

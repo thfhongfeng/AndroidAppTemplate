@@ -19,6 +19,6 @@ public class MainLocalModelManager implements IMainModelManager {
 
     @Override
     public IMainHomeModel getMainHomeModel() {
-        return null;
+        return new MainHomeLocalModel();
     }
 }

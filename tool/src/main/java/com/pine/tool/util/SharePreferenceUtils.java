@@ -19,7 +19,7 @@ public class SharePreferenceUtils {
     // 应用配置SharePreference，生命周期与APP安装周期相同（APP卸载才会被清理）
     public static final String CONFIG_SP = "config_share_preference";
     // 应用本次启动SharePreference，生命周期为本次APP启动周期（APP每次重新启动时清理）
-    public static final String THIS_STARTUP_SP = "this_startup_share_preference";
+    public static final String APP_LIVED_CACHE_SP = "app_lived_cache_share_preference";
 
     private static Application mApplication = AppUtils.getApplication();
 
@@ -61,19 +61,19 @@ public class SharePreferenceUtils {
 
 
     /**
-     * 删除this_startup数据库
+     * 删除app_lived_cache数据库
      */
-    public static void cleanThisStartup() {
-        cleanData(mApplication, THIS_STARTUP_SP);
+    public static void cleanAppLivedCache() {
+        cleanData(mApplication, APP_LIVED_CACHE_SP);
     }
 
     /**
-     * 删除this_startup数据库
+     * 删除app_lived_cache数据库
      *
      * @param context
      */
-    public static void cleanThisStartup(Context context) {
-        cleanData(context, THIS_STARTUP_SP);
+    public static void cleanAppLivedCache(Context context) {
+        cleanData(context, APP_LIVED_CACHE_SP);
     }
 
     /**
@@ -115,22 +115,22 @@ public class SharePreferenceUtils {
     }
 
     /**
-     * 删除this_startup数据
+     * 删除app_lived_cache数据
      *
      * @param key
      */
-    public static void cleanThisStartupKey(String key) {
-        cleanDataKey(mApplication, THIS_STARTUP_SP, key);
+    public static void cleanAppLivedCacheKey(String key) {
+        cleanDataKey(mApplication, APP_LIVED_CACHE_SP, key);
     }
 
     /**
-     * 删除this_startup数据
+     * 删除app_lived_cache数据
      *
      * @param context
      * @param key
      */
-    public static void cleanThisStartupKey(Context context, String key) {
-        cleanDataKey(context, THIS_STARTUP_SP, key);
+    public static void cleanAppLivedCacheKey(Context context, String key) {
+        cleanDataKey(context, APP_LIVED_CACHE_SP, key);
     }
 
     /**
@@ -177,24 +177,24 @@ public class SharePreferenceUtils {
 
 
     /**
-     * 保存数据到this_startup中
+     * 保存数据到app_lived_cache中
      *
      * @param key
      * @param value
      */
-    public static void saveToThisStartup(String key, Object value) {
-        save(mApplication, THIS_STARTUP_SP, key, value);
+    public static void saveToAppLivedCache(String key, Object value) {
+        save(mApplication, APP_LIVED_CACHE_SP, key, value);
     }
 
     /**
-     * 保存数据到this_startup中
+     * 保存数据到app_lived_cache中
      *
      * @param context
      * @param key
      * @param value
      */
-    public static void saveToThisStartup(Context context, String key, Object value) {
-        save(context, THIS_STARTUP_SP, key, value);
+    public static void saveToAppLivedCache(Context context, String key, Object value) {
+        save(context, APP_LIVED_CACHE_SP, key, value);
     }
 
     /**
@@ -303,52 +303,52 @@ public class SharePreferenceUtils {
         return readStringSet(context, CONFIG_SP, key, def);
     }
 
-    public static String readStringFromThisStartup(String key, String def) {
-        return readString(mApplication, THIS_STARTUP_SP, key, def);
+    public static String readStringFromAppLivedCache(String key, String def) {
+        return readString(mApplication, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static String readStringFromThisStartup(Context context, String key, String def) {
-        return readString(context, THIS_STARTUP_SP, key, def);
+    public static String readStringFromAppLivedCache(Context context, String key, String def) {
+        return readString(context, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static boolean readBooleanFromThisStartup(String key, boolean def) {
-        return readBoolean(mApplication, THIS_STARTUP_SP, key, def);
+    public static boolean readBooleanFromAppLivedCache(String key, boolean def) {
+        return readBoolean(mApplication, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static boolean readBooleanFromThisStartup(Context context, String key, boolean def) {
-        return readBoolean(context, THIS_STARTUP_SP, key, def);
+    public static boolean readBooleanFromAppLivedCache(Context context, String key, boolean def) {
+        return readBoolean(context, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static int readIntFromThisStartup(String key, int def) {
-        return readInt(mApplication, THIS_STARTUP_SP, key, def);
+    public static int readIntFromAppLivedCache(String key, int def) {
+        return readInt(mApplication, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static int readIntFromThisStartup(Context context, String key, int def) {
-        return readInt(context, THIS_STARTUP_SP, key, def);
+    public static int readIntFromAppLivedCache(Context context, String key, int def) {
+        return readInt(context, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static float readFloatFromThisStartup(String key, float def) {
-        return readFloat(mApplication, THIS_STARTUP_SP, key, def);
+    public static float readFloatFromAppLivedCache(String key, float def) {
+        return readFloat(mApplication, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static float readFloatFromThisStartup(Context context, String key, float def) {
-        return readFloat(context, THIS_STARTUP_SP, key, def);
+    public static float readFloatFromAppLivedCache(Context context, String key, float def) {
+        return readFloat(context, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static long readLongFromThisStartup(String key, long def) {
-        return readLong(mApplication, THIS_STARTUP_SP, key, def);
+    public static long readLongFromAppLivedCache(String key, long def) {
+        return readLong(mApplication, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static long readLongFromThisStartup(Context context, String key, long def) {
-        return readLong(context, THIS_STARTUP_SP, key, def);
+    public static long readLongFromAppLivedCache(Context context, String key, long def) {
+        return readLong(context, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static Set<String> readSetStringLongFromThisStartup(String key, Set<String> def) {
-        return readStringSet(mApplication, THIS_STARTUP_SP, key, def);
+    public static Set<String> readSetStringLongFromAppLivedCache(String key, Set<String> def) {
+        return readStringSet(mApplication, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static Set<String> readSetStringLongFromThisStartup(Context context, String key, Set<String> def) {
-        return readStringSet(context, THIS_STARTUP_SP, key, def);
+    public static Set<String> readSetStringLongFromAppLivedCache(Context context, String key, Set<String> def) {
+        return readStringSet(context, APP_LIVED_CACHE_SP, key, def);
     }
 
     /**
@@ -384,24 +384,24 @@ public class SharePreferenceUtils {
     }
 
     /**
-     * 判断this_startup中是否包含某一个key
+     * 判断app_lived_cache中是否包含某一个key
      *
      * @param key
      * @return
      */
-    public static boolean isThisStartupContainsKey(String key) {
-        return isContainsKey(THIS_STARTUP_SP, key);
+    public static boolean isAppLivedCacheContainsKey(String key) {
+        return isContainsKey(APP_LIVED_CACHE_SP, key);
     }
 
     /**
-     * 判断this_startup中是否包含某一个key
+     * 判断app_lived_cache中是否包含某一个key
      *
      * @param context
      * @param key
      * @return
      */
-    public static boolean isThisStartupContainsKey(Context context, String key) {
-        return isContainsKey(context, THIS_STARTUP_SP, key);
+    public static boolean isAppLivedCacheContainsKey(Context context, String key) {
+        return isContainsKey(context, APP_LIVED_CACHE_SP, key);
     }
 
     /**

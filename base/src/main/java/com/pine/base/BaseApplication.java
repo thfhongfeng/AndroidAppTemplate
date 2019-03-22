@@ -11,7 +11,9 @@ import com.pine.base.access.UiAccessType;
 import com.pine.base.access.executor.UiAccessLoginExecutor;
 import com.pine.base.access.executor.UiAccessVipLevelExecutor;
 import com.pine.base.component.share.manager.ShareManager;
+import com.pine.base.database.DbRequestManager;
 import com.pine.base.http.HttpRequestManager;
+import com.pine.config.BuildConfig;
 import com.pine.router.RouterApplication;
 import com.pine.tool.util.LogUtils;
 
@@ -88,6 +90,13 @@ public class BaseApplication {
         ShareManager.getInstance().init(mApplication);
 
         HttpRequestManager.init(mApplication);
+        switch (BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
+            case "local":
+                DbRequestManager.init(mApplication);
+                break;
+            default:
+                break;
+        }
 
         UiAccessManager.getInstance().addAccessExecutor(UiAccessType.LOGIN,
                 new UiAccessLoginExecutor(R.string.base_ui_access_login_forbidden));

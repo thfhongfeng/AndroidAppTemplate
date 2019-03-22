@@ -2,8 +2,9 @@ package com.pine.login;
 
 import android.app.Application;
 
+import com.pine.base.http.HttpRequestManager;
 import com.pine.config.BuildConfig;
-import com.pine.login.model.local.LoginDbHelper;
+import com.pine.login.model.net.interceptor.LoginResponseInterceptor;
 import com.pine.tool.util.LogUtils;
 
 /**
@@ -19,9 +20,9 @@ public class LoginApplication {
 
         switch (BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
             case "local":
-                new LoginDbHelper(mApplication).getReadableDatabase();
                 break;
             default:
+                HttpRequestManager.addGlobalResponseInterceptor(new LoginResponseInterceptor());
                 break;
         }
     }

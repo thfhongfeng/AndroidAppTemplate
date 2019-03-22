@@ -60,7 +60,7 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
             public void onResponse(ArrayList<BundleSwitcherEntity> bundleSwitcherEntities) {
                 if (bundleSwitcherEntities != null) {
                     for (int i = 0; i < bundleSwitcherEntities.size(); i++) {
-                        ConfigBundleSwitcher.setBundleState(bundleSwitcherEntities.get(i).getBundleKey(),
+                        ConfigBundleSwitcher.setBundleState(bundleSwitcherEntities.get(i).getConfigKey(),
                                 bundleSwitcherEntities.get(i).isOpen());
                     }
                 }

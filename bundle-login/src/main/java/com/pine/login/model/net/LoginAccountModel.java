@@ -85,7 +85,7 @@ public class LoginAccountModel implements ILoginAccountModel {
     // Test code begin
     private JSONObject getRegisterAccountData() {
         String res = "{success:true,code:200,message:'',data:" +
-                "{id:'" + 100 + "',mobile:'测试注册用户', pwd:'111aaa'}}";
+                "{id:'" + 100 + "',account:'测试注册用户', password:'111aaa'}}";
         try {
             return new JSONObject(res);
         } catch (JSONException e) {

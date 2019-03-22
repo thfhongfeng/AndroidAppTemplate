@@ -70,7 +70,7 @@ public class VersionModel implements IVersionModel {
     // Test code begin
     private JSONObject getUpdateVersionData() {
         String res = "{success:true,code:200,message:'',data:" +
-                "{package:'com.pine.template', 'versionCode':2," +
+                "{packageName:'com.pine.template', 'versionCode':2," +
                 "versionName:'1.0.2',minSupportedVersion:1," +
                 "force:false, fileName:'pine_app_template-V1.0.2-release.apk', " +
                 "path:'http://yanyangtian.purang.com/download/bsd_purang.apk'}}";

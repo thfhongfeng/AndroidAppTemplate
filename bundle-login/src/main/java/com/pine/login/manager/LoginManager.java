@@ -21,17 +21,17 @@ import java.util.HashMap;
 public class LoginManager {
     private final static String TAG = LogUtils.makeLogTag(LoginManager.class);
     private static ILoginAccountModel mAccountModel = LoginModelFactory.getLoginAccountModel();
-    private static volatile String mMobile;
+    private static volatile String mAccount;
     private static volatile String mPassword;
 
     // 登录
-    public static void login(String mobile, String password, ILoginResponse callback) {
+    public static void login(String account, String password, ILoginResponse callback) {
         String securityPwd = SecurityUtils.generateMD5(password);
         HashMap<String, String> params = new HashMap<>();
-        params.put(LoginConstants.LOGIN_MOBILE, mobile);
+        params.put(LoginConstants.LOGIN_ACCOUNT, account);
         params.put(LoginConstants.LOGIN_PASSWORD, securityPwd);
 
-        mMobile = mobile;
+        mAccount = account;
         mPassword = securityPwd;
 
         mAccountModel.requestLogin(params, LoginCallback.LOGIN_CODE, callback);
@@ -45,12 +45,12 @@ public class LoginManager {
     }
 
     // 自动登录
-    public static void autoLogin(String mobile, String password, ILoginResponse callback) {
+    public static void autoLogin(String account, String password, ILoginResponse callback) {
         HashMap<String, String> params = new HashMap<>();
-        params.put(LoginConstants.LOGIN_MOBILE, mobile);
+        params.put(LoginConstants.LOGIN_ACCOUNT, account);
         params.put(LoginConstants.LOGIN_PASSWORD, password);
 
-        mMobile = mobile;
+        mAccount = account;
         mPassword = password;
 
         mAccountModel.requestLogin(params, LoginCallback.AUTO_LOGIN_CODE, callback);
@@ -62,27 +62,27 @@ public class LoginManager {
             return false;
         }
         HashMap<String, String> params = new HashMap<>();
-        String mobile = SharePreferenceUtils.readStringFromCache(LoginConstants.LOGIN_MOBILE, "");
+        String account = SharePreferenceUtils.readStringFromCache(LoginConstants.LOGIN_ACCOUNT, "");
         String password = SharePreferenceUtils.readStringFromCache(LoginConstants.LOGIN_PASSWORD, "");
-        if (mobile.length() == 0 || password.length() == 0) {
+        if (account.length() == 0 || password.length() == 0) {
             return false;
         }
-        params.put(LoginConstants.LOGIN_MOBILE, mobile);
+        params.put(LoginConstants.LOGIN_ACCOUNT, account);
         params.put(LoginConstants.LOGIN_PASSWORD, password);
 
-        mMobile = mobile;
+        mAccount = account;
         mPassword = password;
 
         return mAccountModel.requestLogin(params, LoginCallback.RE_LOGIN_CODE, null);
     }
 
     public static void saveLoginInfo(JSONObject jsonObject) {
-        SharePreferenceUtils.saveToCache(LoginConstants.LOGIN_MOBILE, mMobile);
+        SharePreferenceUtils.saveToCache(LoginConstants.LOGIN_ACCOUNT, mAccount);
         SharePreferenceUtils.saveToCache(LoginConstants.LOGIN_PASSWORD, mPassword);
     }
 
     public static void clearLoginInfo() {
-        SharePreferenceUtils.cleanCacheKey(LoginConstants.LOGIN_MOBILE);
+        SharePreferenceUtils.cleanCacheKey(LoginConstants.LOGIN_ACCOUNT);
         SharePreferenceUtils.cleanCacheKey(LoginConstants.LOGIN_PASSWORD);
     }
 }

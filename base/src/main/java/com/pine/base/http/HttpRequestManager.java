@@ -38,9 +38,9 @@ public class HttpRequestManager {
     // 错误返回的请求
     private static Map<String, HttpRequestBean> mErrorRequestMap = null;
 
-    private static List<IHttpRequestInterceptor> mRequestInterceptorList = new ArrayList<IHttpRequestInterceptor>();
+    private static List<IHttpRequestInterceptor> mRequestInterceptorList = new ArrayList<>();
 
-    private static List<IHttpResponseInterceptor> mResponseInterceptorList = new ArrayList<IHttpResponseInterceptor>();
+    private static List<IHttpResponseInterceptor> mResponseInterceptorList = new ArrayList<>();
 
     public static void init(Context context) {
         init(context, new HashMap<String, String>());
@@ -64,14 +64,14 @@ public class HttpRequestManager {
         mErrorRequestMap = new HashMap<>();
     }
 
-    public static void setGlobalResponseInterceptor(IHttpResponseInterceptor interceptor) {
+    public static void addGlobalResponseInterceptor(IHttpResponseInterceptor interceptor) {
         if (!mResponseInterceptorList.contains(interceptor)) {
             mResponseInterceptorList.add(interceptor);
             LogUtils.releaseLog(TAG, "Global response interceptor: " + interceptor.getClass() + " was added");
         }
     }
 
-    public static void setGlobalRequestInterceptor(IHttpRequestInterceptor interceptor) {
+    public static void addGlobalRequestInterceptor(IHttpRequestInterceptor interceptor) {
         if (!mRequestInterceptorList.contains(interceptor)) {
             mRequestInterceptorList.add(interceptor);
             LogUtils.releaseLog(TAG, "Global request interceptor: " + interceptor.getClass() + " was added");
@@ -79,34 +79,34 @@ public class HttpRequestManager {
     }
 
     // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, HttpJsonCallback callBack) {
-        return setJsonRequest(url, params, moduleTag, -1, RequestType.STRING, callBack);
+    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, HttpJsonCallback callback) {
+        return setJsonRequest(url, params, moduleTag, -1, RequestType.STRING, callback);
     }
 
     // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, HttpJsonCallback callBack) {
-        return setJsonRequest(url, params, moduleTag, what, IHttpRequestManager.RequestType.STRING, callBack);
+    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, HttpJsonCallback callback) {
+        return setJsonRequest(url, params, moduleTag, what, IHttpRequestManager.RequestType.STRING, callback);
     }
 
     // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, boolean needLogin, HttpJsonCallback callBack) {
-        return setJsonRequest(url, params, moduleTag, what, RequestType.STRING, needLogin, callBack);
+    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, boolean needLogin, HttpJsonCallback callback) {
+        return setJsonRequest(url, params, moduleTag, what, RequestType.STRING, needLogin, callback);
     }
 
     // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, Object sign, HttpJsonCallback callBack) {
-        return setJsonRequest(url, HttpRequestMethod.POST, params, moduleTag, what, sign, false, RequestType.STRING, callBack);
+    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, Object sign, HttpJsonCallback callback) {
+        return setJsonRequest(url, HttpRequestMethod.POST, params, moduleTag, what, sign, false, RequestType.STRING, callback);
     }
 
     // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, Object sign, boolean needLogin, HttpJsonCallback callBack) {
-        return setJsonRequest(url, HttpRequestMethod.POST, params, moduleTag, what, sign, needLogin, RequestType.STRING, callBack);
+    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, Object sign, boolean needLogin, HttpJsonCallback callback) {
+        return setJsonRequest(url, HttpRequestMethod.POST, params, moduleTag, what, sign, needLogin, RequestType.STRING, callback);
     }
 
     // json请求
     public static boolean setJsonRequest(String url, HttpRequestMethod method, Map<String, String> params, String moduleTag,
-                                         int what, HttpJsonCallback callBack) {
-        return setJsonRequest(url, method, params, moduleTag, what, null, false, RequestType.STRING, callBack);
+                                         int what, HttpJsonCallback callback) {
+        return setJsonRequest(url, method, params, moduleTag, what, null, false, RequestType.STRING, callback);
     }
 
     // json请求
@@ -114,14 +114,14 @@ public class HttpRequestManager {
         requestBean.setActionType(actionType);
         return setJsonRequest(requestBean.getUrl(), requestBean.getRequestMethod(), requestBean.getParams(),
                 requestBean.getModuleTag(), requestBean.getWhat(), requestBean.getSign(), requestBean.isNeedLogin(),
-                requestBean.getRequestType(), (HttpJsonCallback) requestBean.getCallBack());
+                requestBean.getRequestType(), (HttpJsonCallback) requestBean.getCallback());
     }
 
     // json请求
     public static boolean setJsonRequest(HttpRequestBean requestBean) {
         return setJsonRequest(requestBean.getUrl(), requestBean.getRequestMethod(), requestBean.getParams(),
                 requestBean.getModuleTag(), requestBean.getWhat(), requestBean.getSign(), requestBean.isNeedLogin(),
-                requestBean.getRequestType(), (HttpJsonCallback) requestBean.getCallBack());
+                requestBean.getRequestType(), (HttpJsonCallback) requestBean.getCallback());
     }
 
     /**
@@ -135,19 +135,19 @@ public class HttpRequestManager {
      * @param sign        cancel标识
      * @param needLogin   是否需要登陆
      * @param requestType 请求分类，目前只区分通用和登录
-     * @param callBack    回调
+     * @param callback    回调
      * @return false表示请求没有被发送出去；true表示请求正常发出
      */
     public static boolean setJsonRequest(String url, HttpRequestMethod method, Map<String, String> params, String moduleTag,
-                                         int what, Object sign, boolean needLogin, RequestType requestType, HttpJsonCallback callBack) {
+                                         int what, Object sign, boolean needLogin, RequestType requestType, HttpJsonCallback callback) {
         //设置模块名
         if (!TextUtils.isEmpty(moduleTag)) {
-            callBack.setModuleTag(moduleTag);
+            callback.setModuleTag(moduleTag);
         }
-        callBack.setUrl(url);
-        callBack.setWhat(what);
+        callback.setUrl(url);
+        callback.setWhat(what);
 
-        HttpRequestBean requestBean = new HttpRequestBean(what, callBack);
+        HttpRequestBean requestBean = new HttpRequestBean(what, callback);
         requestBean.setUrl(url);
         requestBean.setRequestMethod(method);
         requestBean.setParams(params);
@@ -159,11 +159,11 @@ public class HttpRequestManager {
         }
         requestBean.setNeedLogin(needLogin);
         requestBean.setRequestType(requestType);
-        requestBean.setCallBack(callBack);
+        requestBean.setCallback(callback);
         if (mRequestInterceptorList != null) {
             for (int i = 0; i < mRequestInterceptorList.size(); i++) {
                 if (mRequestInterceptorList.get(i).onIntercept(what, requestBean)) {
-                    callBack.onCancel(what);
+                    callback.onCancel(what);
                     return false;
                 }
             }
@@ -174,45 +174,45 @@ public class HttpRequestManager {
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- url: " +
                 requestBean.getUrl() + "\r\n- params:" + requestBean.getParams() +
                 "\r\n- Cookies: " + getCookiesLog());
-        mRequestManager.setJsonRequest(requestBean, getResponseListener(requestBean.getKey(), callBack));
+        mRequestManager.setJsonRequest(requestBean, getResponseListener(requestBean.getKey(), callback));
         return true;
     }
 
     // 下载文件
     public static boolean setDownloadRequest(String url, String fileFolder, String fileName,
-                                             int what, Object sign, HttpDownloadCallback callBack) {
+                                             int what, Object sign, HttpDownloadCallback callback) {
         return setDownloadRequest(url, fileFolder, fileName, HttpRequestMethod.GET, new HashMap<String, String>(),
-                null, false, true, what, sign, false, callBack);
+                null, false, true, what, sign, false, callback);
     }
 
     // 下载文件
     public static boolean setDownloadRequest(String url, String fileFolder, String fileName, String moduleTag,
-                                             int what, HttpDownloadCallback callBack) {
+                                             int what, HttpDownloadCallback callback) {
         return setDownloadRequest(url, fileFolder, fileName, HttpRequestMethod.GET, new HashMap<String, String>(),
-                moduleTag, false, true, what, null, false, callBack);
+                moduleTag, false, true, what, null, false, callback);
     }
 
     // 下载文件
     public static boolean setDownloadRequest(String url, String fileFolder, String fileName, String moduleTag,
-                                             int what, boolean needLogin, HttpDownloadCallback callBack) {
+                                             int what, boolean needLogin, HttpDownloadCallback callback) {
         return setDownloadRequest(url, fileFolder, fileName, HttpRequestMethod.GET, new HashMap<String, String>(),
-                moduleTag, false, true, what, null, needLogin, callBack);
+                moduleTag, false, true, what, null, needLogin, callback);
     }
 
     // 下载文件
     public static boolean setDownloadRequest(String url, String fileFolder, String fileName,
                                              String moduleTag, boolean isContinue, boolean isDeleteOld,
-                                             int what, boolean needLogin, HttpDownloadCallback callBack) {
+                                             int what, boolean needLogin, HttpDownloadCallback callback) {
         return setDownloadRequest(url, fileFolder, fileName, HttpRequestMethod.GET, new HashMap<String, String>(),
-                moduleTag, isContinue, isDeleteOld, what, null, needLogin, callBack);
+                moduleTag, isContinue, isDeleteOld, what, null, needLogin, callback);
     }
 
     // 下载文件
     public static boolean setDownloadRequest(String url, String fileFolder, String fileName, HttpRequestMethod method,
                                              HashMap<String, String> params, String moduleTag, boolean isContinue, boolean isDeleteOld,
-                                             int what, boolean needLogin, HttpDownloadCallback callBack) {
+                                             int what, boolean needLogin, HttpDownloadCallback callback) {
         return setDownloadRequest(url, fileFolder, fileName, method, params, moduleTag, isContinue,
-                isDeleteOld, what, null, needLogin, callBack);
+                isDeleteOld, what, null, needLogin, callback);
     }
 
     /**
@@ -229,21 +229,21 @@ public class HttpRequestManager {
      * @param what        请求标识code
      * @param sign        cancel标识
      * @param needLogin   是否需要登陆
-     * @param callBack    回调
+     * @param callback    回调
      * @return false表示请求没有被发送出去；true表示请求正常发出
      */
     public static boolean setDownloadRequest(String url, String fileFolder, String fileName,
                                              HttpRequestMethod method, HashMap<String, String> params,
                                              String moduleTag, boolean isContinue, boolean isDeleteOld,
-                                             int what, Object sign, boolean needLogin, HttpDownloadCallback callBack) {
+                                             int what, Object sign, boolean needLogin, HttpDownloadCallback callback) {
         //设置模块名
         if (!TextUtils.isEmpty(moduleTag)) {
-            callBack.setModuleTag(moduleTag);
+            callback.setModuleTag(moduleTag);
         }
-        callBack.setUrl(url);
-        callBack.setWhat(what);
+        callback.setUrl(url);
+        callback.setWhat(what);
 
-        HttpRequestBean requestBean = new HttpRequestBean(what, callBack);
+        HttpRequestBean requestBean = new HttpRequestBean(what, callback);
         requestBean.setUrl(url);
         requestBean.setSaveFolder(fileFolder);
         requestBean.setSaveFileName(fileName);
@@ -259,12 +259,12 @@ public class HttpRequestManager {
         }
         requestBean.setRequestType(RequestType.DOWNLOAD);
         requestBean.setNeedLogin(needLogin);
-        requestBean.setCallBack(callBack);
+        requestBean.setCallback(callback);
 
         if (mRequestInterceptorList != null) {
             for (int i = 0; i < mRequestInterceptorList.size(); i++) {
                 if (mRequestInterceptorList.get(i).onIntercept(what, requestBean)) {
-                    callBack.onCancel(what);
+                    callback.onCancel(what);
                     return false;
                 }
             }
@@ -275,7 +275,7 @@ public class HttpRequestManager {
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- url: " +
                 requestBean.getUrl() + "\r\n -params: " + requestBean.getParams() +
                 "\r\n- Cookies: " + getCookiesLog());
-        mRequestManager.setDownloadRequest(requestBean, getDownloadListener(requestBean.getKey(), callBack));
+        mRequestManager.setDownloadRequest(requestBean, getDownloadListener(requestBean.getKey(), callback));
         return true;
     }
 
@@ -373,7 +373,7 @@ public class HttpRequestManager {
         }
         requestBean.setRequestType(RequestType.UPLOAD);
         requestBean.setNeedLogin(needLogin);
-        requestBean.setCallBack(requestCallback);
+        requestBean.setCallback(requestCallback);
         if (mRequestInterceptorList != null) {
             for (int i = 0; i < mRequestInterceptorList.size(); i++) {
                 if (mRequestInterceptorList.get(i).onIntercept(what, requestBean)) {
@@ -397,11 +397,11 @@ public class HttpRequestManager {
      * 标准回调请求
      *
      * @param requestKey
-     * @param callBack
+     * @param callback
      * @return
      */
     public static IHttpResponseListener.OnResponseListener getResponseListener(final String requestKey,
-                                                                               final HttpJsonCallback callBack) {
+                                                                               final HttpJsonCallback callback) {
         return new IHttpResponseListener.OnResponseListener() {
             @Override
             public void onStart(int what) {
@@ -409,8 +409,8 @@ public class HttpRequestManager {
 
             @Override
             public void onSucceed(int what, HttpResponse response) {
-                LogUtils.d(TAG, "Response onSucceed in json queue - " + callBack.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callBack.getUrl() +
+                LogUtils.d(TAG, "Response onSucceed in json queue - " + callback.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
                         "\r\n- response: " + response.getData() +
                         "\r\n- Cookies: " + getCookiesLog());
                 HttpRequestBean httpRequestBean = null;
@@ -425,13 +425,13 @@ public class HttpRequestManager {
                         }
                     }
                 }
-                callBack.onResponse(what, response);
+                callback.onResponse(what, response);
             }
 
             @Override
             public void onFailed(int what, HttpResponse response) {
-                LogUtils.d(TAG, "Response onFailed in json queue - " + callBack.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callBack.getUrl() +
+                LogUtils.d(TAG, "Response onFailed in json queue - " + callback.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
                         "\r\n- response: " + response.getData() +
                         "\r\n- Cookies: " + getCookiesLog());
                 HttpRequestBean httpRequestBean = null;
@@ -454,7 +454,7 @@ public class HttpRequestManager {
                     }
                 }
                 Exception exception = response.getException();
-                if (!callBack.onFail(what, exception)) {
+                if (!callback.onFail(what, exception)) {
                     defaultDeduceErrorResponse(exception);
                 }
             }
@@ -470,11 +470,11 @@ public class HttpRequestManager {
 
     // 下载callback
     public static IHttpResponseListener.OnDownloadListener getDownloadListener(final String requestKey,
-                                                                               final HttpDownloadCallback callBack) {
+                                                                               final HttpDownloadCallback callback) {
         return new IHttpResponseListener.OnDownloadListener() {
             @Override
             public void onDownloadError(int what, Exception exception) {
-                LogUtils.d(TAG, "Response onDownloadError in download queue - " + callBack.getModuleTag() +
+                LogUtils.d(TAG, "Response onDownloadError in download queue - " + callback.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- exception: " + exception.toString());
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
                     if (mErrorRequestMap == null) {
@@ -486,81 +486,81 @@ public class HttpRequestManager {
                     mErrorRequestMap.put(requestKey, mLoadingRequestMap.get(requestKey));
                     mLoadingRequestMap.remove(requestKey);
                 }
-                if (!callBack.onError(what, exception)) {
+                if (!callback.onError(what, exception)) {
                     defaultDeduceErrorResponse(exception);
                 }
             }
 
             @Override
             public void onStart(int what, boolean isResume, long rangeSize, long allCount) {
-                LogUtils.d(TAG, "Response onStart in download queue - " + callBack.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callBack.getUrl() +
+                LogUtils.d(TAG, "Response onStart in download queue - " + callback.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
                         "\r\n- isResume: " + isResume +
                         "\r\n- rangeSize: " + rangeSize +
                         "\r\n- allCount: " + allCount +
                         "\r\n- Cookies: " + getCookiesLog());
-                callBack.onStart(what, isResume, rangeSize, allCount);
+                callback.onStart(what, isResume, rangeSize, allCount);
             }
 
             @Override
             public void onProgress(int what, int progress, long fileCount, long speed) {
-                callBack.onProgress(what, progress, fileCount, speed);
+                callback.onProgress(what, progress, fileCount, speed);
             }
 
             @Override
             public void onFinish(int what, String filePath) {
-                LogUtils.d(TAG, "Response onFinish in download queue - " + callBack.getModuleTag() +
+                LogUtils.d(TAG, "Response onFinish in download queue - " + callback.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- filePath: " + filePath);
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
                     mLoadingRequestMap.remove(requestKey);
                 }
-                callBack.onFinish(what, filePath);
+                callback.onFinish(what, filePath);
             }
 
             @Override
             public void onCancel(int what) {
-                LogUtils.d(TAG, "Response onCancel in download queue - " + callBack.getModuleTag() +
+                LogUtils.d(TAG, "Response onCancel in download queue - " + callback.getModuleTag() +
                         "(what:" + what + ")");
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
                     mLoadingRequestMap.remove(requestKey);
                 }
-                callBack.onCancel(what);
+                callback.onCancel(what);
             }
         };
     }
 
-    public static IHttpResponseListener.OnUploadListener getUploadListener(final HttpUploadCallback callBack) {
+    public static IHttpResponseListener.OnUploadListener getUploadListener(final HttpUploadCallback callback) {
         return new IHttpResponseListener.OnUploadListener() {
             @Override
             public void onStart(int what, HttpRequestBean.HttpFileBean fileBean) {
-                LogUtils.d(TAG, "Response onStart in upload queue - " + callBack.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callBack.getUrl() +
+                LogUtils.d(TAG, "Response onStart in upload queue - " + callback.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
                         "\r\n- Cookies: " + getCookiesLog());
-                callBack.onStart(what, fileBean);
+                callback.onStart(what, fileBean);
             }
 
             @Override
             public void onCancel(int what, HttpRequestBean.HttpFileBean fileBean) {
-                callBack.onCancel(what, fileBean);
+                callback.onCancel(what, fileBean);
             }
 
             @Override
             public void onProgress(int what, HttpRequestBean.HttpFileBean fileBean, int progress) {
-                callBack.onProgress(what, fileBean, progress);
+                callback.onProgress(what, fileBean, progress);
             }
 
             @Override
             public void onFinish(int what, HttpRequestBean.HttpFileBean fileBean) {
-                LogUtils.d(TAG, "Response onFinish in upload queue - " + callBack.getModuleTag() +
+                LogUtils.d(TAG, "Response onFinish in upload queue - " + callback.getModuleTag() +
                         "(what:" + what + ")");
-                callBack.onFinish(what, fileBean);
+                callback.onFinish(what, fileBean);
             }
 
             @Override
             public void onError(int what, HttpRequestBean.HttpFileBean fileBean, Exception exception) {
-                LogUtils.d(TAG, "Response onError in upload queue - " + callBack.getModuleTag() +
+                LogUtils.d(TAG, "Response onError in upload queue - " + callback.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- exception: " + exception.toString());
-                if (!callBack.onError(what, fileBean, exception)) {
+                if (!callback.onError(what, fileBean, exception)) {
                     defaultDeduceErrorResponse(exception);
                 }
             }
@@ -588,12 +588,12 @@ public class HttpRequestManager {
         }
         bean.setActionType(ActionType.RETRY_WHEN_ERROR);
         if (bean.getRequestType() == RequestType.UPLOAD) {
-            mRequestManager.setUploadRequest(bean, getUploadListener((HttpUploadCallback) bean.getCallBack()),
-                    getResponseListener(bean.getKey(), (HttpJsonCallback) bean.getCallBack()));
+            mRequestManager.setUploadRequest(bean, getUploadListener((HttpUploadCallback) bean.getCallback()),
+                    getResponseListener(bean.getKey(), (HttpJsonCallback) bean.getCallback()));
         } else if (bean.getRequestType() == RequestType.DOWNLOAD) {
-            mRequestManager.setDownloadRequest(bean, getDownloadListener(bean.getKey(), (HttpDownloadCallback) bean.getCallBack()));
+            mRequestManager.setDownloadRequest(bean, getDownloadListener(bean.getKey(), (HttpDownloadCallback) bean.getCallback()));
         } else {
-            mRequestManager.setJsonRequest(bean, getResponseListener(bean.getKey(), (HttpJsonCallback) bean.getCallBack()));
+            mRequestManager.setJsonRequest(bean, getResponseListener(bean.getKey(), (HttpJsonCallback) bean.getCallback()));
         }
     }
 

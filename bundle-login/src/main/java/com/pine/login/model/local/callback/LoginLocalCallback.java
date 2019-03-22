@@ -1,12 +1,10 @@
-package com.pine.login.model.net.callback;
+package com.pine.login.model.local.callback;
 
 import android.content.Intent;
 import android.widget.Toast;
 
 import com.pine.base.BaseApplication;
-import com.pine.base.http.HttpRequestManager;
-import com.pine.base.http.HttpResponse;
-import com.pine.base.http.callback.HttpJsonCallback;
+import com.pine.base.database.callback.DbJsonCallback;
 import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
@@ -15,40 +13,19 @@ import com.pine.tool.util.AppUtils;
 
 import org.json.JSONObject;
 
-import java.net.HttpCookie;
-import java.util.List;
-
-import static com.pine.base.http.IHttpRequestManager.SESSION_ID;
-
-/**
- * Created by tanghongfeng on 2018/9/10.
- */
-
-public class LoginCallback extends HttpJsonCallback {
+public class LoginLocalCallback extends DbJsonCallback {
     public static final int LOGIN_CODE = 4001;
     public static final int LOGOUT_CODE = 4002;
     public static final int AUTO_LOGIN_CODE = 4003;
     public static final int RE_LOGIN_CODE = 4004;
     private ILoginResponse mCallback;
 
-    public LoginCallback() {
+    public LoginLocalCallback() {
 
     }
 
-    public LoginCallback(ILoginResponse callback) {
+    public LoginLocalCallback(ILoginResponse callback) {
         mCallback = callback;
-    }
-
-    @Override
-    public void onResponse(int what, HttpResponse response) {
-        List<HttpCookie> list = response.getCookies();
-        for (int i = 0; i < list.size(); i++) {
-            if (SESSION_ID.equals(list.get(i).getName().toUpperCase())) {
-                HttpRequestManager.setSessionId(list.get(i).getValue());
-                break;
-            }
-        }
-        super.onResponse(what, response);
     }
 
     @Override

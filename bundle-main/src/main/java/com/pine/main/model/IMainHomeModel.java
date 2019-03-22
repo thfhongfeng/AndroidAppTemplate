@@ -8,5 +8,5 @@ import com.pine.main.bean.MainBusinessItemEntity;
 import java.util.ArrayList;
 
 public interface IMainHomeModel {
-    void requestBusinessListData(@NonNull final IModelAsyncResponse<ArrayList<MainBusinessItemEntity>> callback);
+
 }

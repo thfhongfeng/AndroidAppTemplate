@@ -40,6 +40,10 @@ public class LoginActivity extends BaseMvpActionBarActivity<ILoginContract.Ui, L
     protected void init() {
         login_btn_tv.setOnClickListener(this);
         go_register_tv.setOnClickListener(this);
+        // Test code begin
+        mobile_et.setText("15221464292");
+        password_et.setText("111aaa");
+        // Test code end
     }
 
     @Override
