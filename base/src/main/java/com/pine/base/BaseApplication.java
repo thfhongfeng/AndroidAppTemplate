@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
-import com.pine.base.R;
 import com.pine.base.access.UiAccessManager;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.access.executor.UiAccessLoginExecutor;
