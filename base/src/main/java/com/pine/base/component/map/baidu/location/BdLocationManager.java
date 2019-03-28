@@ -134,5 +134,4 @@ public class BdLocationManager {
     public void setLocation(BDLocation location) {
         mLocation = location;
     }
-
 }

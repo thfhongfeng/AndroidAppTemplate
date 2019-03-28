@@ -11,7 +11,7 @@ public class MvvmTravelNoteItemEntity extends BaseBean {
     /**
      * id :
      * title :
-     * imgUrl :
+     * createTime :
      */
 
     private String id;

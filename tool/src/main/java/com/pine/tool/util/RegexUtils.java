@@ -1,5 +1,7 @@
 package com.pine.tool.util;
 
+import android.text.TextUtils;
+
 /**
  * Created by tanghongfeng on 2018/9/7.
  */
@@ -47,6 +49,11 @@ public class RegexUtils {
      */
     public static final String URL = "^(([hH][tT]{2}[pP][sS]?)|([fF][tT][pP]))\\:\\/\\/[wW]{3}\\.[\\w-]+\\.\\w{2,4}(\\/.*)?$";
 
+    /**
+     * 匹配数学数据的正则表达式
+     */
+    public static final String MATH_NUMBER = "^[-\\+]?[\\d]+.?[\\d]*$";
+
     private RegexUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -58,7 +65,7 @@ public class RegexUtils {
      * @return true：是
      */
     public static boolean isEmail(String string) {
-        return string.matches(EMAIL_REGEX);
+        return !TextUtils.isEmpty(string) && string.matches(EMAIL_REGEX);
     }
 
     /**
@@ -68,7 +75,7 @@ public class RegexUtils {
      * @return true：是
      */
     public static boolean isMobilePhoneNumber(String string) {
-        return string.matches(PHONE_NUMBER_REGEX);
+        return !TextUtils.isEmpty(string) && string.matches(PHONE_NUMBER_REGEX);
     }
 
     /**
@@ -78,7 +85,7 @@ public class RegexUtils {
      * @return true：是
      */
     public static boolean isIp(String string) {
-        return string.matches(IP_REGEX);
+        return !TextUtils.isEmpty(string) && string.matches(IP_REGEX);
     }
 
     /**
@@ -88,7 +95,7 @@ public class RegexUtils {
      * @return true：是
      */
     public static boolean isChinese(String string) {
-        return string.matches(CHINESE_REGEX);
+        return !TextUtils.isEmpty(string) && string.matches(CHINESE_REGEX);
     }
 
     /**
@@ -98,7 +105,7 @@ public class RegexUtils {
      * @return true：是
      */
     public static boolean isPositiveInteger(String string) {
-        return string.matches(POSITIVE_INTEGER_REGEX);
+        return !TextUtils.isEmpty(string) && string.matches(POSITIVE_INTEGER_REGEX);
     }
 
     /**
@@ -125,17 +132,17 @@ public class RegexUtils {
      * @return
      */
     public static boolean isIdCard(String string) {
-        return string.matches(ID_CARD);
+        return !TextUtils.isEmpty(string) && string.matches(ID_CARD);
     }
 
     /**
      * 验证给定的字符串是否是邮编
      *
-     * @param postCode
+     * @param string
      * @return
      */
-    public static boolean isPostCode(String postCode) {
-        return postCode.matches(POST_CODE);
+    public static boolean isPostCode(String string) {
+        return !TextUtils.isEmpty(string) && string.matches(POST_CODE);
     }
 
     /**
@@ -145,6 +152,16 @@ public class RegexUtils {
      * @return
      */
     public static boolean isURL(String string) {
-        return string.matches(URL);
+        return !TextUtils.isEmpty(string) && string.matches(URL);
+    }
+
+    /**
+     * 验证给定的字符是否是数学数据字符串：int, short, long, float, double（不包括""和null）
+     *
+     * @param string
+     * @return
+     */
+    public static boolean isMathNumber(String string) {
+        return !TextUtils.isEmpty(string) && string.matches(MATH_NUMBER);
     }
 }

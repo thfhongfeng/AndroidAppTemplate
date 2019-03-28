@@ -18,13 +18,8 @@ public class BaseCustomBindingAdapter {
     // 被注解的方法的第一个参数则是与属性关联的View类型
     // requireAll值：true表示必须所有参数均被设置才会调用；false则不用全部设置也会调用。
 
-    @BindingAdapter(value = {"title"})
-    public static void setTitle(TextImageDisplayView view, String title) {
-        view.setTitle(title);
-    }
-
-    @BindingAdapter(value = {"contentList"})
-    public static void setContentList(TextImageDisplayView view, List<TextImageItemEntity> contentList) {
-        view.setContent(contentList);
+    @BindingAdapter(value = {"title", "contentList"}, requireAll = false)
+    public static void setTitle(TextImageDisplayView view, String title, List<TextImageItemEntity> contentList) {
+        view.setupView(title, contentList);
     }
 }

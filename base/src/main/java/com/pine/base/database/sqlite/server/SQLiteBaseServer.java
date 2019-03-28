@@ -1,13 +1,14 @@
 package com.pine.base.database.sqlite.server;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
-import com.pine.base.database.sqlite.SQLiteDbHelper;
+import com.pine.base.BaseConstants;
+import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,16 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 public class SQLiteBaseServer {
-    public static long insert(@NonNull Context context, @NonNull String tableName,
+    private static final String TAG = LogUtils.makeLogTag(SQLiteBaseServer.class);
+
+    public static long insert(@NonNull SQLiteDatabase db, @NonNull String tableName,
                               @NonNull String nullColumnHack,
                               @NonNull ContentValues values) throws SQLException {
-        return new SQLiteDbHelper(context).getWritableDatabase().insert(tableName, nullColumnHack, values);
+        return db.insert(tableName, nullColumnHack, values);
     }
 
-    public static long insert(@NonNull Context context, @NonNull String tableName,
+    public static long insert(@NonNull SQLiteDatabase db, @NonNull String tableName,
                               @NonNull Map<String, String> params) throws SQLException {
         if (params != null && params.size() > 0) {
-            SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
             ContentValues cv = new ContentValues();
             Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
             Map.Entry<String, String> first = iterator.next();
@@ -41,45 +43,64 @@ public class SQLiteBaseServer {
         return -1;
     }
 
-    public static Cursor query(@NonNull Context context, @NonNull String tableName,
+    public static Cursor query(@NonNull SQLiteDatabase db, @NonNull String tableName,
                                String[] columns, String selection,
                                String[] selectionArgs, String groupBy, String having,
                                String orderBy) throws SQLException {
-        return new SQLiteDbHelper(context).getReadableDatabase().query(tableName,
+        return db.query(tableName,
                 columns, selection, selectionArgs, groupBy, having, orderBy);
     }
 
-    public static Cursor query(@NonNull Context context, @NonNull String tableName,
+    public static Cursor query(@NonNull SQLiteDatabase db, @NonNull String tableName,
                                Map<String, String> params) throws SQLException {
         String filter = "";
         List<String> filterArgs = null;
-        SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
+        int pageNo = -1;
+        int pageSize = -1;
         if (params != null && params.size() > 0) {
             filterArgs = new ArrayList<>();
             Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<String, String> entry = iterator.next();
-                filter += entry.getKey() + "=?" + (iterator.hasNext() ? " and " : "");
-                filterArgs.add(entry.getValue());
+                if (BaseConstants.PAGE_NO.equals(entry.getKey())) {
+                    pageNo = Integer.parseInt(entry.getValue());
+                } else if (BaseConstants.PAGE_SIZE.equals(entry.getKey())) {
+                    pageSize = Integer.parseInt(entry.getValue());
+                } else {
+                    filter += " " + entry.getKey() + "=?" + " and";
+                    filterArgs.add(entry.getValue());
+                }
             }
         }
-        Cursor cursor = db.query(tableName,
-                null, filter, filterArgs == null ? null : filterArgs.toArray(new String[0]),
-                null, null, null);
+        String limit = "";
+        if (pageSize > 0) {
+            limit = " limit " + pageSize;
+            if (pageNo > 1 && pageSize > 1) {
+                limit += " offset " + pageSize * (pageNo - 1);
+            }
+        }
+        String sql = "select * from " + tableName;
+        if (!TextUtils.isEmpty(filter)) {
+            filter = filter.substring(0, filter.length() - 4);
+            sql += " where" + filter;
+        }
+        if (!TextUtils.isEmpty(limit)) {
+            sql += "" + limit;
+        }
+        LogUtils.d(TAG, "sql : " + sql);
+        Cursor cursor = db.rawQuery(sql, filterArgs == null ? null : filterArgs.toArray(new String[0]));
         return cursor;
     }
 
-    public static int update(@NonNull Context context, @NonNull String tableName,
+    public static int update(@NonNull SQLiteDatabase db, @NonNull String tableName,
                              ContentValues values, String whereCause, String[] whereArgs) throws SQLException {
-        return new SQLiteDbHelper(context).getWritableDatabase().update(tableName,
-                values, whereCause, whereArgs);
+        return db.update(tableName, values, whereCause, whereArgs);
     }
 
-    public static int update(@NonNull Context context, @NonNull String tableName,
+    public static int update(@NonNull SQLiteDatabase db, @NonNull String tableName,
                              @NonNull String idKey, @NonNull String id,
                              Map<String, String> params) throws SQLException {
         if (params != null && params.size() > 0) {
-            SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
             ContentValues cv = new ContentValues();
             Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
             Map.Entry<String, String> first = iterator.next();

@@ -146,7 +146,7 @@ public class MvpShopDetailEntity {
         this.mainImgUrl = mainImgUrl;
     }
 
-    public String getImgUrls() {
+    public String getHeadImgUrls() {
         return imgUrls;
     }
 

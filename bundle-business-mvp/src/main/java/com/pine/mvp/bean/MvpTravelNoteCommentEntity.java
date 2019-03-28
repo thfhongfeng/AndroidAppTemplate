@@ -8,15 +8,15 @@ public class MvpTravelNoteCommentEntity {
 
     /**
      * id :
-     * author_tv :
-     * imgUrl :
+     * author :
+     * headImgUrl :
      * createTime :
      * content :
      */
 
     private String id;
     private String author;
-    private String imgUrl;
+    private String headImgUrl;
     private String createTime;
     private String content;
 
@@ -36,12 +36,12 @@ public class MvpTravelNoteCommentEntity {
         this.author = author;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getHeadImgUrl() {
+        return headImgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setHeadImgUrl(String headImgUrl) {
+        this.headImgUrl = headImgUrl;
     }
 
     public String getCreateTime() {

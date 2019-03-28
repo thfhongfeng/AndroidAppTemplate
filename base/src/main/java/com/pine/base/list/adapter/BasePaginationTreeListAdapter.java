@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -37,6 +37,8 @@ public abstract class BasePaginationTreeListAdapter<T> extends RecyclerView.Adap
     private boolean mShowMore = true;
     private boolean mShowComplete = true;
     private boolean mIsInitState = true;
+
+    protected RecyclerView mRecyclerView;
 
     public BasePaginationTreeListAdapter() {
 
@@ -87,7 +89,6 @@ public abstract class BasePaginationTreeListAdapter<T> extends RecyclerView.Adap
         return viewHolder;
     }
 
-
     @Override
     public void onBindViewHolder(BaseListViewHolder holder, int position) {
         if (mData == null || mData.size() == 0) {
@@ -133,6 +134,14 @@ public abstract class BasePaginationTreeListAdapter<T> extends RecyclerView.Adap
         }
         BaseListAdapterItemEntity itemEntity = mData.get(position);
         return itemEntity.getPropertyEntity().getItemViewType();
+    }
+
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+    }
+
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = null;
     }
 
     private boolean hasMoreView() {
@@ -212,7 +221,7 @@ public abstract class BasePaginationTreeListAdapter<T> extends RecyclerView.Adap
      * 空背景
      */
     public class EmptyBackgroundViewHolder extends BaseListViewHolder<String> {
-        private RelativeLayout container;
+        private LinearLayout container;
         private Context context;
         private TextView tips;
 

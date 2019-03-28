@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.pine.base.database.DbRequestBean;
 import com.pine.base.database.DbResponse;
 import com.pine.base.database.DbResponseGenerator;
+import com.pine.base.database.sqlite.SQLiteDbHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,19 +24,18 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                                                  @NonNull DbRequestBean requestBean,
                                                  @NonNull Map<String, Map<String, String>> header) {
         try {
-            Cursor cursor = query(context, SWITCHER_CONFIG_TABLE_NAME, requestBean.getParams());
+            Cursor cursor = query(new SQLiteDbHelper(context).getReadableDatabase(),
+                    SWITCHER_CONFIG_TABLE_NAME, requestBean.getParams());
             try {
                 JSONArray jsonArray = new JSONArray();
                 while (cursor.moveToNext()) {
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("id", cursor.getInt(cursor.getColumnIndex("id")));
                     jsonObject.put("configKey", cursor.getString(cursor.getColumnIndex("configKey")));
                     jsonObject.put("open", cursor.getString(cursor.getColumnIndex("open")));
                     jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                     jsonArray.put(jsonObject);
                 }
-                cursor.close();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -52,12 +52,12 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                                              @NonNull DbRequestBean requestBean,
                                              @NonNull Map<String, Map<String, String>> header) {
         try {
-            Cursor cursor = query(context, APP_VERSION_TABLE_NAME, requestBean.getParams());
+            Cursor cursor = query(new SQLiteDbHelper(context).getReadableDatabase(),
+                    APP_VERSION_TABLE_NAME, requestBean.getParams());
             try {
                 JSONObject jsonObject = null;
                 if (cursor.moveToFirst()) {
                     jsonObject = new JSONObject();
-                    jsonObject.put("id", cursor.getInt(cursor.getColumnIndex("id")));
                     jsonObject.put("packageName", cursor.getString(cursor.getColumnIndex("packageName")));
                     jsonObject.put("versionName", cursor.getString(cursor.getColumnIndex("versionName")));
                     jsonObject.put("versionCode", cursor.getInt(cursor.getColumnIndex("versionCode")));
@@ -68,7 +68,6 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }
-                cursor.close();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonObject == null ? "" : jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();

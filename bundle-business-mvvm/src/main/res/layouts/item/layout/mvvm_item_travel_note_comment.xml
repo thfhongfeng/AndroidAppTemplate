@@ -26,7 +26,7 @@
             <com.pine.tool.widget.CircleImageView
                 android:id="@+id/person_civ"
                 emptySrc="@mipmap/base_iv_portrait_default"
-                imageUrl="@{travelNoteComment.imgUrl}"
+                imageUrl="@{travelNoteComment.headImgUrl}"
                 android:layout_width="@dimen/dp_38"
                 android:layout_height="@dimen/dp_38"
                 android:layout_marginLeft="@dimen/dp_20"

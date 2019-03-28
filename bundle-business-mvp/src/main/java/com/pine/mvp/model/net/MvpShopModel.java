@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -45,7 +46,7 @@ public class MvpShopModel implements IMvpShopModel {
                                @NonNull final IModelAsyncResponse<MvpShopDetailEntity> callback) {
         String url = MvpUrlConstants.Add_Shop;
         HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_ADD_SHOP,
-                handleHttpResponse(callback, null));
+                handleHttpResponse(callback, params));
     }
 
     @Override
@@ -53,7 +54,7 @@ public class MvpShopModel implements IMvpShopModel {
                                       @NonNull final IModelAsyncResponse<MvpShopDetailEntity> callback) {
         String url = MvpUrlConstants.Query_ShopDetail;
         HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_DETAIL,
-                handleHttpResponse(callback, null));
+                handleHttpResponse(callback, params));
     }
 
     @Override
@@ -61,7 +62,7 @@ public class MvpShopModel implements IMvpShopModel {
                                     @NonNull final IModelAsyncResponse<ArrayList<MvpShopItemEntity>> callback) {
         String url = MvpUrlConstants.Query_ShopList;
         HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_LIST,
-                handleHttpResponse(callback, params.get(MvpConstants.PAGE_NO)));
+                handleHttpResponse(callback, params));
     }
 
     @Override
@@ -69,7 +70,7 @@ public class MvpShopModel implements IMvpShopModel {
                                               @NonNull final IModelAsyncResponse<ArrayList<MvpShopAndProductEntity>> callback) {
         String url = MvpUrlConstants.Query_ShopAndProductList;
         HttpRequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_AND_PRODUCT_LIST,
-                handleHttpResponse(callback, params.get(MvpConstants.PAGE_NO)));
+                handleHttpResponse(callback, params));
     }
 
     private <T> HttpJsonCallback handleHttpResponse(final IModelAsyncResponse<T> callback,
@@ -79,7 +80,7 @@ public class MvpShopModel implements IMvpShopModel {
             public void onResponse(int what, JSONObject jsonObject) {
                 if (what == HTTP_ADD_SHOP) {
                     // Test code begin
-                    jsonObject = getShopDetailData();
+                    jsonObject = getShopDetailData(carryData);
                     // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
@@ -90,7 +91,7 @@ public class MvpShopModel implements IMvpShopModel {
                     }
                 } else if (what == HTTP_QUERY_SHOP_DETAIL) {
                     // Test code begin
-                    jsonObject = getShopDetailData();
+                    jsonObject = getShopDetailData(carryData);
                     // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
@@ -101,7 +102,7 @@ public class MvpShopModel implements IMvpShopModel {
                     }
                 } else if (what == HTTP_QUERY_SHOP_LIST) {
                     // Test code begin
-                    jsonObject = getShopListData(carryData != null ? Integer.parseInt(carryData.toString()) : 1);
+                    jsonObject = getShopListData(carryData);
                     // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<List<MvpShopItemEntity>>() {
@@ -112,7 +113,7 @@ public class MvpShopModel implements IMvpShopModel {
                     }
                 } else if (what == HTTP_QUERY_SHOP_AND_PRODUCT_LIST) {
                     // Test code begin
-                    jsonObject = getShopAndProductListData(carryData != null ? Integer.parseInt(carryData.toString()) : 1);
+                    jsonObject = getShopAndProductListData(carryData);
                     // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<List<MvpShopAndProductEntity>>() {
@@ -137,7 +138,8 @@ public class MvpShopModel implements IMvpShopModel {
     }
 
     // Test code begin
-    private JSONObject getShopDetailData() {
+    private JSONObject getShopDetailData(Object paramsObj) {
+        Map<String, String> params = (HashMap<String, String>) paramsObj;
         double endLatBd = 31.221367;
         double endLonBd = 121.635707;
         double startLatBd = DecimalUtils.add(endLatBd, new Random().nextDouble(), 6);
@@ -146,12 +148,16 @@ public class MvpShopModel implements IMvpShopModel {
         double distance = GPSUtils.getDistance(locations[0], locations[1],
                 startLatBd, startLonBd);
         String distanceStr = String.valueOf(distance);
-        int startIndex = new Random().nextInt(10000);
+        String id = params.get("id");
+        String index = id.substring(id.length() - 2);
+        if ("0".equals(index.substring(0, 1))) {
+            index = index.substring(1, 2);
+        }
         String res = "{success:true,code:200,message:'',data:" +
-                "{id:'" + startIndex + "',name:'Shop Item " + startIndex +
-                "',type:'2',typeName:'食品',mainImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'" +
+                "{id:'" + id + "',name:'Shop Item " + index +
+                "',type:'2',typeName:'食品',mainImgUrl:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg'" +
                 ",distance:'" + distanceStr + "',latitude:'" + endLatBd + "',longitude:'" + endLonBd +
-                "',imgUrls:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp,https://hellorfimg.zcool.cn/preview/70789213.jpg'" +
+                "',imgUrls:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg,https://hellorfimg.zcool.cn/preview/70789213.jpg'" +
                 ",onlineDate:'2019-03-01',mobile:'18672943566'" +
                 ",addressDistrict:'上海市浦东新区浦东新区',addressZipCode:'310115'" +
                 ",addressStreet:'盛夏路888号'" +
@@ -164,7 +170,7 @@ public class MvpShopModel implements IMvpShopModel {
         return new JSONObject();
     }
 
-    private JSONObject getShopListData(int pageNo) {
+    private JSONObject getShopListData(Object paramsObj) {
         if (new Random().nextInt(10) == 9) {
             try {
                 return new JSONObject("{success:true,code:200,message:'',data:[]}");
@@ -173,6 +179,9 @@ public class MvpShopModel implements IMvpShopModel {
             }
             return null;
         }
+        Map<String, String> params = (HashMap<String, String>) paramsObj;
+        int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
+        int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
         double endLatBd = 31.221367;
         double endLonBd = 121.635707;
         double startLatBd = DecimalUtils.add(endLatBd, new Random().nextDouble(), 6);
@@ -181,15 +190,18 @@ public class MvpShopModel implements IMvpShopModel {
         double distance = GPSUtils.getDistance(locations[0], locations[1],
                 startLatBd, startLonBd);
         String distanceStr = String.valueOf(distance);
-        int startIndex = (pageNo - 1) * 10 + 1;
+        int index = (pageNo - 1) * 10 + 1;
+        String id = "1100201903281020000000" + (index > 9 ? index : "0" + index);
         String res = "{success:true,code:200,message:'',data:" +
-                "[{id:'" + startIndex + "',name:'Shop Item " + startIndex +
+                "[{id:'" + id + "',name:'Shop Item " + index +
                 "', distance:'" + distanceStr + "',mainImgUrl:''}";
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < pageSize; i++) {
             distance += 1333;
             distanceStr = String.valueOf(distance);
-            res += ",{id:'" + (startIndex + i) + "',name:'Shop Item " + (startIndex + i) +
-                    "', distance:'" + distanceStr + "',mainImgUrl:''}";
+            index++;
+            id = "1100201903281020000000" + (index > 9 ? index : "0" + index);
+            res += ",{id:'" + id + "',name:'Shop Item " + index +
+                    "', distance:'" + distanceStr + "',mainImgUrl:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg'}";
         }
         res += "]}";
         try {
@@ -200,7 +212,7 @@ public class MvpShopModel implements IMvpShopModel {
         return new JSONObject();
     }
 
-    private JSONObject getShopAndProductListData(int pageNo) {
+    private JSONObject getShopAndProductListData(Object paramsObj) {
         if (new Random().nextInt(5) == 4) {
             try {
                 return new JSONObject("{success:true,code:200,message:'',data:[]}");
@@ -209,6 +221,9 @@ public class MvpShopModel implements IMvpShopModel {
             }
             return null;
         }
+        Map<String, String> params = (HashMap<String, String>) paramsObj;
+        int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
+        int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
         double endLatBd = 31.221367;
         double endLonBd = 121.635707;
         double startLatBd = DecimalUtils.add(endLatBd, new Random().nextDouble(), 6);
@@ -217,17 +232,20 @@ public class MvpShopModel implements IMvpShopModel {
         double distance = GPSUtils.getDistance(locations[0], locations[1],
                 startLatBd, startLonBd);
         String distanceStr = String.valueOf(distance);
-        int startIndex = (pageNo - 1) * 10 + 1;
+        int shopIndex = (pageNo - 1) * 10 + 1;
+        String shopId = "1100201903281020000000" + (shopIndex > 9 ? shopIndex : "0" + shopIndex);
         String res = "{success:true,code:200,message:'',data:" +
-                "[{id:'" + startIndex + "',name:'Shop Item " + startIndex + "', distance:'" + distanceStr +
-                "',mainImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +
+                "[{id:'" + shopId + "',name:'Shop Item " + shopIndex + "', distance:'" + distanceStr +
+                "',mainImgUrl:''," +
                 "products:[{name:'Product Item 1'}, " +
                 "{name:'Product Item 2'},{name:'Product Item 3'}]}";
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < pageSize; i++) {
             distance += 1333;
             distanceStr = String.valueOf(distance);
-            res += ",{id:'" + (startIndex + i) + "',name:'Shop Item " + (startIndex + i) +
-                    "', distance:'" + distanceStr + "',mainImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp', " +
+            shopIndex++;
+            shopId = "1100201903281020000000" + (shopIndex > 9 ? shopIndex : "0" + shopIndex);
+            res += ",{id:'" + shopId + "',name:'Shop Item " + shopIndex +
+                    "', distance:'" + distanceStr + "',mainImgUrl:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg', " +
                     "products:[{name:'Product Item 1'}, {name:'Product Item 2'}]}";
         }
         res += "]}";

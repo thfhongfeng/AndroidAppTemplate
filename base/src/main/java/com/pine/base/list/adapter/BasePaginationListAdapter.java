@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -39,6 +39,8 @@ public abstract class BasePaginationListAdapter<T> extends RecyclerView.Adapter<
     private boolean mShowMore = true;
     private boolean mShowComplete = true;
     private int mDefaultItemViewType = EMPTY_BACKGROUND_VIEW_HOLDER;
+
+    protected RecyclerView mRecyclerView;
 
     public BasePaginationListAdapter(int defaultItemViewType) {
         mDefaultItemViewType = defaultItemViewType;
@@ -137,6 +139,14 @@ public abstract class BasePaginationListAdapter<T> extends RecyclerView.Adapter<
                 itemEntity.getPropertyEntity().getItemViewType() : mDefaultItemViewType;
     }
 
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+    }
+
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = null;
+    }
+
     private boolean hasMoreView() {
         return mShowMore && mHasMore && mData != null && mData.size() != 0;
     }
@@ -230,7 +240,7 @@ public abstract class BasePaginationListAdapter<T> extends RecyclerView.Adapter<
      * 空背景
      */
     public class EmptyBackgroundViewHolder extends BaseListViewHolder<String> {
-        private RelativeLayout container;
+        private LinearLayout container;
         private Context context;
         private TextView tips;
 

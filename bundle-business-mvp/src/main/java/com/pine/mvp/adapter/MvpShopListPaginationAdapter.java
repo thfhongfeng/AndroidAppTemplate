@@ -70,7 +70,7 @@ public class MvpShopListPaginationAdapter extends BasePaginationListAdapter {
                 if (distance >= 1000.0f) {
                     location_tv.setText(DecimalUtils.divide(distance, 1000.0f, 2) + mContext.getString(R.string.unit_kilometre));
                 } else {
-                    location_tv.setText(distance + mContext.getString(R.string.unit_metre));
+                    location_tv.setText(String.valueOf(distance).split("\\.")[0] + mContext.getString(R.string.unit_metre));
                 }
                 location_ll.setVisibility(View.VISIBLE);
             }

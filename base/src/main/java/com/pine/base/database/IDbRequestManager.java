@@ -26,7 +26,10 @@ public interface IDbRequestManager {
     String APP_VERSION_TABLE_NAME = "app_version";
     String SHOP_TABLE_NAME = "shop";
     String SHOP_TYPE_TABLE_NAME = "shop_type";
+    String PRODUCT_TABLE_NAME = "product";
     String TRAVEL_NOTE_TABLE_NAME = "travel_note";
+    String TRAVEL_NOTE_SHOP_TABLE_NAME = "travel_note_shop";
+    String TRAVEL_NOTE_COMMENT_TABLE_NAME = "travel_note_comment";
 
     boolean execSQL(@NonNull Context context, String sql);
 

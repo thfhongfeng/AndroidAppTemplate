@@ -119,7 +119,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
         address_street_tv.setText(entity.getAddressStreet());
         description_tv.setText(entity.getDescription());
         remark_tv.setText(entity.getRemark());
-        photo_iuv.setRemoteImages(entity.getImgUrls(), ",");
+        photo_iuv.setRemoteImages(entity.getHeadImgUrls(), ",");
     }
 
     @Override

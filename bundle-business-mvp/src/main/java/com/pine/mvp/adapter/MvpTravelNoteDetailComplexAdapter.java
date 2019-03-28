@@ -31,11 +31,6 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
     public static final int TRAVEL_NOTE_COMMENT_HEAD_VIEW_HOLDER = 3;
     public static final int TRAVEL_NOTE_COMMENT_VIEW_HOLDER = 4;
 
-    public BaseListViewHolder<String> getEmptyBackgroundViewHolder(ViewGroup parent) {
-        return new EmptyBackgroundViewHolder(parent.getContext(),
-                LayoutInflater.from(parent.getContext()).inflate(com.pine.base.R.layout.base_item_empty_background, parent, false));
-    }
-
     @Override
     public List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> parseHeadData(List<MvpTravelNoteDetailEntity> data) {
         List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> adapterData = new ArrayList<>();
@@ -126,7 +121,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
 
         @Override
         public void updateData(MvpTravelNoteDetailEntity content, BaseListAdapterItemProperty propertyEntity, int position) {
-            ImageLoaderManager.getInstance().loadImage(mContext, content.getHeadImg(),
+            ImageLoaderManager.getInstance().loadImage(mContext, content.getHeadImgUrl(),
                     R.mipmap.base_iv_portrait_default, -1, person_civ);
             title_tv.setText(content.getTitle());
             set_out_date_tv.setText(mContext.getString(R.string.mvp_travel_note_detail_set_out_date, content.getSetOutDate()));
@@ -151,8 +146,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
 
         @Override
         public void updateData(MvpTravelNoteDetailEntity.DayBean content, BaseListAdapterItemProperty propertyEntity, int position) {
-            day_tv.setTitle(content.getDay());
-            day_tv.setContent(content.getTextImageContentList());
+            day_tv.setupView(content.getDay(), content.getTextImageContentList());
         }
     }
 
@@ -185,7 +179,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
 
         @Override
         public void updateData(MvpTravelNoteCommentEntity content, BaseListAdapterItemProperty propertyEntity, int position) {
-            ImageLoaderManager.getInstance().loadImage(mContext, content.getImgUrl(), person_civ);
+            ImageLoaderManager.getInstance().loadImage(mContext, content.getHeadImgUrl(), person_civ);
             author_tv.setText(content.getAuthor());
             create_time_tv.setText(content.getCreateTime());
             content_tv.setText(content.getContent());

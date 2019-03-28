@@ -15,7 +15,7 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
      * id : 1
      * title : Travel Note Title
      * setOutDate : 2018-10-10 10:10:10
-     * headImg :
+     * headImgUrl :
      * author : 作者
      * belongShops :
      * createTime : 2018-10-10 10:10:10
@@ -30,7 +30,7 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
     private String id;
     private String title;
     private String setOutDate;
-    private String headImg;
+    private String headImgUrl;
     private String author;
     private List<MvvmShopItemEntity> belongShops;
     private String createTime;
@@ -65,12 +65,12 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
         this.setOutDate = setOutDate;
     }
 
-    public String getHeadImg() {
-        return headImg;
+    public String getHeadImgUrl() {
+        return headImgUrl;
     }
 
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
+    public void setHeadImgUrl(String headImgUrl) {
+        this.headImgUrl = headImgUrl;
     }
 
     public String getAuthor() {

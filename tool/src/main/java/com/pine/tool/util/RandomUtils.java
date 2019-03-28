@@ -2,6 +2,8 @@ package com.pine.tool.util;
 
 import android.text.TextUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 /**
@@ -109,5 +111,35 @@ public class RandomUtils {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 20位唯一数字ID
+     *
+     * @return
+     */
+    public static String get20UniqueId() {
+        return new SimpleDateFormat("yyyyMMddHHmmssSSS").format(Calendar.getInstance().getTime()) +
+                getRandomNumbers(3);
+    }
+
+    /**
+     * 24位唯一数字ID
+     *
+     * @return
+     */
+    public static String get24UniqueId() {
+        return new SimpleDateFormat("yyyyMMddHHmmssSSS").format(Calendar.getInstance().getTime()) +
+                getRandomNumbers(7);
+    }
+
+    /**
+     * 30位唯一数字ID
+     *
+     * @return
+     */
+    public static String get30UniqueId() {
+        return new SimpleDateFormat("yyyyMMddHHmmssSSS").format(Calendar.getInstance().getTime()) +
+                getRandomNumbers(15);
     }
 }

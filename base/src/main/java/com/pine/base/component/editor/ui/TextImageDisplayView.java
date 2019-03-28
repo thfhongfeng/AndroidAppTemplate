@@ -47,20 +47,15 @@ public class TextImageDisplayView extends LinearLayout {
         setOrientation(VERTICAL);
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
-        View topTitleView = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_display_top, null);
-        ((TextView) topTitleView.findViewById(R.id.title_tv)).setText(mTitle);
-        topTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
-        addView(topTitleView);
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setContent(List<TextImageItemEntity> dataList) {
+    public void setupView(String title, List<TextImageItemEntity> dataList) {
         removeAllViews();
+        mTitle = title;
+        if (!TextUtils.isEmpty(title)) {
+            View topTitleView = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_display_top, null);
+            ((TextView) topTitleView.findViewById(R.id.title_tv)).setText(mTitle);
+            topTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
+            addView(topTitleView);
+        }
         mContent = dataList;
         if (dataList != null) {
             for (TextImageItemEntity entity : dataList) {
@@ -71,6 +66,10 @@ public class TextImageDisplayView extends LinearLayout {
                 }
             }
         }
+    }
+
+    public String getTitle() {
+        return mTitle;
     }
 
     public List<TextImageItemEntity> getContent() {

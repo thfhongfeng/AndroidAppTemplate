@@ -9,7 +9,7 @@ public class MvpTravelNoteItemEntity {
     /**
      * id :
      * title :
-     * imgUrl :
+     * createTime :
      */
 
     private String id;

@@ -52,4 +52,8 @@
         <attr name="civ_border_overlay" format="boolean" />
         <attr name="civ_fill_color" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="riv_radius" format="dimension" />
+    </declare-styleable>
 </resources>

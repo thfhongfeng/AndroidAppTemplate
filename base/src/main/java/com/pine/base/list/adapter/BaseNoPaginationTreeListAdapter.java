@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -30,6 +30,8 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends RecyclerView.Ad
     private boolean mShowEmpty = true;
     private boolean mShowComplete = true;
     private int mTreeListType = -1;
+
+    protected RecyclerView mRecyclerView;
 
     public BaseNoPaginationTreeListAdapter(int treeListType) {
         mTreeListType = treeListType;
@@ -107,6 +109,14 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends RecyclerView.Ad
         return itemEntity.getPropertyEntity().getItemViewType();
     }
 
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+    }
+
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = null;
+    }
+
     private boolean hasCompleteView() {
         return mShowComplete && mData != null && mData.size() != 0;
     }
@@ -157,7 +167,7 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends RecyclerView.Ad
      * 空背景
      */
     public class EmptyBackgroundViewHolder extends BaseListViewHolder<String> {
-        private RelativeLayout container;
+        private LinearLayout container;
         private Context context;
         private TextView tips;
 

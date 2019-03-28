@@ -51,7 +51,7 @@
             <com.pine.tool.widget.CircleImageView
                 android:id="@+id/person_civ"
                 emptySrc="@{R.mipmap.base_iv_portrait_default}"
-                imageUrl="@{travelNoteDetail.headImg}"
+                imageUrl="@{travelNoteDetail.headImgUrl}"
                 android:layout_width="@dimen/dp_22"
                 android:layout_height="@dimen/dp_22"
                 app:civ_border_color="@color/white"

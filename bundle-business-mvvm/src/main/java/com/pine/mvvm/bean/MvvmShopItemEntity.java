@@ -107,7 +107,7 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
                 location = DecimalUtils.divide(distanceF, 1000.0f, 2) +
                         AppUtils.getApplication().getString(R.string.unit_kilometre);
             } else {
-                location = distanceF + AppUtils.getApplication().getString(R.string.unit_metre);
+                location = distance.split("\\.")[0] + AppUtils.getApplication().getString(R.string.unit_metre);
             }
         }
         return location;

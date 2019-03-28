@@ -10,6 +10,8 @@ import com.pine.base.database.DbResponseGenerator;
 import com.pine.base.database.IDbCommand;
 import com.pine.base.database.IDbRequestManager;
 import com.pine.base.database.sqlite.server.SQLiteLoginServer;
+import com.pine.base.database.sqlite.server.SQLiteShopServer;
+import com.pine.base.database.sqlite.server.SQLiteTravelNoteServer;
 import com.pine.base.database.sqlite.server.SQLiteWelcomeServer;
 
 import java.util.Map;
@@ -46,6 +48,22 @@ public class SQLiteDbRequestManager implements IDbRequestManager {
                 return SQLiteLoginServer.logout(context, requestBean, header);
             case IDbCommand.REQUEST_REGISTER:
                 return SQLiteLoginServer.register(context, requestBean, header);
+            case IDbCommand.REQUEST_ADD_SHOP:
+                return SQLiteShopServer.addShop(context, requestBean, header);
+            case IDbCommand.REQUEST_QUERY_SHOP_DETAIL:
+                return SQLiteShopServer.queryShopDetail(context, requestBean, header);
+            case IDbCommand.REQUEST_QUERY_SHOP_LIST:
+                return SQLiteShopServer.queryShopList(context, requestBean, header);
+            case IDbCommand.REQUEST_QUERY_SHOP_AND_PRODUCT_LIST:
+                return SQLiteShopServer.queryShopProductList(context, requestBean, header);
+            case IDbCommand.REQUEST_ADD_TRAVEL_NOTE:
+                return SQLiteTravelNoteServer.addTravelNote(context, requestBean, header);
+            case IDbCommand.REQUEST_QUERY_TRAVEL_NOTE_DETAIL:
+                return SQLiteTravelNoteServer.queryTravelNoteDetail(context, requestBean, header);
+            case IDbCommand.REQUEST_QUERY_TRAVEL_NOTE_LIST:
+                return SQLiteTravelNoteServer.queryTravelNoteList(context, requestBean, header);
+            case IDbCommand.REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST:
+                return SQLiteTravelNoteServer.queryTravelNoteCommentList(context, requestBean, header);
         }
         return DbResponseGenerator.getNoSuchTableRep(requestBean, header);
     }

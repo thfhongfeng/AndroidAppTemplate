@@ -104,7 +104,7 @@ public class MvvmTravelNoteDetailActivity extends
 
     @Override
     public void onRefresh() {
-        mViewModel.loadTravelNoteDetailData(mTravelNoteDetailAdapter.getPageNo());
+        mViewModel.loadTravelNoteDetailData(mTravelNoteDetailAdapter.getPageSize());
     }
 
     public void onLoadingMore() {

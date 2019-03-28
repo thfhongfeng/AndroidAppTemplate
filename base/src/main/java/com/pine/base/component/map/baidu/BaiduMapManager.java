@@ -14,6 +14,8 @@ import com.pine.base.component.map.baidu.ui.BaiduMapActivity;
 import com.pine.tool.util.GPSUtils;
 import com.pine.tool.util.LogUtils;
 
+import java.util.LinkedList;
+
 /**
  * Created by tanghongfeng on 2018/10/31
  */
@@ -22,24 +24,32 @@ public class BaiduMapManager implements IMapManager {
     private final static String TAG = LogUtils.makeLogTag(BaiduMapManager.class);
 
     private static BaiduMapManager mInstance;
-    private ILocationListener mLocationCallback;
+    private LinkedList<ILocationListener> mLocationCallbackList = new LinkedList<>();
     private BDAbstractLocationListener mLocationListener = new BDAbstractLocationListener() {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
+            LogUtils.d(TAG, "onReceiveLocation bdLocation:" + bdLocation +
+                    (bdLocation != null ? ",bdLocation.getLocType():" + bdLocation.getLocType() : ""));
             if (bdLocation != null && (bdLocation.getLocType() == BDLocation.TypeGpsLocation
                     || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation
                     || bdLocation.getLocType() == BDLocation.TypeOffLineLocation)) {
                 BdLocationManager.getInstance().unregisterListener(mLocationListener);
                 BdLocationManager.getInstance().stop();
                 BdLocationManager.getInstance().setLocation(bdLocation);
-                if (mLocationCallback != null) {
-                    LocationInfo locationInfo = new LocationInfo();
-                    locationInfo.setLatitude(bdLocation.getLatitude());
-                    locationInfo.setLongitude(bdLocation.getLongitude());
-                    mLocationCallback.onReceiveLocation(locationInfo);
+                synchronized (mLocationCallbackList) {
+                    for (ILocationListener listener : mLocationCallbackList) {
+                        LocationInfo locationInfo = new LocationInfo();
+                        locationInfo.setLatitude(bdLocation.getLatitude());
+                        locationInfo.setLongitude(bdLocation.getLongitude());
+                        listener.onReceiveLocation(locationInfo);
+                    }
                 }
-            } else if (mLocationCallback != null) {
-                mLocationCallback.onReceiveFail();
+            } else {
+                synchronized (mLocationCallbackList) {
+                    for (ILocationListener listener : mLocationCallbackList) {
+                        listener.onReceiveFail();
+                    }
+                }
             }
         }
     };
@@ -68,13 +78,17 @@ public class BaiduMapManager implements IMapManager {
 
     @Override
     public void registerLocationListener(ILocationListener locationListener) {
-        mLocationCallback = locationListener;
+        synchronized (mLocationCallbackList) {
+            mLocationCallbackList.add(locationListener);
+        }
         BdLocationManager.getInstance().registerListener(mLocationListener);
     }
 
     @Override
     public void unregisterLocationListener(ILocationListener locationListener) {
-        mLocationCallback = null;
+        synchronized (mLocationCallbackList) {
+            mLocationCallbackList.remove(locationListener);
+        }
         BdLocationManager.getInstance().unregisterListener(mLocationListener);
     }
 

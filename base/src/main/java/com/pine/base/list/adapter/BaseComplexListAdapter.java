@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -38,6 +38,8 @@ public abstract class BaseComplexListAdapter<T, B> extends RecyclerView.Adapter<
     private boolean mShowEmpty = true;
     private boolean mShowMore = true;
     private boolean mShowComplete = true;
+
+    protected RecyclerView mRecyclerView;
 
     public BaseComplexListAdapter() {
 
@@ -150,6 +152,14 @@ public abstract class BaseComplexListAdapter<T, B> extends RecyclerView.Adapter<
         }
     }
 
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+    }
+
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        mRecyclerView = null;
+    }
+
     public final void setHeadData(List<T> data) {
         mIsInitState = false;
         mHeadNoPaginationData = parseHeadData(data);
@@ -235,7 +245,7 @@ public abstract class BaseComplexListAdapter<T, B> extends RecyclerView.Adapter<
      * 空背景
      */
     public class EmptyBackgroundViewHolder extends BaseListViewHolder<String> {
-        private RelativeLayout container;
+        private LinearLayout container;
         private Context context;
         private TextView tips;
 
