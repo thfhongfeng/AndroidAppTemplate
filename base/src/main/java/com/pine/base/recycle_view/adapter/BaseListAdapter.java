@@ -28,6 +28,10 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     protected RecyclerView mRecyclerView;
 
+    public BaseListAdapter() {
+
+    }
+
     public BaseListAdapter(int defaultItemViewType) {
         mDefaultItemViewType = defaultItemViewType;
     }

@@ -15,6 +15,10 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
     protected List<BaseListAdapterItemEntity<T>> mData = null;
     private boolean mIsInitState = true;
 
+    public BaseNoPaginationListAdapter() {
+
+    }
+
     public BaseNoPaginationListAdapter(int defaultItemViewType) {
         super(defaultItemViewType);
     }

@@ -20,6 +20,10 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
     protected List<BaseListAdapterItemEntity<T>> mData = null;
     private boolean mIsInitState = true;
 
+    public BasePaginationListAdapter() {
+
+    }
+
     public BasePaginationListAdapter(int defaultItemViewType) {
         super(defaultItemViewType);
     }
