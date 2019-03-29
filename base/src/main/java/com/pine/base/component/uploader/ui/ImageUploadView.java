@@ -21,10 +21,10 @@ import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
-import com.pine.base.list.BaseListViewHolder;
-import com.pine.base.list.adapter.BaseNoPaginationListAdapter;
-import com.pine.base.list.bean.BaseListAdapterItemEntity;
-import com.pine.base.list.bean.BaseListAdapterItemProperty;
+import com.pine.base.recycle_view.BaseListViewHolder;
+import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
+import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
+import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.base.ui.BaseActivity;
 import com.pine.tool.util.LogUtils;
 

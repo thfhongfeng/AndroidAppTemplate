@@ -1,12 +1,12 @@
 package com.pine.login.model.net.interceptor;
 
 import com.pine.base.BaseApplication;
-import com.pine.base.http.HttpRequestBean;
-import com.pine.base.http.HttpRequestManager;
-import com.pine.base.http.HttpResponse;
-import com.pine.base.http.IHttpRequestManager;
-import com.pine.base.http.callback.HttpJsonCallback;
-import com.pine.base.http.interceptor.IHttpResponseInterceptor;
+import com.pine.base.request.http.HttpRequestBean;
+import com.pine.base.request.http.HttpRequestManager;
+import com.pine.base.request.http.HttpResponse;
+import com.pine.base.request.http.IHttpRequestManager;
+import com.pine.base.request.http.callback.HttpJsonCallback;
+import com.pine.base.request.http.interceptor.IHttpResponseInterceptor;
 import com.pine.login.LoginConstants;
 import com.pine.login.ResponseCode;
 import com.pine.login.manager.LoginManager;

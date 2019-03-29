@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pine.base.list.BaseListViewHolder;
-import com.pine.base.list.adapter.BaseNoPaginationListAdapter;
-import com.pine.base.list.bean.BaseListAdapterItemProperty;
+import com.pine.base.recycle_view.BaseListViewHolder;
+import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
+import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.databinding.ShopItemBinding;

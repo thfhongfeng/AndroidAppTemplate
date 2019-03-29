@@ -19,7 +19,7 @@
             android:button="@drawable/base_selector_check"
             android:padding="@dimen/dp_5" />
 
-        <ImageView
+        <com.pine.tool.widget.RoundImageView
             android:id="@+id/photo_iv"
             android:layout_width="@dimen/dp_66"
             android:layout_height="@dimen/dp_60"

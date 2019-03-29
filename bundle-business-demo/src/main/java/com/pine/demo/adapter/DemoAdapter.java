@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pine.base.BaseApplication;
-import com.pine.base.list.BaseListViewHolder;
-import com.pine.base.list.adapter.BaseNoPaginationListAdapter;
-import com.pine.base.list.bean.BaseListAdapterItemProperty;
+import com.pine.base.recycle_view.BaseListViewHolder;
+import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
+import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.demo.R;
 import com.pine.demo.bean.DemoItemEntity;
 

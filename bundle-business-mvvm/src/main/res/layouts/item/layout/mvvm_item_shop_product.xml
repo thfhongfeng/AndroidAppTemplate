@@ -13,7 +13,7 @@
 
         <variable
             name="shopProperty"
-            type="com.pine.base.list.bean.BaseListAdapterItemProperty"></variable>
+            type="com.pine.base.recycle_view.bean.BaseListAdapterItemProperty"></variable>
     </data>
 
     <RelativeLayout

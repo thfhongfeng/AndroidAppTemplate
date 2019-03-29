@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.pine.base.BaseApplication;
-import com.pine.base.http.HttpRequestManager;
-import com.pine.base.http.HttpResponse;
-import com.pine.base.http.callback.HttpJsonCallback;
+import com.pine.base.request.http.HttpRequestManager;
+import com.pine.base.request.http.HttpResponse;
+import com.pine.base.request.http.callback.HttpJsonCallback;
 import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.net.HttpCookie;
 import java.util.List;
 
-import static com.pine.base.http.IHttpRequestManager.SESSION_ID;
+import static com.pine.base.request.http.IHttpRequestManager.SESSION_ID;
 
 /**
  * Created by tanghongfeng on 2018/9/10.

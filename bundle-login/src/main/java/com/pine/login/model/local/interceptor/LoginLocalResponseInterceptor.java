@@ -1,11 +1,11 @@
 package com.pine.login.model.local.interceptor;
 
 import com.pine.base.BaseApplication;
-import com.pine.base.database.DbRequestBean;
-import com.pine.base.database.DbRequestManager;
-import com.pine.base.database.DbResponse;
-import com.pine.base.database.IDbRequestManager;
-import com.pine.base.database.interceptor.IDbResponseInterceptor;
+import com.pine.base.request.database.DbRequestBean;
+import com.pine.base.request.database.DbRequestManager;
+import com.pine.base.request.database.DbResponse;
+import com.pine.base.request.database.IDbRequestManager;
+import com.pine.base.request.database.interceptor.IDbResponseInterceptor;
 import com.pine.login.LoginConstants;
 import com.pine.login.ResponseCode;
 import com.pine.login.manager.LoginManager;

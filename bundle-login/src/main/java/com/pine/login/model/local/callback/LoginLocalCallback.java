@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.pine.base.BaseApplication;
-import com.pine.base.database.callback.DbJsonCallback;
+import com.pine.base.request.database.callback.DbJsonCallback;
 import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;

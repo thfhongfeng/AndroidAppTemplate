@@ -2,7 +2,7 @@ package com.pine.login;
 
 import android.app.Application;
 
-import com.pine.base.http.HttpRequestManager;
+import com.pine.base.request.http.HttpRequestManager;
 import com.pine.config.BuildConfig;
 import com.pine.login.model.net.interceptor.LoginResponseInterceptor;
 import com.pine.tool.util.LogUtils;

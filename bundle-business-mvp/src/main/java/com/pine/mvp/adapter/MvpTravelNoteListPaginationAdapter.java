@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.pine.base.list.BaseListViewHolder;
-import com.pine.base.list.adapter.BasePaginationListAdapter;
-import com.pine.base.list.bean.BaseListAdapterItemProperty;
+import com.pine.base.recycle_view.BaseListViewHolder;
+import com.pine.base.recycle_view.adapter.BasePaginationListAdapter;
+import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpTravelNoteItemEntity;
 import com.pine.mvp.ui.activity.MvpTravelNoteDetailActivity;

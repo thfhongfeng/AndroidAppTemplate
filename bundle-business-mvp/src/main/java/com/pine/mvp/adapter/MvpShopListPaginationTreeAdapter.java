@@ -10,10 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pine.base.component.image_loader.ImageLoaderManager;
-import com.pine.base.list.BaseListViewHolder;
-import com.pine.base.list.adapter.BasePaginationTreeListAdapter;
-import com.pine.base.list.bean.BaseListAdapterItemEntity;
-import com.pine.base.list.bean.BaseListAdapterItemProperty;
+import com.pine.base.recycle_view.BaseListViewHolder;
+import com.pine.base.recycle_view.adapter.BasePaginationTreeListAdapter;
+import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
+import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopAndProductEntity;
 import com.pine.mvp.ui.activity.MvpShopDetailActivity;

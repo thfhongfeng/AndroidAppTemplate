@@ -6,10 +6,10 @@ import android.text.TextUtils;
 
 import com.pine.base.R;
 import com.pine.base.component.uploader.bean.FileUploadBean;
-import com.pine.base.http.HttpRequestBean;
-import com.pine.base.http.HttpRequestManager;
-import com.pine.base.http.callback.HttpJsonCallback;
-import com.pine.base.http.callback.HttpUploadCallback;
+import com.pine.base.request.http.HttpRequestBean;
+import com.pine.base.request.http.HttpRequestManager;
+import com.pine.base.request.http.callback.HttpJsonCallback;
+import com.pine.base.request.http.callback.HttpUploadCallback;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.ImageUtils;
 import com.pine.tool.util.LogUtils;

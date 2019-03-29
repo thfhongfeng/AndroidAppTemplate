@@ -1,7 +1,7 @@
 package com.pine.login.model.net.interceptor;
 
-import com.pine.base.http.HttpRequestBean;
-import com.pine.base.http.interceptor.IHttpRequestInterceptor;
+import com.pine.base.request.http.HttpRequestBean;
+import com.pine.base.request.http.interceptor.IHttpRequestInterceptor;
 
 /**
  * Created by tanghongfeng on 2018/9/10.

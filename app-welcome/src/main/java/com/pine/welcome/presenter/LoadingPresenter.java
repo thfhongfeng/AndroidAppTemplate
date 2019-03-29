@@ -11,7 +11,7 @@ import com.pine.base.BaseApplication;
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.exception.MessageException;
-import com.pine.base.http.HttpRequestManager;
+import com.pine.base.request.http.HttpRequestManager;
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigBundleKey;
 import com.pine.config.switcher.ConfigBundleSwitcher;
