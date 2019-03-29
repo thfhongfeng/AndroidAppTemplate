@@ -153,11 +153,14 @@ public class MvpShopModel implements IMvpShopModel {
         if ("0".equals(index.substring(0, 1))) {
             index = index.substring(1, 2);
         }
+        String imgUrls = new Random().nextInt(10) > 1 ?
+                "http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg,https://hellorfimg.zcool.cn/preview/70789213.jpg"
+                : "";
         String res = "{success:true,code:200,message:'',data:" +
                 "{id:'" + id + "',name:'Shop Item " + index +
                 "',type:'2',typeName:'食品',mainImgUrl:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg'" +
                 ",distance:'" + distanceStr + "',latitude:'" + endLatBd + "',longitude:'" + endLonBd +
-                "',imgUrls:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg,https://hellorfimg.zcool.cn/preview/70789213.jpg'" +
+                "',imgUrls:'" + imgUrls + "'" +
                 ",onlineDate:'2019-03-01',mobile:'18672943566'" +
                 ",addressDistrict:'上海市浦东新区浦东新区',addressZipCode:'310115'" +
                 ",addressStreet:'盛夏路888号'" +

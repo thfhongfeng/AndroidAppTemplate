@@ -1,17 +1,8 @@
 package com.pine.base.list.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-import com.pine.base.R;
 import com.pine.base.list.BaseListViewHolder;
 import com.pine.base.list.bean.BaseListAdapterItemEntity;
 import com.pine.base.list.bean.BaseListAdapterItemProperty;
@@ -22,51 +13,18 @@ import java.util.List;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public abstract class BaseNoPaginationTreeListAdapter<T> extends RecyclerView.Adapter<BaseListViewHolder> {
-    protected final static int EMPTY_BACKGROUND_VIEW_HOLDER = -10000;
-    protected final static int COMPLETE_VIEW_HOLDER = -10001;
+public abstract class BaseNoPaginationTreeListAdapter<T> extends BaseListAdapter {
     protected List<BaseListAdapterItemEntity<T>> mData = null;
     private boolean mIsInitState = true;
-    private boolean mShowEmpty = true;
-    private boolean mShowComplete = true;
     private int mTreeListType = -1;
 
-    protected RecyclerView mRecyclerView;
-
     public BaseNoPaginationTreeListAdapter(int treeListType) {
+        super(EMPTY_BACKGROUND_VIEW_HOLDER);
         mTreeListType = treeListType;
     }
 
     public void showEmptyComplete(boolean showEmptyView, boolean showCompleteView) {
-        mShowEmpty = showEmptyView;
-        mShowComplete = showCompleteView;
-    }
-
-    public BaseListViewHolder<String> getCompleteViewHolder(ViewGroup parent) {
-        return new CompleteViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.base_item_complete, parent, false));
-    }
-
-    public BaseListViewHolder<String> getEmptyBackgroundViewHolder(ViewGroup parent) {
-        return new EmptyBackgroundViewHolder(parent.getContext(),
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.base_item_empty_background, parent, false));
-    }
-
-    @NonNull
-    @Override
-    public BaseListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        BaseListViewHolder viewHolder = null;
-        switch (viewType) {
-            case EMPTY_BACKGROUND_VIEW_HOLDER:
-                viewHolder = getEmptyBackgroundViewHolder(parent);
-                break;
-            case COMPLETE_VIEW_HOLDER:
-                viewHolder = getCompleteViewHolder(parent);
-                break;
-            default:
-                viewHolder = getViewHolder(parent, viewType);
-                break;
-        }
-        return viewHolder;
+        super.showEmptyMoreComplete(showEmptyView, false, showCompleteView);
     }
 
     @Override
@@ -87,7 +45,7 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends RecyclerView.Ad
         if (mIsInitState()) {
             return 0;
         }
-        if ((mData == null || mData.size() == 0) && mShowEmpty) {
+        if (hasEmptyView()) {
             return 1;
         }
         int actualSize = mData.size();
@@ -117,12 +75,16 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends RecyclerView.Ad
         mRecyclerView = null;
     }
 
+    private boolean hasEmptyView() {
+        return isEmptyViewSetup() && (mData == null || mData.size() == 0);
+    }
+
     private boolean hasCompleteView() {
-        return mShowComplete && mData != null && mData.size() != 0;
+        return isCompleteViewSetup() && mData != null && mData.size() != 0;
     }
 
     private boolean isCompleteView(int position) {
-        return mShowComplete && position != 0 && position == mData.size();
+        return isCompleteViewSetup() && position != 0 && position == mData.size();
     }
 
     public final void setData(List<T> data) {
@@ -160,51 +122,4 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends RecyclerView.Ad
     }
 
     public abstract List<BaseListAdapterItemEntity<T>> parseTreeData(List<T> data, boolean reset);
-
-    public abstract BaseListViewHolder getViewHolder(ViewGroup parent, int viewType);
-
-    /**
-     * 空背景
-     */
-    public class EmptyBackgroundViewHolder extends BaseListViewHolder<String> {
-        private LinearLayout container;
-        private Context context;
-        private TextView tips;
-
-        public EmptyBackgroundViewHolder(Context context, View itemView) {
-            super(itemView);
-            this.context = context;
-            container = itemView.findViewById(R.id.container);
-        }
-
-        @Override
-        public void updateData(String tipsValue, BaseListAdapterItemProperty propertyEntity, int position) {
-            if (!TextUtils.isEmpty(tipsValue)) {
-                tips.setText(tipsValue);
-            }
-            TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.MATCH_PARENT);
-            container.setLayoutParams(params);
-        }
-    }
-
-    /**
-     * 全部加载完成holder
-     *
-     * @param
-     */
-    public class CompleteViewHolder extends BaseListViewHolder<String> {
-        private TextView complete_tv;
-
-        public CompleteViewHolder(View itemView) {
-            super(itemView);
-            itemView.setTag("complete");
-            complete_tv = itemView.findViewById(R.id.complete_tv);
-        }
-
-        @Override
-        public void updateData(String content, BaseListAdapterItemProperty propertyEntity, int position) {
-
-        }
-    }
 }
