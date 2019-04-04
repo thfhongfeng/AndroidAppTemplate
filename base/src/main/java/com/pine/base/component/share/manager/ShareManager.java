@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
+import com.pine.base.component.share.bean.UriListShareBean;
+import com.pine.base.component.share.bean.UrlTextShareBean;
 import com.pine.base.util.DialogUtils;
 import com.pine.config.BuildConfig;
 import com.pine.tool.util.LogUtils;
@@ -61,19 +63,19 @@ public class ShareManager {
         return DialogUtils.createShareDialog(context, shareBeanList);
     }
 
-    public void share(Activity activity, ShareBean shareBean) {
-        switch (shareBean.getShareTarget()) {
+    public <T extends ShareBean> void share(Activity activity, T t) {
+        switch (t.getShareTarget()) {
             case ShareBean.SHARE_TARGET_QQ:
-                ShareManager.getInstance().shareToQQ(activity, shareBean);
+                ShareManager.getInstance().shareToQQ(activity, t);
                 break;
             case ShareBean.SHARE_TARGET_WX:
-                ShareManager.getInstance().shareToWX(activity, true, shareBean);
+                ShareManager.getInstance().shareToWX(activity, true, t);
                 break;
             case ShareBean.SHARE_TARGET_WX_FRIEND_CIRCLE:
-                ShareManager.getInstance().shareToWX(activity, false, shareBean);
+                ShareManager.getInstance().shareToWX(activity, false, t);
                 break;
             case ShareBean.SHARE_TARGET_WEI_BO:
-                ShareManager.getInstance().shareToWeiBo(activity, shareBean);
+                ShareManager.getInstance().shareToWeiBo(activity, t);
                 break;
         }
     }
@@ -82,12 +84,15 @@ public class ShareManager {
      * 分享到QQ
      *
      * @param context
-     * @param shareBean
+     * @param t
      */
-    private void shareToQQ(Context context, ShareBean shareBean) {
-        mCurShareBean = shareBean;
-        TencentShareManager.getInstance().shareWebPageToQQ(context, shareBean.getShareTitle(),
-                shareBean.getShareDescription(), shareBean.getShareUrl());
+    private <T extends ShareBean> void shareToQQ(Context context, T t) {
+        mCurShareBean = t;
+        if (t instanceof UrlTextShareBean) {
+            UrlTextShareBean shareBean = (UrlTextShareBean) t;
+            TencentShareManager.getInstance().shareWebPageToQQ(context, t.getShareTitle(),
+                    shareBean.getShareDescription(), shareBean.getShareUrl());
+        }
     }
 
     /**
@@ -95,52 +100,58 @@ public class ShareManager {
      *
      * @param context
      * @param isTimeline true为朋友  false为朋友圈
-     * @param shareBean
+     * @param t
      */
-    private void shareToWX(Context context, boolean isTimeline, ShareBean shareBean) {
-        mCurShareBean = shareBean;
-        TencentShareManager.getInstance().shareWebPageToWX(context, isTimeline,
-                shareBean.getShareUrl(), shareBean.getShareTitle(), shareBean.getShareDescription());
+    private <T extends ShareBean> void shareToWX(Context context, boolean isTimeline, T t) {
+        mCurShareBean = t;
+        if (t instanceof UrlTextShareBean) {
+            UrlTextShareBean shareBean = (UrlTextShareBean) t;
+            TencentShareManager.getInstance().shareWebPageToWX(context, isTimeline,
+                    shareBean.getShareUrl(), shareBean.getShareTitle(), shareBean.getShareDescription());
+        }
     }
 
     /**
      * 分享到新浪微博
      *
      * @param activity
-     * @param shareBean
+     * @param t
      */
-    private void shareToWeiBo(Activity activity, ShareBean shareBean) {
-        mCurShareBean = shareBean;
-        switch (shareBean.getShareContentType()) {
-            case ShareBean.SHARE_CONTENT_TYPE_TEXT_URL:
-                if (shareBean.getShareThumbId() != 0) {
-                    SinaShareManager.getInstance().shareWebPageToWeiBo(activity,
-                            shareBean.getShareTitle(), shareBean.getShareText(), shareBean.getShareDescription(),
-                            shareBean.getShareThumbId(), shareBean.getShareUrl());
-                } else {
-                    SinaShareManager.getInstance().shareTextToWeiBo(activity,
-                            shareBean.getShareTitle(), shareBean.getShareText(), shareBean.getShareUrl());
-                }
-                break;
-            case ShareBean.SHARE_CONTENT_TYPE_IMAGE:
-                if (shareBean.getShareUriList() != null && shareBean.getShareUriList().size() > 0) {
-                    SinaShareManager.getInstance().shareImageToWeiBo(activity,
-                            shareBean.getShareTitle(), shareBean.getShareDescription(),
-                            shareBean.getShareUriList().get(0));
-                }
-                break;
-            case ShareBean.SHARE_CONTENT_TYPE_MULTI_IMAGE:
-                if (shareBean.getShareUriList() != null) {
-                    SinaShareManager.getInstance().shareMultiImageToWeiBo(activity,
-                            shareBean.getShareUriList());
-                }
-                break;
-            case ShareBean.SHARE_CONTENT_TYPE_VIDEO:
-                if (shareBean.getShareUriList() != null && shareBean.getShareUriList().size() > 0) {
-                    SinaShareManager.getInstance().shareVideoToWeiBo(activity,
-                            shareBean.getShareUriList().get(0));
-                }
-                break;
+    private <T extends ShareBean> void shareToWeiBo(Activity activity, T t) {
+        mCurShareBean = t;
+        if (t instanceof UrlTextShareBean && t.getShareContentType() == ShareBean.SHARE_CONTENT_TYPE_TEXT_URL) {
+            UrlTextShareBean shareBean = (UrlTextShareBean) t;
+            if (shareBean.getShareThumbId() != 0) {
+                SinaShareManager.getInstance().shareWebPageToWeiBo(activity,
+                        shareBean.getShareTitle(), shareBean.getShareText(), shareBean.getShareDescription(),
+                        shareBean.getShareThumbId(), shareBean.getShareUrl());
+            } else {
+                SinaShareManager.getInstance().shareTextToWeiBo(activity,
+                        shareBean.getShareTitle(), shareBean.getShareText(), shareBean.getShareUrl());
+            }
+        } else if (t instanceof UriListShareBean) {
+            UriListShareBean shareBean = (UriListShareBean) t;
+            switch (shareBean.getShareContentType()) {
+                case ShareBean.SHARE_CONTENT_TYPE_IMAGE:
+                    if (shareBean.getShareUriList() != null && shareBean.getShareUriList().size() > 0) {
+                        SinaShareManager.getInstance().shareImageToWeiBo(activity,
+                                shareBean.getShareTitle(), shareBean.getShareDescription(),
+                                shareBean.getShareUriList().get(0));
+                    }
+                    break;
+                case ShareBean.SHARE_CONTENT_TYPE_MULTI_IMAGE:
+                    if (shareBean.getShareUriList() != null) {
+                        SinaShareManager.getInstance().shareMultiImageToWeiBo(activity,
+                                shareBean.getShareUriList());
+                    }
+                    break;
+                case ShareBean.SHARE_CONTENT_TYPE_VIDEO:
+                    if (shareBean.getShareUriList() != null && shareBean.getShareUriList().size() > 0) {
+                        SinaShareManager.getInstance().shareVideoToWeiBo(activity,
+                                shareBean.getShareUriList().get(0));
+                    }
+                    break;
+            }
         }
     }
 
@@ -193,11 +204,11 @@ public class ShareManager {
         }
     }
 
-    public interface ShareCallback {
-        void onShareSuccess(ShareBean shareBean);
+    public interface ShareCallback<T extends ShareBean> {
+        void onShareSuccess(T t);
 
-        void onShareCancel(ShareBean shareBean);
+        void onShareCancel(T t);
 
-        void onShareFail(ShareBean shareBean);
+        void onShareFail(T t);
     }
 }

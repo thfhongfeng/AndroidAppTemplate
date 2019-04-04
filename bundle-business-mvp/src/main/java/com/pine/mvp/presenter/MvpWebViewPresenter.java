@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.component.share.bean.ShareBean;
+import com.pine.base.component.share.bean.UrlTextShareBean;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.contract.IMvpWebViewContract;
 
@@ -39,19 +40,19 @@ public class MvpWebViewPresenter extends BasePresenter<IMvpWebViewContract.Ui>
     @Override
     public ArrayList<ShareBean> getShareBeanList() {
         ArrayList<ShareBean> shareBeanList = new ArrayList<>();
-        ShareBean shareBean = new ShareBean(ShareBean.SHARE_TARGET_QQ, ShareBean.SHARE_CONTENT_TYPE_TEXT_URL,
+        UrlTextShareBean shareBean = new UrlTextShareBean(ShareBean.SHARE_TARGET_QQ, ShareBean.SHARE_CONTENT_TYPE_TEXT_URL,
                 "Item Detail Title", "Item Detail Text",
                 "Item Detail Desc", mH5Url);
         shareBeanList.add(shareBean);
-        shareBean = new ShareBean(ShareBean.SHARE_TARGET_WX, ShareBean.SHARE_CONTENT_TYPE_TEXT_URL,
+        shareBean = new UrlTextShareBean(ShareBean.SHARE_TARGET_WX, ShareBean.SHARE_CONTENT_TYPE_TEXT_URL,
                 "Item Detail Title", "Item Detail Text",
                 "Item Detail Desc", mH5Url);
         shareBeanList.add(shareBean);
-        shareBean = new ShareBean(ShareBean.SHARE_TARGET_WX_FRIEND_CIRCLE, ShareBean.SHARE_CONTENT_TYPE_TEXT_URL,
+        shareBean = new UrlTextShareBean(ShareBean.SHARE_TARGET_WX_FRIEND_CIRCLE, ShareBean.SHARE_CONTENT_TYPE_TEXT_URL,
                 "Item Detail Title", "Item Detail Text",
                 "Item Detail Desc", mH5Url);
         shareBeanList.add(shareBean);
-        shareBean = new ShareBean(ShareBean.SHARE_TARGET_WEI_BO, ShareBean.SHARE_CONTENT_TYPE_TEXT_URL,
+        shareBean = new UrlTextShareBean(ShareBean.SHARE_TARGET_WEI_BO, ShareBean.SHARE_CONTENT_TYPE_TEXT_URL,
                 "Item Detail Title", "Item Detail Text",
                 "Item Detail Desc", mH5Url);
         shareBeanList.add(shareBean);

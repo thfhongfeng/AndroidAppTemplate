@@ -1,5 +1,8 @@
 package com.pine.base.recycle_view.adapter;
 
+import android.support.annotation.LayoutRes;
+import android.view.ViewGroup;
+
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
@@ -17,8 +20,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
     protected AtomicInteger mPageNo = new AtomicInteger(1);
     protected AtomicInteger mPageSize = new AtomicInteger(10);
     protected Boolean mHasMore = true;
-    protected List<BaseListAdapterItemEntity<T>> mData = null;
-    private boolean mIsInitState = true;
+    protected List<BaseListAdapterItemEntity<T>> mData = new ArrayList<>();
 
     public BasePaginationListAdapter() {
 
@@ -28,17 +30,22 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
         super(defaultItemViewType);
     }
 
+    public final void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
+                                              boolean enableCompleteView) {
+        super.enableEmptyMoreComplete(enableEmptyView, enableMoreView,
+                enableCompleteView, false);
+    }
+
+    public final void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
+                                              boolean enableCompleteView, boolean enableErrorView) {
+        super.enableEmptyMoreComplete(enableEmptyView, enableMoreView,
+                enableCompleteView, enableErrorView);
+    }
+
     @Override
     public void onBindViewHolder(BaseListViewHolder holder, int position) {
-        if (mData == null || mData.size() == 0) {
-            holder.updateData("", new BaseListAdapterItemProperty(), position);
-            return;
-        }
-        if (isMoreView(position)) {
-            holder.updateData("", new BaseListAdapterItemProperty(), position);
-            return;
-        }
-        if (isCompleteView(position)) {
+        if (isErrorAllView(position) || isErrorMoreView(position) || isEmptyView(position) ||
+                isMoreView(position) || isCompleteView(position)) {
             holder.updateData("", new BaseListAdapterItemProperty(), position);
             return;
         }
@@ -47,14 +54,14 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
 
     @Override
     public int getItemCount() {
-        if (mIsInitState()) {
+        if (mEnableInitState) {
             return 0;
         }
-        if (hasEmptyView()) {
+        if (showEmptyView() || showErrorAllView()) {
             return 1;
         }
-        int actualSize = mData.size();
-        if (hasMoreView() || hasCompleteView()) {
+        int actualSize = mData == null ? 0 : mData.size();
+        if (showMoreView() || showCompleteView() || showErrorMoreView()) {
             return actualSize + 1;
         }
         return actualSize;
@@ -62,7 +69,13 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (mData == null || mData.size() == 0) {
+        if (isErrorAllView(position)) {
+            return ERROR_ALL_VIEW_HOLDER;
+        }
+        if (isErrorMoreView(position)) {
+            return ERROR_MORE_VIEW_HOLDER;
+        }
+        if (isEmptyView(position)) {
             return EMPTY_BACKGROUND_VIEW_HOLDER;
         }
         if (isMoreView(position)) {
@@ -72,31 +85,52 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
             return COMPLETE_VIEW_HOLDER;
         }
         BaseListAdapterItemEntity itemEntity = mData.get(position);
-        return itemEntity != null && itemEntity.getPropertyEntity().getItemViewType() != -10000 ?
+        return itemEntity != null && itemEntity.getPropertyEntity().getItemViewType() != DEFAULT_VIEW_HOLDER ?
                 itemEntity.getPropertyEntity().getItemViewType() : getDefaultItemViewType();
     }
 
-    private boolean hasEmptyView() {
-        return isEmptyViewSetup() && (mData == null || mData.size() == 0);
+    private boolean showEmptyView() {
+        return !isErrorViewState() && isEmptyViewEnabled() && (mData == null || mData.size() == 0);
     }
 
-    private boolean hasMoreView() {
-        return isMoreViewSetup() && mHasMore && mData != null && mData.size() != 0;
+    private boolean showMoreView() {
+        return !isErrorViewState() && isMoreViewEnabled() && mHasMore && mData != null && mData.size() != 0;
     }
 
-    private boolean hasCompleteView() {
-        return isCompleteViewSetup() && !mHasMore && mData != null && mData.size() != 0;
+    private boolean showCompleteView() {
+        return !isErrorViewState() && isCompleteViewEnabled() && !mHasMore && mData != null && mData.size() != 0;
+    }
+
+    private boolean showErrorAllView() {
+        return isErrorViewState() && (mData == null || mData.size() == 0);
+    }
+
+    private boolean showErrorMoreView() {
+        return isErrorViewState() && mHasMore && mData != null && mData.size() != 0;
+    }
+
+    private boolean isEmptyView(int position) {
+        return showEmptyView() && position == 0 && position == mData.size();
     }
 
     private boolean isMoreView(int position) {
-        return isMoreViewSetup() && mHasMore && position != 0 && position == mData.size();
+        return showMoreView() && position != 0 && position == mData.size();
     }
 
     private boolean isCompleteView(int position) {
-        return isCompleteViewSetup() && !mHasMore && position != 0 && position == mData.size();
+        return showCompleteView() && position != 0 && position == mData.size();
+    }
+
+    private boolean isErrorAllView(int position) {
+        return showErrorAllView() && position == 0;
+    }
+
+    private boolean isErrorMoreView(int position) {
+        return showErrorMoreView() && position != 0 && position == mData.size();
     }
 
     public final void addData(List<T> newData) {
+        mIsErrorState = false;
         List<BaseListAdapterItemEntity<T>> parseData = parseData(newData, false);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;
@@ -104,7 +138,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
             return;
         }
         if (mData == null) {
-            mIsInitState = false;
+            mEnableInitState = false;
             mData = parseData;
             resetAndGetPageNo();
         } else {
@@ -118,7 +152,8 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
     }
 
     public final void setData(List<T> data) {
-        mIsInitState = false;
+        mIsErrorState = false;
+        mEnableInitState = false;
         mData = parseData(data, true);
         resetAndGetPageNo();
         mHasMore = mData != null && mData.size() >= getPageSize();
@@ -159,7 +194,15 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
         return mPageSize.get();
     }
 
-    public final boolean mIsInitState() {
-        return mIsInitState;
+    public boolean isMoreViewEnabled() {
+        return super.isMoreViewEnabled();
+    }
+
+    public void setErrorMoreLayoutId(@LayoutRes int layoutResId) {
+        super.setErrorMoreLayoutId(layoutResId);
+    }
+
+    public BaseListViewHolder<String> getErrorMoreViewHolder(ViewGroup parent) {
+        return super.getErrorMoreViewHolder(parent);
     }
 }

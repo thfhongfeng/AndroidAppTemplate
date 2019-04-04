@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarCustomMenuActivity;
+import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvp.R;
+import com.pine.mvp.adapter.MvpTravelNoteDetailComplexAdapter;
 import com.pine.mvp.adapter.MvpTravelNoteListPaginationAdapter;
 import com.pine.mvp.contract.IMvpTravelNoteListContract;
 import com.pine.mvp.presenter.MvpTravelNoteListPresenter;
@@ -57,15 +59,16 @@ public class MvpTravelNoteListActivity extends
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycle_view.setLayoutManager(linearLayoutManager);
         recycle_view.setHasFixedSize(true);
-        recycle_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (MvpTravelNoteListPaginationAdapter.isLastViewMoreView(recyclerView)) {
-                    onLoadingMore();
-                }
-            }
-        });
-        recycle_view.setAdapter(mPresenter.getListAdapter());
+
+        MvpTravelNoteListPaginationAdapter adapter = mPresenter.getListAdapter();
+        adapter.setOnScrollListener(recycle_view,
+                new BaseListAdapter.IOnScrollListener() {
+                    @Override
+                    public void onLoadMore() {
+                        onLoadingMore();
+                    }
+                });
+        recycle_view.setAdapter(adapter);
 
         swipe_refresh_layout.post(new Runnable() {
             @Override

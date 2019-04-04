@@ -29,6 +29,14 @@ public class MvpShopListPaginationTreeAdapter extends BasePaginationTreeListAdap
     public static final int SHOP_VIEW_HOLDER = 1;
     public static final int SHOP_PRODUCT_VIEW_HOLDER = 2;
 
+    public MvpShopListPaginationTreeAdapter() {
+
+    }
+
+    public MvpShopListPaginationTreeAdapter(int defaultItemViewType) {
+        super(defaultItemViewType);
+    }
+
     @Override
     public List<BaseListAdapterItemEntity<MvpShopAndProductEntity>> parseTreeData(List<MvpShopAndProductEntity> data,
                                                                                   boolean reset) {

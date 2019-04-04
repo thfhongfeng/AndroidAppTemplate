@@ -21,6 +21,8 @@
     <string name="base_submit">提交</string>
     <string name="base_update">升级</string>
 
+    <string name="base_save_success">保存成功</string>
+
     <string name="base_text">文字</string>
     <string name="base_image">图片</string>
     <string name="base_add_label">添加：</string>

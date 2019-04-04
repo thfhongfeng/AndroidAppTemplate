@@ -34,7 +34,7 @@ public class MainHomeActivity extends BaseMvpNoActionBarActivity<IMainHomeContra
         business_rv.setHasFixedSize(true);
         mMainBusinessAdapter = new MainBusinessAdapter(
                 MainBusinessAdapter.BUSINESS_VIEW_HOLDER);
-        mMainBusinessAdapter.showEmptyComplete(true, false);
+        mMainBusinessAdapter.enableEmptyComplete(true, false);
         business_rv.setAdapter(mMainBusinessAdapter);
     }
 

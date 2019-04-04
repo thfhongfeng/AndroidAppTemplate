@@ -58,7 +58,7 @@ public class DemoHomeActivity extends BaseActionBarActivity {
         demo_rv.setHasFixedSize(true);
         mDemoAdapter = new DemoAdapter(
                 DemoAdapter.DEMO_VIEW_HOLDER);
-        mDemoAdapter.showEmptyComplete(true, false);
+        mDemoAdapter.enableEmptyComplete(true, false);
         ArrayList<DemoItemEntity> list = new ArrayList<>();
         DemoItemEntity entity = new DemoItemEntity();
         entity.setName("新手引导");

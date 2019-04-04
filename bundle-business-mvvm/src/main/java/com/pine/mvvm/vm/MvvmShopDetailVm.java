@@ -9,7 +9,6 @@ import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
 import com.pine.mvvm.model.IMvvmShopModel;
 import com.pine.mvvm.model.MvvmModelFactory;
-import com.pine.mvvm.model.net.MvvmShopModel;
 
 import java.util.HashMap;
 

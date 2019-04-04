@@ -31,6 +31,14 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
     public static final int TRAVEL_NOTE_COMMENT_HEAD_VIEW_HOLDER = 3;
     public static final int TRAVEL_NOTE_COMMENT_VIEW_HOLDER = 4;
 
+    public MvpTravelNoteDetailComplexAdapter() {
+        
+    }
+
+    public MvpTravelNoteDetailComplexAdapter(int defaultItemViewType) {
+        super(defaultItemViewType);
+    }
+
     @Override
     public List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> parseHeadData(List<MvpTravelNoteDetailEntity> data) {
         List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> adapterData = new ArrayList<>();

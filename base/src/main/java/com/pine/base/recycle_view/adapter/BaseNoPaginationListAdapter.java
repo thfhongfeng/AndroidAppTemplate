@@ -12,8 +12,7 @@ import java.util.List;
  */
 
 public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
-    protected List<BaseListAdapterItemEntity<T>> mData = null;
-    private boolean mIsInitState = true;
+    protected List<BaseListAdapterItemEntity<T>> mData = new ArrayList<>();
 
     public BaseNoPaginationListAdapter() {
 
@@ -23,17 +22,21 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
         super(defaultItemViewType);
     }
 
-    public void showEmptyComplete(boolean showEmptyView, boolean showCompleteView) {
-        super.showEmptyMoreComplete(showEmptyView, false, showCompleteView);
+    public final void enableEmptyComplete(boolean enableEmptyView,
+                                          boolean enableCompleteView) {
+        super.enableEmptyMoreComplete(enableEmptyView, false,
+                enableCompleteView, false);
+    }
+
+    public final void enableEmptyComplete(boolean enableEmptyView,
+                                          boolean enableCompleteView, boolean enableErrorView) {
+        super.enableEmptyMoreComplete(enableEmptyView, false,
+                enableCompleteView, enableErrorView);
     }
 
     @Override
     public void onBindViewHolder(BaseListViewHolder holder, int position) {
-        if (mData == null || mData.size() == 0) {
-            holder.updateData("", new BaseListAdapterItemProperty(), position);
-            return;
-        }
-        if (isCompleteView(position)) {
+        if (isErrorView(position) || isEmptyView(position) || isCompleteView(position)) {
             holder.updateData("", new BaseListAdapterItemProperty(), position);
             return;
         }
@@ -42,14 +45,14 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
 
     @Override
     public int getItemCount() {
-        if (mIsInitState()) {
+        if (mEnableInitState) {
             return 0;
         }
-        if (hasEmptyView()) {
+        if (showEmptyView() || isErrorViewState()) {
             return 1;
         }
-        int actualSize = mData.size();
-        if (hasCompleteView()) {
+        int actualSize = mData == null ? 0 : mData.size();
+        if (showCompleteView()) {
             return actualSize + 1;
         }
         return actualSize;
@@ -57,46 +60,56 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (mData == null || mData.size() == 0) {
+        if (isErrorView(position)) {
+            return ERROR_ALL_VIEW_HOLDER;
+        }
+        if (isEmptyView(position)) {
             return EMPTY_BACKGROUND_VIEW_HOLDER;
         }
         if (isCompleteView(position)) {
             return COMPLETE_VIEW_HOLDER;
         }
         BaseListAdapterItemEntity itemEntity = mData.get(position);
-        return itemEntity.getPropertyEntity().getItemViewType();
+        return itemEntity != null && itemEntity.getPropertyEntity().getItemViewType() != DEFAULT_VIEW_HOLDER ?
+                itemEntity.getPropertyEntity().getItemViewType() : getDefaultItemViewType();
     }
 
-    private boolean hasEmptyView() {
-        return isEmptyViewSetup() && (mData == null || mData.size() == 0);
+    private boolean showEmptyView() {
+        return !isErrorViewState() && isEmptyViewEnabled() && (mData == null || mData.size() == 0);
     }
 
-    private boolean hasCompleteView() {
-        return isCompleteViewSetup() && mData != null && mData.size() != 0;
+    private boolean showCompleteView() {
+        return !isErrorViewState() && isCompleteViewEnabled() && mData != null && mData.size() != 0;
     }
 
     private boolean isEmptyView(int position) {
-        return isCompleteViewSetup() && position != 0 && position == mData.size();
+        return showEmptyView() && position == 0;
     }
 
     private boolean isCompleteView(int position) {
-        return isCompleteViewSetup() && position != 0 && position == mData.size();
+        return showCompleteView() && position != 0 && position == mData.size();
+    }
+
+    private boolean isErrorView(int position) {
+        return isErrorViewState() && position == 0;
     }
 
     public final void setData(List<T> data) {
-        mIsInitState = false;
+        mIsErrorState = false;
+        mEnableInitState = false;
         mData = parseData(data, true);
         notifyDataSetChanged();
     }
 
     public final void addData(List<T> newData) {
+        mIsErrorState = false;
         List<BaseListAdapterItemEntity<T>> parseData = parseData(newData, false);
         if (parseData == null || parseData.size() == 0) {
             notifyDataSetChanged();
             return;
         }
         if (mData == null) {
-            mIsInitState = false;
+            mEnableInitState = false;
             mData = parseData;
         } else {
             for (int i = 0; i < parseData.size(); i++) {
@@ -122,9 +135,5 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
 
     public List<BaseListAdapterItemEntity<T>> getAdapterData() {
         return mData;
-    }
-
-    public final boolean mIsInitState() {
-        return mIsInitState;
     }
 }

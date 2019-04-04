@@ -1,18 +1,15 @@
 package com.pine.base.component.share.bean;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.pine.base.R;
 import com.pine.tool.util.AppUtils;
 
-import java.util.ArrayList;
-
 /**
  * Created by tanghongfeng on 2018/10/11
  */
 
-public class ShareBean {
+public abstract class ShareBean {
     public static final int SHARE_TARGET_QQ = 0;
     public static final int SHARE_TARGET_WX = 1;
     public static final int SHARE_TARGET_WX_FRIEND_CIRCLE = 2;
@@ -39,54 +36,41 @@ public class ShareBean {
     private String iconName;
     private int iconId;
     private String shareTitle;
-    private String shareText;
     private String shareDescription;
-    private String shareUrl;
     private int shareThumbId;
-    private ArrayList<Uri> shareUriList;
 
-    public ShareBean(@NonNull int shareTarget, @NonNull int shareContentType) {
+    protected ShareBean(@NonNull int shareTarget, @NonNull int shareContentType) {
         this(shareTarget, shareContentType,
                 DEFAULT_ICON_NAMES[shareTarget % DEFAULT_ICON_NAMES.length],
                 DEFAULT_ICON_IDS[shareTarget % DEFAULT_ICON_IDS.length],
-                "", "", "", "", null);
+                "", "");
     }
 
-    public ShareBean(@NonNull int shareTarget, @NonNull int shareContentType, @NonNull ArrayList<Uri> shareUriList) {
+    protected ShareBean(@NonNull int shareTarget, @NonNull int shareContentType,
+                        String shareTitle, String shareDescription) {
         this(shareTarget, shareContentType,
                 DEFAULT_ICON_NAMES[shareTarget % DEFAULT_ICON_NAMES.length],
                 DEFAULT_ICON_IDS[shareTarget % DEFAULT_ICON_IDS.length],
-                "", "", "", "", shareUriList);
+                shareTitle, shareDescription);
     }
 
-    public ShareBean(@NonNull int shareTarget, @NonNull int shareContentType, @NonNull String shareUrl) {
-        this(shareTarget, shareContentType,
-                DEFAULT_ICON_NAMES[shareTarget % DEFAULT_ICON_NAMES.length],
-                DEFAULT_ICON_IDS[shareTarget % DEFAULT_ICON_IDS.length],
-                "", "", "", shareUrl, null);
-    }
-
-    public ShareBean(@NonNull int shareTarget, @NonNull int shareContentType, String shareTitle,
-                     String shareText, String shareDescription, @NonNull String shareUrl) {
-        this(shareTarget, shareContentType,
-                DEFAULT_ICON_NAMES[shareTarget % DEFAULT_ICON_NAMES.length],
-                DEFAULT_ICON_IDS[shareTarget % DEFAULT_ICON_IDS.length],
-                shareTitle, shareText, shareDescription, shareUrl, null);
-    }
-
-    private ShareBean(@NonNull int shareTarget, @NonNull int shareContentType,
-                      @NonNull String iconName, @NonNull int iconId,
-                      String shareTitle, String shareText, String shareDescription,
-                      String shareUrl, ArrayList<Uri> shareUriList) {
+    /**
+     * @param shareTarget      通过什么工具进行分享：QQ，微信，微博等，对应SHARE_TARGET_XXX;
+     * @param shareContentType 分享的类型：url，图片，视频等，对应SHARE_CONTENT_TYPE_XXX;
+     * @param iconName         分享按键的名称描述
+     * @param iconId           分享按键的图标资源
+     * @param shareTitle       分享内容标题
+     * @param shareDescription 分享内容描述
+     */
+    protected ShareBean(@NonNull int shareTarget, @NonNull int shareContentType,
+                        @NonNull String iconName, @NonNull int iconId,
+                        String shareTitle, String shareDescription) {
         this.shareTarget = shareTarget;
         this.shareContentType = shareContentType;
         this.iconName = iconName;
         this.iconId = iconId;
         this.shareTitle = shareTitle;
-        this.shareText = shareText;
         this.shareDescription = shareDescription;
-        this.shareUrl = shareUrl;
-        this.shareUriList = shareUriList;
     }
 
     public int getShareTarget() {
@@ -129,14 +113,6 @@ public class ShareBean {
         this.shareTitle = shareTitle;
     }
 
-    public String getShareText() {
-        return shareText;
-    }
-
-    public void setShareText(String shareText) {
-        this.shareText = shareText;
-    }
-
     public String getShareDescription() {
         return shareDescription;
     }
@@ -145,27 +121,11 @@ public class ShareBean {
         this.shareDescription = shareDescription;
     }
 
-    public String getShareUrl() {
-        return shareUrl;
-    }
-
-    public void setShareUrl(String shareUrl) {
-        this.shareUrl = shareUrl;
-    }
-
     public int getShareThumbId() {
         return shareThumbId;
     }
 
     public void setShareThumbId(int shareThumbId) {
         this.shareThumbId = shareThumbId;
-    }
-
-    public ArrayList<Uri> getShareUriList() {
-        return shareUriList;
-    }
-
-    public void setShareUriList(ArrayList<Uri> shareUriList) {
-        this.shareUriList = shareUriList;
     }
 }
