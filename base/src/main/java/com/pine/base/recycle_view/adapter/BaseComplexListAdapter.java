@@ -38,6 +38,10 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
                 enableCompleteView, false);
     }
 
+    public final void enableTailEmpty(boolean enableTailEmptyView) {
+        super.enableTailEmpty(enableTailEmptyView);
+    }
+
     public final void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
                                               boolean enableCompleteView, boolean enableErrorView) {
         super.enableEmptyMoreComplete(enableEmptyView, enableMoreView,
@@ -46,17 +50,8 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull BaseListViewHolder holder, int position) {
-        int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
-        int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
-        if (topSize == 0 && bottomSize == 0) {
-            holder.updateData("", new BaseListAdapterItemProperty(), position);
-            return;
-        }
-        if (isMoreView(position)) {
-            holder.updateData("", new BaseListAdapterItemProperty(), position);
-            return;
-        }
-        if (isCompleteView(position)) {
+        if (isEmptyView(position) || isMoreView(position) || isCompleteView(position) ||
+                isTailEmptyView(position)) {
             holder.updateData("", new BaseListAdapterItemProperty(), position);
             return;
         }
@@ -79,7 +74,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
             return 1;
         }
         int actualSize = topSize + bottomSize;
-        if (showMoreView() || showCompleteView() || showErrorMoreView()) {
+        if (showMoreView() || showCompleteView() || showErrorMoreView() || showTailEmptyView()) {
             return actualSize + 1;
         }
         return actualSize;
@@ -101,6 +96,9 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         }
         if (isCompleteView(position)) {
             return COMPLETE_VIEW_HOLDER;
+        }
+        if (isTailEmptyView(position)) {
+            return TAIL_EMPTY_VIEW_HOLDER;
         }
         if (mHeadNoPaginationData != null && position < mHeadNoPaginationData.size()) {
             return mHeadNoPaginationData.get(position).getPropertyEntity().getItemViewType();
@@ -168,6 +166,11 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
                 (mTailPaginationData == null || mTailPaginationData.size() == 0);
     }
 
+    private boolean showTailEmptyView() {
+        return !isErrorViewState() && isTailEmptyViewEnabled() &&
+                (mTailPaginationData == null || mTailPaginationData.size() == 0);
+    }
+
     private boolean showErrorMoreView() {
         return isErrorViewState() && mHasMore && mTailPaginationData != null && mTailPaginationData.size() != 0;
     }
@@ -186,6 +189,11 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
         int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
         return showCompleteView() && position != 0 && position == topSize + bottomSize;
+    }
+
+    private boolean isTailEmptyView(int position) {
+        int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
+        return showTailEmptyView() && position != 0 && position == topSize;
     }
 
     private boolean isErrorAllView(int position) {
@@ -220,6 +228,10 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
 
     public boolean isMoreViewEnabled() {
         return super.isMoreViewEnabled();
+    }
+
+    public boolean isTailEmptyViewEnabled() {
+        return super.isTailEmptyViewEnabled();
     }
 
     public void setErrorMoreLayoutId(@LayoutRes int layoutResId) {

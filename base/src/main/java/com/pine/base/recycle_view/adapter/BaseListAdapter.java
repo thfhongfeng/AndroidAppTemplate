@@ -22,11 +22,13 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     protected final static int COMPLETE_VIEW_HOLDER = -10003;
     protected final static int ERROR_ALL_VIEW_HOLDER = -10004;
     protected final static int ERROR_MORE_VIEW_HOLDER = -10005;
+    protected final static int TAIL_EMPTY_VIEW_HOLDER = -10006;
     protected boolean mEnableInitState = false;
     protected boolean mIsErrorState = false;
     private boolean mEnableEmpty = true;
     private boolean mEnableMore = true;
     private boolean mEnableComplete = true;
+    private boolean mEnableTailEmpty = true;
     private boolean mEnableError = false;
     private int mCompleteLayoutId = R.layout.base_item_complete;
     private int mMoreLayoutId = R.layout.base_item_more;
@@ -65,6 +67,9 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
             case ERROR_MORE_VIEW_HOLDER:
                 viewHolder = getErrorMoreViewHolder(viewGroup);
                 break;
+            case TAIL_EMPTY_VIEW_HOLDER:
+                viewHolder = getTailEmptyBackgroundViewHolder(viewGroup);
+                break;
             default:
                 viewHolder = getViewHolder(viewGroup, viewType);
                 break;
@@ -74,7 +79,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     public boolean isLastViewMoreView(RecyclerView recyclerView) {
         LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        return getItemViewType(manager.findLastVisibleItemPosition()) == MORE_VIEW_HOLDER;
+        int index = manager.findLastCompletelyVisibleItemPosition();
+        return index >= 0 && getItemViewType(index) == MORE_VIEW_HOLDER;
     }
 
     public boolean isLastViewMoreView(RecyclerView recyclerView, NestedScrollView scrollView) {
@@ -146,6 +152,10 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         mEnableError = enableErrorView;
     }
 
+    protected void enableTailEmpty(boolean enableTailEmptyView) {
+        mEnableTailEmpty = enableTailEmptyView;
+    }
+
     protected void setMoreLayoutId(@LayoutRes int layoutResId) {
         mMoreLayoutId = layoutResId;
     }
@@ -178,6 +188,10 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         return mEnableComplete;
     }
 
+    public boolean isTailEmptyViewEnabled() {
+        return mEnableTailEmpty;
+    }
+
     public boolean isErrorViewEnabled() {
         return mEnableError;
     }
@@ -207,6 +221,11 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     protected BaseListViewHolder<String> getErrorMoreViewHolder(ViewGroup parent) {
         return new ErrorMoreViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(mErrorMoreLayoutId, parent, false));
+    }
+
+    protected BaseListViewHolder<String> getTailEmptyBackgroundViewHolder(ViewGroup parent) {
+        return new TailEmptyBackgroundViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(mEmptyLayoutId, parent, false));
     }
 
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -283,6 +302,27 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         @Override
         public void updateData(String content, BaseListAdapterItemProperty propertyEntity, int position) {
 
+        }
+    }
+
+    /**
+     * 空背景
+     */
+    public class TailEmptyBackgroundViewHolder extends BaseListViewHolder<String> {
+        private View container;
+
+        public TailEmptyBackgroundViewHolder(View itemView) {
+            super(itemView);
+            container = itemView.getRootView();
+        }
+
+        @Override
+        public void updateData(String tipsValue, BaseListAdapterItemProperty propertyEntity, int position) {
+            if (container != null) {
+                TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT);
+                container.setLayoutParams(params);
+            }
         }
     }
 
