@@ -84,7 +84,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
             View lastView = scrollView.getChildAt(scrollView.getChildCount() - 1);
             int bottom = lastView.getBottom();
             int offset = bottom - (scrollView.getHeight() + scrollView.getScrollY());
-            if (offset <= 5) {
+            if (offset <= 3) {
                 return isLastViewMoreView(recyclerView);
             }
         }
@@ -102,6 +102,13 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         });
     }
 
+    private int lastOnLoadMoreScrollX, lastOnLoadMoreScrollY;
+
+    protected void onDataSet() {
+        lastOnLoadMoreScrollX = 0;
+        lastOnLoadMoreScrollY = 0;
+    }
+
     public void setOnScrollListener(@NonNull final RecyclerView recyclerView,
                                     final @NonNull NestedScrollView scrollView,
                                     final IOnScrollListener listener) {
@@ -111,10 +118,24 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
                                        int oldScrollX, int oldScrollY) {
 
                 if (isLastViewMoreView(recyclerView, scrollView) && listener != null) {
-                    listener.onLoadMore();
+                    if (getRecycleViewOrientation() == RecyclerView.HORIZONTAL) {
+                        if (lastOnLoadMoreScrollX == 0 || scrollX - lastOnLoadMoreScrollX > 5) {
+                            listener.onLoadMore();
+                            lastOnLoadMoreScrollX = scrollX;
+                        }
+                    } else {
+                        if (lastOnLoadMoreScrollY == 0 || scrollY - lastOnLoadMoreScrollY > 5) {
+                            listener.onLoadMore();
+                            lastOnLoadMoreScrollY = scrollY;
+                        }
+                    }
                 }
             }
         });
+    }
+
+    public int getRecycleViewOrientation() {
+        return ((LinearLayoutManager) mRecyclerView.getLayoutManager()).getOrientation();
     }
 
     protected void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,

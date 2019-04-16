@@ -267,7 +267,7 @@ public abstract class UploadFileLinearLayout extends LinearLayout implements ILi
             mThreadHandler.removeCallbacksAndMessages(null);
             mThreadHandler = null;
             mHandlerThread.quit();
-            mThreadHandler = null;
+            mHandlerThread = null;
         }
         if (mMainHandler != null) {
             mMainHandler.removeCallbacksAndMessages(null);

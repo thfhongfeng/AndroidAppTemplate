@@ -212,7 +212,8 @@ public class CommonWebView extends WebView {
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
         cookieManager.removeAllCookie();
-        cookieManager.setCookie(url, IHttpRequestManager.SESSION_ID + "=" + HttpRequestManager.getSessionId());
+        cookieManager.setCookie(url,
+                IHttpRequestManager.SESSION_ID + "=" + HttpRequestManager.getSessionId() + ";path=/;");
         CookieSyncManager.getInstance().sync();
     }
 

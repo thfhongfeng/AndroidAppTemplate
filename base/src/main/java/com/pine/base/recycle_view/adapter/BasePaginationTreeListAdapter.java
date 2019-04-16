@@ -151,6 +151,7 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
     }
 
     public final void setData(List<T> data) {
+        onDataSet();
         mIsErrorState = false;
         mEnableInitState = false;
         mData = parseTreeData(data, true);

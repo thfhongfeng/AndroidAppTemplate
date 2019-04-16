@@ -111,6 +111,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     }
 
     public final void setHeadData(List<T> data) {
+        onDataSet();
         mEnableInitState = false;
         mHeadNoPaginationData = parseHeadData(data);
         notifyDataSetChanged();
@@ -138,6 +139,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     }
 
     public final void setTailData(List<B> data) {
+        onDataSet();
         mEnableInitState = false;
         mTailPaginationData = parseTailData(data);
         resetAndGetPageNo();
