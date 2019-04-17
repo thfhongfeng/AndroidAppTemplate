@@ -241,4 +241,8 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     public BaseListViewHolder<String> getErrorMoreViewHolder(ViewGroup parent) {
         return super.getErrorMoreViewHolder(parent);
     }
+
+    public void setTailEmptyLayoutId(@LayoutRes int layoutResId) {
+        super.setTailEmptyLayoutId(layoutResId);
+    }
 }

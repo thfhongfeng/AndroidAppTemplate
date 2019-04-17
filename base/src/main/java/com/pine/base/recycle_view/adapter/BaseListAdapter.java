@@ -1,15 +1,15 @@
 package com.pine.base.recycle_view.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TableRow;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TableRow;
 
 import com.pine.base.R;
 import com.pine.base.recycle_view.BaseListViewHolder;
@@ -33,6 +33,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     private int mCompleteLayoutId = R.layout.base_item_complete;
     private int mMoreLayoutId = R.layout.base_item_more;
     private int mEmptyLayoutId = R.layout.base_item_empty_background;
+    private int mTailEmptyLayoutId = R.layout.base_item_empty_background;
     private int mErrorAllLayoutId = R.layout.base_item_error;
     private int mErrorMoreLayoutId = R.layout.base_item_error_more;
     private int mDefaultItemViewType = DEFAULT_VIEW_HOLDER;
@@ -176,6 +177,10 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         mErrorMoreLayoutId = layoutResId;
     }
 
+    protected void setTailEmptyLayoutId(@LayoutRes int layoutResId) {
+        mTailEmptyLayoutId = layoutResId;
+    }
+
     public boolean isEmptyViewEnabled() {
         return mEnableEmpty;
     }
@@ -225,7 +230,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     protected BaseListViewHolder<String> getTailEmptyBackgroundViewHolder(ViewGroup parent) {
         return new TailEmptyBackgroundViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(mEmptyLayoutId, parent, false));
+                .inflate(mTailEmptyLayoutId, parent, false));
     }
 
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
