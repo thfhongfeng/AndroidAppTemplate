@@ -30,6 +30,11 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
         super(defaultItemViewType);
     }
 
+    public final void setPage(int startPageNo, int pageSize) {
+        mPageNo = new AtomicInteger(startPageNo);
+        mPageSize = new AtomicInteger(pageSize);
+    }
+
     public final void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
                                               boolean enableCompleteView) {
         super.enableEmptyMoreComplete(enableEmptyView, enableMoreView,
