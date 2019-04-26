@@ -98,6 +98,11 @@ public class MvvmTravelNoteDetailActivity extends
     }
 
     @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
+    @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.mvvm_travel_note_detail_title);
     }

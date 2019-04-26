@@ -108,6 +108,11 @@ public class MvvmWebViewFragment extends
         });
     }
 
+    @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
     private void loadUrl() {
         mBinding.webView.loadUrl(MvvmUrlConstants.H5_DefaultUrl);
     }

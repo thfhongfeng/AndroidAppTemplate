@@ -43,6 +43,12 @@ public abstract class BaseMvvmActivity<T extends ViewDataBinding, VM extends Bas
 
     @Override
     protected final void findViewOnCreate() {
+        mViewModel.getSyncLiveDataInitData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer tag) {
+                onSyncLiveDataInit(tag);
+            }
+        });
         mViewModel.getResetUiData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
@@ -135,4 +141,11 @@ public abstract class BaseMvvmActivity<T extends ViewDataBinding, VM extends Bas
             mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_DETACH);
         }
     }
+
+    /**
+     * 此方法的调用需要在VM中主动调用callOnSyncLiveDataInit方法，否则不会执行
+     *
+     * @param liveDataObjTag 用来标识对应的异步LiveData(由调用者自己标识)
+     */
+    public abstract void onSyncLiveDataInit(int liveDataObjTag);
 }

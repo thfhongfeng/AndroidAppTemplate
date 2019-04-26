@@ -68,6 +68,11 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
     }
 
     @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
+    @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.mvvm_shop_detail_title);
     }

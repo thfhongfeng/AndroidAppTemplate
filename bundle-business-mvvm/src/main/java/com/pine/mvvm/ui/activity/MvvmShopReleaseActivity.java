@@ -132,6 +132,11 @@ public class MvvmShopReleaseActivity extends
     }
 
     @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
+    @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
         titleTv.setText(R.string.mvvm_shop_release_title);
         menuBtnTv.setText(R.string.mvvm_shop_release_confirm_menu);

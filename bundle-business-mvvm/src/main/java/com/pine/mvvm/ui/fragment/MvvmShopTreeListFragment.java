@@ -96,6 +96,11 @@ public class MvvmShopTreeListFragment extends BaseMvvmFragment<MvvmShopTreeListF
     };
 
     @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (MapSdkManager.getInstance().getLocation() == null) {

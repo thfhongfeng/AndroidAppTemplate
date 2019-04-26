@@ -1,12 +1,12 @@
 package com.pine.base.architecture.mvvm.vm;
 
-import android.app.Activity;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.app.SupportActivity;
 
 /**
  * Created by tanghongfeng on 2019/3/1
@@ -14,13 +14,13 @@ import android.support.annotation.StringRes;
 
 public abstract class BaseViewModel extends ViewModel {
     private UiState mUiState = UiState.UI_STATE_UNDEFINE;
-    private Activity mUi;
+    private SupportActivity mUi;
 
-    public Activity getUi() {
+    public SupportActivity getUi() {
         return mUi;
     }
 
-    public void setUi(Activity ui) {
+    public void setUi(SupportActivity ui) {
         mUi = ui;
     }
 
@@ -69,6 +69,20 @@ public abstract class BaseViewModel extends ViewModel {
 
     protected void onCleared() {
         mUi = null;
+    }
+
+    // 用于LiveData是异步操作返回（不是在VM中初始化）的情况，
+    // 在异步LiveData返回时调用callOnSyncLiveDataInit来告诉UI开始绑定Observer，
+    // 参数liveDataObjTag用来标识对应的异步LiveData(由调用者自己标识)
+    // UI中的必须实现onSyncLiveDataInit，同时所有的异步返回的LiveData只能在此方法中进行绑定
+    MutableLiveData<Integer> syncLiveDataInitData = new MutableLiveData<>();
+
+    public MutableLiveData<Integer> getSyncLiveDataInitData() {
+        return syncLiveDataInitData;
+    }
+
+    public void callOnSyncLiveDataInit(int liveDataObjTag) {
+        syncLiveDataInitData.setValue(liveDataObjTag);
     }
 
     // 重置UI

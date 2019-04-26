@@ -130,6 +130,11 @@ public class MvvmWebViewActivity extends
     }
 
     @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
+    @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvvm_web_view_title);
         menuBtnIv.setImageResource(R.mipmap.base_ic_share);

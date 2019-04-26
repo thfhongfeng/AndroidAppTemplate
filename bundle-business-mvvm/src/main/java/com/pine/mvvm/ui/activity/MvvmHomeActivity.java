@@ -59,6 +59,11 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
     }
 
     @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
+    @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvvm_home_title);
         if (ConfigFuncSwitcher.getInstance().canAddProduct()) {

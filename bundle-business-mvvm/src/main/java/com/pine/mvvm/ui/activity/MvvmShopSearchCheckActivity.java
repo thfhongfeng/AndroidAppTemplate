@@ -130,6 +130,11 @@ public class MvvmShopSearchCheckActivity extends
     }
 
     @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
+    @Override
     public void onRefresh() {
         mViewModel.postSearch(true, 1, mShopCheckListPaginationAdapter.getPageSize());
     }

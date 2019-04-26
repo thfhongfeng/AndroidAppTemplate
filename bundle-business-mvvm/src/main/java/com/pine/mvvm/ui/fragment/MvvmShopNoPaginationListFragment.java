@@ -84,6 +84,11 @@ public class MvvmShopNoPaginationListFragment extends
     };
 
     @Override
+   public void onSyncLiveDataInit(int liveDataObjTag) {
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (MapSdkManager.getInstance().getLocation() == null) {
