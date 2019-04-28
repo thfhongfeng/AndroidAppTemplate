@@ -1,6 +1,5 @@
 package com.pine.router.impl.arouter.manager;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -26,13 +25,13 @@ public abstract class ARouterManager implements IRouterManager {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     @Override
-    public void callUiCommand(final Activity activity, String commandName,
+    public void callUiCommand(final Context context, String commandName,
                               Bundle args, final IRouterCallback callback) {
-        if (!checkBundleValidity(TYPE_UI_COMMAND, activity, callback)) {
+        if (!checkBundleValidity(TYPE_UI_COMMAND, context, callback)) {
             return;
         }
         IARouterService routerService = ((IARouterService) ARouter.getInstance().build(getUiCommandPath())
-                .navigation(activity, new NavigationCallback() {
+                .navigation(context, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
                         LogUtils.d(TAG, "callUiCommand path:'" + postcard.getPath() + "'onFound");
@@ -42,7 +41,7 @@ public abstract class ARouterManager implements IRouterManager {
                     public void onLost(Postcard postcard) {
                         LogUtils.d(TAG, "callUiCommand path:'" + postcard.getPath() + "'onLost");
                         if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_LOST, "onLost")) {
-                            onCommandFail(TYPE_UI_COMMAND, activity, IRouterManager.FAIL_CODE_LOST, "onLost");
+                            onCommandFail(TYPE_UI_COMMAND, context, IRouterManager.FAIL_CODE_LOST, "onLost");
                         }
                     }
 
@@ -55,22 +54,22 @@ public abstract class ARouterManager implements IRouterManager {
                     public void onInterrupt(Postcard postcard) {
                         LogUtils.d(TAG, "callUiCommand path:'" + postcard.getPath() + "'onInterrupt");
                         if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt")) {
-                            onCommandFail(TYPE_UI_COMMAND, activity, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
+                            onCommandFail(TYPE_UI_COMMAND, context, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
                         }
                     }
                 }));
         if (routerService != null) {
-            routerService.callCommand(activity, commandName, args, callback);
+            routerService.callCommand(context, commandName, args, callback);
         }
     }
 
     @Override
-    public void callDataCommand(final Activity activity, String commandName, Bundle args, final IRouterCallback callback) {
-        if (!checkBundleValidity(TYPE_DATA_COMMAND, activity, callback)) {
+    public void callDataCommand(final Context context, String commandName, Bundle args, final IRouterCallback callback) {
+        if (!checkBundleValidity(TYPE_DATA_COMMAND, context, callback)) {
             return;
         }
         IARouterService routerService = ((IARouterService) ARouter.getInstance().build(getDataCommandPath())
-                .navigation(activity, new NavigationCallback() {
+                .navigation(context, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
                         LogUtils.d(TAG, "callDataCommand path:'" + postcard.getPath() + "'onFound");
@@ -80,7 +79,7 @@ public abstract class ARouterManager implements IRouterManager {
                     public void onLost(Postcard postcard) {
                         LogUtils.d(TAG, "callDataCommand path:'" + postcard.getPath() + "'onLost");
                         if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_LOST, "onLost")) {
-                            onCommandFail(TYPE_DATA_COMMAND, activity, IRouterManager.FAIL_CODE_LOST, "onLost");
+                            onCommandFail(TYPE_DATA_COMMAND, context, IRouterManager.FAIL_CODE_LOST, "onLost");
                         }
                     }
 
@@ -93,23 +92,23 @@ public abstract class ARouterManager implements IRouterManager {
                     public void onInterrupt(Postcard postcard) {
                         LogUtils.d(TAG, "callDataCommand path:'" + postcard.getPath() + "'onInterrupt");
                         if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt")) {
-                            onCommandFail(TYPE_DATA_COMMAND, activity, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
+                            onCommandFail(TYPE_DATA_COMMAND, context, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
                         }
                     }
                 }));
         if (routerService != null) {
-            routerService.callCommand(activity, commandName, args, callback);
+            routerService.callCommand(context, commandName, args, callback);
         }
     }
 
     @Override
-    public void callOpCommand(final Activity activity, String commandName,
+    public void callOpCommand(final Context context, String commandName,
                               Bundle args, final IRouterCallback callback) {
-        if (!checkBundleValidity(TYPE_OP_COMMAND, activity, callback)) {
+        if (!checkBundleValidity(TYPE_OP_COMMAND, context, callback)) {
             return;
         }
         IARouterService routerService = ((IARouterService) ARouter.getInstance().build(getOpCommandPath())
-                .navigation(activity, new NavigationCallback() {
+                .navigation(context, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
                         LogUtils.d(TAG, "callOpCommand path:'" + postcard.getPath() + "'onFound");
@@ -119,7 +118,7 @@ public abstract class ARouterManager implements IRouterManager {
                     public void onLost(Postcard postcard) {
                         LogUtils.d(TAG, "callOpCommand path:'" + postcard.getPath() + "'onLost");
                         if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_LOST, "onLost")) {
-                            onCommandFail(TYPE_OP_COMMAND, activity, IRouterManager.FAIL_CODE_LOST, "onLost");
+                            onCommandFail(TYPE_OP_COMMAND, context, IRouterManager.FAIL_CODE_LOST, "onLost");
                         }
                     }
 
@@ -132,23 +131,62 @@ public abstract class ARouterManager implements IRouterManager {
                     public void onInterrupt(Postcard postcard) {
                         LogUtils.d(TAG, "callOpCommand path:'" + postcard.getPath() + "'onInterrupt");
                         if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt")) {
-                            onCommandFail(TYPE_OP_COMMAND, activity, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
+                            onCommandFail(TYPE_OP_COMMAND, context, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
                         }
                     }
                 }));
         if (routerService != null) {
-            routerService.callCommand(activity, commandName, args, callback);
+            routerService.callCommand(context, commandName, args, callback);
         }
     }
 
-    private boolean checkBundleValidity(final String commandType, final Activity activity,
+    @Override
+    public <R> R callUiCommandDirect(final Context context, String commandName, Bundle args) {
+        if (!checkBundleValidity(TYPE_UI_COMMAND, context, null)) {
+            return null;
+        }
+        IARouterService routerService = ((IARouterService) ARouter.getInstance().build(getUiCommandPath())
+                .navigation(context, null));
+        if (routerService != null) {
+            return routerService.callCommandDirect(context, commandName, args);
+        }
+        return null;
+    }
+
+    @Override
+    public <R> R callDataCommandDirect(final Context context, String commandName, Bundle args) {
+        if (!checkBundleValidity(TYPE_DATA_COMMAND, context, null)) {
+            return null;
+        }
+        IARouterService routerService = ((IARouterService) ARouter.getInstance().build(getDataCommandPath())
+                .navigation(context, null));
+        if (routerService != null) {
+            return routerService.callCommandDirect(context, commandName, args);
+        }
+        return null;
+    }
+
+    @Override
+    public <R> R callOpCommandDirect(final Context context, String commandName, Bundle args) {
+        if (!checkBundleValidity(TYPE_OP_COMMAND, context, null)) {
+            return null;
+        }
+        IARouterService routerService = ((IARouterService) ARouter.getInstance().build(getOpCommandPath())
+                .navigation(context, null));
+        if (routerService != null) {
+            return routerService.callCommandDirect(context, commandName, args);
+        }
+        return null;
+    }
+
+    private boolean checkBundleValidity(final String commandType, final Context context,
                                         final IRouterCallback callback) {
         if (!ConfigBundleSwitcher.isBundleOpen(getBundleKey())) {
             LogUtils.releaseLog(TAG, getBundleKey() + " is not opened");
             if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INVALID,
-                    activity.getString(R.string.router_bundle_not_open))) {
-                onCommandFail(commandType, activity, IRouterManager.FAIL_CODE_INVALID,
-                        activity.getString(R.string.router_bundle_not_open));
+                    context.getString(R.string.router_bundle_not_open))) {
+                onCommandFail(commandType, context, IRouterManager.FAIL_CODE_INVALID,
+                        context.getString(R.string.router_bundle_not_open));
             }
             return false;
         }

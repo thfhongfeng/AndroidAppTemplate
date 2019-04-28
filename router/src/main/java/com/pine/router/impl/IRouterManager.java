@@ -1,6 +1,6 @@
 package com.pine.router.impl;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import com.pine.router.IRouterCallback;
@@ -15,9 +15,15 @@ public interface IRouterManager {
     int FAIL_CODE_INTERRUPT = 1003; // 请求被打断。
     int FAIL_CODE_ERROR = 1004; // 请求返回出错，被请求的服务出错。
 
-    void callUiCommand(Activity activity, final String commandName, final Bundle args, final IRouterCallback callback);
+    void callUiCommand(Context context, final String commandName, final Bundle args, final IRouterCallback callback);
 
-    void callDataCommand(Activity activity, final String commandName, final Bundle args, final IRouterCallback callback);
+    void callDataCommand(Context context, final String commandName, final Bundle args, final IRouterCallback callback);
 
-    void callOpCommand(Activity activity, final String commandName, final Bundle args, final IRouterCallback callback);
+    void callOpCommand(Context context, final String commandName, final Bundle args, final IRouterCallback callback);
+
+    <R> R callUiCommandDirect(Context context, final String commandName, final Bundle args);
+
+    <R> R callDataCommandDirect(Context context, final String commandName, final Bundle args);
+
+    <R> R callOpCommandDirect(Context context, final String commandName, final Bundle args);
 }

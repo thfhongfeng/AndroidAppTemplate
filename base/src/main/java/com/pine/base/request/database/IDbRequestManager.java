@@ -3,7 +3,7 @@ package com.pine.base.request.database;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -35,7 +35,7 @@ public interface IDbRequestManager {
 
     @NonNull
     DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                           Map<String, Map<String, String>> header);
+                           HashMap<String, HashMap<String, String>> header);
 
     enum ActionType {
         COMMON, // common

@@ -2,12 +2,12 @@ package com.pine.base.request.database;
 
 import android.text.TextUtils;
 
-import java.util.Map;
+import java.util.HashMap;
 
 public class DbResponseGenerator {
 
     public static DbResponse getSuccessRep(DbRequestBean requestBean,
-                                           Map<String, Map<String, String>> header,
+                                           HashMap<String, HashMap<String, String>> header,
                                            String data) {
         String dataContainer;
         if (!TextUtils.isEmpty(data)) {
@@ -24,7 +24,7 @@ public class DbResponseGenerator {
     }
 
     public static DbResponse getLoginFailRep(DbRequestBean requestBean,
-                                             Map<String, Map<String, String>> header, String message) {
+                                             HashMap<String, HashMap<String, String>> header, String message) {
         String dataContainer = "{'success':false, 'code':401, 'message':'" + message + "'}";
         DbResponse response = new DbResponse();
         response.setSucceed(true);
@@ -35,7 +35,7 @@ public class DbResponseGenerator {
     }
 
     public static DbResponse getNoSuchTableRep(DbRequestBean requestBean,
-                                               Map<String, Map<String, String>> header) {
+                                               HashMap<String, HashMap<String, String>> header) {
         String dataContainer = "{'success':false, 'code':2, 'message':''}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);
@@ -47,7 +47,7 @@ public class DbResponseGenerator {
     }
 
     public static DbResponse getBadArgsRep(DbRequestBean requestBean,
-                                           Map<String, Map<String, String>> header) {
+                                           HashMap<String, HashMap<String, String>> header) {
         String dataContainer = "{'success':false, 'code':1001, 'message':''}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);
@@ -59,7 +59,7 @@ public class DbResponseGenerator {
     }
 
     public static DbResponse getExceptionRep(DbRequestBean requestBean,
-                                             Map<String, Map<String, String>> header, Exception e) {
+                                             HashMap<String, HashMap<String, String>> header, Exception e) {
         String dataContainer = "{'success':false, 'code':1002, 'message':''}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);

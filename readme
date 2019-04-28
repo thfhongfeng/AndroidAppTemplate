@@ -3,12 +3,14 @@
 2. config模块为配置模块，该模块与config.gradle中的配置项相配合， 主要进行项目的配置，比如：项目常量设置，项目模块开关及业务功能开关等。
 3. router模块为路由模块，用于bundle模块间的通信。
 4. base模块为主体基础模块，该模块放置了所有项目和业务通用基础库（与项目相关，但不与具体业务相关）。
-5. app-welcome为入口模块，用于App入口界面的启动。主要包括loading界面（app初始数据的获取：例如版本更新情况等）和welcome界面。
+5. app_welcome为入口模块，用于App入口界面的启动。主要包括loading界面（app初始数据的获取：例如版本更新情况等）和welcome界面。
 6. app为构建模块，主要用于项目初始化，构建和打包，与具体业务无关。
 以上为项目必不可少的模块，为项目的主体模块。
-7. bundle-xxx为常用基础业务模块，包括：bundle-main, bundle-login, bundle-user
-8. bundle-business-xxx为"xxx"具体业务模块。
-9. xxx-lib-yyy为 "xxx"模块对应的lib库"yyy"。
+7. bundle_xxx为常用基础业务模块，包括：bundle_main, bundle_login, bundle_user
+8. bundle_business_xxx为"xxx"具体业务模块。
+9. xxx_lib_yyy为 "xxx"模块对应的lib库"yyy"。
+
+10. db_server为调试用的本地数据库模拟后台数据服务器模块（不需要搭架后台数据服务就可以对该模板的非网络功能进行调试验证）。
 
 
 base模块文件夹说明：

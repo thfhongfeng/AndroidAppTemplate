@@ -1,6 +1,6 @@
 package com.pine.router.impl.arouter;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.template.IProvider;
@@ -11,6 +11,9 @@ import com.pine.router.IRouterCallback;
  */
 
 public interface IARouterService extends IProvider {
-    void callCommand(Activity activity, final String commandName,
+    void callCommand(Context context, final String commandName,
                      final Bundle args, final IRouterCallback callback);
+
+    <R> R callCommandDirect(Context context, final String commandName,
+                            final Bundle args);
 }

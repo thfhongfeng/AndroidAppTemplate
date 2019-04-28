@@ -1,12 +1,15 @@
 package com.pine.base.request.database;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.pine.base.request.database.callback.DbJsonCallback;
 import com.pine.base.request.database.interceptor.IDbRequestInterceptor;
 import com.pine.base.request.database.interceptor.IDbResponseInterceptor;
-import com.pine.base.request.database.sqlite.SQLiteDbRequestManager;
+import com.pine.router.command.RouterDbCommand;
+import com.pine.router.impl.IRouterManager;
+import com.pine.router.impl.RouterManager;
 import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
@@ -17,8 +20,9 @@ import java.util.Map;
 public class DbRequestManager {
     public final static String TAG = LogUtils.makeLogTag(DbRequestManager.class);
     private static Context mApplicationContext;
-    private static IDbRequestManager mRequestManager;
-    private static Map<String, Map<String, String>> mResponseHeader = new HashMap<>();
+    private static IRouterManager mRequestManager;
+    private static HashMap<String, HashMap<String, String>> mRequestHeader = new HashMap<>();
+    private static HashMap<String, HashMap<String, String>> mResponseHeader = new HashMap<>();
 
     private static List<IDbRequestInterceptor> mRequestInterceptorList = new ArrayList<>();
 
@@ -26,7 +30,7 @@ public class DbRequestManager {
 
     public static void init(Context context) {
         mApplicationContext = context;
-        mRequestManager = new SQLiteDbRequestManager(context);
+        mRequestManager = RouterManager.getDbServerRouter();
     }
 
     public static void addGlobalRequestInterceptor(IDbRequestInterceptor interceptor) {
@@ -87,7 +91,15 @@ public class DbRequestManager {
         LogUtils.d(TAG, "Request db - " + requestBean.getModuleTag() +
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- command: " +
                 requestBean.getCommand() + "\r\n- params:" + requestBean.getParams());
-        DbResponse response = mRequestManager.callCommand(mApplicationContext, requestBean, mResponseHeader);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("requestBean", requestBean);
+        bundle.putSerializable("requestHeader", mRequestHeader);
+        DbResponse response = mRequestManager.callDataCommandDirect(mApplicationContext,
+                RouterDbCommand.callDbServerCommand, bundle);
+        if (response == null) {
+            requestBean.getCallback().onFail(requestBean.getWhat(), new Exception("remote error"));
+            return true;
+        }
         mResponseHeader = response.getResponseHeader();
         requestBean.setResponse(response);
         if (response.isSucceed()) {

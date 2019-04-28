@@ -3,13 +3,14 @@ package com.pine.base.request.database;
 import com.pine.base.request.database.IDbRequestManager.ActionType;
 import com.pine.base.request.database.callback.DbJsonCallback;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Created by tanghongfeng on 2018/9/10.
  */
 
-public class DbRequestBean {
+public class DbRequestBean implements Serializable {
     // 该callback对应的http请求的key
     private String key;
     private Map<String, String> params;

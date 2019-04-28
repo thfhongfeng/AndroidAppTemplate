@@ -93,19 +93,21 @@ dependencies {
     // 主体基础模块 end
 
     // 入口模块 begin
-    implementation project(':app-welcome')
+    implementation project(':app_welcome')
     // 入口模块 end
 
     // bundle模块 begin
-    implementation project(':bundle-login')
-    implementation project(':bundle-main')
-    implementation project(':bundle-user')
+    implementation project(':bundle_login')
+    implementation project(':bundle_main')
+    implementation project(':bundle_user')
 //
-    implementation project(':bundle-business-mvc')
-    implementation project(':bundle-business-mvp')
-    implementation project(':bundle-business-mvvm')
-    implementation project(':bundle-business-demo')
+    implementation project(':bundle_business_mvc')
+    implementation project(':bundle_business_mvp')
+    implementation project(':bundle_business_mvvm')
+    implementation project(':bundle_business_demo')
     // bundle模块 end
+
+    implementation project(':db_server')
 }
 
 // 下面的代码会引起：

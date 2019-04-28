@@ -12,4 +12,6 @@ public interface ConfigBundleKey {
     String BUSINESS_MVP_BUNDLE_KEY = "business_mvp_bundle";
     String BUSINESS_MVVM_BUNDLE_KEY = "business_mvvm_bundle";
     String BUSINESS_DEMO_BUNDLE_KEY = "business_demo_bundle";
+
+    String DB_SEVER_BUNDLE_KEY = "db_server_bundle";
 }

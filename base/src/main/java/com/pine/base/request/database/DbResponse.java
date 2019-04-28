@@ -1,6 +1,6 @@
 package com.pine.base.request.database;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -11,7 +11,7 @@ public class DbResponse {
     private boolean succeed;
     private Object tag;
     private Object data;
-    private Map<String, Map<String, String>> responseHeader;
+    private HashMap<String, HashMap<String, String>> responseHeader;
     private Exception exception;
 
     public int getResponseCode() {
@@ -46,11 +46,11 @@ public class DbResponse {
         this.data = data;
     }
 
-    public Map<String, Map<String, String>> getResponseHeader() {
+    public HashMap<String, HashMap<String, String>> getResponseHeader() {
         return responseHeader;
     }
 
-    public void setResponseHeader(Map<String, Map<String, String>> responseHeader) {
+    public void setResponseHeader(HashMap<String, HashMap<String, String>> responseHeader) {
         this.responseHeader = responseHeader;
     }
 
