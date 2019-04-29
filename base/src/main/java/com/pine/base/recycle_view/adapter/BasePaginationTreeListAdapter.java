@@ -1,5 +1,7 @@
 package com.pine.base.recycle_view.adapter;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.view.ViewGroup;
 
@@ -138,7 +140,7 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
         List<BaseListAdapterItemEntity<T>> parseData = parseTreeData(newData, false);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;
-            notifyDataSetChanged();
+            notifyDataSetChangedOnMainThread();
             return;
         }
         if (mData == null) {
@@ -152,7 +154,7 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
             mPageNo.incrementAndGet();
         }
         mHasMore = parseData.size() >= getPageSize();
-        notifyDataSetChanged();
+        notifyDataSetChangedOnMainThread();
     }
 
     public final void setData(List<T> data) {
@@ -162,7 +164,7 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
         mData = parseTreeData(data, true);
         resetAndGetPageNo();
         mHasMore = mData != null && mData.size() >= getPageSize();
-        notifyDataSetChanged();
+        notifyDataSetChangedOnMainThread();
     }
 
     public List<BaseListAdapterItemEntity<T>> getAdapterData() {

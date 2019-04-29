@@ -26,8 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/dp_10"
-            android:visibility="@{shopProperty.isItemViewNeedShow ? View.VISIBLE: View.GONE}">
+            android:paddingLeft="@dimen/dp_10">
 
             <TextView
                 android:id="@+id/title_tv"

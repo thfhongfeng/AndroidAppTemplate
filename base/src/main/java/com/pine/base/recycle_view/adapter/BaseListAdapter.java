@@ -1,15 +1,18 @@
 package com.pine.base.recycle_view.adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableRow;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.pine.base.R;
 import com.pine.base.recycle_view.BaseListViewHolder;
@@ -251,6 +254,101 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     public final void setErrorState() {
         mIsErrorState = true;
+    }
+
+    public final void notifyDataSetChangedOnMainThread() {
+        if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyDataSetChanged();
+                }
+            });
+        } else {
+            notifyDataSetChanged();
+        }
+    }
+
+    public final void notifyItemChangedOnMainThread(final int position, final @Nullable Object payload) {
+        notifyItemRangeChangedOnMainThread(position, 1, payload);
+    }
+
+    public final void notifyItemRangeChangedOnMainThread(final int positionStart, final int itemCount,
+                                                         final @Nullable Object payload) {
+        if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemRangeChanged(positionStart, itemCount, payload);
+                }
+            });
+        } else {
+            notifyItemRangeChanged(positionStart, itemCount, payload);
+        }
+    }
+
+    public final void notifyItemChangedOnMainThread(int position) {
+        notifyItemRangeChangedOnMainThread(position, 1);
+    }
+
+    public final void notifyItemRangeChangedOnMainThread(final int positionStart, final int itemCount) {
+        if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemRangeChanged(positionStart, itemCount);
+                }
+            });
+        } else {
+            notifyItemRangeChanged(positionStart, itemCount);
+        }
+    }
+
+    public final void notifyItemMovedOnMainThread(final int fromPosition, final int toPosition) {
+        if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemMoved(fromPosition, toPosition);
+                }
+            });
+        } else {
+            notifyItemMoved(fromPosition, toPosition);
+        }
+    }
+
+    public final void notifyItemInsertedOnMainThread(int position) {
+        notifyItemRangeInsertedOnMainThread(position, 1);
+    }
+
+    public final void notifyItemRangeInsertedOnMainThread(final int positionStart, final int itemCount) {
+        if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemRangeInserted(positionStart, itemCount);
+                }
+            });
+        } else {
+            notifyItemRangeInserted(positionStart, itemCount);
+        }
+    }
+
+    public final void notifyItemRemovedOnMainThread(int position) {
+        notifyItemRangeRemovedOnMainThread(position, 1);
+    }
+
+    public final void notifyItemRangeRemovedOnMainThread(final int positionStart, final int itemCount) {
+        if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemRangeRemoved(positionStart, itemCount);
+                }
+            });
+        } else {
+            notifyItemRangeRemoved(positionStart, itemCount);
+        }
     }
 
     public abstract BaseListViewHolder getViewHolder(ViewGroup parent, int viewType);

@@ -122,6 +122,11 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
         @Override
         public void updateData(final MvvmShopAndProductEntity.ProductsBean content,
                                BaseListAdapterItemProperty propertyEntity, int position) {
+            if (!propertyEntity.isItemViewNeedShow()) {
+                mBinding.container.setVisibility(View.GONE);
+                return;
+            }
+            mBinding.container.setVisibility(View.VISIBLE);
             mBinding.setProduct(content);
             mBinding.setShopProperty(propertyEntity);
         }

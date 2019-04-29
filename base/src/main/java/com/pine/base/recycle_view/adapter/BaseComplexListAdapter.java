@@ -117,14 +117,14 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         onDataSet();
         mEnableInitState = false;
         mHeadNoPaginationData = parseHeadData(data);
-        notifyDataSetChanged();
+        notifyDataSetChangedOnMainThread();
     }
 
     public final void addTailData(List<B> newData) {
         List<BaseListAdapterItemEntity<B>> parseData = parseTailData(newData);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;
-            notifyDataSetChanged();
+            notifyDataSetChangedOnMainThread();
             return;
         }
         if (mTailPaginationData == null) {
@@ -138,7 +138,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
             mPageNo.incrementAndGet();
         }
         mHasMore = parseData.size() >= getPageSize();
-        notifyDataSetChanged();
+        notifyDataSetChangedOnMainThread();
     }
 
     public final void setTailData(List<B> data) {
@@ -147,7 +147,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         mTailPaginationData = parseTailData(data);
         resetAndGetPageNo();
         mHasMore = mTailPaginationData != null && mTailPaginationData.size() >= getPageSize();
-        notifyDataSetChanged();
+        notifyDataSetChangedOnMainThread();
     }
 
     private boolean showEmptyView() {

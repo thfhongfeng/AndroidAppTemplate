@@ -99,14 +99,14 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
         mIsErrorState = false;
         mEnableInitState = false;
         mData = parseData(data, true);
-        notifyDataSetChanged();
+        notifyDataSetChangedOnMainThread();
     }
 
     public final void addData(List<T> newData) {
         mIsErrorState = false;
         List<BaseListAdapterItemEntity<T>> parseData = parseData(newData, false);
         if (parseData == null || parseData.size() == 0) {
-            notifyDataSetChanged();
+            notifyDataSetChangedOnMainThread();
             return;
         }
         if (mData == null) {
@@ -117,7 +117,7 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
                 mData.add(parseData.get(i));
             }
         }
-        notifyDataSetChanged();
+        notifyDataSetChangedOnMainThread();
     }
 
     protected List<BaseListAdapterItemEntity<T>> parseData(List<T> data, boolean reset) {
