@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarCustomMenuActivity;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvp.R;
-import com.pine.mvp.adapter.MvpTravelNoteDetailComplexAdapter;
 import com.pine.mvp.adapter.MvpTravelNoteListPaginationAdapter;
 import com.pine.mvp.contract.IMvpTravelNoteListContract;
 import com.pine.mvp.presenter.MvpTravelNoteListPresenter;

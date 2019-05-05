@@ -17,18 +17,18 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-import static com.pine.base.request.database.IDbRequestManager.ACCOUNT_LOGIN_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.ACCOUNT_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.APP_VERSION_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.DATABASE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.DATABASE_VERSION;
-import static com.pine.base.request.database.IDbRequestManager.PRODUCT_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.SHOP_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.SHOP_TYPE_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.SWITCHER_CONFIG_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.TRAVEL_NOTE_COMMENT_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.TRAVEL_NOTE_SHOP_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.TRAVEL_NOTE_TABLE_NAME;
+import static com.pine.db_server.DbConstants.ACCOUNT_LOGIN_TABLE_NAME;
+import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
+import static com.pine.db_server.DbConstants.APP_VERSION_TABLE_NAME;
+import static com.pine.db_server.DbConstants.DATABASE_NAME;
+import static com.pine.db_server.DbConstants.DATABASE_VERSION;
+import static com.pine.db_server.DbConstants.PRODUCT_TABLE_NAME;
+import static com.pine.db_server.DbConstants.SHOP_TABLE_NAME;
+import static com.pine.db_server.DbConstants.SHOP_TYPE_TABLE_NAME;
+import static com.pine.db_server.DbConstants.SWITCHER_CONFIG_TABLE_NAME;
+import static com.pine.db_server.DbConstants.TRAVEL_NOTE_COMMENT_TABLE_NAME;
+import static com.pine.db_server.DbConstants.TRAVEL_NOTE_SHOP_TABLE_NAME;
+import static com.pine.db_server.DbConstants.TRAVEL_NOTE_TABLE_NAME;
 
 public class SQLiteDbHelper extends SQLiteOpenHelper {
     private final String TAG = LogUtils.makeLogTag(this.getClass());

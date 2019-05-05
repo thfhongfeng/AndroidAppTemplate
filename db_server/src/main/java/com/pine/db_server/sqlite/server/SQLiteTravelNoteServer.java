@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.pine.base.request.database.DbRequestBean;
 import com.pine.base.request.database.DbResponse;
-import com.pine.base.request.database.DbResponseGenerator;
+import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
 
 import org.json.JSONArray;
@@ -18,9 +18,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.pine.base.request.database.IDbRequestManager.TRAVEL_NOTE_COMMENT_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.TRAVEL_NOTE_SHOP_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.TRAVEL_NOTE_TABLE_NAME;
+import static com.pine.db_server.DbConstants.TRAVEL_NOTE_COMMENT_TABLE_NAME;
+import static com.pine.db_server.DbConstants.TRAVEL_NOTE_SHOP_TABLE_NAME;
+import static com.pine.db_server.DbConstants.TRAVEL_NOTE_TABLE_NAME;
 
 public class SQLiteTravelNoteServer extends SQLiteBaseServer {
 

@@ -68,7 +68,7 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
     }
 
     @Override
-   public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void onSyncLiveDataInit(int liveDataObjTag) {
 
     }
 

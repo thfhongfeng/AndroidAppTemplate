@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.pine.base.request.database.DbRequestBean;
 import com.pine.base.request.database.DbResponse;
-import com.pine.base.request.database.DbResponseGenerator;
+import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
 
 import org.json.JSONArray;
@@ -16,8 +16,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import static com.pine.base.request.database.IDbRequestManager.APP_VERSION_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.SWITCHER_CONFIG_TABLE_NAME;
+import static com.pine.db_server.DbConstants.APP_VERSION_TABLE_NAME;
+import static com.pine.db_server.DbConstants.SWITCHER_CONFIG_TABLE_NAME;
 
 public class SQLiteWelcomeServer extends SQLiteBaseServer {
     public static DbResponse queryConfigSwitcher(@NonNull Context context,

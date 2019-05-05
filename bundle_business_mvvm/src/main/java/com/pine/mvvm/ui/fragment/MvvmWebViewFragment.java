@@ -109,7 +109,7 @@ public class MvvmWebViewFragment extends
     }
 
     @Override
-   public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void onSyncLiveDataInit(int liveDataObjTag) {
 
     }
 

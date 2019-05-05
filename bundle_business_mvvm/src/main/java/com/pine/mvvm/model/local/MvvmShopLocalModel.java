@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.base.request.database.DbRequestManager;
-import com.pine.base.request.database.IDbCommand;
 import com.pine.base.request.database.callback.DbJsonCallback;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;

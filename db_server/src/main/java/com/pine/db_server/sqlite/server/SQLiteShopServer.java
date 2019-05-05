@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 
 import com.pine.base.request.database.DbRequestBean;
 import com.pine.base.request.database.DbResponse;
-import com.pine.base.request.database.DbResponseGenerator;
+import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
 import com.pine.tool.util.RegexUtils;
 
@@ -20,8 +20,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.pine.base.request.database.IDbRequestManager.PRODUCT_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.SHOP_TABLE_NAME;
+import static com.pine.db_server.DbConstants.PRODUCT_TABLE_NAME;
+import static com.pine.db_server.DbConstants.SHOP_TABLE_NAME;
 
 public class SQLiteShopServer extends SQLiteBaseServer {
 

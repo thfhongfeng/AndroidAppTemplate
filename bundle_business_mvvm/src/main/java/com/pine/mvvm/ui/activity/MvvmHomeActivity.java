@@ -59,7 +59,7 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
     }
 
     @Override
-   public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void onSyncLiveDataInit(int liveDataObjTag) {
 
     }
 

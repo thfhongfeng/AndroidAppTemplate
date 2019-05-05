@@ -10,7 +10,7 @@ import android.text.TextUtils;
 
 import com.pine.base.request.database.DbRequestBean;
 import com.pine.base.request.database.DbResponse;
-import com.pine.base.request.database.DbResponseGenerator;
+import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
 
 import org.json.JSONException;
@@ -20,10 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.pine.base.request.database.IDbRequestManager.ACCOUNT_LOGIN_TABLE_NAME;
-import static com.pine.base.request.database.IDbRequestManager.ACCOUNT_TABLE_NAME;
 import static com.pine.base.request.database.IDbRequestManager.COOKIE_KEY;
 import static com.pine.base.request.database.IDbRequestManager.SESSION_ID;
+import static com.pine.db_server.DbConstants.ACCOUNT_LOGIN_TABLE_NAME;
+import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 
 public class SQLiteLoginServer extends SQLiteBaseServer {
 

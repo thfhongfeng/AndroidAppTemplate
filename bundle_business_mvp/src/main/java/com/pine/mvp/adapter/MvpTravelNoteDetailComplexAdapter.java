@@ -32,7 +32,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
     public static final int TRAVEL_NOTE_COMMENT_VIEW_HOLDER = 4;
 
     public MvpTravelNoteDetailComplexAdapter() {
-        
+
     }
 
     public MvpTravelNoteDetailComplexAdapter(int defaultItemViewType) {

@@ -6,9 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.pine.base.request.database.DbRequestBean;
 import com.pine.base.request.database.DbResponse;
-import com.pine.base.request.database.DbResponseGenerator;
-import com.pine.base.request.database.IDbCommand;
 import com.pine.base.request.database.IDbRequestManager;
+import com.pine.db_server.IDbCommand;
 import com.pine.db_server.sqlite.server.SQLiteLoginServer;
 import com.pine.db_server.sqlite.server.SQLiteShopServer;
 import com.pine.db_server.sqlite.server.SQLiteTravelNoteServer;

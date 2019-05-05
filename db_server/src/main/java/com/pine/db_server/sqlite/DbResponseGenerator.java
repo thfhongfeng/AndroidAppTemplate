@@ -1,6 +1,9 @@
-package com.pine.base.request.database;
+package com.pine.db_server.sqlite;
 
 import android.text.TextUtils;
+
+import com.pine.base.request.database.DbRequestBean;
+import com.pine.base.request.database.DbResponse;
 
 import java.util.HashMap;
 

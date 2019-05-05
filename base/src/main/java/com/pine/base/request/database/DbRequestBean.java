@@ -22,7 +22,7 @@ public class DbRequestBean implements Serializable {
 
     private ActionType actionType = ActionType.COMMON;
 
-    private int command = IDbCommand.DEFAULT;
+    private int command;
 
     private DbResponse response;
 

@@ -1,14 +1,6 @@
-package com.pine.base.request.database;
+package com.pine.mvvm.model.local;
 
 public interface IDbCommand {
-    int DEFAULT = 10000000;
-
-    int REQUEST_CONFIG_SWITCHER = 10001001;
-    int REQUEST_APP_VERSION = 10001002;
-    int REQUEST_LOGIN = 10001003;
-    int REQUEST_LOGOUT = 10001004;
-    int REQUEST_REGISTER = 10001005;
-
     int REQUEST_ADD_SHOP = 10002000;
     int REQUEST_QUERY_SHOP_DETAIL = 10002001;
     int REQUEST_QUERY_SHOP_LIST = 10002002;

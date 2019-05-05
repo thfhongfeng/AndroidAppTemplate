@@ -84,7 +84,7 @@ public class MvvmShopNoPaginationListFragment extends
     };
 
     @Override
-   public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void onSyncLiveDataInit(int liveDataObjTag) {
 
     }
 

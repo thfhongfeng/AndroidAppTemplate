@@ -96,7 +96,7 @@ public class MvvmShopTreeListFragment extends BaseMvvmFragment<MvvmShopTreeListF
     };
 
     @Override
-   public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void onSyncLiveDataInit(int liveDataObjTag) {
 
     }
 
