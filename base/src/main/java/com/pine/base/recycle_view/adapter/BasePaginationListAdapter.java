@@ -139,7 +139,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
         List<BaseListAdapterItemEntity<T>> parseData = parseData(newData, false);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;
-            notifyDataSetChangedOnMainThread();
+            notifyDataSetChangedSafely();
             return;
         }
         if (mData == null) {
@@ -153,7 +153,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
             mPageNo.incrementAndGet();
         }
         mHasMore = parseData.size() >= getPageSize();
-        notifyDataSetChangedOnMainThread();
+        notifyDataSetChangedSafely();
     }
 
     public final void setData(List<T> data) {
@@ -163,7 +163,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
         mData = parseData(data, true);
         resetAndGetPageNo();
         mHasMore = mData != null && mData.size() >= getPageSize();
-        notifyDataSetChangedOnMainThread();
+        notifyDataSetChangedSafely();
     }
 
     protected List<BaseListAdapterItemEntity<T>> parseData(List<T> data, boolean reset) {
