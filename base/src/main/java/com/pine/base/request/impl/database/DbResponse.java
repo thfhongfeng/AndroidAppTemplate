@@ -15,6 +15,9 @@ public class DbResponse implements Serializable {
     private Exception exception;
     private HashMap<String, String> cookies;
 
+    // for upload
+    private boolean multiUpload;
+
     public int getResponseCode() {
         return responseCode;
     }
@@ -61,5 +64,13 @@ public class DbResponse implements Serializable {
 
     public void setCookies(HashMap<String, String> cookies) {
         this.cookies = cookies;
+    }
+
+    public boolean isMultiUpload() {
+        return multiUpload;
+    }
+
+    public void setMultiUpload(boolean multiUpload) {
+        this.multiUpload = multiUpload;
     }
 }

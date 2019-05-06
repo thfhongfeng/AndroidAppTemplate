@@ -97,7 +97,7 @@ public class MvvmShopReleaseActivity extends
         );
         mBinding.swipeRefreshLayout.setEnabled(false);
 
-        mBinding.photoIuv.init(this, MvvmUrlConstants.Upload_File, true,
+        mBinding.photoIuv.init(this, MvvmUrlConstants.Upload_Single_File, true,
                 new ImageUploadView.OneByOneUploadAdapter() {
                     @Override
                     public String getFileKey(FileUploadBean fileUploadBean) {

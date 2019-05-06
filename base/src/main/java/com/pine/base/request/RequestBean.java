@@ -5,6 +5,7 @@ import com.pine.base.request.IRequestManager.RequestType;
 import com.pine.base.request.callback.AbstractBaseCallback;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -186,7 +187,7 @@ public class RequestBean {
         this.uploadFileList = uploadFileList;
     }
 
-    public static class FileBean {
+    public static class FileBean implements Serializable {
         private int what;
         private String fileKey;
         private String fileName;

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.pine.base.request.impl.database.DbRequestBean;
 import com.pine.base.request.impl.database.DbResponse;
 import com.pine.db_server.DbUrlConstants;
+import com.pine.db_server.sqlite.server.SQLiteFileServer;
 import com.pine.db_server.sqlite.server.SQLiteLoginServer;
 import com.pine.db_server.sqlite.server.SQLiteShopServer;
 import com.pine.db_server.sqlite.server.SQLiteTravelNoteServer;
@@ -69,8 +70,12 @@ public class SQLiteDbRequestManager {
             return SQLiteTravelNoteServer.queryTravelNoteList(context, requestBean, header);
         } else if (DbUrlConstants.Query_TravelNoteCommentList.equals(requestBean.getUrl())) {
             return SQLiteTravelNoteServer.queryTravelNoteCommentList(context, requestBean, header);
+        } else if (DbUrlConstants.Upload_Single_File.equals(requestBean.getUrl())) {
+            return SQLiteFileServer.uploadSingleFile(context, requestBean, header);
+        } else if (DbUrlConstants.Upload_Multi_File.equals(requestBean.getUrl())) {
+            return SQLiteFileServer.uploadMultiFile(context, requestBean, header);
         } else {
-            return DbResponseGenerator.getNoSuchTableRep(requestBean, header);
+            return DbResponseGenerator.getNoSuchTableJsonRep(requestBean, header);
         }
     }
 }

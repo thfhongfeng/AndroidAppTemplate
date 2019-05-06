@@ -64,7 +64,7 @@ public class MvpNoteEditorView extends LinearLayout {
                             UploadFileLinearLayout.OneByOneUploadAdapter adapter) {
         TextImageEditorView view = new TextImageEditorView(getContext());
         String title = getContext().getString(R.string.mvp_note_release_day_note_title, StringUtils.toChineseNumber(day));
-        view.init(activity, MvpUrlConstants.Upload_File, day, title,
+        view.init(activity, MvpUrlConstants.Upload_Single_File, day, title,
                 adapter, 100 + day);
         if (data != null) {
             view.setData(data);

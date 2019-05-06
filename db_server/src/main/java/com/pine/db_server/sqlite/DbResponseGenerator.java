@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class DbResponseGenerator {
 
-    public static DbResponse getSuccessRep(DbRequestBean requestBean,
+    public static DbResponse getSuccessJsonRep(DbRequestBean requestBean,
                                            HashMap<String, String> cookies,
                                            String data) {
         String dataContainer;
@@ -26,7 +26,7 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getLoginFailRep(DbRequestBean requestBean,
+    public static DbResponse getLoginFailJsonRep(DbRequestBean requestBean,
                                              HashMap<String, String> cookies, String message) {
         String dataContainer = "{'success':false, 'code':401, 'message':'" + message + "'}";
         DbResponse response = new DbResponse();
@@ -37,7 +37,7 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getNoSuchTableRep(DbRequestBean requestBean,
+    public static DbResponse getNoSuchTableJsonRep(DbRequestBean requestBean,
                                                HashMap<String, String> cookies) {
         String dataContainer = "{'success':false, 'code':2, 'message':''}";
         DbResponse response = new DbResponse();
@@ -49,7 +49,7 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getBadArgsRep(DbRequestBean requestBean,
+    public static DbResponse getBadArgsJsonRep(DbRequestBean requestBean,
                                            HashMap<String, String> cookies) {
         String dataContainer = "{'success':false, 'code':1001, 'message':''}";
         DbResponse response = new DbResponse();
@@ -61,7 +61,7 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getExceptionRep(DbRequestBean requestBean,
+    public static DbResponse getExceptionJsonRep(DbRequestBean requestBean,
                                              HashMap<String, String> cookies, Exception e) {
         String dataContainer = "{'success':false, 'code':1002, 'message':''}";
         DbResponse response = new DbResponse();

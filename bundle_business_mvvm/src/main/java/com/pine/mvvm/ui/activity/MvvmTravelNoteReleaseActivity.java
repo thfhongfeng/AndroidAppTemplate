@@ -59,7 +59,6 @@ public class MvvmTravelNoteReleaseActivity extends
             // Test code begin
             params.put("bizType", "10");
             params.put("orderNum", "100");
-            params.put("orderNum", "100");
             params.put("descr", "");
             params.put("fileType", "1");
             // Test code end

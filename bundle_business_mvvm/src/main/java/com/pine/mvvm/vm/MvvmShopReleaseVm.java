@@ -32,7 +32,6 @@ public class MvvmShopReleaseVm extends BaseViewModel {
         // Test code begin
         params.put("bizType", "10");
         params.put("orderNum", "100");
-        params.put("orderNum", "100");
         params.put("descr", "");
         params.put("fileType", "1");
         // Test code end
@@ -79,6 +78,12 @@ public class MvvmShopReleaseVm extends BaseViewModel {
         if (TextUtils.isEmpty(entity.getImgUrls())) {
             setToastResId(R.string.mvvm_shop_release_photo_image_need);
             return;
+        }
+        int pos = entity.getImgUrls().indexOf(",");
+        if (pos == -1) {
+            entity.setMainImgUrl(entity.getImgUrls());
+        } else {
+            entity.setMainImgUrl(entity.getImgUrls().substring(0, pos));
         }
         setUiLoading(true);
         mShopModel.requestAddShop(entity.toMapJsonIgnoreEmpty(), new IModelAsyncResponse<MvvmShopDetailEntity>() {

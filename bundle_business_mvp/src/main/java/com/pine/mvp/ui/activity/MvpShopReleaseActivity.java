@@ -97,7 +97,7 @@ public class MvpShopReleaseActivity extends
         );
         swipe_refresh_layout.setEnabled(false);
 
-        photo_iuv.init(this, MvpUrlConstants.Upload_File, true,
+        photo_iuv.init(this, MvpUrlConstants.Upload_Single_File, true,
                 new ImageUploadView.OneByOneUploadAdapter() {
                     @Override
                     public String getFileKey(FileUploadBean fileUploadBean) {

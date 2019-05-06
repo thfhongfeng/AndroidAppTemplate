@@ -30,12 +30,12 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
         try {
             long id = insert(db, TRAVEL_NOTE_TABLE_NAME, requestBean.getParams());
             if (id == -1) {
-                return DbResponseGenerator.getBadArgsRep(requestBean, cookies);
+                return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
             } else {
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, "{'id':" + id + "}");
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
@@ -79,16 +79,16 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                 db.setTransactionSuccessful();
                 db.endTransaction();
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonObject.toString());
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 db.endTransaction();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+                return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
             db.endTransaction();
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
@@ -126,16 +126,16 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                 db.setTransactionSuccessful();
                 db.endTransaction();
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonArray.toString());
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 db.endTransaction();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+                return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
             db.endTransaction();
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
@@ -163,14 +163,14 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     jsonArray.put(jsonObject);
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonArray.toString());
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+                return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }

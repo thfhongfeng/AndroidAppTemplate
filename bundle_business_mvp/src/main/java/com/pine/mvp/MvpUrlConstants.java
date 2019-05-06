@@ -18,10 +18,12 @@ public interface MvpUrlConstants extends BaseUrlConstants {
     String Query_TravelNoteDetail = BASE_URL + "&q=qtnd";
     String Query_TravelNoteCommentList = BASE_URL + "&q=qtncl";
 
-//    String Upload_File = BASE_URL + "";
+//    String Upload_Single_File = BASE_URL + "";
+//    String Upload_Multi_File = BASE_URL + "";
 
     // Test code begin
-    String Upload_File = "https://yanyangtian.purang.com/" + "/mobile/bizFile/addBizFile.htm";
+    String Upload_Single_File = "https://yanyangtian.purang.com/" + "/mobile/bizFile/addBizFile.htm";
+    String Upload_Multi_File = "https://yanyangtian.purang.com/" + "/mobile/bizFile/addBizFileList.htm";
     String H5_DefaultUrl = "https://www.baidu.com";
     // Test code end
 }

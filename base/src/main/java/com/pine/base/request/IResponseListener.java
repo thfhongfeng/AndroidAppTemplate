@@ -20,6 +20,12 @@ public interface IResponseListener {
 
         void onStart(int what, boolean isResume, long rangeSize, long allCount);
 
+        /**
+         * @param what
+         * @param progress  0-100
+         * @param fileCount
+         * @param speed
+         */
         void onProgress(int what, int progress, long fileCount, long speed);
 
         void onFinish(int what, String filePath);
@@ -32,6 +38,11 @@ public interface IResponseListener {
 
         void onCancel(int what, RequestBean.FileBean fileBean);
 
+        /**
+         * @param what
+         * @param fileBean
+         * @param progress 0-100
+         */
         void onProgress(int what, RequestBean.FileBean fileBean, int progress);
 
         void onFinish(int what, RequestBean.FileBean fileBean);

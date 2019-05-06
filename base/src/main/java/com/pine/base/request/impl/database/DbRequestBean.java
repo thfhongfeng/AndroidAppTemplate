@@ -2,7 +2,9 @@ package com.pine.base.request.impl.database;
 
 import com.pine.base.request.IRequestManager;
 
+import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 public class DbRequestBean implements Serializable {
@@ -14,6 +16,16 @@ public class DbRequestBean implements Serializable {
     private String moduleTag = "common";
     private int what;
     private boolean needLogin;
+
+    // for download
+    private String saveFolder;
+    private String saveFileName;
+    private boolean isContinue;
+    private boolean isDeleteOld;
+
+    // for upload
+    private String upLoadFileKey;
+    private List<FileBean> uploadFileList;
 
     private IRequestManager.ActionType actionType = IRequestManager.ActionType.COMMON;
 
@@ -66,11 +78,111 @@ public class DbRequestBean implements Serializable {
         this.needLogin = needLogin;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getSaveFolder() {
+        return saveFolder;
+    }
+
+    public void setSaveFolder(String saveFolder) {
+        this.saveFolder = saveFolder;
+    }
+
+    public String getSaveFileName() {
+        return saveFileName;
+    }
+
+    public void setSaveFileName(String saveFileName) {
+        this.saveFileName = saveFileName;
+    }
+
+    public boolean isContinue() {
+        return isContinue;
+    }
+
+    public void setContinue(boolean aContinue) {
+        isContinue = aContinue;
+    }
+
+    public boolean isDeleteOld() {
+        return isDeleteOld;
+    }
+
+    public void setDeleteOld(boolean deleteOld) {
+        isDeleteOld = deleteOld;
+    }
+
+    public String getUpLoadFileKey() {
+        return upLoadFileKey;
+    }
+
+    public void setUpLoadFileKey(String upLoadFileKey) {
+        this.upLoadFileKey = upLoadFileKey;
+    }
+
+    public List<FileBean> getUploadFileList() {
+        return uploadFileList;
+    }
+
+    public void setUploadFileList(List<FileBean> uploadFileList) {
+        this.uploadFileList = uploadFileList;
+    }
+
     public IRequestManager.ActionType getActionType() {
         return actionType;
     }
 
     public void setActionType(IRequestManager.ActionType actionType) {
         this.actionType = actionType;
+    }
+
+    public static class FileBean implements Serializable {
+        private int what;
+        private String fileKey;
+        private String fileName;
+        private File file;
+        private int position;
+
+        public FileBean(String fileKey, String fileName, File file, int position) {
+            this.what = hashCode();
+            this.fileKey = fileKey;
+            this.fileName = fileName;
+            this.file = file;
+            this.position = position;
+        }
+
+        public int getWhat() {
+            return what;
+        }
+
+        public String getFileKey() {
+            return fileKey;
+        }
+
+        public void setFileKey(String fileKey) {
+            this.fileKey = fileKey;
+        }
+
+        public String getFileName() {
+            return fileName;
+        }
+
+        public void setFileName(String fileName) {
+            this.fileName = fileName;
+        }
+
+        public File getFile() {
+            return file;
+        }
+
+        public void setFile(File file) {
+            this.file = file;
+        }
+
+        public int getPosition() {
+            return position;
+        }
     }
 }

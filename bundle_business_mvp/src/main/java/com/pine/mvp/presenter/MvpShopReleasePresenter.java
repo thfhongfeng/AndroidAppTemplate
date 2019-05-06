@@ -37,7 +37,6 @@ public class MvpShopReleasePresenter extends BasePresenter<IMvpShopReleaseContra
         // Test code begin
         params.put("bizType", "10");
         params.put("orderNum", "100");
-        params.put("orderNum", "100");
         params.put("descr", "");
         params.put("fileType", "1");
         // Test code end
@@ -87,7 +86,7 @@ public class MvpShopReleasePresenter extends BasePresenter<IMvpShopReleaseContra
             params.put(mobile.getKey(), mobile.getValue());
         }
 
-        BaseInputParam<String> address = getUi().getShopAddressParam("address");
+        BaseInputParam<String> address = getUi().getShopAddressParam("addressDistrict");
         if (address.checkIsEmpty(R.string.mvp_shop_release_address_need)) {
             return;
         } else {
@@ -115,7 +114,7 @@ public class MvpShopReleasePresenter extends BasePresenter<IMvpShopReleaseContra
             params.put(longitude.getKey(), longitude.getValue());
         }
 
-        params.put("detailAddress", getUi().getShopDetailAddressParam("detailAddress").getValue().toString());
+        params.put("addressStreet", getUi().getShopDetailAddressParam("addressStreet").getValue().toString());
         params.put("description", getUi().getShopDescriptionParam("description").getValue().toString());
         params.put("remark", getUi().getShopRemarkParam("remark").getValue().toString());
 
@@ -123,6 +122,12 @@ public class MvpShopReleasePresenter extends BasePresenter<IMvpShopReleaseContra
         if (images.checkIsEmpty(R.string.mvp_shop_release_photo_image_need)) {
             return;
         } else {
+            int pos = images.getValue().indexOf(",");
+            if (pos == -1) {
+                params.put("mainImgUrl", images.getValue());
+            } else {
+                params.put("mainImgUrl", images.getValue().substring(0, pos));
+            }
             params.put(images.getKey(), images.getValue());
         }
 

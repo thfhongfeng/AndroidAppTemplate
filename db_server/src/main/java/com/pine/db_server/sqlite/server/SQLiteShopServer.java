@@ -17,9 +17,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.pine.base.request.IRequestManager.SESSION_ID;
+import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.PRODUCT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.SHOP_TABLE_NAME;
 
@@ -29,14 +32,24 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                      @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            long id = insert(db, SHOP_TABLE_NAME, requestBean.getParams());
-            if (id == -1) {
-                return DbResponseGenerator.getBadArgsRep(requestBean, cookies);
+            Map<String, String> queryParams = new HashMap<>();
+            queryParams.put("id" , cookies.get(SESSION_ID));
+            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, queryParams);
+            if (cursor.moveToFirst()) {
+                Map<String, String> requestParams = requestBean.getParams();
+                requestParams.put("id", "1100" + new Date().getTime());
+                requestParams.put("userId", cursor.getString(cursor.getColumnIndex("id")));
+                long id = insert(db, SHOP_TABLE_NAME, requestParams);
+                if (id == -1) {
+                    return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+                } else {
+                    return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
+                }
             } else {
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, "{'id':" + id + "}");
+                return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "请登录");
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
@@ -68,14 +81,14 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     jsonObject.put("remark", cursor.getString(cursor.getColumnIndex("remark")));
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonObject.toString());
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+                return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
@@ -108,14 +121,14 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     jsonArray.put(jsonObject);
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonArray.toString());
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+                return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
@@ -162,16 +175,16 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 db.setTransactionSuccessful();
                 db.endTransaction();
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, shopArr.toString());
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, shopArr.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 db.endTransaction();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+                return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
             db.endTransaction();
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }

@@ -24,4 +24,6 @@ public interface DbConstants extends BaseConstants {
     String TRAVEL_NOTE_TABLE_NAME = "travel_note";
     String TRAVEL_NOTE_SHOP_TABLE_NAME = "travel_note_shop";
     String TRAVEL_NOTE_COMMENT_TABLE_NAME = "travel_note_comment";
+
+    String FILE_INFO_TABLE_NAME = "file_info";
 }

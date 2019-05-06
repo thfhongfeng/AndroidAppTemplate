@@ -22,6 +22,7 @@ import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.APP_VERSION_TABLE_NAME;
 import static com.pine.db_server.DbConstants.DATABASE_NAME;
 import static com.pine.db_server.DbConstants.DATABASE_VERSION;
+import static com.pine.db_server.DbConstants.FILE_INFO_TABLE_NAME;
 import static com.pine.db_server.DbConstants.PRODUCT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.SHOP_TABLE_NAME;
 import static com.pine.db_server.DbConstants.SHOP_TYPE_TABLE_NAME;
@@ -40,6 +41,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         LogUtils.d(TAG, "onCreate");
+        createFileInfoTable(db);
         createConfigSwitcherTable(db);
         createAppVersionTable(db);
         createAccountTable(db);
@@ -55,6 +57,14 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    private void createFileInfoTable(SQLiteDatabase db) {
+        db.execSQL("create table if not exists " + FILE_INFO_TABLE_NAME +
+                "(_id integer primary key autoincrement,fileName text not null," +
+                "filePath text not null,bizType integer not null,fileType integer not null," +
+                "descr text,orderNum integer not null," +
+                "createTime datetime,updateTime datetime)");
     }
 
     private void createConfigSwitcherTable(SQLiteDatabase db) {

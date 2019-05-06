@@ -38,14 +38,14 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonArray.put(jsonObject);
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonArray.toString());
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+                return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
@@ -72,14 +72,14 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonObject == null ? "" : jsonObject.toString());
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject == null ? "" : jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+                return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
