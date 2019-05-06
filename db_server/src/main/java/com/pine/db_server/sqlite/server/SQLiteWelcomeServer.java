@@ -36,12 +36,12 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                     jsonArray.put(jsonObject);
                 }
+                cursor.close();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-            } finally {
                 cursor.close();
+                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
             }
         } catch (SQLException e) {
             return DbResponseGenerator.getExceptionRep(requestBean, header, e);
@@ -68,12 +68,12 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }
+                cursor.close();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonObject == null ? "" : jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-            } finally {
                 cursor.close();
+                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
             }
         } catch (SQLException e) {
             return DbResponseGenerator.getExceptionRep(requestBean, header, e);

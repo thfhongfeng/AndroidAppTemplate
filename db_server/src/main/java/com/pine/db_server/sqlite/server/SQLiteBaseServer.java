@@ -37,7 +37,6 @@ public class SQLiteBaseServer {
                 cv.put(entry.getKey(), entry.getValue());
             }
             long id = db.insert(tableName, nullColumnHack, cv);
-            db.close();
             return id;
         }
         return -1;
@@ -110,7 +109,6 @@ public class SQLiteBaseServer {
                 cv.put(entry.getKey(), entry.getValue());
             }
             int count = db.update(tableName, cv, idKey + "=?", new String[]{id});
-            db.close();
             return count;
         }
         return -1;

@@ -65,12 +65,12 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     jsonObject.put("description", cursor.getString(cursor.getColumnIndex("description")));
                     jsonObject.put("remark", cursor.getString(cursor.getColumnIndex("remark")));
                 }
+                cursor.close();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-            } finally {
                 cursor.close();
+                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
             }
         } catch (SQLException e) {
             return DbResponseGenerator.getExceptionRep(requestBean, header, e);
@@ -103,12 +103,12 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     jsonObject.put("mainImgUrl", cursor.getString(cursor.getColumnIndex("mainImgUrl")));
                     jsonArray.put(jsonObject);
                 }
+                cursor.close();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-            } finally {
                 cursor.close();
+                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
             }
         } catch (SQLException e) {
             return DbResponseGenerator.getExceptionRep(requestBean, header, e);
@@ -154,13 +154,14 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     shopArr.put(jsonObject);
                 }
                 db.setTransactionSuccessful();
+                db.endTransaction();
+                cursor.close();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, shopArr.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-            } finally {
                 db.endTransaction();
                 cursor.close();
+                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
             }
         } catch (SQLException e) {
             if (db.inTransaction()) {

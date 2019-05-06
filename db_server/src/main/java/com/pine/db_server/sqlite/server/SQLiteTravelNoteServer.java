@@ -75,13 +75,14 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }
                 db.setTransactionSuccessful();
+                cursor.close();
+                db.endTransaction();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-            } finally {
                 cursor.close();
                 db.endTransaction();
+                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
             }
         } catch (SQLException e) {
             db.endTransaction();
@@ -119,13 +120,14 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     }
                 }
                 db.setTransactionSuccessful();
+                cursor.close();
+                db.endTransaction();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-            } finally {
                 cursor.close();
                 db.endTransaction();
+                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
             }
         } catch (SQLException e) {
             db.endTransaction();
@@ -154,12 +156,12 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                     jsonArray.put(jsonObject);
                 }
+                cursor.close();
                 return DbResponseGenerator.getSuccessRep(requestBean, header, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-            } finally {
                 cursor.close();
+                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
             }
         } catch (SQLException e) {
             return DbResponseGenerator.getExceptionRep(requestBean, header, e);

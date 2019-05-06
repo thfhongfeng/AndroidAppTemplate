@@ -73,13 +73,14 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                     }
                     cookies.put(SESSION_ID, String.valueOf(accountId));
                     header.put(COOKIE_KEY, cookies);
+                    loginCursor.close();
+                    cursor.close();
                     return DbResponseGenerator.getSuccessRep(requestBean, header, jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    return DbResponseGenerator.getExceptionRep(requestBean, header, e);
-                } finally {
                     loginCursor.close();
                     cursor.close();
+                    return DbResponseGenerator.getExceptionRep(requestBean, header, e);
                 }
             }
         } catch (SQLException e) {
