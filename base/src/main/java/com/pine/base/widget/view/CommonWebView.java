@@ -30,8 +30,8 @@ import android.widget.Toast;
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
-import com.pine.base.request.http.HttpRequestManager;
-import com.pine.base.request.http.IHttpRequestManager;
+import com.pine.base.request.IRequestManager;
+import com.pine.base.request.RequestManager;
 import com.pine.base.util.DialogUtils;
 import com.pine.router.IRouterCallback;
 import com.pine.router.command.RouterLoginCommand;
@@ -213,7 +213,7 @@ public class CommonWebView extends WebView {
         cookieManager.setAcceptCookie(true);
         cookieManager.removeAllCookie();
         cookieManager.setCookie(url,
-                IHttpRequestManager.SESSION_ID + "=" + HttpRequestManager.getSessionId() + ";path=/;");
+                IRequestManager.SESSION_ID + "=" + RequestManager.getSessionId() + ";path=/;");
         CookieSyncManager.getInstance().sync();
     }
 

@@ -7,14 +7,13 @@ import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
-import com.pine.mvvm.model.IMvvmShopModel;
-import com.pine.mvvm.model.MvvmModelFactory;
+import com.pine.mvvm.model.MvvmShopModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MvvmShopNoPaginationListVm extends BaseViewModel {
-    private IMvvmShopModel mShopModel = MvvmModelFactory.getMvvmShopModel();
+    private MvvmShopModel mShopModel = new MvvmShopModel();
 
     public void loadShopNoPaginationListData() {
         if (isUiLoading()) {

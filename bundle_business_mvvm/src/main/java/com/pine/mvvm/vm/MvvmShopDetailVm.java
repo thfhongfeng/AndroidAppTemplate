@@ -7,8 +7,7 @@ import android.text.TextUtils;
 import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
-import com.pine.mvvm.model.IMvvmShopModel;
-import com.pine.mvvm.model.MvvmModelFactory;
+import com.pine.mvvm.model.MvvmShopModel;
 
 import java.util.HashMap;
 
@@ -18,7 +17,7 @@ import java.util.HashMap;
 
 public class MvvmShopDetailVm extends BaseViewModel {
     private String mId;
-    private IMvvmShopModel mShopModel = MvvmModelFactory.getMvvmShopModel();
+    private MvvmShopModel mShopModel = new MvvmShopModel();
 
     @Override
     public boolean parseIntentData(Bundle bundle) {

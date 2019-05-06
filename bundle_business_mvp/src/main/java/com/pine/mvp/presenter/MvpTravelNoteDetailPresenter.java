@@ -10,8 +10,7 @@ import com.pine.mvp.adapter.MvpTravelNoteDetailComplexAdapter;
 import com.pine.mvp.bean.MvpTravelNoteCommentEntity;
 import com.pine.mvp.bean.MvpTravelNoteDetailEntity;
 import com.pine.mvp.contract.IMvpTravelNoteDetailContract;
-import com.pine.mvp.model.IMvpTravelNoteModel;
-import com.pine.mvp.model.MvpModelFactory;
+import com.pine.mvp.model.MvpTravelNoteModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +23,11 @@ import java.util.List;
 public class MvpTravelNoteDetailPresenter extends BasePresenter<IMvpTravelNoteDetailContract.Ui>
         implements IMvpTravelNoteDetailContract.Presenter {
     private String mId;
-    private IMvpTravelNoteModel mTravelNoteModel;
+    private MvpTravelNoteModel mTravelNoteModel;
     private MvpTravelNoteDetailComplexAdapter mTravelNoteDetailAdapter;
 
     public MvpTravelNoteDetailPresenter() {
-        mTravelNoteModel = MvpModelFactory.getMvpTravelNoteModel();
+        mTravelNoteModel = new MvpTravelNoteModel();
     }
 
     @Override

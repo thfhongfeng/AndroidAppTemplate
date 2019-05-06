@@ -7,8 +7,7 @@ import com.pine.login.LoginConstants;
 import com.pine.login.R;
 import com.pine.login.bean.AccountBean;
 import com.pine.login.contract.IRegisterContract;
-import com.pine.login.model.ILoginAccountModel;
-import com.pine.login.model.LoginModelFactory;
+import com.pine.login.model.LoginAccountModel;
 
 import java.util.HashMap;
 
@@ -18,7 +17,7 @@ import java.util.HashMap;
 
 public class RegisterPresenter extends BasePresenter<IRegisterContract.Ui>
         implements IRegisterContract.Presenter {
-    private ILoginAccountModel mAccountModel = LoginModelFactory.getLoginAccountModel();
+    private LoginAccountModel mAccountModel = new LoginAccountModel();
 
     @Override
     public void register() {

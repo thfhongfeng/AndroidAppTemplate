@@ -40,7 +40,7 @@ ext.build_versions = build_versions
  */
 def build_url = [:]
 
-build_url.base_url = "https://suggest.taobao.com/sug?code=utf-8&q=android"
+build_url.base_url = "https://suggest.taobao.com/sug?code=utf-8"
 
 build_url.wei_bo_redirect_url = "https://api.weibo.com/oauth2/default.html"
 

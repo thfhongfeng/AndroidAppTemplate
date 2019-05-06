@@ -8,8 +8,7 @@ import com.pine.base.bean.BaseInputParam;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopDetailEntity;
 import com.pine.mvp.contract.IMvpShopReleaseContract;
-import com.pine.mvp.model.IMvpShopModel;
-import com.pine.mvp.model.MvpModelFactory;
+import com.pine.mvp.model.MvpShopModel;
 
 import java.util.HashMap;
 
@@ -19,10 +18,10 @@ import java.util.HashMap;
 
 public class MvpShopReleasePresenter extends BasePresenter<IMvpShopReleaseContract.Ui>
         implements IMvpShopReleaseContract.Presenter {
-    private IMvpShopModel mShopModel;
+    private MvpShopModel mShopModel;
 
     public MvpShopReleasePresenter() {
-        mShopModel = MvpModelFactory.getMvpShopModel();
+        mShopModel = new MvpShopModel();
     }
 
     @NonNull

@@ -9,8 +9,7 @@ import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpShopListPaginationAdapter;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpShopPaginationContract;
-import com.pine.mvp.model.IMvpShopModel;
-import com.pine.mvp.model.MvpModelFactory;
+import com.pine.mvp.model.MvpShopModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import java.util.HashMap;
 
 public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPaginationContract.Ui>
         implements IMvpShopPaginationContract.Presenter {
-    private IMvpShopModel mShopModel;
+    private MvpShopModel mShopModel;
     private MvpShopListPaginationAdapter mMvpHomeItemAdapter;
 
     private ILocationListener mLocationListener = new ILocationListener() {
@@ -37,7 +36,7 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
     };
 
     public MvpShopPaginationListPresenter() {
-        mShopModel = MvpModelFactory.getMvpShopModel();
+        mShopModel = new MvpShopModel();
     }
 
     @Override

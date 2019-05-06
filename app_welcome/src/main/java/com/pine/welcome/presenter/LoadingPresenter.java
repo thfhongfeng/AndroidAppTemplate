@@ -11,7 +11,7 @@ import com.pine.base.BaseApplication;
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.exception.MessageException;
-import com.pine.base.request.http.HttpRequestManager;
+import com.pine.base.request.RequestManager;
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigBundleKey;
 import com.pine.config.switcher.ConfigBundleSwitcher;
@@ -24,9 +24,8 @@ import com.pine.welcome.bean.BundleSwitcherEntity;
 import com.pine.welcome.bean.VersionEntity;
 import com.pine.welcome.contract.ILoadingContract;
 import com.pine.welcome.manager.ApkVersionManager;
-import com.pine.welcome.model.IBundleSwitcherModel;
-import com.pine.welcome.model.IVersionModel;
-import com.pine.welcome.model.WelModelFactory;
+import com.pine.welcome.model.BundleSwitcherModel;
+import com.pine.welcome.model.VersionModel;
 import com.pine.welcome.ui.activity.WelcomeActivity;
 
 import java.io.File;
@@ -38,13 +37,13 @@ import java.util.ArrayList;
 
 public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> implements ILoadingContract.Presenter {
     private final static long LOADING_MAX_TIME = 2000;
-    private IBundleSwitcherModel mBundleSwitcherModel;
-    private IVersionModel mVersionModel;
+    private BundleSwitcherModel mBundleSwitcherModel;
+    private VersionModel mVersionModel;
     private long mStartTimeMillis;
 
     public LoadingPresenter() {
-        mBundleSwitcherModel = WelModelFactory.getBundleSwitcherModel();
-        mVersionModel = WelModelFactory.getVersionModel();
+        mBundleSwitcherModel = new BundleSwitcherModel();
+        mVersionModel = new VersionModel();
     }
 
     @Override
@@ -245,7 +244,7 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
                 new ProgressDialog.IDialogActionListener() {
                     @Override
                     public void onCancel() {
-                        HttpRequestManager.cancelBySign(ApkVersionManager.getInstance().CANCEL_SIGN);
+                        RequestManager.cancelBySign(ApkVersionManager.getInstance().CANCEL_SIGN);
                     }
                 });
     }

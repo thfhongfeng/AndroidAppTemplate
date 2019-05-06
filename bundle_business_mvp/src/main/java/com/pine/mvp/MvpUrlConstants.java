@@ -7,15 +7,16 @@ import com.pine.base.BaseUrlConstants;
  */
 
 public interface MvpUrlConstants extends BaseUrlConstants {
-    String Add_Shop = BASE_URL + "";
-    String Query_ShopDetail = BASE_URL + "";
-    String Query_ShopList = BASE_URL + "";
-    String Query_ShopAndProductList = BASE_URL + "";
 
-    String Add_TravelNote = BASE_URL + "";
-    String Query_TravelNoteList = BASE_URL + "";
-    String Query_TravelNoteDetail = BASE_URL + "";
-    String Query_TravelNoteCommentList = BASE_URL + "";
+    String Add_Shop = BASE_URL + "&q=as";
+    String Query_ShopDetail = BASE_URL + "&q=qsd";
+    String Query_ShopList = BASE_URL + "&q=qsl";
+    String Query_ShopAndProductList = BASE_URL + "&q=qsapl";
+
+    String Add_TravelNote = BASE_URL + "&q=atn";
+    String Query_TravelNoteList = BASE_URL + "&q=qtnl";
+    String Query_TravelNoteDetail = BASE_URL + "&q=qtnd";
+    String Query_TravelNoteCommentList = BASE_URL + "&q=qtncl";
 
 //    String Upload_File = BASE_URL + "";
 

@@ -6,8 +6,7 @@ import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.config.ConfigBundleKey;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.contract.IMainHomeContract;
-import com.pine.main.model.IMainHomeModel;
-import com.pine.main.model.MainModelFactory;
+import com.pine.main.model.MainHomeModel;
 import com.pine.router.command.RouterDemoCommand;
 import com.pine.router.command.RouterMvcCommand;
 import com.pine.router.command.RouterMvpCommand;
@@ -20,10 +19,10 @@ import java.util.ArrayList;
  */
 
 public class MainHomePresenter extends BasePresenter<IMainHomeContract.Ui> implements IMainHomeContract.Presenter {
-    private IMainHomeModel mHomeModel;
+    private MainHomeModel mHomeModel;
 
     public MainHomePresenter() {
-        mHomeModel = MainModelFactory.getMainHomeModel();
+        mHomeModel = new MainHomeModel();
     }
 
     @Override

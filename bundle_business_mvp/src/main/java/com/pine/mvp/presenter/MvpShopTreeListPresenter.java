@@ -6,8 +6,7 @@ import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpShopListPaginationTreeAdapter;
 import com.pine.mvp.bean.MvpShopAndProductEntity;
 import com.pine.mvp.contract.IMvpShopTreeListContract;
-import com.pine.mvp.model.IMvpShopModel;
-import com.pine.mvp.model.MvpModelFactory;
+import com.pine.mvp.model.MvpShopModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,11 +17,11 @@ import java.util.HashMap;
 
 public class MvpShopTreeListPresenter extends BasePresenter<IMvpShopTreeListContract.Ui>
         implements IMvpShopTreeListContract.Presenter {
-    private IMvpShopModel mShopModel;
+    private MvpShopModel mShopModel;
     private MvpShopListPaginationTreeAdapter mMvpHomeItemAdapter;
 
     public MvpShopTreeListPresenter() {
-        mShopModel = MvpModelFactory.getMvpShopModel();
+        mShopModel = new MvpShopModel();
     }
 
     @Override

@@ -2,10 +2,9 @@ package com.pine.login.manager;
 
 import com.pine.base.BaseApplication;
 import com.pine.login.LoginConstants;
-import com.pine.login.model.ILoginAccountModel;
 import com.pine.login.model.ILoginResponse;
-import com.pine.login.model.LoginModelFactory;
-import com.pine.login.model.net.callback.LoginCallback;
+import com.pine.login.model.LoginAccountModel;
+import com.pine.login.model.callback.LoginCallback;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.SecurityUtils;
 import com.pine.tool.util.SharePreferenceUtils;
@@ -20,7 +19,7 @@ import java.util.HashMap;
 
 public class LoginManager {
     private final static String TAG = LogUtils.makeLogTag(LoginManager.class);
-    private static ILoginAccountModel mAccountModel = LoginModelFactory.getLoginAccountModel();
+    private static LoginAccountModel mAccountModel = new LoginAccountModel();
     private static volatile String mAccount;
     private static volatile String mPassword;
 

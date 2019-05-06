@@ -7,5 +7,5 @@ import com.pine.base.BaseUrlConstants;
  */
 
 public interface MainUrlConstants extends BaseUrlConstants {
-    String Query_BusinessList_Data = BASE_URL + "";
+
 }

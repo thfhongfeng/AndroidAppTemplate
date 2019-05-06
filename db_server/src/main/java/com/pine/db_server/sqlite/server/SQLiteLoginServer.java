@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.pine.base.request.database.DbRequestBean;
-import com.pine.base.request.database.DbResponse;
+import com.pine.base.request.impl.database.DbRequestBean;
+import com.pine.base.request.impl.database.DbResponse;
 import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
 
@@ -20,34 +20,36 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.pine.base.request.database.IDbRequestManager.COOKIE_KEY;
-import static com.pine.base.request.database.IDbRequestManager.SESSION_ID;
+import static com.pine.base.request.IRequestManager.SESSION_ID;
 import static com.pine.db_server.DbConstants.ACCOUNT_LOGIN_TABLE_NAME;
 import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 
 public class SQLiteLoginServer extends SQLiteBaseServer {
 
     public static DbResponse register(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                      @NonNull HashMap<String, HashMap<String, String>> header) {
+                                      @NonNull HashMap<String, String> cookies) {
+        SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            long id = insert(new SQLiteDbHelper(context).getWritableDatabase(), ACCOUNT_TABLE_NAME, requestBean.getParams());
+            long id = insert(db, ACCOUNT_TABLE_NAME, requestBean.getParams());
             if (id == -1) {
-                return DbResponseGenerator.getBadArgsRep(requestBean, header);
+                return DbResponseGenerator.getBadArgsRep(requestBean, cookies);
             } else {
-                return DbResponseGenerator.getSuccessRep(requestBean, header, "{'id':" + id + "}");
+                return DbResponseGenerator.getSuccessRep(requestBean, cookies, "{'id':" + id + "}");
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 
     public static DbResponse login(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                   @NonNull HashMap<String, HashMap<String, String>> header) {
+                                   @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
             Cursor cursor = query(db, ACCOUNT_TABLE_NAME, requestBean.getParams());
             if (!cursor.moveToFirst()) {
-                return DbResponseGenerator.getLoginFailRep(requestBean, header, "用户名密码错误");
+                return DbResponseGenerator.getLoginFailRep(requestBean, cookies, "用户名密码错误");
             } else {
                 ContentValues contentValues = new ContentValues();
                 String accountId = cursor.getString(cursor.getColumnIndex("id"));
@@ -67,34 +69,34 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                     jsonObject.put("mobile", cursor.getInt(cursor.getColumnIndex("mobile")));
                     jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
-                    HashMap<String, String> cookies = header.get(COOKIE_KEY);
                     if (cookies == null) {
                         cookies = new HashMap<>();
                     }
                     cookies.put(SESSION_ID, String.valueOf(accountId));
-                    header.put(COOKIE_KEY, cookies);
                     loginCursor.close();
                     cursor.close();
-                    return DbResponseGenerator.getSuccessRep(requestBean, header, jsonObject.toString());
+                    return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                     loginCursor.close();
                     cursor.close();
-                    return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+                    return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
                 }
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 
     public static DbResponse logout(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                    @NonNull HashMap<String, HashMap<String, String>> header) {
+                                    @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            String accountIdStr = header.get(COOKIE_KEY).get(SESSION_ID);
+            String accountIdStr = cookies.get(SESSION_ID);
             if (TextUtils.isEmpty(accountIdStr)) {
-                return DbResponseGenerator.getSuccessRep(requestBean, header, "");
+                return DbResponseGenerator.getSuccessRep(requestBean, cookies, "");
             }
             Cursor loginCursor = query(db, ACCOUNT_LOGIN_TABLE_NAME, null, "accountId=?",
                     new String[]{accountIdStr}, null, null, null);
@@ -105,9 +107,11 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                 update(db, ACCOUNT_LOGIN_TABLE_NAME, contentValues, "accountId=?", new String[]{accountIdStr});
             }
             loginCursor.close();
-            return DbResponseGenerator.getSuccessRep(requestBean, header, "");
+            return DbResponseGenerator.getSuccessRep(requestBean, cookies, "");
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 }

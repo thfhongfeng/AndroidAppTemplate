@@ -7,6 +7,7 @@ import com.pine.base.BaseUrlConstants;
  */
 
 public interface WelcomeUrlConstants extends BaseUrlConstants {
-    String Query_BundleSwitcher_Data = BASE_URL + "";
-    String Query_Version_Data = BASE_URL + "";
+
+    String Query_BundleSwitcher_Data = BASE_URL + "&q=bsd";
+    String Query_Version_Data = BASE_URL + "&q=vd";
 }

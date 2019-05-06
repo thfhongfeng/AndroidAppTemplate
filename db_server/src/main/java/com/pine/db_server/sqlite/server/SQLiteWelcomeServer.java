@@ -3,10 +3,11 @@ package com.pine.db_server.sqlite.server;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import com.pine.base.request.database.DbRequestBean;
-import com.pine.base.request.database.DbResponse;
+import com.pine.base.request.impl.database.DbRequestBean;
+import com.pine.base.request.impl.database.DbResponse;
 import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
 
@@ -22,10 +23,10 @@ import static com.pine.db_server.DbConstants.SWITCHER_CONFIG_TABLE_NAME;
 public class SQLiteWelcomeServer extends SQLiteBaseServer {
     public static DbResponse queryConfigSwitcher(@NonNull Context context,
                                                  @NonNull DbRequestBean requestBean,
-                                                 @NonNull HashMap<String, HashMap<String, String>> header) {
+                                                 @NonNull HashMap<String, String> cookies) {
+        SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
-            Cursor cursor = query(new SQLiteDbHelper(context).getReadableDatabase(),
-                    SWITCHER_CONFIG_TABLE_NAME, requestBean.getParams());
+            Cursor cursor = query(db, SWITCHER_CONFIG_TABLE_NAME, requestBean.getParams());
             try {
                 JSONArray jsonArray = new JSONArray();
                 while (cursor.moveToNext()) {
@@ -37,23 +38,25 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonArray.put(jsonObject);
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, header, jsonArray.toString());
+                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 
     public static DbResponse queryAppVersion(@NonNull Context context,
                                              @NonNull DbRequestBean requestBean,
-                                             @NonNull HashMap<String, HashMap<String, String>> header) {
+                                             @NonNull HashMap<String, String> cookies) {
+        SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
-            Cursor cursor = query(new SQLiteDbHelper(context).getReadableDatabase(),
-                    APP_VERSION_TABLE_NAME, requestBean.getParams());
+            Cursor cursor = query(db, APP_VERSION_TABLE_NAME, requestBean.getParams());
             try {
                 JSONObject jsonObject = null;
                 if (cursor.moveToFirst()) {
@@ -69,14 +72,16 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, header, jsonObject == null ? "" : jsonObject.toString());
+                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonObject == null ? "" : jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 }

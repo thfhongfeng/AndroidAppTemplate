@@ -17,8 +17,7 @@ import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.bean.MvpTravelNoteDetailEntity;
 import com.pine.mvp.contract.IMvpTravelNoteReleaseContract;
-import com.pine.mvp.model.IMvpTravelNoteModel;
-import com.pine.mvp.model.MvpModelFactory;
+import com.pine.mvp.model.MvpTravelNoteModel;
 import com.pine.mvp.ui.activity.MvpShopSearchCheckActivity;
 
 import org.json.JSONArray;
@@ -37,11 +36,11 @@ import java.util.Map;
 public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteReleaseContract.Ui>
         implements IMvpTravelNoteReleaseContract.Presenter {
     public final int REQUEST_CODE_SELECT_BELONG_SHOP = 1;
-    private IMvpTravelNoteModel mTravelNoteModel;
+    private MvpTravelNoteModel mTravelNoteModel;
     private ArrayList<MvpShopItemEntity> mBelongShopList;
 
     public MvpTravelNoteReleasePresenter() {
-        mTravelNoteModel = MvpModelFactory.getMvpTravelNoteModel();
+        mTravelNoteModel = new MvpTravelNoteModel();
     }
 
     @NonNull

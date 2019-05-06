@@ -5,8 +5,7 @@ import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.mvp.adapter.MvpShopListNoPaginationAdapter;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpShopNoPaginationListContract;
-import com.pine.mvp.model.IMvpShopModel;
-import com.pine.mvp.model.MvpModelFactory;
+import com.pine.mvp.model.MvpShopModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +16,11 @@ import java.util.HashMap;
 
 public class MvpShopNoPaginationListPresenter extends BasePresenter<IMvpShopNoPaginationListContract.Ui>
         implements IMvpShopNoPaginationListContract.Presenter {
-    private IMvpShopModel mShopModel;
+    private MvpShopModel mShopModel;
     private MvpShopListNoPaginationAdapter mMvpHomeItemAdapter;
 
     public MvpShopNoPaginationListPresenter() {
-        mShopModel = MvpModelFactory.getMvpShopModel();
+        mShopModel = new MvpShopModel();
     }
 
     @Override

@@ -13,8 +13,7 @@ import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpShopCheckListPaginationAdapter;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpShopSearchCheckContract;
-import com.pine.mvp.model.IMvpShopModel;
-import com.pine.mvp.model.MvpModelFactory;
+import com.pine.mvp.model.MvpShopModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,13 +28,13 @@ public class MvpShopSearchCheckPresenter extends BasePresenter<IMvpShopSearchChe
     public final static String RESULT_CHECKED_LIST_KEY = "result_checked_list_key";
     public final static String REQUEST_CHECKED_LIST_KEY = "request_checked_list_key";
 
-    private IMvpShopModel mShopModel;
+    private MvpShopModel mShopModel;
     private MvpShopCheckListPaginationAdapter mAdapter;
     private boolean mSearchMode;
     private ArrayList<MvpShopItemEntity> mBelongShopList;
 
     public MvpShopSearchCheckPresenter() {
-        mShopModel = MvpModelFactory.getMvpShopModel();
+        mShopModel = new MvpShopModel();
     }
 
     @Override

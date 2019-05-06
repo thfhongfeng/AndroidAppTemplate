@@ -10,8 +10,7 @@ import com.pine.base.binding.data.BaseLiveData;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.bean.MvvmShopSearchBean;
-import com.pine.mvvm.model.IMvvmShopModel;
-import com.pine.mvvm.model.MvvmModelFactory;
+import com.pine.mvvm.model.MvvmShopModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +22,7 @@ import static com.pine.mvvm.ui.activity.MvvmShopSearchCheckActivity.REQUEST_CHEC
  */
 
 public class MvvmShopSearchCheckVm extends BaseViewModel {
-    private IMvvmShopModel mShopModel = MvvmModelFactory.getMvvmShopModel();
+    private MvvmShopModel mShopModel = new MvvmShopModel();
     public ArrayList<MvvmShopItemEntity> mInitBelongShopList = new ArrayList<>();
     public boolean mSearchMode;
 

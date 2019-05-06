@@ -37,6 +37,7 @@ public class DbARouterDataRemote extends ARouterBundleRemote<DbDataRemoteService
 
     @Override
     public <R> R callCommandDirect(Context context, String commandName, Bundle args) {
+        LogUtils.d(TAG, "callCommandDirect execute");
         return callDirect(mRemoteService, mMethods, context, commandName, args);
     }
 }

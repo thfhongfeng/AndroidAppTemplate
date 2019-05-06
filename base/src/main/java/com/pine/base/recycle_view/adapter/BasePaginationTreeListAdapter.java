@@ -1,7 +1,5 @@
 package com.pine.base.recycle_view.adapter;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.view.ViewGroup;
 

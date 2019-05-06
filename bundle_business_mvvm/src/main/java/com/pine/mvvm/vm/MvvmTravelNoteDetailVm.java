@@ -10,8 +10,7 @@ import com.pine.base.binding.data.BaseLiveData;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmTravelNoteCommentEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
-import com.pine.mvvm.model.IMvvmTravelNoteModel;
-import com.pine.mvvm.model.MvvmModelFactory;
+import com.pine.mvvm.model.MvvmTravelNoteModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +22,7 @@ import java.util.List;
 
 public class MvvmTravelNoteDetailVm extends BaseViewModel {
     private String mId;
-    IMvvmTravelNoteModel mTravelNoteModel = MvvmModelFactory.getMvvmTravelNoteModel();
+    MvvmTravelNoteModel mTravelNoteModel = new MvvmTravelNoteModel();
 
     @Override
     public boolean parseIntentData(Bundle bundle) {

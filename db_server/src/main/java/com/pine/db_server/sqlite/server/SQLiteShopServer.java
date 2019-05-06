@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
-import com.pine.base.request.database.DbRequestBean;
-import com.pine.base.request.database.DbResponse;
+import com.pine.base.request.impl.database.DbRequestBean;
+import com.pine.base.request.impl.database.DbResponse;
 import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
 import com.pine.tool.util.RegexUtils;
@@ -26,22 +26,24 @@ import static com.pine.db_server.DbConstants.SHOP_TABLE_NAME;
 public class SQLiteShopServer extends SQLiteBaseServer {
 
     public static DbResponse addShop(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                     @NonNull HashMap<String, HashMap<String, String>> header) {
+                                     @NonNull HashMap<String, String> cookies) {
+        SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            long id = insert(new SQLiteDbHelper(context).getWritableDatabase(),
-                    SHOP_TABLE_NAME, requestBean.getParams());
+            long id = insert(db, SHOP_TABLE_NAME, requestBean.getParams());
             if (id == -1) {
-                return DbResponseGenerator.getBadArgsRep(requestBean, header);
+                return DbResponseGenerator.getBadArgsRep(requestBean, cookies);
             } else {
-                return DbResponseGenerator.getSuccessRep(requestBean, header, "{'id':" + id + "}");
+                return DbResponseGenerator.getSuccessRep(requestBean, cookies, "{'id':" + id + "}");
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 
     public static DbResponse queryShopDetail(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                             @NonNull HashMap<String, HashMap<String, String>> header) {
+                                             @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
             Map<String, String> params = requestBean.getParams();
@@ -66,19 +68,21 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     jsonObject.put("remark", cursor.getString(cursor.getColumnIndex("remark")));
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, header, jsonObject.toString());
+                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 
     public static DbResponse queryShopList(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                           @NonNull HashMap<String, HashMap<String, String>> header) {
+                                           @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
             Map<String, String> params = requestBean.getParams();
@@ -104,19 +108,21 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     jsonArray.put(jsonObject);
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, header, jsonArray.toString());
+                return DbResponseGenerator.getSuccessRep(requestBean, cookies, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 
     public static DbResponse queryShopProductList(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                                  @NonNull HashMap<String, HashMap<String, String>> header) {
+                                                  @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
             Map<String, String> params = requestBean.getParams();
@@ -156,18 +162,18 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 db.setTransactionSuccessful();
                 db.endTransaction();
                 cursor.close();
-                return DbResponseGenerator.getSuccessRep(requestBean, header, shopArr.toString());
+                return DbResponseGenerator.getSuccessRep(requestBean, cookies, shopArr.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 db.endTransaction();
                 cursor.close();
-                return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+                return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            if (db.inTransaction()) {
-                db.endTransaction();
-            }
-            return DbResponseGenerator.getExceptionRep(requestBean, header, e);
+            db.endTransaction();
+            return DbResponseGenerator.getExceptionRep(requestBean, cookies, e);
+        } finally {
+            db.close();
         }
     }
 

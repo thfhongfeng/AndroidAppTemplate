@@ -4,10 +4,9 @@ import android.content.Context;
 import android.database.SQLException;
 import android.support.annotation.NonNull;
 
-import com.pine.base.request.database.DbRequestBean;
-import com.pine.base.request.database.DbResponse;
-import com.pine.base.request.database.IDbRequestManager;
-import com.pine.db_server.IDbCommand;
+import com.pine.base.request.impl.database.DbRequestBean;
+import com.pine.base.request.impl.database.DbResponse;
+import com.pine.db_server.DbUrlConstants;
 import com.pine.db_server.sqlite.server.SQLiteLoginServer;
 import com.pine.db_server.sqlite.server.SQLiteShopServer;
 import com.pine.db_server.sqlite.server.SQLiteTravelNoteServer;
@@ -16,7 +15,7 @@ import com.pine.tool.util.AppUtils;
 
 import java.util.HashMap;
 
-public class SQLiteDbRequestManager implements IDbRequestManager {
+public class SQLiteDbRequestManager {
 
     private static volatile SQLiteDbRequestManager mInstance;
 
@@ -31,7 +30,6 @@ public class SQLiteDbRequestManager implements IDbRequestManager {
         return mInstance;
     }
 
-    @Override
     public boolean execSQL(@NonNull Context context, String sql) {
         try {
             new SQLiteDbHelper(context).getWritableDatabase().execSQL(sql);
@@ -43,37 +41,36 @@ public class SQLiteDbRequestManager implements IDbRequestManager {
     }
 
     @NonNull
-    @Override
     public DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                  HashMap<String, HashMap<String, String>> header) {
-        switch (requestBean.getCommand()) {
-            case IDbCommand.REQUEST_CONFIG_SWITCHER:
-                return SQLiteWelcomeServer.queryConfigSwitcher(context, requestBean, header);
-            case IDbCommand.REQUEST_APP_VERSION:
-                return SQLiteWelcomeServer.queryAppVersion(context, requestBean, header);
-            case IDbCommand.REQUEST_LOGIN:
-                return SQLiteLoginServer.login(context, requestBean, header);
-            case IDbCommand.REQUEST_LOGOUT:
-                return SQLiteLoginServer.logout(context, requestBean, header);
-            case IDbCommand.REQUEST_REGISTER:
-                return SQLiteLoginServer.register(context, requestBean, header);
-            case IDbCommand.REQUEST_ADD_SHOP:
-                return SQLiteShopServer.addShop(context, requestBean, header);
-            case IDbCommand.REQUEST_QUERY_SHOP_DETAIL:
-                return SQLiteShopServer.queryShopDetail(context, requestBean, header);
-            case IDbCommand.REQUEST_QUERY_SHOP_LIST:
-                return SQLiteShopServer.queryShopList(context, requestBean, header);
-            case IDbCommand.REQUEST_QUERY_SHOP_AND_PRODUCT_LIST:
-                return SQLiteShopServer.queryShopProductList(context, requestBean, header);
-            case IDbCommand.REQUEST_ADD_TRAVEL_NOTE:
-                return SQLiteTravelNoteServer.addTravelNote(context, requestBean, header);
-            case IDbCommand.REQUEST_QUERY_TRAVEL_NOTE_DETAIL:
-                return SQLiteTravelNoteServer.queryTravelNoteDetail(context, requestBean, header);
-            case IDbCommand.REQUEST_QUERY_TRAVEL_NOTE_LIST:
-                return SQLiteTravelNoteServer.queryTravelNoteList(context, requestBean, header);
-            case IDbCommand.REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST:
-                return SQLiteTravelNoteServer.queryTravelNoteCommentList(context, requestBean, header);
+                                  HashMap<String, String> header) {
+        if (DbUrlConstants.Query_BundleSwitcher_Data.equals(requestBean.getUrl())) {
+            return SQLiteWelcomeServer.queryConfigSwitcher(context, requestBean, header);
+        } else if (DbUrlConstants.Query_Version_Data.equals(requestBean.getUrl())) {
+            return SQLiteWelcomeServer.queryAppVersion(context, requestBean, header);
+        } else if (DbUrlConstants.Login.equals(requestBean.getUrl())) {
+            return SQLiteLoginServer.login(context, requestBean, header);
+        } else if (DbUrlConstants.Logout.equals(requestBean.getUrl())) {
+            return SQLiteLoginServer.logout(context, requestBean, header);
+        } else if (DbUrlConstants.Register_Account.equals(requestBean.getUrl())) {
+            return SQLiteLoginServer.register(context, requestBean, header);
+        } else if (DbUrlConstants.Add_Shop.equals(requestBean.getUrl())) {
+            return SQLiteShopServer.addShop(context, requestBean, header);
+        } else if (DbUrlConstants.Query_ShopDetail.equals(requestBean.getUrl())) {
+            return SQLiteShopServer.queryShopDetail(context, requestBean, header);
+        } else if (DbUrlConstants.Query_ShopList.equals(requestBean.getUrl())) {
+            return SQLiteShopServer.queryShopList(context, requestBean, header);
+        } else if (DbUrlConstants.Query_ShopAndProductList.equals(requestBean.getUrl())) {
+            return SQLiteShopServer.queryShopProductList(context, requestBean, header);
+        } else if (DbUrlConstants.Add_TravelNote.equals(requestBean.getUrl())) {
+            return SQLiteTravelNoteServer.addTravelNote(context, requestBean, header);
+        } else if (DbUrlConstants.Query_TravelNoteDetail.equals(requestBean.getUrl())) {
+            return SQLiteTravelNoteServer.queryTravelNoteDetail(context, requestBean, header);
+        } else if (DbUrlConstants.Query_TravelNoteList.equals(requestBean.getUrl())) {
+            return SQLiteTravelNoteServer.queryTravelNoteList(context, requestBean, header);
+        } else if (DbUrlConstants.Query_TravelNoteCommentList.equals(requestBean.getUrl())) {
+            return SQLiteTravelNoteServer.queryTravelNoteCommentList(context, requestBean, header);
+        } else {
+            return DbResponseGenerator.getNoSuchTableRep(requestBean, header);
         }
-        return DbResponseGenerator.getNoSuchTableRep(requestBean, header);
     }
 }

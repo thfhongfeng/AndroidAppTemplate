@@ -2,9 +2,9 @@ package com.pine.login;
 
 import android.app.Application;
 
-import com.pine.base.request.http.HttpRequestManager;
+import com.pine.base.request.RequestManager;
 import com.pine.config.BuildConfig;
-import com.pine.login.model.net.interceptor.LoginResponseInterceptor;
+import com.pine.login.model.interceptor.LoginResponseInterceptor;
 import com.pine.tool.util.LogUtils;
 
 /**
@@ -22,7 +22,7 @@ public class LoginApplication {
             case "local":
                 break;
             default:
-                HttpRequestManager.addGlobalResponseInterceptor(new LoginResponseInterceptor());
+                RequestManager.addGlobalResponseInterceptor(new LoginResponseInterceptor());
                 break;
         }
     }

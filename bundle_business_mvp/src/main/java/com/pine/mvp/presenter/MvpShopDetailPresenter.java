@@ -10,8 +10,7 @@ import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.bean.MvpShopDetailEntity;
 import com.pine.mvp.contract.IMvpShopDetailContract;
-import com.pine.mvp.model.IMvpShopModel;
-import com.pine.mvp.model.MvpModelFactory;
+import com.pine.mvp.model.MvpShopModel;
 import com.pine.mvp.ui.activity.MvpTravelNoteListActivity;
 import com.pine.mvp.ui.activity.MvpWebViewActivity;
 import com.pine.tool.util.DecimalUtils;
@@ -25,11 +24,11 @@ import java.util.HashMap;
 public class MvpShopDetailPresenter extends BasePresenter<IMvpShopDetailContract.Ui>
         implements IMvpShopDetailContract.Presenter {
     private String mId;
-    private IMvpShopModel mShopModel;
+    private MvpShopModel mShopModel;
     private MvpShopDetailEntity mShopDetailEntity;
 
     public MvpShopDetailPresenter() {
-        mShopModel = MvpModelFactory.getMvpShopModel();
+        mShopModel = new MvpShopModel();
     }
 
     @Override

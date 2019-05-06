@@ -11,8 +11,7 @@ import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
-import com.pine.mvvm.model.IMvvmTravelNoteModel;
-import com.pine.mvvm.model.MvvmModelFactory;
+import com.pine.mvvm.model.MvvmTravelNoteModel;
 import com.pine.mvvm.ui.activity.MvvmShopSearchCheckActivity;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 
 public class MvvmTravelNoteReleaseVm extends BaseViewModel {
-    IMvvmTravelNoteModel mTravelNoteModel = MvvmModelFactory.getMvvmTravelNoteModel();
+    MvvmTravelNoteModel mTravelNoteModel = new MvvmTravelNoteModel();
 
     @Override
     public void afterViewInit() {
