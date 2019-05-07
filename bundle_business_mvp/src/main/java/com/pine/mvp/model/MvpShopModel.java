@@ -75,16 +75,11 @@ public class MvpShopModel {
     }
 
     private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback,
-                                                final Object carryData) {
+                                            final Object carryData) {
         return new JsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject) {
                 if (what == REQUEST_ADD_SHOP) {
-                    // Test code begin
-                    if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
-                        jsonObject = getShopDetailData(carryData);
-                    }
-                    // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
                         }.getType());
