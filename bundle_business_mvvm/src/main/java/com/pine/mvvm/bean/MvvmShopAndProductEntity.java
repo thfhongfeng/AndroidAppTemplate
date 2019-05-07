@@ -19,6 +19,8 @@ public class MvvmShopAndProductEntity {
      * name : Shop Item 1
      * distance :
      * mainImgUrl :
+     * createTime :
+     * updateTime :
      * products : [{"name":"Product Item 1"},{"name":"Product Item 1"}]
      */
 
@@ -26,6 +28,8 @@ public class MvvmShopAndProductEntity {
     private String name;
     private String distance;
     private String mainImgUrl;
+    private String createTime;
+    private String updateTime;
 
     private String location;
 
@@ -63,6 +67,22 @@ public class MvvmShopAndProductEntity {
 
     public void setMainImgUrl(String mainImgUrl) {
         this.mainImgUrl = mainImgUrl;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     public String getLocation() {

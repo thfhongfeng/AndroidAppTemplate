@@ -104,14 +104,16 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(final RecyclerView recyclerView, int dx, int dy) {
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isLastViewMoreView(recyclerView) && listener != null) {
-                            listener.onLoadMore();
+                if (isLastViewMoreView(recyclerView)) {
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onLoadMore();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }
@@ -130,24 +132,33 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
             @Override
             public void onScrollChange(NestedScrollView v, final int scrollX, final int scrollY,
                                        int oldScrollX, int oldScrollY) {
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isLastViewMoreView(recyclerView, scrollView) && listener != null) {
-                            if (getRecycleViewOrientation() == RecyclerView.HORIZONTAL) {
-                                if (lastOnLoadMoreScrollX == 0 || scrollX - lastOnLoadMoreScrollX > 5) {
-                                    listener.onLoadMore();
-                                    lastOnLoadMoreScrollX = scrollX;
+                if (isLastViewMoreView(recyclerView, scrollView)) {
+                    if (getRecycleViewOrientation() == RecyclerView.HORIZONTAL) {
+                        if (lastOnLoadMoreScrollX == 0 || scrollX - lastOnLoadMoreScrollX > 5) {
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (listener != null) {
+                                        listener.onLoadMore();
+                                        lastOnLoadMoreScrollX = scrollX;
+                                    }
                                 }
-                            } else {
-                                if (lastOnLoadMoreScrollY == 0 || scrollY - lastOnLoadMoreScrollY > 5) {
-                                    listener.onLoadMore();
-                                    lastOnLoadMoreScrollY = scrollY;
+                            });
+                        }
+                    } else {
+                        if (lastOnLoadMoreScrollY == 0 || scrollY - lastOnLoadMoreScrollY > 5) {
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (listener != null) {
+                                        listener.onLoadMore();
+                                        lastOnLoadMoreScrollY = scrollY;
+                                    }
                                 }
-                            }
+                            });
                         }
                     }
-                });
+                }
             }
         });
     }

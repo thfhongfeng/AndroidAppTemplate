@@ -10,11 +10,13 @@ public class MvpTravelNoteItemEntity {
      * id :
      * title :
      * createTime :
+     * updateTime :
      */
 
     private String id;
     private String title;
     private String createTime;
+    private String updateTime;
 
     public String getId() {
         return id;
@@ -38,5 +40,13 @@ public class MvpTravelNoteItemEntity {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 }

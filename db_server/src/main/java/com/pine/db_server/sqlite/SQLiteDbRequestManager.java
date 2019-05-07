@@ -62,6 +62,8 @@ public class SQLiteDbRequestManager {
             return SQLiteShopServer.queryShopList(context, requestBean, header);
         } else if (DbUrlConstants.Query_ShopAndProductList.equals(requestBean.getUrl())) {
             return SQLiteShopServer.queryShopProductList(context, requestBean, header);
+        } else if (DbUrlConstants.Add_Product.equals(requestBean.getUrl())) {
+            return SQLiteShopServer.addProduct(context, requestBean, header);
         } else if (DbUrlConstants.Add_TravelNote.equals(requestBean.getUrl())) {
             return SQLiteTravelNoteServer.addTravelNote(context, requestBean, header);
         } else if (DbUrlConstants.Query_TravelNoteDetail.equals(requestBean.getUrl())) {

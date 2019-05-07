@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 public class LoginAccountModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
-    private static final int HTTP_REGISTER = 1;
+    private static final int REQUEST_REGISTER = 1;
 
     public boolean requestLogin(final HashMap<String, String> params, int requestCode, ILoginResponse callback) {
         String url = LoginUrlConstants.Login;
@@ -40,15 +40,15 @@ public class LoginAccountModel {
     public void requestRegister(final HashMap<String, String> params,
                                 @NonNull final IModelAsyncResponse<AccountBean> callback) {
         String url = LoginUrlConstants.Register_Account;
-        RequestManager.setJsonRequest(url, params, TAG, HTTP_REGISTER,
-                handleHttpResponse(callback));
+        RequestManager.setJsonRequest(url, params, TAG, REQUEST_REGISTER,
+                handleResponse(callback));
     }
 
-    private <T> JsonCallback handleHttpResponse(final IModelAsyncResponse<T> callback) {
+    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {
         return new JsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject) {
-                if (what == HTTP_REGISTER) {
+                if (what == REQUEST_REGISTER) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getRegisterAccountData();

@@ -11,6 +11,7 @@ import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.bean.MvpShopDetailEntity;
 import com.pine.mvp.contract.IMvpShopDetailContract;
 import com.pine.mvp.model.MvpShopModel;
+import com.pine.mvp.ui.activity.MvpProductReleaseActivity;
 import com.pine.mvp.ui.activity.MvpTravelNoteListActivity;
 import com.pine.mvp.ui.activity.MvpWebViewActivity;
 import com.pine.tool.util.DecimalUtils;
@@ -95,6 +96,13 @@ public class MvpShopDetailPresenter extends BasePresenter<IMvpShopDetailContract
     @Override
     public void goToTravelNoteListActivity() {
         Intent intent = new Intent(getContext(), MvpTravelNoteListActivity.class);
+        intent.putExtra("id", mId);
+        getContext().startActivity(intent);
+    }
+
+    @Override
+    public void goAddProductActivity() {
+        Intent intent = new Intent(getContext(), MvpProductReleaseActivity.class);
         intent.putExtra("id", mId);
         getContext().startActivity(intent);
     }

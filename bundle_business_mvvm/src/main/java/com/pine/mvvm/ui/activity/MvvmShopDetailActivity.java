@@ -116,5 +116,11 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
             intent.putExtra("id", id);
             startActivity(intent);
         }
+
+        public void goAddProductUi(View v, String id) {
+            Intent intent = new Intent(MvvmShopDetailActivity.this, MvvmProductReleaseActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        }
     }
 }

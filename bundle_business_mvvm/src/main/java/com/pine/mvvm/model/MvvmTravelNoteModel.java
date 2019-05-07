@@ -30,49 +30,49 @@ import java.util.Random;
 
 public class MvvmTravelNoteModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
-    private static final int HTTP_ADD_TRAVEL_NOTE = 1;
-    private static final int HTTP_QUERY_TRAVEL_NOTE_DETAIL = 2;
-    private static final int HTTP_QUERY_TRAVEL_NOTE_LIST = 3;
-    private static final int HTTP_QUERY_TRAVEL_NOTE_COMMENT_LIST = 4;
+    private static final int REQUEST_ADD_TRAVEL_NOTE = 1;
+    private static final int REQUEST_QUERY_TRAVEL_NOTE_DETAIL = 2;
+    private static final int REQUEST_QUERY_TRAVEL_NOTE_LIST = 3;
+    private static final int REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST = 4;
 
     public void requestAddTravelNote(final Map<String, String> params,
                                      @NonNull final IModelAsyncResponse<MvvmTravelNoteDetailEntity> callback) {
         String url = MvvmUrlConstants.Add_TravelNote;
-        JsonCallback httpStringCallback = handleHttpResponse(callback, params);
+        JsonCallback httpStringCallback = handleResponse(callback, params);
         RequestManager.setJsonRequest(url, params, TAG,
-                HTTP_ADD_TRAVEL_NOTE, httpStringCallback);
+                REQUEST_ADD_TRAVEL_NOTE, httpStringCallback);
     }
 
     public void requestTravelNoteDetailData(final Map<String, String> params,
                                             @NonNull final IModelAsyncResponse<MvvmTravelNoteDetailEntity> callback) {
         String url = MvvmUrlConstants.Query_TravelNoteDetail;
-        JsonCallback httpStringCallback = handleHttpResponse(callback, params);
+        JsonCallback httpStringCallback = handleResponse(callback, params);
         RequestManager.setJsonRequest(url, params, TAG,
-                HTTP_QUERY_TRAVEL_NOTE_DETAIL, httpStringCallback);
+                REQUEST_QUERY_TRAVEL_NOTE_DETAIL, httpStringCallback);
     }
 
     public void requestTravelNoteListData(final Map<String, String> params,
                                           @NonNull final IModelAsyncResponse<ArrayList<MvvmTravelNoteItemEntity>> callback) {
         String url = MvvmUrlConstants.Query_TravelNoteList;
-        JsonCallback httpStringCallback = handleHttpResponse(callback, params);
+        JsonCallback httpStringCallback = handleResponse(callback, params);
         RequestManager.setJsonRequest(url, params, TAG,
-                HTTP_QUERY_TRAVEL_NOTE_LIST, httpStringCallback);
+                REQUEST_QUERY_TRAVEL_NOTE_LIST, httpStringCallback);
     }
 
     public void requestTravelNoteCommentData(final Map<String, String> params,
                                              @NonNull final IModelAsyncResponse<ArrayList<MvvmTravelNoteCommentEntity>> callback) {
         String url = MvvmUrlConstants.Query_TravelNoteCommentList;
-        JsonCallback httpStringCallback = handleHttpResponse(callback, params);
+        JsonCallback httpStringCallback = handleResponse(callback, params);
         RequestManager.setJsonRequest(url, params, TAG,
-                HTTP_QUERY_TRAVEL_NOTE_COMMENT_LIST, httpStringCallback);
+                REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST, httpStringCallback);
     }
 
-    private <T> JsonCallback handleHttpResponse(final IModelAsyncResponse<T> callback,
-                                                final Object carryData) {
+    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback,
+                                            final Object carryData) {
         return new JsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject) {
-                if (what == HTTP_ADD_TRAVEL_NOTE) {
+                if (what == REQUEST_ADD_TRAVEL_NOTE) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getTravelNoteDetailData(carryData);
@@ -85,7 +85,7 @@ public class MvvmTravelNoteModel {
                     } else {
                         callback.onFail(new Exception(jsonObject.optString("message")));
                     }
-                } else if (what == HTTP_QUERY_TRAVEL_NOTE_DETAIL) {
+                } else if (what == REQUEST_QUERY_TRAVEL_NOTE_DETAIL) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getTravelNoteDetailData(carryData);
@@ -98,7 +98,7 @@ public class MvvmTravelNoteModel {
                     } else {
                         callback.onFail(new Exception(jsonObject.optString("message")));
                     }
-                } else if (what == HTTP_QUERY_TRAVEL_NOTE_LIST) {
+                } else if (what == REQUEST_QUERY_TRAVEL_NOTE_LIST) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getTravelNoteListData(carryData);
@@ -111,7 +111,7 @@ public class MvvmTravelNoteModel {
                     } else {
                         callback.onFail(new Exception(jsonObject.optString("message")));
                     }
-                } else if (what == HTTP_QUERY_TRAVEL_NOTE_COMMENT_LIST) {
+                } else if (what == REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getTravelNoteCommentData(carryData);

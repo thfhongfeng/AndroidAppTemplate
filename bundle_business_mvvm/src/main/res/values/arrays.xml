@@ -7,7 +7,7 @@
     </string-array>
     <string-array name="mvvm_shop_name_type">
         <item>景点</item>
-        <item>食品</item>
-        <item>五金</item>
+        <item>食品店</item>
+        <item>服装店</item>
     </string-array>
 </resources>

@@ -2,7 +2,7 @@
 <resources>
     <string-array name="mvp_shop_type">
         <item>景点</item>
-        <item>食品</item>
-        <item>五金</item>
+        <item>食品店</item>
+        <item>服装店</item>
     </string-array>
 </resources>

@@ -20,14 +20,17 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
      * name :
      * distance :
      * mainImgUrl :
+     * createTime :
+     * updateTime :
      */
 
     private String id;
     private String name;
     private String distance;
     private String mainImgUrl;
-
     private String location;
+    private String createTime;
+    private String updateTime;
 
     protected MvvmShopItemEntity(Parcel in) {
         id = in.readString();
@@ -35,6 +38,8 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
         distance = in.readString();
         mainImgUrl = in.readString();
         location = in.readString();
+        createTime = in.readString();
+        updateTime = in.readString();
     }
 
     public static final Creator<MvvmShopItemEntity> CREATOR = new Creator<MvvmShopItemEntity>() {
@@ -61,6 +66,8 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
         dest.writeString(distance);
         dest.writeString(mainImgUrl);
         dest.writeString(location);
+        dest.writeString(createTime);
+        dest.writeString(updateTime);
     }
 
     public String getId() {
@@ -111,5 +118,21 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
             }
         }
         return location;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 }

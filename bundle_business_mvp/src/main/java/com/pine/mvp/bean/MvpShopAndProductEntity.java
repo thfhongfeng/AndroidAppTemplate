@@ -1,5 +1,11 @@
 package com.pine.mvp.bean;
 
+import android.text.TextUtils;
+
+import com.pine.mvp.R;
+import com.pine.tool.util.AppUtils;
+import com.pine.tool.util.DecimalUtils;
+
 import java.util.List;
 
 /**
@@ -13,6 +19,8 @@ public class MvpShopAndProductEntity {
      * name : Shop Item 1
      * distance :
      * mainImgUrl :
+     * createTime :
+     * updateTime :
      * products : [{"name":"Product Item 1"},{"name":"Product Item 1"}]
      */
 
@@ -20,6 +28,10 @@ public class MvpShopAndProductEntity {
     private String name;
     private String distance;
     private String mainImgUrl;
+    private String createTime;
+    private String updateTime;
+
+    private String location;
 
     private List<ProductsBean> products;
 
@@ -45,6 +57,8 @@ public class MvpShopAndProductEntity {
 
     public void setDistance(String distance) {
         this.distance = distance;
+        this.location = "";
+        this.location = getLocation();
     }
 
     public String getMainImgUrl() {
@@ -53,6 +67,38 @@ public class MvpShopAndProductEntity {
 
     public void setMainImgUrl(String mainImgUrl) {
         this.mainImgUrl = mainImgUrl;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getLocation() {
+        if (!TextUtils.isEmpty(location)) {
+            return location;
+        }
+        if (!TextUtils.isEmpty(distance)) {
+            float distanceF = Float.parseFloat(distance);
+            if (distanceF >= 1000.0f) {
+                location = DecimalUtils.divide(distanceF, 1000.0f, 2) +
+                        AppUtils.getApplication().getString(R.string.unit_kilometre);
+            } else {
+                location = distanceF + AppUtils.getApplication().getString(R.string.unit_metre);
+            }
+        }
+        return location;
     }
 
     public List<ProductsBean> getProducts() {

@@ -253,13 +253,13 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             list.add(contentValues);
             contentValues = new ContentValues();
             contentValues.put("type", "2");
-            contentValues.put("typeName", "食品");
+            contentValues.put("typeName", "食品店");
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             list.add(contentValues);
             contentValues = new ContentValues();
             contentValues.put("type", "3");
-            contentValues.put("typeName", "五金");
+            contentValues.put("typeName", "服装店");
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             list.add(contentValues);
@@ -301,7 +301,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("id", "1100" + "20190328102000000" + "0" + (i > 9 ? i : "0" + i));
                 contentValues.put("name", "Shop Item " + (i + 1));
                 contentValues.put("type", i % 3 == 0 ? "2" : "1");
-                contentValues.put("typeName", i % 3 == 0 ? "食品" : "景点");
+                contentValues.put("typeName", i % 3 == 0 ? "食品店" : "景点");
                 int r = new Random().nextInt(3);
                 if (r == 1) {
                     contentValues.put("userId", "100020190328102000000001");
@@ -365,8 +365,10 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         try {
             db.execSQL("create table if not exists " + PRODUCT_TABLE_NAME +
                     "(_id integer primary key autoincrement," +
-                    "id text not null unique,name text not null," +
-                    "shopId text not null,createTime datetime,updateTime datetime)");
+                    "id text not null unique,name text not null,price text not null," +
+                    "shelvePrice text not null,shelveDate datetime not null," +
+                    "shopId text not null,description text,remark text," +
+                    "createTime datetime,updateTime datetime)");
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             for (int i = 0; i < 80; i++) {
@@ -374,7 +376,11 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("id", "1101" + "20190328102000000" + "0" + (i > 9 ? i : "0" + i));
                 contentValues.put("name", "Product Item " + (i + 1));
                 int r = new Random().nextInt(24);
+                float price = r * 2.0f + i;
+                contentValues.put("price", String.valueOf(price));
+                contentValues.put("shelvePrice", String.valueOf(price * r / (r + 2)));
                 contentValues.put("shopId", "110020190328102000000" + "0" + (r > 9 ? r : "0" + r));
+                contentValues.put("shelveDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 list.add(contentValues);

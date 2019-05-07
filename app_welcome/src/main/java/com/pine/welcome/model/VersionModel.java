@@ -24,20 +24,20 @@ import java.util.HashMap;
 
 public class VersionModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
-    private static final int HTTP_QUERY_VERSION_INFO = 1;
+    private static final int REQUEST_QUERY_VERSION_INFO = 1;
 
     public boolean requestUpdateVersionData(@NonNull IModelAsyncResponse<VersionEntity> callback) {
         String url = WelcomeUrlConstants.Query_Version_Data;
-        JsonCallback httpStringCallback = handleHttpResponse(callback);
+        JsonCallback httpStringCallback = handleResponse(callback);
         return RequestManager.setJsonRequest(url, new HashMap<String, String>(),
-                TAG, HTTP_QUERY_VERSION_INFO, httpStringCallback);
+                TAG, REQUEST_QUERY_VERSION_INFO, httpStringCallback);
     }
 
-    private <T> JsonCallback handleHttpResponse(final IModelAsyncResponse<T> callback) {
+    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {
         return new JsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject) {
-                if (HTTP_QUERY_VERSION_INFO == what) {
+                if (REQUEST_QUERY_VERSION_INFO == what) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getUpdateVersionData();

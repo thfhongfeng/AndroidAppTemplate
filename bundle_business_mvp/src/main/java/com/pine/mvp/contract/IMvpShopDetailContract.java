@@ -20,5 +20,7 @@ public interface IMvpShopDetailContract {
         void goToShopH5Activity();
 
         void goToTravelNoteListActivity();
+
+        void goAddProductActivity();
     }
 }

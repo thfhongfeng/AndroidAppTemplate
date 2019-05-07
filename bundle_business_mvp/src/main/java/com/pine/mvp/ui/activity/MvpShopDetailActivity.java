@@ -31,6 +31,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
     private ImageUploadView photo_iuv;
     private TextView go_shop_h5_btn_tv;
     private TextView go_travel_note_list_btn_tv;
+    private TextView go_add_product_btn_tv;
 
     @Override
     protected int getActivityLayoutResId() {
@@ -51,6 +52,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
         photo_iuv = findViewById(R.id.photo_iuv);
         go_shop_h5_btn_tv = findViewById(R.id.go_shop_h5_btn_tv);
         go_travel_note_list_btn_tv = findViewById(R.id.go_travel_note_list_btn_tv);
+        go_add_product_btn_tv = findViewById(R.id.go_add_product_btn_tv);
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
     }
 
@@ -85,6 +87,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
         address_marker_tv.setOnClickListener(this);
         go_shop_h5_btn_tv.setOnClickListener(this);
         go_travel_note_list_btn_tv.setOnClickListener(this);
+        go_add_product_btn_tv.setOnClickListener(this);
     }
 
     @Override
@@ -100,6 +103,8 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
             mPresenter.goToShopH5Activity();
         } else if (v.getId() == R.id.go_travel_note_list_btn_tv) {
             mPresenter.goToTravelNoteListActivity();
+        } else if (v.getId() == R.id.go_add_product_btn_tv) {
+            mPresenter.goAddProductActivity();
         }
     }
 
@@ -119,7 +124,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
         address_street_tv.setText(entity.getAddressStreet());
         description_tv.setText(entity.getDescription());
         remark_tv.setText(entity.getRemark());
-        photo_iuv.setRemoteImages(entity.getHeadImgUrls(), ",");
+        photo_iuv.setRemoteImages(entity.getImgUrls(), ",");
     }
 
     @Override

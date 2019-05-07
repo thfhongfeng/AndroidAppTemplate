@@ -10,6 +10,7 @@ import com.pine.base.request.callback.JsonCallback;
 import com.pine.config.BuildConfig;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.MvvmUrlConstants;
+import com.pine.mvvm.bean.MvvmProductDetailEntity;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
@@ -31,46 +32,62 @@ import java.util.Random;
  */
 
 public class MvvmShopModel {
-    private static final int HTTP_ADD_SHOP = 1;
-    private static final int HTTP_QUERY_SHOP_DETAIL = 2;
-    private static final int HTTP_QUERY_SHOP_LIST = 3;
-    private static final int HTTP_QUERY_SHOP_AND_PRODUCT_LIST = 4;
     private final String TAG = LogUtils.makeLogTag(this.getClass());
+    private static final int REQUEST_ADD_SHOP = 1;
+    private static final int REQUEST_QUERY_SHOP_DETAIL = 2;
+    private static final int REQUEST_QUERY_SHOP_LIST = 3;
+    private static final int REQUEST_QUERY_SHOP_AND_PRODUCT_LIST = 4;
+    private static final int REQUEST_ADD_PRODUCT = 5;
 
     public void requestAddShop(final Map<String, String> params,
                                @NonNull final IModelAsyncResponse<MvvmShopDetailEntity> callback) {
         String url = MvvmUrlConstants.Add_Shop;
-        RequestManager.setJsonRequest(url, params, TAG, HTTP_ADD_SHOP,
-                handleHttpResponse(callback, params));
+        RequestManager.setJsonRequest(url, params, TAG, REQUEST_ADD_SHOP,
+                handleResponse(callback, params));
     }
 
     public void requestShopDetailData(final Map<String, String> params,
                                       @NonNull final IModelAsyncResponse<MvvmShopDetailEntity> callback) {
         String url = MvvmUrlConstants.Query_ShopDetail;
-        RequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_DETAIL,
-                handleHttpResponse(callback, params));
+        RequestManager.setJsonRequest(url, params, TAG, REQUEST_QUERY_SHOP_DETAIL,
+                handleResponse(callback, params));
     }
 
     public void requestShopListData(final Map<String, String> params,
                                     @NonNull final IModelAsyncResponse<ArrayList<MvvmShopItemEntity>> callback) {
         String url = MvvmUrlConstants.Query_ShopList;
-        RequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_LIST,
-                handleHttpResponse(callback, params));
+        RequestManager.setJsonRequest(url, params, TAG, REQUEST_QUERY_SHOP_LIST,
+                handleResponse(callback, params));
     }
 
     public void requestShopAndProductListData(Map<String, String> params,
                                               @NonNull final IModelAsyncResponse<ArrayList<MvvmShopAndProductEntity>> callback) {
         String url = MvvmUrlConstants.Query_ShopAndProductList;
-        RequestManager.setJsonRequest(url, params, TAG, HTTP_QUERY_SHOP_AND_PRODUCT_LIST,
-                handleHttpResponse(callback, params));
+        RequestManager.setJsonRequest(url, params, TAG, REQUEST_QUERY_SHOP_AND_PRODUCT_LIST,
+                handleResponse(callback, params));
     }
 
-    private <T> JsonCallback handleHttpResponse(final IModelAsyncResponse<T> callback,
-                                                final Object carryData) {
+    public void requestAddProduct(final Map<String, String> params,
+                                  @NonNull final IModelAsyncResponse<MvvmProductDetailEntity> callback) {
+        String url = MvvmUrlConstants.Add_Product;
+        RequestManager.setJsonRequest(url, params, TAG, REQUEST_ADD_PRODUCT,
+                handleResponse(callback, params));
+    }
+
+    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback,
+                                            final Object carryData) {
         return new JsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject) {
-                if (what == HTTP_ADD_SHOP) {
+                if (what == REQUEST_ADD_SHOP) {
+                    if (jsonObject.optBoolean(MvvmConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvvmConstants.DATA), new TypeToken<MvvmShopDetailEntity>() {
+                        }.getType());
+                        callback.onResponse(retData);
+                    } else {
+                        callback.onFail(new Exception(jsonObject.optString("message")));
+                    }
+                } else if (what == REQUEST_QUERY_SHOP_DETAIL) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getShopDetailData(carryData);
@@ -83,20 +100,7 @@ public class MvvmShopModel {
                     } else {
                         callback.onFail(new Exception(jsonObject.optString("message")));
                     }
-                } else if (what == HTTP_QUERY_SHOP_DETAIL) {
-                    // Test code begin
-                    if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
-                        jsonObject = getShopDetailData(carryData);
-                    }
-                    // Test code end
-                    if (jsonObject.optBoolean(MvvmConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvvmConstants.DATA), new TypeToken<MvvmShopDetailEntity>() {
-                        }.getType());
-                        callback.onResponse(retData);
-                    } else {
-                        callback.onFail(new Exception(jsonObject.optString("message")));
-                    }
-                } else if (what == HTTP_QUERY_SHOP_LIST) {
+                } else if (what == REQUEST_QUERY_SHOP_LIST) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getShopListData(carryData);
@@ -109,7 +113,7 @@ public class MvvmShopModel {
                     } else {
                         callback.onFail(new Exception(jsonObject.optString("message")));
                     }
-                } else if (what == HTTP_QUERY_SHOP_AND_PRODUCT_LIST) {
+                } else if (what == REQUEST_QUERY_SHOP_AND_PRODUCT_LIST) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
                         jsonObject = getShopAndProductListData(carryData);
@@ -117,6 +121,14 @@ public class MvvmShopModel {
                     // Test code end
                     if (jsonObject.optBoolean(MvvmConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvvmConstants.DATA), new TypeToken<List<MvvmShopAndProductEntity>>() {
+                        }.getType());
+                        callback.onResponse(retData);
+                    } else {
+                        callback.onFail(new Exception(jsonObject.optString("message")));
+                    }
+                } else if (what == REQUEST_ADD_PRODUCT) {
+                    if (jsonObject.optBoolean(MvvmConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvvmConstants.DATA), new TypeToken<MvvmProductDetailEntity>() {
                         }.getType());
                         callback.onResponse(retData);
                     } else {

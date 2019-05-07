@@ -285,5 +285,19 @@
             android:padding="@dimen/dp_20"
             android:text="Go To Travel Note List" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0.5"
+            android:background="#999999"></View>
+
+        <TextView
+            android:id="@+id/go_add_product_btn_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/dp_20"
+            android:text="Add Product" />
+
     </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

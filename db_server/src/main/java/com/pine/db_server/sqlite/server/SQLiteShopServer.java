@@ -33,7 +33,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
             Map<String, String> queryParams = new HashMap<>();
-            queryParams.put("id" , cookies.get(SESSION_ID));
+            queryParams.put("id", cookies.get(SESSION_ID));
             Cursor cursor = query(db, ACCOUNT_TABLE_NAME, queryParams);
             if (cursor.moveToFirst()) {
                 Map<String, String> requestParams = requestBean.getParams();
@@ -79,6 +79,8 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     jsonObject.put("imgUrls", cursor.getString(cursor.getColumnIndex("imgUrls")));
                     jsonObject.put("description", cursor.getString(cursor.getColumnIndex("description")));
                     jsonObject.put("remark", cursor.getString(cursor.getColumnIndex("remark")));
+                    jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
+                    jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }
                 cursor.close();
                 return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject.toString());
@@ -118,6 +120,8 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                         jsonObject.put("distance", String.valueOf(distance));
                     }
                     jsonObject.put("mainImgUrl", cursor.getString(cursor.getColumnIndex("mainImgUrl")));
+                    jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
+                    jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                     jsonArray.put(jsonObject);
                 }
                 cursor.close();
@@ -160,6 +164,8 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                         jsonObject.put("distance", String.valueOf(distance));
                     }
                     jsonObject.put("mainImgUrl", cursor.getString(cursor.getColumnIndex("mainImgUrl")));
+                    jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
+                    jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                     Cursor productCursor = query(db, PRODUCT_TABLE_NAME, new String[]{"id", "name"},
                             "shopId=?", new String[]{id}, null, null, null);
                     JSONArray productArr = new JSONArray();
@@ -184,6 +190,32 @@ public class SQLiteShopServer extends SQLiteBaseServer {
             }
         } catch (SQLException e) {
             db.endTransaction();
+            return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
+        } finally {
+            db.close();
+        }
+    }
+
+    public static DbResponse addProduct(@NonNull Context context, @NonNull DbRequestBean requestBean,
+                                        @NonNull HashMap<String, String> cookies) {
+        SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
+        try {
+            Map<String, String> queryParams = new HashMap<>();
+            queryParams.put("id", cookies.get(SESSION_ID));
+            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, queryParams);
+            if (cursor.moveToFirst()) {
+                Map<String, String> requestParams = requestBean.getParams();
+                requestParams.put("id", "1101" + new Date().getTime());
+                long id = insert(db, PRODUCT_TABLE_NAME, requestParams);
+                if (id == -1) {
+                    return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+                } else {
+                    return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
+                }
+            } else {
+                return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "请登录");
+            }
+        } catch (SQLException e) {
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();

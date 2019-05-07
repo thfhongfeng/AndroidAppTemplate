@@ -25,6 +25,8 @@ public class MvvmShopDetailEntity extends BaseBean {
      * imgUrls :
      * description :
      * remark :
+     * createTime :
+     * updateTime :
      */
 
     private String id;
@@ -43,6 +45,8 @@ public class MvvmShopDetailEntity extends BaseBean {
     private String imgUrls;
     private String description;
     private String remark;
+    private String createTime;
+    private String updateTime;
 
     public String getId() {
         return id;
@@ -170,5 +174,21 @@ public class MvvmShopDetailEntity extends BaseBean {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 }

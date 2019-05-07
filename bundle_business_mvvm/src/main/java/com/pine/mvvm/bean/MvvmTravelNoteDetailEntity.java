@@ -18,13 +18,14 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
      * headImgUrl :
      * author : 作者
      * belongShops :
-     * createTime : 2018-10-10 10:10:10
      * likeCount : 100
      * isLike : true
      * readCount : 10000
      * preface :
      * dayCount :
      * days : []
+     * createTime : 2018-10-10 10:10:10
+     * updateTime :
      */
 
     private String id;
@@ -33,13 +34,14 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
     private String headImgUrl;
     private String author;
     private List<MvvmShopItemEntity> belongShops;
-    private String createTime;
     private int likeCount;
     private boolean isLike;
     private int readCount;
     private String preface;
     private Integer dayCount = new Integer(0);
     private List<DayBean> days;
+    private String createTime;
+    private String updateTime;
 
     public String getId() {
         return id;
@@ -89,14 +91,6 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
         this.belongShops = belongShops;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
     public int getLikeCount() {
         return likeCount;
     }
@@ -143,6 +137,22 @@ public class MvvmTravelNoteDetailEntity extends BaseBean {
 
     public void setDays(List<DayBean> days) {
         this.days = days;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     public static class DayBean {
