@@ -2,7 +2,6 @@ package com.pine.base.recycle_view.adapter;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -104,10 +103,15 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     public void setOnScrollListener(@NonNull RecyclerView recyclerView, final IOnScrollListener listener) {
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (isLastViewMoreView(recyclerView) && listener != null) {
-                    listener.onLoadMore();
-                }
+            public void onScrolled(final RecyclerView recyclerView, int dx, int dy) {
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isLastViewMoreView(recyclerView) && listener != null) {
+                            listener.onLoadMore();
+                        }
+                    }
+                });
             }
         });
     }
@@ -124,22 +128,26 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
                                     final IOnScrollListener listener) {
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY,
+            public void onScrollChange(NestedScrollView v, final int scrollX, final int scrollY,
                                        int oldScrollX, int oldScrollY) {
-
-                if (isLastViewMoreView(recyclerView, scrollView) && listener != null) {
-                    if (getRecycleViewOrientation() == RecyclerView.HORIZONTAL) {
-                        if (lastOnLoadMoreScrollX == 0 || scrollX - lastOnLoadMoreScrollX > 5) {
-                            listener.onLoadMore();
-                            lastOnLoadMoreScrollX = scrollX;
-                        }
-                    } else {
-                        if (lastOnLoadMoreScrollY == 0 || scrollY - lastOnLoadMoreScrollY > 5) {
-                            listener.onLoadMore();
-                            lastOnLoadMoreScrollY = scrollY;
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isLastViewMoreView(recyclerView, scrollView) && listener != null) {
+                            if (getRecycleViewOrientation() == RecyclerView.HORIZONTAL) {
+                                if (lastOnLoadMoreScrollX == 0 || scrollX - lastOnLoadMoreScrollX > 5) {
+                                    listener.onLoadMore();
+                                    lastOnLoadMoreScrollX = scrollX;
+                                }
+                            } else {
+                                if (lastOnLoadMoreScrollY == 0 || scrollY - lastOnLoadMoreScrollY > 5) {
+                                    listener.onLoadMore();
+                                    lastOnLoadMoreScrollY = scrollY;
+                                }
+                            }
                         }
                     }
-                }
+                });
             }
         });
     }
@@ -257,9 +265,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     public final void notifyDataSetChangedSafely() {
-        if (Thread.currentThread() != Looper.getMainLooper().getThread() ||
-                mRecyclerView != null && mRecyclerView.isComputingLayout()) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+        if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
+            mRecyclerView.post(new Runnable() {
                 @Override
                 public void run() {
                     notifyDataSetChanged();
@@ -276,9 +283,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     public final void notifyItemRangeChangedSafely(final int positionStart, final int itemCount,
                                                    final @Nullable Object payload) {
-        if (Thread.currentThread() != Looper.getMainLooper().getThread() ||
-                mRecyclerView != null && mRecyclerView.isComputingLayout()) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+        if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
+            mRecyclerView.post(new Runnable() {
                 @Override
                 public void run() {
                     notifyItemRangeChanged(positionStart, itemCount, payload);
@@ -294,9 +300,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     public final void notifyItemRangeChangedSafely(final int positionStart, final int itemCount) {
-        if (Thread.currentThread() != Looper.getMainLooper().getThread() ||
-                mRecyclerView != null && mRecyclerView.isComputingLayout()) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+        if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
+            mRecyclerView.post(new Runnable() {
                 @Override
                 public void run() {
                     notifyItemRangeChanged(positionStart, itemCount);
@@ -308,9 +313,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     public final void notifyItemMovedSafely(final int fromPosition, final int toPosition) {
-        if (Thread.currentThread() != Looper.getMainLooper().getThread() ||
-                mRecyclerView != null && mRecyclerView.isComputingLayout()) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+        if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
+            mRecyclerView.post(new Runnable() {
                 @Override
                 public void run() {
                     notifyItemMoved(fromPosition, toPosition);
@@ -326,9 +330,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     public final void notifyItemRangeInsertedSafely(final int positionStart, final int itemCount) {
-        if (Thread.currentThread() != Looper.getMainLooper().getThread() ||
-                mRecyclerView != null && mRecyclerView.isComputingLayout()) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+        if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
+            mRecyclerView.post(new Runnable() {
                 @Override
                 public void run() {
                     notifyItemRangeInserted(positionStart, itemCount);
@@ -344,9 +347,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     public final void notifyItemRangeRemovedSafely(final int positionStart, final int itemCount) {
-        if (Thread.currentThread() != Looper.getMainLooper().getThread() ||
-                mRecyclerView != null && mRecyclerView.isComputingLayout()) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+        if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
+            mRecyclerView.post(new Runnable() {
                 @Override
                 public void run() {
                     notifyItemRangeRemoved(positionStart, itemCount);
