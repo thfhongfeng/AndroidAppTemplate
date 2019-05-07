@@ -1,6 +1,7 @@
 package com.pine.base.request;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,14 +16,15 @@ public interface IRequestManager {
     String COOKIE_KEY = "Cookie";
     String MOBILE_MODEL_KEY = "mobileModel";
 
-    IRequestManager init(Context context, HashMap<String, String> head);
+    IRequestManager init(@NonNull Context context, HashMap<String, String> head);
 
-    void setJsonRequest(RequestBean requestBean, IResponseListener.OnResponseListener listener);
+    void setJsonRequest(@NonNull RequestBean requestBean,
+                        @NonNull IResponseListener.OnResponseListener listener);
 
-    void setDownloadRequest(RequestBean requestBean, IResponseListener.OnDownloadListener listener);
+    void setDownloadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener);
 
-    void setUploadRequest(RequestBean requestBean, IResponseListener.OnUploadListener processListener,
-                          IResponseListener.OnResponseListener responseListener);
+    void setUploadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
+                          @NonNull IResponseListener.OnResponseListener responseListener);
 
     void cancelBySign(Object sign);
 

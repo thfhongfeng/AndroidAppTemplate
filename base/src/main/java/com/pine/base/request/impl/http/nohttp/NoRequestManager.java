@@ -1,6 +1,7 @@
 package com.pine.base.request.impl.http.nohttp;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.pine.base.request.IRequestManager;
@@ -178,7 +179,7 @@ public class NoRequestManager implements IRequestManager {
     }
 
     @Override
-    public IRequestManager init(Context context, HashMap<String, String> head) {
+    public IRequestManager init(@NonNull Context context, HashMap<String, String> head) {
         if (head != null) {
             mHeaderParams = head;
         }
@@ -212,7 +213,7 @@ public class NoRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setJsonRequest(RequestBean requestBean, IResponseListener.OnResponseListener listener) {
+    public void setJsonRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnResponseListener listener) {
         IBasicRequest request = NoHttp.createStringRequest(requestBean.getUrl(),
                 transferToNoHttpHttpMethod(requestBean.getRequestMethod()));
         if (requestBean.getSign() != null) {
@@ -224,7 +225,7 @@ public class NoRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setDownloadRequest(RequestBean requestBean, IResponseListener.OnDownloadListener listener) {
+    public void setDownloadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener) {
         IBasicRequest request = NoHttp.createDownloadRequest(requestBean.getUrl(),
                 transferToNoHttpHttpMethod(requestBean.getRequestMethod()),
                 requestBean.getSaveFolder(), requestBean.getSaveFileName(),
@@ -238,8 +239,8 @@ public class NoRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setUploadRequest(RequestBean requestBean, IResponseListener.OnUploadListener processListener,
-                                 IResponseListener.OnResponseListener responseListener) {
+    public void setUploadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
+                                 @NonNull IResponseListener.OnResponseListener responseListener) {
         if (requestBean.getUploadFileList() == null) {
             return;
         }

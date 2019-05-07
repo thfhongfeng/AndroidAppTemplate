@@ -80,6 +80,15 @@ public class MvpShopModel {
             @Override
             public void onResponse(int what, JSONObject jsonObject) {
                 if (what == REQUEST_ADD_SHOP) {
+                    // Test code begin
+                    if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
+                        try {
+                            jsonObject = new JSONObject("{success:true,code:200,message:'',data:{id:'110020190328102000000008'}}");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
                         }.getType());
@@ -127,6 +136,15 @@ public class MvpShopModel {
                         callback.onFail(new Exception(jsonObject.optString("message")));
                     }
                 } else if (what == REQUEST_ADD_PRODUCT) {
+                    // Test code begin
+                    if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
+                        try {
+                            jsonObject = new JSONObject("{success:true,code:200,message:'',data:{id:'110120190328102000000008'}}");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    // Test code end
                     if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpProductDetailEntity>() {
                         }.getType());

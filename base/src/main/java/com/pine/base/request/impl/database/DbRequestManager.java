@@ -52,7 +52,7 @@ public class DbRequestManager implements IRequestManager {
 
 
     @Override
-    public IRequestManager init(Context context, HashMap<String, String> head) {
+    public IRequestManager init(@NonNull Context context, HashMap<String, String> head) {
         mApplicationContext = context;
         if (head != null) {
             mHeaderParams = head;
@@ -62,7 +62,7 @@ public class DbRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setJsonRequest(RequestBean requestBean, IResponseListener.OnResponseListener listener) {
+    public void setJsonRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnResponseListener listener) {
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
 
         Bundle bundle = new Bundle();
@@ -91,13 +91,18 @@ public class DbRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setDownloadRequest(RequestBean requestBean, IResponseListener.OnDownloadListener listener) {
+    public void setDownloadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener) {
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
+        // Test code begin
+        listener.onStart(requestBean.getWhat(), false, 10000, 100000);
+        listener.onProgress(requestBean.getWhat(), 50, 100000, 6000);
+        listener.onDownloadError(requestBean.getWhat(), new Exception("not implement"));
+        // Test code end
     }
 
     @Override
-    public void setUploadRequest(RequestBean requestBean, IResponseListener.OnUploadListener processListener,
-                                 IResponseListener.OnResponseListener responseListener) {
+    public void setUploadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
+                                 @NonNull IResponseListener.OnResponseListener responseListener) {
         List<RequestBean.FileBean> fileBeanList = requestBean.getUploadFileList();
         responseListener.onStart(requestBean.getWhat());
         if (fileBeanList == null || fileBeanList.size() < 1) {
