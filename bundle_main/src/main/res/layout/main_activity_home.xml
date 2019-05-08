@@ -26,6 +26,7 @@
             android:padding="@dimen/dp_20"></android.support.v7.widget.RecyclerView>
 
         <com.pine.base.widget.view.BottomTabNavigationBar
+            android:id="@+id/bottom_tab_nb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:baseSelectedItem="0"></com.pine.base.widget.view.BottomTabNavigationBar>

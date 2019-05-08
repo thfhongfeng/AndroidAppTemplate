@@ -14,7 +14,7 @@ public class RouterApplication {
     private final static String TAG = LogUtils.makeLogTag(RouterApplication.class);
     public static Application mApplication;
 
-    public static void init(Application application) {
+    public static void attach(Application application) {
         mApplication = application;
 
         initRouter();

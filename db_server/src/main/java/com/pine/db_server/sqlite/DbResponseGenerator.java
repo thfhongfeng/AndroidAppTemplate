@@ -10,8 +10,8 @@ import java.util.HashMap;
 public class DbResponseGenerator {
 
     public static DbResponse getSuccessJsonRep(DbRequestBean requestBean,
-                                           HashMap<String, String> cookies,
-                                           String data) {
+                                               HashMap<String, String> cookies,
+                                               String data) {
         String dataContainer;
         if (!TextUtils.isEmpty(data)) {
             dataContainer = "{'success':true, 'code':200, 'message':'','data':" + data + "}";
@@ -27,7 +27,7 @@ public class DbResponseGenerator {
     }
 
     public static DbResponse getLoginFailJsonRep(DbRequestBean requestBean,
-                                             HashMap<String, String> cookies, String message) {
+                                                 HashMap<String, String> cookies, String message) {
         String dataContainer = "{'success':false, 'code':401, 'message':'" + message + "'}";
         DbResponse response = new DbResponse();
         response.setSucceed(true);
@@ -38,7 +38,7 @@ public class DbResponseGenerator {
     }
 
     public static DbResponse getNoSuchTableJsonRep(DbRequestBean requestBean,
-                                               HashMap<String, String> cookies) {
+                                                   HashMap<String, String> cookies) {
         String dataContainer = "{'success':false, 'code':2, 'message':''}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);
@@ -50,7 +50,7 @@ public class DbResponseGenerator {
     }
 
     public static DbResponse getBadArgsJsonRep(DbRequestBean requestBean,
-                                           HashMap<String, String> cookies) {
+                                               HashMap<String, String> cookies) {
         String dataContainer = "{'success':false, 'code':1001, 'message':''}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);
@@ -62,7 +62,7 @@ public class DbResponseGenerator {
     }
 
     public static DbResponse getExceptionJsonRep(DbRequestBean requestBean,
-                                             HashMap<String, String> cookies, Exception e) {
+                                                 HashMap<String, String> cookies, Exception e) {
         String dataContainer = "{'success':false, 'code':1002, 'message':''}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);

@@ -6,6 +6,13 @@ import android.os.Build;
 import android.os.StrictMode;
 
 import com.pine.base.BaseApplication;
+import com.pine.base.access.UiAccessManager;
+import com.pine.base.access.UiAccessType;
+import com.pine.base.access.executor.UiAccessLoginExecutor;
+import com.pine.base.access.executor.UiAccessVipLevelExecutor;
+import com.pine.base.component.map.MapSdkManager;
+import com.pine.base.component.share.manager.ShareManager;
+import com.pine.base.request.RequestManager;
 import com.pine.demo.DemoApplication;
 import com.pine.login.LoginApplication;
 import com.pine.main.MainApplication;
@@ -38,18 +45,33 @@ public class TemplateApplication extends Application {
         LogUtils.setDebuggable(AppUtils.isApkDebuggable(this));
 
         BaseApplication.init(this);
-        WelcomeApplication.init(this);
-        LoginApplication.init(this);
-        MainApplication.init(this);
-        UserApplication.init(this);
-        MvcApplication.init(this);
-        MvpApplication.init(this);
-        MvvmApplication.init(this);
-        DemoApplication.init(this);
+        initManager();
+
+        WelcomeApplication.attach();
+        LoginApplication.attach();
+        MainApplication.attach();
+        UserApplication.attach();
+        MvcApplication.attach();
+        MvpApplication.attach();
+        MvvmApplication.attach();
+        DemoApplication.attach();
     }
 
     @Override
     public void attachBaseContext(Context baseContext) {
         super.attachBaseContext(baseContext);
+    }
+
+    private void initManager() {
+        ShareManager.getInstance().init(this);
+
+        RequestManager.init(this);
+
+        MapSdkManager.getInstance().init(this);
+
+        UiAccessManager.getInstance().addAccessExecutor(UiAccessType.LOGIN,
+                new UiAccessLoginExecutor(com.pine.base.R.string.base_ui_access_login_forbidden));
+        UiAccessManager.getInstance().addAccessExecutor(UiAccessType.VIP_LEVEL,
+                new UiAccessVipLevelExecutor(com.pine.base.R.string.base_ui_access_vip_level_forbidden));
     }
 }

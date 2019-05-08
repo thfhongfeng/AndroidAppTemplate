@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.pine.base.BaseApplication;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.bean.BaseInputParam;
+import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.R;
 import com.pine.login.contract.ILoginContract;
@@ -27,7 +27,7 @@ public class LoginPresenter extends BasePresenter<ILoginContract.Ui> implements 
 
     @Override
     public void login() {
-        if (BaseApplication.isLogin() || mIsLoadProcessing) {
+        if (LoginApplication.isLogin() || mIsLoadProcessing) {
             return;
         }
         BaseInputParam<String> accountBean = getUi().getUserMobileParam(LoginConstants.LOGIN_ACCOUNT);

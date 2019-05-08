@@ -5,11 +5,11 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pine.base.BaseApplication;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpNoActionBarActivity;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.welcome.R;
+import com.pine.welcome.WelcomeApplication;
 import com.pine.welcome.contract.ILoadingContract;
 import com.pine.welcome.presenter.LoadingPresenter;
 
@@ -75,7 +75,7 @@ public class LoadingActivity extends BaseMvpNoActionBarActivity<ILoadingContract
 
             @Override
             public void onFinish() {
-                if (mUpdateConfirmDialog != null && BaseApplication.mCurResumedActivity.getClass() == LoadingActivity.class &&
+                if (mUpdateConfirmDialog != null && WelcomeApplication.mCurResumedActivity.getClass() == LoadingActivity.class &&
                         mUpdateConfirmDialog.isShowing()) {
                     mUpdateConfirmDialog.findViewById(R.id.confirm_ll).performClick();
                     mUpdateConfirmDialog.findViewById(R.id.count_time_tv).setVisibility(View.GONE);
@@ -84,7 +84,7 @@ public class LoadingActivity extends BaseMvpNoActionBarActivity<ILoadingContract
 
             @Override
             public void onTick(long millisUntilFinished) {
-                if (mUpdateConfirmDialog != null && BaseApplication.mCurResumedActivity.getClass() == LoadingActivity.class &&
+                if (mUpdateConfirmDialog != null && WelcomeApplication.mCurResumedActivity.getClass() == LoadingActivity.class &&
                         mUpdateConfirmDialog.isShowing()) {
                     ((TextView) mUpdateConfirmDialog.findViewById(R.id.count_time_tv)).setText("(" + millisUntilFinished / 1000 + ")");
                 }

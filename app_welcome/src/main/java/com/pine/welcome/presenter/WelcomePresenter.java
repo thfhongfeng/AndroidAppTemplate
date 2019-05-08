@@ -3,13 +3,12 @@ package com.pine.welcome.presenter;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.pine.base.BaseApplication;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.router.IRouterCallback;
 import com.pine.router.command.RouterMainCommand;
-import com.pine.router.impl.RouterManager;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.contract.IWelcomeContract;
+import com.pine.welcome.remote.WelcomeClientManager;
 
 /**
  * Created by tanghongfeng on 2018/9/12
@@ -26,21 +25,19 @@ public class WelcomePresenter extends BasePresenter<IWelcomeContract.Ui> impleme
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                RouterManager.getMainRouter().callUiCommand(BaseApplication.mCurResumedActivity,
-                        RouterMainCommand.goMainHomeActivity, null, new IRouterCallback() {
-                            @Override
-                            public void onSuccess(Bundle responseBundle) {
-                                LogUtils.d(TAG, "onSuccess " + RouterMainCommand.goMainHomeActivity);
-                                finishUi();
-                                return;
-                            }
+                WelcomeClientManager.goMainHomeActivity(null, new IRouterCallback() {
+                    @Override
+                    public void onSuccess(Bundle responseBundle) {
+                        LogUtils.d(TAG, "onSuccess " + RouterMainCommand.goMainHomeActivity);
+                        finishUi();
+                        return;
+                    }
 
-                            @Override
-                            public boolean onFail(int failCode, String errorInfo) {
-                                return false;
-                            }
-                        });
-
+                    @Override
+                    public boolean onFail(int failCode, String errorInfo) {
+                        return false;
+                    }
+                });
             }
         }, 2000);
     }

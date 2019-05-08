@@ -24,6 +24,7 @@
         android:text="@string/user_logout" />
 
     <com.pine.base.widget.view.BottomTabNavigationBar
+        android:id="@+id/bottom_tab_nb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:baseSelectedItem="1"></com.pine.base.widget.view.BottomTabNavigationBar>

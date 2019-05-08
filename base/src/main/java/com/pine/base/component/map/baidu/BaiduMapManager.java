@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.baidu.mapapi.CoordType;
+import com.baidu.mapapi.SDKInitializer;
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.IMapManager;
 import com.pine.base.component.map.LocationInfo;
@@ -64,6 +66,15 @@ public class BaiduMapManager implements IMapManager {
             }
         }
         return mInstance;
+    }
+
+    @Override
+    public void init(Context context) {
+        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
+        SDKInitializer.initialize(context);
+        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
+        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
+        SDKInitializer.setCoordType(CoordType.BD09LL);
     }
 
     @Override

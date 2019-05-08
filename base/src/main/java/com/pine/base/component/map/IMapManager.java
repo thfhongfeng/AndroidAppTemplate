@@ -8,6 +8,8 @@ import android.content.Intent;
  */
 
 public interface IMapManager {
+    void init(Context context);
+
     void startLocation();
 
     void stopLocation();

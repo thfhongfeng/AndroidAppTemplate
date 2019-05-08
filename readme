@@ -20,10 +20,11 @@ util---项目相关而具体业务无关的工具集合，此工具集合与tool
 widget---项目相关而具体业务无关的自定义小控件集合。与tool模块的区分依据同util文件夹。
 component---各种实用组件封装。
 permission---EasyPermission的进一步封装，已在基础ui中封装使用。
-http---http请求封装。
-list---列表的封装。
+request---数据请求封装（http，database）。
+recycler_view---RecyclerView适配器的封装。
 architecture---编码架构封装：mvc，mvp，mvvm。
 access---准入条件封装，已在基础ui中封装使用。
+binding---dataBinding绑定辅助。
 bean、exception---实体类及异常类集合。
 
 
@@ -62,15 +63,20 @@ projectXxx---各客制化渠道源文件夹，对应不同渠道。为default的
 1. bundle业务模块所有的资源必须以bundle名小写开头，例如login模块的xxx资源必须写为"login_xxx"。
 2. bundle业务模块所有的类必须以bundle名首字母大写开头，例如login模块的类Xxx必须写为"LoginXxx"。
 3. 所有bundle间的通信必须要统一使用router模块进行。为了减少对业务模块的污染，本项目并没有按arouter的规范方式进行模块间通信，而只是借助了其部分功能。
-   如何新增模块通信（结合arouter的通信方式说明文档来理解）：
-   a. 各自模块中编写XxxRemote（可参考已有模块，基本内容都差不多）和XxxRemoteService类（通信方法写在该类中，使用注解方式）。
-   b. router模块中继承IRouterManager或者ARouterManager编写各自模块的通信管理类（可参考已有模块，基本内容都差不多），编写通信命令常量类RouterXxxCommand。
-   c. ARouterManagerFactory类中添加新模块的通信管理类的获取方法。
-   d. RouterManager类中添加新模块的通信管理类的获取方法。
-   e. 模块间通信使用方式：
-     RouterManager.getXxxRouter().callYyCommand(Activity activity, final String commandName, final Bundle args, final IRouterCallback callback);
 4. 编码时特别是编写公共类库时，请确认该类库的共性：
    a. 有项目共性，与具体业务无关的统一放在base模块中。
    b. 无项目共性，与业务无关的的统一放在tool模块中。
-5. 业务的Constants常量类请统一继承base模块的BaseConstants类。
-6. 业务的UrlConstants常量类统一继承base模块的UrlConstants类。
+
+
+
+新建业务模块注意事项：
+1. 业务模块的Application类统一继承base模块的BaseApplication类（方便将模块进行sdk改造）。
+2. 业务模块的Constants常量类请统一继承base模块的BaseConstants类。
+3. 业务模块的UrlConstants常量类统一继承base模块的UrlConstants类。
+4. 业务模块arouter通信的搭建（结合arouter的通信方式说明文档来理解）：
+   a. 模块中编写XxxRemote（可参考已有模块，基本内容都差不多）和XxxRemoteService类（通信方法写在该类中，使用注解方式）。
+   b. router模块中继承ARouterManager编写各自模块的arouter通信管理类（可参考已有模块，基本内容都差不多），编写通信命令常量类RouterXxxCommand。
+   c. ARouterManagerFactory类中添加新模块的arouter通信管理类的获取方法。
+   d. RouterManager类中添加新模块的通信管理类的获取方法getXxxRouter()。
+   e. 模块间通信使用方式：
+     RouterManager.getXxxRouter().callYyCommand(Activity activity, final String commandName, final Bundle args, final IRouterCallback callback);

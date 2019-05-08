@@ -1,6 +1,6 @@
 package com.pine.login.manager;
 
-import com.pine.base.BaseApplication;
+import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.model.ILoginResponse;
 import com.pine.login.model.LoginAccountModel;
@@ -39,7 +39,7 @@ public class LoginManager {
     // 退出登录
     public static void logout() {
         clearLoginInfo();
-        BaseApplication.setLogin(false);
+        LoginApplication.setLogin(false);
         mAccountModel.requestLogout();
     }
 
@@ -57,7 +57,7 @@ public class LoginManager {
 
     // 重新登录
     public static boolean reLogin() {
-        if (BaseApplication.isLogin()) {
+        if (LoginApplication.isLogin()) {
             return false;
         }
         HashMap<String, String> params = new HashMap<>();

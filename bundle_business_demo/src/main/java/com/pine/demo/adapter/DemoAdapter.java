@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.pine.base.BaseApplication;
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
+import com.pine.demo.DemoApplication;
 import com.pine.demo.R;
 import com.pine.demo.bean.DemoItemEntity;
 
@@ -54,8 +54,8 @@ public class DemoAdapter extends BaseNoPaginationListAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    BaseApplication.mCurResumedActivity.startActivity(new Intent(
-                            BaseApplication.mCurResumedActivity, content.getClazz()));
+                    DemoApplication.mCurResumedActivity.startActivity(new Intent(
+                            DemoApplication.mCurResumedActivity, content.getClazz()));
                 }
             });
         }

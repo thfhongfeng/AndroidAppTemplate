@@ -1,5 +1,7 @@
 package com.pine.demo;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,6 +34,8 @@ public class DemoHomeActivity extends BaseActionBarActivity {
     @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.demo_home_title);
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboard.getPrimaryClip();
     }
 
     @Override

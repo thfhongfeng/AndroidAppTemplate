@@ -1,12 +1,12 @@
 package com.pine.login.model.interceptor;
 
-import com.pine.base.BaseApplication;
 import com.pine.base.request.IRequestManager;
 import com.pine.base.request.RequestBean;
 import com.pine.base.request.RequestManager;
 import com.pine.base.request.Response;
 import com.pine.base.request.callback.JsonCallback;
 import com.pine.base.request.interceptor.IResponseInterceptor;
+import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.ResponseCode;
 import com.pine.login.manager.LoginManager;
@@ -36,7 +36,7 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
         if (requestBean.getCallback() instanceof LoginCallback) {
             mIsReLoginProcessing = false;
             if (!response.isSucceed() && what == LoginCallback.RE_LOGIN_CODE) {
-                BaseApplication.setLogin(false);
+                LoginApplication.setLogin(false);
                 if (!tryToSendReLogin()) { // 发出自动登录失败
                     flushAllNoAuthRequest();
                     mNoAuthRequestMap.clear();
@@ -61,7 +61,7 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
                     mNoAuthRequestMap.put(requestBean.getKey(), requestBean);
                 }
                 if (!mIsReLoginProcessing) {
-                    BaseApplication.setLogin(false);
+                    LoginApplication.setLogin(false);
                     if (!tryToSendReLogin()) { // 发出自动登录失败
                         flushAllNoAuthRequest();
                         mNoAuthRequestMap.clear();

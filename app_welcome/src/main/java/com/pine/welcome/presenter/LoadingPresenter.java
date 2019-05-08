@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.pine.base.BaseApplication;
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.exception.MessageException;
@@ -16,16 +15,16 @@ import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigBundleKey;
 import com.pine.config.switcher.ConfigBundleSwitcher;
 import com.pine.router.IRouterCallback;
-import com.pine.router.command.RouterLoginCommand;
-import com.pine.router.impl.RouterManager;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.R;
+import com.pine.welcome.WelcomeApplication;
 import com.pine.welcome.bean.BundleSwitcherEntity;
 import com.pine.welcome.bean.VersionEntity;
 import com.pine.welcome.contract.ILoadingContract;
 import com.pine.welcome.manager.ApkVersionManager;
 import com.pine.welcome.model.BundleSwitcherModel;
 import com.pine.welcome.model.VersionModel;
+import com.pine.welcome.remote.WelcomeClientManager;
 import com.pine.welcome.ui.activity.WelcomeActivity;
 
 import java.io.File;
@@ -155,30 +154,28 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
     @Override
     public void autoLogin() {
         if (!ConfigBundleSwitcher.isBundleOpen(ConfigBundleKey.LOGIN_BUNDLE_KEY) ||
-                BaseApplication.isLogin()) {
+                WelcomeApplication.isLogin()) {
             if (isUiAlive()) {
                 goWelcomeActivity();
             }
             return;
         }
-        RouterManager.getLoginRouter().callOpCommand(BaseApplication.mCurResumedActivity,
-                RouterLoginCommand.autoLogin,
-                null, new IRouterCallback() {
-                    @Override
-                    public void onSuccess(Bundle responseBundle) {
-                        if (isUiAlive()) {
-                            goWelcomeActivity();
-                        }
-                    }
+        WelcomeClientManager.autoLogin(null, new IRouterCallback() {
+            @Override
+            public void onSuccess(Bundle responseBundle) {
+                if (isUiAlive()) {
+                    goWelcomeActivity();
+                }
+            }
 
-                    @Override
-                    public boolean onFail(int failCode, String errorInfo) {
-                        if (isUiAlive()) {
-                            goWelcomeActivity();
-                        }
-                        return true;
-                    }
-                });
+            @Override
+            public boolean onFail(int failCode, String errorInfo) {
+                if (isUiAlive()) {
+                    goWelcomeActivity();
+                }
+                return true;
+            }
+        });
     }
 
     private void goWelcomeActivity() {

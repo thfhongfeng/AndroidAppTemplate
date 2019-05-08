@@ -7,14 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.pine.base.BaseApplication;
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.main.R;
 import com.pine.main.bean.MainBusinessItemEntity;
+import com.pine.main.remote.MainClientManager;
 import com.pine.router.IRouterCallback;
-import com.pine.router.impl.RouterManager;
 
 /**
  * Created by tanghongfeng on 2019/1/16
@@ -56,8 +55,8 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RouterManager.getInstance(content.getBundle()).callUiCommand(BaseApplication.mCurResumedActivity,
-                            content.getCommand(), null, new IRouterCallback() {
+                    MainClientManager.callCommand(content.getBundle(), content.getCommand(), null,
+                            new IRouterCallback() {
                                 @Override
                                 public void onSuccess(Bundle responseBundle) {
 

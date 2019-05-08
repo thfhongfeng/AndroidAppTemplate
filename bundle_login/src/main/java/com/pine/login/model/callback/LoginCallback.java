@@ -3,10 +3,10 @@ package com.pine.login.model.callback;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.pine.base.BaseApplication;
 import com.pine.base.request.RequestManager;
 import com.pine.base.request.Response;
 import com.pine.base.request.callback.JsonCallback;
+import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
@@ -58,11 +58,11 @@ public class LoginCallback extends JsonCallback {
     public void onResponse(int what, JSONObject jsonObject) {
         if (LOGOUT_CODE == what) {
             LoginManager.clearLoginInfo();
-            BaseApplication.setLogin(false);
+            LoginApplication.setLogin(false);
             return;
         } else {
             if (jsonObject == null || !jsonObject.optBoolean(LoginConstants.SUCCESS, false)) {
-                BaseApplication.setLogin(false);
+                LoginApplication.setLogin(false);
                 if (mCallback != null) {
                     if (!mCallback.onLoginResponse(false, jsonObject == null ?
                             "" : jsonObject.optString(LoginConstants.MESSAGE)) && LOGIN_CODE == what) {
@@ -75,7 +75,7 @@ public class LoginCallback extends JsonCallback {
                 return;
             }
             LoginManager.saveLoginInfo(jsonObject);
-            BaseApplication.setLogin(true);
+            LoginApplication.setLogin(true);
             if (mCallback != null) {
                 if (mCallback.onLoginResponse(true, "") && LOGIN_CODE == what) {
                     Toast.makeText(AppUtils.getApplication(), "登陆成功！", Toast.LENGTH_SHORT).show();
@@ -86,7 +86,7 @@ public class LoginCallback extends JsonCallback {
 
     @Override
     public boolean onFail(int what, Exception e) {
-        BaseApplication.setLogin(false);
+        LoginApplication.setLogin(false);
         boolean consumed = false;
         if (mCallback != null) {
             consumed = mCallback.onLoginResponse(false, "");

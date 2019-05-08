@@ -1,6 +1,5 @@
 package com.pine.base.widget.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -12,9 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.pine.base.R;
-import com.pine.router.command.RouterMainCommand;
-import com.pine.router.command.RouterUserCommand;
-import com.pine.router.impl.RouterManager;
 
 /**
  * Created by tanghongfeng on 2018/9/13
@@ -27,6 +23,7 @@ public class BottomTabNavigationBar extends FrameLayout implements View.OnClickL
     private LinearLayout bottom_main_home_ll, bottom_user_center_ll;
     private View layout_view;
     private int mCurrentItem = 0;
+    private IOnItemClickListener mListener;
 
     public BottomTabNavigationBar(Context context) {
         super(context);
@@ -37,8 +34,9 @@ public class BottomTabNavigationBar extends FrameLayout implements View.OnClickL
     public BottomTabNavigationBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.BaseBottomTabNavigationBar);
+        mCurrentItem = typedArray.getInt(R.styleable.BaseBottomTabNavigationBar_baseSelectedItem, 0);
         initView();
-        init(attrs);
     }
 
     private void initView() {
@@ -52,11 +50,7 @@ public class BottomTabNavigationBar extends FrameLayout implements View.OnClickL
 
         bottom_main_home_ll.setOnClickListener(this);
         bottom_user_center_ll.setOnClickListener(this);
-    }
 
-    private void init(AttributeSet attrs) {
-        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.BaseBottomTabNavigationBar);
-        mCurrentItem = typedArray.getInt(R.styleable.BaseBottomTabNavigationBar_baseSelectedItem, 0);
         switch (mCurrentItem) {
             case 0:
                 bottom_main_home_iv.setSelected(true);
@@ -67,19 +61,25 @@ public class BottomTabNavigationBar extends FrameLayout implements View.OnClickL
         }
     }
 
+    public void init(IOnItemClickListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.bottom_main_home_ll) {
-            if (mCurrentItem != 0) {
-                RouterManager.getMainRouter().callUiCommand((Activity) mContext,
-                        RouterMainCommand.goMainHomeActivity, null, null);
+            if (mListener != null) {
+                mListener.onItemClick(view, mCurrentItem, 0);
             }
         } else if (id == R.id.bottom_user_center_ll) {
-            if (mCurrentItem != 1) {
-                RouterManager.getUserRouter().callUiCommand((Activity) mContext,
-                        RouterUserCommand.goUserHomeActivity, null, null);
+            if (mListener != null) {
+                mListener.onItemClick(view, mCurrentItem, 1);
             }
         }
+    }
+
+    public interface IOnItemClickListener {
+        void onItemClick(View view, int preItemIndex, int clickItemIndex);
     }
 }
