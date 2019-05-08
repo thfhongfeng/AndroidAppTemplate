@@ -1,10 +1,10 @@
-package com.pine.db_server.remote.remote;
+package com.pine.db_server.remote.server.remote;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.pine.db_server.remote.DbDataRemoteService;
+import com.pine.db_server.remote.server.DbDataRemoteService;
 import com.pine.router.IRouterCallback;
 import com.pine.router.impl.arouter.ARouterBundleRemote;
 import com.pine.router.impl.arouter.IARouterService;

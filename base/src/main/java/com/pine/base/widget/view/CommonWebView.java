@@ -30,12 +30,11 @@ import android.widget.Toast;
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
+import com.pine.base.remote.BaseClientManager;
 import com.pine.base.request.IRequestManager;
 import com.pine.base.request.RequestManager;
 import com.pine.base.util.DialogUtils;
 import com.pine.router.IRouterCallback;
-import com.pine.router.command.RouterLoginCommand;
-import com.pine.router.impl.RouterManager;
 import com.pine.tool.util.DensityUtils;
 import com.pine.tool.util.ImageUtils;
 import com.pine.tool.util.NetWorkUtils;
@@ -163,24 +162,21 @@ public class CommonWebView extends WebView {
                     return;
                 }
                 if (mTryLoginCount < MAX_TRY_LOGIN_COUNT) {
-                    RouterManager.getLoginRouter().callOpCommand(mActivity,
-                            RouterLoginCommand.autoLogin, null, new IRouterCallback() {
-                                @Override
-                                public void onSuccess(Bundle responseBundle) {
-                                    loadUrl();
-                                }
+                    BaseClientManager.autoLogin(mActivity, null, new IRouterCallback() {
+                        @Override
+                        public void onSuccess(Bundle responseBundle) {
+                            loadUrl();
+                        }
 
-                                @Override
-                                public boolean onFail(int code, String errorInfo) {
-                                    RouterManager.getLoginRouter().callUiCommand(mActivity,
-                                            RouterLoginCommand.goLoginActivity, null, null);
-                                    return true;
-                                }
-                            });
+                        @Override
+                        public boolean onFail(int code, String errorInfo) {
+                            BaseClientManager.goLoginActivity(mActivity, null, null);
+                            return true;
+                        }
+                    });
                     mTryLoginCount++;
                 } else {
-                    RouterManager.getLoginRouter().callUiCommand(mActivity,
-                            RouterLoginCommand.goLoginActivity, null, null);
+                    BaseClientManager.goLoginActivity(mActivity, null, null);
                 }
             }
 

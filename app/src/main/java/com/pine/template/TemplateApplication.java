@@ -30,10 +30,12 @@ import com.pine.welcome.WelcomeApplication;
 
 public class TemplateApplication extends Application {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
+    private static Application mApplication;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mApplication = this;
 
         // android 7.0系统解决拍照的问题
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -60,6 +62,14 @@ public class TemplateApplication extends Application {
     @Override
     public void attachBaseContext(Context baseContext) {
         super.attachBaseContext(baseContext);
+    }
+
+    public static Application getApplication() {
+        return mApplication;
+    }
+
+    public static Context getContext() {
+        return mApplication.getApplicationContext();
     }
 
     private void initManager() {

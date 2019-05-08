@@ -55,7 +55,7 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MainClientManager.callCommand(content.getBundle(), content.getCommand(), null,
+                    MainClientManager.callCommand(mContext, content.getBundle(), content.getCommand(), null,
                             new IRouterCallback() {
                                 @Override
                                 public void onSuccess(Bundle responseBundle) {

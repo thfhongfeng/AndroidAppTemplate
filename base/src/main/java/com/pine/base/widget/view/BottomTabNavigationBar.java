@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.pine.base.R;
+import com.pine.base.remote.BaseClientManager;
 
 /**
  * Created by tanghongfeng on 2018/9/13
@@ -71,10 +72,14 @@ public class BottomTabNavigationBar extends FrameLayout implements View.OnClickL
         if (id == R.id.bottom_main_home_ll) {
             if (mListener != null) {
                 mListener.onItemClick(view, mCurrentItem, 0);
+            } else {
+                BaseClientManager.goMainHomeActivity(mContext, null, null);
             }
         } else if (id == R.id.bottom_user_center_ll) {
             if (mListener != null) {
                 mListener.onItemClick(view, mCurrentItem, 1);
+            } else {
+                BaseClientManager.goUserHomeActivity(mContext, null, null);
             }
         }
     }

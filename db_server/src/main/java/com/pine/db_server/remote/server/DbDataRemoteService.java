@@ -1,4 +1,4 @@
-package com.pine.db_server.remote;
+package com.pine.db_server.remote.server;
 
 import android.content.Context;
 import android.os.Bundle;

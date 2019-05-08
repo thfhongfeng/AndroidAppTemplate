@@ -8,6 +8,7 @@ import com.pine.base.BaseApplication;
 import com.pine.base.access.IUiAccessCallback;
 import com.pine.base.access.IUiAccessExecutor;
 import com.pine.router.IRouterCallback;
+import com.pine.template.TemplateApplication;
 import com.pine.template.remote.TemplateClientManager;
 
 /**
@@ -35,7 +36,7 @@ public class UiAccessLoginExecutor implements IUiAccessExecutor {
                     activity.finish();
                 }
             } else {
-                TemplateClientManager.goLoginActivity(new IRouterCallback() {
+                TemplateClientManager.goLoginActivity(TemplateApplication.getContext(), null, new IRouterCallback() {
                     @Override
                     public void onSuccess(Bundle responseBundle) {
                         if (activity != null && !activity.isFinishing()) {

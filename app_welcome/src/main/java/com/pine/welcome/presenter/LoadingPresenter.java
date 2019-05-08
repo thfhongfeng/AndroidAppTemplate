@@ -160,7 +160,7 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
             }
             return;
         }
-        WelcomeClientManager.autoLogin(null, new IRouterCallback() {
+        WelcomeClientManager.autoLogin(getContext(), null, new IRouterCallback() {
             @Override
             public void onSuccess(Bundle responseBundle) {
                 if (isUiAlive()) {

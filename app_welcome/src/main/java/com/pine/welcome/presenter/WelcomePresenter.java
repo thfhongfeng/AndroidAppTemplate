@@ -25,7 +25,7 @@ public class WelcomePresenter extends BasePresenter<IWelcomeContract.Ui> impleme
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                WelcomeClientManager.goMainHomeActivity(null, new IRouterCallback() {
+                WelcomeClientManager.goMainHomeActivity(getContext(), null, new IRouterCallback() {
                     @Override
                     public void onSuccess(Bundle responseBundle) {
                         LogUtils.d(TAG, "onSuccess " + RouterMainCommand.goMainHomeActivity);
