@@ -1,8 +1,9 @@
-package com.pine.base.access.executor;
+package com.pine.template.access;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
+import com.pine.base.access.IUiAccessCallback;
 import com.pine.base.access.IUiAccessExecutor;
 
 /**
@@ -11,9 +12,11 @@ import com.pine.base.access.IUiAccessExecutor;
 
 public class UiAccessVipLevelExecutor implements IUiAccessExecutor {
     private int mForbiddenToastResId = -1;
+    private IUiAccessCallback mCallback;
 
-    public UiAccessVipLevelExecutor(int forbiddenToastResId) {
+    public UiAccessVipLevelExecutor(int forbiddenToastResId, IUiAccessCallback callback) {
         mForbiddenToastResId = forbiddenToastResId;
+        mCallback = callback;
     }
 
     @Override
