@@ -74,11 +74,11 @@ projectXxx---各客制化渠道源文件夹，对应不同渠道。为default的
 2. 业务模块的Constants常量类请统一继承base模块的BaseConstants类。
 3. 业务模块的UrlConstants常量类统一继承base模块的UrlConstants类。
 4. 业务模块arouter通信的搭建（结合arouter的通信方式说明文档来理解）：
-   a. 模块中编写XxxRemote（可参考已有模块，基本内容都差不多）和XxxRemoteService类（通信方法写在该类中，使用注解方式），向外部模块提供统一的跨模块服务。
-   b. 模块中编写XxxClientManager（可参考已有模块，基本内容都差不多），用于统一调用外部模块的跨模块方法。
-   c. router模块中继承ARouterManager编写各自模块的arouter通信管理类（可参考已有模块，基本内容都差不多），编写通信命令常量类RouterXxxCommand。
-   d. ARouterManagerFactory类中添加新模块的arouter通信管理类的获取方法。
-   e. RouterManager类中添加新模块的通信管理类的获取方法getXxxRouter()。
+   a. 模块中编写XxxRemote（可参考已有模块，基本内容都差不多）和XxxRemoteService类（通信方法写在该类中，使用注解方式），用于向外部模块提供统一的跨模块服务。
+   b. 模块中编写XxxClientManager（可参考已有模块），用于统一调用外部模块的跨模块方法。
+   c. router模块中继承ARouterManager编写对应业务模块的arouter通信管理类（可参考已有模块，基本内容都差不多），编写通信命令常量类RouterXxxCommand。
+   d. ARouterManagerFactory类中添加对应业务模块的arouter通信管理类的获取方法getXxxRouter()，并在getManager方法中调用。
+   e. RouterManager类中添加对应业务模块的通信管理类的获取方法getXxxRouter()。
    f. 模块间通信使用方式：
-     RouterManager.getXxxRouter().callYyCommand(Activity activity, final String commandName, final Bundle args, final IRouterCallback callback);
+     RouterManager.getXxxRouter().callYyCommand(Context context, final String commandName, final Bundle args, final IRouterCallback callback);
      该调用统一写在XxxClientManager中
