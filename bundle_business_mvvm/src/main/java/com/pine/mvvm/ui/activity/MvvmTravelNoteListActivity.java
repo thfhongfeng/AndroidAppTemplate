@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -77,6 +78,8 @@ public class MvvmTravelNoteListActivity extends
         mBinding.recycleView.setHasFixedSize(true);
         mMvvmTravelListItemAdapter = new MvvmTravelNoteListPaginationAdapter(
                 MvvmTravelNoteListPaginationAdapter.TRAVEL_NOTE_VIEW_HOLDER);
+        View headView = LayoutInflater.from(this).inflate(R.layout.mvvm_item_travle_note_list_head, null);
+        mMvvmTravelListItemAdapter.setHeadView(headView);
         mBinding.recycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

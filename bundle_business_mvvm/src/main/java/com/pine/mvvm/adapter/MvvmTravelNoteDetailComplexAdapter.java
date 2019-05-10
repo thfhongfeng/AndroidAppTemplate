@@ -31,8 +31,8 @@ public class MvvmTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<M
     public static final int TRAVEL_NOTE_COMMENT_VIEW_HOLDER = 4;
 
     public BaseListViewHolder<String> getEmptyBackgroundViewHolder(ViewGroup parent) {
-        return new EmptyBackgroundViewHolder(parent.getContext(),
-                LayoutInflater.from(parent.getContext()).inflate(com.pine.base.R.layout.base_item_empty_background, parent, false));
+        return new EmptyBackgroundViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(com.pine.base.R.layout.base_item_empty_background, parent, false));
     }
 
     @Override

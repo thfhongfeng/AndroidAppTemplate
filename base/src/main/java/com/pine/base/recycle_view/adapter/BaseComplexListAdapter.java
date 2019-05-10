@@ -55,38 +55,47 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull BaseListViewHolder holder, int position) {
-        if (isEmptyView(position) || isMoreView(position) || isCompleteView(position) ||
-                isTailEmptyView(position)) {
+        if (isHeadView(position)) {
             holder.updateData("", new BaseListAdapterItemProperty(), position);
             return;
         }
-        if (mHeadNoPaginationData != null && position < mHeadNoPaginationData.size()) {
-            holder.updateData(mHeadNoPaginationData.get(position).getData(), mHeadNoPaginationData.get(position).getPropertyEntity(), position);
+        if (isEmptyView(position) || isMoreView(position) || isCompleteView(position) ||
+                isTailEmptyView(position)) {
+            holder.updateData("", new BaseListAdapterItemProperty(), 0);
+            return;
+        }
+        int dataIndex = position - getHeadViewCount();
+        if (mHeadNoPaginationData != null && dataIndex < mHeadNoPaginationData.size()) {
+            holder.updateData(mHeadNoPaginationData.get(dataIndex).getData(), mHeadNoPaginationData.get(dataIndex).getPropertyEntity(), dataIndex);
         } else {
-            int index = position - mHeadNoPaginationData.size();
+            int index = dataIndex - mHeadNoPaginationData.size();
             holder.updateData(mTailPaginationData.get(index).getData(), mTailPaginationData.get(index).getPropertyEntity(), index);
         }
     }
 
     @Override
     public int getItemCount() {
+        int headOffset = getHeadViewCount();
         if (mEnableInitState) {
-            return 0;
+            return 0 + headOffset;
         }
         int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
         int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
         if (showEmptyView() || showErrorAllView()) {
-            return 1;
+            return 1 + headOffset;
         }
         int actualSize = topSize + bottomSize;
         if (showMoreView() || showCompleteView() || showErrorMoreView() || showTailEmptyView()) {
-            return actualSize + 1;
+            return actualSize + 1 + headOffset;
         }
-        return actualSize;
+        return actualSize + headOffset;
     }
 
     @Override
     public int getItemViewType(int position) {
+        if (isHeadView(position)) {
+            return HEAD_VIEW_HOLDER;
+        }
         if (isErrorAllView(position)) {
             return ERROR_ALL_VIEW_HOLDER;
         }
@@ -105,10 +114,11 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         if (isTailEmptyView(position)) {
             return TAIL_EMPTY_VIEW_HOLDER;
         }
-        if (mHeadNoPaginationData != null && position < mHeadNoPaginationData.size()) {
-            return mHeadNoPaginationData.get(position).getPropertyEntity().getItemViewType();
+        int dataIndex = position - getHeadViewCount();
+        if (mHeadNoPaginationData != null && dataIndex < mHeadNoPaginationData.size()) {
+            return mHeadNoPaginationData.get(dataIndex).getPropertyEntity().getItemViewType();
         } else {
-            int index = mHeadNoPaginationData == null ? position : position - mHeadNoPaginationData.size();
+            int index = mHeadNoPaginationData == null ? dataIndex : dataIndex - mHeadNoPaginationData.size();
             return mTailPaginationData.get(index).getPropertyEntity().getItemViewType();
         }
     }
@@ -181,34 +191,34 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     }
 
     private boolean isEmptyView(int position) {
-        return showEmptyView() && position == 0;
+        return showEmptyView() && position == (0 + getHeadViewCount());
     }
 
     private boolean isMoreView(int position) {
         int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
         int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
-        return showMoreView() && position != 0 && position == topSize + bottomSize;
+        return showMoreView() && position != 0 && position == (topSize + bottomSize + getHeadViewCount());
     }
 
     private boolean isCompleteView(int position) {
         int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
         int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
-        return showCompleteView() && position != 0 && position == topSize + bottomSize;
+        return showCompleteView() && position != 0 && position == (topSize + bottomSize + getHeadViewCount());
     }
 
     private boolean isTailEmptyView(int position) {
         int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
-        return showTailEmptyView() && position != 0 && position == topSize;
+        return showTailEmptyView() && position != 0 && position == (topSize + getHeadViewCount());
     }
 
     private boolean isErrorAllView(int position) {
-        return showErrorAllView() && position == 0;
+        return showErrorAllView() && position == (0 + getHeadViewCount());
     }
 
     private boolean isErrorMoreView(int position) {
         int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
         int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
-        return showErrorMoreView() && position != 0 && position == topSize + bottomSize;
+        return showErrorMoreView() && position != 0 && position == (topSize + bottomSize + getHeadViewCount());
     }
 
     public void resetAndGetPageNo() {

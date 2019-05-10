@@ -8,11 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.SupportActivity;
 
+import com.pine.tool.util.LogUtils;
+
 /**
  * Created by tanghongfeng on 2019/3/1
  */
 
 public abstract class BaseViewModel extends ViewModel {
+    protected final String TAG = LogUtils.makeLogTag(this.getClass());
     private UiState mUiState = UiState.UI_STATE_UNDEFINE;
     private SupportActivity mUi;
 
@@ -47,6 +50,12 @@ public abstract class BaseViewModel extends ViewModel {
         UI_STATE_ON_PAUSE,
         UI_STATE_ON_STOP,
         UI_STATE_ON_DETACH
+    }
+
+    public enum DialogState {
+        DIALOG_STATE_SHOW,
+        DIALOG_STATE_HIDE,
+        DIALOG_STATE_DISMISS
     }
 
     /**

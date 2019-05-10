@@ -1,6 +1,5 @@
 package com.pine.base.recycle_view.adapter;
 
-import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -19,6 +18,7 @@ import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 
 public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewHolder> {
     protected final static int DEFAULT_VIEW_HOLDER = -10000;
+    protected final static int HEAD_VIEW_HOLDER = -100000;
     protected final static int EMPTY_BACKGROUND_VIEW_HOLDER = -10001;
     protected final static int MORE_VIEW_HOLDER = -10002;
     protected final static int COMPLETE_VIEW_HOLDER = -10003;
@@ -39,6 +39,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     private int mErrorAllLayoutId = R.layout.base_item_error;
     private int mErrorMoreLayoutId = R.layout.base_item_error_more;
     private int mDefaultItemViewType = DEFAULT_VIEW_HOLDER;
+    private View mHeadView = null;
 
     protected RecyclerView mRecyclerView;
 
@@ -55,6 +56,9 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     public BaseListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         BaseListViewHolder viewHolder = null;
         switch (viewType) {
+            case HEAD_VIEW_HOLDER:
+                viewHolder = getHeadViewHolder(viewGroup);
+                break;
             case EMPTY_BACKGROUND_VIEW_HOLDER:
                 viewHolder = getEmptyBackgroundViewHolder(viewGroup);
                 break;
@@ -167,6 +171,33 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         return ((LinearLayoutManager) mRecyclerView.getLayoutManager()).getOrientation();
     }
 
+    public void setHeadView(@NonNull View view) {
+        mHeadView = view;
+    }
+
+    public boolean isHeadViewEnabled() {
+        return mHeadView != null;
+    }
+
+    public int getHeadViewCount() {
+        return isHeadViewEnabled() ? 1 : 0;
+    }
+
+    protected boolean isHeadView(int position) {
+        return isHeadViewEnabled() && position == 0;
+    }
+
+    public BaseListViewHolder<String> getHeadViewHolder(ViewGroup parent) {
+        ViewGroup.LayoutParams layoutParams = mHeadView.getLayoutParams();
+        if (mHeadView.getLayoutParams() == null) {
+            layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        mHeadView.setLayoutParams(layoutParams);
+        HeadViewHolder viewHolder = new HeadViewHolder(mHeadView);
+        return viewHolder;
+    }
+
     protected void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
                                            boolean enableCompleteView, boolean enableErrorView) {
         mEnableEmpty = enableEmptyView;
@@ -232,8 +263,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     public BaseListViewHolder<String> getEmptyBackgroundViewHolder(ViewGroup parent) {
-        return new EmptyBackgroundViewHolder(parent.getContext(),
-                LayoutInflater.from(parent.getContext()).inflate(mEmptyLayoutId, parent, false));
+        return new EmptyBackgroundViewHolder(LayoutInflater.from(parent.getContext()).inflate(mEmptyLayoutId, parent, false));
     }
 
     public BaseListViewHolder<String> getCompleteViewHolder(ViewGroup parent) {
@@ -373,12 +403,29 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     public abstract BaseListViewHolder getViewHolder(ViewGroup parent, int viewType);
 
     /**
+     * Head ViewHolder
+     *
+     * @param
+     */
+    public class HeadViewHolder extends BaseListViewHolder<String> {
+
+        public HeadViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void updateData(String content, BaseListAdapterItemProperty propertyEntity, int position) {
+
+        }
+    }
+
+    /**
      * 空背景
      */
     public class EmptyBackgroundViewHolder extends BaseListViewHolder<String> {
         private View container;
 
-        public EmptyBackgroundViewHolder(Context context, View itemView) {
+        public EmptyBackgroundViewHolder(View itemView) {
             super(itemView);
             container = itemView.getRootView();
         }

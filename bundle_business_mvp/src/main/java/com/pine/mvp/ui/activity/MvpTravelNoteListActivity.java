@@ -3,6 +3,7 @@ package com.pine.mvp.ui.activity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +61,8 @@ public class MvpTravelNoteListActivity extends
         recycle_view.setHasFixedSize(true);
 
         MvpTravelNoteListPaginationAdapter adapter = mPresenter.getListAdapter();
+        View headView = LayoutInflater.from(this).inflate(R.layout.mvp_item_travle_note_list_head, null);
+        adapter.setHeadView(headView);
         adapter.setOnScrollListener(recycle_view,
                 new BaseListAdapter.IOnScrollListener() {
                     @Override

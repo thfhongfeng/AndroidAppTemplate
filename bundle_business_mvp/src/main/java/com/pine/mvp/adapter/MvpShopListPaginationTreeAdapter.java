@@ -113,7 +113,7 @@ public class MvpShopListPaginationTreeAdapter extends BasePaginationTreeListAdap
                     for (int i = position + 1; i < propertyEntity.getSubItemViewCount() + position + 1; i++) {
                         mData.get(i).getPropertyEntity().setItemViewNeedShow(subWillShow);
                     }
-                    notifyItemRangeChanged(position, propertyEntity.getSubItemViewCount() + 1);
+                    notifyItemRangeChanged(position + getHeadViewCount(), propertyEntity.getSubItemViewCount() + 1);
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
