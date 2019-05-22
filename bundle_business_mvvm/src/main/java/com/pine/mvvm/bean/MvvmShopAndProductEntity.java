@@ -58,7 +58,7 @@ public class MvvmShopAndProductEntity {
     public void setDistance(String distance) {
         this.distance = distance;
         this.location = "";
-        this.location = getLocation();
+        this.location = getFormatDistance();
     }
 
     public String getMainImgUrl() {
@@ -85,7 +85,7 @@ public class MvvmShopAndProductEntity {
         this.updateTime = updateTime;
     }
 
-    public String getLocation() {
+    public String getFormatDistance() {
         if (!TextUtils.isEmpty(location)) {
             return location;
         }

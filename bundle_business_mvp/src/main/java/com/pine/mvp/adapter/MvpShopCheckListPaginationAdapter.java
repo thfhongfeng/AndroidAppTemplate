@@ -17,7 +17,6 @@ import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
-import com.pine.tool.util.DecimalUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,17 +126,12 @@ public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter
             }
             ImageLoaderManager.getInstance().loadImage(mContext, content.getMainImgUrl(), photo_iv);
             title_tv.setText(content.getName());
-            String distanceStr = content.getDistance();
+            String distanceStr = content.getFormatDistance();
             if (TextUtils.isEmpty(distanceStr)) {
                 location_tv.setText("");
                 location_ll.setVisibility(View.GONE);
             } else {
-                float distance = Float.parseFloat(distanceStr);
-                if (distance >= 1000.0f) {
-                    location_tv.setText(DecimalUtils.divide(distance, 1000.0f, 2) + mContext.getString(R.string.unit_kilometre));
-                } else {
-                    location_tv.setText(String.valueOf(distance).split("\\.")[0] + mContext.getString(R.string.unit_metre));
-                }
+                location_tv.setText(distanceStr);
                 location_ll.setVisibility(View.VISIBLE);
             }
             item_cb.setOnClickListener(new View.OnClickListener() {

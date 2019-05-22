@@ -3,6 +3,10 @@
 
     <data class="MvvmShopCheckItemBinding">
 
+        <import type="android.text.TextUtils"></import>
+
+        <import type="android.view.View"></import>
+
         <variable
             name="shop"
             type="com.pine.mvvm.bean.MvvmShopItemEntity"></variable>
@@ -30,9 +34,9 @@
 
             <ImageView
                 android:id="@+id/photo_iv"
+                imageUrl="@{shop.mainImgUrl}"
                 android:layout_width="@dimen/dp_66"
                 android:layout_height="@dimen/dp_60"
-                imageUrl="@{shop.mainImgUrl}"
                 android:layout_marginRight="@dimen/dp_10" />
 
             <LinearLayout
@@ -54,7 +58,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|right"
                     android:orientation="horizontal"
-                    android:padding="@dimen/dp_5">
+                    android:padding="@dimen/dp_5"
+                    android:visibility="@{TextUtils.isEmpty(shop.formatDistance) ? View.GONE:View.VISIBLE}">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -66,8 +71,8 @@
                         android:id="@+id/location_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{shop.location}"
                         android:padding="@dimen/dp_5"
+                        android:text="@{shop.formatDistance}"
                         android:textSize="@dimen/sp_13" />
                 </LinearLayout>
             </LinearLayout>

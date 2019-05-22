@@ -53,7 +53,7 @@
                     android:gravity="center_vertical|right"
                     android:orientation="horizontal"
                     android:padding="@dimen/dp_5"
-                    android:visibility="@{TextUtils.isEmpty(shop.location) ? View.GONE:View.VISIBLE}">
+                    android:visibility="@{TextUtils.isEmpty(shop.formatDistance) ? View.GONE:View.VISIBLE}">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dp_5"
-                        android:text="@{shop.location}"
+                        android:text="@{shop.formatDistance}"
                         android:textSize="@dimen/sp_13" />
                 </LinearLayout>
             </LinearLayout>

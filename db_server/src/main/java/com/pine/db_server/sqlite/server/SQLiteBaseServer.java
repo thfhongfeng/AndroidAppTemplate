@@ -91,6 +91,44 @@ public class SQLiteBaseServer {
         return cursor;
     }
 
+    public static Cursor dimSearch(@NonNull SQLiteDatabase db, @NonNull String tableName,
+                                Map<String, String> params) throws SQLException {
+        String filter = "";
+        int pageNo = -1;
+        int pageSize = -1;
+        if (params != null && params.size() > 0) {
+            Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> entry = iterator.next();
+                if (BaseConstants.PAGE_NO.equals(entry.getKey())) {
+                    pageNo = Integer.parseInt(entry.getValue());
+                } else if (BaseConstants.PAGE_SIZE.equals(entry.getKey())) {
+                    pageSize = Integer.parseInt(entry.getValue());
+                } else {
+                    filter += " " + entry.getKey() + " like '%" + entry.getValue() + "%'" + " and";
+                }
+            }
+        }
+        String limit = "";
+        if (pageSize > 0) {
+            limit = " limit " + pageSize;
+            if (pageNo > 1 && pageSize > 1) {
+                limit += " offset " + pageSize * (pageNo - 1);
+            }
+        }
+        String sql = "select * from " + tableName;
+        if (!TextUtils.isEmpty(filter)) {
+            filter = filter.substring(0, filter.length() - 4);
+            sql += " where" + filter;
+        }
+        if (!TextUtils.isEmpty(limit)) {
+            sql += "" + limit;
+        }
+        LogUtils.d(TAG, "sql : " + sql);
+        Cursor cursor = db.rawQuery(sql, null);
+        return cursor;
+    }
+
     public static int update(@NonNull SQLiteDatabase db, @NonNull String tableName,
                              ContentValues values, String whereCause, String[] whereArgs) throws SQLException {
         return db.update(tableName, values, whereCause, whereArgs);

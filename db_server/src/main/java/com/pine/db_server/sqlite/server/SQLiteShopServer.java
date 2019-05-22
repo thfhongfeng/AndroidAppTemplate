@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.pine.base.request.impl.database.DbRequestBean;
 import com.pine.base.request.impl.database.DbResponse;
@@ -103,7 +104,14 @@ public class SQLiteShopServer extends SQLiteBaseServer {
             Map<String, String> params = requestBean.getParams();
             String latitudeStr = params.remove("latitude");
             String longitudeStr = params.remove("longitude");
-            Cursor cursor = query(db, SHOP_TABLE_NAME, params);
+            String searchKey = params.remove("searchKey");
+            Cursor cursor = null;
+            if (!TextUtils.isEmpty(searchKey)) {
+                params.put("name", searchKey);
+                cursor = dimSearch(db, SHOP_TABLE_NAME, params);
+            } else {
+                cursor = query(db, SHOP_TABLE_NAME, params);
+            }
             try {
                 JSONArray jsonArray = new JSONArray();
                 while (cursor.moveToNext()) {

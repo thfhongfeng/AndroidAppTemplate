@@ -27,8 +27,8 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
     private String id;
     private String name;
     private String distance;
+    private String formatDistance;
     private String mainImgUrl;
-    private String location;
     private String createTime;
     private String updateTime;
 
@@ -36,8 +36,8 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
         id = in.readString();
         name = in.readString();
         distance = in.readString();
+        formatDistance = in.readString();
         mainImgUrl = in.readString();
-        location = in.readString();
         createTime = in.readString();
         updateTime = in.readString();
     }
@@ -64,8 +64,8 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(distance);
+        dest.writeString(formatDistance);
         dest.writeString(mainImgUrl);
-        dest.writeString(location);
         dest.writeString(createTime);
         dest.writeString(updateTime);
     }
@@ -92,8 +92,15 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
 
     public void setDistance(String distance) {
         this.distance = distance;
-        this.location = "";
-        this.location = getLocation();
+        if (!TextUtils.isEmpty(distance)) {
+            float distanceF = Float.parseFloat(distance);
+            if (distanceF >= 1000.0f) {
+                formatDistance = DecimalUtils.divide(distanceF, 1000.0f, 2) +
+                        AppUtils.getApplication().getString(R.string.unit_kilometre);
+            } else {
+                formatDistance = distance.split("\\.")[0] + AppUtils.getApplication().getString(R.string.unit_metre);
+            }
+        }
     }
 
     public String getMainImgUrl() {
@@ -104,20 +111,8 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
         this.mainImgUrl = mainImgUrl;
     }
 
-    public String getLocation() {
-        if (!TextUtils.isEmpty(location)) {
-            return location;
-        }
-        if (!TextUtils.isEmpty(distance)) {
-            float distanceF = Float.parseFloat(distance);
-            if (distanceF >= 1000.0f) {
-                location = DecimalUtils.divide(distanceF, 1000.0f, 2) +
-                        AppUtils.getApplication().getString(R.string.unit_kilometre);
-            } else {
-                location = distance.split("\\.")[0] + AppUtils.getApplication().getString(R.string.unit_metre);
-            }
-        }
-        return location;
+    public String getFormatDistance() {
+        return formatDistance;
     }
 
     public String getCreateTime() {
