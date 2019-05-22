@@ -72,7 +72,7 @@ public abstract class BaseActivity extends AppCompatActivity
             }
         }
 
-        tryOnAllRestrictionReleased();
+        tryInitOnAllRestrictionReleased();
     }
 
     protected void setContentView(Bundle savedInstanceState) {
@@ -118,7 +118,7 @@ public abstract class BaseActivity extends AppCompatActivity
     protected abstract void init();
 
     /**
-     * onCreate中结束初始化
+     * 初始化结束
      */
     protected abstract void afterInit();
 
@@ -129,9 +129,11 @@ public abstract class BaseActivity extends AppCompatActivity
         if (mPrePause) {
             mPrePause = false;
             if (!UiAccessManager.getInstance().checkCanAccess(this, false)) {
+                mUiAccessReady = false;
+                finish();
                 return;
             } else {
-                tryOnAllRestrictionReleased();
+                tryInitOnAllRestrictionReleased();
             }
         }
     }
@@ -142,9 +144,11 @@ public abstract class BaseActivity extends AppCompatActivity
         if (mPrePause) {
             mPrePause = false;
             if (!UiAccessManager.getInstance().checkCanAccess(this, true)) {
+                mUiAccessReady = false;
+                finish();
                 return;
             } else {
-                tryOnAllRestrictionReleased();
+                tryInitOnAllRestrictionReleased();
             }
         }
     }
@@ -282,11 +286,11 @@ public abstract class BaseActivity extends AppCompatActivity
         }
         if (REQUEST_ACCESS_PERMISSION == requestCode) {
             mPermissionReady = true;
-            tryOnAllRestrictionReleased();
+            tryInitOnAllRestrictionReleased();
         }
     }
 
-    private void tryOnAllRestrictionReleased() {
+    private void tryInitOnAllRestrictionReleased() {
         if (!onAllAccessRestrictionReleasedMethodCalled &&
                 mUiAccessReady && mPermissionReady) {
             onAllAccessRestrictionReleasedMethodCalled = true;

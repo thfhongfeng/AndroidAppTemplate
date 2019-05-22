@@ -59,7 +59,7 @@ public class NoRequestManager implements IRequestManager {
         if (mInstance == null) {
             synchronized (NoRequestManager.class) {
                 if (mInstance == null) {
-                    LogUtils.releaseLog(TAG, "use http request: nohttp");
+                    LogUtils.releaseLog(TAG, "use request: nohttp");
                     mInstance = new NoRequestManager();
                 }
             }

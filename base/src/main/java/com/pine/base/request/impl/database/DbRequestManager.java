@@ -42,7 +42,7 @@ public class DbRequestManager implements IRequestManager {
         if (mInstance == null) {
             synchronized (DbRequestManager.class) {
                 if (mInstance == null) {
-                    LogUtils.releaseLog(TAG, "use http request: nohttp");
+                    LogUtils.releaseLog(TAG, "use request: db");
                     mInstance = new DbRequestManager();
                 }
             }

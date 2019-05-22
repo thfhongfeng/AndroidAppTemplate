@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DbRequestBean implements Serializable {
-    // 该callback对应的http请求的key
+    // 该callback对应的请求的key
     private String key;
     private String url;
     private Map<String, String> params;

@@ -58,7 +58,7 @@ public class RequestManager {
         } else {
             mApplicationContext = AppUtils.getApplication();
         }
-        mRequestManager = RequestManagerFactory.getRequestManager(context, head);
+        mRequestManager = RequestManagerFactory.makeRequestManager(context, head);
         mLoadingRequestMap = new HashMap<>();
         mErrorRequestMap = new HashMap<>();
     }
