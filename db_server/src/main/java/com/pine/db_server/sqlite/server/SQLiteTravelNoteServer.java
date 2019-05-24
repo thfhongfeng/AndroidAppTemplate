@@ -15,9 +15,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.pine.base.request.IRequestManager.SESSION_ID;
+import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.TRAVEL_NOTE_COMMENT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.TRAVEL_NOTE_SHOP_TABLE_NAME;
 import static com.pine.db_server.DbConstants.TRAVEL_NOTE_TABLE_NAME;
@@ -28,15 +33,60 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                                            @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            long id = insert(db, TRAVEL_NOTE_TABLE_NAME, requestBean.getParams());
-            if (id == -1) {
-                return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+            Map<String, String> requestParams = requestBean.getParams();
+            Map<String, String> params = new HashMap<>();
+            params.put("id", cookies.get(SESSION_ID));
+            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
+            if (cursor.moveToFirst()) {
+                requestParams.put("authorId", cursor.getString(cursor.getColumnIndex("id")));
+                requestParams.put("author", cursor.getString(cursor.getColumnIndex("name")));
+                requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                cursor.close();
+                String travelNoteId = "1102" + new Date().getTime();
+                requestParams.put("id", travelNoteId);
+                String belongShopsStr = requestParams.remove("belongShops");
+                JSONArray belongShops = null;
+                try {
+                    belongShops = new JSONArray();
+                    JSONArray belongShopArr = new JSONArray(belongShopsStr);
+                    for (int i = 0; i < belongShopArr.length(); i++) {
+                        JSONObject belongShop = new JSONObject();
+                        belongShop.put("travelNoteId", travelNoteId);
+                        belongShop.put("shopId", belongShopArr.optJSONObject(i).optString("id"));
+                        belongShops.put(belongShop);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (belongShops == null || belongShops.length() < 1) {
+                    return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+                }
+                db.beginTransaction();
+                boolean isSuccess = true;
+                for (int i = 0; i < belongShops.length(); i++) {
+                    JSONObject belongShop = belongShops.optJSONObject(i);
+                    if (belongShop != null) {
+                        isSuccess = isSuccess && insert(db, TRAVEL_NOTE_SHOP_TABLE_NAME, belongShop) >= 0;
+                    }
+                }
+                long id = insert(db, TRAVEL_NOTE_TABLE_NAME, requestParams);
+                isSuccess = isSuccess && id >= 0;
+                if (isSuccess) {
+                    db.setTransactionSuccessful();
+                    return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
+                } else {
+                    return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+                }
             } else {
-                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
+                return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "请登录");
             }
         } catch (SQLException e) {
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
             db.close();
         }
     }
@@ -77,19 +127,19 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }
                 db.setTransactionSuccessful();
-                db.endTransaction();
                 cursor.close();
                 return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                db.endTransaction();
                 cursor.close();
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            db.endTransaction();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
             db.close();
         }
     }
@@ -124,19 +174,19 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     }
                 }
                 db.setTransactionSuccessful();
-                db.endTransaction();
                 cursor.close();
                 return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonArray.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                db.endTransaction();
                 cursor.close();
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            db.endTransaction();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
             db.close();
         }
     }

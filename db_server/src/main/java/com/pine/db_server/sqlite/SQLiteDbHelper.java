@@ -420,7 +420,8 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             db.execSQL("create table if not exists " + TRAVEL_NOTE_TABLE_NAME +
                     "(_id integer primary key autoincrement," +
                     "id text not null unique,title text not null,authorId text not null," +
-                    "author text not null,likeCount integer not null default 0," +
+                    "author text not null,dayCount integer not null default 0," +
+                    "likeCount integer not null default 0," +
                     "isLike boolean not null default 'false',headImgUrl text," +
                     "readCount integer not null default 0,preface text not null," +
                     "days text,setOutDate datetime not null," +
@@ -458,6 +459,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     days += ",{id:'" + (j + 1) + "',day:'第" + (j + 1) + "天',contentList:" + str + "}";
                 }
                 days += "]";
+                contentValues.put("dayCount", 10);
                 contentValues.put("days", days);
                 contentValues.put("setOutDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 calendar.add(Calendar.DATE, 1);

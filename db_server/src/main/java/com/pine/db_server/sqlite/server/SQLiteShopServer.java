@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,13 +35,15 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                      @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            Map<String, String> queryParams = new HashMap<>();
-            queryParams.put("id", cookies.get(SESSION_ID));
-            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, queryParams);
+            Map<String, String> params = new HashMap<>();
+            params.put("id", cookies.get(SESSION_ID));
+            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
             if (cursor.moveToFirst()) {
                 Map<String, String> requestParams = requestBean.getParams();
                 requestParams.put("id", "1100" + new Date().getTime());
                 requestParams.put("userId", cursor.getString(cursor.getColumnIndex("id")));
+                requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 long id = insert(db, SHOP_TABLE_NAME, requestParams);
                 if (id == -1) {
                     return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
@@ -187,19 +191,19 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                     shopArr.put(jsonObject);
                 }
                 db.setTransactionSuccessful();
-                db.endTransaction();
                 cursor.close();
                 return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, shopArr.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-                db.endTransaction();
                 cursor.close();
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
-            db.endTransaction();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
             db.close();
         }
     }
@@ -214,6 +218,8 @@ public class SQLiteShopServer extends SQLiteBaseServer {
             if (cursor.moveToFirst()) {
                 Map<String, String> requestParams = requestBean.getParams();
                 requestParams.put("id", "1101" + new Date().getTime());
+                requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 long id = insert(db, PRODUCT_TABLE_NAME, requestParams);
                 if (id == -1) {
                     return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);

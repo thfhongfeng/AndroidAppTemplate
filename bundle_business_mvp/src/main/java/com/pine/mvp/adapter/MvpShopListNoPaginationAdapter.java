@@ -17,7 +17,6 @@ import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.ui.activity.MvpShopDetailActivity;
-import com.pine.tool.util.DecimalUtils;
 
 /**
  * Created by tanghongfeng on 2018/9/28

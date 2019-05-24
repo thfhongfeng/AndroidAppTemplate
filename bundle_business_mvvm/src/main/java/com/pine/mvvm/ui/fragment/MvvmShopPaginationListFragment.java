@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.pine.base.architecture.mvvm.ui.fragment.BaseMvvmFragment;
 import com.pine.base.component.map.ILocationListener;

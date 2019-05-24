@@ -92,15 +92,6 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
 
     public void setDistance(String distance) {
         this.distance = distance;
-        if (!TextUtils.isEmpty(distance)) {
-            float distanceF = Float.parseFloat(distance);
-            if (distanceF >= 1000.0f) {
-                formatDistance = DecimalUtils.divide(distanceF, 1000.0f, 2) +
-                        AppUtils.getApplication().getString(R.string.unit_kilometre);
-            } else {
-                formatDistance = distance.split("\\.")[0] + AppUtils.getApplication().getString(R.string.unit_metre);
-            }
-        }
     }
 
     public String getMainImgUrl() {
@@ -112,7 +103,22 @@ public class MvvmShopItemEntity extends BaseBean implements Parcelable {
     }
 
     public String getFormatDistance() {
+        if (!TextUtils.isEmpty(distance)) {
+            float distanceF = Float.parseFloat(distance);
+            if (distanceF >= 1000.0f) {
+                formatDistance = DecimalUtils.divide(distanceF, 1000.0f, 2) +
+                        AppUtils.getApplication().getString(R.string.unit_kilometre);
+            } else {
+                formatDistance = distance.split("\\.")[0] + AppUtils.getApplication().getString(R.string.unit_metre);
+            }
+        } else {
+            formatDistance = "";
+        }
         return formatDistance;
+    }
+
+    public void setFormatDistance(String formatDistance) {
+        this.formatDistance = formatDistance;
     }
 
     public String getCreateTime() {

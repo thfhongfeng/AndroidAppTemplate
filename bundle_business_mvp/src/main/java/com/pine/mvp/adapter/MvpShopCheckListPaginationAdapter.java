@@ -34,9 +34,15 @@ public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter
     private Map<String, MvpShopItemEntity> mAllCheckedMap = new HashMap<>();
     private Map<String, MvpShopItemEntity> mSearchModeCheckedMap = new HashMap<>();
 
-    public MvpShopCheckListPaginationAdapter(ArrayList<MvpShopItemEntity> initCheckedIds, int defaultItemViewType) {
+    public MvpShopCheckListPaginationAdapter(ArrayList<MvpShopItemEntity> initCheckedList, int defaultItemViewType) {
         super(defaultItemViewType);
-        mInitCheckedList = initCheckedIds;
+        mInitCheckedList = initCheckedList;
+        if (mInitCheckedList != null) {
+            for (int j = mInitCheckedList.size() - 1; j >= 0; j--) {
+                mAllCheckedMap.put(mInitCheckedList.get(j).getId(), mInitCheckedList.get(j));
+                mInitCheckedList.remove(j);
+            }
+        }
     }
 
     @Override
@@ -68,14 +74,6 @@ public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter
                 adapterEntity.setData(entity);
                 adapterEntity.getPropertyEntity().setItemViewType(getDefaultItemViewType());
                 adapterData.add(adapterEntity);
-                if (mInitCheckedList != null) {
-                    for (int j = mInitCheckedList.size() - 1; j >= 0; j--) {
-                        if (entity.getId().equals(mInitCheckedList.get(j).getId())) {
-                            mAllCheckedMap.put(entity.getId(), entity);
-                            mInitCheckedList.remove(j);
-                        }
-                    }
-                }
             }
         }
         return adapterData;

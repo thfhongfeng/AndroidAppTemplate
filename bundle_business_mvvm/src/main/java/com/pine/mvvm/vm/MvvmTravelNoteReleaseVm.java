@@ -98,6 +98,8 @@ public class MvvmTravelNoteReleaseVm extends BaseViewModel {
                 contentList.add(dayContent);
             }
             MvvmTravelNoteDetailEntity.DayBean dayBean = new MvvmTravelNoteDetailEntity.DayBean();
+            dayBean.setId((i + 1) + "");
+            dayBean.setDay("第" + (i + 1) + "天");
             dayBean.setContentList(contentList);
             days.add(dayBean);
         }

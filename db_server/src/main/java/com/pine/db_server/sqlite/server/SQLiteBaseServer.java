@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import com.pine.base.BaseConstants;
 import com.pine.tool.util.LogUtils;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +24,24 @@ public class SQLiteBaseServer {
                               @NonNull String nullColumnHack,
                               @NonNull ContentValues values) throws SQLException {
         return db.insert(tableName, nullColumnHack, values);
+    }
+
+    public static long insert(@NonNull SQLiteDatabase db, @NonNull String tableName,
+                              @NonNull JSONObject object) throws SQLException {
+        if (object != null) {
+            ContentValues cv = new ContentValues();
+            Iterator<String> iterator = object.keys();
+            String first = iterator.next();
+            String nullColumnHack = first;
+            cv.put(first, object.optString(first));
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                cv.put(key, object.optString(key));
+            }
+            long id = db.insert(tableName, nullColumnHack, cv);
+            return id;
+        }
+        return -1;
     }
 
     public static long insert(@NonNull SQLiteDatabase db, @NonNull String tableName,
@@ -92,7 +112,7 @@ public class SQLiteBaseServer {
     }
 
     public static Cursor dimSearch(@NonNull SQLiteDatabase db, @NonNull String tableName,
-                                Map<String, String> params) throws SQLException {
+                                   Map<String, String> params) throws SQLException {
         String filter = "";
         int pageNo = -1;
         int pageSize = -1;

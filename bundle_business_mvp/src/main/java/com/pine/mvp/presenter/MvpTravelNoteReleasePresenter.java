@@ -154,16 +154,16 @@ public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteR
             params.put(preface.getKey(), preface.getValue());
         }
 
-        BaseInputParam<List<List<TextImageEditorItemData>>> contentBean = getUi().getNoteContentParam("content");
-        if (contentBean.checkIsEmpty(R.string.mvp_note_release_note_content_need)) {
+        BaseInputParam<List<List<TextImageEditorItemData>>> daysBean = getUi().getNoteContentParam("days");
+        if (daysBean.checkIsEmpty(R.string.mvp_note_release_note_content_need)) {
             return;
         } else {
-            JSONArray contentArr = new JSONArray();
+            JSONArray daysArr = new JSONArray();
             try {
-                for (int i = 0; i < contentBean.getValue().size(); i++) {
-                    List<TextImageEditorItemData> dayContentList = contentBean.getValue().get(i);
+                for (int i = 0; i < daysBean.getValue().size(); i++) {
+                    List<TextImageEditorItemData> dayContentList = daysBean.getValue().get(i);
                     if (dayContentList == null || dayContentList.size() < 1) {
-                        contentBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_need);
+                        daysBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_need);
                         return;
                     }
                     JSONArray dayContentArr = new JSONArray();
@@ -172,32 +172,36 @@ public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteR
                         switch (itemData.getType()) {
                             case TextImageItemEntity.TYPE_TEXT:
                                 if (TextUtils.isEmpty(itemData.getText())) {
-                                    contentBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_text_need);
+                                    daysBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_text_need);
                                     return;
                                 }
                                 break;
                             case TextImageItemEntity.TYPE_IMAGE:
                                 if (TextUtils.isEmpty(itemData.getRemoteFilePath())) {
-                                    contentBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_image_need);
+                                    daysBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_image_need);
                                     return;
                                 }
                                 break;
                             default:
-                                contentBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_content_incorrect);
+                                daysBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_content_incorrect);
                                 return;
                         }
-                        JSONObject object = new JSONObject();
-                        object.put("type", itemData.getType());
-                        object.put("text", itemData.getText());
-                        object.put("imgUrl", itemData.getRemoteFilePath());
-                        dayContentArr.put(object);
+                        JSONObject dayContent = new JSONObject();
+                        dayContent.put("type", itemData.getType());
+                        dayContent.put("text", itemData.getText());
+                        dayContent.put("remoteFilePath", itemData.getRemoteFilePath());
+                        dayContentArr.put(dayContent);
                     }
-                    contentArr.put(dayContentArr);
+                    JSONObject day = new JSONObject();
+                    day.put("id", (i + 1) + "");
+                    day.put("day", "第" + (i + 1) + "天");
+                    day.put("contentList", dayContentArr);
+                    daysArr.put(day);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            params.put(contentBean.getKey(), contentArr.toString());
+            params.put(daysBean.getKey(), daysArr.toString());
         }
         setUiLoading(true);
         mTravelNoteModel.requestAddTravelNote(params, new IModelAsyncResponse<MvpTravelNoteDetailEntity>() {
