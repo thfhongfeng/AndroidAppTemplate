@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
+import com.pine.base.exception.BusinessException;
 import com.pine.base.request.RequestManager;
 import com.pine.base.request.callback.JsonCallback;
 import com.pine.config.BuildConfig;
@@ -81,9 +82,13 @@ public class MvvmTravelNoteModel {
                     if (jsonObject.optBoolean(MvvmConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvvmConstants.DATA), new TypeToken<MvvmTravelNoteDetailEntity>() {
                         }.getType());
-                        callback.onResponse(retData);
+                        if (callback != null) {
+                            callback.onResponse(retData);
+                        }
                     } else {
-                        callback.onFail(new Exception(jsonObject.optString("message")));
+                        if (callback != null) {
+                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                        }
                     }
                 } else if (what == REQUEST_QUERY_TRAVEL_NOTE_DETAIL) {
                     // Test code begin
@@ -94,9 +99,13 @@ public class MvvmTravelNoteModel {
                     if (jsonObject.optBoolean(MvvmConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvvmConstants.DATA), new TypeToken<MvvmTravelNoteDetailEntity>() {
                         }.getType());
-                        callback.onResponse(retData);
+                        if (callback != null) {
+                            callback.onResponse(retData);
+                        }
                     } else {
-                        callback.onFail(new Exception(jsonObject.optString("message")));
+                        if (callback != null) {
+                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                        }
                     }
                 } else if (what == REQUEST_QUERY_TRAVEL_NOTE_LIST) {
                     // Test code begin
@@ -107,9 +116,13 @@ public class MvvmTravelNoteModel {
                     if (jsonObject.optBoolean(MvvmConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvvmConstants.DATA), new TypeToken<List<MvvmTravelNoteItemEntity>>() {
                         }.getType());
-                        callback.onResponse(retData);
+                        if (callback != null) {
+                            callback.onResponse(retData);
+                        }
                     } else {
-                        callback.onFail(new Exception(jsonObject.optString("message")));
+                        if (callback != null) {
+                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                        }
                     }
                 } else if (what == REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST) {
                     // Test code begin
@@ -120,21 +133,30 @@ public class MvvmTravelNoteModel {
                     if (jsonObject.optBoolean(MvvmConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(MvvmConstants.DATA), new TypeToken<List<MvvmTravelNoteCommentEntity>>() {
                         }.getType());
-                        callback.onResponse(retData);
+                        if (callback != null) {
+                            callback.onResponse(retData);
+                        }
                     } else {
-                        callback.onFail(new Exception(jsonObject.optString("message")));
+                        if (callback != null) {
+                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                        }
                     }
                 }
             }
 
             @Override
             public boolean onFail(int what, Exception e) {
-                return callback.onFail(e);
+                if (callback != null) {
+                    return callback.onFail(e);
+                }
+                return false;
             }
 
             @Override
             public void onCancel(int what) {
-                callback.onCancel();
+                if (callback != null) {
+                    callback.onCancel();
+                }
             }
         };
     }

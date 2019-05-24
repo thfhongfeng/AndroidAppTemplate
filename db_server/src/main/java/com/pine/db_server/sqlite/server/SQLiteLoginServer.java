@@ -34,13 +34,38 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                                       @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            long id = insert(db, ACCOUNT_TABLE_NAME, requestBean.getParams());
+            Map<String, String> requestParams = requestBean.getParams();
+            String account = requestParams.get("mobile");
+            if (isAccountExist(db, account)) {
+                return DbResponseGenerator.getExistAccountJsonRep(requestBean, cookies, "账号已存在");
+            }
+            requestParams.put("id", "1000" + new Date().getTime());
+            requestParams.put("account", account);
+            requestParams.put("name", account);
+            requestParams.put("state", "1");
+            requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+            requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+            long id = insert(db, ACCOUNT_TABLE_NAME, requestParams);
             if (id == -1) {
                 return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
             } else {
-                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("id", requestParams.get("id"));
+                    jsonObject.put("account", requestParams.get("account"));
+                    jsonObject.put("password", requestParams.get("password"));
+                    jsonObject.put("state", requestParams.get("state"));
+                    jsonObject.put("mobile", requestParams.get("mobile"));
+                    jsonObject.put("createTime", requestParams.get("createTime"));
+                    jsonObject.put("updateTime", requestParams.get("updateTime"));
+                    return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
+                }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
@@ -95,6 +120,7 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
@@ -122,9 +148,16 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
             loginCursor.close();
             return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "");
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
         }
+    }
+
+    private static boolean isAccountExist(SQLiteDatabase db, String account) {
+        Cursor cursor = query(db, ACCOUNT_TABLE_NAME, null, "account=?",
+                new String[]{account}, null, null, null);
+        return cursor.moveToFirst();
     }
 }

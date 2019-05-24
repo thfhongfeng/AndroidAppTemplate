@@ -37,9 +37,20 @@ public class DbResponseGenerator {
         return response;
     }
 
+    public static DbResponse getExistAccountJsonRep(DbRequestBean requestBean,
+                                                    HashMap<String, String> cookies, String message) {
+        String dataContainer = "{'success':false, 'code':601, 'message':'" + message + "'}";
+        DbResponse response = new DbResponse();
+        response.setSucceed(true);
+        response.setCookies(cookies);
+        response.setData(dataContainer);
+        response.setTag(requestBean.getModuleTag());
+        return response;
+    }
+
     public static DbResponse getNoSuchTableJsonRep(DbRequestBean requestBean,
                                                    HashMap<String, String> cookies) {
-        String dataContainer = "{'success':false, 'code':2, 'message':''}";
+        String dataContainer = "{'success':false, 'code':602, 'message':'No table'}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);
         response.setCookies(cookies);
@@ -51,7 +62,7 @@ public class DbResponseGenerator {
 
     public static DbResponse getBadArgsJsonRep(DbRequestBean requestBean,
                                                HashMap<String, String> cookies) {
-        String dataContainer = "{'success':false, 'code':1001, 'message':''}";
+        String dataContainer = "{'success':false, 'code':603, 'message':'Bad args'}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);
         response.setCookies(cookies);
@@ -63,7 +74,7 @@ public class DbResponseGenerator {
 
     public static DbResponse getExceptionJsonRep(DbRequestBean requestBean,
                                                  HashMap<String, String> cookies, Exception e) {
-        String dataContainer = "{'success':false, 'code':1002, 'message':''}";
+        String dataContainer = "{'success':false, 'code':604, 'message':'" + e.toString() + "'}";
         DbResponse response = new DbResponse();
         response.setSucceed(false);
         response.setCookies(cookies);

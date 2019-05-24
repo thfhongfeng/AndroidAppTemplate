@@ -3,7 +3,7 @@ package com.pine.welcome.manager;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.pine.base.exception.MessageException;
+import com.pine.base.exception.BusinessException;
 import com.pine.base.request.RequestManager;
 import com.pine.base.request.callback.DownloadCallback;
 import com.pine.tool.util.AppUtils;
@@ -55,7 +55,7 @@ public class ApkVersionManager {
     private void startDownloadTask() {
         if (TextUtils.isEmpty(mDownloadDir)) {
             if (mListener != null) {
-                mListener.onDownloadError(new MessageException(AppUtils.getApplication()
+                mListener.onDownloadError(new BusinessException(AppUtils.getApplication()
                         .getString(R.string.wel_version_get_download_path_fail, mDownloadDir)));
             }
             return;

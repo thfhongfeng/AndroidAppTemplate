@@ -13,6 +13,7 @@ import com.pine.base.component.editor.bean.TextImageEditorItemData;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
+import com.pine.base.exception.BusinessException;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.bean.MvpTravelNoteDetailEntity;
@@ -215,6 +216,12 @@ public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteR
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        showShortToast(e.getMessage());
+                    }
+                    return true;
+                }
                 return false;
             }
 

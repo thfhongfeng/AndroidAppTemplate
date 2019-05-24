@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.base.exception.BusinessException;
 import com.pine.base.request.RequestManager;
 import com.pine.base.request.callback.JsonCallback;
 import com.pine.config.BuildConfig;
@@ -48,21 +49,30 @@ public class BundleSwitcherModel {
                         T retData = new Gson().fromJson(jsonObject.optString(WelcomeConstants.DATA),
                                 new TypeToken<ArrayList<BundleSwitcherEntity>>() {
                                 }.getType());
-                        callback.onResponse(retData);
+                        if (callback != null) {
+                            callback.onResponse(retData);
+                        }
                     } else {
-                        callback.onFail(new Exception(jsonObject.optString("message")));
+                        if (callback != null) {
+                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                        }
                     }
                 }
             }
 
             @Override
             public boolean onFail(int what, Exception e) {
-                return callback.onFail(e);
+                if (callback != null) {
+                    return callback.onFail(e);
+                }
+                return false;
             }
 
             @Override
             public void onCancel(int what) {
-                callback.onCancel();
+                if (callback != null) {
+                    callback.onCancel();
+                }
             }
         };
     }

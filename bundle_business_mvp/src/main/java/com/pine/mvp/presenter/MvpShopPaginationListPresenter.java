@@ -1,10 +1,13 @@
 package com.pine.mvp.presenter;
 
+import android.text.TextUtils;
+
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
+import com.pine.base.exception.BusinessException;
 import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpShopListPaginationAdapter;
 import com.pine.mvp.bean.MvpShopItemEntity;
@@ -105,6 +108,12 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        showShortToast(e.getMessage());
+                    }
+                    return true;
+                }
                 return false;
             }
 

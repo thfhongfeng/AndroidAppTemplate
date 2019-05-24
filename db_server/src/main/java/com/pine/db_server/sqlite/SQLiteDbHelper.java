@@ -169,7 +169,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             db.execSQL("create table if not exists " + ACCOUNT_TABLE_NAME +
                     "(_id integer primary key autoincrement, id text not null unique," +
                     "account text not null, name text not null," +
-                    "password text not null, headImgUrl text,state integer not null,login integer not null," +
+                    "password text not null, headImgUrl text,state integer not null," +
                     "mobile text not null,createTime datetime,updateTime datetime)");
             Calendar calendar = Calendar.getInstance();
             List<ContentValues> list = new ArrayList<>();
@@ -179,7 +179,6 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues.put("name", "admin");
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
-            contentValues.put("login", 2); // 账户状态:1-登录中，2-已下线
             contentValues.put("mobile", "18672943565");
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
@@ -190,7 +189,6 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues.put("name", "15221464292");
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
-            contentValues.put("login", 2); // 账户状态:1-登录中，2-已下线
             contentValues.put("mobile", "15221464292");
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
@@ -201,7 +199,6 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues.put("name", "15221464296");
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
-            contentValues.put("login", 2); // 账户状态:1-登录中，2-已下线
             contentValues.put("mobile", "15221464296");
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));

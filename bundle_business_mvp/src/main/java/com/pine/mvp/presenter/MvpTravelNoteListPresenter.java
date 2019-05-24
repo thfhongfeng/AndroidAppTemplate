@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
+import com.pine.base.exception.BusinessException;
 import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpTravelNoteListPaginationAdapter;
 import com.pine.mvp.bean.MvpTravelNoteItemEntity;
@@ -85,6 +86,12 @@ public class MvpTravelNoteListPresenter extends BasePresenter<IMvpTravelNoteList
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        showShortToast(e.getMessage());
+                    }
+                    return true;
+                }
                 return false;
             }
 

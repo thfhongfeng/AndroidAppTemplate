@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.component.map.MapSdkManager;
+import com.pine.base.exception.BusinessException;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.bean.MvpShopDetailEntity;
 import com.pine.mvp.contract.IMvpShopDetailContract;
@@ -63,6 +64,12 @@ public class MvpShopDetailPresenter extends BasePresenter<IMvpShopDetailContract
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        showShortToast(e.getMessage());
+                    }
+                    return true;
+                }
                 return false;
             }
 

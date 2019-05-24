@@ -1,15 +1,15 @@
 package com.pine.login.bean;
 
 public class AccountBean {
-    private int id;
+    private String id;
     private String account;
     private String password;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

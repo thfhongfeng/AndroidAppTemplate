@@ -45,6 +45,7 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
@@ -79,6 +80,7 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();

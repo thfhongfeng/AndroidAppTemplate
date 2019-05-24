@@ -571,7 +571,8 @@ public class RequestManager {
             Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.base_network_err),
                     Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.base_server_err),
+            Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.base_server_err) +
+                            (TextUtils.isEmpty(exception.toString()) ? "" : ":" + exception.toString()),
                     Toast.LENGTH_SHORT).show();
         }
     }

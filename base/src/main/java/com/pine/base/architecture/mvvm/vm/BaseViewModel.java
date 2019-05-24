@@ -138,7 +138,7 @@ public abstract class BaseViewModel extends ViewModel {
         return toastMsgData;
     }
 
-    public void setToastMsgData(String msg) {
+    public void setToastMsg(String msg) {
         toastMsgData.setValue(msg);
     }
 

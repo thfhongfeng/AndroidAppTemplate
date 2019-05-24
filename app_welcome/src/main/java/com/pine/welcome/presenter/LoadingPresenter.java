@@ -9,7 +9,7 @@ import android.os.Handler;
 
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
-import com.pine.base.exception.MessageException;
+import com.pine.base.exception.BusinessException;
 import com.pine.base.request.RequestManager;
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigBundleKey;
@@ -133,7 +133,7 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
                 LogUtils.d(TAG, "onDownloadError onDownloadError:" + exception);
                 if (isUiAlive()) {
                     String msg = "";
-                    if (exception instanceof MessageException) {
+                    if (exception instanceof BusinessException) {
                         msg = getContext().getString(R.string.wel_version_update_fail) +
                                 "(" + exception.getMessage() + ")";
                     } else {

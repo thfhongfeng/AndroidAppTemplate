@@ -1,10 +1,13 @@
 package com.pine.mvvm.vm;
 
+import android.text.TextUtils;
+
 import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.base.binding.data.BaseLiveData;
 import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
+import com.pine.base.exception.BusinessException;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
 import com.pine.mvvm.model.MvvmShopModel;
@@ -38,6 +41,12 @@ public class MvvmShopTreeListVm extends BaseViewModel {
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        setToastMsg(e.getMessage());
+                    }
+                    return true;
+                }
                 return false;
             }
 

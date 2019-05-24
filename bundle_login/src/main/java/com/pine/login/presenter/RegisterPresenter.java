@@ -1,13 +1,18 @@
 package com.pine.login.presenter;
 
+import android.text.TextUtils;
+
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.bean.BaseInputParam;
+import com.pine.base.exception.BusinessException;
 import com.pine.login.LoginConstants;
 import com.pine.login.R;
 import com.pine.login.bean.AccountBean;
 import com.pine.login.contract.IRegisterContract;
+import com.pine.login.manager.LoginManager;
 import com.pine.login.model.LoginAccountModel;
+import com.pine.tool.util.SecurityUtils;
 
 import java.util.HashMap;
 
@@ -33,20 +38,29 @@ public class RegisterPresenter extends BasePresenter<IRegisterContract.Ui>
         }
         HashMap<String, String> params = new HashMap<>();
         params.put(accountBean.getKey(), accountBean.getValue());
-        params.put(pwdBean.getKey(), pwdBean.getValue());
+        String securityPwd = SecurityUtils.generateMD5(pwdBean.getValue());
+        params.put(pwdBean.getKey(), securityPwd);
         setUiLoading(true);
         mAccountModel.requestRegister(params, new IModelAsyncResponse<AccountBean>() {
             @Override
             public void onResponse(AccountBean accountBean) {
                 setUiLoading(false);
                 showShortToast(R.string.login_register_success);
+                LoginManager.autoLogin(accountBean.getAccount(), accountBean.getPassword(), null);
                 finishUi();
             }
 
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                showShortToast(R.string.login_register_fail);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        showShortToast(e.getMessage());
+                    } else {
+                        showShortToast(R.string.login_register_fail);
+                    }
+                    return true;
+                }
                 return false;
             }
 

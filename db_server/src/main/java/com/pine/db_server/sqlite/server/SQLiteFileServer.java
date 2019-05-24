@@ -40,6 +40,7 @@ public class SQLiteFileServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
@@ -68,6 +69,7 @@ public class SQLiteFileServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();

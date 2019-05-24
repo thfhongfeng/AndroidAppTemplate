@@ -61,6 +61,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
@@ -102,6 +103,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
@@ -151,6 +153,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();
@@ -206,6 +209,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             if (db.inTransaction()) {
@@ -242,6 +246,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();

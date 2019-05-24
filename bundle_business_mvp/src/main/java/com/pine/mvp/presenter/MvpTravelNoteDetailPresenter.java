@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvp.presenter.BasePresenter;
+import com.pine.base.exception.BusinessException;
 import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpTravelNoteDetailComplexAdapter;
 import com.pine.mvp.bean.MvpTravelNoteCommentEntity;
@@ -71,6 +72,12 @@ public class MvpTravelNoteDetailPresenter extends BasePresenter<IMvpTravelNoteDe
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        showShortToast(e.getMessage());
+                    }
+                    return true;
+                }
                 return false;
             }
 
@@ -111,6 +118,12 @@ public class MvpTravelNoteDetailPresenter extends BasePresenter<IMvpTravelNoteDe
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        showShortToast(e.getMessage());
+                    }
+                    return true;
+                }
                 return false;
             }
 

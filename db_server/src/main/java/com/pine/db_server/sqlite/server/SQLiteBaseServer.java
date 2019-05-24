@@ -87,7 +87,7 @@ public class SQLiteBaseServer {
                     pageSize = Integer.parseInt(entry.getValue());
                 } else {
                     filter += " " + entry.getKey() + "=?" + " and";
-                    filterArgs.add(entry.getValue());
+                    filterArgs.add(entry.getValue() == null ? "" : entry.getValue());
                 }
             }
         }
@@ -125,7 +125,9 @@ public class SQLiteBaseServer {
                 } else if (BaseConstants.PAGE_SIZE.equals(entry.getKey())) {
                     pageSize = Integer.parseInt(entry.getValue());
                 } else {
-                    filter += " " + entry.getKey() + " like '%" + entry.getValue() + "%'" + " and";
+                    if (!TextUtils.isEmpty(entry.getValue())) {
+                        filter += " " + entry.getKey() + " like '%" + entry.getValue() + "%'" + " and";
+                    }
                 }
             }
         }

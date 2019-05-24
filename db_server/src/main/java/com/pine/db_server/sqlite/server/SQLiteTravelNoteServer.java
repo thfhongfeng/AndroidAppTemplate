@@ -90,6 +90,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             if (db.inTransaction()) {
@@ -143,6 +144,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             if (db.inTransaction()) {
@@ -190,6 +192,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             if (db.inTransaction()) {
@@ -228,6 +231,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                 return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
         } finally {
             db.close();

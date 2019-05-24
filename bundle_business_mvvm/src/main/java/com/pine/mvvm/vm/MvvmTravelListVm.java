@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.base.binding.data.BaseLiveData;
+import com.pine.base.exception.BusinessException;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
 import com.pine.mvvm.model.MvvmTravelNoteModel;
@@ -46,6 +47,12 @@ public class MvvmTravelListVm extends BaseViewModel {
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
+                if (e instanceof BusinessException) {
+                    if (!TextUtils.isEmpty(e.getMessage())) {
+                        setToastMsg(e.getMessage());
+                    }
+                    return true;
+                }
                 return false;
             }
 
