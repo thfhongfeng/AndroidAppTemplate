@@ -1,11 +1,12 @@
 package com.pine.db_server.sqlite;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.pine.base.request.impl.database.DbRequestBean;
 import com.pine.base.request.impl.database.DbResponse;
+import com.pine.db_server.DbSession;
 import com.pine.db_server.DbUrlConstants;
 import com.pine.db_server.sqlite.server.SQLiteFileServer;
 import com.pine.db_server.sqlite.server.SQLiteLoginServer;
@@ -14,11 +15,16 @@ import com.pine.db_server.sqlite.server.SQLiteTravelNoteServer;
 import com.pine.db_server.sqlite.server.SQLiteWelcomeServer;
 import com.pine.tool.util.AppUtils;
 
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Random;
+
+import static com.pine.base.request.IRequestManager.SESSION_ID;
 
 public class SQLiteDbRequestManager {
 
     private static volatile SQLiteDbRequestManager mInstance;
+    private static volatile HashMap<String, DbSession> mSessionMap = new HashMap<>();
 
     private SQLiteDbRequestManager(@NonNull Context context) {
         new SQLiteDbHelper(context).getReadableDatabase();
@@ -31,19 +37,39 @@ public class SQLiteDbRequestManager {
         return mInstance;
     }
 
-    public boolean execSQL(@NonNull Context context, String sql) {
-        try {
-            new SQLiteDbHelper(context).getWritableDatabase().execSQL(sql);
-            return true;
-        } catch (SQLException e) {
-
+    public DbSession getOrGenerateSession(String sessionId) {
+        synchronized (mSessionMap) {
+            DbSession session = mSessionMap.get(sessionId);
+            if (session == null) {
+                session = new DbSession(sessionId);
+                mSessionMap.put(sessionId, session);
+            }
+            return session;
         }
-        return false;
+    }
+
+    public void removeSession(String sessionId) {
+        synchronized (mSessionMap) {
+            mSessionMap.remove(sessionId);
+        }
+    }
+
+    public String generateSessionId() {
+        return Calendar.getInstance().getTimeInMillis() + "" + new Random().nextInt(10000);
+    }
+
+    public String generateSessionId(String userId) {
+        return Calendar.getInstance().getTimeInMillis() + userId;
     }
 
     @NonNull
     public DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                   HashMap<String, String> header) {
+        if (TextUtils.isEmpty(header.get(SESSION_ID))) {
+            String sessionId = generateSessionId();
+            header.put(SESSION_ID, sessionId);
+            getOrGenerateSession(sessionId);
+        }
         if (DbUrlConstants.Query_BundleSwitcher_Data.equals(requestBean.getUrl())) {
             return SQLiteWelcomeServer.queryConfigSwitcher(context, requestBean, header);
         } else if (DbUrlConstants.Query_Version_Data.equals(requestBean.getUrl())) {

@@ -10,8 +10,10 @@ import android.text.TextUtils;
 
 import com.pine.base.request.impl.database.DbRequestBean;
 import com.pine.base.request.impl.database.DbResponse;
+import com.pine.db_server.DbSession;
 import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
+import com.pine.db_server.sqlite.SQLiteDbRequestManager;
 import com.pine.tool.util.RegexUtils;
 
 import org.json.JSONArray;
@@ -35,23 +37,28 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                      @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            Map<String, String> params = new HashMap<>();
-            params.put("id", cookies.get(SESSION_ID));
-            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
-            if (cursor.moveToFirst()) {
-                Map<String, String> requestParams = requestBean.getParams();
-                requestParams.put("id", "1100" + new Date().getTime());
-                requestParams.put("userId", cursor.getString(cursor.getColumnIndex("id")));
-                requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                long id = insert(db, SHOP_TABLE_NAME, requestParams);
-                if (id == -1) {
-                    return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
-                } else {
-                    return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
-                }
-            } else {
+            DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+            if (TextUtils.isEmpty(session.getUserId())) {
                 return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "请登录");
+            } else {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", session.getUserId());
+                Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
+                if (cursor.moveToFirst()) {
+                    Map<String, String> requestParams = requestBean.getParams();
+                    requestParams.put("id", "1100" + new Date().getTime());
+                    requestParams.put("userId", cursor.getString(cursor.getColumnIndex("id")));
+                    requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    long id = insert(db, SHOP_TABLE_NAME, requestParams);
+                    if (id == -1) {
+                        return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+                    } else {
+                        return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
+                    }
+                } else {
+                    return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "不存在该用户");
+                }
             }
         } catch (SQLException e) {
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
@@ -212,22 +219,27 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                         @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            Map<String, String> queryParams = new HashMap<>();
-            queryParams.put("id", cookies.get(SESSION_ID));
-            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, queryParams);
-            if (cursor.moveToFirst()) {
-                Map<String, String> requestParams = requestBean.getParams();
-                requestParams.put("id", "1101" + new Date().getTime());
-                requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                long id = insert(db, PRODUCT_TABLE_NAME, requestParams);
-                if (id == -1) {
-                    return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
-                } else {
-                    return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
-                }
-            } else {
+            DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+            if (TextUtils.isEmpty(session.getUserId())) {
                 return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "请登录");
+            } else {
+                Map<String, String> queryParams = new HashMap<>();
+                queryParams.put("id", session.getUserId());
+                Cursor cursor = query(db, ACCOUNT_TABLE_NAME, queryParams);
+                if (cursor.moveToFirst()) {
+                    Map<String, String> requestParams = requestBean.getParams();
+                    requestParams.put("id", "1101" + new Date().getTime());
+                    requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    long id = insert(db, PRODUCT_TABLE_NAME, requestParams);
+                    if (id == -1) {
+                        return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+                    } else {
+                        return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "{'id':" + id + "}");
+                    }
+                } else {
+                    return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "不存在该用户");
+                }
             }
         } catch (SQLException e) {
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);

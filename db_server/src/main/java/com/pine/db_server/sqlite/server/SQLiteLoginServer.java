@@ -10,13 +10,16 @@ import android.text.TextUtils;
 
 import com.pine.base.request.impl.database.DbRequestBean;
 import com.pine.base.request.impl.database.DbResponse;
+import com.pine.db_server.DbSession;
 import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
+import com.pine.db_server.sqlite.SQLiteDbRequestManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,7 +79,11 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                     if (cookies == null) {
                         cookies = new HashMap<>();
                     }
-                    cookies.put(SESSION_ID, String.valueOf(accountId));
+                    String sessionId = SQLiteDbRequestManager.getInstance().generateSessionId(accountId);
+                    DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(sessionId);
+                    session.setUserId(accountId);
+                    session.setLoginTimeStamp(Calendar.getInstance().getTimeInMillis());
+                    cookies.put(SESSION_ID, sessionId);
                     loginCursor.close();
                     cursor.close();
                     return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject.toString());
@@ -98,10 +105,12 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                                     @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            String accountIdStr = cookies.get(SESSION_ID);
+            DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+            String accountIdStr = session.getUserId();
             if (TextUtils.isEmpty(accountIdStr)) {
                 return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "");
             }
+            SQLiteDbRequestManager.getInstance().removeSession(session.getSessionId());
             Cursor loginCursor = query(db, ACCOUNT_LOGIN_TABLE_NAME, null, "accountId=?",
                     new String[]{accountIdStr}, null, null, null);
             while (loginCursor.moveToNext() &&
