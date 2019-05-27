@@ -24,6 +24,6 @@ public interface ILoadingContract {
 
         void updateVersion(boolean isForce);
 
-        void autoLogin();
+        void autoLogin(int delayTogoWelcome);
     }
 }

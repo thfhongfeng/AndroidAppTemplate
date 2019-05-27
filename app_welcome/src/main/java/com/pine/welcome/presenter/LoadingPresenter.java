@@ -118,12 +118,12 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
             public void onDownloadCancel() {
                 LogUtils.d(TAG, "onDownloadCancel");
                 if (isUiAlive()) {
-                    showShortToast(R.string.wel_version_update_cancel);
+                    showShortToast(R.string.wel_new_version_update_cancel);
                     getUi().dismissVersionUpdateProgressDialog();
                     if (isForce) {
                         getActivity().finish();
                     } else {
-                        autoLogin();
+                        autoLogin(1000);
                     }
                 }
             }
@@ -134,17 +134,17 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
                 if (isUiAlive()) {
                     String msg = "";
                     if (exception instanceof BusinessException) {
-                        msg = getContext().getString(R.string.wel_version_update_fail) +
+                        msg = getContext().getString(R.string.wel_new_version_download_fail) +
                                 "(" + exception.getMessage() + ")";
                     } else {
-                        msg = getContext().getString(R.string.wel_version_update_fail);
+                        msg = getContext().getString(R.string.wel_new_version_download_fail);
                     }
                     showShortToast(msg);
                     getUi().dismissVersionUpdateProgressDialog();
                     if (isForce) {
                         getActivity().finish();
                     } else {
-                        autoLogin();
+                        autoLogin(1000);
                     }
                 }
             }
@@ -152,11 +152,11 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
     }
 
     @Override
-    public void autoLogin() {
+    public void autoLogin(final int delayTogoWelcome) {
         if (!ConfigBundleSwitcher.isBundleOpen(ConfigBundleKey.LOGIN_BUNDLE_KEY) ||
                 WelcomeApplication.isLogin()) {
             if (isUiAlive()) {
-                goWelcomeActivity();
+                goWelcomeActivity(delayTogoWelcome);
             }
             return;
         }
@@ -164,23 +164,26 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
             @Override
             public void onSuccess(Bundle responseBundle) {
                 if (isUiAlive()) {
-                    goWelcomeActivity();
+                    goWelcomeActivity(delayTogoWelcome);
                 }
             }
 
             @Override
             public boolean onFail(int failCode, String errorInfo) {
                 if (isUiAlive()) {
-                    goWelcomeActivity();
+                    goWelcomeActivity(delayTogoWelcome);
                 }
                 return true;
             }
         });
     }
 
-    private void goWelcomeActivity() {
-        long delay = LOADING_MAX_TIME - (System.currentTimeMillis() - mStartTimeMillis);
-        delay = delay > 0 ? delay : 0;
+    private void goWelcomeActivity(int delayTogoWelcome) {
+        long delay = delayTogoWelcome;
+        if (delayTogoWelcome <= 0) {
+            delay = LOADING_MAX_TIME - (System.currentTimeMillis() - mStartTimeMillis);
+            delay = delay > 0 ? delay : 0;
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -210,11 +213,11 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
                                 getUi().showVersionUpdateConfirmDialog(versionEntity.getVersionName());
                             }
                         } else {
-                            autoLogin();
+                            autoLogin(-1);
                         }
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
-                        autoLogin();
+                        autoLogin(-1);
                     }
                 }
             }
@@ -222,7 +225,7 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
             @Override
             public boolean onFail(Exception e) {
                 if (isUiAlive()) {
-                    autoLogin();
+                    autoLogin(-1);
                 }
                 return false;
             }
@@ -230,7 +233,7 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
             @Override
             public void onCancel() {
                 if (isUiAlive()) {
-                    autoLogin();
+                    autoLogin(-1);
                 }
             }
         });
@@ -257,10 +260,10 @@ public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> impleme
                     "application/vnd.android.package-archive");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
+            finishUi();
         } else {
-            showShortToast(R.string.wel_version_update_fail);
-            autoLogin();
+            showShortToast(R.string.wel_new_version_install_fail);
+            autoLogin(1000);
         }
-        finishUi();
     }
 }

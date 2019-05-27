@@ -59,7 +59,7 @@ public class LoadingActivity extends BaseMvpNoActionBarActivity<ILoadingContract
                 @Override
                 public void onClick(View v) {
                     mUpdateConfirmDialog.dismiss();
-                    mPresenter.autoLogin();
+                    mPresenter.autoLogin(-1);
                 }
             });
             mUpdateConfirmDialog.findViewById(R.id.confirm_ll).setOnClickListener(new View.OnClickListener() {

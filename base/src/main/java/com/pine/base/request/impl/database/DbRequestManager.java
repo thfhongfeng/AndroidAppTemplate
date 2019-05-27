@@ -2,6 +2,7 @@ package com.pine.base.request.impl.database;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.pine.base.request.IRequestManager;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -91,12 +93,35 @@ public class DbRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setDownloadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener) {
+    public void setDownloadRequest(final @NonNull RequestBean requestBean,
+                                   final @NonNull IResponseListener.OnDownloadListener listener) {
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
         // Test code begin
         listener.onStart(requestBean.getWhat(), false, 10000, 100000);
-        listener.onProgress(requestBean.getWhat(), 50, 100000, 6000);
-        listener.onDownloadError(requestBean.getWhat(), new Exception("not implement"));
+        new Handler().post(new Runnable() {
+            int progress = 0;
+
+            @Override
+            public void run() {
+                progress = progress > 100 ? 100 : progress;
+                listener.onProgress(requestBean.getWhat(), progress, 100000, 6000);
+                if (new Random().nextInt(20) < 1) {
+                    listener.onDownloadError(requestBean.getWhat(), new Exception("simulation downloadError"));
+                } else {
+                    if (this.progress < 100) {
+                        this.progress = this.progress + 6;
+                        new Handler().postDelayed(this, 500);
+                    } else {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.onFinish(requestBean.getWhat(), "");
+                            }
+                        }, 1000);
+                    }
+                }
+            }
+        });
         // Test code end
     }
 
