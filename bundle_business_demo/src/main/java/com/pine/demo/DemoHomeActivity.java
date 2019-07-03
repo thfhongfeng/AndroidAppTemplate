@@ -13,6 +13,7 @@ import com.pine.base.ui.BaseActionBarActivity;
 import com.pine.base.widget.decor.GridSpacingItemDecoration;
 import com.pine.demo.adapter.DemoAdapter;
 import com.pine.demo.bean.DemoItemEntity;
+import com.pine.demo.console.DemoConsoleActivity;
 import com.pine.demo.novice_guide.DemoNoviceGuideActivity;
 
 import java.util.ArrayList;
@@ -63,11 +64,18 @@ public class DemoHomeActivity extends BaseActionBarActivity {
         mDemoAdapter = new DemoAdapter(
                 DemoAdapter.DEMO_VIEW_HOLDER);
         mDemoAdapter.enableEmptyComplete(true, false);
+
         ArrayList<DemoItemEntity> list = new ArrayList<>();
         DemoItemEntity entity = new DemoItemEntity();
+        entity.setName("控制台");
+        entity.setClazz(DemoConsoleActivity.class);
+        list.add(entity);
+
+        entity = new DemoItemEntity();
         entity.setName("新手引导");
         entity.setClazz(DemoNoviceGuideActivity.class);
         list.add(entity);
+
         mDemoAdapter.setData(list);
         demo_rv.setAdapter(mDemoAdapter);
     }

@@ -73,6 +73,16 @@ public class AppUtils {
     }
 
     /**
+     * 得到App名称
+     *
+     * @return App名称
+     */
+    public static String getAppName() {
+        return getApplication().getApplicationInfo().loadLabel(getApplication().getPackageManager()).toString();
+    }
+
+
+    /**
      * 得到软件版本号
      *
      * @param context 上下文
@@ -103,7 +113,6 @@ public class AppUtils {
         }
         return versionName;
     }
-
 
     /**
      * 安装apk

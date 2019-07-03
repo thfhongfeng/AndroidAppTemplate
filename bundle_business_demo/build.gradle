@@ -29,7 +29,8 @@ android {
     sourceSets {
         main {
             res.srcDirs += [
-                    'src/main/res_novice_guide'
+                    'src/main/res_novice_guide',
+                    'src/main/res_console'
             ]
             jniLibs.srcDir 'libs'
             jni.srcDirs = []    //disable automatic ndk-build
