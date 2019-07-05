@@ -63,7 +63,7 @@ public class SQLiteDbRequestManager {
     }
 
     @NonNull
-    public DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
+    public synchronized DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                   HashMap<String, String> header) {
         if (TextUtils.isEmpty(header.get(SESSION_ID))) {
             String sessionId = generateSessionId();

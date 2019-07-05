@@ -10,7 +10,7 @@ android {
         versionCode build_versions.versionCode
         versionName build_versions.versionName
 
-        manifestPlaceholders = [baidu_for_app_key: build_app_key.baidu_for_app_key]
+        manifestPlaceholders = [baidu_for_app_key: app_key.baidu_for_app_key]
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

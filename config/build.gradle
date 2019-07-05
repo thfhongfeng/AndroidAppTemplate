@@ -13,14 +13,14 @@ android {
         buildConfigField "String", "APPLICATION_PACKAGE", "\"${build_versions.applicationId}\""
         buildConfigField "String", "APP_NAME", "\"${build_versions.app_name}\""
 
-        buildConfigField "String", "BASE_URL", "\"${build_url.base_url}\""
-        buildConfigField "String", "WEI_BO_REDIRECT_URL", "\"${build_url.wei_bo_secret_key}\""
+        buildConfigField "String", "BASE_URL", "\"${app_url.base_url}\""
+        buildConfigField "String", "WEI_BO_REDIRECT_URL", "\"${app_url.wei_bo_secret_key}\""
 
-        buildConfigField "String", "QQ_FOR_APP_ID", "\"${build_app_key.qq_for_app_id}\""
-        buildConfigField "String", "WX_FOR_APP_ID", "\"${build_app_key.wx_for_app_id}\""
-        buildConfigField "String", "WX_SECRET_KEY", "\"${build_app_key.wx_secret_key}\""
-        buildConfigField "String", "WEI_BO_FOR_APP_KEY", "\"${build_app_key.wei_bo_for_app_key}\""
-        buildConfigField "String", "WEI_BO_SECRET_KEY", "\"${build_app_key.wei_bo_secret_key}\""
+        buildConfigField "String", "QQ_FOR_APP_ID", "\"${app_key.qq_for_app_id}\""
+        buildConfigField "String", "WX_FOR_APP_ID", "\"${app_key.wx_for_app_id}\""
+        buildConfigField "String", "WX_SECRET_KEY", "\"${app_key.wx_secret_key}\""
+        buildConfigField "String", "WEI_BO_FOR_APP_KEY", "\"${app_key.wei_bo_for_app_key}\""
+        buildConfigField "String", "WEI_BO_SECRET_KEY", "\"${app_key.wei_bo_secret_key}\""
 
         buildConfigField "String", "APP_THIRD_ROUTER_PROVIDER", "\"${app_third_sdk_provider.router_provider}\""
         buildConfigField "String", "APP_THIRD_MAP_PROVIDER", "\"${app_third_sdk_provider.map_provider}\""
