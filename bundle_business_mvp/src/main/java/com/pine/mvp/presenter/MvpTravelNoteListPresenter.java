@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
-import com.pine.base.exception.BusinessException;
 import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpTravelNoteListPaginationAdapter;
 import com.pine.mvp.bean.MvpTravelNoteItemEntity;
 import com.pine.mvp.contract.IMvpTravelNoteListContract;
 import com.pine.mvp.model.MvpTravelNoteModel;
 import com.pine.mvp.ui.activity.MvpTravelNoteReleaseActivity;
+import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

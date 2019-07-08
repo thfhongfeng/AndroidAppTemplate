@@ -11,7 +11,8 @@ import android.view.ViewStub;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
-import com.pine.base.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.ui.BaseMvvmActivity;
+import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
 
 /**
  * Created by tanghongfeng on 2019/3/1

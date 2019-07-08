@@ -3,14 +3,14 @@ package com.pine.login.model.callback;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.pine.base.request.RequestManager;
-import com.pine.base.request.Response;
-import com.pine.base.request.callback.JsonCallback;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
 import com.pine.login.ui.activity.LoginActivity;
+import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.Response;
+import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.AppUtils;
 
 import org.json.JSONObject;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.pine.base.request.IRequestManager.SESSION_ID;
+import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 /**
  * Created by tanghongfeng on 2018/9/10.

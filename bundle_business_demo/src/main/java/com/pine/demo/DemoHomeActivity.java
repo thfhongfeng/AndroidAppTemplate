@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.ui.BaseActionBarActivity;
-import com.pine.base.widget.decor.GridSpacingItemDecoration;
 import com.pine.demo.adapter.DemoAdapter;
 import com.pine.demo.bean.DemoItemEntity;
 import com.pine.demo.console.DemoConsoleActivity;
 import com.pine.demo.novice_guide.DemoNoviceGuideActivity;
+import com.pine.tool.widget.decor.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
 

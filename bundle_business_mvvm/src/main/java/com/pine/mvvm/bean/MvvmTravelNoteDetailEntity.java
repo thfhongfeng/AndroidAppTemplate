@@ -1,7 +1,7 @@
 package com.pine.mvvm.bean;
 
-import com.pine.base.bean.BaseBean;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
+import com.pine.tool.bean.BaseBean;
 
 import java.util.ArrayList;
 import java.util.List;

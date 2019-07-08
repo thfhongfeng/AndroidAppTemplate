@@ -1,9 +1,9 @@
 package com.pine.login;
 
 import com.pine.base.BaseApplication;
-import com.pine.base.request.RequestManager;
 import com.pine.config.BuildConfig;
 import com.pine.login.model.interceptor.LoginResponseInterceptor;
+import com.pine.tool.request.RequestManager;
 import com.pine.tool.util.LogUtils;
 
 /**

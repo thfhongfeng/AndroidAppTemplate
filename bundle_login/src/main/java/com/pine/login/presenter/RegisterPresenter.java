@@ -2,16 +2,16 @@ package com.pine.login.presenter;
 
 import android.text.TextUtils;
 
-import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
-import com.pine.base.bean.BaseInputParam;
-import com.pine.base.exception.BusinessException;
 import com.pine.login.LoginConstants;
 import com.pine.login.R;
 import com.pine.login.bean.AccountBean;
 import com.pine.login.contract.IRegisterContract;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.LoginAccountModel;
+import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.exception.BusinessException;
 import com.pine.tool.util.SecurityUtils;
 
 import java.util.HashMap;

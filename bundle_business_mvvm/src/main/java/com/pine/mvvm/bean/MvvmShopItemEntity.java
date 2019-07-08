@@ -4,8 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.pine.base.bean.BaseBean;
 import com.pine.mvvm.R;
+import com.pine.tool.bean.BaseBean;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.DecimalUtils;
 

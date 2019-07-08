@@ -21,9 +21,9 @@ import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.image_selector.bean.ImageItemBean;
-import com.pine.base.permission.PermissionsAnnotation;
 import com.pine.base.ui.BaseActionBarTextMenuActivity;
-import com.pine.tool.widget.ZoomImageView;
+import com.pine.tool.permission.PermissionsAnnotation;
+import com.pine.tool.widget.view.ZoomImageView;
 
 import java.util.ArrayList;
 

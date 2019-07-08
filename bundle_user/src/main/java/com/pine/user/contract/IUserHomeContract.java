@@ -1,6 +1,6 @@
 package com.pine.user.contract;
 
-import com.pine.base.architecture.mvp.contract.IBaseContract;
+import com.pine.tool.architecture.mvp.contract.IBaseContract;
 
 /**
  * Created by tanghongfeng on 2018/9/14

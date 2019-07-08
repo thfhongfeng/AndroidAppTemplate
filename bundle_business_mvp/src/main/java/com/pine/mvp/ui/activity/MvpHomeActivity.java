@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarImageMenuActivity;
-import com.pine.base.permission.PermissionsAnnotation;
 import com.pine.config.switcher.ConfigFuncSwitcher;
 import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpHomeContract;
@@ -20,7 +19,8 @@ import com.pine.mvp.ui.fragment.MvpShopPaginationListFragment;
 import com.pine.mvp.ui.fragment.MvpShopTreeListFragment;
 import com.pine.mvp.ui.fragment.MvpWebViewFragment;
 import com.pine.tool.adapter.TabFragmentPagerAdapter;
-import com.pine.tool.widget.ViewPagerTabLayout;
+import com.pine.tool.permission.PermissionsAnnotation;
+import com.pine.tool.widget.view.ViewPagerTabLayout;
 
 /**
  * Created by tanghongfeng on 2018/9/13

@@ -10,8 +10,9 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
-import com.pine.base.architecture.mvp.contract.IBaseContract;
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.contract.IBaseContract;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.ui.BaseMvpActivity;
 
 public abstract class BaseMvpActionBarImageMenuActivity<V extends IBaseContract.Ui, P extends BasePresenter<V>>
         extends BaseMvpActivity<V, P> implements IBaseContract.Ui {

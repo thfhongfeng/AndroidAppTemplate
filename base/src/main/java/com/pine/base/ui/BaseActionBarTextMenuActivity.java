@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
+import com.pine.tool.ui.BaseActivity;
 
 public abstract class BaseActionBarTextMenuActivity extends BaseActivity {
     public static final int ACTION_BAR_TYPE_DEFAULT = 0x0;

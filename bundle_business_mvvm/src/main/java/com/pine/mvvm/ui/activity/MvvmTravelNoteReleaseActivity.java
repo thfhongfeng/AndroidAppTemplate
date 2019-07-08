@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.BaseConstants;
-import com.pine.base.access.UiAccessAnnotation;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.component.uploader.bean.FileUploadBean;
@@ -24,6 +23,7 @@ import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.databinding.MvvmTravelNoteReleaseActivityBinding;
 import com.pine.mvvm.vm.MvvmTravelNoteReleaseVm;
+import com.pine.tool.access.UiAccessAnnotation;
 
 import org.json.JSONObject;
 

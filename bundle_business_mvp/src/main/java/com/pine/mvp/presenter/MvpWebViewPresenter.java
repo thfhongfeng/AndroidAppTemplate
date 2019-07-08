@@ -2,11 +2,11 @@ package com.pine.mvp.presenter;
 
 import android.os.Bundle;
 
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.bean.UrlTextShareBean;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.contract.IMvpWebViewContract;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 

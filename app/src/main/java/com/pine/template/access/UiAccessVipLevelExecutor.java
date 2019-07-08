@@ -3,8 +3,8 @@ package com.pine.template.access;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
-import com.pine.base.access.IUiAccessCallback;
-import com.pine.base.access.IUiAccessExecutor;
+import com.pine.tool.access.IUiAccessCallback;
+import com.pine.tool.access.IUiAccessExecutor;
 
 /**
  * Created by tanghongfeng on 2018/9/16

@@ -7,14 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
-import com.pine.base.exception.BusinessException;
-import com.pine.base.request.RequestManager;
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigBundleKey;
 import com.pine.config.switcher.ConfigBundleSwitcher;
 import com.pine.router.IRouterCallback;
+import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.exception.BusinessException;
+import com.pine.tool.request.RequestManager;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.R;
 import com.pine.welcome.WelcomeApplication;

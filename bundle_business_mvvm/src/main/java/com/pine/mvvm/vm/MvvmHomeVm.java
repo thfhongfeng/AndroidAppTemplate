@@ -1,6 +1,6 @@
 package com.pine.mvvm.vm;
 
-import com.pine.base.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
 
 /**
  * Created by tanghongfeng on 2019/3/1

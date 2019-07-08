@@ -4,14 +4,14 @@ import android.arch.lifecycle.MutableLiveData;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.base.architecture.mvvm.vm.BaseViewModel;
-import com.pine.base.binding.data.BaseLiveData;
-import com.pine.base.exception.BusinessException;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmTravelNoteCommentEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.model.MvvmTravelNoteModel;
+import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
+import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.binding.data.BaseLiveData;
+import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

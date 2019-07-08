@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.pine.base.BaseApplication;
-import com.pine.base.access.IUiAccessCallback;
-import com.pine.base.access.IUiAccessExecutor;
 import com.pine.router.IRouterCallback;
 import com.pine.template.TemplateApplication;
 import com.pine.template.remote.TemplateClientManager;
+import com.pine.tool.access.IUiAccessCallback;
+import com.pine.tool.access.IUiAccessExecutor;
 
 /**
  * Created by tanghongfeng on 2018/9/16

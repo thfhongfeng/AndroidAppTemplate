@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.pine.base.request.impl.database.DbRequestBean;
-import com.pine.base.request.impl.database.DbResponse;
 import com.pine.db_server.DbSession;
 import com.pine.db_server.DbUrlConstants;
 import com.pine.db_server.sqlite.server.SQLiteFileServer;
@@ -13,13 +11,15 @@ import com.pine.db_server.sqlite.server.SQLiteLoginServer;
 import com.pine.db_server.sqlite.server.SQLiteShopServer;
 import com.pine.db_server.sqlite.server.SQLiteTravelNoteServer;
 import com.pine.db_server.sqlite.server.SQLiteWelcomeServer;
+import com.pine.tool.request.impl.database.DbRequestBean;
+import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.util.AppUtils;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 
-import static com.pine.base.request.IRequestManager.SESSION_ID;
+import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteDbRequestManager {
 
@@ -64,7 +64,7 @@ public class SQLiteDbRequestManager {
 
     @NonNull
     public synchronized DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                  HashMap<String, String> header) {
+                                               HashMap<String, String> header) {
         if (TextUtils.isEmpty(header.get(SESSION_ID))) {
             String sessionId = generateSessionId();
             header.put(SESSION_ID, sessionId);

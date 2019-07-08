@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 
-import com.pine.base.ui.BaseFragment;
+import com.pine.tool.ui.BaseFragment;
 
 public abstract class BaseMvcFragment extends BaseFragment {
 

@@ -2,15 +2,15 @@ package com.pine.mvvm.vm;
 
 import android.text.TextUtils;
 
-import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.base.architecture.mvvm.vm.BaseViewModel;
-import com.pine.base.binding.data.BaseLiveData;
 import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
-import com.pine.base.exception.BusinessException;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.model.MvvmShopModel;
+import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
+import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.binding.data.BaseLiveData;
+import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

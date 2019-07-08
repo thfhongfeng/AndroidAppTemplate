@@ -16,7 +16,7 @@ import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpTravelNoteCommentEntity;
 import com.pine.mvp.bean.MvpTravelNoteDetailEntity;
-import com.pine.tool.widget.CircleImageView;
+import com.pine.tool.widget.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;

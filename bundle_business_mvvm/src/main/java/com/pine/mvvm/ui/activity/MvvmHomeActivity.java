@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarImageMenuActivity;
-import com.pine.base.permission.PermissionsAnnotation;
 import com.pine.config.switcher.ConfigFuncSwitcher;
 import com.pine.mvvm.R;
 import com.pine.mvvm.databinding.MvvmHomeActivityBinding;
@@ -20,6 +19,7 @@ import com.pine.mvvm.ui.fragment.MvvmShopTreeListFragment;
 import com.pine.mvvm.ui.fragment.MvvmWebViewFragment;
 import com.pine.mvvm.vm.MvvmHomeVm;
 import com.pine.tool.adapter.TabFragmentPagerAdapter;
+import com.pine.tool.permission.PermissionsAnnotation;
 
 /**
  * Created by tanghongfeng on 2019/2/25

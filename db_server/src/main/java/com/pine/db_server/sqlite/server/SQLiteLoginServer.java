@@ -8,12 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.pine.base.request.impl.database.DbRequestBean;
-import com.pine.base.request.impl.database.DbResponse;
 import com.pine.db_server.DbSession;
 import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
 import com.pine.db_server.sqlite.SQLiteDbRequestManager;
+import com.pine.tool.request.impl.database.DbRequestBean;
+import com.pine.tool.request.impl.database.DbResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,9 +24,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.pine.base.request.IRequestManager.SESSION_ID;
 import static com.pine.db_server.DbConstants.ACCOUNT_LOGIN_TABLE_NAME;
 import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
+import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteLoginServer extends SQLiteBaseServer {
 

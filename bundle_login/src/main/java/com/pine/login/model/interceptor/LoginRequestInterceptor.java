@@ -1,7 +1,7 @@
 package com.pine.login.model.interceptor;
 
-import com.pine.base.request.RequestBean;
-import com.pine.base.request.interceptor.IRequestInterceptor;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.interceptor.IRequestInterceptor;
 
 /**
  * Created by tanghongfeng on 2018/9/10.

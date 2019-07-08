@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
-import com.pine.base.bean.BaseInputParam;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.R;
@@ -13,6 +11,8 @@ import com.pine.login.contract.ILoginContract;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
 import com.pine.login.ui.activity.RegisterActivity;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.bean.BaseInputParam;
 
 /**
  * Created by tanghongfeng on 2018/9/12

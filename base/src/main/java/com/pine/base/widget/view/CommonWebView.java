@@ -31,10 +31,10 @@ import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.base.remote.BaseClientManager;
-import com.pine.base.request.IRequestManager;
-import com.pine.base.request.RequestManager;
 import com.pine.base.util.DialogUtils;
 import com.pine.router.IRouterCallback;
+import com.pine.tool.request.IRequestManager;
+import com.pine.tool.request.RequestManager;
 import com.pine.tool.util.DensityUtils;
 import com.pine.tool.util.ImageUtils;
 import com.pine.tool.util.NetWorkUtils;
@@ -218,11 +218,11 @@ public class CommonWebView extends WebView {
         if (mActivity != null && !mActivity.isFinishing()) {
             if (NetWorkUtils.checkNetWork(mActivity)) {
                 DialogUtils.showConfirmDialog(mActivity, getResources()
-                        .getString(R.string.base_server_err), null);
+                        .getString(R.string.tool_server_err), null);
             } else {
                 //无网络
                 DialogUtils.showConfirmDialog(mActivity, getResources()
-                        .getString(R.string.base_network_err), null);
+                        .getString(R.string.tool_network_err), null);
             }
         }
         mIsErrorViewState = true;

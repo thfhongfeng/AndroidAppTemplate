@@ -1,7 +1,7 @@
 package com.pine.mvp.contract;
 
-import com.pine.base.architecture.mvp.contract.IBaseContract;
 import com.pine.mvp.adapter.MvpShopListNoPaginationAdapter;
+import com.pine.tool.architecture.mvp.contract.IBaseContract;
 
 /**
  * Created by tanghongfeng on 2018/9/14

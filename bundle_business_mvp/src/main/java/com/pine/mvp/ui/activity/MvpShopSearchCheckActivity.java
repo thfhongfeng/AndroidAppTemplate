@@ -11,12 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
-import com.pine.base.bean.BaseInputParam;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpShopCheckListPaginationAdapter;
 import com.pine.mvp.contract.IMvpShopSearchCheckContract;
 import com.pine.mvp.presenter.MvpShopSearchCheckPresenter;
+import com.pine.tool.bean.BaseInputParam;
 import com.pine.tool.util.KeyboardUtils;
 
 /**

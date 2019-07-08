@@ -13,10 +13,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.pine.base.access.UiAccessAnnotation;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
-import com.pine.base.bean.BaseInputParam;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -25,6 +23,8 @@ import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpTravelNoteReleaseContract;
 import com.pine.mvp.presenter.MvpTravelNoteReleasePresenter;
 import com.pine.mvp.widget.view.MvpNoteEditorView;
+import com.pine.tool.access.UiAccessAnnotation;
+import com.pine.tool.bean.BaseInputParam;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

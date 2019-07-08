@@ -8,12 +8,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
-import com.pine.base.bean.BaseInputParam;
 import com.pine.base.widget.view.PicVerifyCodeImageView;
 import com.pine.login.LoginUrlConstants;
 import com.pine.login.R;
 import com.pine.login.contract.IRegisterContract;
 import com.pine.login.presenter.RegisterPresenter;
+import com.pine.tool.bean.BaseInputParam;
 
 /**
  * Created by tanghongfeng on 2018/11/15

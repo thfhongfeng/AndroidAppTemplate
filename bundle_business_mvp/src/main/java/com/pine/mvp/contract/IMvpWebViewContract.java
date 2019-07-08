@@ -1,7 +1,7 @@
 package com.pine.mvp.contract;
 
-import com.pine.base.architecture.mvp.contract.IBaseContract;
 import com.pine.base.component.share.bean.ShareBean;
+import com.pine.tool.architecture.mvp.contract.IBaseContract;
 
 import java.util.ArrayList;
 

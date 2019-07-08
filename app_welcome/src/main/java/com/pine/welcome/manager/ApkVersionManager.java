@@ -3,9 +3,9 @@ package com.pine.welcome.manager;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.pine.base.exception.BusinessException;
-import com.pine.base.request.RequestManager;
-import com.pine.base.request.callback.DownloadCallback;
+import com.pine.tool.exception.BusinessException;
+import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.callback.DownloadCallback;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;

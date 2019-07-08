@@ -48,7 +48,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <com.pine.tool.widget.CircleImageView
+            <com.pine.tool.widget.view.CircleImageView
                 android:id="@+id/person_civ"
                 emptySrc="@{R.mipmap.base_iv_portrait_default}"
                 imageUrl="@{travelNoteDetail.headImgUrl}"

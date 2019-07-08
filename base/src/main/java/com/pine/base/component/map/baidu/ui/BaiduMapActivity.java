@@ -24,8 +24,8 @@ import com.baidu.mapapi.model.LatLng;
 import com.pine.base.R;
 import com.pine.base.component.map.MapSdkManager.MapType;
 import com.pine.base.component.map.baidu.location.BdLocationManager;
-import com.pine.base.permission.PermissionsAnnotation;
 import com.pine.base.ui.BaseActionBarTextMenuActivity;
+import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.util.GPSUtils;
 
 /**

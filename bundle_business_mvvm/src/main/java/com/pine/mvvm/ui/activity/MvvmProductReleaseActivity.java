@@ -8,7 +8,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pine.base.access.UiAccessAnnotation;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.util.DialogUtils;
@@ -18,6 +17,7 @@ import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmProductDetailEntity;
 import com.pine.mvvm.databinding.MvvmProductReleaseActivityBinding;
 import com.pine.mvvm.vm.MvvmProductReleaseVm;
+import com.pine.tool.access.UiAccessAnnotation;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

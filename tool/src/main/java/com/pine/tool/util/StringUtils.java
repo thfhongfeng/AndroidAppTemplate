@@ -2,10 +2,6 @@ package com.pine.tool.util;
 
 import com.vdurmont.emoji.EmojiParser;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.HashMap;
-
 /**
  * Created by tanghongfeng on 2018/11/13
  */

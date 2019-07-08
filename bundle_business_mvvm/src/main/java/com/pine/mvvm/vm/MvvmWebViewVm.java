@@ -3,10 +3,10 @@ package com.pine.mvvm.vm;
 import android.arch.lifecycle.MutableLiveData;
 import android.os.Bundle;
 
-import com.pine.base.architecture.mvvm.vm.BaseViewModel;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.bean.UrlTextShareBean;
 import com.pine.mvvm.MvvmUrlConstants;
+import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
 
 import java.util.ArrayList;
 

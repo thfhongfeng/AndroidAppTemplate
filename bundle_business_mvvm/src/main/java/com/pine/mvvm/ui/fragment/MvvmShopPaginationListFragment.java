@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.pine.base.architecture.mvvm.ui.fragment.BaseMvvmFragment;
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
@@ -15,6 +14,7 @@ import com.pine.mvvm.adapter.MvvmShopListPaginationAdapter;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.databinding.MvvmShopPaginationListFragmentBinding;
 import com.pine.mvvm.vm.MvvmShopPaginationListVm;
+import com.pine.tool.architecture.mvvm.ui.BaseMvvmFragment;
 
 import java.util.ArrayList;
 

@@ -14,10 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pine.base.BaseConstants;
-import com.pine.base.access.UiAccessAnnotation;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
-import com.pine.base.bean.BaseInputParam;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.ui.ImageUploadView;
@@ -30,6 +28,8 @@ import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpShopReleaseContract;
 import com.pine.mvp.presenter.MvpShopReleasePresenter;
+import com.pine.tool.access.UiAccessAnnotation;
+import com.pine.tool.bean.BaseInputParam;
 import com.pine.tool.util.DecimalUtils;
 
 import org.json.JSONObject;

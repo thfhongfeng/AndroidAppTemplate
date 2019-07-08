@@ -1,7 +1,7 @@
 package com.pine.main.contract;
 
-import com.pine.base.architecture.mvp.contract.IBaseContract;
 import com.pine.main.bean.MainBusinessItemEntity;
+import com.pine.tool.architecture.mvp.contract.IBaseContract;
 
 import java.util.ArrayList;
 

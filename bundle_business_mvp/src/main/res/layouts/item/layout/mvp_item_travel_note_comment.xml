@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:orientation="horizontal">
 
-        <com.pine.tool.widget.CircleImageView
+        <com.pine.tool.widget.view.CircleImageView
             android:id="@+id/person_civ"
             android:layout_width="@dimen/dp_38"
             android:layout_height="@dimen/dp_38"

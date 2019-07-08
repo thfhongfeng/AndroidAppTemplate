@@ -2,14 +2,14 @@ package com.pine.mvp.presenter;
 
 import android.text.TextUtils;
 
-import com.pine.base.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
-import com.pine.base.exception.BusinessException;
 import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpShopListPaginationTreeAdapter;
 import com.pine.mvp.bean.MvpShopAndProductEntity;
 import com.pine.mvp.contract.IMvpShopTreeListContract;
 import com.pine.mvp.model.MvpShopModel;
+import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

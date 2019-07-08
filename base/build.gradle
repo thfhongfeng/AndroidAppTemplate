@@ -61,16 +61,7 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // android官方 dependency begin
-    api build_dependency["lifecycle_extensions"]
-    // android官方 dependency end
-
-    // google官方 dependency begin
-    api build_dependency["google_gson"]
-    // google官方 dependency end
-
     // 第三方 dependency begin
-    api build_dependency["nohttp_okhttp"]
     api build_dependency["aigestudio_wheelpicker"]
     api build_dependency['safewebviewbridge']
     api build_dependency['bumptech_glide']

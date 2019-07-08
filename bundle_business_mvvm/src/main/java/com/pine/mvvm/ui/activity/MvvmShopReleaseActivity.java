@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.BaseConstants;
-import com.pine.base.access.UiAccessAnnotation;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.component.map.MapSdkManager;
@@ -27,6 +26,7 @@ import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
 import com.pine.mvvm.databinding.MvvmShopReleaseActivityBinding;
 import com.pine.mvvm.vm.MvvmShopReleaseVm;
+import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.util.DecimalUtils;
 
 import org.json.JSONObject;

@@ -1,6 +1,6 @@
 package com.pine.mvvm.bean;
 
-import com.pine.base.bean.BaseBean;
+import com.pine.tool.bean.BaseBean;
 
 /**
  * Created by tanghongfeng on 2018/9/28

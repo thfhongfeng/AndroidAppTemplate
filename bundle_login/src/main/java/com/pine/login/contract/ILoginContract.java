@@ -2,8 +2,8 @@ package com.pine.login.contract;
 
 import android.support.annotation.NonNull;
 
-import com.pine.base.architecture.mvp.contract.IBaseContract;
-import com.pine.base.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.contract.IBaseContract;
+import com.pine.tool.bean.BaseInputParam;
 
 /**
  * Created by tanghongfeng on 2018/9/14

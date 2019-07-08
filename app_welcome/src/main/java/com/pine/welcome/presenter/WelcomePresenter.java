@@ -3,9 +3,9 @@ package com.pine.welcome.presenter;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.router.IRouterCallback;
 import com.pine.router.command.RouterMainCommand;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.contract.IWelcomeContract;
 import com.pine.welcome.remote.WelcomeClientManager;

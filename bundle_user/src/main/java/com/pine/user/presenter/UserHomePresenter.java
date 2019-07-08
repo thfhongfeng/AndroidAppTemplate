@@ -1,6 +1,6 @@
 package com.pine.user.presenter;
 
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
 import com.pine.user.contract.IUserHomeContract;
 
 /**

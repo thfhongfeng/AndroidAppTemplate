@@ -8,9 +8,9 @@ import android.widget.LinearLayout;
 import com.pine.base.component.editor.bean.TextImageEditorItemData;
 import com.pine.base.component.editor.ui.TextImageEditorView;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
-import com.pine.base.ui.BaseActivity;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.R;
+import com.pine.tool.ui.BaseActivity;
 import com.pine.tool.util.StringUtils;
 
 import java.util.ArrayList;

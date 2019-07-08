@@ -19,8 +19,8 @@ import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
-import com.pine.base.ui.BaseActivity;
 import com.pine.base.util.DialogUtils;
+import com.pine.tool.ui.BaseActivity;
 import com.pine.tool.util.KeyboardUtils;
 import com.pine.tool.util.LogUtils;
 

@@ -5,10 +5,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import com.pine.base.request.impl.database.DbRequestBean;
-import com.pine.base.request.impl.database.DbResponse;
 import com.pine.db_server.sqlite.DbResponseGenerator;
 import com.pine.db_server.sqlite.SQLiteDbHelper;
+import com.pine.tool.request.impl.database.DbRequestBean;
+import com.pine.tool.request.impl.database.DbResponse;
 
 import java.util.HashMap;
 import java.util.List;

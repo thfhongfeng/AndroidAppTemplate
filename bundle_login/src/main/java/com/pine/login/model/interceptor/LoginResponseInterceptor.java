@@ -1,16 +1,16 @@
 package com.pine.login.model.interceptor;
 
-import com.pine.base.request.IRequestManager;
-import com.pine.base.request.RequestBean;
-import com.pine.base.request.RequestManager;
-import com.pine.base.request.Response;
-import com.pine.base.request.callback.JsonCallback;
-import com.pine.base.request.interceptor.IResponseInterceptor;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.ResponseCode;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.callback.LoginCallback;
+import com.pine.tool.request.IRequestManager;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.Response;
+import com.pine.tool.request.callback.JsonCallback;
+import com.pine.tool.request.interceptor.IResponseInterceptor;
 
 import org.json.JSONException;
 import org.json.JSONObject;

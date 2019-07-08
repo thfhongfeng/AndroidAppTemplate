@@ -4,16 +4,16 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.base.exception.BusinessException;
-import com.pine.base.request.RequestManager;
-import com.pine.base.request.callback.JsonCallback;
 import com.pine.config.BuildConfig;
 import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.bean.MvvmTravelNoteCommentEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
+import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
+import com.pine.tool.exception.BusinessException;
+import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONException;

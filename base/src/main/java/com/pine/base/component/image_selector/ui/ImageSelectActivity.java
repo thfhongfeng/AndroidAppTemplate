@@ -30,8 +30,8 @@ import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.image_selector.OnBackPressedListener;
 import com.pine.base.component.image_selector.bean.ImageFolderBean;
 import com.pine.base.component.image_selector.bean.ImageItemBean;
-import com.pine.base.permission.PermissionsAnnotation;
 import com.pine.base.ui.BaseActionBarTextMenuActivity;
+import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.util.LogUtils;
 
 import java.io.File;

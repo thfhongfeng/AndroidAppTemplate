@@ -14,11 +14,11 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.pine.base.architecture.mvvm.ui.fragment.BaseMvvmFragment;
 import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.R;
 import com.pine.mvvm.databinding.MvvmWebViewFragmentBinding;
 import com.pine.mvvm.vm.MvvmWebViewVm;
+import com.pine.tool.architecture.mvvm.ui.BaseMvvmFragment;
 import com.pine.tool.util.WebViewUtils;
 
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;

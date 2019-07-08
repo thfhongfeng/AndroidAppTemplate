@@ -22,11 +22,11 @@ import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
-import com.pine.base.ui.BaseActivity;
-import com.pine.base.widget.ILifeCircleView;
+import com.pine.tool.ui.BaseActivity;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
+import com.pine.tool.widget.ILifeCircleView;
 
 import org.json.JSONObject;
 

@@ -5,10 +5,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.pine.base.architecture.mvp.ui.fragment.BaseMvpFragment;
 import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpShopNoPaginationListContract;
 import com.pine.mvp.presenter.MvpShopNoPaginationListPresenter;
+import com.pine.tool.architecture.mvp.ui.BaseMvpFragment;
 
 /**
  * Created by tanghongfeng on 2018/9/28

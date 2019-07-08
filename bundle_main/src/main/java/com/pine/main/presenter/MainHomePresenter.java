@@ -2,7 +2,6 @@ package com.pine.main.presenter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.base.architecture.mvp.presenter.BasePresenter;
 import com.pine.config.ConfigBundleKey;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.contract.IMainHomeContract;
@@ -11,6 +10,7 @@ import com.pine.router.command.RouterDemoCommand;
 import com.pine.router.command.RouterMvcCommand;
 import com.pine.router.command.RouterMvpCommand;
 import com.pine.router.command.RouterMvvmCommand;
+import com.pine.tool.architecture.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 

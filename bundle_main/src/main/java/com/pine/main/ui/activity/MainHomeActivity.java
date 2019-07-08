@@ -2,17 +2,14 @@ package com.pine.main.ui.activity;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpNoActionBarActivity;
-import com.pine.base.widget.decor.GridSpacingItemDecoration;
-import com.pine.base.widget.view.BottomTabNavigationBar;
 import com.pine.main.R;
 import com.pine.main.adapter.MainBusinessAdapter;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.contract.IMainHomeContract;
 import com.pine.main.presenter.MainHomePresenter;
-import com.pine.main.remote.MainClientManager;
+import com.pine.tool.widget.decor.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
 

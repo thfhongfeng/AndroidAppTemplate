@@ -4,11 +4,11 @@ import android.arch.lifecycle.MutableLiveData;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.pine.base.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.base.architecture.mvvm.vm.BaseViewModel;
-import com.pine.base.exception.BusinessException;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
 import com.pine.mvvm.model.MvvmShopModel;
+import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
+import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.exception.BusinessException;
 
 import java.util.HashMap;
 

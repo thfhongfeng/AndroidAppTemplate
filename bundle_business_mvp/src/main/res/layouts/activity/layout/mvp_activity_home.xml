@@ -20,7 +20,7 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/dp_10">
 
-        <com.pine.tool.widget.ViewPagerTabLayout
+        <com.pine.tool.widget.view.ViewPagerTabLayout
             android:id="@+id/view_pager_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             app:tabLayout_marginStart="@dimen/dp_10"
             app:tabLayout_showDividers="middle"
             app:tabSelectedTextColor="@color/dark_red"
-            app:tabTextColor="@color/dim_gray"></com.pine.tool.widget.ViewPagerTabLayout>
+            app:tabTextColor="@color/dim_gray"></com.pine.tool.widget.view.ViewPagerTabLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
