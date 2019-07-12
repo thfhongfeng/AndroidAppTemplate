@@ -8,8 +8,8 @@ import com.pine.mvp.bean.MvpProductDetailEntity;
 import com.pine.mvp.contract.IMvpProductReleaseContract;
 import com.pine.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.bean.InputParam;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class MvpProductReleasePresenter extends BasePresenter<IMvpProductReleaseContract.Ui>
+public class MvpProductReleasePresenter extends Presenter<IMvpProductReleaseContract.Ui>
         implements IMvpProductReleaseContract.Presenter {
     private MvpShopModel mShopModel;
     private String mShopId;
@@ -44,28 +44,28 @@ public class MvpProductReleasePresenter extends BasePresenter<IMvpProductRelease
         }
         HashMap<String, String> params = new HashMap<>();
 
-        BaseInputParam<String> name = getUi().getProductNameParam("name");
+        InputParam<String> name = getUi().getProductNameParam("name");
         if (name.checkIsEmpty(R.string.mvp_product_release_name_need)) {
             return;
         } else {
             params.put(name.getKey(), name.getValue());
         }
 
-        BaseInputParam<String> price = getUi().getProductPriceParam("price");
+        InputParam<String> price = getUi().getProductPriceParam("price");
         if (price.checkIsEmpty(R.string.mvp_product_release_price_need)) {
             return;
         } else {
             params.put(price.getKey(), price.getValue());
         }
 
-        BaseInputParam<String> shelvePrice = getUi().getProductShelvePriceParam("shelvePrice");
+        InputParam<String> shelvePrice = getUi().getProductShelvePriceParam("shelvePrice");
         if (shelvePrice.checkIsEmpty(R.string.mvp_product_release_shelve_price_need)) {
             return;
         } else {
             params.put(shelvePrice.getKey(), shelvePrice.getValue());
         }
 
-        BaseInputParam<String> shelveDate = getUi().getProductShelveDateParam("shelveDate");
+        InputParam<String> shelveDate = getUi().getProductShelveDateParam("shelveDate");
         if (shelveDate.checkIsEmpty(R.string.mvp_product_release_shelve_date_need)) {
             return;
         } else {

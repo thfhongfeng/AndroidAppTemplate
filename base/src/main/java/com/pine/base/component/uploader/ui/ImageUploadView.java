@@ -25,7 +25,7 @@ import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
-import com.pine.tool.ui.BaseActivity;
+import com.pine.tool.ui.Activity;
 import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
@@ -63,11 +63,11 @@ public class ImageUploadView extends UploadFileRecyclerView {
         mMaxImageSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
     }
 
-    public void init(@NonNull BaseActivity activity) {
+    public void init(@NonNull Activity activity) {
         init(activity, false);
     }
 
-    public void init(@NonNull BaseActivity activity, boolean canDelete) {
+    public void init(@NonNull Activity activity, boolean canDelete) {
         initUpload(activity, FileUploadComponent.TYPE_IMAGE);
         mUploadImageAdapter = new UploadImageAdapter(
                 UploadImageAdapter.UPLOAD_IMAGE_VIEW_HOLDER, false, canDelete, mMaxFileCount);
@@ -80,7 +80,7 @@ public class ImageUploadView extends UploadFileRecyclerView {
     }
 
 
-    public void init(@NonNull BaseActivity activity, @NonNull String uploadUrl,
+    public void init(@NonNull Activity activity, @NonNull String uploadUrl,
                      boolean canDelete, @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
         initUpload(activity, uploadUrl, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
         mUploadImageAdapter = new UploadImageAdapter(
@@ -93,7 +93,7 @@ public class ImageUploadView extends UploadFileRecyclerView {
         notifyAdapterDataChanged();
     }
 
-    public void init(@NonNull BaseActivity activity, @NonNull String uploadUrl,
+    public void init(@NonNull Activity activity, @NonNull String uploadUrl,
                      boolean canDelete, @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
         initUpload(activity, uploadUrl, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
         mUploadImageAdapter = new UploadImageAdapter(

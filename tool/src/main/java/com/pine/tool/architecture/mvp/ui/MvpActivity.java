@@ -1,19 +1,18 @@
 package com.pine.tool.architecture.mvp.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.ui.BaseActivity;
+import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.ui.Activity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class BaseMvpActivity<V extends IBaseContract.Ui, P extends BasePresenter<V>>
-        extends BaseActivity implements IBaseContract.Ui {
+public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>>
+        extends Activity implements IContract.Ui {
     protected P mPresenter;
 
     @CallSuper
@@ -59,7 +58,7 @@ public abstract class BaseMvpActivity<V extends IBaseContract.Ui, P extends Base
     @Override
     protected void afterInit() {
         if (mPresenter != null) {
-            mPresenter.onUiState(BasePresenter.UiState.UI_STATE_ON_CREATE);
+            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_CREATE);
             mPresenter.afterViewInit();
         }
     }
@@ -68,7 +67,7 @@ public abstract class BaseMvpActivity<V extends IBaseContract.Ui, P extends Base
     protected void onStart() {
         super.onStart();
         if (mPresenter != null) {
-            mPresenter.onUiState(BasePresenter.UiState.UI_STATE_ON_START);
+            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_START);
         }
     }
 
@@ -76,7 +75,7 @@ public abstract class BaseMvpActivity<V extends IBaseContract.Ui, P extends Base
     protected void onResume() {
         super.onResume();
         if (mPresenter != null) {
-            mPresenter.onUiState(BasePresenter.UiState.UI_STATE_ON_RESUME);
+            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_RESUME);
         }
     }
 
@@ -84,14 +83,14 @@ public abstract class BaseMvpActivity<V extends IBaseContract.Ui, P extends Base
     protected void onPause() {
         super.onPause();
         if (mPresenter != null) {
-            mPresenter.onUiState(BasePresenter.UiState.UI_STATE_ON_PAUSE);
+            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_PAUSE);
         }
     }
 
     @Override
     protected void onStop() {
         if (mPresenter != null) {
-            mPresenter.onUiState(BasePresenter.UiState.UI_STATE_ON_STOP);
+            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_STOP);
         }
         super.onStop();
     }
@@ -106,7 +105,7 @@ public abstract class BaseMvpActivity<V extends IBaseContract.Ui, P extends Base
     }
 
     @Override
-    public Activity getContextActivity() {
+    public android.app.Activity getContextActivity() {
         return this;
     }
 }

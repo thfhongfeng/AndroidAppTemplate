@@ -1,7 +1,7 @@
 package com.pine.main.contract;
 
 import com.pine.main.bean.MainBusinessItemEntity;
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
+import com.pine.tool.architecture.mvp.contract.IContract;
 
 import java.util.ArrayList;
 
@@ -10,11 +10,11 @@ import java.util.ArrayList;
  */
 
 public interface IMainHomeContract {
-    interface Ui extends IBaseContract.Ui {
+    interface Ui extends IContract.Ui {
         void setBusinessBundleData(ArrayList<MainBusinessItemEntity> list);
     }
 
-    interface Presenter extends IBaseContract.Presenter {
+    interface Presenter extends IContract.Presenter {
         void loadBusinessBundleData();
     }
 }

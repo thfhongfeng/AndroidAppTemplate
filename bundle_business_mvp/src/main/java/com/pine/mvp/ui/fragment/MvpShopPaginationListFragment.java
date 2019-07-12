@@ -10,13 +10,13 @@ import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpShopListPaginationAdapter;
 import com.pine.mvp.contract.IMvpShopPaginationContract;
 import com.pine.mvp.presenter.MvpShopPaginationListPresenter;
-import com.pine.tool.architecture.mvp.ui.BaseMvpFragment;
+import com.pine.tool.architecture.mvp.ui.MvpFragment;
 
 /**
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvpShopPaginationListFragment extends BaseMvpFragment<IMvpShopPaginationContract.Ui, MvpShopPaginationListPresenter>
+public class MvpShopPaginationListFragment extends MvpFragment<IMvpShopPaginationContract.Ui, MvpShopPaginationListPresenter>
         implements IMvpShopPaginationContract.Ui, SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipe_refresh_layout;
     private RecyclerView recycle_view;

@@ -11,7 +11,7 @@ import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpShopPaginationContract;
 import com.pine.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPaginationContract.Ui>
+public class MvpShopPaginationListPresenter extends Presenter<IMvpShopPaginationContract.Ui>
         implements IMvpShopPaginationContract.Presenter {
     private MvpShopModel mShopModel;
     private MvpShopListPaginationAdapter mMvpHomeItemAdapter;
@@ -43,7 +43,7 @@ public class MvpShopPaginationListPresenter extends BasePresenter<IMvpShopPagina
     }
 
     @Override
-    public void onUiState(BasePresenter.UiState state) {
+    public void onUiState(Presenter.UiState state) {
         super.onUiState(state);
         switch (state) {
             case UI_STATE_ON_CREATE:

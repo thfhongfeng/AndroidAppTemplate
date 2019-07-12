@@ -5,7 +5,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.pine.mvvm.R;
-import com.pine.tool.bean.BaseBean;
+import com.pine.tool.bean.Bean;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.DecimalUtils;
 
@@ -13,7 +13,7 @@ import com.pine.tool.util.DecimalUtils;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvvmShopItemEntity extends BaseBean implements Parcelable {
+public class MvvmShopItemEntity extends Bean implements Parcelable {
 
     /**
      * id :

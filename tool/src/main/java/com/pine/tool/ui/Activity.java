@@ -35,7 +35,7 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public abstract class BaseActivity extends AppCompatActivity
+public abstract class Activity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
     public final int REQUEST_ACCESS_PERMISSION = 33333;
     protected final String TAG = LogUtils.makeLogTag(this.getClass());

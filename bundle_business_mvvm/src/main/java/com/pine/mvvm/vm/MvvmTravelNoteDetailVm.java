@@ -9,8 +9,8 @@ import com.pine.mvvm.bean.MvvmTravelNoteCommentEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.model.MvvmTravelNoteModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
-import com.pine.tool.binding.data.BaseLiveData;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.binding.data.CustomLiveData;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
  * Created by tanghongfeng on 2019/3/1
  */
 
-public class MvvmTravelNoteDetailVm extends BaseViewModel {
+public class MvvmTravelNoteDetailVm extends ViewModel {
     private String mId;
     MvvmTravelNoteModel mTravelNoteModel = new MvvmTravelNoteModel();
 
@@ -115,9 +115,9 @@ public class MvvmTravelNoteDetailVm extends BaseViewModel {
         travelNoteDetailDate.setValue(travelNoteDetail);
     }
 
-    private BaseLiveData<List<MvvmTravelNoteCommentEntity>, Boolean> travelNoteCommentListDate = new BaseLiveData<>();
+    private CustomLiveData<List<MvvmTravelNoteCommentEntity>, Boolean> travelNoteCommentListDate = new CustomLiveData<>();
 
-    public BaseLiveData<List<MvvmTravelNoteCommentEntity>, Boolean> getTravelNoteCommentListDate() {
+    public CustomLiveData<List<MvvmTravelNoteCommentEntity>, Boolean> getTravelNoteCommentListDate() {
         return travelNoteCommentListDate;
     }
 

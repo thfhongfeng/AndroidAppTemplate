@@ -7,12 +7,9 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
-import com.pine.tool.ui.BaseFragment;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.ui.Activity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -21,34 +18,31 @@ import java.lang.reflect.Type;
  * Created by tanghongfeng on 2019/3/1
  */
 
-public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends BaseViewModel> extends BaseFragment {
+public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewModel> extends Activity {
     protected T mBinding;
     protected VM mViewModel;
 
     @CallSuper
     @Override
-    protected void beforeInitOnCreateView(@Nullable Bundle savedInstanceState) {
+    protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         // 创建ViewModel
         if (mViewModel == null) {
             Type type = getClass().getGenericSuperclass();
             if (type instanceof ParameterizedType) {
                 Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
-                mViewModel = (VM) ViewModelProviders.of(getActivity()).get(presenterClazz);
+                mViewModel = (VM) ViewModelProviders.of(this).get(presenterClazz);
                 mViewModel.getUiLoadingData().setValue(false);
-                mViewModel.setUi(getActivity());
+                mViewModel.setUi(this);
             }
         }
     }
 
-    @Override
-    protected View setContentView(LayoutInflater inflater, @Nullable ViewGroup container,
-                                  @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, getFragmentLayoutResId(), container, false);
-        return mBinding.getRoot();
+    protected void setContentView(Bundle savedInstanceState) {
+        mBinding = DataBindingUtil.setContentView(this, getActivityLayoutResId());
     }
 
     @Override
-    protected final void findViewOnCreateView(View layout) {
+    protected final void findViewOnCreate() {
         mViewModel.getSyncLiveDataInitData().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer tag) {
@@ -58,24 +52,18 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
         mViewModel.getResetUiData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean && getActivity() != null && !getActivity().isFinishing()) {
-                    getActivity().finish();
-                    startActivity(getActivity().getIntent());
+                if (aBoolean) {
+                    finish();
+                    startActivity(getIntent());
                 }
             }
         });
         mViewModel.getFinishData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean && getActivity() != null && !getActivity().isFinishing()) {
-                    getActivity().finish();
+                if (aBoolean) {
+                    finish();
                 }
-            }
-        });
-        mViewModel.getUiLoadingData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                setLoadingUiVisibility(aBoolean);
             }
         });
         mViewModel.getToastMsgData().observe(this, new Observer<String>() {
@@ -94,9 +82,10 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
 
     @CallSuper
     @Override
-    protected boolean parseArguments() {
+    protected final boolean parseIntentData() {
         if (mViewModel != null) {
-            return mViewModel.parseIntentData(getArguments() == null ? new Bundle() : getArguments());
+            return mViewModel.parseIntentData(getIntent().getExtras() == null ?
+                    new Bundle() : getIntent().getExtras());
         }
         return false;
     }
@@ -105,7 +94,7 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
     @Override
     protected void afterInit() {
         if (mViewModel != null) {
-            mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_CREATE);
+            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_CREATE);
         }
         if (mViewModel != null) {
             mViewModel.afterViewInit();
@@ -113,47 +102,44 @@ public abstract class BaseMvvmFragment<T extends ViewDataBinding, VM extends Bas
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
         if (mViewModel != null) {
-            mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_START);
+            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_START);
         }
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
         if (mViewModel != null) {
-            mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_RESUME);
+            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_RESUME);
         }
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
         if (mViewModel != null) {
-            mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_PAUSE);
+            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_PAUSE);
         }
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         if (mViewModel != null) {
-            mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_STOP);
+            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_STOP);
         }
         super.onStop();
     }
 
     @Override
-    public void onDestroyView() {
+    protected void onDestroy() {
+        super.onDestroy();
+        //解除绑定
         if (mViewModel != null) {
-            mViewModel.onUiState(BaseViewModel.UiState.UI_STATE_ON_DETACH);
+            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_DETACH);
         }
-        super.onDestroyView();
-    }
-
-    public void setLoadingUiVisibility(boolean visibility) {
-
     }
 
     /**

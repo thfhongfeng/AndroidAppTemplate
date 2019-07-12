@@ -17,8 +17,8 @@ import com.pine.mvp.contract.IMvpTravelNoteReleaseContract;
 import com.pine.mvp.model.MvpTravelNoteModel;
 import com.pine.mvp.ui.activity.MvpShopSearchCheckActivity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.bean.InputParam;
 import com.pine.tool.exception.BusinessException;
 
 import org.json.JSONArray;
@@ -34,7 +34,7 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteReleaseContract.Ui>
+public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteReleaseContract.Ui>
         implements IMvpTravelNoteReleaseContract.Presenter {
     public final int REQUEST_CODE_SELECT_BELONG_SHOP = 1;
     private MvpTravelNoteModel mTravelNoteModel;
@@ -118,21 +118,21 @@ public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteR
         }
         HashMap<String, String> params = new HashMap<>();
 
-        BaseInputParam<String> title = getUi().getNoteTitleParam("title");
+        InputParam<String> title = getUi().getNoteTitleParam("title");
         if (title.checkIsEmpty(R.string.mvp_note_release_title_need)) {
             return;
         } else {
             params.put(title.getKey(), title.getValue());
         }
 
-        BaseInputParam<String> setOutDate = getUi().getNoteSetOutDateParam("setOutDate");
+        InputParam<String> setOutDate = getUi().getNoteSetOutDateParam("setOutDate");
         if (setOutDate.checkIsEmpty(R.string.mvp_note_release_set_out_date_need)) {
             return;
         } else {
             params.put(setOutDate.getKey(), setOutDate.getValue());
         }
 
-        BaseInputParam<String> dayCount = getUi().getNoteTravelDayCountParam("dayCount");
+        InputParam<String> dayCount = getUi().getNoteTravelDayCountParam("dayCount");
         if (dayCount.checkIsEmpty(R.string.mvp_note_release_day_count_need) ||
                 !dayCount.checkNumberRange(R.string.mvp_note_release_day_count_incorrect,
                         1, Integer.MAX_VALUE)) {
@@ -141,21 +141,21 @@ public class MvpTravelNoteReleasePresenter extends BasePresenter<IMvpTravelNoteR
             params.put(dayCount.getKey(), dayCount.getValue());
         }
 
-        BaseInputParam<MvpShopItemEntity> belongShops = getUi().getNoteBelongShopsParam("belongShops", mBelongShopList);
+        InputParam<MvpShopItemEntity> belongShops = getUi().getNoteBelongShopsParam("belongShops", mBelongShopList);
         if (belongShops.checkIsEmpty(R.string.mvp_note_release_belong_shops_need)) {
             return;
         } else {
             params.put(belongShops.getKey(), new Gson().toJson(belongShops.getValue()));
         }
 
-        BaseInputParam<String> preface = getUi().getNotePrefaceParam("preface");
+        InputParam<String> preface = getUi().getNotePrefaceParam("preface");
         if (preface.checkIsEmpty(R.string.mvp_note_release_preface_need)) {
             return;
         } else {
             params.put(preface.getKey(), preface.getValue());
         }
 
-        BaseInputParam<List<List<TextImageEditorItemData>>> daysBean = getUi().getNoteContentParam("days");
+        InputParam<List<List<TextImageEditorItemData>>> daysBean = getUi().getNoteContentParam("days");
         if (daysBean.checkIsEmpty(R.string.mvp_note_release_note_content_need)) {
             return;
         } else {

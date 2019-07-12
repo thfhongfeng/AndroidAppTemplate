@@ -8,8 +8,8 @@ import com.pine.tool.R;
 import com.pine.tool.permission.easy.AppSettingsDialog;
 import com.pine.tool.permission.easy.EasyPermissions;
 import com.pine.tool.permission.easy.PermissionRequest;
-import com.pine.tool.ui.BaseActivity;
-import com.pine.tool.ui.BaseFragment;
+import com.pine.tool.ui.Activity;
+import com.pine.tool.ui.Fragment;
 
 import java.util.Arrays;
 
@@ -23,7 +23,7 @@ public class PermissionManager {
         return EasyPermissions.hasPermissions(context, perms);
     }
 
-    public static void requestPermission(@NonNull BaseActivity activity, int requestCode,
+    public static void requestPermission(@NonNull Activity activity, int requestCode,
                                          IPermissionCallback callback,
                                          @Size(min = 1) @NonNull String... perms) {
         PermissionBean bean = new PermissionBean(requestCode, perms);
@@ -32,7 +32,7 @@ public class PermissionManager {
         requestPermission(activity, bean);
     }
 
-    public static void requestPermission(@NonNull BaseActivity activity, PermissionBean bean) {
+    public static void requestPermission(@NonNull Activity activity, PermissionBean bean) {
         EasyPermissions.requestPermissions(
                 new PermissionRequest.Builder(activity, bean.getRequestCode(), bean.getPerms())
                         .setRationale(bean.getRationaleContent())
@@ -43,7 +43,7 @@ public class PermissionManager {
         activity.getPermissionRequestMap().put(bean.getRequestCode(), bean);
     }
 
-    public static void requestPermission(@NonNull BaseFragment fragment, int requestCode,
+    public static void requestPermission(@NonNull Fragment fragment, int requestCode,
                                          IPermissionCallback callback,
                                          @Size(min = 1) @NonNull String... perms) {
         PermissionBean bean = new PermissionBean(requestCode, perms);
@@ -52,7 +52,7 @@ public class PermissionManager {
         requestPermission(fragment, bean);
     }
 
-    public static void requestPermission(@NonNull BaseFragment fragment, PermissionBean bean) {
+    public static void requestPermission(@NonNull Fragment fragment, PermissionBean bean) {
         EasyPermissions.requestPermissions(
                 new PermissionRequest.Builder(fragment, bean.getRequestCode(), bean.getPerms())
                         .setRationale(bean.getRationaleContent())
@@ -63,7 +63,7 @@ public class PermissionManager {
         fragment.getPermissionRequestMap().put(bean.getRequestCode(), bean);
     }
 
-    public static boolean showGoAppSettingsDialog(@NonNull BaseActivity activity,
+    public static boolean showGoAppSettingsDialog(@NonNull Activity activity,
                                                   int requestCode,
                                                   PermissionBean bean,
                                                   @NonNull String... perms) {
@@ -78,7 +78,7 @@ public class PermissionManager {
         return false;
     }
 
-    public static boolean showGoAppSettingsDialog(@NonNull BaseFragment fragment,
+    public static boolean showGoAppSettingsDialog(@NonNull Fragment fragment,
                                                   int requestCode,
                                                   PermissionBean bean,
                                                   @NonNull String... perms) {

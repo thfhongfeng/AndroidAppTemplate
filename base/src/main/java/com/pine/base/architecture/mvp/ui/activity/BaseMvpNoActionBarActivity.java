@@ -7,12 +7,12 @@ import android.view.ViewStub;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.architecture.mvp.ui.BaseMvpActivity;
+import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.architecture.mvp.ui.MvpActivity;
 
-public abstract class BaseMvpNoActionBarActivity<V extends IBaseContract.Ui, P extends BasePresenter<V>>
-        extends BaseMvpActivity<V, P> implements IBaseContract.Ui {
+public abstract class BaseMvpNoActionBarActivity<V extends IContract.Ui, P extends Presenter<V>>
+        extends MvpActivity<V, P> implements IContract.Ui {
     private ImmersionBar mImmersionBar;
 
     @Override

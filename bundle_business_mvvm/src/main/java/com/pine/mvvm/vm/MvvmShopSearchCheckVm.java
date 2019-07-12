@@ -9,8 +9,8 @@ import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.bean.MvvmShopSearchBean;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
-import com.pine.tool.binding.data.BaseLiveData;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.binding.data.CustomLiveData;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import static com.pine.mvvm.ui.activity.MvvmShopSearchCheckActivity.REQUEST_CHEC
  * Created by tanghongfeng on 2019/3/1
  */
 
-public class MvvmShopSearchCheckVm extends BaseViewModel {
+public class MvvmShopSearchCheckVm extends ViewModel {
     private MvvmShopModel mShopModel = new MvvmShopModel();
     public ArrayList<MvvmShopItemEntity> mInitBelongShopList = new ArrayList<>();
     public boolean mSearchMode;
@@ -90,13 +90,13 @@ public class MvvmShopSearchCheckVm extends BaseViewModel {
         return mSearchKeyData;
     }
 
-    BaseLiveData<ArrayList<MvvmShopItemEntity>, Boolean> mShopListData = new BaseLiveData<>();
+    CustomLiveData<ArrayList<MvvmShopItemEntity>, Boolean> mShopListData = new CustomLiveData<>();
 
     public void setShopList(ArrayList<MvvmShopItemEntity> list, boolean refresh) {
         mShopListData.setValue(list, refresh);
     }
 
-    public BaseLiveData<ArrayList<MvvmShopItemEntity>, Boolean> getShopListData() {
+    public CustomLiveData<ArrayList<MvvmShopItemEntity>, Boolean> getShopListData() {
         return mShopListData;
     }
 }

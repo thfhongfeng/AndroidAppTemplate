@@ -10,13 +10,13 @@ import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpShopListPaginationTreeAdapter;
 import com.pine.mvp.contract.IMvpShopTreeListContract;
 import com.pine.mvp.presenter.MvpShopTreeListPresenter;
-import com.pine.tool.architecture.mvp.ui.BaseMvpFragment;
+import com.pine.tool.architecture.mvp.ui.MvpFragment;
 
 /**
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvpShopTreeListFragment extends BaseMvpFragment<IMvpShopTreeListContract.Ui, MvpShopTreeListPresenter>
+public class MvpShopTreeListFragment extends MvpFragment<IMvpShopTreeListContract.Ui, MvpShopTreeListPresenter>
         implements IMvpShopTreeListContract.Ui, SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipe_refresh_layout;
     private RecyclerView recycle_view;

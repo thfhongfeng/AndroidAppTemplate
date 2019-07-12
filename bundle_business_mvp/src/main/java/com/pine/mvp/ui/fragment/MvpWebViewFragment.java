@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.R;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.architecture.mvp.ui.BaseMvpFragment;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.architecture.mvp.ui.MvpFragment;
 import com.pine.tool.util.WebViewUtils;
 
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
@@ -25,12 +25,12 @@ import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvpWebViewFragment extends BaseMvpFragment implements View.OnClickListener {
+public class MvpWebViewFragment extends MvpFragment implements View.OnClickListener {
     private WebView web_view;
     private TextView refresh_btn_tv;
 
     @Override
-    protected BasePresenter createPresenter() {
+    protected Presenter createPresenter() {
         return null;
     }
 

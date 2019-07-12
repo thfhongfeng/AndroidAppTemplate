@@ -2,29 +2,29 @@ package com.pine.login.contract;
 
 import android.support.annotation.NonNull;
 
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.bean.InputParam;
 
 /**
  * Created by tanghongfeng on 2018/9/14
  */
 
 public interface IRegisterContract {
-    interface Ui extends IBaseContract.Ui {
+    interface Ui extends IContract.Ui {
         @NonNull
-        BaseInputParam getUserMobileParam(String key);
+        InputParam getUserMobileParam(String key);
 
         @NonNull
-        BaseInputParam getVerificationCodeParam(String key);
+        InputParam getVerificationCodeParam(String key);
 
         @NonNull
-        BaseInputParam getUserPasswordParam(String key);
+        InputParam getUserPasswordParam(String key);
 
         @NonNull
-        BaseInputParam getUserConfirmPasswordParam(String key);
+        InputParam getUserConfirmPasswordParam(String key);
     }
 
-    interface Presenter extends IBaseContract.Presenter {
+    interface Presenter extends IContract.Presenter {
         void register();
     }
 }

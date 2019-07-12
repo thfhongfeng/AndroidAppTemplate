@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BaseBean {
+public class Bean {
     public HashMap<String, String> toMapJson() {
         HashMap<String, String> map = new HashMap<>();
         Class clazz = this.getClass();
@@ -22,8 +22,8 @@ public class BaseBean {
                 Object obj = field.get(this);
                 if (obj == null) {
                     map.put(field.getName(), "");
-                } else if (obj instanceof BaseBean) {
-                    map.putAll(((BaseBean) obj).toMapJson());
+                } else if (obj instanceof Bean) {
+                    map.putAll(((Bean) obj).toMapJson());
                 } else if (isBaseType(obj)) {
                     map.put(field.getName(), String.valueOf(obj));
                 } else if (obj instanceof Map) {
@@ -52,8 +52,8 @@ public class BaseBean {
                 if (isNullObj(obj)) {
                     continue;
                 }
-                if (obj instanceof BaseBean) {
-                    map.putAll(((BaseBean) obj).toMapJsonIgnoreEmpty());
+                if (obj instanceof Bean) {
+                    map.putAll(((Bean) obj).toMapJsonIgnoreEmpty());
                 } else if (isBaseType(obj)) {
                     map.put(field.getName(), String.valueOf(obj));
                 } else if (obj instanceof Map) {

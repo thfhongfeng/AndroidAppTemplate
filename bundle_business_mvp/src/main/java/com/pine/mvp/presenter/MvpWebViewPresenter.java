@@ -6,7 +6,7 @@ import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.bean.UrlTextShareBean;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.contract.IMvpWebViewContract;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class MvpWebViewPresenter extends BasePresenter<IMvpWebViewContract.Ui>
+public class MvpWebViewPresenter extends Presenter<IMvpWebViewContract.Ui>
         implements IMvpWebViewContract.Presenter {
     private String mH5Url;
 
@@ -25,7 +25,7 @@ public class MvpWebViewPresenter extends BasePresenter<IMvpWebViewContract.Ui>
     }
 
     @Override
-    public void onUiState(BasePresenter.UiState state) {
+    public void onUiState(Presenter.UiState state) {
         super.onUiState(state);
         if (state == UiState.UI_STATE_ON_CREATE) {
             getUi().loadUrl(mH5Url);

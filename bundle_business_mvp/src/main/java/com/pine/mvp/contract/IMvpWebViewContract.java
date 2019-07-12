@@ -1,7 +1,7 @@
 package com.pine.mvp.contract;
 
 import com.pine.base.component.share.bean.ShareBean;
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
+import com.pine.tool.architecture.mvp.contract.IContract;
 
 import java.util.ArrayList;
 
@@ -10,11 +10,11 @@ import java.util.ArrayList;
  */
 
 public interface IMvpWebViewContract {
-    interface Ui extends IBaseContract.Ui {
+    interface Ui extends IContract.Ui {
         void loadUrl(String url);
     }
 
-    interface Presenter extends IBaseContract.Presenter {
+    interface Presenter extends IContract.Presenter {
         String getH5Url();
 
         ArrayList<ShareBean> getShareBeanList();

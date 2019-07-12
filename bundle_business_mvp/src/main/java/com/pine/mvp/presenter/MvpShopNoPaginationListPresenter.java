@@ -7,7 +7,7 @@ import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpShopNoPaginationListContract;
 import com.pine.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvpShopNoPaginationListPresenter extends BasePresenter<IMvpShopNoPaginationListContract.Ui>
+public class MvpShopNoPaginationListPresenter extends Presenter<IMvpShopNoPaginationListContract.Ui>
         implements IMvpShopNoPaginationListContract.Presenter {
     private MvpShopModel mShopModel;
     private MvpShopListNoPaginationAdapter mMvpHomeItemAdapter;

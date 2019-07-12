@@ -9,9 +9,9 @@ import android.view.ViewStub;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
-import com.pine.tool.ui.BaseActivity;
+import com.pine.tool.ui.Activity;
 
-public abstract class BaseNoActionBarActivity extends BaseActivity {
+public abstract class BaseNoActionBarActivity extends Activity {
     private ImmersionBar mImmersionBar;
 
     @Override

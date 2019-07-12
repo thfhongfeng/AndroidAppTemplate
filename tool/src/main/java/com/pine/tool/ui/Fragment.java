@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,7 @@ import java.util.List;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public abstract class BaseFragment extends Fragment
+public abstract class Fragment extends android.support.v4.app.Fragment
         implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     private boolean mUiAccessReady;

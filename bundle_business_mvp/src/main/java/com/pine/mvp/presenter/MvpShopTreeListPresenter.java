@@ -8,7 +8,7 @@ import com.pine.mvp.bean.MvpShopAndProductEntity;
 import com.pine.mvp.contract.IMvpShopTreeListContract;
 import com.pine.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvpShopTreeListPresenter extends BasePresenter<IMvpShopTreeListContract.Ui>
+public class MvpShopTreeListPresenter extends Presenter<IMvpShopTreeListContract.Ui>
         implements IMvpShopTreeListContract.Presenter {
     private MvpShopModel mShopModel;
     private MvpShopListPaginationTreeAdapter mMvpHomeItemAdapter;

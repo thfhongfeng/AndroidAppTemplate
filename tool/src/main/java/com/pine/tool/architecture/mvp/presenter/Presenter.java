@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
+import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
  * Created by tanghongfeng on 2018/9/12
  */
 
-public abstract class BasePresenter<V extends IBaseContract.Ui> {
+public abstract class Presenter<V extends IContract.Ui> {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     private UiState mUiState = UiState.UI_STATE_UNDEFINE;
 

@@ -14,7 +14,6 @@ import com.pine.mvvm.adapter.MvvmShopListPaginationAdapter;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.databinding.MvvmShopPaginationListFragmentBinding;
 import com.pine.mvvm.vm.MvvmShopPaginationListVm;
-import com.pine.tool.architecture.mvvm.ui.BaseMvvmFragment;
 
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class MvvmShopPaginationListFragment extends
-        BaseMvvmFragment<MvvmShopPaginationListFragmentBinding, MvvmShopPaginationListVm>
+        com.pine.tool.architecture.mvvm.ui.MvvmFragment<MvvmShopPaginationListFragmentBinding, MvvmShopPaginationListVm>
         implements SwipeRefreshLayout.OnRefreshListener {
     private MvvmShopListPaginationAdapter mMvvmHomeItemAdapter;
 

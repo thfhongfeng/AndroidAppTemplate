@@ -13,7 +13,7 @@ import com.pine.mvvm.adapter.MvvmShopListNoPaginationAdapter;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.databinding.MvvmShopNoPaginationListFragmentBinding;
 import com.pine.mvvm.vm.MvvmShopNoPaginationListVm;
-import com.pine.tool.architecture.mvvm.ui.BaseMvvmFragment;
+import com.pine.tool.architecture.mvvm.ui.MvvmFragment;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class MvvmShopNoPaginationListFragment extends
-        BaseMvvmFragment<MvvmShopNoPaginationListFragmentBinding, MvvmShopNoPaginationListVm>
+        MvvmFragment<MvvmShopNoPaginationListFragmentBinding, MvvmShopNoPaginationListVm>
         implements SwipeRefreshLayout.OnRefreshListener {
     private MvvmShopListNoPaginationAdapter mMvvmHomeItemAdapter;
 

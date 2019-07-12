@@ -24,7 +24,7 @@ import com.pine.mvp.contract.IMvpTravelNoteReleaseContract;
 import com.pine.mvp.presenter.MvpTravelNoteReleasePresenter;
 import com.pine.mvp.widget.view.MvpNoteEditorView;
 import com.pine.tool.access.UiAccessAnnotation;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.bean.InputParam;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -175,43 +175,43 @@ public class MvpTravelNoteReleaseActivity extends
 
     @NonNull
     @Override
-    public BaseInputParam getNoteTitleParam(String key) {
-        return new BaseInputParam(this, key, title_et.getText().toString(),
+    public InputParam getNoteTitleParam(String key) {
+        return new InputParam(this, key, title_et.getText().toString(),
                 nested_scroll_view, title_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getNoteSetOutDateParam(String key) {
-        return new BaseInputParam(this, key, set_out_date_tv.getText().toString(),
+    public InputParam getNoteSetOutDateParam(String key) {
+        return new InputParam(this, key, set_out_date_tv.getText().toString(),
                 nested_scroll_view, set_out_date_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getNoteTravelDayCountParam(String key) {
-        return new BaseInputParam(this, key, day_count_tv.getText().toString(),
+    public InputParam getNoteTravelDayCountParam(String key) {
+        return new InputParam(this, key, day_count_tv.getText().toString(),
                 nested_scroll_view, day_count_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getNoteBelongShopsParam(String key, ArrayList<MvpShopItemEntity> list) {
-        return new BaseInputParam(this, key, list,
+    public InputParam getNoteBelongShopsParam(String key, ArrayList<MvpShopItemEntity> list) {
+        return new InputParam(this, key, list,
                 nested_scroll_view, belong_shop_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getNotePrefaceParam(String key) {
-        return new BaseInputParam(this, key, preface_et.getText().toString(),
+    public InputParam getNotePrefaceParam(String key) {
+        return new InputParam(this, key, preface_et.getText().toString(),
                 nested_scroll_view, preface_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getNoteContentParam(String key) {
-        return new BaseInputParam(this, key, mnev_view.getNoteDayList());
+    public InputParam getNoteContentParam(String key) {
+        return new InputParam(this, key, mnev_view.getNoteDayList());
     }
 
     @Override

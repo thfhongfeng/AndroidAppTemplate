@@ -13,7 +13,7 @@ import com.pine.login.LoginUrlConstants;
 import com.pine.login.R;
 import com.pine.login.contract.IRegisterContract;
 import com.pine.login.presenter.RegisterPresenter;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.bean.InputParam;
 
 /**
  * Created by tanghongfeng on 2018/11/15
@@ -64,29 +64,29 @@ public class RegisterActivity extends
 
     @NonNull
     @Override
-    public BaseInputParam getUserMobileParam(String key) {
-        return new BaseInputParam(this, key, mobile_et.getText().toString(),
+    public InputParam getUserMobileParam(String key) {
+        return new InputParam(this, key, mobile_et.getText().toString(),
                 scroll_view, mobile_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getVerificationCodeParam(String key) {
-        return new BaseInputParam(this, key, verify_code_et.getText().toString(),
+    public InputParam getVerificationCodeParam(String key) {
+        return new InputParam(this, key, verify_code_et.getText().toString(),
                 scroll_view, verify_code_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getUserPasswordParam(String key) {
-        return new BaseInputParam(this, key, password_et.getText().toString(),
+    public InputParam getUserPasswordParam(String key) {
+        return new InputParam(this, key, password_et.getText().toString(),
                 scroll_view, password_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getUserConfirmPasswordParam(String key) {
-        return new BaseInputParam(this, key, confirm_pwd_et.getText().toString(),
+    public InputParam getUserConfirmPasswordParam(String key) {
+        return new InputParam(this, key, confirm_pwd_et.getText().toString(),
                 scroll_view, confirm_pwd_et);
     }
 

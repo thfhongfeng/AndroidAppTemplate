@@ -2,35 +2,35 @@ package com.pine.mvp.contract;
 
 import android.support.annotation.NonNull;
 
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.bean.InputParam;
 
 /**
  * Created by tanghongfeng on 2018/9/14
  */
 
 public interface IMvpProductReleaseContract {
-    interface Ui extends IBaseContract.Ui {
+    interface Ui extends IContract.Ui {
         @NonNull
-        BaseInputParam getProductNameParam(String key);
+        InputParam getProductNameParam(String key);
 
         @NonNull
-        BaseInputParam getProductPriceParam(String key);
+        InputParam getProductPriceParam(String key);
 
         @NonNull
-        BaseInputParam getProductShelvePriceParam(String key);
+        InputParam getProductShelvePriceParam(String key);
 
         @NonNull
-        BaseInputParam getProductShelveDateParam(String key);
+        InputParam getProductShelveDateParam(String key);
 
         @NonNull
-        BaseInputParam getProductDescriptionParam(String key);
+        InputParam getProductDescriptionParam(String key);
 
         @NonNull
-        BaseInputParam getProductRemarkParam(String key);
+        InputParam getProductRemarkParam(String key);
     }
 
-    interface Presenter extends IBaseContract.Presenter {
+    interface Presenter extends IContract.Presenter {
         void addProduct();
     }
 }

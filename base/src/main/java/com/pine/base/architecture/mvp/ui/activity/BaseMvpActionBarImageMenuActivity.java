@@ -10,12 +10,12 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.architecture.mvp.ui.BaseMvpActivity;
+import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.architecture.mvp.ui.MvpActivity;
 
-public abstract class BaseMvpActionBarImageMenuActivity<V extends IBaseContract.Ui, P extends BasePresenter<V>>
-        extends BaseMvpActivity<V, P> implements IBaseContract.Ui {
+public abstract class BaseMvpActionBarImageMenuActivity<V extends IContract.Ui, P extends Presenter<V>>
+        extends MvpActivity<V, P> implements IContract.Ui {
     public static final int ACTION_BAR_TYPE_DEFAULT = 0x0;
     public static final int ACTION_BAR_CENTER_TITLE_TAG = 0x0001;
     public static final int ACTION_BAR_NO_GO_BACK_TAG = 0x0002;

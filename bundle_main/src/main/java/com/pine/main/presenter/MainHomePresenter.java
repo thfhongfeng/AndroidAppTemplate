@@ -10,7 +10,7 @@ import com.pine.router.command.RouterDemoCommand;
 import com.pine.router.command.RouterMvcCommand;
 import com.pine.router.command.RouterMvpCommand;
 import com.pine.router.command.RouterMvvmCommand;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class MainHomePresenter extends BasePresenter<IMainHomeContract.Ui> implements IMainHomeContract.Presenter {
+public class MainHomePresenter extends Presenter<IMainHomeContract.Ui> implements IMainHomeContract.Presenter {
     private MainHomeModel mHomeModel;
 
     public MainHomePresenter() {

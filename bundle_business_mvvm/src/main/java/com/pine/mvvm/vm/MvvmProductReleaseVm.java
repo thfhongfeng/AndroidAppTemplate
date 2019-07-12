@@ -8,14 +8,14 @@ import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmProductDetailEntity;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.BusinessException;
 
 /**
  * Created by tanghongfeng on 2019/3/1
  */
 
-public class MvvmProductReleaseVm extends BaseViewModel {
+public class MvvmProductReleaseVm extends ViewModel {
     private MvvmShopModel mShopModel = new MvvmShopModel();
     private String mShopId;
 

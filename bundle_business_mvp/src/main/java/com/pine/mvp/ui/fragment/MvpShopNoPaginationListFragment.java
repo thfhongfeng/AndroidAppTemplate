@@ -8,13 +8,13 @@ import android.view.View;
 import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpShopNoPaginationListContract;
 import com.pine.mvp.presenter.MvpShopNoPaginationListPresenter;
-import com.pine.tool.architecture.mvp.ui.BaseMvpFragment;
+import com.pine.tool.architecture.mvp.ui.MvpFragment;
 
 /**
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvpShopNoPaginationListFragment extends BaseMvpFragment<IMvpShopNoPaginationListContract.Ui, MvpShopNoPaginationListPresenter>
+public class MvpShopNoPaginationListFragment extends MvpFragment<IMvpShopNoPaginationListContract.Ui, MvpShopNoPaginationListPresenter>
         implements IMvpShopNoPaginationListContract.Ui, SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipe_refresh_layout;
     private RecyclerView recycle_view;

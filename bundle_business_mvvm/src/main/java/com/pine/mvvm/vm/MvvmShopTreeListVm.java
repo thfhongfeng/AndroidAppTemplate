@@ -8,14 +8,14 @@ import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
-import com.pine.tool.binding.data.BaseLiveData;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.binding.data.CustomLiveData;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MvvmShopTreeListVm extends BaseViewModel {
+public class MvvmShopTreeListVm extends ViewModel {
     private MvvmShopModel mShopModel = new MvvmShopModel();
 
     public void loadShopTreeListData(final boolean refresh, int pageNo, int pageSize) {
@@ -57,9 +57,9 @@ public class MvvmShopTreeListVm extends BaseViewModel {
         });
     }
 
-    BaseLiveData<ArrayList<MvvmShopAndProductEntity>, Boolean> shopListData = new BaseLiveData<>();
+    CustomLiveData<ArrayList<MvvmShopAndProductEntity>, Boolean> shopListData = new CustomLiveData<>();
 
-    public BaseLiveData<ArrayList<MvvmShopAndProductEntity>, Boolean> getShopListData() {
+    public CustomLiveData<ArrayList<MvvmShopAndProductEntity>, Boolean> getShopListData() {
         return shopListData;
     }
 

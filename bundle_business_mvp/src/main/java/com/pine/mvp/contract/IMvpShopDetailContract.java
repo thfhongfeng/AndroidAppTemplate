@@ -1,18 +1,18 @@
 package com.pine.mvp.contract;
 
 import com.pine.mvp.bean.MvpShopDetailEntity;
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
+import com.pine.tool.architecture.mvp.contract.IContract;
 
 /**
  * Created by tanghongfeng on 2018/9/14
  */
 
 public interface IMvpShopDetailContract {
-    interface Ui extends IBaseContract.Ui {
+    interface Ui extends IContract.Ui {
         void setupShopDetail(MvpShopDetailEntity entity);
     }
 
-    interface Presenter extends IBaseContract.Presenter {
+    interface Presenter extends IContract.Presenter {
         void loadShopDetailData();
 
         void showMarkerInMap();

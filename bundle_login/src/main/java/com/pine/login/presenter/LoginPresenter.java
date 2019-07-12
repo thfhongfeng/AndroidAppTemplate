@@ -11,14 +11,14 @@ import com.pine.login.contract.ILoginContract;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
 import com.pine.login.ui.activity.RegisterActivity;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.bean.InputParam;
 
 /**
  * Created by tanghongfeng on 2018/9/12
  */
 
-public class LoginPresenter extends BasePresenter<ILoginContract.Ui> implements ILoginContract.Presenter {
+public class LoginPresenter extends Presenter<ILoginContract.Ui> implements ILoginContract.Presenter {
 
     @Override
     public boolean parseIntentData(Bundle bundle) {
@@ -30,8 +30,8 @@ public class LoginPresenter extends BasePresenter<ILoginContract.Ui> implements 
         if (LoginApplication.isLogin() || mIsLoadProcessing) {
             return;
         }
-        BaseInputParam<String> accountBean = getUi().getUserMobileParam(LoginConstants.LOGIN_ACCOUNT);
-        BaseInputParam<String> pwdBean = getUi().getUserPasswordParam(LoginConstants.LOGIN_PASSWORD);
+        InputParam<String> accountBean = getUi().getUserMobileParam(LoginConstants.LOGIN_ACCOUNT);
+        InputParam<String> pwdBean = getUi().getUserPasswordParam(LoginConstants.LOGIN_PASSWORD);
         if (accountBean.checkIsEmpty(R.string.login_input_empty_msg) ||
                 pwdBean.checkIsEmpty(R.string.login_input_empty_msg) ||
                 !accountBean.checkIsPhone(R.string.login_mobile_incorrect_format)) {

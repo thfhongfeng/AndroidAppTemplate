@@ -18,7 +18,7 @@ import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.R;
 import com.pine.mvvm.databinding.MvvmWebViewFragmentBinding;
 import com.pine.mvvm.vm.MvvmWebViewVm;
-import com.pine.tool.architecture.mvvm.ui.BaseMvvmFragment;
+import com.pine.tool.architecture.mvvm.ui.MvvmFragment;
 import com.pine.tool.util.WebViewUtils;
 
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
@@ -28,7 +28,7 @@ import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
  */
 
 public class MvvmWebViewFragment extends
-        BaseMvvmFragment<MvvmWebViewFragmentBinding, MvvmWebViewVm> {
+        MvvmFragment<MvvmWebViewFragmentBinding, MvvmWebViewVm> {
     @Override
     protected int getFragmentLayoutResId() {
         return R.layout.mvvm_fragment_web_view;

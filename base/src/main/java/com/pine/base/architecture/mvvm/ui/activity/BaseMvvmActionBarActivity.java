@@ -14,11 +14,11 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
-import com.pine.tool.architecture.mvvm.ui.BaseMvvmActivity;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.ui.MvvmActivity;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
-public abstract class BaseMvvmActionBarActivity<T extends ViewDataBinding, VM extends BaseViewModel>
-        extends BaseMvvmActivity<T, VM> {
+public abstract class BaseMvvmActionBarActivity<T extends ViewDataBinding, VM extends ViewModel>
+        extends MvvmActivity<T, VM> {
     public static final int ACTION_BAR_TYPE_DEFAULT = 0x0;
     public static final int ACTION_BAR_CENTER_TITLE_TAG = 0x0001;
     public static final int ACTION_BAR_NO_GO_BACK_TAG = 0x0002;

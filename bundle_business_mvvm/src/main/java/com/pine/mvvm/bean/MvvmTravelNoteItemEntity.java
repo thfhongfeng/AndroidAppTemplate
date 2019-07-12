@@ -1,12 +1,12 @@
 package com.pine.mvvm.bean;
 
-import com.pine.tool.bean.BaseBean;
+import com.pine.tool.bean.Bean;
 
 /**
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvvmTravelNoteItemEntity extends BaseBean {
+public class MvvmTravelNoteItemEntity extends Bean {
 
     /**
      * id :

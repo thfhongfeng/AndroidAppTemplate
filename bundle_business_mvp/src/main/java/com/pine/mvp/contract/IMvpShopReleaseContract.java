@@ -2,8 +2,8 @@ package com.pine.mvp.contract;
 
 import android.support.annotation.NonNull;
 
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.bean.InputParam;
 
 import java.util.HashMap;
 
@@ -12,48 +12,48 @@ import java.util.HashMap;
  */
 
 public interface IMvpShopReleaseContract {
-    interface Ui extends IBaseContract.Ui {
+    interface Ui extends IContract.Ui {
         @NonNull
-        BaseInputParam getShopNameParam(String key);
+        InputParam getShopNameParam(String key);
 
         @NonNull
-        BaseInputParam getShopTypeParam(String key);
+        InputParam getShopTypeParam(String key);
 
         @NonNull
-        BaseInputParam getShopTypeNameParam(String key);
+        InputParam getShopTypeNameParam(String key);
 
         @NonNull
-        BaseInputParam getShopOnlineDateParam(String key);
+        InputParam getShopOnlineDateParam(String key);
 
         @NonNull
-        BaseInputParam getShopContactMobileParam(String key);
+        InputParam getShopContactMobileParam(String key);
 
         @NonNull
-        BaseInputParam getShopAddressParam(String key);
+        InputParam getShopAddressParam(String key);
 
         @NonNull
-        BaseInputParam getShopAddressZipCodeParam(String key);
+        InputParam getShopAddressZipCodeParam(String key);
 
         @NonNull
-        BaseInputParam getShopLocationLonParam(String key);
+        InputParam getShopLocationLonParam(String key);
 
         @NonNull
-        BaseInputParam getShopLocationLatParam(String key);
+        InputParam getShopLocationLatParam(String key);
 
         @NonNull
-        BaseInputParam getShopDetailAddressParam(String key);
+        InputParam getShopDetailAddressParam(String key);
 
         @NonNull
-        BaseInputParam getShopDescriptionParam(String key);
+        InputParam getShopDescriptionParam(String key);
 
         @NonNull
-        BaseInputParam getShopRemarkParam(String key);
+        InputParam getShopRemarkParam(String key);
 
         @NonNull
-        BaseInputParam getShopImagesParam(String key);
+        InputParam getShopImagesParam(String key);
     }
 
-    interface Presenter extends IBaseContract.Presenter {
+    interface Presenter extends IContract.Presenter {
         @NonNull
         String[] getShopTypeNameArr();
 

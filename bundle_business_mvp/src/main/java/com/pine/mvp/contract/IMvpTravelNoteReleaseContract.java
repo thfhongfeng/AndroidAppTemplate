@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
 import com.pine.mvp.bean.MvpShopItemEntity;
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.bean.InputParam;
 
 import java.util.ArrayList;
 
@@ -15,30 +15,30 @@ import java.util.ArrayList;
  */
 
 public interface IMvpTravelNoteReleaseContract {
-    interface Ui extends IBaseContract.Ui {
+    interface Ui extends IContract.Ui {
 
         void setBelongShop(String ids, String names);
 
         @NonNull
-        BaseInputParam getNoteTitleParam(String key);
+        InputParam getNoteTitleParam(String key);
 
         @NonNull
-        BaseInputParam getNoteSetOutDateParam(String key);
+        InputParam getNoteSetOutDateParam(String key);
 
         @NonNull
-        BaseInputParam getNoteTravelDayCountParam(String key);
+        InputParam getNoteTravelDayCountParam(String key);
 
         @NonNull
-        BaseInputParam getNoteBelongShopsParam(String key, ArrayList<MvpShopItemEntity> list);
+        InputParam getNoteBelongShopsParam(String key, ArrayList<MvpShopItemEntity> list);
 
         @NonNull
-        BaseInputParam getNotePrefaceParam(String key);
+        InputParam getNotePrefaceParam(String key);
 
         @NonNull
-        BaseInputParam getNoteContentParam(String key);
+        InputParam getNoteContentParam(String key);
     }
 
-    interface Presenter extends IBaseContract.Presenter {
+    interface Presenter extends IContract.Presenter {
         @NonNull
         UploadFileLinearLayout.OneByOneUploadAdapter getUploadAdapter();
 

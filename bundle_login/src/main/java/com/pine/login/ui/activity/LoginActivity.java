@@ -9,7 +9,7 @@ import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
 import com.pine.login.R;
 import com.pine.login.contract.ILoginContract;
 import com.pine.login.presenter.LoginPresenter;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.bean.InputParam;
 
 /**
  * Created by tanghongfeng on 2018/9/11.
@@ -62,12 +62,12 @@ public class LoginActivity extends BaseMvpActionBarActivity<ILoginContract.Ui, L
     }
 
     @Override
-    public BaseInputParam getUserMobileParam(String key) {
-        return new BaseInputParam(this, key, mobile_et.getText().toString());
+    public InputParam getUserMobileParam(String key) {
+        return new InputParam(this, key, mobile_et.getText().toString());
     }
 
     @Override
-    public BaseInputParam getUserPasswordParam(String key) {
-        return new BaseInputParam(this, key, password_et.getText().toString());
+    public InputParam getUserPasswordParam(String key) {
+        return new InputParam(this, key, password_et.getText().toString());
     }
 }

@@ -10,7 +10,7 @@ import com.pine.base.component.editor.ui.TextImageEditorView;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
 import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.R;
-import com.pine.tool.ui.BaseActivity;
+import com.pine.tool.ui.Activity;
 import com.pine.tool.util.StringUtils;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class MvvmNoteEditorView extends LinearLayout {
         return list;
     }
 
-    public void setDayCount(BaseActivity activity, int dayCount, List<List<TextImageEditorItemData>> dayList,
+    public void setDayCount(Activity activity, int dayCount, List<List<TextImageEditorItemData>> dayList,
                             UploadFileLinearLayout.OneByOneUploadAdapter adapter) {
         int childCount = getChildCount();
         if (dayCount > childCount) {
@@ -60,7 +60,7 @@ public class MvvmNoteEditorView extends LinearLayout {
         invalidate();
     }
 
-    private void addDayView(BaseActivity activity, List<TextImageEditorItemData> data, int day,
+    private void addDayView(Activity activity, List<TextImageEditorItemData> data, int day,
                             UploadFileLinearLayout.OneByOneUploadAdapter adapter) {
         TextImageEditorView view = new TextImageEditorView(getContext());
         String title = getContext().getString(R.string.mvvm_note_release_day_note_title, StringUtils.toChineseNumber(day));

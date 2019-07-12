@@ -6,7 +6,7 @@ import android.app.Activity;
  * Created by tanghongfeng on 2018/9/21
  */
 
-public interface IBaseContract {
+public interface IContract {
     interface Ui {
         Activity getContextActivity();
 

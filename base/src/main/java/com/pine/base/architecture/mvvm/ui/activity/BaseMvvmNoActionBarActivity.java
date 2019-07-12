@@ -11,15 +11,15 @@ import android.view.ViewStub;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
-import com.pine.tool.architecture.mvvm.ui.BaseMvvmActivity;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.ui.MvvmActivity;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
 /**
  * Created by tanghongfeng on 2019/3/1
  */
 
-public abstract class BaseMvvmNoActionBarActivity<T extends ViewDataBinding, VM extends BaseViewModel>
-        extends BaseMvvmActivity<T, VM> {
+public abstract class BaseMvvmNoActionBarActivity<T extends ViewDataBinding, VM extends ViewModel>
+        extends MvvmActivity<T, VM> {
     private ImmersionBar mImmersionBar;
 
     protected void setContentView(Bundle savedInstanceState) {

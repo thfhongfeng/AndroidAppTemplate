@@ -13,7 +13,7 @@ import com.pine.mvp.ui.activity.MvpProductReleaseActivity;
 import com.pine.mvp.ui.activity.MvpTravelNoteListActivity;
 import com.pine.mvp.ui.activity.MvpWebViewActivity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.BusinessException;
 import com.pine.tool.util.DecimalUtils;
 
@@ -23,7 +23,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class MvpShopDetailPresenter extends BasePresenter<IMvpShopDetailContract.Ui>
+public class MvpShopDetailPresenter extends Presenter<IMvpShopDetailContract.Ui>
         implements IMvpShopDetailContract.Presenter {
     private String mId;
     private MvpShopModel mShopModel;

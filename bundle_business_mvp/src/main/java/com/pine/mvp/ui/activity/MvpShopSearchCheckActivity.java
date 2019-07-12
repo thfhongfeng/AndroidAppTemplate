@@ -16,7 +16,7 @@ import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpShopCheckListPaginationAdapter;
 import com.pine.mvp.contract.IMvpShopSearchCheckContract;
 import com.pine.mvp.presenter.MvpShopSearchCheckPresenter;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.bean.InputParam;
 import com.pine.tool.util.KeyboardUtils;
 
 /**
@@ -135,8 +135,8 @@ public class MvpShopSearchCheckActivity extends
     }
 
     @Override
-    public BaseInputParam getSearchKey(String key) {
-        return new BaseInputParam(this, key, search_key_et.getText().toString());
+    public InputParam getSearchKey(String key) {
+        return new InputParam(this, key, search_key_et.getText().toString());
     }
 
     @Override

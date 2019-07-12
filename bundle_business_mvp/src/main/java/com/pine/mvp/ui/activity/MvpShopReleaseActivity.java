@@ -29,7 +29,7 @@ import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpShopReleaseContract;
 import com.pine.mvp.presenter.MvpShopReleasePresenter;
 import com.pine.tool.access.UiAccessAnnotation;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.bean.InputParam;
 import com.pine.tool.util.DecimalUtils;
 
 import org.json.JSONObject;
@@ -255,104 +255,104 @@ public class MvpShopReleaseActivity extends
     }
 
     @Override
-    public BaseInputParam getShopNameParam(String key) {
-        return new BaseInputParam(this, key, name_et.getText().toString(),
+    public InputParam getShopNameParam(String key) {
+        return new InputParam(this, key, name_et.getText().toString(),
                 nested_scroll_view, name_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopTypeParam(String key) {
-        return new BaseInputParam(this, key,
+    public InputParam getShopTypeParam(String key) {
+        return new InputParam(this, key,
                 type_tv.getTag() == null ? "" : type_tv.getTag().toString(),
                 nested_scroll_view, type_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopTypeNameParam(String key) {
-        return new BaseInputParam(this, key, type_tv.getText().toString(),
+    public InputParam getShopTypeNameParam(String key) {
+        return new InputParam(this, key, type_tv.getText().toString(),
                 nested_scroll_view, type_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopOnlineDateParam(String key) {
-        return new BaseInputParam(this, key, online_date_tv.getText().toString(),
+    public InputParam getShopOnlineDateParam(String key) {
+        return new InputParam(this, key, online_date_tv.getText().toString(),
                 nested_scroll_view, online_date_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopContactMobileParam(String key) {
-        return new BaseInputParam(this, key, contact_tv.getText().toString(),
+    public InputParam getShopContactMobileParam(String key) {
+        return new InputParam(this, key, contact_tv.getText().toString(),
                 nested_scroll_view, contact_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopAddressParam(String key) {
-        return new BaseInputParam(this, key, address_district_tv.getText().toString(),
+    public InputParam getShopAddressParam(String key) {
+        return new InputParam(this, key, address_district_tv.getText().toString(),
                 nested_scroll_view, address_district_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopAddressZipCodeParam(String key) {
-        return new BaseInputParam(this,
+    public InputParam getShopAddressZipCodeParam(String key) {
+        return new InputParam(this,
                 key, address_district_tv.getTag() == null ? "" : address_district_tv.getTag().toString(),
                 nested_scroll_view, address_district_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopLocationLonParam(String key) {
+    public InputParam getShopLocationLonParam(String key) {
         double[] locationLonLat = (double[]) address_marker_tv.getTag();
         String lon = "";
         if (locationLonLat != null && locationLonLat.length == 2) {
             lon = String.valueOf(locationLonLat[1]);
         }
-        return new BaseInputParam(this, key, lon,
+        return new InputParam(this, key, lon,
                 nested_scroll_view, address_marker_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopLocationLatParam(String key) {
+    public InputParam getShopLocationLatParam(String key) {
         double[] locationLonLat = (double[]) address_marker_tv.getTag();
         String lat = "";
         if (locationLonLat != null && locationLonLat.length == 2) {
             lat = String.valueOf(locationLonLat[0]);
         }
-        return new BaseInputParam(this, key, lat,
+        return new InputParam(this, key, lat,
                 nested_scroll_view, address_marker_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopDetailAddressParam(String key) {
-        return new BaseInputParam(this, key, address_street_et.getText().toString(),
+    public InputParam getShopDetailAddressParam(String key) {
+        return new InputParam(this, key, address_street_et.getText().toString(),
                 nested_scroll_view, address_street_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopDescriptionParam(String key) {
-        return new BaseInputParam(this, key, description_et.getText().toString(),
+    public InputParam getShopDescriptionParam(String key) {
+        return new InputParam(this, key, description_et.getText().toString(),
                 nested_scroll_view, description_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopRemarkParam(String key) {
-        return new BaseInputParam(this, key, remark_et.getText().toString(),
+    public InputParam getShopRemarkParam(String key) {
+        return new InputParam(this, key, remark_et.getText().toString(),
                 nested_scroll_view, remark_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getShopImagesParam(String key) {
-        return new BaseInputParam(this,
+    public InputParam getShopImagesParam(String key) {
+        return new InputParam(this,
                 key, photo_iuv.getNewUploadImageRemoteString(","),
                 nested_scroll_view, photo_iuv);
     }

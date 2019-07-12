@@ -20,7 +20,7 @@ import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpProductReleaseContract;
 import com.pine.mvp.presenter.MvpProductReleasePresenter;
 import com.pine.tool.access.UiAccessAnnotation;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.bean.InputParam;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -163,43 +163,43 @@ public class MvpProductReleaseActivity extends
     }
 
     @Override
-    public BaseInputParam getProductNameParam(String key) {
-        return new BaseInputParam(this, key, name_et.getText().toString(),
+    public InputParam getProductNameParam(String key) {
+        return new InputParam(this, key, name_et.getText().toString(),
                 nested_scroll_view, name_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getProductPriceParam(String key) {
-        return new BaseInputParam(this, key, price_tv.getText().toString(),
+    public InputParam getProductPriceParam(String key) {
+        return new InputParam(this, key, price_tv.getText().toString(),
                 nested_scroll_view, price_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getProductShelvePriceParam(String key) {
-        return new BaseInputParam(this, key, shelve_price_tv.getText().toString(),
+    public InputParam getProductShelvePriceParam(String key) {
+        return new InputParam(this, key, shelve_price_tv.getText().toString(),
                 nested_scroll_view, shelve_price_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getProductShelveDateParam(String key) {
-        return new BaseInputParam(this, key, shelve_date_tv.getText().toString(),
+    public InputParam getProductShelveDateParam(String key) {
+        return new InputParam(this, key, shelve_date_tv.getText().toString(),
                 nested_scroll_view, shelve_date_tv);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getProductDescriptionParam(String key) {
-        return new BaseInputParam(this, key, description_et.getText().toString(),
+    public InputParam getProductDescriptionParam(String key) {
+        return new InputParam(this, key, description_et.getText().toString(),
                 nested_scroll_view, description_et);
     }
 
     @NonNull
     @Override
-    public BaseInputParam getProductRemarkParam(String key) {
-        return new BaseInputParam(this, key, remark_et.getText().toString(),
+    public InputParam getProductRemarkParam(String key) {
+        return new InputParam(this, key, remark_et.getText().toString(),
                 nested_scroll_view, remark_et);
     }
 

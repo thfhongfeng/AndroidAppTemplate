@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.bean.UrlTextShareBean;
 import com.pine.mvvm.MvvmUrlConstants;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by tanghongfeng on 2019/3/1
  */
 
-public class MvvmWebViewVm extends BaseViewModel {
+public class MvvmWebViewVm extends ViewModel {
     private String mH5Url;
 
     @Override

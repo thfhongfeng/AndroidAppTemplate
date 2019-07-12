@@ -12,8 +12,8 @@ import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpShopSearchCheckContract;
 import com.pine.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.bean.InputParam;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/11/15
  */
 
-public class MvpShopSearchCheckPresenter extends BasePresenter<IMvpShopSearchCheckContract.Ui>
+public class MvpShopSearchCheckPresenter extends Presenter<IMvpShopSearchCheckContract.Ui>
         implements IMvpShopSearchCheckContract.Presenter {
     public final static String RESULT_CHECKED_LIST_KEY = "result_checked_list_key";
     public final static String REQUEST_CHECKED_LIST_KEY = "request_checked_list_key";
@@ -66,7 +66,7 @@ public class MvpShopSearchCheckPresenter extends BasePresenter<IMvpShopSearchChe
         params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
         params.put(MvpConstants.PAGE_SIZE, String.valueOf(mAdapter.getPageSize()));
 
-        BaseInputParam<String> searchKey = getUi().getSearchKey("searchKey");
+        InputParam<String> searchKey = getUi().getSearchKey("searchKey");
         if (TextUtils.isEmpty(searchKey.getValue())) {
             mSearchMode = false;
         } else {

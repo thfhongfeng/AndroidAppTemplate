@@ -11,9 +11,9 @@ import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
-import com.pine.tool.ui.BaseActivity;
+import com.pine.tool.ui.Activity;
 
-public abstract class BaseActionBarImageMenuActivity extends BaseActivity {
+public abstract class BaseActionBarImageMenuActivity extends Activity {
     public static final int ACTION_BAR_TYPE_DEFAULT = 0x0;
     public static final int ACTION_BAR_CENTER_TITLE_TAG = 0x0001;
     public static final int ACTION_BAR_NO_GO_BACK_TAG = 0x0002;

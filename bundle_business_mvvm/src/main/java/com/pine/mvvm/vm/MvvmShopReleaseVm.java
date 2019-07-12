@@ -7,7 +7,7 @@ import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.BusinessException;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.RegexUtils;
@@ -18,7 +18,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2019/3/1
  */
 
-public class MvvmShopReleaseVm extends BaseViewModel {
+public class MvvmShopReleaseVm extends ViewModel {
     private MvvmShopModel mShopModel = new MvvmShopModel();
 
     @Override

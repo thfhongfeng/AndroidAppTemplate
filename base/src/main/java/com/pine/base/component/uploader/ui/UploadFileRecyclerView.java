@@ -1,6 +1,5 @@
 package com.pine.base.component.uploader.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,7 +21,7 @@ import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
-import com.pine.tool.ui.BaseActivity;
+import com.pine.tool.ui.Activity;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
@@ -45,7 +44,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
     private int mRequestCodeSelectImage = 90201;
     // 每次选择文件最大允数
     private final int MAX_PER_UPLOAD_FILE_COUNT = 10;
-    protected BaseActivity mActivity;
+    protected Activity mActivity;
     // 图片需要压缩时（图片大小大于允许上传大小时）的输出宽度和高度
     protected int mCompressImageWidth = 1440;
     protected int mCompressImageHeight = 2550;
@@ -87,7 +86,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         super(context, attrs, defStyle);
     }
 
-    public void initUpload(@NonNull BaseActivity activity, int fileType) {
+    public void initUpload(@NonNull Activity activity, int fileType) {
         mActivity = activity;
         if (mActivity == null) {
             throw new IllegalStateException("Activity should not be empty");
@@ -97,7 +96,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         mIsInit = true;
     }
 
-    protected void initUpload(@NonNull BaseActivity activity, @NonNull String uploadUrl,
+    protected void initUpload(@NonNull Activity activity, @NonNull String uploadUrl,
                               int fileType, @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
         mActivity = activity;
         if (mActivity == null) {
@@ -118,7 +117,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         mIsInit = true;
     }
 
-    public void initUpload(@NonNull BaseActivity activity, @NonNull String uploadUrl,
+    public void initUpload(@NonNull Activity activity, @NonNull String uploadUrl,
                            int fileType, @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
         mActivity = activity;
         if (mActivity == null) {
@@ -289,7 +288,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == mRequestCodeCrop) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == android.app.Activity.RESULT_OK) {
                 List<String> newSelectList = new ArrayList<>();
                 newSelectList.add(mCurCropPhotoPath);
                 LogUtils.d(TAG, "onActivityResult REQUEST_CODE_CROP" +
@@ -297,7 +296,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
                 uploadFileOneByOne(newSelectList);
             }
         } else if (requestCode == mRequestCodeSelectImage) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == android.app.Activity.RESULT_OK) {
                 List<String> newSelectList = data.getStringArrayListExtra(
                         ImageSelector.INTENT_SELECTED_IMAGE_LIST);
                 if (newSelectList.size() < 1) {

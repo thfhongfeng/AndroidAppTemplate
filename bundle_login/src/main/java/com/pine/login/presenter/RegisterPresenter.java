@@ -9,8 +9,8 @@ import com.pine.login.contract.IRegisterContract;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.LoginAccountModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.bean.InputParam;
 import com.pine.tool.exception.BusinessException;
 import com.pine.tool.util.SecurityUtils;
 
@@ -20,7 +20,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/11/15
  */
 
-public class RegisterPresenter extends BasePresenter<IRegisterContract.Ui>
+public class RegisterPresenter extends Presenter<IRegisterContract.Ui>
         implements IRegisterContract.Presenter {
     private LoginAccountModel mAccountModel = new LoginAccountModel();
 
@@ -29,8 +29,8 @@ public class RegisterPresenter extends BasePresenter<IRegisterContract.Ui>
         if (mIsLoadProcessing) {
             return;
         }
-        BaseInputParam<String> accountBean = getUi().getUserMobileParam(LoginConstants.LOGIN_ACCOUNT);
-        BaseInputParam<String> pwdBean = getUi().getUserPasswordParam(LoginConstants.LOGIN_PASSWORD);
+        InputParam<String> accountBean = getUi().getUserMobileParam(LoginConstants.LOGIN_ACCOUNT);
+        InputParam<String> pwdBean = getUi().getUserPasswordParam(LoginConstants.LOGIN_PASSWORD);
         if (accountBean.checkIsEmpty(R.string.login_input_empty_msg) ||
                 pwdBean.checkIsEmpty(R.string.login_input_empty_msg) ||
                 !accountBean.checkIsPhone(R.string.login_mobile_incorrect_format)) {

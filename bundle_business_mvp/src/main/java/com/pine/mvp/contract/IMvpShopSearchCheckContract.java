@@ -1,21 +1,21 @@
 package com.pine.mvp.contract;
 
 import com.pine.mvp.adapter.MvpShopCheckListPaginationAdapter;
-import com.pine.tool.architecture.mvp.contract.IBaseContract;
-import com.pine.tool.bean.BaseInputParam;
+import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.bean.InputParam;
 
 /**
  * Created by tanghongfeng on 2018/11/15
  */
 
 public interface IMvpShopSearchCheckContract {
-    interface Ui extends IBaseContract.Ui {
-        BaseInputParam getSearchKey(String key);
+    interface Ui extends IContract.Ui {
+        InputParam getSearchKey(String key);
 
         void goAllSelectMode();
     }
 
-    interface Presenter extends IBaseContract.Presenter {
+    interface Presenter extends IContract.Presenter {
         MvpShopCheckListPaginationAdapter getListAdapter();
 
         void postSearch(boolean refresh);

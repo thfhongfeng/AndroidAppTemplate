@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">tool</string>
-
     <string name="tool_rationale_ask">没有授予相应权限，应用可能无法正常运行。</string>
     <string name="tool_rationale_ask_again">没有授予相应权限，应用可能无法正常运行。请打开应用设置允许相应权限。</string>
     <string name="tool_title_settings_dialog">权限需求</string>

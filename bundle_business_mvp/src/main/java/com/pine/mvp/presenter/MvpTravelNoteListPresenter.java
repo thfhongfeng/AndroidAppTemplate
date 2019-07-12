@@ -11,7 +11,7 @@ import com.pine.mvp.contract.IMvpTravelNoteListContract;
 import com.pine.mvp.model.MvpTravelNoteModel;
 import com.pine.mvp.ui.activity.MvpTravelNoteReleaseActivity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvpTravelNoteListPresenter extends BasePresenter<IMvpTravelNoteListContract.Ui>
+public class MvpTravelNoteListPresenter extends Presenter<IMvpTravelNoteListContract.Ui>
         implements IMvpTravelNoteListContract.Presenter {
     private String mId;
     private MvpTravelNoteModel mTravelNoteModel;

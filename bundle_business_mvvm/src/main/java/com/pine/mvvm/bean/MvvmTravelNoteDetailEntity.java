@@ -1,7 +1,7 @@
 package com.pine.mvvm.bean;
 
 import com.pine.base.component.editor.bean.TextImageItemEntity;
-import com.pine.tool.bean.BaseBean;
+import com.pine.tool.bean.Bean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public class MvvmTravelNoteDetailEntity extends BaseBean {
+public class MvvmTravelNoteDetailEntity extends Bean {
     /**
      * id : 1
      * title : Travel Note Title

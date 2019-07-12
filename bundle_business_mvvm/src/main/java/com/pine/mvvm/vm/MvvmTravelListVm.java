@@ -7,14 +7,14 @@ import com.pine.mvvm.MvvmConstants;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
 import com.pine.mvvm.model.MvvmTravelNoteModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
-import com.pine.tool.binding.data.BaseLiveData;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.binding.data.CustomLiveData;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MvvmTravelListVm extends BaseViewModel {
+public class MvvmTravelListVm extends ViewModel {
     public String mId;
     MvvmTravelNoteModel mTravelNoteModel = new MvvmTravelNoteModel();
 
@@ -63,9 +63,9 @@ public class MvvmTravelListVm extends BaseViewModel {
         });
     }
 
-    BaseLiveData<ArrayList<MvvmTravelNoteItemEntity>, Boolean> travelListData = new BaseLiveData<>();
+    CustomLiveData<ArrayList<MvvmTravelNoteItemEntity>, Boolean> travelListData = new CustomLiveData<>();
 
-    public BaseLiveData<ArrayList<MvvmTravelNoteItemEntity>, Boolean> getTravelListData() {
+    public CustomLiveData<ArrayList<MvvmTravelNoteItemEntity>, Boolean> getTravelListData() {
         return travelListData;
     }
 

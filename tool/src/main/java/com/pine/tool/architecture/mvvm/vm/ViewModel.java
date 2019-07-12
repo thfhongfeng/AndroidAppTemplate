@@ -1,7 +1,6 @@
 package com.pine.tool.architecture.mvvm.vm;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
@@ -14,7 +13,7 @@ import com.pine.tool.util.LogUtils;
  * Created by tanghongfeng on 2019/3/1
  */
 
-public abstract class BaseViewModel extends ViewModel {
+public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     private UiState mUiState = UiState.UI_STATE_UNDEFINE;
     private SupportActivity mUi;

@@ -20,7 +20,7 @@ import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
 import com.pine.base.util.DialogUtils;
-import com.pine.tool.ui.BaseActivity;
+import com.pine.tool.ui.Activity;
 import com.pine.tool.util.KeyboardUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -66,13 +66,13 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         mMaxImageSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
     }
 
-    public void init(@NonNull BaseActivity activity, @NonNull String uploadUrl, int index,
+    public void init(@NonNull Activity activity, @NonNull String uploadUrl, int index,
                      String title, OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
         initUpload(activity, uploadUrl, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
         initView(index, title);
     }
 
-    public void init(@NonNull BaseActivity activity, @NonNull String uploadUrl, int index,
+    public void init(@NonNull Activity activity, @NonNull String uploadUrl, int index,
                      String title, TogetherUploadAdapter adapter, int requestCodeSelectImage) {
         initUpload(activity, uploadUrl, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
         initView(index, title);

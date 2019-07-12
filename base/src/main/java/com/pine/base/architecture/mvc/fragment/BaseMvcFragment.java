@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 
-import com.pine.tool.ui.BaseFragment;
+import com.pine.tool.ui.Fragment;
 
-public abstract class BaseMvcFragment extends BaseFragment {
+public abstract class BaseMvcFragment extends Fragment {
 
     @CallSuper
     @Override

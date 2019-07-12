@@ -12,7 +12,7 @@ import com.pine.config.ConfigBundleKey;
 import com.pine.config.switcher.ConfigBundleSwitcher;
 import com.pine.router.IRouterCallback;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvp.presenter.BasePresenter;
+import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.BusinessException;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.util.LogUtils;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * Created by tanghongfeng on 2018/9/12
  */
 
-public class LoadingPresenter extends BasePresenter<ILoadingContract.Ui> implements ILoadingContract.Presenter {
+public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements ILoadingContract.Presenter {
     private final static long LOADING_MAX_TIME = 2000;
     private BundleSwitcherModel mBundleSwitcherModel;
     private VersionModel mVersionModel;

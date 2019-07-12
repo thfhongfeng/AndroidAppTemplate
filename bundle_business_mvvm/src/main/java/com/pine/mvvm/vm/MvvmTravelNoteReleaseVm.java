@@ -12,7 +12,7 @@ import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.model.MvvmTravelNoteModel;
 import com.pine.mvvm.ui.activity.MvvmShopSearchCheckActivity;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by tanghongfeng on 2019/3/1
  */
 
-public class MvvmTravelNoteReleaseVm extends BaseViewModel {
+public class MvvmTravelNoteReleaseVm extends ViewModel {
     MvvmTravelNoteModel mTravelNoteModel = new MvvmTravelNoteModel();
 
     @Override

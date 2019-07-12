@@ -8,13 +8,13 @@ import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
-import com.pine.tool.architecture.mvvm.vm.BaseViewModel;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MvvmShopNoPaginationListVm extends BaseViewModel {
+public class MvvmShopNoPaginationListVm extends ViewModel {
     private MvvmShopModel mShopModel = new MvvmShopModel();
 
     public void loadShopNoPaginationListData() {
