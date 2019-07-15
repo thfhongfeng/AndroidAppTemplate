@@ -11,7 +11,6 @@ import com.pine.base.access.UiAccessType;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.config.BuildConfig;
-import com.pine.demo.DemoApplication;
 import com.pine.login.LoginApplication;
 import com.pine.main.MainApplication;
 import com.pine.mvc.MvcApplication;
@@ -68,7 +67,6 @@ public class TemplateApplication extends Application {
         MvcApplication.attach();
         MvpApplication.attach();
         MvvmApplication.attach();
-        DemoApplication.attach();
     }
 
     @Override

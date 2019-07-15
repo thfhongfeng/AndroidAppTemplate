@@ -2,7 +2,6 @@ package com.pine.router.impl.arouter;
 
 import com.pine.config.ConfigBundleKey;
 import com.pine.router.impl.IRouterManager;
-import com.pine.router.impl.arouter.manager.ARouterBusinessDemoManager;
 import com.pine.router.impl.arouter.manager.ARouterBusinessMvcManager;
 import com.pine.router.impl.arouter.manager.ARouterBusinessMvpManager;
 import com.pine.router.impl.arouter.manager.ARouterBusinessMvvmManager;
@@ -31,8 +30,6 @@ public class ARouterManagerFactory {
                 return getBusinessMvpRouter();
             case ConfigBundleKey.BUSINESS_MVVM_BUNDLE_KEY:
                 return getBusinessMvvmRouter();
-            case ConfigBundleKey.BUSINESS_DEMO_BUNDLE_KEY:
-                return getBusinessDemoRouter();
             case ConfigBundleKey.DB_SEVER_BUNDLE_KEY:
                 return getDbServerRouter();
             default:
@@ -62,10 +59,6 @@ public class ARouterManagerFactory {
 
     public static IRouterManager getBusinessMvvmRouter() {
         return ARouterBusinessMvvmManager.getInstance();
-    }
-
-    public static IRouterManager getBusinessDemoRouter() {
-        return ARouterBusinessDemoManager.getInstance();
     }
 
     public static IRouterManager getDbServerRouter() {

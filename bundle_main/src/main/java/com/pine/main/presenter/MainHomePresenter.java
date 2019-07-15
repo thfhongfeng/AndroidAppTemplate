@@ -6,7 +6,6 @@ import com.pine.config.ConfigBundleKey;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.contract.IMainHomeContract;
 import com.pine.main.model.MainHomeModel;
-import com.pine.router.command.RouterDemoCommand;
 import com.pine.router.command.RouterMvcCommand;
 import com.pine.router.command.RouterMvpCommand;
 import com.pine.router.command.RouterMvvmCommand;
@@ -32,9 +31,7 @@ public class MainHomePresenter extends Presenter<IMainHomeContract.Ui> implement
                 + "{name:'Business Mvp',bundle:" + ConfigBundleKey.BUSINESS_MVP_BUNDLE_KEY
                 + ",command:" + RouterMvpCommand.goMvpHomeActivity + "},"
                 + "{name:'Business Mvvm',bundle:" + ConfigBundleKey.BUSINESS_MVVM_BUNDLE_KEY
-                + ",command:" + RouterMvvmCommand.goMvvmHomeActivity + "},"
-                + "{name:'Business Demo',bundle:" + ConfigBundleKey.BUSINESS_DEMO_BUNDLE_KEY
-                + ",command:" + RouterDemoCommand.goDemoHomeActivity + "}]";
+                + ",command:" + RouterMvvmCommand.goMvvmHomeActivity + "}]";
         ArrayList<MainBusinessItemEntity> entityList = new Gson().fromJson(res, new TypeToken<ArrayList<MainBusinessItemEntity>>() {
         }.getType());
         getUi().setBusinessBundleData(entityList);

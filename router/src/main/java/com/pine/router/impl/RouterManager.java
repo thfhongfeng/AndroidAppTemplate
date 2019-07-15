@@ -42,10 +42,6 @@ public class RouterManager {
         return getInstance(ConfigBundleKey.BUSINESS_MVVM_BUNDLE_KEY);
     }
 
-    public static IRouterManager getBusinessDemoRouter() {
-        return getInstance(ConfigBundleKey.BUSINESS_DEMO_BUNDLE_KEY);
-    }
-
     public static IRouterManager getDbServerRouter() {
         return getInstance(ConfigBundleKey.DB_SEVER_BUNDLE_KEY);
     }

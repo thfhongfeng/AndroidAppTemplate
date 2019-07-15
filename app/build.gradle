@@ -104,7 +104,6 @@ dependencies {
     implementation project(':bundle_business_mvc')
     implementation project(':bundle_business_mvp')
     implementation project(':bundle_business_mvvm')
-    implementation project(':bundle_business_demo')
     // bundle模块 end
 
     implementation project(':db_server')
