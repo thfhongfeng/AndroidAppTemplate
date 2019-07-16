@@ -7,14 +7,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Created by tanghongfeng on 2018/9/13
- */
-
 @Documented
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RouterAnnotation {
-    String CommandName();
+public @interface AtlasRemoteAction {
+    String Key();
+
+    String UiRemoteAction();
+
+    String DataRemoteAction();
+
+    String OpRemoteAction();
 }

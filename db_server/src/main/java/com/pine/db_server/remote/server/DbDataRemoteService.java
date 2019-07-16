@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.pine.db_server.sqlite.SQLiteDbRequestManager;
-import com.pine.router.annotation.RouterAnnotation;
+import com.pine.router.annotation.RouterCommand;
 import com.pine.router.command.RouterDbServerCommand;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class DbDataRemoteService {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
-    @RouterAnnotation(CommandName = RouterDbServerCommand.callDbServerCommand)
+    @RouterCommand(CommandName = RouterDbServerCommand.callDbServerCommand)
     public DbResponse callDbServerCommand(@NonNull Context context, Bundle args) {
         LogUtils.d(TAG, "callDbServerCommand execute");
         return SQLiteDbRequestManager.getInstance().callCommand(context,

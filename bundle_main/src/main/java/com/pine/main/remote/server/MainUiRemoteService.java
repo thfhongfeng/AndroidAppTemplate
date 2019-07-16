@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.pine.main.ui.activity.MainHomeActivity;
 import com.pine.router.IServiceCallback;
-import com.pine.router.annotation.RouterAnnotation;
+import com.pine.router.annotation.RouterCommand;
 import com.pine.router.command.RouterMainCommand;
 
 /**
@@ -16,7 +16,7 @@ import com.pine.router.command.RouterMainCommand;
 
 public class MainUiRemoteService {
 
-    @RouterAnnotation(CommandName = RouterMainCommand.goMainHomeActivity)
+    @RouterCommand(CommandName = RouterMainCommand.goMainHomeActivity)
     public void goMainHomeActivity(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
         Intent intent = new Intent(context, MainHomeActivity.class);

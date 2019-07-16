@@ -9,7 +9,7 @@ import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
 import com.pine.router.IServiceCallback;
-import com.pine.router.annotation.RouterAnnotation;
+import com.pine.router.annotation.RouterCommand;
 import com.pine.router.command.RouterLoginCommand;
 import com.pine.tool.util.SharePreferenceUtils;
 
@@ -19,7 +19,7 @@ import com.pine.tool.util.SharePreferenceUtils;
 
 public class LoginOpRemoteService {
 
-    @RouterAnnotation(CommandName = RouterLoginCommand.autoLogin)
+    @RouterCommand(CommandName = RouterLoginCommand.autoLogin)
     public void autoLogin(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
         final Bundle responseBundle = new Bundle();
         if (LoginApplication.isLogin()) {
@@ -52,7 +52,7 @@ public class LoginOpRemoteService {
         });
     }
 
-    @RouterAnnotation(CommandName = RouterLoginCommand.logout)
+    @RouterCommand(CommandName = RouterLoginCommand.logout)
     public void logout(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
         final Bundle responseBundle = new Bundle();
         LoginManager.logout();

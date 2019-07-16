@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.pine.login.ui.activity.LoginActivity;
 import com.pine.router.IServiceCallback;
-import com.pine.router.annotation.RouterAnnotation;
+import com.pine.router.annotation.RouterCommand;
 import com.pine.router.command.RouterLoginCommand;
 
 /**
@@ -16,7 +16,7 @@ import com.pine.router.command.RouterLoginCommand;
 
 public class LoginUiRemoteService {
 
-    @RouterAnnotation(CommandName = RouterLoginCommand.goLoginActivity)
+    @RouterCommand(CommandName = RouterLoginCommand.goLoginActivity)
     public void goLoginActivity(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
         Intent intent = new Intent(context, LoginActivity.class);

@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.pine.mvp.ui.activity.MvpHomeActivity;
 import com.pine.router.IServiceCallback;
-import com.pine.router.annotation.RouterAnnotation;
+import com.pine.router.annotation.RouterCommand;
 import com.pine.router.command.RouterMvpCommand;
 
 /**
@@ -16,7 +16,7 @@ import com.pine.router.command.RouterMvpCommand;
 
 public class MvpUiRemoteService {
 
-    @RouterAnnotation(CommandName = RouterMvpCommand.goMvpHomeActivity)
+    @RouterCommand(CommandName = RouterMvpCommand.goMvpHomeActivity)
     public void goBusinessHomeActivity(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
         Intent intent = new Intent(context, MvpHomeActivity.class);

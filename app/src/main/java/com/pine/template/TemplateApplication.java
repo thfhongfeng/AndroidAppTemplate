@@ -11,6 +11,8 @@ import com.pine.base.access.UiAccessType;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.config.BuildConfig;
+import com.pine.config.ConfigBundleKey;
+import com.pine.config.switcher.ConfigBundleSwitcher;
 import com.pine.login.LoginApplication;
 import com.pine.main.MainApplication;
 import com.pine.mvc.MvcApplication;
@@ -90,10 +92,11 @@ public class TemplateApplication extends Application {
             public IRequestManager makeRequestManager(Context context, HashMap<String, String> head) {
                 switch (com.pine.config.BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
                     case "local":
+                        ConfigBundleSwitcher.setBundleState(ConfigBundleKey.DB_SEVER_BUNDLE_KEY, true);
                         return DbRequestManager.getInstance().init(context, head, new IDbRequestServer() {
                             @Override
                             public DbResponse request(Bundle bundle) {
-                                return RouterManager.getDbServerRouter().callDataCommandDirect(mApplication,
+                                return RouterManager.getInstance(ConfigBundleKey.DB_SEVER_BUNDLE_KEY).callDataCommandDirect(mApplication,
                                         RouterDbServerCommand.callDbServerCommand, bundle);
                             }
                         });

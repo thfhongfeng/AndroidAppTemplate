@@ -34,6 +34,8 @@ import static com.pine.db_server.DbConstants.TRAVEL_NOTE_TABLE_NAME;
 public class SQLiteDbHelper extends SQLiteOpenHelper {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
+    public final static Object DB_SYNC_LOCK = new Object();
+
     public SQLiteDbHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
