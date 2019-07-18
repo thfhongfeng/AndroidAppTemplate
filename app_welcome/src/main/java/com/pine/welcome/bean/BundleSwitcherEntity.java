@@ -7,12 +7,13 @@ package com.pine.welcome.bean;
 public class BundleSwitcherEntity {
 
     /**
-     * configKey : login_bundle
+     * configKey : bundle_login
      * open : true
      */
 
     private String configKey;
-    private boolean open;
+    // 是否开放：0-关闭；1-开放
+    private int open;
 
     public String getConfigKey() {
         return configKey;
@@ -22,11 +23,11 @@ public class BundleSwitcherEntity {
         this.configKey = configKey;
     }
 
-    public boolean isOpen() {
+    public int getOpen() {
         return open;
     }
 
-    public void setOpen(boolean open) {
+    public void setOpen(int open) {
         this.open = open;
     }
 }

@@ -1,6 +1,6 @@
 package com.pine.router.command;
 
-import com.pine.config.ConfigBundleKey;
+import com.pine.config.ConfigKey;
 import com.pine.router.annotation.ARouterRemoteAction;
 import com.pine.router.annotation.AtlasRemoteAction;
 
@@ -8,9 +8,9 @@ import com.pine.router.annotation.AtlasRemoteAction;
  * Created by tanghongfeng on 2019/1/25
  */
 
-@ARouterRemoteAction(Key = ConfigBundleKey.USER_BUNDLE_KEY, UiRemoteAction = "/user/uiService",
+@ARouterRemoteAction(Key = ConfigKey.BUNDLE_USER_KEY, UiRemoteAction = "/user/uiService",
         DataRemoteAction = "/user/dataService", OpRemoteAction = "/user/opService")
-@AtlasRemoteAction(Key = ConfigBundleKey.USER_BUNDLE_KEY,
+@AtlasRemoteAction(Key = ConfigKey.BUNDLE_USER_KEY,
         UiRemoteAction = "atlas.transaction.intent.action.main.UserUiRemoteAction",
         DataRemoteAction = "atlas.transaction.intent.action.main.UserDataRemoteAction",
         OpRemoteAction = "atlas.transaction.intent.action.main.UserOpRemoteAction")

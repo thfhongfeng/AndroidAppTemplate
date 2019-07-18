@@ -3,7 +3,9 @@ package com.pine.login.remote;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.pine.config.ConfigKey;
 import com.pine.router.IRouterCallback;
+import com.pine.router.command.RouterWelcomeCommand;
 import com.pine.router.impl.RouterManager;
 
 public class LoginClientManager {
@@ -11,5 +13,10 @@ public class LoginClientManager {
                                    String command, Bundle args, IRouterCallback callback) {
         RouterManager.getInstance(bundleKey).callUiCommand(context,
                 command, args, callback);
+    }
+
+    public static void setupConfigSwitcher(Context context, Bundle args, IRouterCallback callback) {
+        RouterManager.getInstance(ConfigKey.BUNDLE_WELCOME_KEY).callOpCommand(context,
+                RouterWelcomeCommand.setupConfigSwitcher, args, callback);
     }
 }

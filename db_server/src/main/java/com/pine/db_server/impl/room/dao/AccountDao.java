@@ -15,12 +15,12 @@ public interface AccountDao {
     @Update
     int update(Account account);
 
-    @Query("SELECT * FROM db_account WHERE id=:accountId AND invalid=0")
+    @Query("SELECT * FROM db_account WHERE id=:accountId AND state=1")
     Account checkAccountByAccountId(String accountId);
 
-    @Query("SELECT * FROM db_account WHERE account=:account AND invalid=0")
+    @Query("SELECT * FROM db_account WHERE account=:account AND state=1")
     Account checkAccountByAccount(String account);
 
-    @Query("SELECT * FROM db_account WHERE account=:account AND password=:password AND invalid=0")
+    @Query("SELECT * FROM db_account WHERE account=:account AND password=:password AND state=1")
     Account checkAccountByAccountPwd(String account, String password);
 }

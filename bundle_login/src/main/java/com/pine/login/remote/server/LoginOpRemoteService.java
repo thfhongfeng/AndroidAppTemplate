@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.pine.config.SPKeyConstants;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.manager.LoginManager;
@@ -23,24 +24,24 @@ public class LoginOpRemoteService {
     public void autoLogin(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
         final Bundle responseBundle = new Bundle();
         if (LoginApplication.isLogin()) {
-            responseBundle.putBoolean("success", true);
-            responseBundle.putString("msg", "");
+            responseBundle.putBoolean(LoginConstants.SUCCESS, true);
+            responseBundle.putString(LoginConstants.MESSAGE, "");
             callback.onResponse(responseBundle);
             return;
         }
-        String account = SharePreferenceUtils.readStringFromCache(LoginConstants.LOGIN_ACCOUNT, "");
-        String password = SharePreferenceUtils.readStringFromCache(LoginConstants.LOGIN_PASSWORD, "");
+        String account = SharePreferenceUtils.readStringFromCache(SPKeyConstants.ACCOUNT_ACCOUNT, "");
+        String password = SharePreferenceUtils.readStringFromCache(SPKeyConstants.ACCOUNT_PASSWORD, "");
         if (account.length() == 0 || password.length() == 0) {
-            responseBundle.putBoolean("success", false);
-            responseBundle.putString("msg", "no account on local");
+            responseBundle.putBoolean(LoginConstants.SUCCESS, false);
+            responseBundle.putString(LoginConstants.MESSAGE, "no account on local");
             callback.onResponse(responseBundle);
             return;
         }
         LoginManager.autoLogin(account, password, new ILoginResponse() {
             @Override
             public boolean onLoginResponse(boolean isSuccess, String msg) {
-                responseBundle.putBoolean("success", isSuccess);
-                responseBundle.putString("msg", msg);
+                responseBundle.putBoolean(LoginConstants.SUCCESS, isSuccess);
+                responseBundle.putString(LoginConstants.MESSAGE, msg);
                 callback.onResponse(responseBundle);
                 return true;
             }

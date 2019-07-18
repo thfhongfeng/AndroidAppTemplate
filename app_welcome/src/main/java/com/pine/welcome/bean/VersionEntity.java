@@ -11,7 +11,7 @@ public class VersionEntity {
      * versionCode : 2
      * versionName : 1.0.2
      * minSupportedVersion : 1
-     * force : true
+     * force : 0
      * fileName : template.apk
      * path : https://www.baidu.com
      */
@@ -20,9 +20,12 @@ public class VersionEntity {
     private int versionCode;
     private String versionName;
     private int minSupportedVersion;
-    private boolean force;
+    // 是否强制更新：0-不强制；1-强制
+    private int force;
     private String fileName;
     private String path;
+    private String createTime;
+    private String updateTime;
 
     public String getPackageName() {
         return packageName;
@@ -56,11 +59,11 @@ public class VersionEntity {
         this.minSupportedVersion = minSupportedVersion;
     }
 
-    public boolean isForce() {
+    public int getForce() {
         return force;
     }
 
-    public void setForce(boolean force) {
+    public void setForce(int force) {
         this.force = force;
     }
 
@@ -78,5 +81,21 @@ public class VersionEntity {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 }

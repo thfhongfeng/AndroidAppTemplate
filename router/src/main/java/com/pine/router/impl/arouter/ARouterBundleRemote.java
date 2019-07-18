@@ -6,7 +6,6 @@ import android.os.Bundle;
 import com.alibaba.android.arouter.facade.template.IProvider;
 import com.pine.router.IRouterCallback;
 import com.pine.router.IServiceCallback;
-import com.pine.router.RouterConstants;
 import com.pine.router.annotation.RouterCommand;
 import com.pine.router.impl.IRouterManager;
 import com.pine.tool.util.LogUtils;
@@ -51,18 +50,15 @@ public abstract class ARouterBundleRemote<T> implements IProvider {
             RouterCommand annotation = mMethods[i].getAnnotation(RouterCommand.class);
             if (annotation != null && annotation.CommandName().equals(commandName)) {
                 mMethods[i].setAccessible(true);
-                final Bundle responseBundle = new Bundle();
                 try {
-                    responseBundle.putString(RouterConstants.REMOTE_CALL_STATE_KEY, RouterConstants.ON_SUCCEED);
                     mMethods[i].invoke(mRemoteService, context, args, new IServiceCallback() {
                         @Override
                         public void onResponse(Bundle bundle) {
                             if (bundle == null) {
                                 bundle = new Bundle();
                             }
-                            responseBundle.putBundle(RouterConstants.REMOTE_CALL_RESULT_KEY, bundle);
                             if (callback != null) {
-                                callback.onSuccess(responseBundle);
+                                callback.onSuccess(bundle);
                             }
                         }
                     });
@@ -96,9 +92,7 @@ public abstract class ARouterBundleRemote<T> implements IProvider {
             RouterCommand annotation = mMethods[i].getAnnotation(RouterCommand.class);
             if (annotation != null && annotation.CommandName().equals(commandName)) {
                 mMethods[i].setAccessible(true);
-                final Bundle responseBundle = new Bundle();
                 try {
-                    responseBundle.putString(RouterConstants.REMOTE_CALL_STATE_KEY, RouterConstants.ON_SUCCEED);
                     return (R) mMethods[i].invoke(mRemoteService, context, args);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

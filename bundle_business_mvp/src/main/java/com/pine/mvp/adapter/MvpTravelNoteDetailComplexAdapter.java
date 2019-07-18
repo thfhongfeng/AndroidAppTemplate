@@ -135,7 +135,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
             set_out_date_tv.setText(mContext.getString(R.string.mvp_travel_note_detail_set_out_date, content.getSetOutDate()));
             author_tv.setText(content.getAuthor());
             create_time_tv.setText(content.getCreateTime());
-            is_like_iv.setSelected(content.isLike());
+            is_like_iv.setSelected(content.hot());
             like_count_tv.setText(String.valueOf(content.getLikeCount()));
             read_count_tv.setText(String.valueOf(content.getReadCount()));
             preface_tv.setText(content.getPreface());

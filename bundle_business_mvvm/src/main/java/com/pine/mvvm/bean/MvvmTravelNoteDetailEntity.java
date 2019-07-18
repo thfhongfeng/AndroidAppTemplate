@@ -19,7 +19,7 @@ public class MvvmTravelNoteDetailEntity extends Bean {
      * author : 作者
      * belongShops :
      * likeCount : 100
-     * isLike : true
+     * hot : 0
      * readCount : 10000
      * preface :
      * dayCount :
@@ -35,7 +35,7 @@ public class MvvmTravelNoteDetailEntity extends Bean {
     private String author;
     private List<MvvmShopItemEntity> belongShops;
     private int likeCount;
-    private boolean isLike;
+    private int hot;
     private int readCount;
     private String preface;
     private Integer dayCount = new Integer(0);
@@ -99,12 +99,12 @@ public class MvvmTravelNoteDetailEntity extends Bean {
         this.likeCount = likeCount;
     }
 
-    public boolean isLike() {
-        return isLike;
+    public int getHot() {
+        return hot;
     }
 
-    public void setLike(boolean like) {
-        isLike = like;
+    public void setHot(int hot) {
+        this.hot = hot;
     }
 
     public int getReadCount() {

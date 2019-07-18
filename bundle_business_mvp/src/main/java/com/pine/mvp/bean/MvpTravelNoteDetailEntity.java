@@ -18,7 +18,7 @@ public class MvpTravelNoteDetailEntity {
      * author : 作者
      * belongShops :
      * likeCount : 100
-     * isLike : true
+     * hot : true
      * readCount : 10000
      * preface :
      * dayCount :
@@ -34,7 +34,7 @@ public class MvpTravelNoteDetailEntity {
     private String author;
     private List<MvpShopItemEntity> belongShops;
     private int likeCount;
-    private boolean isLike;
+    private boolean hot;
     private int readCount;
     private String preface;
     private Integer dayCount = new Integer(0);
@@ -98,12 +98,12 @@ public class MvpTravelNoteDetailEntity {
         this.likeCount = likeCount;
     }
 
-    public boolean isLike() {
-        return isLike;
+    public boolean hot() {
+        return hot;
     }
 
     public void setLike(boolean like) {
-        isLike = like;
+        hot = like;
     }
 
     public int getReadCount() {

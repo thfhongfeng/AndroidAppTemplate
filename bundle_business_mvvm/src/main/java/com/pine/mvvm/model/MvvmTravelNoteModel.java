@@ -183,7 +183,7 @@ public class MvvmTravelNoteModel {
                 "{id:'" + id + "',title:'Travel Note Item " + index + "', setOutDate:'2018-10-11 10:10',headImgUrl:''," +
                 "author:'作者',belongShops:[{id:'110020190328102000000001', name:'Shop Item 1'},{id:'110020190328102000000002', name:'Shop Item 2'}]," +
                 "createTime:'2018-10-10 10:10',likeCount:100," +
-                "isLike:" + (new Random().nextInt(10) > 5) + ",readCount:10000," +
+                "hot:" + ((new Random().nextInt(10) > 5) ? 1 :0) + ",readCount:10000," +
                 "preface:'这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言',";
         res += "days:[{id:'1',day:'第1天',contentList:[{type:'text',index:'1',text:'第1天第1段'}," +
                 "{type:'text',index:'2',text:'第1天第2段'}]}";

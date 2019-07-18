@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.pine.base.widget.dialog.ProgressDialog;
-import com.pine.config.ConfigBundleKey;
+import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigBundleSwitcher;
 import com.pine.router.IRouterCallback;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
@@ -22,7 +22,7 @@ import com.pine.welcome.bean.BundleSwitcherEntity;
 import com.pine.welcome.bean.VersionEntity;
 import com.pine.welcome.contract.ILoadingContract;
 import com.pine.welcome.manager.ApkVersionManager;
-import com.pine.welcome.model.BundleSwitcherModel;
+import com.pine.welcome.model.SwitcherModel;
 import com.pine.welcome.model.VersionModel;
 import com.pine.welcome.remote.WelcomeClientManager;
 import com.pine.welcome.ui.activity.WelcomeActivity;
@@ -36,12 +36,12 @@ import java.util.ArrayList;
 
 public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements ILoadingContract.Presenter {
     private final static long LOADING_MAX_TIME = 2000;
-    private BundleSwitcherModel mBundleSwitcherModel;
+    private SwitcherModel mSwitcherModel;
     private VersionModel mVersionModel;
     private long mStartTimeMillis;
 
     public LoadingPresenter() {
-        mBundleSwitcherModel = new BundleSwitcherModel();
+        mSwitcherModel = new SwitcherModel();
         mVersionModel = new VersionModel();
     }
 
@@ -53,13 +53,13 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
 
     @Override
     public void loadBundleSwitcherData() {
-        mBundleSwitcherModel.requestBundleSwitcherData(new IModelAsyncResponse<ArrayList<BundleSwitcherEntity>>() {
+        mSwitcherModel.requestBundleSwitcherData(new IModelAsyncResponse<ArrayList<BundleSwitcherEntity>>() {
             @Override
             public void onResponse(ArrayList<BundleSwitcherEntity> bundleSwitcherEntities) {
                 if (bundleSwitcherEntities != null) {
                     for (int i = 0; i < bundleSwitcherEntities.size(); i++) {
                         ConfigBundleSwitcher.setBundleState(bundleSwitcherEntities.get(i).getConfigKey(),
-                                bundleSwitcherEntities.get(i).isOpen());
+                                bundleSwitcherEntities.get(i).getOpen() == 1);
                     }
                 }
                 if (isUiAlive()) {
@@ -153,7 +153,7 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
 
     @Override
     public void autoLogin(final int delayTogoWelcome) {
-        if (!ConfigBundleSwitcher.isBundleOpen(ConfigBundleKey.LOGIN_BUNDLE_KEY) ||
+        if (!ConfigBundleSwitcher.isBundleOpen(ConfigKey.BUNDLE_LOGIN_KEY) ||
                 WelcomeApplication.isLogin()) {
             if (isUiAlive()) {
                 goWelcomeActivity(delayTogoWelcome);
@@ -207,7 +207,7 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
                         PackageInfo packageInfo = getContext().getPackageManager()
                                 .getPackageInfo(getContext().getPackageName(), 0);
                         if (packageInfo.versionCode < versionEntity.getVersionCode()) {
-                            if (versionEntity.isForce()) {
+                            if (versionEntity.getForce() == 1) {
                                 updateVersion(true);
                             } else {
                                 getUi().showVersionUpdateConfirmDialog(versionEntity.getVersionName());

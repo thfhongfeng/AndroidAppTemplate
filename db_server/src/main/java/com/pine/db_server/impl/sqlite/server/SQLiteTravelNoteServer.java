@@ -116,7 +116,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     jsonObject.put("authorId", cursor.getString(cursor.getColumnIndex("authorId")));
                     jsonObject.put("author", cursor.getString(cursor.getColumnIndex("author")));
                     jsonObject.put("likeCount", cursor.getInt(cursor.getColumnIndex("likeCount")));
-                    jsonObject.put("isLike", cursor.getString(cursor.getColumnIndex("isLike")));
+                    jsonObject.put("hot", cursor.getString(cursor.getColumnIndex("hot")));
                     jsonObject.put("headImgUrl", cursor.getString(cursor.getColumnIndex("headImgUrl")));
                     jsonObject.put("readCount", cursor.getInt(cursor.getColumnIndex("readCount")));
                     jsonObject.put("preface", cursor.getString(cursor.getColumnIndex("preface")));
@@ -178,7 +178,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                         jsonObject.put("title", travelNoteCursor.getString(travelNoteCursor.getColumnIndex("title")));
                         jsonObject.put("author", travelNoteCursor.getString(travelNoteCursor.getColumnIndex("author")));
                         jsonObject.put("likeCount", travelNoteCursor.getInt(travelNoteCursor.getColumnIndex("likeCount")));
-                        jsonObject.put("isLike", travelNoteCursor.getString(travelNoteCursor.getColumnIndex("isLike")));
+                        jsonObject.put("hot", travelNoteCursor.getString(travelNoteCursor.getColumnIndex("hot")));
                         jsonObject.put("readCount", travelNoteCursor.getInt(travelNoteCursor.getColumnIndex("readCount")));
                         jsonObject.put("createTime", travelNoteCursor.getString(travelNoteCursor.getColumnIndex("createTime")));
                         jsonObject.put("updateTime", travelNoteCursor.getString(travelNoteCursor.getColumnIndex("updateTime")));

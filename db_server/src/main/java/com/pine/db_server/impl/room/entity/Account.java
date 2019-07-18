@@ -22,6 +22,10 @@ public class Account implements Serializable {
     @NonNull
     private String account;
 
+    // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+    @NonNull
+    private int accountType;
+
     @NonNull
     private String name;
 
@@ -30,6 +34,7 @@ public class Account implements Serializable {
 
     private String headImgUrl;
 
+    // 账户状态:0-删除，1-激活，2-未激活
     @NonNull
     private int state;
 
@@ -42,9 +47,6 @@ public class Account implements Serializable {
     private String createTime;
 
     private String updateTime;
-
-    @NonNull
-    private String invalid;
 
     public long getId() {
         return id;
@@ -70,6 +72,14 @@ public class Account implements Serializable {
 
     public void setAccount(@NonNull String account) {
         this.account = account;
+    }
+
+    public int getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(int accountType) {
+        this.accountType = accountType;
     }
 
     @NonNull
@@ -137,14 +147,5 @@ public class Account implements Serializable {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @NonNull
-    public String getInvalid() {
-        return invalid;
-    }
-
-    public void setInvalid(@NonNull String invalid) {
-        this.invalid = invalid;
     }
 }

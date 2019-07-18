@@ -24,7 +24,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/14
  */
 
-public class BundleSwitcherModel {
+public class SwitcherModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER = 1;
 
@@ -80,10 +80,10 @@ public class BundleSwitcherModel {
     // Test code begin
     private JSONObject getBundleSwitcherData() {
         String res = "{success:true,code:200,message:'',data:" +
-                "[{configKey:'login_bundle', open:true},{configKey:'main_bundle', open:true}," +
-                "{configKey:'user_bundle', open:true},{configKey:'business_mvc_bundle', open:true}," +
-                "{configKey:'business_mvp_bundle', open:true},{configKey:'business_mvvm_bundle', open:true}," +
-                "{configKey:'business_demo_bundle', open:true}]}";
+                "[{configKey:'bundle_login', open:1},{configKey:'bundle_login', open:1}," +
+                "{configKey:'bundle_main', open:1},{configKey:'bundle_user', open:1}," +
+                "{configKey:'bundle_business_mvc', open:1},{configKey:'bundle_business_mvp', open:1}," +
+                "{configKey:'bundle_business_mvvm', open:1},{configKey:'business_demo_bundle', open:1}]}";
         try {
             return new JSONObject(res);
         } catch (JSONException e) {

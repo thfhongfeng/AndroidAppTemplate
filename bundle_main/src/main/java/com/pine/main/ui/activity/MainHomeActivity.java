@@ -41,12 +41,13 @@ public class MainHomeActivity extends BaseMvpNoActionBarActivity<IMainHomeContra
 
     @Override
     protected void init() {
-        mPresenter.loadBusinessBundleData();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mPresenter.loadBusinessBundleData();
     }
 
     @Override

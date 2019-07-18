@@ -12,6 +12,13 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        // ARouter配置 begin
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+        // ARouter配置 end
     }
     buildTypes {
         release {
@@ -46,6 +53,11 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // ARouter配置 begin
+    implementation build_dependency["arouter_api"]
+    annotationProcessor build_dependency["arouter_compiler"]
+    // ARouter配置 end
 
     // 第三方 dependency begin
     // 第三方 dependency end

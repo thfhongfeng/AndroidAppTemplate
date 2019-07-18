@@ -81,7 +81,7 @@
                 android:layout_height="@dimen/dp_12"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:scaleType="center"
-                android:selected="@{travelNoteDetail.isLike}"
+                android:selected="@{travelNoteDetail.hot == 1}"
                 android:src="@drawable/base_selector_is_like" />
 
             <TextView

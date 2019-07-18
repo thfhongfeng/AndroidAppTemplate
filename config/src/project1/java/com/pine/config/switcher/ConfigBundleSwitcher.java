@@ -16,9 +16,10 @@ public class ConfigBundleSwitcher {
     private static Map<String, Boolean> mBundleStateMap = new HashMap();
 
     static {
-        setBundleState(ConfigBundleKey.LOGIN_BUNDLE_KEY, true);
-        setBundleState(ConfigBundleKey.MAIN_BUNDLE_KEY, true);
-        setBundleState(ConfigBundleKey.USER_BUNDLE_KEY, true);
+        setBundleState(ConfigKey.BUNDLE_WELCOME_KEY, true);
+        setBundleState(ConfigBundleKey.BUNDLE_LOGIN_KEY, true);
+        setBundleState(ConfigBundleKey.BUNDLE_MAIN_KEY, true);
+        setBundleState(ConfigBundleKey.BUNDLE_USER_KEY, true);
     }
 
     public static void setBundleState(String key, boolean isOpen) {

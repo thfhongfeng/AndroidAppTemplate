@@ -10,9 +10,27 @@ import android.content.Context;
 import com.pine.db_server.impl.room.dao.AccountAccessLogDao;
 import com.pine.db_server.impl.room.dao.AccountDao;
 import com.pine.db_server.impl.room.dao.AppTrackDao;
+import com.pine.db_server.impl.room.dao.AppVersionDao;
+import com.pine.db_server.impl.room.dao.ConfigSwitcherDao;
+import com.pine.db_server.impl.room.dao.FileInfoDao;
+import com.pine.db_server.impl.room.dao.ProductDao;
+import com.pine.db_server.impl.room.dao.ShopDao;
+import com.pine.db_server.impl.room.dao.ShopTypeDao;
+import com.pine.db_server.impl.room.dao.TravelNoteCommentDao;
+import com.pine.db_server.impl.room.dao.TravelNoteDao;
+import com.pine.db_server.impl.room.dao.TravelNoteShopDao;
 import com.pine.db_server.impl.room.entity.Account;
 import com.pine.db_server.impl.room.entity.AccountAccessLog;
 import com.pine.db_server.impl.room.entity.AppTrack;
+import com.pine.db_server.impl.room.entity.AppVersion;
+import com.pine.db_server.impl.room.entity.ConfigSwitcher;
+import com.pine.db_server.impl.room.entity.FileInfo;
+import com.pine.db_server.impl.room.entity.Product;
+import com.pine.db_server.impl.room.entity.Shop;
+import com.pine.db_server.impl.room.entity.ShopType;
+import com.pine.db_server.impl.room.entity.TravelNote;
+import com.pine.db_server.impl.room.entity.TravelNoteComment;
+import com.pine.db_server.impl.room.entity.TravelNoteShop;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
@@ -21,7 +39,9 @@ import com.tencent.wcdb.room.db.WCDBOpenHelperFactory;
 
 import java.io.File;
 
-@Database(entities = {Account.class, AccountAccessLog.class, AppTrack.class}, version = 2, exportSchema = false)
+@Database(entities = {Account.class, AccountAccessLog.class, AppVersion.class, ConfigSwitcher.class,
+        FileInfo.class, Product.class, Shop.class, ShopType.class, TravelNote.class,
+        TravelNoteComment.class, TravelNoteShop.class, AppTrack.class}, version = 2, exportSchema = false)
 public abstract class DbRoomDatabase extends RoomDatabase {
     private static final String TAG = LogUtils.makeLogTag(DbRoomDatabase.class);
 
@@ -30,6 +50,24 @@ public abstract class DbRoomDatabase extends RoomDatabase {
     public abstract AccountDao accountDao();
 
     public abstract AccountAccessLogDao accountAccessLogDao();
+
+    public abstract AppVersionDao appVersionDao();
+
+    public abstract ConfigSwitcherDao configSwitcherDao();
+
+    public abstract FileInfoDao fileInfoDao();
+
+    public abstract ProductDao productDao();
+
+    public abstract ShopDao shopDao();
+
+    public abstract ShopTypeDao shopTypeDao();
+
+    public abstract TravelNoteDao travelNoteDao();
+
+    public abstract TravelNoteCommentDao travelNoteCommentDao();
+
+    public abstract TravelNoteShopDao travelNoteShopDao();
 
     public abstract AppTrackDao appTrackDao();
 
