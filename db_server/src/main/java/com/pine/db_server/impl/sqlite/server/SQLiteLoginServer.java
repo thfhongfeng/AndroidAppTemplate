@@ -1,4 +1,4 @@
-package com.pine.db_server.sqlite.server;
+package com.pine.db_server.impl.sqlite.server;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.pine.db_server.DbResponseGenerator;
 import com.pine.db_server.DbSession;
-import com.pine.db_server.sqlite.DbResponseGenerator;
-import com.pine.db_server.sqlite.SQLiteDbHelper;
-import com.pine.db_server.sqlite.SQLiteDbRequestManager;
+import com.pine.db_server.impl.sqlite.SQLiteDbHelper;
+import com.pine.db_server.impl.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
 
@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.pine.db_server.DbConstants.ACCOUNT_LOGIN_TABLE_NAME;
+import static com.pine.db_server.DbConstants.ACCOUNT_ACCESS_LOG_TABLE_NAME;
 import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
@@ -83,16 +83,11 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
             if (!cursor.moveToFirst()) {
                 return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "用户名密码错误");
             } else {
-                ContentValues contentValues = new ContentValues();
                 String accountId = cursor.getString(cursor.getColumnIndex("id"));
-                contentValues.put("accountId", accountId);
-                Cursor loginCursor = query(db, ACCOUNT_LOGIN_TABLE_NAME, null, "accountId=?",
-                        new String[]{String.valueOf(accountId)}, null, null, null);
-                if (!loginCursor.moveToFirst() ||
-                        !TextUtils.isEmpty(loginCursor.getString(loginCursor.getColumnIndex("logoutTime")))) {
-                    contentValues.put("loginTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-                    insert(db, ACCOUNT_LOGIN_TABLE_NAME, "accountId", contentValues);
-                }
+                long login_stamp = Calendar.getInstance().getTimeInMillis();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("curLoginTimeStamp", login_stamp);
+                update(db, ACCOUNT_TABLE_NAME, contentValues, "id=?", new String[]{accountId});
                 try {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("id", cursor.getInt(cursor.getColumnIndex("id")));
@@ -104,17 +99,15 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                     if (cookies == null) {
                         cookies = new HashMap<>();
                     }
-                    String sessionId = SQLiteDbRequestManager.getInstance().generateSessionId(accountId);
-                    DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(sessionId);
-                    session.setUserId(accountId);
-                    session.setLoginTimeStamp(Calendar.getInstance().getTimeInMillis());
+                    String sessionId = SQLiteDbServerManager.getInstance().generateSessionId(accountId);
+                    DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(sessionId);
+                    session.setAccountId(accountId);
+                    session.setLoginTimeStamp(login_stamp);
                     cookies.put(SESSION_ID, sessionId);
-                    loginCursor.close();
                     cursor.close();
                     return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    loginCursor.close();
                     cursor.close();
                     return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);
                 }
@@ -131,22 +124,36 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                                     @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
-            String accountIdStr = session.getUserId();
+            DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+            String accountIdStr = session.getAccountId();
             if (TextUtils.isEmpty(accountIdStr)) {
                 return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "");
             }
-            SQLiteDbRequestManager.getInstance().removeSession(session.getSessionId());
-            Cursor loginCursor = query(db, ACCOUNT_LOGIN_TABLE_NAME, null, "accountId=?",
+            SQLiteDbServerManager.getInstance().removeSession(session.getSessionId());
+            Cursor accountCursor = query(db, ACCOUNT_TABLE_NAME, null, "accountId=?",
                     new String[]{accountIdStr}, null, null, null);
-            while (loginCursor.moveToNext() &&
-                    TextUtils.isEmpty(loginCursor.getString(loginCursor.getColumnIndex("logoutTime")))) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("logoutTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-                update(db, ACCOUNT_LOGIN_TABLE_NAME, contentValues, "accountId=?", new String[]{accountIdStr});
+            if (!accountCursor.moveToNext()) {
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "");
             }
-            loginCursor.close();
-            return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "");
+            boolean isSuccess = true;
+            db.beginTransaction();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("accountId", accountIdStr);
+            contentValues.put("loginTimeStamp", accountCursor.getLong(accountCursor.getColumnIndex("curLoginTimeStamp")));
+            contentValues.put("logoutTimeStamp", Calendar.getInstance().getTimeInMillis());
+            isSuccess = isSuccess && insert(db, ACCOUNT_ACCESS_LOG_TABLE_NAME, "accountId", contentValues) > 0;
+            ContentValues accountValue = new ContentValues();
+            accountValue.put("curLoginTimeStamp", 0);
+            isSuccess = isSuccess && update(db, ACCOUNT_TABLE_NAME, accountValue, "id=?", new String[]{accountIdStr}) > 0;
+            if (isSuccess) {
+                db.setTransactionSuccessful();
+            }
+            db.endTransaction();
+            if (isSuccess) {
+                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "");
+            } else {
+                return DbResponseGenerator.getServerDbOpFailJsonRep(requestBean, cookies, "");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return DbResponseGenerator.getExceptionJsonRep(requestBean, cookies, e);

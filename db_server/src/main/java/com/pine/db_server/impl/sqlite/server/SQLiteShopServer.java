@@ -1,4 +1,4 @@
-package com.pine.db_server.sqlite.server;
+package com.pine.db_server.impl.sqlite.server;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,9 +9,9 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.pine.db_server.DbSession;
-import com.pine.db_server.sqlite.DbResponseGenerator;
-import com.pine.db_server.sqlite.SQLiteDbHelper;
-import com.pine.db_server.sqlite.SQLiteDbRequestManager;
+import com.pine.db_server.DbResponseGenerator;
+import com.pine.db_server.impl.sqlite.SQLiteDbHelper;
+import com.pine.db_server.impl.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.util.RegexUtils;
@@ -37,17 +37,17 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                      @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
-            if (TextUtils.isEmpty(session.getUserId())) {
+            DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+            if (TextUtils.isEmpty(session.getAccountId())) {
                 return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "请登录");
             } else {
                 Map<String, String> params = new HashMap<>();
-                params.put("id", session.getUserId());
+                params.put("id", session.getAccountId());
                 Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
                 if (cursor.moveToFirst()) {
                     Map<String, String> requestParams = requestBean.getParams();
                     requestParams.put("id", "1100" + new Date().getTime());
-                    requestParams.put("userId", cursor.getString(cursor.getColumnIndex("id")));
+                    requestParams.put("accountId", cursor.getString(cursor.getColumnIndex("id")));
                     requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                     requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                     long id = insert(db, SHOP_TABLE_NAME, requestParams);
@@ -223,12 +223,12 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                         @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
-            if (TextUtils.isEmpty(session.getUserId())) {
+            DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+            if (TextUtils.isEmpty(session.getAccountId())) {
                 return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "请登录");
             } else {
                 Map<String, String> queryParams = new HashMap<>();
-                queryParams.put("id", session.getUserId());
+                queryParams.put("id", session.getAccountId());
                 Cursor cursor = query(db, ACCOUNT_TABLE_NAME, queryParams);
                 if (cursor.moveToFirst()) {
                     Map<String, String> requestParams = requestBean.getParams();

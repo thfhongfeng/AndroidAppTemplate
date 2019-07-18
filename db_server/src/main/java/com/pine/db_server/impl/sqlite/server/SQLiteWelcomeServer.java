@@ -1,4 +1,4 @@
-package com.pine.db_server.sqlite.server;
+package com.pine.db_server.impl.sqlite.server;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,8 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import com.pine.db_server.sqlite.DbResponseGenerator;
-import com.pine.db_server.sqlite.SQLiteDbHelper;
+import com.pine.db_server.DbResponseGenerator;
+import com.pine.db_server.impl.sqlite.SQLiteDbHelper;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
 

@@ -1,4 +1,4 @@
-package com.pine.db_server.sqlite.server;
+package com.pine.db_server.impl.sqlite.server;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.pine.db_server.DbResponseGenerator;
 import com.pine.db_server.DbSession;
-import com.pine.db_server.sqlite.DbResponseGenerator;
-import com.pine.db_server.sqlite.SQLiteDbHelper;
-import com.pine.db_server.sqlite.SQLiteDbRequestManager;
+import com.pine.db_server.impl.sqlite.SQLiteDbHelper;
+import com.pine.db_server.impl.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
 
@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
+import static com.pine.db_server.DbConstants.SHOP_TABLE_NAME;
 import static com.pine.db_server.DbConstants.TRAVEL_NOTE_COMMENT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.TRAVEL_NOTE_SHOP_TABLE_NAME;
 import static com.pine.db_server.DbConstants.TRAVEL_NOTE_TABLE_NAME;
@@ -36,13 +37,13 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                                            @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            DbSession session = SQLiteDbRequestManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
-            if (TextUtils.isEmpty(session.getUserId())) {
+            DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+            if (TextUtils.isEmpty(session.getAccountId())) {
                 return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "请登录");
             } else {
                 Map<String, String> requestParams = requestBean.getParams();
                 Map<String, String> params = new HashMap<>();
-                params.put("id", session.getUserId());
+                params.put("id", session.getAccountId());
                 Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
                 if (cursor.moveToFirst()) {
                     requestParams.put("authorId", cursor.getString(cursor.getColumnIndex("id")));
@@ -119,7 +120,8 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     jsonObject.put("headImgUrl", cursor.getString(cursor.getColumnIndex("headImgUrl")));
                     jsonObject.put("readCount", cursor.getInt(cursor.getColumnIndex("readCount")));
                     jsonObject.put("preface", cursor.getString(cursor.getColumnIndex("preface")));
-                    String sql = "select t2.id,t2.name from travel_note_shop t1,shop t2 where t1.travelNoteId=? and t1.shopId=t2.id";
+                    String sql = "select t2.id,t2.name from " +
+                            TRAVEL_NOTE_SHOP_TABLE_NAME + " t1," + SHOP_TABLE_NAME + " t2 where t1.travelNoteId=? and t1.shopId=t2.id";
                     Cursor travelNoteShopCursor = db.rawQuery(sql, new String[]{travelNoteId});
                     JSONArray belongShops = new JSONArray();
                     while (travelNoteShopCursor.moveToNext()) {

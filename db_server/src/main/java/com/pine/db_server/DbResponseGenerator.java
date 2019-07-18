@@ -1,4 +1,4 @@
-package com.pine.db_server.sqlite;
+package com.pine.db_server;
 
 import android.text.TextUtils;
 
@@ -29,6 +29,17 @@ public class DbResponseGenerator {
     public static DbResponse getLoginFailJsonRep(DbRequestBean requestBean,
                                                  HashMap<String, String> cookies, String message) {
         String dataContainer = "{'success':false, 'code':401, 'message':'" + message + "'}";
+        DbResponse response = new DbResponse();
+        response.setSucceed(true);
+        response.setCookies(cookies);
+        response.setData(dataContainer);
+        response.setTag(requestBean.getModuleTag());
+        return response;
+    }
+
+    public static DbResponse getServerDbOpFailJsonRep(DbRequestBean requestBean,
+                                                      HashMap<String, String> cookies, String message) {
+        String dataContainer = "{'success':false, 'code':501, 'message':'" + message + "'}";
         DbResponse response = new DbResponse();
         response.setSucceed(true);
         response.setCookies(cookies);

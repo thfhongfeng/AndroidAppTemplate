@@ -1,4 +1,4 @@
-package com.pine.db_server.sqlite;
+package com.pine.db_server.impl.sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-import static com.pine.db_server.DbConstants.ACCOUNT_LOGIN_TABLE_NAME;
+import static com.pine.db_server.DbConstants.ACCOUNT_ACCESS_LOG_TABLE_NAME;
 import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.APP_VERSION_TABLE_NAME;
 import static com.pine.db_server.DbConstants.DATABASE_NAME;
@@ -45,7 +45,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         createConfigSwitcherTable(db);
         createAppVersionTable(db);
         createAccountTable(db);
-        createAccountLoginTable(db);
+        createAccountAccessLogTable(db);
         createShopTypeTable(db);
         createShopTable(db);
         createProductTable(db);
@@ -64,7 +64,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 "(_id integer primary key autoincrement,fileName text not null," +
                 "filePath text not null,bizType integer not null,fileType integer not null," +
                 "descr text,orderNum integer not null," +
-                "createTime datetime,updateTime datetime)");
+                "createTime text,updateTime text)");
     }
 
     private void createConfigSwitcherTable(SQLiteDatabase db) {
@@ -72,7 +72,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             db.execSQL("create table if not exists " + SWITCHER_CONFIG_TABLE_NAME +
                     "(_id integer primary key autoincrement,configKey text not null," +
                     "open text not null," +
-                    "createTime datetime,updateTime datetime)");
+                    "createTime text,updateTime text)");
             List<ContentValues> list = new ArrayList<>();
             ContentValues contentValues = new ContentValues();
             contentValues.put("configKey", "login_bundle");
@@ -142,7 +142,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     "(_id integer primary key autoincrement,packageName text not null," +
                     "versionName text not null,versionCode integer not null," +
                     "minSupportedVersion text,force boolean,fileName text,path text," +
-                    "createTime datetime,updateTime datetime)");
+                    "createTime text,updateTime text)");
             ContentValues contentValues = new ContentValues();
             contentValues.put("packageName", "com.pine.template");
             contentValues.put("versionName", "1.0.2");
@@ -170,7 +170,8 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     "(_id integer primary key autoincrement, id text not null unique," +
                     "account text not null, name text not null," +
                     "password text not null, headImgUrl text,state integer not null," +
-                    "mobile text not null,createTime datetime,updateTime datetime)");
+                    "mobile text not null,curLoginTimeStamp integer not null,createTime text," +
+                    "updateTime text,invalid integer not null)");
             Calendar calendar = Calendar.getInstance();
             List<ContentValues> list = new ArrayList<>();
             ContentValues contentValues = new ContentValues();
@@ -180,8 +181,10 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
             contentValues.put("mobile", "18672943565");
+            contentValues.put("curLoginTimeStamp", 0);
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
+            contentValues.put("invalid", 0);
             list.add(contentValues);
             contentValues = new ContentValues();
             contentValues.put("id", "1000" + "20190328102000000" + "001");
@@ -190,8 +193,10 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
             contentValues.put("mobile", "15221464292");
+            contentValues.put("curLoginTimeStamp", 0);
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
+            contentValues.put("invalid", 0);
             list.add(contentValues);
             contentValues = new ContentValues();
             contentValues.put("id", "1000" + "20190328102000000" + "002");
@@ -200,8 +205,10 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
             contentValues.put("mobile", "15221464296");
+            contentValues.put("curLoginTimeStamp", 0);
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
+            contentValues.put("invalid", 0);
             list.add(contentValues);
             boolean insertSuccess = true;
             db.beginTransaction();
@@ -223,14 +230,14 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
-    private void createAccountLoginTable(SQLiteDatabase db) {
+    private void createAccountAccessLogTable(SQLiteDatabase db) {
         try {
-            db.execSQL("create table if not exists " + ACCOUNT_LOGIN_TABLE_NAME +
+            db.execSQL("create table if not exists " + ACCOUNT_ACCESS_LOG_TABLE_NAME +
                     "(_id integer primary key autoincrement,accountId text not null," +
-                    "loginTime datetime,logoutTime datetime)");
-            LogUtils.d(TAG, "createAccountLoginTable success");
+                    "loginTimeStamp integer,logoutTimeStamp integer)");
+            LogUtils.d(TAG, "createAccountAccessLogTable success");
         } catch (SQLException e) {
-            LogUtils.d(TAG, "createAccountLoginTable fail: " + e.toString());
+            LogUtils.d(TAG, "createAccountAccessLogTable fail: " + e.toString());
         }
     }
 
@@ -239,7 +246,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             db.execSQL("create table if not exists " + SHOP_TYPE_TABLE_NAME +
                     "(_id integer primary key autoincrement," +
                     "type text not null unique,typeName text not null," +
-                    "createTime datetime,updateTime datetime)");
+                    "createTime text,updateTime text)");
             Calendar calendar = Calendar.getInstance();
             List<ContentValues> list = new ArrayList<>();
             ContentValues contentValues = new ContentValues();
@@ -285,11 +292,11 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             db.execSQL("create table if not exists " + SHOP_TABLE_NAME +
                     "(_id integer primary key autoincrement,id text not null unique,name text not null," +
                     "type text not null,typeName text not null,mobile text not null," +
-                    "userId text not null,latitude text not null,longitude text not null," +
+                    "accountId text not null,latitude text not null,longitude text not null," +
                     "addressDistrict text not null,addressZipCode text not null,addressStreet text," +
                     "mainImgUrl text,imgUrls text,description text," +
-                    "onlineDate datetime not null,remark text," +
-                    "createTime datetime,updateTime datetime)");
+                    "onlineDate text not null,remark text," +
+                    "createTime text,updateTime text)");
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, -500);
@@ -301,7 +308,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("typeName", i % 3 == 0 ? "食品店" : "景点");
                 int r = new Random().nextInt(3);
                 if (r == 1) {
-                    contentValues.put("userId", "100020190328102000000001");
+                    contentValues.put("accountId", "100020190328102000000001");
                     contentValues.put("mobile", "15221464292");
                     if (new Random().nextInt(10) > 1) {
                         contentValues.put("mainImgUrl", "http://pic9.nipic.com/20100824/2531170_082435310724_2.jpg");
@@ -310,7 +317,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                                 "https://hellorfimg.zcool.cn/preview/70789213.jpg");
                     }
                 } else if (r == 2) {
-                    contentValues.put("userId", "100020190328102000000002");
+                    contentValues.put("accountId", "100020190328102000000002");
                     contentValues.put("mobile", "15221464296");
                     if (new Random().nextInt(10) > 1) {
                         contentValues.put("mainImgUrl", "http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg");
@@ -319,7 +326,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                                 "https://hellorfimg.zcool.cn/preview/70789213.jpg");
                     }
                 } else {
-                    contentValues.put("userId", "100020190328102000000000");
+                    contentValues.put("accountId", "100020190328102000000000");
                     contentValues.put("mobile", "18672943565");
                     if (new Random().nextInt(10) > 1) {
                         contentValues.put("mainImgUrl", "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg");
@@ -363,9 +370,9 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             db.execSQL("create table if not exists " + PRODUCT_TABLE_NAME +
                     "(_id integer primary key autoincrement," +
                     "id text not null unique,name text not null,price text not null," +
-                    "shelvePrice text not null,shelveDate datetime not null," +
+                    "shelvePrice text not null,shelveDate text not null," +
                     "shopId text not null,description text,remark text," +
-                    "createTime datetime,updateTime datetime)");
+                    "createTime text,updateTime text)");
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             for (int i = 0; i < 80; i++) {
@@ -421,8 +428,8 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     "likeCount integer not null default 0," +
                     "isLike boolean not null default 'false',headImgUrl text," +
                     "readCount integer not null default 0,preface text not null," +
-                    "days text,setOutDate datetime not null," +
-                    "createTime datetime,updateTime datetime)");
+                    "days text,setOutDate text not null," +
+                    "createTime text,updateTime text)");
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, -51);
@@ -538,7 +545,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     "(_id integer primary key autoincrement," +
                     "id text not null unique,content text not null,travelNoteId text not null," +
                     "authorId text not null,author text not null, headImgUrl text," +
-                    "createTime datetime,updateTime datetime)");
+                    "createTime text,updateTime text)");
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.SECOND, -10000);

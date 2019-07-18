@@ -3,7 +3,7 @@ package com.pine.db_server;
 public class DbSession {
     private String sessionId;
     private long createTimeStamp;
-    private String userId;
+    private String accountId;
     private long loginTimeStamp;
 
     public DbSession(String sessionId) {
@@ -22,12 +22,12 @@ public class DbSession {
         this.createTimeStamp = createTimeStamp;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public long getLoginTimeStamp() {

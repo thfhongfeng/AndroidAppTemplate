@@ -1,10 +1,12 @@
 package com.pine.router;
 
+import com.pine.config.ConfigConstants;
+
 /**
  * Created by tanghongfeng on 2018/9/12
  */
 
-public interface RouterConstants {
+public interface RouterConstants extends ConfigConstants {
     String TYPE_UI_COMMAND = "ui_command";
     String TYPE_DATA_COMMAND = "data_command";
     String TYPE_OP_COMMAND = "op_command";

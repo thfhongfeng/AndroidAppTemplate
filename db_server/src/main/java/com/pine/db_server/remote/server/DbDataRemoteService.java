@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.pine.db_server.sqlite.SQLiteDbRequestManager;
+import com.pine.db_server.impl.sqlite.SQLiteDbServerManager;
 import com.pine.router.annotation.RouterCommand;
 import com.pine.router.command.RouterDbServerCommand;
 import com.pine.tool.request.impl.database.DbRequestBean;
@@ -24,7 +24,7 @@ public class DbDataRemoteService {
     @RouterCommand(CommandName = RouterDbServerCommand.callDbServerCommand)
     public DbResponse callDbServerCommand(@NonNull Context context, Bundle args) {
         LogUtils.d(TAG, "callDbServerCommand execute");
-        return SQLiteDbRequestManager.getInstance().callCommand(context,
+        return SQLiteDbServerManager.getInstance().callCommand(context,
                 (DbRequestBean) args.getSerializable(IDbRequestServer.requestBeanKey),
                 (HashMap<String, String>) args.getSerializable(IDbRequestServer.cookiesKey));
     }

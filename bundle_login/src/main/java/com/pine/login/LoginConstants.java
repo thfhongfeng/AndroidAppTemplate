@@ -7,10 +7,5 @@ import com.pine.base.BaseConstants;
  */
 
 public interface LoginConstants extends BaseConstants {
-    String LOGIN_ACCOUNT = "mobile";
-    String LOGIN_PASSWORD = "password";
 
-    String SUCCESS = "success";
-    String CODE = "code";
-    String MESSAGE = "message";
 }

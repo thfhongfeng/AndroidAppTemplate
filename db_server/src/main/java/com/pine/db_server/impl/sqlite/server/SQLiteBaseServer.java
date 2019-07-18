@@ -1,4 +1,4 @@
-package com.pine.db_server.sqlite.server;
+package com.pine.db_server.impl.sqlite.server;
 
 import android.content.ContentValues;
 import android.database.Cursor;

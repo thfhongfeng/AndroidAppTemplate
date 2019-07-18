@@ -1,10 +1,12 @@
 package com.pine.base;
 
+import com.pine.config.ConfigConstants;
+
 /**
  * Created by tanghongfeng on 2018/9/10.
  */
 
-public interface BaseConstants {
+public interface BaseConstants extends ConfigConstants {
     // http response key
     String SUCCESS = "success";
     String CODE = "code";

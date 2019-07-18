@@ -1,16 +1,18 @@
-package com.pine.db_server.sqlite;
+package com.pine.db_server.impl.sqlite;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.pine.db_server.DbResponseGenerator;
 import com.pine.db_server.DbSession;
 import com.pine.db_server.DbUrlConstants;
-import com.pine.db_server.sqlite.server.SQLiteFileServer;
-import com.pine.db_server.sqlite.server.SQLiteLoginServer;
-import com.pine.db_server.sqlite.server.SQLiteShopServer;
-import com.pine.db_server.sqlite.server.SQLiteTravelNoteServer;
-import com.pine.db_server.sqlite.server.SQLiteWelcomeServer;
+import com.pine.db_server.IDbServerManager;
+import com.pine.db_server.impl.sqlite.server.SQLiteFileServer;
+import com.pine.db_server.impl.sqlite.server.SQLiteLoginServer;
+import com.pine.db_server.impl.sqlite.server.SQLiteShopServer;
+import com.pine.db_server.impl.sqlite.server.SQLiteTravelNoteServer;
+import com.pine.db_server.impl.sqlite.server.SQLiteWelcomeServer;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.util.AppUtils;
@@ -21,18 +23,18 @@ import java.util.Random;
 
 import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
-public class SQLiteDbRequestManager {
+public class SQLiteDbServerManager implements IDbServerManager {
 
-    private static volatile SQLiteDbRequestManager mInstance;
+    private static volatile SQLiteDbServerManager mInstance;
     private static volatile HashMap<String, DbSession> mSessionMap = new HashMap<>();
 
-    private SQLiteDbRequestManager(@NonNull Context context) {
+    private SQLiteDbServerManager(@NonNull Context context) {
         new SQLiteDbHelper(context).getReadableDatabase();
     }
 
-    public synchronized static SQLiteDbRequestManager getInstance() {
+    public synchronized static SQLiteDbServerManager getInstance() {
         if (mInstance == null) {
-            mInstance = new SQLiteDbRequestManager(AppUtils.getApplicationContext());
+            mInstance = new SQLiteDbServerManager(AppUtils.getApplicationContext());
         }
         return mInstance;
     }
@@ -58,10 +60,11 @@ public class SQLiteDbRequestManager {
         return Calendar.getInstance().getTimeInMillis() + "" + new Random().nextInt(10000);
     }
 
-    public String generateSessionId(String userId) {
-        return Calendar.getInstance().getTimeInMillis() + userId;
+    public String generateSessionId(String accountId) {
+        return Calendar.getInstance().getTimeInMillis() + accountId;
     }
 
+    @Override
     @NonNull
     public synchronized DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                                HashMap<String, String> header) {
