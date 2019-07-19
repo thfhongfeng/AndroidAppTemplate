@@ -1,6 +1,7 @@
 package com.pine.mvp.model;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -174,10 +175,13 @@ public class MvpTravelNoteModel {
 
     private JSONObject getTravelNoteDetailData(Object paramsObj) {
         Map<String, String> params = (HashMap<String, String>) paramsObj;
+        String index = "10";
         String id = params.get("id");
-        String index = id.substring(id.length() - 2);
-        if ("0".equals(index.substring(0, 1))) {
-            index = index.substring(1, 2);
+        if (!TextUtils.isEmpty(id)) {
+            index = id.substring(id.length() - 2);
+            if ("0".equals(index.substring(0, 1))) {
+                index = index.substring(1, 2);
+            }
         }
         String res = "{success:true,code:200,message:'',data:" +
                 "{id:'" + id + "',title:'Travel Note Item " + index + "', setOutDate:'2018-10-11 10:10',headImgUrl:''," +

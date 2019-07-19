@@ -49,7 +49,7 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                 while (cursor.moveToNext()) {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("configKey", cursor.getString(cursor.getColumnIndex("configKey")));
-                    jsonObject.put("open", cursor.getString(cursor.getColumnIndex("open")));
+                    jsonObject.put("state", cursor.getString(cursor.getColumnIndex("state")));
                     jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                     jsonArray.put(jsonObject);

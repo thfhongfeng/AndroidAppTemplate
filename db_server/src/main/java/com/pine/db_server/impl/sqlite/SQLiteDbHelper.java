@@ -71,8 +71,8 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     private void createConfigSwitcherTable(SQLiteDatabase db) {
         try {
             db.execSQL("create table if not exists " + SWITCHER_CONFIG_TABLE_NAME +
-                    "(_id integer primary key autoincrement,accountType integer not null," +
-                    "configKey text not null,open integer not null," +
+                    "(_id integer primary key autoincrement,configType integer not null," +
+                    "accountType integer not null,configKey text not null,state integer not null," +
                     "createTime text,updateTime text)");
             List<ContentValues> list = new ArrayList<>();
             HashMap<Integer, Integer> accountTypeMap = new HashMap<>();
@@ -82,50 +82,97 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             accountTypeMap.put(3, 0);
             for (int i = 0; i < 4; i++) {
                 ContentValues contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
+                contentValues.put("configKey", "bundle_db_server");
+                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                list.add(contentValues);
+                contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
+                contentValues.put("configKey", "bundle_welcome");
+                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", "bundle_login");
-                contentValues.put("open", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", "bundle_main");
-                contentValues.put("open", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", "bundle_user");
-                contentValues.put("open", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", "bundle_business_mvc");
-                contentValues.put("open", i != 3 ? 1 : 0); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", i < 3 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", "bundle_business_mvp");
-                contentValues.put("open", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", "bundle_business_mvvm");
-                contentValues.put("open", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
+                contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", "business_demo_bundle");
-                contentValues.put("open", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                list.add(contentValues);
+
+                contentValues = new ContentValues();
+                contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关
+                contentValues.put("configKey", "fun_add_shop");
+                contentValues.put("state", i < 2 ? 1 : 0); // 是否开放：0-关闭；1-开放
+                contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                list.add(contentValues);
+                contentValues = new ContentValues();
+                contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关
+                contentValues.put("configKey", "fun_add_product");
+                contentValues.put("state", i < 2 ? 1 : 0); // 是否开放：0-关闭；1-开放
+                contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                list.add(contentValues);
+                contentValues = new ContentValues();
+                contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关
+                contentValues.put("configKey", "fun_add_travel_note");
+                contentValues.put("state", i < 2 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)

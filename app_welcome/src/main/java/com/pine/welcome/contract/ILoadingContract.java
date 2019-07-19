@@ -20,7 +20,7 @@ public interface ILoadingContract {
 
     interface Presenter extends IContract.Presenter {
 
-        void loadBundleSwitcherData();
+        void setupConfigSwitcher();
 
         void updateVersion(boolean isForce);
 

@@ -12,7 +12,7 @@ import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.config.BuildConfig;
 import com.pine.config.ConfigKey;
-import com.pine.config.switcher.ConfigBundleSwitcher;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.login.LoginApplication;
 import com.pine.main.MainApplication;
 import com.pine.mvc.MvcApplication;
@@ -92,7 +92,6 @@ public class TemplateApplication extends Application {
             public IRequestManager makeRequestManager(Context context, HashMap<String, String> head) {
                 switch (com.pine.config.BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
                     case "local":
-                        ConfigBundleSwitcher.setBundleState(ConfigKey.BUNDLE_DB_SEVER_KEY, true);
                         return DbRequestManager.getInstance().init(context, head, new IDbRequestServer() {
                             @Override
                             public DbResponse request(Bundle bundle) {

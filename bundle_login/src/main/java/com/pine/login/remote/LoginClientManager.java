@@ -14,9 +14,4 @@ public class LoginClientManager {
         RouterManager.getInstance(bundleKey).callUiCommand(context,
                 command, args, callback);
     }
-
-    public static void setupConfigSwitcher(Context context, Bundle args, IRouterCallback callback) {
-        RouterManager.getInstance(ConfigKey.BUNDLE_WELCOME_KEY).callOpCommand(context,
-                RouterWelcomeCommand.setupConfigSwitcher, args, callback);
-    }
 }

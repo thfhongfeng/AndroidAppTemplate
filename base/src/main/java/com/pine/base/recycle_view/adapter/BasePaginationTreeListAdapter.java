@@ -64,11 +64,13 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
 
     @Override
     public int getItemCount() {
+        onNoDataItemState(false);
         int headOffset = getHeadViewCount();
         if (mEnableInitState) {
             return 0 + headOffset;
         }
         if (showEmptyView() || showErrorAllView()) {
+            onNoDataItemState(true);
             return 1 + headOffset;
         }
         int actualSize = mData == null ? 0 : mData.size();
@@ -144,6 +146,7 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
     }
 
     public final void addData(List<T> newData) {
+        onDataAdd();
         mIsErrorState = false;
         List<BaseListAdapterItemEntity<T>> parseData = parseTreeData(newData, false);
         if (parseData == null || parseData.size() == 0) {

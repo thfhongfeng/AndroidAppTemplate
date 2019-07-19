@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.pine.config.switcher.ConfigBundleSwitcher;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.router.IRouterCallback;
 import com.pine.router.R;
 import com.pine.router.annotation.ARouterRemoteAction;
@@ -266,7 +266,7 @@ public class ARouterManager implements IRouterManager {
             }
             return false;
         }
-        if (!ConfigBundleSwitcher.isBundleOpen(mBundleKey)) {
+        if (!ConfigSwitcherServer.getInstance().isEnable(mBundleKey)) {
             LogUtils.releaseLog(TAG, mBundleKey + " is not opened");
             if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INVALID,
                     context.getString(R.string.router_bundle_not_open))) {

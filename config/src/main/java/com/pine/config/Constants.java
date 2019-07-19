@@ -1,7 +1,9 @@
 package com.pine.config;
 
 public interface Constants {
-    String LOGIN_ACCOUNT_ID = "accountId";
-    String LOGIN_ACCOUNT = "mobile";
-    String LOGIN_PASSWORD = "password";
+    // http response key
+    String SUCCESS = "success";
+    String CODE = "code";
+    String MESSAGE = "message";
+    String DATA = "data";
 }

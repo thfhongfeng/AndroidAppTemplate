@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.router.RouterApplication;
 import com.pine.tool.util.LogUtils;
 
@@ -23,6 +24,7 @@ public class BaseApplication {
 
     public static void setLogin(boolean isLogin) {
         mIsLogin = isLogin;
+        ConfigSwitcherServer.getInstance().setLogin(isLogin);
     }
 
     public static void init(Application application) {

@@ -10,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarImageMenuActivity;
-import com.pine.config.switcher.ConfigFuncSwitcher;
+import com.pine.config.ConfigKey;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpHomeContract;
 import com.pine.mvp.presenter.MvpHomePresenter;
@@ -66,7 +67,7 @@ public class MvpHomeActivity extends BaseMvpActionBarImageMenuActivity<IMvpHomeC
     @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvp_home_title);
-        if (ConfigFuncSwitcher.getInstance().canAddProduct()) {
+        if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.FUN_ADD_SHOP_KEY)) {
             menuBtnIv.setImageResource(R.mipmap.base_ic_add);
             menuBtnIv.setOnClickListener(new View.OnClickListener() {
                 @Override

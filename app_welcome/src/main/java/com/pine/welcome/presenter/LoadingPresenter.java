@@ -1,34 +1,24 @@
 package com.pine.welcome.presenter;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigKey;
-import com.pine.config.switcher.ConfigBundleSwitcher;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.router.IRouterCallback;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.BusinessException;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.R;
 import com.pine.welcome.WelcomeApplication;
-import com.pine.welcome.bean.BundleSwitcherEntity;
 import com.pine.welcome.bean.VersionEntity;
 import com.pine.welcome.contract.ILoadingContract;
 import com.pine.welcome.manager.ApkVersionManager;
-import com.pine.welcome.model.SwitcherModel;
-import com.pine.welcome.model.VersionModel;
 import com.pine.welcome.remote.WelcomeClientManager;
 import com.pine.welcome.ui.activity.WelcomeActivity;
-
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by tanghongfeng on 2018/9/12
@@ -36,13 +26,9 @@ import java.util.ArrayList;
 
 public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements ILoadingContract.Presenter {
     private final static long LOADING_MAX_TIME = 2000;
-    private SwitcherModel mSwitcherModel;
-    private VersionModel mVersionModel;
     private long mStartTimeMillis;
 
     public LoadingPresenter() {
-        mSwitcherModel = new SwitcherModel();
-        mVersionModel = new VersionModel();
     }
 
     @Override
@@ -52,35 +38,21 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
     }
 
     @Override
-    public void loadBundleSwitcherData() {
-        mSwitcherModel.requestBundleSwitcherData(new IModelAsyncResponse<ArrayList<BundleSwitcherEntity>>() {
+    public void setupConfigSwitcher() {
+        ConfigSwitcherServer.getInstance().setupConfigSwitcher(new ConfigSwitcherServer.IConfigSwitcherCallback() {
             @Override
-            public void onResponse(ArrayList<BundleSwitcherEntity> bundleSwitcherEntities) {
-                if (bundleSwitcherEntities != null) {
-                    for (int i = 0; i < bundleSwitcherEntities.size(); i++) {
-                        ConfigBundleSwitcher.setBundleState(bundleSwitcherEntities.get(i).getConfigKey(),
-                                bundleSwitcherEntities.get(i).getOpen() == 1);
-                    }
-                }
+            public void onSetupComplete() {
                 if (isUiAlive()) {
                     checkVersion();
                 }
-                return;
             }
 
             @Override
-            public boolean onFail(Exception e) {
+            public boolean onSetupFail() {
                 if (isUiAlive()) {
                     checkVersion();
                 }
                 return true;
-            }
-
-            @Override
-            public void onCancel() {
-                if (isUiAlive()) {
-                    checkVersion();
-                }
             }
         });
     }
@@ -110,7 +82,16 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
                 LogUtils.d(TAG, "onDownloadComplete filePath:" + filePath);
                 if (isUiAlive()) {
                     getUi().dismissVersionUpdateProgressDialog();
-                    installNewVersionApk();
+                    if (ApkVersionManager.getInstance().installNewVersionApk(getContext())) {
+                        finishUi();
+                    } else {
+                        showShortToast(R.string.wel_new_version_install_fail);
+                        if (isForce) {
+                            finishUi();
+                        } else {
+                            autoLogin(500);
+                        }
+                    }
                 }
             }
 
@@ -123,7 +104,7 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
                     if (isForce) {
                         getActivity().finish();
                     } else {
-                        autoLogin(1000);
+                        autoLogin(-1);
                     }
                 }
             }
@@ -144,7 +125,7 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
                     if (isForce) {
                         getActivity().finish();
                     } else {
-                        autoLogin(1000);
+                        autoLogin(500);
                     }
                 }
             }
@@ -153,7 +134,7 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
 
     @Override
     public void autoLogin(final int delayTogoWelcome) {
-        if (!ConfigBundleSwitcher.isBundleOpen(ConfigKey.BUNDLE_LOGIN_KEY) ||
+        if (!ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_LOGIN_KEY) ||
                 WelcomeApplication.isLogin()) {
             if (isUiAlive()) {
                 goWelcomeActivity(delayTogoWelcome);
@@ -198,43 +179,31 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
     }
 
     private void checkVersion() {
-        mVersionModel.requestUpdateVersionData(new IModelAsyncResponse<VersionEntity>() {
+        ApkVersionManager.getInstance().checkVersion(getContext(), new ApkVersionManager.ICheckCallback() {
             @Override
-            public void onResponse(VersionEntity versionEntity) {
-                if (isUiAlive() && versionEntity != null) {
-                    ApkVersionManager.getInstance().setVersionEntity(versionEntity);
-                    try {
-                        PackageInfo packageInfo = getContext().getPackageManager()
-                                .getPackageInfo(getContext().getPackageName(), 0);
-                        if (packageInfo.versionCode < versionEntity.getVersionCode()) {
-                            if (versionEntity.getForce() == 1) {
-                                updateVersion(true);
-                            } else {
-                                getUi().showVersionUpdateConfirmDialog(versionEntity.getVersionName());
-                            }
-                        } else {
-                            autoLogin(-1);
-                        }
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                        autoLogin(-1);
+            public void onNewVersionFound(boolean force, VersionEntity versionEntity) {
+                if (isUiAlive()) {
+                    if (force) {
+                        updateVersion(true);
+                    } else {
+                        getUi().showVersionUpdateConfirmDialog(versionEntity.getVersionName());
                     }
                 }
             }
 
             @Override
-            public boolean onFail(Exception e) {
+            public void onNoNewVersion() {
                 if (isUiAlive()) {
                     autoLogin(-1);
                 }
-                return false;
             }
 
             @Override
-            public void onCancel() {
+            public boolean onRequestFail() {
                 if (isUiAlive()) {
                     autoLogin(-1);
                 }
+                return true;
             }
         });
     }
@@ -247,23 +216,5 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
                         RequestManager.cancelBySign(ApkVersionManager.getInstance().CANCEL_SIGN);
                     }
                 });
-    }
-
-    private void installNewVersionApk() {
-        if (!isUiAlive()) {
-            return;
-        }
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        File file = ApkVersionManager.getInstance().getDownLoadFile();
-        if (file != null && file.exists()) {
-            intent.setDataAndType(Uri.fromFile(file),
-                    "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-            finishUi();
-        } else {
-            showShortToast(R.string.wel_new_version_install_fail);
-            autoLogin(1000);
-        }
     }
 }

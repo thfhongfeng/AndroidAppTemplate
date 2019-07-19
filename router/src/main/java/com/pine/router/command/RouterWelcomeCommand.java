@@ -22,6 +22,5 @@ public interface RouterWelcomeCommand {
     // Data command end
 
     // Op command begin
-    String setupConfigSwitcher = "setupConfigSwitcher";
     // Op command end
 }

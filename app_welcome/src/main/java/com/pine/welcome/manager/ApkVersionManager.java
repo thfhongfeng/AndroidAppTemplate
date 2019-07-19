@@ -1,8 +1,16 @@
 package com.pine.welcome.manager;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.pine.config.SPKeyConstants;
+import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.BusinessException;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.callback.DownloadCallback;
@@ -11,8 +19,8 @@ import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
 import com.pine.tool.util.SharePreferenceUtils;
 import com.pine.welcome.R;
-import com.pine.welcome.WelcomeConstants;
 import com.pine.welcome.bean.VersionEntity;
+import com.pine.welcome.model.VersionModel;
 
 import java.io.File;
 
@@ -27,9 +35,10 @@ public class ApkVersionManager {
     public final Object CANCEL_SIGN = new Object();
     private String mDownloadDir = PathUtils.getExternalPublicPath(Environment.DIRECTORY_DOWNLOADS);
     private VersionEntity mVersionEntity;
-    private UpdateListener mListener;
+    private VersionModel mVersionModel;
 
     private ApkVersionManager() {
+        mVersionModel = new VersionModel();
     }
 
     public static ApkVersionManager getInstance() {
@@ -47,15 +56,58 @@ public class ApkVersionManager {
         mVersionEntity = entity;
     }
 
-    public void startUpdate(UpdateListener listener) {
-        mListener = listener;
-        startDownloadTask();
+    public void checkVersion(@NonNull final Context context, final ICheckCallback callback) {
+        mVersionModel.requestUpdateVersionData(new IModelAsyncResponse<VersionEntity>() {
+            @Override
+            public void onResponse(VersionEntity versionEntity) {
+                if (versionEntity != null) {
+                    ApkVersionManager.getInstance().setVersionEntity(versionEntity);
+                    try {
+                        PackageInfo packageInfo = context.getPackageManager()
+                                .getPackageInfo(context.getPackageName(), 0);
+                        if (packageInfo.versionCode < versionEntity.getVersionCode()) {
+                            if (callback != null) {
+                                callback.onNewVersionFound(versionEntity.getForce() == 1, versionEntity);
+                            }
+                        } else {
+                            if (callback != null) {
+                                callback.onNoNewVersion();
+                            }
+                        }
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                        if (callback != null) {
+                            callback.onRequestFail();
+                        }
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onNoNewVersion();
+                    }
+                }
+            }
+
+            @Override
+            public boolean onFail(Exception e) {
+                if (callback != null) {
+                    return callback.onRequestFail();
+                }
+                return false;
+            }
+
+            @Override
+            public void onCancel() {
+                if (callback != null) {
+                    callback.onRequestFail();
+                }
+            }
+        });
     }
 
-    private void startDownloadTask() {
+    public void startUpdate(final UpdateListener listener) {
         if (TextUtils.isEmpty(mDownloadDir)) {
-            if (mListener != null) {
-                mListener.onDownloadError(new BusinessException(AppUtils.getApplication()
+            if (listener != null) {
+                listener.onDownloadError(new BusinessException(AppUtils.getApplication()
                         .getString(R.string.wel_version_get_download_path_fail, mDownloadDir)));
             }
             return;
@@ -65,41 +117,55 @@ public class ApkVersionManager {
                 mVersionEntity.getFileName(), HTTP_REQUEST_DOWNLOAD, CANCEL_SIGN, new DownloadCallback() {
                     @Override
                     public void onStart(int what, boolean isResume, long rangeSize, long allCount) {
-                        if (mListener != null) {
-                            mListener.onDownloadStart(isResume, rangeSize, allCount);
+                        if (listener != null) {
+                            listener.onDownloadStart(isResume, rangeSize, allCount);
                         }
                     }
 
                     @Override
                     public void onProgress(int what, int progress, long fileCount, long speed) {
-                        if (mListener != null) {
-                            mListener.onDownloadProgress(progress, fileCount, speed);
+                        if (listener != null) {
+                            listener.onDownloadProgress(progress, fileCount, speed);
                         }
                     }
 
                     @Override
                     public void onFinish(int what, String filePath) {
-                        SharePreferenceUtils.saveToConfig(WelcomeConstants.APK_DOWNLOAD_FILE_PATH, filePath);
-                        if (mListener != null) {
-                            mListener.onDownloadComplete(filePath);
+                        SharePreferenceUtils.saveToConfig(SPKeyConstants.APK_DOWNLOAD_FILE_PATH, filePath);
+                        if (listener != null) {
+                            listener.onDownloadComplete(filePath);
                         }
                     }
 
                     @Override
                     public void onCancel(int what) {
-                        if (mListener != null) {
-                            mListener.onDownloadCancel();
+                        if (listener != null) {
+                            listener.onDownloadCancel();
                         }
                     }
 
                     @Override
                     public boolean onError(int what, Exception e) {
-                        if (mListener != null) {
-                            mListener.onDownloadError(e);
+                        if (listener != null) {
+                            listener.onDownloadError(e);
                         }
                         return true;
                     }
                 });
+    }
+
+    public boolean installNewVersionApk(Context context) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        File file = ApkVersionManager.getInstance().getDownLoadFile();
+        if (file != null && file.exists()) {
+            intent.setDataAndType(Uri.fromFile(file),
+                    "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void deleteOldApk() {
@@ -118,11 +184,11 @@ public class ApkVersionManager {
     }
 
     public String getDownLoadFilePath() {
-        return SharePreferenceUtils.readStringFromConfig(WelcomeConstants.APK_DOWNLOAD_FILE_PATH, "");
+        return SharePreferenceUtils.readStringFromConfig(SPKeyConstants.APK_DOWNLOAD_FILE_PATH, "");
     }
 
     public File getDownLoadFile() {
-        String apkFilePath = SharePreferenceUtils.readStringFromConfig(WelcomeConstants.APK_DOWNLOAD_FILE_PATH, "");
+        String apkFilePath = SharePreferenceUtils.readStringFromConfig(SPKeyConstants.APK_DOWNLOAD_FILE_PATH, "");
         return new File(apkFilePath);
     }
 
@@ -137,5 +203,13 @@ public class ApkVersionManager {
         void onDownloadCancel();
 
         void onDownloadError(Exception exception);
+    }
+
+    public interface ICheckCallback {
+        void onNewVersionFound(boolean force, VersionEntity versionEntity);
+
+        void onNoNewVersion();
+
+        boolean onRequestFail();
     }
 }

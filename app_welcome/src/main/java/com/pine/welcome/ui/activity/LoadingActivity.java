@@ -30,7 +30,7 @@ public class LoadingActivity extends BaseMvpNoActionBarActivity<ILoadingContract
 
     @Override
     protected void init() {
-        mPresenter.loadBundleSwitcherData();
+        mPresenter.setupConfigSwitcher();
     }
 
     @Override

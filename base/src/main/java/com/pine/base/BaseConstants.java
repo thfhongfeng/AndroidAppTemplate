@@ -7,16 +7,11 @@ import com.pine.config.Constants;
  */
 
 public interface BaseConstants extends Constants {
-    // http response key
-    String SUCCESS = "success";
-    String CODE = "code";
-    String MESSAGE = "message";
-    String DATA = "data";
+    String LOGIN_ACCOUNT_ID = "accountId";
+    String LOGIN_ACCOUNT = "mobile";
+    String LOGIN_PASSWORD = "password";
 
     // list adapter key
     String PAGE_NO = "pageNo";
     String PAGE_SIZE = "pageSize";
-
-    // preference key
-    String APK_DOWNLOAD_FILE_PATH = "apk_download_file_path";
 }

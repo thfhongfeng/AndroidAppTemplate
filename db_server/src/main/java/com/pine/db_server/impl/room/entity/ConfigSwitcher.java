@@ -12,6 +12,10 @@ public class ConfigSwitcher {
     @ColumnInfo(name = "_id")
     private long id;
 
+    // 配置类型:0-缺省；1-模块开关；2-功能开关
+    @NonNull
+    private int configType;
+
     // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
     @NonNull
     private int accountType;
@@ -21,7 +25,7 @@ public class ConfigSwitcher {
 
     // 是否开放：0-关闭；1-开放
     @NonNull
-    private int open;
+    private int state;
 
     private String createTime;
 
@@ -33,6 +37,14 @@ public class ConfigSwitcher {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getConfigType() {
+        return configType;
+    }
+
+    public void setConfigType(int configType) {
+        this.configType = configType;
     }
 
     public int getAccountType() {
@@ -52,12 +64,12 @@ public class ConfigSwitcher {
         this.configKey = configKey;
     }
 
-    public int getOpen() {
-        return open;
+    public int getState() {
+        return state;
     }
 
-    public void setOpen(int open) {
-        this.open = open;
+    public void setState(int state) {
+        this.state = state;
     }
 
     public String getCreateTime() {

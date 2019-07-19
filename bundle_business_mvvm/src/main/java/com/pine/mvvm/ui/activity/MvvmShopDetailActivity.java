@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.base.component.map.MapSdkManager;
+import com.pine.config.ConfigKey;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;
@@ -65,6 +67,9 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
         });
 
         mBinding.photoIuv.init(this);
+
+        mBinding.goAddProductBtnTv.setVisibility(ConfigSwitcherServer.getInstance()
+                .isEnable(ConfigKey.FUN_ADD_PRODUCT_KEY) ? View.VISIBLE : View.GONE);
     }
 
     @Override

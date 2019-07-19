@@ -1,18 +1,18 @@
-package com.pine.welcome.model;
+package com.pine.config.model;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.config.BuildConfig;
+import com.pine.config.Constants;
+import com.pine.config.UrlConstants;
+import com.pine.config.bean.ConfigSwitcherEntity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.BusinessException;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
-import com.pine.welcome.WelcomeConstants;
-import com.pine.welcome.WelcomeUrlConstants;
-import com.pine.welcome.bean.BundleSwitcherEntity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,12 +24,12 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/14
  */
 
-public class SwitcherModel {
+public class ConfigSwitcherModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER = 1;
 
-    public boolean requestBundleSwitcherData(@NonNull IModelAsyncResponse<ArrayList<BundleSwitcherEntity>> callback) {
-        String url = WelcomeUrlConstants.Query_BundleSwitcher_Data;
+    public boolean requestBundleSwitcherData(@NonNull IModelAsyncResponse<ArrayList<ConfigSwitcherEntity>> callback) {
+        String url = UrlConstants.Query_BundleSwitcher_Data;
         JsonCallback httpStringCallback = handleResponse(callback);
         return RequestManager.setJsonRequest(url, new HashMap<String, String>(),
                 TAG, REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER, httpStringCallback);
@@ -45,9 +45,9 @@ public class SwitcherModel {
                         jsonObject = getBundleSwitcherData();
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(WelcomeConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(WelcomeConstants.DATA),
-                                new TypeToken<ArrayList<BundleSwitcherEntity>>() {
+                    if (jsonObject.optBoolean(Constants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(Constants.DATA),
+                                new TypeToken<ArrayList<ConfigSwitcherEntity>>() {
                                 }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -80,10 +80,12 @@ public class SwitcherModel {
     // Test code begin
     private JSONObject getBundleSwitcherData() {
         String res = "{success:true,code:200,message:'',data:" +
-                "[{configKey:'bundle_login', open:1},{configKey:'bundle_login', open:1}," +
-                "{configKey:'bundle_main', open:1},{configKey:'bundle_user', open:1}," +
-                "{configKey:'bundle_business_mvc', open:1},{configKey:'bundle_business_mvp', open:1}," +
-                "{configKey:'bundle_business_mvvm', open:1},{configKey:'business_demo_bundle', open:1}]}";
+                "[{configKey:'bundle_welcome', state:1},{configKey:'bundle_login', state:1}," +
+                "{configKey:'bundle_main', state:1},{configKey:'bundle_user', state:1}," +
+                "{configKey:'bundle_business_mvc', state:1},{configKey:'bundle_business_mvp', state:1}," +
+                "{configKey:'bundle_business_mvvm', state:1},{configKey:'business_demo_bundle', state:1}," +
+                "{configKey:'fun_add_shop', state:1},{configKey:'fun_add_product', state:1}," +
+                "{configKey:'fun_add_travel_note', state:1}]}";
         try {
             return new JSONObject(res);
         } catch (JSONException e) {

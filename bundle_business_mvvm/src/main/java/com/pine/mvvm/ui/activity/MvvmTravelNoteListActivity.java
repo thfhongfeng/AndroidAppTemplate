@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarCustomMenuActivity;
+import com.pine.config.ConfigKey;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmTravelNoteListPaginationAdapter;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
@@ -107,14 +109,19 @@ public class MvvmTravelNoteListActivity extends
     @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv, View menuContainer) {
         titleTv.setText(R.string.mvvm_travel_note_list_title);
-        menuContainer.findViewById(R.id.menu_iv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MvvmTravelNoteListActivity.this, MvvmTravelNoteReleaseActivity.class);
-                intent.putExtra("id", mViewModel.mId);
-                startActivity(intent);
-            }
-        });
+        if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY)) {
+            menuContainer.findViewById(R.id.menu_iv).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MvvmTravelNoteListActivity.this, MvvmTravelNoteReleaseActivity.class);
+                    intent.putExtra("id", mViewModel.mId);
+                    startActivity(intent);
+                }
+            });
+            menuContainer.findViewById(R.id.menu_iv).setVisibility(View.VISIBLE);
+        } else {
+            menuContainer.findViewById(R.id.menu_iv).setVisibility(View.GONE);
+        }
     }
 
     @Override

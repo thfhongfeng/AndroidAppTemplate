@@ -1,18 +1,16 @@
 package com.pine.login.model.callback;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.bean.AccountBean;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
-import com.pine.login.remote.LoginClientManager;
 import com.pine.login.ui.activity.LoginActivity;
-import com.pine.router.IRouterCallback;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
@@ -74,31 +72,27 @@ public class LoginCallback extends JsonCallback {
                 }
                 return;
             }
-            LoginClientManager.setupConfigSwitcher(AppUtils.getApplicationContext(), null, new IRouterCallback() {
+            final AccountBean accountBean = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), AccountBean.class);
+            LoginManager.saveLoginInfo(accountBean);
+            LoginApplication.setLogin(true);
+            ConfigSwitcherServer.getInstance().setupConfigSwitcher(new ConfigSwitcherServer.IConfigSwitcherCallback() {
                 @Override
-                public void onSuccess(Bundle responseBundle) {
-                    if (responseBundle.getBoolean(LoginConstants.SUCCESS)) {
-                        AccountBean accountBean = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), AccountBean.class);
-                        loginSuccess(what, accountBean, "登陆成功！");
-                    } else {
-                        loginFail(what, jsonObject == null ?
-                                "" : jsonObject.optString(LoginConstants.MESSAGE), "登陆失败，服务器异常，请重试！");
-                    }
+                public void onSetupComplete() {
+                    loginSuccess(what, accountBean, "登陆成功！");
                 }
 
                 @Override
-                public boolean onFail(int code, String errorInfo) {
+                public boolean onSetupFail() {
+                    LoginManager.logout();
                     loginFail(what, jsonObject == null ?
                             "" : jsonObject.optString(LoginConstants.MESSAGE), "登陆失败，服务器异常，请重试！");
-                    return false;
+                    return true;
                 }
             });
         }
     }
 
     private void loginSuccess(int what, AccountBean accountBean, String defaultMsg) {
-        LoginManager.saveLoginInfo(accountBean);
-        LoginApplication.setLogin(true);
         if (mCallback != null) {
             if (mCallback.onLoginResponse(true, "") && LOGIN_CODE == what) {
                 Toast.makeText(AppUtils.getApplication(), defaultMsg, Toast.LENGTH_SHORT).show();

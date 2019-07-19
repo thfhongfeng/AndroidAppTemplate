@@ -1,10 +1,10 @@
-package com.pine.welcome.bean;
+package com.pine.config.bean;
 
 /**
  * Created by tanghongfeng on 2018/9/14
  */
 
-public class BundleSwitcherEntity {
+public class ConfigSwitcherEntity {
 
     /**
      * configKey : bundle_login
@@ -13,7 +13,9 @@ public class BundleSwitcherEntity {
 
     private String configKey;
     // 是否开放：0-关闭；1-开放
-    private int open;
+    private int state;
+    // 配置类型:0-缺省；1-模块开关；2-功能开关
+    private int configType;
 
     public String getConfigKey() {
         return configKey;
@@ -23,11 +25,11 @@ public class BundleSwitcherEntity {
         this.configKey = configKey;
     }
 
-    public int getOpen() {
-        return open;
+    public int getState() {
+        return state;
     }
 
-    public void setOpen(int open) {
-        this.open = open;
+    public void setState(int state) {
+        this.state = state;
     }
 }

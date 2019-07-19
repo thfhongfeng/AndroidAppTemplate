@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
 import com.pine.base.component.uploader.ui.ImageUploadView;
+import com.pine.config.ConfigKey;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopDetailEntity;
 import com.pine.mvp.contract.IMvpShopDetailContract;
@@ -54,6 +56,9 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
         go_travel_note_list_btn_tv = findViewById(R.id.go_travel_note_list_btn_tv);
         go_add_product_btn_tv = findViewById(R.id.go_add_product_btn_tv);
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
+
+        go_add_product_btn_tv.setVisibility(ConfigSwitcherServer.getInstance()
+                .isEnable(ConfigKey.FUN_ADD_PRODUCT_KEY) ? View.VISIBLE : View.GONE);
     }
 
     @Override

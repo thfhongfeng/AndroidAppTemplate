@@ -1,5 +1,7 @@
 package com.pine.base.recycle_view.adapter;
 
+import android.support.v7.widget.GridLayoutManager;
+
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
@@ -50,11 +52,13 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
 
     @Override
     public int getItemCount() {
+        onNoDataItemState(false);
         int headOffset = getHeadViewCount();
         if (mEnableInitState) {
             return 0 + headOffset;
         }
         if (showEmptyView() || isErrorViewState()) {
+            onNoDataItemState(true);
             return 1 + headOffset;
         }
         int actualSize = mData == null ? 0 : mData.size();
@@ -113,6 +117,7 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
     }
 
     public final void addData(List<T> newData) {
+        onDataAdd();
         mIsErrorState = false;
         List<BaseListAdapterItemEntity<T>> parseData = parseData(newData, false);
         if (parseData == null || parseData.size() == 0) {

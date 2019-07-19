@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarCustomMenuActivity;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;
+import com.pine.config.ConfigKey;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpTravelNoteListPaginationAdapter;
 import com.pine.mvp.contract.IMvpTravelNoteListContract;
@@ -84,12 +86,19 @@ public class MvpTravelNoteListActivity extends
     @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv, View menuContainer) {
         titleTv.setText(R.string.mvp_travel_note_list_title);
-        menuContainer.findViewById(R.id.menu_iv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.goToAddTravelNoteActivity();
-            }
-        });
+        if (ConfigSwitcherServer.getInstance()
+                .isEnable(ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY)) {
+            menuContainer.findViewById(R.id.menu_iv).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPresenter.goToAddTravelNoteActivity();
+                }
+            });
+            menuContainer.findViewById(R.id.menu_iv).setVisibility(View.VISIBLE);
+        } else {
+            menuContainer.findViewById(R.id.menu_iv).setVisibility(View.GONE);
+        }
+
     }
 
     @Override

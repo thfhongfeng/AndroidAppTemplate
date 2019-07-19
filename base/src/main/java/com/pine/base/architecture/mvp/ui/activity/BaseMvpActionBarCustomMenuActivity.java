@@ -69,7 +69,9 @@ public abstract class BaseMvpActionBarCustomMenuActivity<V extends IContract.Ui,
      *
      * @return MenuBar的内容布局资源id
      */
-    protected abstract int getMenuBarLayoutResId();
+    protected int getMenuBarLayoutResId() {
+        return R.layout.base_custom_menu_container;
+    }
 
     protected abstract void setupActionBar(ImageView goBackIv, TextView titleTv, View menuContainer);
 

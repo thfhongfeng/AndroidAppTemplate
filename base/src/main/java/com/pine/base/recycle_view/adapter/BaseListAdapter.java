@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,6 +43,10 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     private View mHeadView = null;
 
     protected RecyclerView mRecyclerView;
+
+    private RecyclerView.LayoutManager mLayoutManager;
+    private boolean mIsNoDataItemState;
+    private int mGridSpanCount;
 
     public BaseListAdapter() {
 
@@ -124,9 +129,17 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     private int lastOnLoadMoreScrollX, lastOnLoadMoreScrollY;
 
+    protected void onDataAdd() {
+
+    }
+
     protected void onDataSet() {
         lastOnLoadMoreScrollX = 0;
         lastOnLoadMoreScrollY = 0;
+    }
+
+    protected void onNoDataItemState(boolean isNoDataState) {
+        mIsNoDataItemState = isNoDataState;
     }
 
     public void setOnScrollListener(@NonNull final RecyclerView recyclerView,
@@ -287,10 +300,21 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
+        mLayoutManager = mRecyclerView.getLayoutManager();
+        if (mLayoutManager instanceof GridLayoutManager) {
+            mGridSpanCount = ((GridLayoutManager) mLayoutManager).getSpanCount();
+            ((GridLayoutManager) mLayoutManager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return position == 0 && mIsNoDataItemState ? mGridSpanCount : 1;
+                }
+            });
+        }
     }
 
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         mRecyclerView = null;
+        mLayoutManager = null;
     }
 
     public int getDefaultItemViewType() {
@@ -475,7 +499,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     /**
-     * 空背景
+     * 尾部空背景
      */
     public class TailEmptyBackgroundViewHolder extends BaseListViewHolder<String> {
         private View container;

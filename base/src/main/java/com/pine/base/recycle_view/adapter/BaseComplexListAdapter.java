@@ -75,6 +75,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
 
     @Override
     public int getItemCount() {
+        onNoDataItemState(false);
         int headOffset = getHeadViewCount();
         if (mEnableInitState) {
             return 0 + headOffset;
@@ -82,6 +83,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
         int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
         if (showEmptyView() || showErrorAllView()) {
+            onNoDataItemState(true);
             return 1 + headOffset;
         }
         int actualSize = topSize + bottomSize;
@@ -131,6 +133,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     }
 
     public final void addTailData(List<B> newData) {
+        onDataAdd();
         List<BaseListAdapterItemEntity<B>> parseData = parseTailData(newData);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;

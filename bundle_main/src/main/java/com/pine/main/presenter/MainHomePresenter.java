@@ -3,7 +3,7 @@ package com.pine.main.presenter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.config.ConfigKey;
-import com.pine.config.switcher.ConfigBundleSwitcher;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.contract.IMainHomeContract;
 import com.pine.main.model.MainHomeModel;
@@ -34,21 +34,21 @@ public class MainHomePresenter extends Presenter<IMainHomeContract.Ui> implement
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject;
         try {
-            if (ConfigBundleSwitcher.isBundleOpen(ConfigKey.BUNDLE_BUSINESS_MVC_KEY)) {
+            if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_BUSINESS_MVC_KEY)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvc");
                 jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVC_KEY);
                 jsonObject.put("command", RouterMvcCommand.goMvcHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (ConfigBundleSwitcher.isBundleOpen(ConfigKey.BUNDLE_BUSINESS_MVP_KEY)) {
+            if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_BUSINESS_MVP_KEY)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvp");
                 jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVP_KEY);
                 jsonObject.put("command", RouterMvpCommand.goMvpHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (ConfigBundleSwitcher.isBundleOpen(ConfigKey.BUNDLE_BUSINESS_MVVM_KEY)) {
+            if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_BUSINESS_MVVM_KEY)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvvm");
                 jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVVM_KEY);
