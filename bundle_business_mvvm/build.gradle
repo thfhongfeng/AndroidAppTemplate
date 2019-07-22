@@ -7,10 +7,11 @@ android {
     defaultConfig {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
-        versionCode build_versions.versionCode
-        versionName build_versions.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //必须要保证所有的flavor 都属于同一个维度
+        flavorDimensions "default"
 
         // ARouter配置 begin
         javaCompileOptions {
@@ -31,6 +32,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        common {
+
+        }
+        huawei {
+
+        }
+        xiaomi {
+
+        }
+    }
+
     sourceSets {
         main {
             res.srcDirs += [
@@ -40,10 +54,10 @@ android {
                     'src/main/res/layouts/dialog',
                     'src/main/res/layouts/item'
             ]
-            jniLibs.srcDir 'libs'
-            jni.srcDirs = []    //disable automatic ndk-build
+            java.srcDirs = ['src/main/java']
         }
     }
+
     resourcePrefix "mvvm_"
 }
 

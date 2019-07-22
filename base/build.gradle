@@ -7,12 +7,17 @@ android {
     defaultConfig {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
-        versionCode build_versions.versionCode
-        versionName build_versions.versionName
 
         manifestPlaceholders = [baidu_for_app_key: app_key.baidu_for_app_key]
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //必须要保证所有的flavor 都属于同一个维度
+        flavorDimensions "default"
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     buildTypes {
@@ -22,8 +27,16 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
+    productFlavors {
+        common {
+
+        }
+        huawei {
+
+        }
+        xiaomi {
+
+        }
     }
 
     sourceSets {
@@ -35,20 +48,12 @@ android {
                     'src/main/res/layouts/dialog',
                     'src/main/res/layouts/item'
             ]
-            switch ("${build_versions.applicationId}"){
-                case "com.pine.project1":
-                    java.srcDirs += ['src/project1/java']
-                    res.srcDirs += ['src/project1/res']
-                    break
-                default:
-                    java.srcDirs += ['src/default/java']
-                    res.srcDirs += ['src/default/res']
-                    break
-            }
+            java.srcDirs = ['src/main/java']
             jniLibs.srcDir 'libs'
             jni.srcDirs = []    //disable automatic ndk-build
         }
     }
+
     resourcePrefix "base_"
 }
 

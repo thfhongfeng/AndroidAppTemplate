@@ -1,0 +1,26 @@
+/**
+ * 渠道打包参数
+ */
+def build_product_applicationId = [:]
+build_product_applicationId.common = "com.pine.template.common"
+build_product_applicationId.huawei = "com.pine.template.huawei"
+build_product_applicationId.xiaomi = "com.pine.template.xiaomi"
+ext.build_product_applicationId = build_product_applicationId
+
+def build_product_versionCode = [:]
+build_product_versionCode.common = 1
+build_product_versionCode.huawei = 1
+build_product_versionCode.xiaomi = 1
+ext.build_product_versionCode = build_product_versionCode
+
+def build_product_versionName = [:]
+build_product_versionName.common = "1.0.1"
+build_product_versionName.huawei = "1.0.1"
+build_product_versionName.xiaomi = "1.0.1"
+ext.build_product_versionName = build_product_versionName
+
+def build_product_appName = [:]
+build_product_appName.common = "App模板"
+build_product_appName.huawei = "AppFor华为"
+build_product_appName.xiaomi = "AppFor小米"
+ext.build_product_appName = build_product_appName

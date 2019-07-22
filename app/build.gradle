@@ -5,6 +5,7 @@ def apVersion = getEnvValue("apVersion", "");
 android {
     compileSdkVersion build_versions.compileSdkVersion
     buildToolsVersion build_versions.buildToolsVersion
+
     signingConfigs {
         release {
             storeFile file(build_versions.storeFile)
@@ -13,16 +14,15 @@ android {
             keyPassword build_versions.keyPassword
         }
     }
+
     defaultConfig {
-        applicationId build_versions.applicationId
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
-        versionCode build_versions.versionCode
-        versionName build_versions.versionName
-
-        manifestPlaceholders = [app_name: build_versions.app_name]
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //必须要保证所有的flavor 都属于同一个维度
+        flavorDimensions "default"
     }
 
     dataBinding {
@@ -37,16 +37,36 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
 
-        debug {
+    productFlavors {
+        common {
+            applicationId build_product_applicationId.common
+            versionCode build_product_versionCode.common
+            versionName build_product_versionName.common
 
+            manifestPlaceholders = [app_name: build_product_appName.common]
+        }
+        huawei {
+            applicationId build_product_applicationId.huawei
+            versionCode build_product_versionCode.huawei
+            versionName build_product_versionName.huawei
+
+            manifestPlaceholders = [app_name: build_product_appName.huawei]
+        }
+        xiaomi {
+            applicationId build_product_applicationId.xiaomi
+            versionCode build_product_versionCode.xiaomi
+            versionName build_product_versionName.xiaomi
+
+            manifestPlaceholders = [app_name: build_product_appName.xiaomi]
         }
     }
 
     applicationVariants.all { variant ->
         variant.outputs.all {
             // 显示app名称+当前版本号
-            def fileName = "${build_versions.apk_head_name}-V${variant.versionName}"
+            def fileName = "${build_versions.apkHeadName}-${variant.productFlavors[0].name}-V${variant.versionName}"
 //                // 加入打包时间
 //                fileName = fileName + "-${releaseTime()}"
             // 如果是debug版本，加入beta版本号
