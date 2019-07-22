@@ -201,6 +201,27 @@ public class AppUtils {
     }
 
     /**
+     * 获取当前进程名
+     *
+     * @param context
+     * @return
+     */
+    public static String getCurProcessName(Context context) {
+        int pid = android.os.Process.myPid();
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+        if (runningApps == null) {
+            return null;
+        }
+        for (ActivityManager.RunningAppProcessInfo processInfo : runningApps) {
+            if (processInfo.pid == pid) {
+                return processInfo.processName;
+            }
+        }
+        return null;
+    }
+
+    /**
      * 指定进程名的进程是否存在
      *
      * @param context     上下文

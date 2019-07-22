@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.pine.base.track.AppTrackManager;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.router.RouterApplication;
+import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
 /**
@@ -31,6 +33,11 @@ public class BaseApplication {
         mApplication = application;
         registerActivity();
         RouterApplication.attach(mApplication);
+
+        if (mApplication.getPackageName().equals(AppUtils.getCurProcessName(mApplication))) {
+            AppTrackManager.getInstance().init(application, BaseUrlConstants.APP_TRACK_UPLOAD);
+            AppTrackManager.getInstance().uploadAllExistTrack(null);
+        }
     }
 
     private static void registerActivity() {

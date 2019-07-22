@@ -23,13 +23,17 @@ public class ConfigSwitcherServer {
     private volatile boolean mIsLogin;
 
     private ConfigSwitcherServer() {
-        mGuestConfigStateMap.put(ConfigKey.BUNDLE_WELCOME_KEY, true);
-        mGuestConfigStateMap.put(ConfigKey.BUNDLE_LOGIN_KEY, true);
-        mGuestConfigStateMap.put(ConfigKey.BUNDLE_MAIN_KEY, true);
-        mGuestConfigStateMap.put(ConfigKey.BUNDLE_USER_KEY, true);
-        mGuestConfigStateMap.put(ConfigKey.BUNDLE_DB_SEVER_KEY, true);
+        synchronized (mGuestConfigStateMap) {
+            mGuestConfigStateMap.put(ConfigKey.BUNDLE_WELCOME_KEY, true);
+            mGuestConfigStateMap.put(ConfigKey.BUNDLE_LOGIN_KEY, true);
+            mGuestConfigStateMap.put(ConfigKey.BUNDLE_MAIN_KEY, true);
+            mGuestConfigStateMap.put(ConfigKey.BUNDLE_USER_KEY, true);
+            mGuestConfigStateMap.put(ConfigKey.BUNDLE_DB_SEVER_KEY, true);
+        }
 
-        mUserConfigStateMap.putAll(mGuestConfigStateMap);
+        synchronized (mUserConfigStateMap) {
+            mUserConfigStateMap.putAll(mGuestConfigStateMap);
+        }
     }
 
     public static ConfigSwitcherServer getInstance() {
@@ -50,34 +54,46 @@ public class ConfigSwitcherServer {
 
     public void setEnable(String key, boolean enable) {
         if (mIsLogin) {
-            mUserConfigStateMap.put(key, enable);
+            synchronized (mUserConfigStateMap) {
+                mUserConfigStateMap.put(key, enable);
+            }
         } else {
-            mGuestConfigStateMap.put(key, enable);
+            synchronized (mGuestConfigStateMap) {
+                mGuestConfigStateMap.put(key, enable);
+            }
         }
         LogUtils.releaseLog(TAG, "Set " + key + " fun " + (enable ? "open" : "close"));
     }
 
     public boolean isEnable(String key) {
         if (mIsLogin) {
-            return mUserConfigStateMap.containsKey(key) && mUserConfigStateMap.get(key);
+            synchronized (mUserConfigStateMap) {
+                return mUserConfigStateMap.containsKey(key) && mUserConfigStateMap.get(key);
+            }
         } else {
-            return mGuestConfigStateMap.containsKey(key) && mGuestConfigStateMap.get(key);
+            synchronized (mGuestConfigStateMap) {
+                return mGuestConfigStateMap.containsKey(key) && mGuestConfigStateMap.get(key);
+            }
         }
     }
 
     public void setConfig(List<ConfigSwitcherEntity> switcherEntityList) {
         if (mIsLogin) {
-            mUserConfigStateMap.clear();
-            if (switcherEntityList != null && switcherEntityList.size() > 0) {
-                for (int i = 0; i < switcherEntityList.size(); i++) {
-                    mUserConfigStateMap.put(switcherEntityList.get(i).getConfigKey(), switcherEntityList.get(i).getState() == 1);
+            synchronized (mUserConfigStateMap) {
+                mUserConfigStateMap.clear();
+                if (switcherEntityList != null && switcherEntityList.size() > 0) {
+                    for (int i = 0; i < switcherEntityList.size(); i++) {
+                        mUserConfigStateMap.put(switcherEntityList.get(i).getConfigKey(), switcherEntityList.get(i).getState() == 1);
+                    }
                 }
             }
         } else {
-            mGuestConfigStateMap.clear();
-            if (switcherEntityList != null && switcherEntityList.size() > 0) {
-                for (int i = 0; i < switcherEntityList.size(); i++) {
-                    mGuestConfigStateMap.put(switcherEntityList.get(i).getConfigKey(), switcherEntityList.get(i).getState() == 1);
+            synchronized (mGuestConfigStateMap) {
+                mGuestConfigStateMap.clear();
+                if (switcherEntityList != null && switcherEntityList.size() > 0) {
+                    for (int i = 0; i < switcherEntityList.size(); i++) {
+                        mGuestConfigStateMap.put(switcherEntityList.get(i).getConfigKey(), switcherEntityList.get(i).getState() == 1);
+                    }
                 }
             }
         }

@@ -4,6 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 public class NetWorkUtils {
 
@@ -45,5 +53,48 @@ public class NetWorkUtils {
                 ? null
                 : connectivityManager.getActiveNetworkInfo();
         return networkInfo == null ? -1 : networkInfo.getType();
+    }
+
+    /**
+     * 获取本机IP地址
+     *
+     * @return null：没有网络连接
+     */
+    public static String getIpAddress() {
+        NetworkInfo networkInfo = ((ConnectivityManager) AppUtils.getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                try {
+                    Enumeration<NetworkInterface> networkInterfaceEnumeration = NetworkInterface.getNetworkInterfaces();
+                    while (networkInterfaceEnumeration.hasMoreElements()) {
+                        NetworkInterface networkInterface = networkInterfaceEnumeration.nextElement();
+                        Enumeration<InetAddress> inetAddressEnumeration = networkInterface.getInetAddresses();
+                        while (inetAddressEnumeration.hasMoreElements()) {
+                            InetAddress inetAddress = inetAddressEnumeration.nextElement();
+                            if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+                                return inetAddress.getHostAddress();
+                            }
+                        }
+                    }
+                } catch (SocketException se) {
+
+                }
+            } else if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                WifiManager wifiManager = ((WifiManager) AppUtils.getApplicationContext().getSystemService(Context.WIFI_SERVICE));
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                return intIP2StringIP(wifiInfo.getIpAddress());
+            } else {
+                return "";
+            }
+        }
+        return "";
+    }
+
+    public static String intIP2StringIP(int ip) {
+        return (ip & 0xFF) + "." +
+                ((ip >> 8) & 0xFF) + "." +
+                ((ip >> 16) & 0xFF) + "." +
+                (ip >> 24 & 0xFF);
     }
 }

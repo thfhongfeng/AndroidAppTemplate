@@ -1,7 +1,5 @@
 package com.pine.base.recycle_view.adapter;
 
-import android.support.v7.widget.GridLayoutManager;
-
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;

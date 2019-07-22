@@ -7,5 +7,5 @@ import com.pine.config.UrlConstants;
  */
 
 public interface BaseUrlConstants extends UrlConstants {
-
+    String APP_TRACK_UPLOAD = BASE_URL + "&q=vd";
 }

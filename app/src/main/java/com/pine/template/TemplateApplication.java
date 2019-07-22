@@ -12,7 +12,7 @@ import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.config.BuildConfig;
 import com.pine.config.ConfigKey;
-import com.pine.config.switcher.ConfigSwitcherServer;
+import com.pine.db_server.DbServerApplication;
 import com.pine.login.LoginApplication;
 import com.pine.main.MainApplication;
 import com.pine.mvc.MvcApplication;
@@ -47,6 +47,7 @@ public class TemplateApplication extends Application {
 
     @Override
     public void onCreate() {
+        LogUtils.d(TAG, "onCreate");
         super.onCreate();
         mApplication = this;
 
@@ -69,6 +70,7 @@ public class TemplateApplication extends Application {
         MvcApplication.attach();
         MvpApplication.attach();
         MvvmApplication.attach();
+        DbServerApplication.attach();
     }
 
     @Override

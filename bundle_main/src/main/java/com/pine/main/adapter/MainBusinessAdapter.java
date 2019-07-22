@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
+import com.pine.base.track.AppTrackManager;
+import com.pine.base.track.TrackModuleTag;
 import com.pine.main.R;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.remote.MainClientManager;
@@ -59,7 +61,9 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
                             new IRouterCallback() {
                                 @Override
                                 public void onSuccess(Bundle responseBundle) {
-
+                                    AppTrackManager.getInstance().trackButton(TrackModuleTag.MODULE_DEFAULT,
+                                            "MainHomeActivity", "MainHomeActivity",
+                                            "HomeGoBundle※" + content.getCommand(), content.getBundle());
                                 }
 
                                 @Override
