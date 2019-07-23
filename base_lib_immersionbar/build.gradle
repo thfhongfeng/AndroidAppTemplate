@@ -30,7 +30,7 @@ dependencies {
     // 测试 dependency end
 
     // android官方 dependency begin
-    implementation build_dependency["appcompat_v7"]
-    implementation build_dependency["constraint_layout"]
+    implementation build_dependency["android_appcompat_v7"]
+    implementation build_dependency["android_constraint_layout"]
     // android官方 dependency end
 }
