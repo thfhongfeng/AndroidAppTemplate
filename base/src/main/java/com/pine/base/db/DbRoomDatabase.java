@@ -70,7 +70,7 @@ public abstract class DbRoomDatabase extends RoomDatabase {
     private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE IF NOT EXISTS db_download_info" +
+            database.execSQL("CREATE TABLE IF NOT EXISTS app_attach_cache" +
                     " (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,module TEXT NOT NULL," +
                     "file_name TEXT,file_size INTEGER NOT NULL,url TEXT NOT NULL," +
                     "cache_url TEXT NOT NULL,remark TEXT,invalid INTEGER NOT NULL)");

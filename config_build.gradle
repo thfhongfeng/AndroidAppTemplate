@@ -7,6 +7,7 @@ build_versions.buildToolsVersion = "28.0.3"
 build_versions.minSdkVersion = 21
 build_versions.targetSdkVersion = 28
 build_versions.targetSdkVersion = 28
+
 build_versions.apkHeadName = "pine_app_template"
 
 build_versions.storeFile = "../template.jks"
