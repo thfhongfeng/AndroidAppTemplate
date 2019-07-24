@@ -279,8 +279,22 @@ public class ARouterManager implements IRouterManager {
     }
 
     private void onCommandFail(String commandType, Context context, int failCode, String message) {
-        if (!TextUtils.isEmpty(message)) {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        switch (commandType) {
+            case TYPE_UI_COMMAND:
+                if (!TextUtils.isEmpty(message)) {
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case TYPE_DATA_COMMAND:
+                if (!TextUtils.isEmpty(message)) {
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case TYPE_OP_COMMAND:
+                if (!TextUtils.isEmpty(message)) {
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 }
