@@ -7,16 +7,7 @@ import com.pine.router.annotation.ARouterRemoteAction;
  * Created by tanghongfeng on 2019/1/25
  */
 
-@ARouterRemoteAction(Key = ConfigKey.BUNDLE_BUSINESS_MVVM_KEY, UiRemoteAction = "/mvvm/uiService",
-        DataRemoteAction = "/mvvm/dataService", OpRemoteAction = "/mvvm/opService")
+@ARouterRemoteAction(Key = ConfigKey.BUNDLE_BUSINESS_MVVM_KEY, RemoteAction = "/mvvm/service")
 public interface RouterMvvmCommand {
-    // Ui command begin
     String goMvvmHomeActivity = "goMvpHomeActivity";
-    // Ui command end
-
-    // Data command begin
-    // Data command end
-
-    // Op command begin
-    // Op command end
 }

@@ -19,7 +19,7 @@ import java.util.HashMap;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class DbDataRemoteService {
+public class DbRemoteService {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     private IDbServerManager mDbServerManager = SQLiteDbServerManager.getInstance();

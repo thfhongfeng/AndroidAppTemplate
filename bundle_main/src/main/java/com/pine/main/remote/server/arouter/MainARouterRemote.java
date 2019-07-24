@@ -1,14 +1,14 @@
 package com.pine.main.remote.server.arouter;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.pine.main.remote.server.MainOpRemoteService;
+import com.pine.main.remote.server.MainRemoteService;
 import com.pine.router.impl.arouter.ARouterBundleRemote;
 
 /**
  * Created by tanghongfeng on 2019/2/21
  */
 
-@Route(path = "/main/opService")
-public class MainARouterOpRemote extends ARouterBundleRemote<MainOpRemoteService> {
+@Route(path = "/main/service")
+public class MainARouterRemote extends ARouterBundleRemote<MainRemoteService> {
 
 }

@@ -14,9 +14,5 @@ import java.lang.annotation.Target;
 public @interface ARouterRemoteAction {
     String Key();
 
-    String UiRemoteAction();
-
-    String DataRemoteAction();
-
-    String OpRemoteAction();
+    String RemoteAction();
 }

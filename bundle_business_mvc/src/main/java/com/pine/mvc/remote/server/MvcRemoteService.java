@@ -14,7 +14,7 @@ import com.pine.router.command.RouterMvcCommand;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class MvcUiRemoteService {
+public class MvcRemoteService {
 
     @RouterCommand(CommandName = RouterMvcCommand.goMvcHomeActivity)
     public void goBusinessHomeActivity(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {

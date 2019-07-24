@@ -1,25 +1,25 @@
-package com.pine.user.remote.server;
+package com.pine.main.remote.server;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.pine.main.ui.activity.MainHomeActivity;
 import com.pine.router.IServiceCallback;
 import com.pine.router.annotation.RouterCommand;
-import com.pine.router.command.RouterUserCommand;
-import com.pine.user.ui.activity.UserHomeActivity;
+import com.pine.router.command.RouterMainCommand;
 
 /**
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class UserUiRemoteService {
+public class MainRemoteService {
 
-    @RouterCommand(CommandName = RouterUserCommand.goUserHomeActivity)
-    public void goUserCenterActivity(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
+    @RouterCommand(CommandName = RouterMainCommand.goMainHomeActivity)
+    public void goMainHomeActivity(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
         Bundle responseBundle = new Bundle();
-        Intent intent = new Intent(context, UserHomeActivity.class);
+        Intent intent = new Intent(context, MainHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
         callback.onResponse(responseBundle);

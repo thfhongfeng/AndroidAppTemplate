@@ -40,9 +40,7 @@ public class ARouterManager implements IRouterManager {
     private static volatile HashMap<String, ARouterManager> mInstanceMap = new HashMap<>();
 
     private String mBundleKey = "";
-    private String mUiRemoteAction = "";
-    private String mDataRemoteAction = "";
-    private String mOpRemoteAction = "";
+    private String mRemoteAction = "";
 
     static {
         try {
@@ -65,9 +63,7 @@ public class ARouterManager implements IRouterManager {
                 ARouterRemoteAction remoteAction = clazz.getAnnotation(ARouterRemoteAction.class);
                 if (remoteAction != null) {
                     if (mBundleKey.equals(remoteAction.Key())) {
-                        mUiRemoteAction = remoteAction.UiRemoteAction();
-                        mDataRemoteAction = remoteAction.DataRemoteAction();
-                        mOpRemoteAction = remoteAction.OpRemoteAction();
+                        mRemoteAction = remoteAction.RemoteAction();
                         break;
                     }
                 }
@@ -91,87 +87,26 @@ public class ARouterManager implements IRouterManager {
     @Override
     public void callUiCommand(final Context context, String commandName,
                               Bundle args, final IRouterCallback callback) {
-        if (!checkBundleValidity(TYPE_UI_COMMAND, context, callback)) {
-            return;
-        }
-        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mUiRemoteAction)
-                .navigation(context, new NavigationCallback() {
-                    @Override
-                    public void onFound(Postcard postcard) {
-                        LogUtils.d(TAG, "callUiCommand path:'" + postcard.getPath() + "'onFound");
-                    }
-
-                    @Override
-                    public void onLost(Postcard postcard) {
-                        LogUtils.d(TAG, "callUiCommand path:'" + postcard.getPath() + "'onLost");
-                        if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_LOST, "onLost")) {
-                            onCommandFail(TYPE_UI_COMMAND, context, IRouterManager.FAIL_CODE_LOST, "onLost");
-                        }
-                    }
-
-                    @Override
-                    public void onArrival(Postcard postcard) {
-                        LogUtils.d(TAG, "callUiCommand path:'" + postcard.getPath() + "'onArrival");
-                    }
-
-                    @Override
-                    public void onInterrupt(Postcard postcard) {
-                        LogUtils.d(TAG, "callUiCommand path:'" + postcard.getPath() + "'onInterrupt");
-                        if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt")) {
-                            onCommandFail(TYPE_UI_COMMAND, context, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
-                        }
-                    }
-                }));
-        if (routerService != null) {
-            routerService.call(context, commandName, args, callback);
-        }
+        callCommand(TYPE_UI_COMMAND, context, commandName, args, callback);
     }
 
     @Override
     public void callDataCommand(final Context context, String commandName, Bundle args, final IRouterCallback callback) {
-        if (!checkBundleValidity(TYPE_DATA_COMMAND, context, callback)) {
-            return;
-        }
-        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mDataRemoteAction)
-                .navigation(context, new NavigationCallback() {
-                    @Override
-                    public void onFound(Postcard postcard) {
-                        LogUtils.d(TAG, "callDataCommand path:'" + postcard.getPath() + "'onFound");
-                    }
-
-                    @Override
-                    public void onLost(Postcard postcard) {
-                        LogUtils.d(TAG, "callDataCommand path:'" + postcard.getPath() + "'onLost");
-                        if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_LOST, "onLost")) {
-                            onCommandFail(TYPE_DATA_COMMAND, context, IRouterManager.FAIL_CODE_LOST, "onLost");
-                        }
-                    }
-
-                    @Override
-                    public void onArrival(Postcard postcard) {
-                        LogUtils.d(TAG, "callDataCommand path:'" + postcard.getPath() + "'onArrival");
-                    }
-
-                    @Override
-                    public void onInterrupt(Postcard postcard) {
-                        LogUtils.d(TAG, "callDataCommand path:'" + postcard.getPath() + "'onInterrupt");
-                        if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt")) {
-                            onCommandFail(TYPE_DATA_COMMAND, context, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
-                        }
-                    }
-                }));
-        if (routerService != null) {
-            routerService.call(context, commandName, args, callback);
-        }
+        callCommand(TYPE_DATA_COMMAND, context, commandName, args, callback);
     }
 
     @Override
     public void callOpCommand(final Context context, String commandName,
                               Bundle args, final IRouterCallback callback) {
-        if (!checkBundleValidity(TYPE_OP_COMMAND, context, callback)) {
+        callCommand(TYPE_OP_COMMAND, context, commandName, args, callback);
+    }
+
+    public void callCommand(final String commandType, final Context context, String commandName,
+                            Bundle args, final IRouterCallback callback) {
+        if (!checkBundleValidity(commandType, context, callback)) {
             return;
         }
-        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mOpRemoteAction)
+        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mRemoteAction)
                 .navigation(context, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
@@ -182,7 +117,7 @@ public class ARouterManager implements IRouterManager {
                     public void onLost(Postcard postcard) {
                         LogUtils.d(TAG, "callOpCommand path:'" + postcard.getPath() + "'onLost");
                         if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_LOST, "onLost")) {
-                            onCommandFail(TYPE_OP_COMMAND, context, IRouterManager.FAIL_CODE_LOST, "onLost");
+                            onCommandFail(commandType, context, IRouterManager.FAIL_CODE_LOST, "onLost");
                         }
                     }
 
@@ -195,7 +130,7 @@ public class ARouterManager implements IRouterManager {
                     public void onInterrupt(Postcard postcard) {
                         LogUtils.d(TAG, "callOpCommand path:'" + postcard.getPath() + "'onInterrupt");
                         if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt")) {
-                            onCommandFail(TYPE_OP_COMMAND, context, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
+                            onCommandFail(commandType, context, IRouterManager.FAIL_CODE_INTERRUPT, "onInterrupt");
                         }
                     }
                 }));
@@ -206,36 +141,25 @@ public class ARouterManager implements IRouterManager {
 
     @Override
     public <R> R callUiCommandDirect(final Context context, String commandName, Bundle args) {
-        if (!checkBundleValidity(TYPE_UI_COMMAND, context, null)) {
-            return null;
-        }
-        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mUiRemoteAction)
-                .navigation(context, null));
-        if (routerService != null) {
-            return (R) routerService.callDirect(context, commandName, args);
-        }
-        return null;
+        return callCommandDirect(TYPE_UI_COMMAND, context, commandName, args);
     }
 
     @Override
     public <R> R callDataCommandDirect(final Context context, String commandName, Bundle args) {
-        if (!checkBundleValidity(TYPE_DATA_COMMAND, context, null)) {
-            return null;
-        }
-        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mDataRemoteAction)
-                .navigation(context, null));
-        if (routerService != null) {
-            return (R) routerService.callDirect(context, commandName, args);
-        }
-        return null;
+        return callCommandDirect(TYPE_DATA_COMMAND, context, commandName, args);
     }
 
     @Override
     public <R> R callOpCommandDirect(final Context context, String commandName, Bundle args) {
-        if (!checkBundleValidity(TYPE_OP_COMMAND, context, null)) {
+        return callCommandDirect(TYPE_OP_COMMAND, context, commandName, args);
+    }
+
+    private <R> R callCommandDirect(final String commandType, final Context context,
+                                    String commandName, Bundle args) {
+        if (!checkBundleValidity(commandType, context, null)) {
             return null;
         }
-        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mOpRemoteAction)
+        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mRemoteAction)
                 .navigation(context, null));
         if (routerService != null) {
             return (R) routerService.callDirect(context, commandName, args);
@@ -245,20 +169,8 @@ public class ARouterManager implements IRouterManager {
 
     private boolean checkBundleValidity(final String commandType, final Context context,
                                         final IRouterCallback callback) {
-        boolean typeValidity = false;
-        switch (commandType) {
-            case TYPE_UI_COMMAND:
-                typeValidity = !TextUtils.isEmpty(mUiRemoteAction);
-                break;
-            case TYPE_DATA_COMMAND:
-                typeValidity = !TextUtils.isEmpty(mDataRemoteAction);
-                break;
-            case TYPE_OP_COMMAND:
-                typeValidity = !TextUtils.isEmpty(mOpRemoteAction);
-                break;
-        }
-        if (!typeValidity) {
-            LogUtils.releaseLog(TAG, "ui remote action is null");
+        if (TextUtils.isEmpty(mRemoteAction)) {
+            LogUtils.releaseLog(TAG, "remote action is null");
             if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INVALID,
                     context.getString(R.string.router_remote_action_empty))) {
                 onCommandFail(commandType, context, IRouterManager.FAIL_CODE_INVALID,
