@@ -70,6 +70,11 @@ public class MvpTravelNoteReleaseActivity extends
     }
 
     @Override
+    protected boolean onUiAccessForbidden() {
+        return true;
+    }
+
+    @Override
     protected void init() {
         set_out_date_ll.setOnClickListener(this);
         belong_shop_ll.setOnClickListener(this);

@@ -35,12 +35,30 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/9/28
  */
 
+/**
+ * 权限检查中关于onResume和init的执行顺序说明：因为EasyPermission是实质是另起了一个界面，
+ * 所以当前Activity在进行权限检查时，会先onResume，再onPause，权限检查完后会先执行init，再执行onResume。
+ * 也就是说init之后必定会执行onResume。综上有两种情况：
+ * 1. 不执行权限检查时，onCreate（onNewIntent）-->init-->onResume;
+ * 2. 执行权限检查时，onCreate（onNewIntent）-->onResume-->onPause-->init-->onResume;
+ * 这就会出现在onResume、onPause的时候有可能init未执行，
+ * 具体使用的时候如果onResume、onPause中有需要在init之后才能做的操作时，有以下两种方式：
+ * 1.在onResume可以使用isInit方法来判断；
+ * 2.不重写onResume，而通过重写onRealResume来做onResume操作。
+ * 事实上，在执行权限检查流程中，没有init时的onResume的处理是可以忽略的，因为之后还会再次onResume，
+ * 所以推荐通过重写onRealResume来解决以上问题。
+ */
 public abstract class Activity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
     public final int REQUEST_ACCESS_PERMISSION = 33333;
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
-    private boolean mUiAccessReady, mPermissionReady;
-    private boolean onAllAccessRestrictionReleasedMethodCalled;
+    // UiAccess（比如需要登陆）是否检查通过，没有则结束当前界面；
+    public boolean mUiAccessReady;
+    // 权限（比如需要登陆）是否检查通过，没有则弹出授权界面给用户授权；
+    public boolean mPermissionReady;
+    // onAllAccessRestrictionReleased方法是否被调用过（该方法在activity的生命周期中只会调用一次，onCreate，onNewIntent才会重置）；
+    // 该参数保证一次生命周期中init方法只会执行一次，并且可以用来判断init是否已经执行。
+    private boolean mOnAllAccessRestrictionReleasedMethodCalled;
     private boolean mPrePause;
     private HashMap<Integer, PermissionBean> mPermissionRequestMap = new HashMap<>();
     private Map<Integer, ILifeCircleView> mLifeCircleViewMap = new HashMap<>();
@@ -48,16 +66,19 @@ public abstract class Activity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mOnAllAccessRestrictionReleasedMethodCalled = false;
         beforeInitOnCreate(savedInstanceState);
         setContentView(savedInstanceState);
 
         findViewOnCreate();
 
         mUiAccessReady = true;
-        if (!UiAccessManager.getInstance().checkCanAccess(this, false)) {
+        if (!UiAccessManager.getInstance().checkCanAccess(this)) {
             mUiAccessReady = false;
-            finish();
-            return;
+            if (!onUiAccessForbidden()) {
+                finish();
+                return;
+            }
         }
 
         mPermissionReady = true;
@@ -98,6 +119,19 @@ public abstract class Activity extends AppCompatActivity
      */
     protected abstract void findViewOnCreate();
 
+    /**
+     * 当UiAccess准入条件不具备时的回调，重写该方法定制用户自己的处理方式
+     *
+     * @return false:默认处理方式（finish()）执行；true:默认处理方式（finish()）不执行
+     */
+    protected boolean onUiAccessForbidden() {
+        return false;
+    }
+
+    protected boolean isInit() {
+        return mOnAllAccessRestrictionReleasedMethodCalled;
+    }
+
     private void onAllAccessRestrictionReleased() {
         if (!parseIntentData()) {
             init();
@@ -126,16 +160,31 @@ public abstract class Activity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (mPrePause) {
-            mPrePause = false;
-            if (!UiAccessManager.getInstance().checkCanAccess(this, false)) {
-                mUiAccessReady = false;
+        mOnAllAccessRestrictionReleasedMethodCalled = false;
+        mPrePause = false;
+
+        mUiAccessReady = true;
+        if (!UiAccessManager.getInstance().checkCanAccess(this)) {
+            mUiAccessReady = false;
+            if (!onUiAccessForbidden()) {
                 finish();
                 return;
-            } else {
-                tryInitOnAllRestrictionReleased();
             }
         }
+
+        mPermissionReady = true;
+        PermissionsAnnotation annotation = getClass().getAnnotation(PermissionsAnnotation.class);
+        if (annotation != null) {
+            String[] permissions = annotation.Permissions();
+            if (permissions != null) {
+                if (!hasPermissions(permissions)) {
+                    mPermissionReady = false;
+                    requestPermission(REQUEST_ACCESS_PERMISSION, null, permissions);
+                }
+            }
+        }
+
+        tryInitOnAllRestrictionReleased();
     }
 
     @Override
@@ -143,14 +192,24 @@ public abstract class Activity extends AppCompatActivity
         super.onResume();
         if (mPrePause) {
             mPrePause = false;
-            if (!UiAccessManager.getInstance().checkCanAccess(this, true)) {
+            mUiAccessReady = true;
+            if (!UiAccessManager.getInstance().checkCanAccess(this)) {
                 mUiAccessReady = false;
-                finish();
-                return;
+                if (!onUiAccessForbidden()) {
+                    finish();
+                    return;
+                }
             } else {
                 tryInitOnAllRestrictionReleased();
             }
         }
+        if (isInit()) {
+            onRealResume();
+        }
+    }
+
+    protected void onRealResume() {
+
     }
 
     @Override
@@ -291,9 +350,9 @@ public abstract class Activity extends AppCompatActivity
     }
 
     private void tryInitOnAllRestrictionReleased() {
-        if (!onAllAccessRestrictionReleasedMethodCalled &&
+        if (!mOnAllAccessRestrictionReleasedMethodCalled &&
                 mUiAccessReady && mPermissionReady) {
-            onAllAccessRestrictionReleasedMethodCalled = true;
+            mOnAllAccessRestrictionReleasedMethodCalled = true;
             onAllAccessRestrictionReleased();
         }
     }

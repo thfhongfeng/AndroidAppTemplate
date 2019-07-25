@@ -48,7 +48,7 @@ public abstract class Fragment extends android.support.v4.app.Fragment
         findViewOnCreateView(layout);
 
         mUiAccessReady = true;
-        if (!UiAccessManager.getInstance().checkCanAccess(this, false)) {
+        if (!UiAccessManager.getInstance().checkCanAccess(this)) {
             mUiAccessReady = false;
         }
 

@@ -39,7 +39,7 @@ public class UiAccessManager {
         mAccessExecutorMap.clear();
     }
 
-    public boolean checkCanAccess(Activity activity, boolean resumeUi) {
+    public boolean checkCanAccess(Activity activity) {
         if (activity == null) {
             return false;
         }
@@ -52,7 +52,7 @@ public class UiAccessManager {
             }
             for (int i = 0; i < types.length; i++) {
                 if (mAccessExecutorMap.get(types[i]) != null &&
-                        !mAccessExecutorMap.get(types[i]).onExecute(activity, args[i], resumeUi)) {
+                        !mAccessExecutorMap.get(types[i]).onExecute(activity, args[i])) {
                     return false;
                 }
             }
@@ -60,7 +60,7 @@ public class UiAccessManager {
         return true;
     }
 
-    public boolean checkCanAccess(Fragment fragment, boolean isResumeUi) {
+    public boolean checkCanAccess(Fragment fragment) {
         if (fragment == null) {
             return false;
         }
@@ -73,7 +73,7 @@ public class UiAccessManager {
             }
             for (int i = 0; i < types.length; i++) {
                 if (mAccessExecutorMap.get(types[i]) != null &&
-                        !mAccessExecutorMap.get(types[i]).onExecute(fragment, args[i], isResumeUi)) {
+                        !mAccessExecutorMap.get(types[i]).onExecute(fragment, args[i])) {
                     return false;
                 }
             }

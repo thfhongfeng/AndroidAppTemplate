@@ -25,40 +25,32 @@ public class UiAccessLoginExecutor implements IUiAccessExecutor {
     }
 
     @Override
-    public boolean onExecute(final Activity activity, String args, boolean isResumeUi) {
+    public boolean onExecute(final Activity activity, String args) {
         boolean canAccess = BaseApplication.isLogin();
         if (!canAccess) {
             if (mCallback != null) {
-                mCallback.onAccessForbidden(activity, args, isResumeUi);
+                mCallback.onAccessForbidden(activity, args);
             }
-            if (isResumeUi) {
-                if (activity != null && !activity.isFinishing()) {
-                    activity.finish();
-                }
-            } else {
-                TemplateClientManager.goLoginActivity(TemplateApplication.getContext(), null, new IRouterCallback() {
-                    @Override
-                    public void onSuccess(Bundle responseBundle) {
-                        if (activity != null && !activity.isFinishing()) {
-                            activity.finish();
-                        }
-                    }
+            TemplateClientManager.goLoginActivity(TemplateApplication.getContext(), null, new IRouterCallback() {
+                @Override
+                public void onSuccess(Bundle responseBundle) {
 
-                    @Override
-                    public boolean onFail(int failCode, String errorInfo) {
-                        if (activity != null && !activity.isFinishing()) {
-                            activity.finish();
-                        }
-                        return true;
+                }
+
+                @Override
+                public boolean onFail(int failCode, String errorInfo) {
+                    if (activity != null && !activity.isFinishing()) {
+                        activity.finish();
                     }
-                });
-            }
+                    return true;
+                }
+            });
         }
         return canAccess;
     }
 
     @Override
-    public boolean onExecute(Fragment fragment, String args, boolean isResumeUi) {
+    public boolean onExecute(Fragment fragment, String args) {
         return true;
     }
 }

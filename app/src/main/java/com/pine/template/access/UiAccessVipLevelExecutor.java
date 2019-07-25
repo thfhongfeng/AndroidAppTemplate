@@ -20,12 +20,12 @@ public class UiAccessVipLevelExecutor implements IUiAccessExecutor {
     }
 
     @Override
-    public boolean onExecute(Activity activity, String args, boolean isResumeUi) {
+    public boolean onExecute(Activity activity, String args) {
         return true;
     }
 
     @Override
-    public boolean onExecute(Fragment fragment, String args, boolean isResumeUi) {
+    public boolean onExecute(Fragment fragment, String args) {
         return true;
     }
 }

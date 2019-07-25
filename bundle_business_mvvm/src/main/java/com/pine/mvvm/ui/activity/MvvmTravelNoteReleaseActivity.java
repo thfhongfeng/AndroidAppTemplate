@@ -90,6 +90,11 @@ public class MvvmTravelNoteReleaseActivity extends
     }
 
     @Override
+    protected boolean onUiAccessForbidden() {
+        return true;
+    }
+
+    @Override
     protected void init() {
         initBindingAndVm();
         initView();
