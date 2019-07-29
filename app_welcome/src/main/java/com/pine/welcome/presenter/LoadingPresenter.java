@@ -17,7 +17,7 @@ import com.pine.welcome.WelcomeApplication;
 import com.pine.welcome.bean.VersionEntity;
 import com.pine.welcome.contract.ILoadingContract;
 import com.pine.welcome.manager.ApkVersionManager;
-import com.pine.welcome.remote.WelcomeClientManager;
+import com.pine.welcome.remote.WelcomeRouterClient;
 import com.pine.welcome.ui.activity.WelcomeActivity;
 
 /**
@@ -141,7 +141,7 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
             }
             return;
         }
-        WelcomeClientManager.autoLogin(getContext(), null, new IRouterCallback() {
+        WelcomeRouterClient.autoLogin(getContext(), null, new IRouterCallback() {
             @Override
             public void onSuccess(Bundle responseBundle) {
                 if (isUiAlive()) {

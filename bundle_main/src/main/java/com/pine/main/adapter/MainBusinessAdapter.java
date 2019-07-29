@@ -14,7 +14,7 @@ import com.pine.base.track.AppTrackManager;
 import com.pine.base.track.TrackModuleTag;
 import com.pine.main.R;
 import com.pine.main.bean.MainBusinessItemEntity;
-import com.pine.main.remote.MainClientManager;
+import com.pine.main.remote.MainRouterClient;
 import com.pine.router.IRouterCallback;
 
 /**
@@ -57,7 +57,7 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MainClientManager.callCommand(mContext, content.getBundle(), content.getCommand(), null,
+                    MainRouterClient.callCommand(mContext, content.getBundle(), content.getCommand(), null,
                             new IRouterCallback() {
                                 @Override
                                 public void onSuccess(Bundle responseBundle) {

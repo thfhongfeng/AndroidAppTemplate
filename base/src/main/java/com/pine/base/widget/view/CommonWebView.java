@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
-import com.pine.base.remote.BaseClientManager;
+import com.pine.base.remote.BaseRouterClient;
 import com.pine.base.util.DialogUtils;
 import com.pine.router.IRouterCallback;
 import com.pine.tool.request.IRequestManager;
@@ -162,7 +162,7 @@ public class CommonWebView extends WebView {
                     return;
                 }
                 if (mTryLoginCount < MAX_TRY_LOGIN_COUNT) {
-                    BaseClientManager.autoLogin(mActivity, null, new IRouterCallback() {
+                    BaseRouterClient.autoLogin(mActivity, null, new IRouterCallback() {
                         @Override
                         public void onSuccess(Bundle responseBundle) {
                             loadUrl();
@@ -170,13 +170,13 @@ public class CommonWebView extends WebView {
 
                         @Override
                         public boolean onFail(int code, String errorInfo) {
-                            BaseClientManager.goLoginActivity(mActivity, null, null);
+                            BaseRouterClient.goLoginActivity(mActivity, null, null);
                             return true;
                         }
                     });
                     mTryLoginCount++;
                 } else {
-                    BaseClientManager.goLoginActivity(mActivity, null, null);
+                    BaseRouterClient.goLoginActivity(mActivity, null, null);
                 }
             }
 

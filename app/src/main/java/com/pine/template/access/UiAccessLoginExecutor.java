@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import com.pine.base.BaseApplication;
 import com.pine.router.IRouterCallback;
 import com.pine.template.TemplateApplication;
-import com.pine.template.remote.TemplateClientManager;
+import com.pine.template.remote.TemplateRouterClient;
 import com.pine.tool.access.IUiAccessCallback;
 import com.pine.tool.access.IUiAccessExecutor;
 
@@ -31,7 +31,7 @@ public class UiAccessLoginExecutor implements IUiAccessExecutor {
             if (mCallback != null) {
                 mCallback.onAccessForbidden(activity, args);
             }
-            TemplateClientManager.goLoginActivity(TemplateApplication.getContext(), null, new IRouterCallback() {
+            TemplateRouterClient.goLoginActivity(TemplateApplication.getContext(), null, new IRouterCallback() {
                 @Override
                 public void onSuccess(Bundle responseBundle) {
 

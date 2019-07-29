@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.pine.router.IRouterCallback;
 import com.pine.router.impl.RouterManager;
 
-public class MainClientManager {
+public class MainRouterClient {
     public static void callCommand(Context context, String bundleKey,
                                    String command, Bundle args, IRouterCallback callback) {
         RouterManager.getInstance(bundleKey).callUiCommand(context,

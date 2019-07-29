@@ -8,7 +8,7 @@ import com.pine.router.command.RouterMainCommand;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.contract.IWelcomeContract;
-import com.pine.welcome.remote.WelcomeClientManager;
+import com.pine.welcome.remote.WelcomeRouterClient;
 
 /**
  * Created by tanghongfeng on 2018/9/12
@@ -25,7 +25,7 @@ public class WelcomePresenter extends Presenter<IWelcomeContract.Ui> implements 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                WelcomeClientManager.goMainHomeActivity(getContext(), null, new IRouterCallback() {
+                WelcomeRouterClient.goMainHomeActivity(getContext(), null, new IRouterCallback() {
                     @Override
                     public void onSuccess(Bundle responseBundle) {
                         LogUtils.d(TAG, "onSuccess " + RouterMainCommand.goMainHomeActivity);

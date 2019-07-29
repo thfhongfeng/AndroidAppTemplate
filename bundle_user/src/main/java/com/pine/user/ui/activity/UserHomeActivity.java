@@ -11,7 +11,7 @@ import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.user.R;
 import com.pine.user.contract.IUserHomeContract;
 import com.pine.user.presenter.UserHomePresenter;
-import com.pine.user.remote.UserClientManager;
+import com.pine.user.remote.UserRouterClient;
 
 /**
  * Created by tanghongfeng on 2018/9/13
@@ -38,7 +38,7 @@ public class UserHomeActivity extends BaseMvpNoActionBarActivity<IUserHomeContra
         logout_btn_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserClientManager.logout(UserHomeActivity.this, null,
+                UserRouterClient.logout(UserHomeActivity.this, null,
                         new IRouterCallback() {
                             @Override
                             public void onSuccess(Bundle responseBundle) {
