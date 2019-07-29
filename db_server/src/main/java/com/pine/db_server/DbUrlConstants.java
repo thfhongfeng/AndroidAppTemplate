@@ -35,6 +35,5 @@ public interface DbUrlConstants extends BaseUrlConstants {
     // Test code begin
     String Upload_Single_File = "https://yanyangtian.purang.com/" + "/mobile/bizFile/addBizFile.htm";
     String Upload_Multi_File = "https://yanyangtian.purang.com/" + "/mobile/bizFile/addBizFileList.htm";
-    String H5_DefaultUrl = "https://www.baidu.com";
     // Test code end
 }

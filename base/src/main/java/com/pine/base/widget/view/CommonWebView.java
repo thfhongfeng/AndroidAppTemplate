@@ -14,7 +14,6 @@ import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Base64;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
@@ -48,9 +47,6 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
 
@@ -59,7 +55,6 @@ public class CommonWebView extends WebView {
     private JsInterface mJsInterface;
 
     private boolean mIsUseJsGoBackHistory = false;
-    private List<String> mUrlHistory = new LinkedList<>();
     private IWebViewListener mListener;
 
     // 当前网页链接
@@ -90,6 +85,7 @@ public class CommonWebView extends WebView {
     public void init(Activity activity, String startUrl, IWebViewListener listener) {
         mListener = listener;
         mUrl = startUrl;
+        setupUrlHistoryType();
         mActivity = activity;
         initWebView();
     }
@@ -130,9 +126,8 @@ public class CommonWebView extends WebView {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.startsWith("http")) {
                     mUrl = url;
-                    mUrlHistory.add(mUrl);
+                    setupUrlHistoryType();
                 }
-                loadUrl();
                 return false;
             }
 
@@ -145,6 +140,8 @@ public class CommonWebView extends WebView {
             @Override
             public void onPageFinished(WebView view, String url) {
                 mWebViewState = 2;   //加载成功
+                mUrl = url;
+                setupUrlHistoryType();
                 super.onPageFinished(view, url);
             }
 
@@ -192,12 +189,12 @@ public class CommonWebView extends WebView {
         });
         mJsInterface = new JsInterface(this);
         addJavascriptInterface(mJsInterface, "appInterface");
-        mUrlHistory.add(mUrl);
-        loadUrl();
+        if (!TextUtils.isEmpty(mUrl)) {
+            loadUrl();
+        }
     }
 
     private void loadUrl() {
-        setupUrlHistoryType();
         synCookies(mUrl);
         loadUrl(mUrl);
     }
@@ -239,14 +236,12 @@ public class CommonWebView extends WebView {
      * 调用了webview 的goback 清除历史数据
      */
     private void callWebViewBack() {
-        mUrlHistory.remove(mUrlHistory.size() - 1);
-        if (mUrlHistory.size() == 0) {
+        if (canGoBack()) {
+            goBack();
+        } else {
             finishUi();
             return;
         }
-        mUrl = mUrlHistory.get(mUrlHistory.size() - 1);
-        setupUrlHistoryType();
-        goBack();
     }
 
     /**
@@ -290,47 +285,10 @@ public class CommonWebView extends WebView {
     }
 
     public void goBackAction() {
-        if (mIsUseJsGoBackHistory) {
-            switch (mWebViewState) {
-                case 0:
-                    callWebViewBack();
-                    break;
-                case 1:
-                    callWebViewBack();
-                    break;
-                case 2:
-                    callJsBack();
-                    break;
-                case 3:
-                    callWebViewBack();
-            }
+        if (mIsUseJsGoBackHistory && mWebViewState == 2) {
+            callJsBack();
         } else {
-            if (mUrlHistory.isEmpty()) {
-                finishUi();
-            } else {
-                HashMap<String, String> keyHm = UrlUtils.getParameters(mUrlHistory.get(mUrlHistory.size() - 1));
-                String key = getGoBackUrlKeyFromPreUrl();
-                if (keyHm != null && keyHm.containsKey(key)) {
-                    if ("-1".equals(keyHm.get(key))) {
-                        finishUi();
-                    } else {
-                        String resultUrl = keyHm.get(key);
-                        byte[] bytes = Base64.decode(resultUrl, Base64.DEFAULT);
-                        mUrl = new String(bytes);
-                        mUrlHistory.add(mUrl);
-                        loadUrl(mUrl);
-                    }
-                } else {   //正常走原先逻辑
-                    int length = mUrlHistory.size();
-                    mUrlHistory.remove(length - 1);
-                    if (mUrlHistory.isEmpty()) {
-                        finishUi();
-                    } else {
-                        mUrl = mUrlHistory.get(mUrlHistory.size() - 1);
-                        loadUrl(mUrl);
-                    }
-                }
-            }
+            callWebViewBack();
         }
     }
 
@@ -614,7 +572,7 @@ public class CommonWebView extends WebView {
             return;
         }
         mUrl = params.optString("targetHttpUrl");
-        mUrlHistory.add(mUrl);
+        setupUrlHistoryType();
         loadUrl();
     }
 
