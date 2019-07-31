@@ -62,7 +62,7 @@ public class ConfigSwitcherServer {
                 mGuestConfigStateMap.put(key, enable);
             }
         }
-        LogUtils.releaseLog(TAG, "Set " + key + " fun " + (enable ? "open" : "close"));
+        LogUtils.releaseLog(TAG, "Set " + key + " func " + (enable ? "open" : "close"));
     }
 
     public boolean isEnable(String key) {
