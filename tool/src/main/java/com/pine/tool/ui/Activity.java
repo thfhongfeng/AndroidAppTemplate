@@ -36,17 +36,17 @@ import java.util.Map;
  */
 
 /**
- * 权限检查中关于onResume和init的执行顺序说明：因为EasyPermission是实质是另起了一个界面，
- * 所以当前Activity在进行权限检查时，会先onResume，再onPause，权限检查完后会先执行init，再执行onResume。
- * 也就是说init之后必定会执行onResume。综上有两种情况：
+ * 权限检查中关于onResume和init的执行顺序说明：
+ * 因为EasyPermission实质是另起了一个界面，所以当前Activity在进行权限检查时，
+ * 会先onResume，再onPause，权限检查完后会先执行init，再执行onResume。
+ * 综上有两种情况：
  * 1. 不执行权限检查时，onCreate（onNewIntent）-->init-->onResume;
  * 2. 执行权限检查时，onCreate（onNewIntent）-->onResume-->onPause-->init-->onResume;
  * 这就会出现在onResume、onPause的时候有可能init未执行，
  * 具体使用的时候如果onResume、onPause中有需要在init之后才能做的操作时，有以下两种方式：
- * 1.在onResume可以使用isInit方法来判断；
- * 2.不重写onResume，而通过重写onRealResume来做onResume操作。
- * 事实上，在执行权限检查流程中，没有init时的onResume的处理是可以忽略的，因为之后还会再次onResume，
- * 所以推荐通过重写onRealResume来解决以上问题。
+ * a. 在onResume可以使用isInit方法来判断；
+ * b. 不重写onResume，而通过重写onRealResume来做onResume操作。
+ * 推荐通过重写onRealResume来解决以上问题。
  */
 public abstract class Activity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
