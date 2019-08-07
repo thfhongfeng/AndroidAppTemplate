@@ -133,11 +133,11 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
     }
 
     @Override
-    public void autoLogin(final int delayTogoWelcome) {
+    public void autoLogin(final int delayTogo) {
         if (!ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_LOGIN_KEY) ||
                 WelcomeApplication.isLogin()) {
             if (isUiAlive()) {
-                goWelcomeActivity(delayTogoWelcome);
+                gotoNext(delayTogo);
             }
             return;
         }
@@ -145,23 +145,23 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
             @Override
             public void onSuccess(Bundle responseBundle) {
                 if (isUiAlive()) {
-                    goWelcomeActivity(delayTogoWelcome);
+                    gotoNext(delayTogo);
                 }
             }
 
             @Override
             public boolean onFail(int failCode, String errorInfo) {
                 if (isUiAlive()) {
-                    goWelcomeActivity(delayTogoWelcome);
+                    gotoNext(delayTogo);
                 }
                 return true;
             }
         });
     }
 
-    private void goWelcomeActivity(int delayTogoWelcome) {
-        long delay = delayTogoWelcome;
-        if (delayTogoWelcome <= 0) {
+    private void gotoNext(int delayTogo) {
+        long delay = delayTogo;
+        if (delayTogo <= 0) {
             delay = LOADING_MAX_TIME - (System.currentTimeMillis() - mStartTimeMillis);
             delay = delay > 0 ? delay : 0;
         }
