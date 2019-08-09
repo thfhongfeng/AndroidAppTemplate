@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;
@@ -26,6 +27,18 @@ public class MvvmShopNoPaginationListFragment extends
         implements SwipeRefreshLayout.OnRefreshListener {
     private MvvmShopListNoPaginationAdapter mMvvmHomeItemAdapter;
 
+    private ILocationListener mLocationListener = new ILocationListener() {
+        @Override
+        public void onReceiveLocation(LocationInfo locationInfo) {
+            onRefresh();
+        }
+
+        @Override
+        public void onReceiveFail() {
+
+        }
+    };
+
     @Override
     protected int getFragmentLayoutResId() {
         return R.layout.mvvm_fragment_shop_no_pagination_list;
@@ -38,6 +51,7 @@ public class MvvmShopNoPaginationListFragment extends
     }
 
     private void initBindingAndVm() {
+        mBinding.setPresenter(new Presenter());
         mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
@@ -71,18 +85,6 @@ public class MvvmShopNoPaginationListFragment extends
         });
     }
 
-    private ILocationListener mLocationListener = new ILocationListener() {
-        @Override
-        public void onReceiveLocation(LocationInfo locationInfo) {
-            onRefresh();
-        }
-
-        @Override
-        public void onReceiveFail() {
-
-        }
-    };
-
     @Override
     public void onSyncLiveDataInit(int liveDataObjTag) {
 
@@ -114,4 +116,11 @@ public class MvvmShopNoPaginationListFragment extends
         hideSoftInputFromWindow();
         mBinding.swipeRefreshLayout.setRefreshing(visibility);
     }
+
+    public class Presenter {
+        public void onRefreshBtnClick(View view) {
+            onRefresh();
+        }
+    }
+
 }

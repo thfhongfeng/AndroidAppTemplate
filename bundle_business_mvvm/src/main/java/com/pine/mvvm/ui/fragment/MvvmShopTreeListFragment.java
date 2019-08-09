@@ -26,6 +26,18 @@ public class MvvmShopTreeListFragment extends MvvmFragment<MvvmShopTreeListFragm
         implements SwipeRefreshLayout.OnRefreshListener {
     private MvvmShopListPaginationTreeAdapter mMvvmHomeItemAdapter;
 
+    private ILocationListener mLocationListener = new ILocationListener() {
+        @Override
+        public void onReceiveLocation(LocationInfo locationInfo) {
+            onRefresh();
+        }
+
+        @Override
+        public void onReceiveFail() {
+
+        }
+    };
+
     @Override
     protected int getFragmentLayoutResId() {
         return R.layout.mvvm_fragment_shop_tree_list;
@@ -82,18 +94,6 @@ public class MvvmShopTreeListFragment extends MvvmFragment<MvvmShopTreeListFragm
             }
         });
     }
-
-    private ILocationListener mLocationListener = new ILocationListener() {
-        @Override
-        public void onReceiveLocation(LocationInfo locationInfo) {
-            onRefresh();
-        }
-
-        @Override
-        public void onReceiveFail() {
-
-        }
-    };
 
     @Override
     public void onSyncLiveDataInit(int liveDataObjTag) {

@@ -5,6 +5,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.pine.base.component.map.ILocationListener;
+import com.pine.base.component.map.LocationInfo;
+import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvp.R;
 import com.pine.mvp.adapter.MvpShopListPaginationTreeAdapter;
@@ -20,6 +23,18 @@ public class MvpShopTreeListFragment extends MvpFragment<IMvpShopTreeListContrac
         implements IMvpShopTreeListContract.Ui, SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipe_refresh_layout;
     private RecyclerView recycle_view;
+
+    private ILocationListener mLocationListener = new ILocationListener() {
+        @Override
+        public void onReceiveLocation(LocationInfo locationInfo) {
+            onRefresh();
+        }
+
+        @Override
+        public void onReceiveFail() {
+
+        }
+    };
 
     @Override
     protected int getFragmentLayoutResId() {
@@ -68,6 +83,22 @@ public class MvpShopTreeListFragment extends MvpFragment<IMvpShopTreeListContrac
                 onRefresh();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (MapSdkManager.getInstance().getLocation() == null) {
+            MapSdkManager.getInstance().registerLocationListener(mLocationListener);
+            MapSdkManager.getInstance().startLocation();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        MapSdkManager.getInstance().unregisterLocationListener(mLocationListener);
+        MapSdkManager.getInstance().stopLocation();
+        super.onStop();
     }
 
     @Override

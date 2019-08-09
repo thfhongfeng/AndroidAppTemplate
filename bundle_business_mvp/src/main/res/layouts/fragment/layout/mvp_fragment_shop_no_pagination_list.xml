@@ -6,11 +6,12 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/refresh_btn_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/dp_15"
-        android:text="No Pagination List" />
+        android:text="No Pagination List(Click To Refresh)" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
