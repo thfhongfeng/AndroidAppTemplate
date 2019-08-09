@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.pine.base.component.editor.bean.TextImageEditorItemData;
+import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
@@ -34,7 +34,7 @@ public class MvvmTravelNoteReleaseVm extends ViewModel {
         setBelongShopList(data.<MvvmShopItemEntity>getParcelableArrayListExtra(MvvmShopSearchCheckActivity.RESULT_CHECKED_LIST_KEY));
     }
 
-    public void addNote(List<List<TextImageEditorItemData>> noteDayList) {
+    public void addNote(List<TextImageEntity> noteDayList) {
         if (isUiLoading()) {
             return;
         }
@@ -66,14 +66,15 @@ public class MvvmTravelNoteReleaseVm extends ViewModel {
         }
         List<MvvmTravelNoteDetailEntity.DayBean> days = new ArrayList<>();
         for (int i = 0; i < noteDayList.size(); i++) {
-            List<TextImageEditorItemData> dayContentList = noteDayList.get(i);
+            TextImageEntity day = noteDayList.get(i);
+            List<TextImageItemEntity> dayContentList = day.getItemList();
             if (dayContentList == null || dayContentList.size() < 1) {
                 setToastResId(R.string.mvvm_note_release_day_note_need);
                 return;
             }
             List<MvvmTravelNoteDetailEntity.DayBean.Content> contentList = new ArrayList<>();
             for (int j = 0; j < dayContentList.size(); j++) {
-                TextImageEditorItemData itemData = dayContentList.get(j);
+                TextImageItemEntity itemData = dayContentList.get(j);
                 switch (itemData.getType()) {
                     case TextImageItemEntity.TYPE_TEXT:
                         if (TextUtils.isEmpty(itemData.getText())) {
@@ -100,7 +101,7 @@ public class MvvmTravelNoteReleaseVm extends ViewModel {
             }
             MvvmTravelNoteDetailEntity.DayBean dayBean = new MvvmTravelNoteDetailEntity.DayBean();
             dayBean.setId((i + 1) + "");
-            dayBean.setDay("第" + (i + 1) + "天");
+            dayBean.setDay(entity.getTitle());
             dayBean.setContentList(contentList);
             days.add(dayBean);
         }

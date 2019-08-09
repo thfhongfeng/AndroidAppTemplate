@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pine.base.R;
+import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.tool.util.LogUtils;
@@ -47,10 +48,31 @@ public class TextImageDisplayView extends LinearLayout {
         setOrientation(VERTICAL);
     }
 
-    public void setupView(String title, List<TextImageItemEntity> dataList) {
+    public void setupView(@NonNull TextImageEntity textImageEntity) {
+        removeAllViews();
+        mTitle = textImageEntity.getTitle();
+        if (!TextUtils.isEmpty(mTitle)) {
+            View topTitleView = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_display_top, null);
+            ((TextView) topTitleView.findViewById(R.id.title_tv)).setText(mTitle);
+            topTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
+            addView(topTitleView);
+        }
+        mContent = textImageEntity.getItemList();
+        if (mContent != null) {
+            for (TextImageItemEntity entity : mContent) {
+                if (TYPE_TEXT.equals(entity.getType())) {
+                    addText(entity);
+                } else if (TYPE_IMAGE.equals(entity.getType())) {
+                    addImage(entity);
+                }
+            }
+        }
+    }
+
+    public void setupView(@NonNull String title, @NonNull List<TextImageItemEntity> dataList) {
         removeAllViews();
         mTitle = title;
-        if (!TextUtils.isEmpty(title)) {
+        if (!TextUtils.isEmpty(mTitle)) {
             View topTitleView = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_display_top, null);
             ((TextView) topTitleView.findViewById(R.id.title_tv)).setText(mTitle);
             topTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);

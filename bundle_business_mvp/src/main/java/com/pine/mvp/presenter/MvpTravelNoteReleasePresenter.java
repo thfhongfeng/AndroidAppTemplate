@@ -6,10 +6,11 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.pine.base.BaseConstants;
-import com.pine.base.component.editor.bean.TextImageEditorItemData;
+import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
+import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.bean.MvpTravelNoteDetailEntity;
@@ -47,6 +48,11 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
     @NonNull
     public UploadFileLinearLayout.OneByOneUploadAdapter getUploadAdapter() {
         return new UploadFileLinearLayout.OneByOneUploadAdapter() {
+
+            @Override
+            public String getUploadUrl() {
+                return MvpUrlConstants.Upload_Single_File;
+            }
 
             @Override
             public String getFileKey(FileUploadBean fileUploadBean) {
@@ -155,21 +161,22 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
             params.put(preface.getKey(), preface.getValue());
         }
 
-        InputParam<List<List<TextImageEditorItemData>>> daysBean = getUi().getNoteContentParam("days");
+        InputParam<List<TextImageEntity>> daysBean = getUi().getNoteContentParam("days");
         if (daysBean.checkIsEmpty(R.string.mvp_note_release_note_content_need)) {
             return;
         } else {
             JSONArray daysArr = new JSONArray();
             try {
                 for (int i = 0; i < daysBean.getValue().size(); i++) {
-                    List<TextImageEditorItemData> dayContentList = daysBean.getValue().get(i);
+                    TextImageEntity entity = daysBean.getValue().get(i);
+                    List<TextImageItemEntity> dayContentList = entity.getItemList();
                     if (dayContentList == null || dayContentList.size() < 1) {
                         daysBean.toastAndTryScrollTo(R.string.mvp_note_release_day_note_need);
                         return;
                     }
                     JSONArray dayContentArr = new JSONArray();
                     for (int j = 0; j < dayContentList.size(); j++) {
-                        TextImageEditorItemData itemData = dayContentList.get(j);
+                        TextImageItemEntity itemData = dayContentList.get(j);
                         switch (itemData.getType()) {
                             case TextImageItemEntity.TYPE_TEXT:
                                 if (TextUtils.isEmpty(itemData.getText())) {
@@ -195,7 +202,7 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
                     }
                     JSONObject day = new JSONObject();
                     day.put("id", (i + 1) + "");
-                    day.put("day", "第" + (i + 1) + "天");
+                    day.put("day", entity.getTitle());
                     day.put("contentList", dayContentArr);
                     daysArr.put(day);
                 }

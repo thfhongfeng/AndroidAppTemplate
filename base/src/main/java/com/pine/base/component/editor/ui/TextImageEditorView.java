@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.pine.base.R;
 import com.pine.base.component.editor.bean.TextImageEditorItemData;
+import com.pine.base.component.editor.bean.TextImageEntity;
+import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
@@ -66,15 +68,15 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         mMaxImageSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
     }
 
-    public void init(@NonNull Activity activity, @NonNull String uploadUrl, int index,
-                     String title, OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
-        initUpload(activity, uploadUrl, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
+    public void init(@NonNull Activity activity, int index, String title,
+                     @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
+        initUpload(activity, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
         initView(index, title);
     }
 
-    public void init(@NonNull Activity activity, @NonNull String uploadUrl, int index,
-                     String title, TogetherUploadAdapter adapter, int requestCodeSelectImage) {
-        initUpload(activity, uploadUrl, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
+    public void init(@NonNull Activity activity, int index, String title,
+                     @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
+        initUpload(activity, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
         initView(index, title);
     }
 
@@ -234,8 +236,9 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         return imageItemUrlList;
     }
 
-    public List<TextImageEditorItemData> getData() {
-        List<TextImageEditorItemData> data = new ArrayList<>();
+    public TextImageEntity getData() {
+        TextImageEntity entity = new TextImageEntity();
+        List<TextImageItemEntity> list = new ArrayList<>();
         int childCount = getChildCount();
         for (int i = mInitChildViewCount; i < childCount; i++) {
             View view = getChildAt(i);
@@ -243,22 +246,27 @@ public class TextImageEditorView extends UploadFileLinearLayout {
             if (itemData != null) {
                 EditText editText = view.findViewById(R.id.text_et);
                 itemData.setText(editText.getText().toString());
-                data.add(itemData);
+                list.add(itemData);
             }
         }
-        return data;
+        entity.setTitle(mTitle);
+        entity.setItemList(list);
+        return entity;
     }
 
-    public void setData(List<TextImageEditorItemData> data) {
-        for (int i = 0; i < data.size(); i++) {
-            TextImageEditorItemData itemData = data.get(i);
-            if (itemData == null) {
-                continue;
-            }
-            if (TYPE_TEXT.equals(itemData.getType())) {
-                addText(i + mInitChildViewCount, itemData, false);
-            } else if (TYPE_IMAGE.equals(itemData.getType())) {
-                addImage(i + mInitChildViewCount, itemData);
+    public void setData(@NonNull TextImageEntity data) {
+        List<TextImageItemEntity> list = data.getItemList();
+        if (list == null) {
+            return;
+        }
+        for (int i = 0; i < list.size(); i++) {
+            TextImageItemEntity itemData = list.get(i);
+            if (itemData != null && itemData instanceof TextImageEditorItemData) {
+                if (TYPE_TEXT.equals(itemData.getType())) {
+                    addText(i + mInitChildViewCount, (TextImageEditorItemData) itemData, false);
+                } else if (TYPE_IMAGE.equals(itemData.getType())) {
+                    addImage(i + mInitChildViewCount, (TextImageEditorItemData) itemData);
+                }
             }
         }
         invalidate();

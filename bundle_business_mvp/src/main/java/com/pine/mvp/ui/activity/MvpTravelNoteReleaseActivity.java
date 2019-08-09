@@ -15,6 +15,9 @@ import android.widget.TextView;
 
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
+import com.pine.base.component.editor.bean.TextImageEntity;
+import com.pine.base.component.editor.ui.ArticleDisplayView;
+import com.pine.base.component.editor.ui.ArticleEditorView;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -22,9 +25,9 @@ import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpTravelNoteReleaseContract;
 import com.pine.mvp.presenter.MvpTravelNoteReleasePresenter;
-import com.pine.mvp.widget.view.MvpNoteEditorView;
 import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.bean.InputParam;
+import com.pine.tool.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,8 +45,10 @@ public class MvpTravelNoteReleaseActivity extends
     private final int REQUEST_CODE_BAIDU_MAP = 1;
     private SwipeRefreshLayout swipe_refresh_layout;
     private NestedScrollView nested_scroll_view;
-    private RelativeLayout set_out_date_ll, day_count_ll, belong_shop_ll;
-    private MvpNoteEditorView mnev_view;
+    private TextView preview_note_btn_tv;
+    private ArticleDisplayView note_preview_adv;
+    private RelativeLayout note_preview_rl, set_out_date_rl, day_count_rl, belong_shop_rl;
+    private ArticleEditorView aev_view;
     private EditText title_et, preface_et;
     private TextView set_out_date_tv, day_count_tv, belong_shop_tv;
     private InputTextDialog mDayCountInputDialog;
@@ -58,10 +63,13 @@ public class MvpTravelNoteReleaseActivity extends
     protected void findViewOnCreate() {
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         nested_scroll_view = findViewById(R.id.nested_scroll_view);
-        set_out_date_ll = findViewById(R.id.set_out_date_ll);
-        day_count_ll = findViewById(R.id.day_count_ll);
-        belong_shop_ll = findViewById(R.id.belong_shop_ll);
-        mnev_view = findViewById(R.id.mnev_view);
+        note_preview_rl = findViewById(R.id.note_preview_rl);
+        preview_note_btn_tv = findViewById(R.id.preview_note_btn_tv);
+        note_preview_adv = findViewById(R.id.note_preview_adv);
+        set_out_date_rl = findViewById(R.id.set_out_date_rl);
+        day_count_rl = findViewById(R.id.day_count_rl);
+        belong_shop_rl = findViewById(R.id.belong_shop_rl);
+        aev_view = findViewById(R.id.aev_view);
         title_et = findViewById(R.id.title_et);
         preface_et = findViewById(R.id.preface_et);
         set_out_date_tv = findViewById(R.id.set_out_date_tv);
@@ -76,9 +84,11 @@ public class MvpTravelNoteReleaseActivity extends
 
     @Override
     protected void init() {
-        set_out_date_ll.setOnClickListener(this);
-        belong_shop_ll.setOnClickListener(this);
-        day_count_ll.setOnClickListener(this);
+        preview_note_btn_tv.setOnClickListener(this);
+        note_preview_rl.setOnClickListener(this);
+        set_out_date_rl.setOnClickListener(this);
+        belong_shop_rl.setOnClickListener(this);
+        day_count_rl.setOnClickListener(this);
 
         swipe_refresh_layout.setColorSchemeResources(
                 R.color.red,
@@ -123,7 +133,13 @@ public class MvpTravelNoteReleaseActivity extends
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.set_out_date_ll) {
+        if (v.getId() == R.id.note_preview_rl) {
+            note_preview_rl.setVisibility(View.GONE);
+        } else if (v.getId() == R.id.preview_note_btn_tv) {
+            note_preview_rl.setVisibility(View.VISIBLE);
+            List<TextImageEntity> noteDayList = aev_view.getSectionList();
+            note_preview_adv.init(noteDayList);
+        } else if (v.getId() == R.id.set_out_date_rl) {
             if (mSetOutDateSelectDialog == null) {
                 int year = Calendar.getInstance().get(Calendar.YEAR);
                 mSetOutDateSelectDialog = DialogUtils.createDateSelectDialog(this,
@@ -137,7 +153,7 @@ public class MvpTravelNoteReleaseActivity extends
                         });
             }
             mSetOutDateSelectDialog.show();
-        } else if (v.getId() == R.id.day_count_ll) {
+        } else if (v.getId() == R.id.day_count_rl) {
             if (mDayCountInputDialog == null) {
                 mDayCountInputDialog = DialogUtils.createTextInputDialog(this,
                         getString(R.string.mvp_shop_release_day_count_hint),
@@ -149,10 +165,16 @@ public class MvpTravelNoteReleaseActivity extends
                                 if (textList != null && textList.size() > 0 &&
                                         !TextUtils.isEmpty(textList.get(0))) {
                                     day_count_tv.setText(textList.get(0));
-                                    mnev_view.setDayCount(MvpTravelNoteReleaseActivity.this,
-                                            Integer.parseInt(textList.get(0)),
-                                            null,
-                                            mPresenter.getUploadAdapter());
+                                    int count = Integer.parseInt(textList.get(0));
+                                    List<String> titleList = null;
+                                    if (count > 1) {
+                                        titleList = new ArrayList<>();
+                                        for (int i = 0; i < count; i++) {
+                                            titleList.add(getString(R.string.mvp_note_release_day_note_title, StringUtils.toChineseNumber(i + 1)));
+                                        }
+                                    }
+                                    aev_view.setSectionCount(MvpTravelNoteReleaseActivity.this,
+                                            count, titleList, mPresenter.getUploadAdapter());
                                 }
                             }
 
@@ -163,7 +185,7 @@ public class MvpTravelNoteReleaseActivity extends
                         });
             }
             mDayCountInputDialog.show();
-        } else if (v.getId() == R.id.belong_shop_ll) {
+        } else if (v.getId() == R.id.belong_shop_rl) {
             mPresenter.selectBelongShop();
         }
     }
@@ -216,7 +238,7 @@ public class MvpTravelNoteReleaseActivity extends
     @NonNull
     @Override
     public InputParam getNoteContentParam(String key) {
-        return new InputParam(this, key, mnev_view.getNoteDayList());
+        return new InputParam(this, key, aev_view.getSectionList());
     }
 
     @Override

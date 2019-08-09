@@ -97,37 +97,41 @@ public class MvpShopReleaseActivity extends
         );
         swipe_refresh_layout.setEnabled(false);
 
-        photo_iuv.init(this, MvpUrlConstants.Upload_Single_File, true,
-                new ImageUploadView.OneByOneUploadAdapter() {
-                    @Override
-                    public String getFileKey(FileUploadBean fileUploadBean) {
-                        // Test code begin
-                        return "file";
-                        // Test code end
-                    }
+        photo_iuv.init(this, true, new ImageUploadView.OneByOneUploadAdapter() {
+            @Override
+            public String getUploadUrl() {
+                return MvpUrlConstants.Upload_Single_File;
+            }
 
-                    @Override
-                    public Map<String, String> getUploadParam(FileUploadBean fileUploadBean) {
-                        return mPresenter.makeUploadDefaultParams();
-                    }
+            @Override
+            public String getFileKey(FileUploadBean fileUploadBean) {
+                // Test code begin
+                return "file";
+                // Test code end
+            }
 
-                    @Override
-                    public String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject response) {
-                        // Test code begin
-                        if (response == null) {
-                            return null;
-                        }
-                        if (!response.optBoolean(BaseConstants.SUCCESS)) {
-                            return null;
-                        }
-                        JSONObject data = response.optJSONObject(BaseConstants.DATA);
-                        if (data == null) {
-                            return null;
-                        }
-                        return data.optString("fileUrl");
-                        // Test code end
-                    }
-                }, 100);
+            @Override
+            public Map<String, String> getUploadParam(FileUploadBean fileUploadBean) {
+                return mPresenter.makeUploadDefaultParams();
+            }
+
+            @Override
+            public String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject response) {
+                // Test code begin
+                if (response == null) {
+                    return null;
+                }
+                if (!response.optBoolean(BaseConstants.SUCCESS)) {
+                    return null;
+                }
+                JSONObject data = response.optJSONObject(BaseConstants.DATA);
+                if (data == null) {
+                    return null;
+                }
+                return data.optString("fileUrl");
+                // Test code end
+            }
+        }, 100);
         photo_iuv.setCropEnable(101);
     }
 

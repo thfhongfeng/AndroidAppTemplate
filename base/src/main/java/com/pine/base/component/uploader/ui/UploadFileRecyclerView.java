@@ -67,8 +67,6 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
     private Handler mThreadHandler;
     // 主线程Handler
     private Handler mMainHandler;
-    // 上传文件的服务器地址
-    private String mUploadFileUrl;
     private boolean mIsInit;
     private OneByOneUploadAdapter mOneByOneUploadAdapter;
     private TogetherUploadAdapter mTogetherUploadAdapter;
@@ -96,16 +94,15 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         mIsInit = true;
     }
 
-    protected void initUpload(@NonNull Activity activity, @NonNull String uploadUrl,
-                              int fileType, @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
+    protected void initUpload(@NonNull Activity activity, int fileType,
+                              @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
         mActivity = activity;
         if (mActivity == null) {
             throw new IllegalStateException("Activity should not be empty");
         }
         activity.attachCircleView(this);
         mTogetherUploadMode = false;
-        mUploadFileUrl = uploadUrl;
-        if (TextUtils.isEmpty(mUploadFileUrl)) {
+        if (TextUtils.isEmpty(adapter.getUploadUrl())) {
             throw new IllegalStateException("Upload url should not be empty");
         }
         mFileType = fileType;
@@ -117,16 +114,15 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         mIsInit = true;
     }
 
-    public void initUpload(@NonNull Activity activity, @NonNull String uploadUrl,
-                           int fileType, @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
+    public void initUpload(@NonNull Activity activity, int fileType,
+                           @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
         mActivity = activity;
         if (mActivity == null) {
             throw new IllegalStateException("Activity should not be empty");
         }
         activity.attachCircleView(this);
         mTogetherUploadMode = true;
-        mUploadFileUrl = uploadUrl;
-        if (TextUtils.isEmpty(mUploadFileUrl)) {
+        if (TextUtils.isEmpty(adapter.getUploadUrl())) {
             throw new IllegalStateException("Upload url should not be empty");
         }
         mFileType = fileType;
@@ -345,7 +341,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
             fileUploadBean.setFileName(filePath.substring(filePath.lastIndexOf(File.separator) + 1));
             fileUploadBean.setParams(mOneByOneUploadAdapter.getUploadParam(fileUploadBean));
             fileUploadBean.setOrderIndex(i);
-            fileUploadBean.setRequestUrl(mUploadFileUrl);
+            fileUploadBean.setRequestUrl(mOneByOneUploadAdapter.getUploadUrl());
             fileUploadBean.setUploadState(FileUploadState.UPLOAD_STATE_PREPARING);
             uploadBeanList.add(fileUploadBean);
         }
@@ -461,7 +457,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
             fileUploadBean.setLocalFilePath(filePath);
             fileUploadBean.setFileName(filePath.substring(filePath.lastIndexOf(File.separator) + 1));
             fileUploadBean.setOrderIndex(i);
-            fileUploadBean.setRequestUrl(mUploadFileUrl);
+            fileUploadBean.setRequestUrl(mTogetherUploadAdapter.getUploadUrl());
             fileUploadBean.setUploadState(FileUploadState.UPLOAD_STATE_PREPARING);
             uploadBeanList.add(fileUploadBean);
         }
@@ -477,7 +473,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
                 }
                 mFileUploadComponent = new FileUploadComponent(mActivity, mMaxImageSize,
                         mCompressImageWidth, mCompressImageHeight);
-                mFileUploadComponent.startTogether(mUploadFileUrl,
+                mFileUploadComponent.startTogether(mTogetherUploadAdapter.getUploadUrl(),
                         mTogetherUploadAdapter.getUploadParam(uploadBeanList),
                         mTogetherUploadAdapter.getFilesKey(uploadBeanList),
                         uploadBeanList, new FileUploadComponent.SimpleTogetherUploadListCallback() {
@@ -578,6 +574,9 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
 
 
     public interface OneByOneUploadAdapter {
+        // 获取上传文件的服务器地址
+        String getUploadUrl();
+
         String getFileKey(FileUploadBean fileUploadBean);
 
         Map<String, String> getUploadParam(FileUploadBean fileUploadBean);
@@ -586,6 +585,9 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
     }
 
     public interface TogetherUploadAdapter {
+        // 获取上传文件的服务器地址
+        String getUploadUrl();
+
         String getFileKey(FileUploadBean fileUploadBean);
 
         String getFilesKey(List<FileUploadBean> fileUploadBeanList);

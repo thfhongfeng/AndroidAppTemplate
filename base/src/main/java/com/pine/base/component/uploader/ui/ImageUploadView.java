@@ -80,9 +80,9 @@ public class ImageUploadView extends UploadFileRecyclerView {
     }
 
 
-    public void init(@NonNull Activity activity, @NonNull String uploadUrl,
-                     boolean canDelete, @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
-        initUpload(activity, uploadUrl, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
+    public void init(@NonNull Activity activity, boolean canDelete,
+                     @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
+        initUpload(activity, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
         mUploadImageAdapter = new UploadImageAdapter(
                 UploadImageAdapter.UPLOAD_IMAGE_VIEW_HOLDER, true, canDelete, mMaxFileCount);
         addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.dp_10)));
@@ -93,9 +93,9 @@ public class ImageUploadView extends UploadFileRecyclerView {
         notifyAdapterDataChanged();
     }
 
-    public void init(@NonNull Activity activity, @NonNull String uploadUrl,
-                     boolean canDelete, @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
-        initUpload(activity, uploadUrl, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
+    public void init(@NonNull Activity activity, boolean canDelete,
+                     @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
+        initUpload(activity, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
         mUploadImageAdapter = new UploadImageAdapter(
                 UploadImageAdapter.UPLOAD_IMAGE_VIEW_HOLDER, true, canDelete, mMaxFileCount);
         addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.dp_10)));

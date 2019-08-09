@@ -481,7 +481,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     "id text not null unique,title text not null,authorId text not null," +
                     "author text not null,dayCount integer not null default 0," +
                     "likeCount integer not null default 0," +
-                    "hot integer not null default 'false',headImgUrl text," +
+                    "hot integer not null default 0,headImgUrl text," +
                     "readCount integer not null default 0,preface text not null," +
                     "days text,setOutDate text not null," +
                     "createTime text,updateTime text)");

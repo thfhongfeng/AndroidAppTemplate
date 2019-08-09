@@ -13,17 +13,20 @@ import android.widget.TextView;
 import com.pine.base.BaseConstants;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
+import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
+import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.databinding.MvvmTravelNoteReleaseActivityBinding;
 import com.pine.mvvm.vm.MvvmTravelNoteReleaseVm;
 import com.pine.tool.access.UiAccessAnnotation;
+import com.pine.tool.util.StringUtils;
 
 import org.json.JSONObject;
 
@@ -45,6 +48,11 @@ public class MvvmTravelNoteReleaseActivity extends
     private InputTextDialog mDayCountInputDialog;
     private DateSelectDialog mSetOutDateSelectDialog;
     private UploadFileLinearLayout.OneByOneUploadAdapter mUploadAdapter = new UploadFileLinearLayout.OneByOneUploadAdapter() {
+
+        @Override
+        public String getUploadUrl() {
+            return MvvmUrlConstants.Upload_Single_File;
+        }
 
         @Override
         public String getFileKey(FileUploadBean fileUploadBean) {
@@ -174,7 +182,7 @@ public class MvvmTravelNoteReleaseActivity extends
     }
 
     private void onAddNoteBtnClicked() {
-        mViewModel.addNote(mBinding.mnevView.getNoteDayList());
+        mViewModel.addNote(mBinding.aevView.getSectionList());
     }
 
     @Override
@@ -214,10 +222,17 @@ public class MvvmTravelNoteReleaseActivity extends
                                 if (textList != null && textList.size() > 0 &&
                                         !TextUtils.isEmpty(textList.get(0))) {
                                     mBinding.dayCountTv.setText(textList.get(0));
-                                    mBinding.dayCountTv.setData(Integer.parseInt(textList.get(0)));
-                                    mBinding.mnevView.setDayCount(MvvmTravelNoteReleaseActivity.this,
-                                            Integer.parseInt(textList.get(0)),
-                                            null, mUploadAdapter);
+                                    int count = Integer.parseInt(textList.get(0));
+                                    mBinding.dayCountTv.setData(count);
+                                    List<String> titleList = null;
+                                    if (count > 1) {
+                                        titleList = new ArrayList<>();
+                                        for (int i = 0; i < count; i++) {
+                                            titleList.add(getString(R.string.mvvm_note_release_day_note_title, StringUtils.toChineseNumber(i + 1)));
+                                        }
+                                    }
+                                    mBinding.aevView.setSectionCount(MvvmTravelNoteReleaseActivity.this,
+                                            count, titleList, mUploadAdapter);
                                 }
                             }
 
@@ -234,6 +249,16 @@ public class MvvmTravelNoteReleaseActivity extends
             Intent intent = new Intent(MvvmTravelNoteReleaseActivity.this, MvvmShopSearchCheckActivity.class);
             intent.putParcelableArrayListExtra(MvvmShopSearchCheckActivity.REQUEST_CHECKED_LIST_KEY, mViewModel.getBelongShopListData().getValue());
             startActivityForResult(intent, REQUEST_CODE_SELECT_BELONG_SHOP);
+        }
+
+        public void onPreviewNoteClick(View view) {
+            mBinding.notePreviewRl.setVisibility(View.VISIBLE);
+            List<TextImageEntity> noteDayList = mBinding.aevView.getSectionList();
+            mBinding.notePreviewAdv.init(noteDayList);
+        }
+
+        public void onPreviewContainerClick(View view) {
+            mBinding.notePreviewRl.setVisibility(View.GONE);
         }
     }
 }
