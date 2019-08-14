@@ -58,25 +58,25 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseFileUploadView);
         mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileCount, 10);
-        mMaxImageSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
     }
 
     public TextImageEditorView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseFileUploadView);
         mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileCount, 10);
-        mMaxImageSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
     }
 
     public void init(@NonNull Activity activity, int index, String title,
                      @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
-        initUpload(activity, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
+        initUpload(activity, adapter, requestCodeSelectImage);
         initView(index, title);
     }
 
     public void init(@NonNull Activity activity, int index, String title,
                      @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
-        initUpload(activity, FileUploadComponent.TYPE_IMAGE, adapter, requestCodeSelectImage);
+        initUpload(activity, adapter, requestCodeSelectImage);
         initView(index, title);
     }
 
@@ -271,9 +271,14 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         }
         invalidate();
     }
+    
+    @Override
+    public int getUploadFileType() {
+        return FileUploadComponent.TYPE_IMAGE;
+    }
 
     @Override
-    public int getValidImageCount() {
+    public int getValidFileCount() {
         List<TextImageEditorItemData> imageItemUrlList = getValidImageDataList();
         return imageItemUrlList == null ? 0 : imageItemUrlList.size();
     }

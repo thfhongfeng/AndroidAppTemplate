@@ -7,21 +7,21 @@ import android.databinding.InverseBindingListener;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.pine.base.component.uploader.ui.ImageUploadView;
+import com.pine.base.component.uploader.ui.ImageUploadRecycleView;
 
-public class BindingImageUploadView extends ImageUploadView {
+public class BindingImageUploadRecycleView extends ImageUploadRecycleView {
     private InverseBindingListener bindingDataListener;
     private String imgUrlsJoinStr = ",";
 
-    public BindingImageUploadView(Context context) {
+    public BindingImageUploadRecycleView(Context context) {
         super(context);
     }
 
-    public BindingImageUploadView(Context context, @Nullable AttributeSet attrs) {
+    public BindingImageUploadRecycleView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BindingImageUploadView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public BindingImageUploadRecycleView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -47,27 +47,27 @@ public class BindingImageUploadView extends ImageUploadView {
     }
 
     @BindingAdapter(value = {"imgUrlsJoinStr"})
-    public static void setImgUrlsJoinStr(BindingImageUploadView view, String imgUrlsJoinStr) {
+    public static void setImgUrlsJoinStr(BindingImageUploadRecycleView view, String imgUrlsJoinStr) {
         view.imgUrlsJoinStr = imgUrlsJoinStr;
     }
 
     @BindingAdapter(value = {"newAddImgUrls"})
-    public static void setNewAddImgUrls(BindingImageUploadView view, String newAddImgUrls) {
+    public static void setNewAddImgUrls(BindingImageUploadRecycleView view, String newAddImgUrls) {
 
     }
 
     @InverseBindingAdapter(attribute = "newAddImgUrls", event = "newAddImgUrlsAttrChanged")
-    public static Object getNewAddImgUrls(BindingImageUploadView view) {
+    public static Object getNewAddImgUrls(BindingImageUploadRecycleView view) {
         return view.getNewUploadImageRemoteString(view.imgUrlsJoinStr);
     }
 
     @BindingAdapter(value = {"newAddImgUrlsAttrChanged"}, requireAll = false)
-    public static void setNewAddImgUrlsAttrChanged(BindingImageUploadView view, InverseBindingListener listener) {
+    public static void setNewAddImgUrlsAttrChanged(BindingImageUploadRecycleView view, InverseBindingListener listener) {
         view.bindingDataListener = listener;
     }
 
     @BindingAdapter(value = {"initImgUrls"})
-    public static void setInitImgUrls(BindingImageUploadView view, String initImgUrls) {
+    public static void setInitImgUrls(BindingImageUploadRecycleView view, String initImgUrls) {
         view.setRemoteImages(initImgUrls, view.imgUrlsJoinStr);
     }
 }

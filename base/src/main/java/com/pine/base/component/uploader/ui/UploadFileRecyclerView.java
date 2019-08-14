@@ -3,6 +3,7 @@ package com.pine.base.component.uploader.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -25,6 +26,7 @@ import com.pine.tool.ui.Activity;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
+import com.pine.tool.util.UriUtils;
 import com.pine.tool.widget.ILifeCircleView;
 
 import org.json.JSONObject;
@@ -40,23 +42,23 @@ import java.util.Map;
 
 public abstract class UploadFileRecyclerView extends RecyclerView implements ILifeCircleView {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
-    private int mRequestCodeCrop = 90200;
-    private int mRequestCodeSelectImage = 90201;
     // 每次选择文件最大允数
     private final int MAX_PER_UPLOAD_FILE_COUNT = 10;
     protected Activity mActivity;
     // 图片需要压缩时（图片大小大于允许上传大小时）的输出宽度和高度
     protected int mCompressImageWidth = 1440;
     protected int mCompressImageHeight = 2550;
-    // 每张图片最大允许上传大小
-    protected long mMaxImageSize = 1024 * 1024;
+    // 每张图片裁剪宽高
     protected int mCropWidth = 360;
     protected int mCropHeight = 360;
     // 最大允许上传文件数
     protected int mMaxFileCount = 30;
+    // 最大允许上传文件大小
+    protected long mMaxFileSize = 1024 * 1024;
     // 文件上传组件
     protected FileUploadComponent mFileUploadComponent;
-    private int mFileType = FileUploadComponent.TYPE_IMAGE;
+    private int mRequestCodeCrop = 90100;
+    private int mRequestCodeSelectFile = 90101;
     // 是否支持图片裁剪
     private boolean mEnableCrop;
     private String mCurCropPhotoPath;
@@ -84,18 +86,17 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         super(context, attrs, defStyle);
     }
 
-    public void initUpload(@NonNull Activity activity, int fileType) {
+    public void initUpload(@NonNull Activity activity) {
         mActivity = activity;
         if (mActivity == null) {
             throw new IllegalStateException("Activity should not be empty");
         }
         activity.attachCircleView(this);
-        mFileType = fileType;
         mIsInit = true;
     }
 
-    protected void initUpload(@NonNull Activity activity, int fileType,
-                              @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
+    protected void initUpload(@NonNull Activity activity,
+                              @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
         mActivity = activity;
         if (mActivity == null) {
             throw new IllegalStateException("Activity should not be empty");
@@ -105,17 +106,16 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         if (TextUtils.isEmpty(adapter.getUploadUrl())) {
             throw new IllegalStateException("Upload url should not be empty");
         }
-        mFileType = fileType;
         mOneByOneUploadAdapter = adapter;
-        mRequestCodeSelectImage = requestCodeSelectImage;
+        mRequestCodeSelectFile = requestCodeSelectFile;
         if (mMainHandler == null) {
             mMainHandler = new Handler(Looper.getMainLooper());
         }
         mIsInit = true;
     }
 
-    public void initUpload(@NonNull Activity activity, int fileType,
-                           @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
+    public void initUpload(@NonNull Activity activity,
+                           @NonNull TogetherUploadAdapter adapter, int requestCodeSelectFile) {
         mActivity = activity;
         if (mActivity == null) {
             throw new IllegalStateException("Activity should not be empty");
@@ -125,9 +125,8 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         if (TextUtils.isEmpty(adapter.getUploadUrl())) {
             throw new IllegalStateException("Upload url should not be empty");
         }
-        mFileType = fileType;
         mTogetherUploadAdapter = adapter;
-        mRequestCodeSelectImage = requestCodeSelectImage;
+        mRequestCodeSelectFile = requestCodeSelectFile;
         if (mMainHandler == null) {
             mMainHandler = new Handler(Looper.getMainLooper());
         }
@@ -135,14 +134,14 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
     }
 
     public void setCropEnable(int cropRequestCode) {
-        mEnableCrop = mFileType == FileUploadComponent.TYPE_IMAGE;
+        mEnableCrop = getUploadFileType() == FileUploadComponent.TYPE_IMAGE;
         if (mEnableCrop) {
             mRequestCodeCrop = cropRequestCode;
         }
     }
 
     public void setCropEnable(int cropRequestCode, int cropWidth, int cropHeight) {
-        if (mFileType == FileUploadComponent.TYPE_IMAGE) {
+        if (getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
             mEnableCrop = true;
             mCropWidth = cropWidth;
             mCropHeight = cropHeight;
@@ -156,8 +155,8 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         mMaxFileCount = maxFileCount;
     }
 
-    public void setMaxImageSize(int maxImageSize) {
-        mMaxImageSize = maxImageSize;
+    public void setMaxFileSize(int maxFileSize) {
+        mMaxFileSize = maxFileSize;
     }
 
     /**
@@ -199,7 +198,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
     }
 
     protected void selectUploadObjects() {
-        if (mFileType == FileUploadComponent.TYPE_IMAGE) {
+        if (getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
             selectImages();
         } else {
             selectFiles();
@@ -210,9 +209,9 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
      * 打开相册或者照相机选择图片，最多mMaxFileCount张
      */
     private void selectImages() {
-        int validCount = getValidImageCount();
+        int validCount = getValidFileCount();
         if (validCount >= mMaxFileCount) {
-            Toast.makeText(mActivity, getResources().getString(R.string.base_upload_file_count_exceeding_msg,
+            Toast.makeText(mActivity, getResources().getString(R.string.base_upload_image_count_exceeding_msg,
                     mMaxFileCount), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -222,14 +221,14 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
                 ", allowCount:" + allowCount);
         ImageSelector.create()
                 .count(mEnableCrop ? 1 : allowCount)
-                .start(mActivity, mRequestCodeSelectImage);
+                .start(mActivity, mRequestCodeSelectFile);
     }
 
     /**
-     * 打开文件管理选择文件，最多mMaxFileCount个
+     * 打开文件管理选择文件，最多mMaxFileCount张
      */
     private void selectFiles() {
-        int validCount = getValidImageCount();
+        int validCount = getValidFileCount();
         if (validCount >= mMaxFileCount) {
             Toast.makeText(mActivity, getResources().getString(R.string.base_upload_file_count_exceeding_msg,
                     mMaxFileCount), Toast.LENGTH_SHORT).show();
@@ -238,11 +237,15 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         int allowCount = (mMaxFileCount - validCount > MAX_PER_UPLOAD_FILE_COUNT ?
                 MAX_PER_UPLOAD_FILE_COUNT : mMaxFileCount - validCount);
         LogUtils.d(TAG, "selectFiles allowCount:" + allowCount);
-        // todo
+        //调用系统文件管理器打开指定路径目录
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        mActivity.startActivityForResult(intent, mRequestCodeSelectFile);
     }
 
     protected void displayUploadObject(ArrayList<String> displayList, int position) {
-        if (mFileType == FileUploadComponent.TYPE_IMAGE) {
+        if (getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
             displayBigImages(displayList, position);
         } else {
             displayFiles(displayList, position);
@@ -252,12 +255,16 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
     private void displayBigImages(ArrayList<String> displayList, int position) {
         ImageViewer.create()
                 .origin(displayList)
-                .position(position)
+                .position(position < 0 ? 0 : position)
                 .start(mActivity);
     }
 
     private void displayFiles(ArrayList<String> displayList, int position) {
-        // todo
+        if (position < 0) {
+            return;
+        }
+        File file = new File(displayList.get(position));
+        FileUtils.openFile(getContext(), file, getResources().getString(R.string.base_file_open_not_support_type));
     }
 
     @Override
@@ -267,7 +274,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
             mThreadHandler.removeCallbacksAndMessages(null);
             mThreadHandler = null;
             mHandlerThread.quit();
-            mThreadHandler = null;
+            mHandlerThread = null;
         }
         if (mMainHandler != null) {
             mMainHandler.removeCallbacksAndMessages(null);
@@ -291,23 +298,47 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
                         " mCurCropPhotoPath:" + mCurCropPhotoPath);
                 uploadFileOneByOne(newSelectList);
             }
-        } else if (requestCode == mRequestCodeSelectImage) {
+        } else if (requestCode == mRequestCodeSelectFile) {
             if (resultCode == android.app.Activity.RESULT_OK) {
-                List<String> newSelectList = data.getStringArrayListExtra(
-                        ImageSelector.INTENT_SELECTED_IMAGE_LIST);
-                if (newSelectList.size() < 1) {
-                    return;
-                }
-                LogUtils.d(TAG, "onActivityResult REQUEST_CODE_SELECT_IMAGE" +
-                        " mEnableCrop:" + mEnableCrop + ", mTogetherUploadMode:" + mTogetherUploadMode +
-                        ", newSelectList.size():" + newSelectList.size());
-                if (mEnableCrop) {
-                    startCropImage(newSelectList.get(0));
-                } else {
-                    if (mTogetherUploadMode) {
-                        uploadFileList(newSelectList);
+                if (getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
+                    List<String> newSelectList = data.getStringArrayListExtra(
+                            ImageSelector.INTENT_SELECTED_IMAGE_LIST);
+                    if (newSelectList.size() < 1) {
+                        return;
+                    }
+                    LogUtils.d(TAG, "onActivityResult REQUEST_CODE_SELECT_IMAGE" +
+                            " mEnableCrop:" + mEnableCrop + ", mTogetherUploadMode:" + mTogetherUploadMode +
+                            ", newSelectList.size():" + newSelectList.size());
+                    if (mEnableCrop) {
+                        startCropImage(newSelectList.get(0));
                     } else {
-                        uploadFileOneByOne(newSelectList);
+                        if (mTogetherUploadMode) {
+                            uploadFileList(newSelectList);
+                        } else {
+                            uploadFileOneByOne(newSelectList);
+                        }
+                    }
+                } else {
+                    Uri uri = data.getData();
+                    String path;
+                    if ("file".equalsIgnoreCase(uri.getScheme())) {//使用第三方应用打开
+                        path = uri.getPath();
+                    } else {
+                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {//4.4以后
+                            path = UriUtils.getPath(getContext(), uri);
+                        } else {//4.4以下下系统调用方法
+                            path = UriUtils.getRealPathFromURI(getContext(), uri);
+                        }
+                    }
+                    LogUtils.d(TAG, "onActivityResult REQUEST_CODE_SELECT_IMAGE" +
+                            " mTogetherUploadMode:" + mTogetherUploadMode +
+                            ", path:" + path);
+                    List<String> list = new ArrayList<>();
+                    list.add(path);
+                    if (mTogetherUploadMode) {
+                        uploadFileList(list);
+                    } else {
+                        uploadFileOneByOne(list);
                     }
                 }
             }
@@ -321,7 +352,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         if (list == null || list.size() < 1 || mOneByOneUploadAdapter == null) {
             return;
         }
-        LogUtils.d(TAG, "uploadImageOneByOne list.size():" + list.size());
+        LogUtils.d(TAG, "uploadFileOneByOne list.size():" + list.size());
         if (mHandlerThread == null) {
             mHandlerThread = new HandlerThread("UploadFileRecyclerView");
             mHandlerThread.start();
@@ -336,7 +367,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
             fileUploadBean = new FileUploadBean();
             String filePath = list.get(i);
             fileUploadBean.setFileKey(mOneByOneUploadAdapter.getFileKey(fileUploadBean));
-            fileUploadBean.setFileType(mFileType);
+            fileUploadBean.setFileType(getUploadFileType());
             fileUploadBean.setLocalFilePath(filePath);
             fileUploadBean.setFileName(filePath.substring(filePath.lastIndexOf(File.separator) + 1));
             fileUploadBean.setParams(mOneByOneUploadAdapter.getUploadParam(fileUploadBean));
@@ -355,7 +386,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
                 if (!isAttachedToWindow()) {
                     return;
                 }
-                mFileUploadComponent = new FileUploadComponent(mActivity, mMaxImageSize,
+                mFileUploadComponent = new FileUploadComponent(mActivity, mMaxFileSize,
                         mCompressImageWidth, mCompressImageHeight);
                 mFileUploadComponent.startOneByOne(uploadBeanList,
                         new FileUploadComponent.OneByOneUploadCallback() {
@@ -438,9 +469,9 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         if (list == null || list.size() < 1 || mTogetherUploadAdapter == null) {
             return;
         }
-        LogUtils.d(TAG, "uploadImageList list.size():" + list.size());
+        LogUtils.d(TAG, "uploadFileList list.size():" + list.size());
         if (mHandlerThread == null) {
-            mHandlerThread = new HandlerThread("ImageUploadView");
+            mHandlerThread = new HandlerThread("FileUploadView");
             mHandlerThread.start();
             mThreadHandler = new Handler(mHandlerThread.getLooper());
         }
@@ -453,7 +484,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
             fileUploadBean = new FileUploadBean();
             String filePath = list.get(i);
             fileUploadBean.setFileKey(mTogetherUploadAdapter.getFileKey(fileUploadBean));
-            fileUploadBean.setFileType(mFileType);
+            fileUploadBean.setFileType(getUploadFileType());
             fileUploadBean.setLocalFilePath(filePath);
             fileUploadBean.setFileName(filePath.substring(filePath.lastIndexOf(File.separator) + 1));
             fileUploadBean.setOrderIndex(i);
@@ -471,7 +502,7 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
                 if (!isAttachedToWindow()) {
                     return;
                 }
-                mFileUploadComponent = new FileUploadComponent(mActivity, mMaxImageSize,
+                mFileUploadComponent = new FileUploadComponent(mActivity, mMaxFileSize,
                         mCompressImageWidth, mCompressImageHeight);
                 mFileUploadComponent.startTogether(mTogetherUploadAdapter.getUploadUrl(),
                         mTogetherUploadAdapter.getUploadParam(uploadBeanList),
@@ -554,7 +585,9 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
         });
     }
 
-    public abstract int getValidImageCount();
+    public abstract int getUploadFileType();
+
+    public abstract int getValidFileCount();
 
     public abstract void onFileUploadPrepare(List<FileUploadBean> uploadBeanList);
 

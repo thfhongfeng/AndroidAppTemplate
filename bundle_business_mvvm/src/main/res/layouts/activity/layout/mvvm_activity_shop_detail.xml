@@ -276,13 +276,13 @@
                         </TableRow>
                     </TableLayout>
 
-                    <com.pine.base.binding.widget.custom.view.BindingImageUploadView
+                    <com.pine.base.binding.widget.custom.view.BindingImageUploadRecycleView
                         android:id="@+id/photo_iuv"
                         imgUrlsJoinStr='@{","}'
                         initImgUrls="@{shopDetail.imgUrls}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp_10"></com.pine.base.binding.widget.custom.view.BindingImageUploadView>
+                        android:layout_margin="@dimen/dp_10"></com.pine.base.binding.widget.custom.view.BindingImageUploadRecycleView>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
 

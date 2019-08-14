@@ -33,9 +33,10 @@ import java.util.Map;
  */
 
 public class FileUploadComponent {
-    public static final int TYPE_IMAGE = 1;
-    public static final int TYPE_WORD_DOC = 2;
-    public static final int TYPE_TXT = 3;
+    public static final int TYPE_ALL = 1;
+    public static final int TYPE_IMAGE = 11;
+    public static final int TYPE_WORD_DOC = 12;
+    public static final int TYPE_TXT = 13;
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private WeakReference<Context> mContext;
     private Map<Integer, Object> mRequestMap;
@@ -356,7 +357,7 @@ public class FileUploadComponent {
     }
 
     private void deleteTempFile(FileUploadBean bean) {
-        if (bean != null && TextUtils.isEmpty(bean.getLocalTempFilePath())) {
+        if (bean != null && !TextUtils.isEmpty(bean.getLocalTempFilePath())) {
             new File(bean.getLocalTempFilePath()).deleteOnExit();
             bean.setLocalTempFilePath("");
         }

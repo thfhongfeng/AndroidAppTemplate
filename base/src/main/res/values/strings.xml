@@ -30,8 +30,10 @@
     <string name="base_all_image">所有图片</string>
     <string name="base_preview">预览</string>
     <string name="base_preview_format">预览(%1$d)</string>
-    <string name="base_upload_file_count_exceeding_msg">上传文件数量已超过%1$d张</string>
+    <string name="base_upload_image_count_exceeding_msg">上传图片数量已超过%1$d张</string>
+    <string name="base_upload_file_count_exceeding_msg">上传文件数量已超过%1$d个</string>
     <string name="base_error_no_permission">没有权限</string>
+    <string name="base_file_open_not_support_type">暂不支持打开该文件</string>
 
     <string name="base_file_upload_file_is_uploading">文件正在上传中</string>
     <string name="base_file_upload_file_null">文件不存在</string>

@@ -857,34 +857,34 @@ public class FileUtils {
      *
      * @param context 上下文
      * @param file    文件
+     * @param failMsg
      */
-    public static void openFile(Context context, File file) {
+    public static void openFile(Context context, File file, String failMsg) {
         try {
             // 调用系统程序打开文件.
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(Uri.fromFile(file), MimeTypeMap.getSingleton()
-                    .getMimeTypeFromExtension(
-                            MimeTypeMap
-                                    .getFileExtensionFromUrl(
-                                            file.getPath())));
+            String fileType = MimeTypeMap.getSingleton()
+                    .getMimeTypeFromExtension(getFileExtensionFromPath(file.getPath()));
+            intent.setDataAndType(Uri.fromFile(file), TextUtils.isEmpty(fileType) ? "*/*" : fileType);
             context.startActivity(intent);
         } catch (Exception ex) {
-            Toast.makeText(context, "打开失败.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, failMsg, Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
      * @param context 上下文
      * @param file    文件对象
+     * @param failMsg
      */
-    public static void openMedia(Context context, File file) {
+    public static void openMedia(Context context, File file, String failMsg) {
         if (file.getName().endsWith(".png") ||
                 file.getName().endsWith(".jpg") ||
                 file.getName().endsWith(".jpeg")) {
-            viewPhoto(context, file);
+            viewPhoto(context, file, failMsg);
         } else {
-            openFile(context, file);
+            openFile(context, file, failMsg);
         }
     }
 
@@ -893,9 +893,10 @@ public class FileUtils {
      *
      * @param context 上下文
      * @param file    多媒体文件
+     * @param failMsg
      */
-    public static void viewPhoto(Context context, String file) {
-        viewPhoto(context, new File(file));
+    public static void viewPhoto(Context context, String file, String failMsg) {
+        viewPhoto(context, new File(file), failMsg);
     }
 
     /**
@@ -903,8 +904,9 @@ public class FileUtils {
      *
      * @param context 上下文
      * @param file    文件对象
+     * @param failMsg
      */
-    public static void viewPhoto(Context context, File file) {
+    public static void viewPhoto(Context context, File file, String failMsg) {
         try {
             // 调用系统程序打开文件.
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -912,7 +914,7 @@ public class FileUtils {
             intent.setDataAndType(Uri.fromFile(file), "image/*");
             context.startActivity(intent);
         } catch (Exception ex) {
-            Toast.makeText(context, "打开失败.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, failMsg, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -933,5 +935,28 @@ public class FileUtils {
         } else {
             return false;
         }
+    }
+
+    public static String getFileExtensionFromPath(String filePath) {
+        if (!TextUtils.isEmpty(filePath)) {
+            int fragment = filePath.lastIndexOf('#');
+            if (fragment > 0) {
+                filePath = filePath.substring(0, fragment);
+            }
+            int query = filePath.lastIndexOf('?');
+            if (query > 0) {
+                filePath = filePath.substring(0, query);
+            }
+            int filenamePos = filePath.lastIndexOf('/');
+            String filename =
+                    0 <= filenamePos ? filePath.substring(filenamePos + 1) : filePath;
+            if (!filename.isEmpty()) {
+                int dotPos = filename.lastIndexOf('.');
+                if (0 <= dotPos) {
+                    return filename.substring(dotPos + 1);
+                }
+            }
+        }
+        return "";
     }
 }

@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
-import com.pine.base.component.uploader.ui.ImageUploadView;
+import com.pine.base.component.uploader.ui.ImageUploadRecycleView;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvp.R;
@@ -30,7 +30,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
     private TextView address_street_tv;
     private TextView description_tv;
     private TextView remark_tv;
-    private ImageUploadView photo_iuv;
+    private ImageUploadRecycleView photo_iuv;
     private TextView go_shop_h5_btn_tv;
     private TextView go_travel_note_list_btn_tv;
     private TextView go_add_product_btn_tv;

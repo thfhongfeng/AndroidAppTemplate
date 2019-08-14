@@ -119,9 +119,12 @@ public class DbRequestManager implements IRequestManager {
         // Test code end
     }
 
+    private HashMap<Integer, Integer> mUploadCountMap = new HashMap<>();
+
     @Override
-    public void setUploadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
-                                 @NonNull IResponseListener.OnResponseListener responseListener) {
+    public void setUploadRequest(final @NonNull RequestBean requestBean,
+                                 final @NonNull IResponseListener.OnUploadListener processListener,
+                                 final @NonNull IResponseListener.OnResponseListener responseListener) {
         List<RequestBean.FileBean> fileBeanList = requestBean.getUploadFileList();
         responseListener.onStart(requestBean.getWhat());
         if (fileBeanList == null || fileBeanList.size() < 1) {
@@ -138,10 +141,11 @@ public class DbRequestManager implements IRequestManager {
         }
         boolean isAllSuccess = true;
         boolean isMultiUpload = true;
+        mUploadCountMap.put(requestBean.hashCode(), fileBeanList.size());
         HashMap<String, String> cookies = new HashMap<>();
-        List<Object> respDataList = new ArrayList<>();
-        for (RequestBean.FileBean fileBean : fileBeanList) {
-            DbRequestBean bean = toDbRequestBean(requestBean);
+        final List<Object> respDataList = new ArrayList<>();
+        for (final RequestBean.FileBean fileBean : fileBeanList) {
+            final DbRequestBean bean = toDbRequestBean(requestBean);
             ArrayList<DbRequestBean.FileBean> list = new ArrayList<>();
             list.add(new DbRequestBean.FileBean(fileBean.getFileKey(), fileBean.getFileName(), fileBean.getFile(), fileBean.getPosition()));
             bean.setUploadFileList(list);
@@ -157,59 +161,112 @@ public class DbRequestManager implements IRequestManager {
             } else {
                 cookies = dbResponse.getCookies();
             }
-            Response response = toResponse(dbResponse);
+            final Response response = toResponse(dbResponse);
             if (response.isSucceed()) {
                 isAllSuccess = isAllSuccess && true;
-                processListener.onProgress(bean.getWhat(), fileBean, 100);
-                processListener.onFinish(bean.getWhat(), fileBean);
+                new Handler().post(new Runnable() {
+                    int progress = 0;
+                    int interval = new Random().nextInt(10) * 6 + 6;
+
+                    @Override
+                    public void run() {
+                        progress = progress > 100 ? 100 : progress;
+                        processListener.onProgress(bean.getWhat(), fileBean, progress);
+                        if (this.progress < 100) {
+                            this.progress = this.progress + interval;
+                            new Handler().postDelayed(this, 500);
+                        } else {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    processListener.onFinish(bean.getWhat(), fileBean);
+                                    if (mUploadCountMap.containsKey(requestBean.hashCode())) {
+                                        mUploadCountMap.put(requestBean.hashCode(), (mUploadCountMap.get(requestBean.hashCode()) - 1));
+                                    }
+                                }
+                            }, 500);
+                        }
+                    }
+                });
                 isMultiUpload = dbResponse.isMultiUpload();
                 respDataList.add(response.getData());
             } else {
                 isAllSuccess = false;
-                processListener.onError(bean.getWhat(), fileBean, response.getException());
-            }
-        }
-        if (!isAllSuccess) {
-            Response failRsp = new Response();
-            failRsp.setSucceed(false);
-            failRsp.setException(new Exception("fail"));
-            responseListener.onFailed(requestBean.getWhat(), failRsp);
-        } else {
-            mCookies = cookies;
-            Response successRep = new Response();
-            successRep.setSucceed(true);
-            successRep.setCookies(mCookies);
-            if (isMultiUpload) {
-                String paths = "";
-                String names = "";
-                try {
-                    JSONObject allData = new JSONObject(respDataList.get(0).toString());
-                    for (Object obj : respDataList) {
-                        JSONObject entity = new JSONObject(obj.toString());
-                        JSONObject data = entity.optJSONObject("data");
-                        paths += data.opt("fileUrls") + ",";
-                        names += data.opt("fileNames") + ",";
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        processListener.onError(bean.getWhat(), fileBean, response.getException());
+                        if (mUploadCountMap.containsKey(requestBean.hashCode())) {
+                            mUploadCountMap.put(requestBean.hashCode(), (mUploadCountMap.get(requestBean.hashCode()) - 1));
+                        }
                     }
-                    allData.optJSONObject("data").put("fileUrls", paths.substring(0, paths.length() - 1));
-                    allData.optJSONObject("data").put("fileNames", names.substring(0, paths.length() - 1));
-                    successRep.setData(allData);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Response failRsp = new Response();
-                    failRsp.setSucceed(false);
-                    failRsp.setException(new Exception("fail"));
-                    responseListener.onFailed(requestBean.getWhat(), failRsp);
-                    responseListener.onFinish(requestBean.getWhat());
-                    return;
-                }
-            } else {
-                successRep.setData(respDataList.get(0));
+                }, 1000);
             }
-            successRep.setResponseCode(200);
-            successRep.setException(new Exception("fail"));
-            responseListener.onSucceed(requestBean.getWhat(), successRep);
         }
-        responseListener.onFinish(requestBean.getWhat());
+        final HashMap<String, String> finalCookies = cookies;
+        final boolean finalIsMultiUpload = isMultiUpload;
+        if (!isAllSuccess) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!mUploadCountMap.containsKey(requestBean.hashCode()) || mUploadCountMap.get(requestBean.hashCode()) < 1) {
+                        mUploadCountMap.remove(requestBean.hashCode());
+                        Response failRsp = new Response();
+                        failRsp.setSucceed(false);
+                        failRsp.setException(new Exception("fail"));
+                        responseListener.onFailed(requestBean.getWhat(), failRsp);
+                        responseListener.onFinish(requestBean.getWhat());
+                    } else {
+                        new Handler().postDelayed(this, 500);
+                    }
+                }
+            }, 500);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!mUploadCountMap.containsKey(requestBean.hashCode()) || mUploadCountMap.get(requestBean.hashCode()) < 1) {
+                        mUploadCountMap.remove(requestBean.hashCode());
+                        mCookies = finalCookies;
+                        Response successRep = new Response();
+                        successRep.setSucceed(true);
+                        successRep.setCookies(mCookies);
+                        if (finalIsMultiUpload) {
+                            String paths = "";
+                            String names = "";
+                            try {
+                                JSONObject allData = new JSONObject(respDataList.get(0).toString());
+                                for (Object obj : respDataList) {
+                                    JSONObject entity = new JSONObject(obj.toString());
+                                    JSONObject data = entity.optJSONObject("data");
+                                    paths += data.opt("fileUrls") + ",";
+                                    names += data.opt("fileNames") + ",";
+                                }
+                                allData.optJSONObject("data").put("fileUrls", paths.substring(0, paths.length() - 1));
+                                allData.optJSONObject("data").put("fileNames", names.substring(0, paths.length() - 1));
+                                successRep.setData(allData);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Response failRsp = new Response();
+                                failRsp.setSucceed(false);
+                                failRsp.setException(new Exception("fail"));
+                                responseListener.onFailed(requestBean.getWhat(), failRsp);
+                                responseListener.onFinish(requestBean.getWhat());
+                                return;
+                            }
+                        } else {
+                            successRep.setData(respDataList.get(0));
+                        }
+                        successRep.setResponseCode(200);
+                        successRep.setException(new Exception("fail"));
+                        responseListener.onSucceed(requestBean.getWhat(), successRep);
+                        responseListener.onFinish(requestBean.getWhat());
+                    } else {
+                        new Handler().postDelayed(this, 500);
+                    }
+                }
+            }, 500);
+        }
     }
 
     @Override

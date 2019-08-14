@@ -229,6 +229,7 @@ public class CommonWebView extends WebView {
     public void onDetachedFromWindow() {
         mJsInterface.clear();
         mActivity = null;
+        destroy();
         super.onDetachedFromWindow();
     }
 

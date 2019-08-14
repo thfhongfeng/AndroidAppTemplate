@@ -18,7 +18,7 @@ import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.uploader.bean.FileUploadBean;
-import com.pine.base.component.uploader.ui.ImageUploadView;
+import com.pine.base.component.uploader.ui.ImageUploadRecycleView;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -53,7 +53,7 @@ public class MvpShopReleaseActivity extends
     private LinearLayout type_ll, online_date_ll;
     private EditText name_et, address_street_et, description_et, remark_et;
     private TextView type_tv, online_date_tv, contact_tv, address_district_tv, address_marker_tv;
-    private ImageUploadView photo_iuv;
+    private ImageUploadRecycleView photo_iuv;
     private InputTextDialog mContactInputDialog;
     private DateSelectDialog mOnLineDateSelectDialog;
     private SelectItemDialog mTypeSelectDialog;
@@ -97,7 +97,7 @@ public class MvpShopReleaseActivity extends
         );
         swipe_refresh_layout.setEnabled(false);
 
-        photo_iuv.init(this, true, new ImageUploadView.OneByOneUploadAdapter() {
+        photo_iuv.init(this, true, new ImageUploadRecycleView.OneByOneUploadAdapter() {
             @Override
             public String getUploadUrl() {
                 return MvpUrlConstants.Upload_Single_File;
