@@ -15,19 +15,24 @@ public class AppTrack {
 
     // 埋点所属模块
     @NonNull
+    @ColumnInfo(name = "module_tag")
     private String moduleTag;
 
     // 用户id
+    @ColumnInfo(name = "account_id")
     private String accountId;
 
     @NonNull
+    @ColumnInfo(name = "account_type")
     private int accountType;
 
     // 用户名
+    @ColumnInfo(name = "user_name")
     private String userName;
 
     // 埋点类型：0-点击事件；1-页面
     @NonNull
+    @ColumnInfo(name = "track_type")
     private int trackType;
 
     // 业务title
@@ -36,21 +41,26 @@ public class AppTrack {
 
     // 当前class名
     @NonNull
+    @ColumnInfo(name = "cur_class")
     private String curClass;
 
     // 前一个class名
+    @ColumnInfo(name = "pre_class")
     private String preClass;
 
     // 按键名称（对应埋点点击事件类型）
+    @ColumnInfo(name = "button_name")
     private String buttonName;
 
     @ColumnInfo(name = "ip")
     private String ip;
 
     // 进入页面/点击button 时间
+    @ColumnInfo(name = "time_in_stamp")
     private long timeInStamp;
 
     // 离开页面时间（对应埋点页面类型）
+    @ColumnInfo(name = "time_out_stamp")
     private long timeOutStamp;
 
     public long getId() {

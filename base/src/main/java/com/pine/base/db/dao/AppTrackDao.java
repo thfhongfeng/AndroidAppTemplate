@@ -18,40 +18,40 @@ public interface AppTrackDao {
     @Update
     int update(AppTrack appTrack);
 
-    @Query("SELECT * FROM db_app_track ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track ORDER BY time_in_stamp ASC")
     List<AppTrack> queryAllList();
 
-    @Query("SELECT * FROM db_app_track WHERE timeInStamp >= :startTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE time_in_stamp >= :startTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByStartTime(long startTime);
 
-    @Query("SELECT * FROM db_app_track WHERE timeInStamp < :endTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE time_in_stamp < :endTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByEndTime(long endTime);
 
-    @Query("SELECT * FROM db_app_track WHERE timeInStamp >= :startTime AND timeInStamp < :endTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE time_in_stamp >= :startTime AND time_in_stamp < :endTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByTime(long startTime, long endTime);
 
-    @Query("SELECT * FROM db_app_track WHERE moduleTag=:moduleTag ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE module_tag=:moduleTag ORDER BY time_in_stamp ASC")
     List<AppTrack> queryAllListByModule(String moduleTag);
 
-    @Query("SELECT * FROM db_app_track WHERE moduleTag=:moduleTag AND timeInStamp >= :startTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE module_tag=:moduleTag AND time_in_stamp >= :startTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModuleAndStartTime(String moduleTag, long startTime);
 
-    @Query("SELECT * FROM db_app_track WHERE moduleTag=:moduleTag AND timeInStamp < :endTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE module_tag=:moduleTag AND time_in_stamp < :endTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModuleAndEndTime(String moduleTag, long endTime);
 
-    @Query("SELECT * FROM db_app_track WHERE moduleTag=:moduleTag AND timeInStamp >= :startTime AND timeInStamp < :endTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE module_tag=:moduleTag AND time_in_stamp >= :startTime AND time_in_stamp < :endTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModuleAndTime(String moduleTag, long startTime, long endTime);
 
-    @Query("SELECT * FROM db_app_track WHERE moduleTag IN (:moduleTags) ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) ORDER BY time_in_stamp ASC")
     List<AppTrack> queryAllListByModules(List<String> moduleTags);
 
-    @Query("SELECT * FROM db_app_track WHERE moduleTag IN (:moduleTags) AND timeInStamp >= :startTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) AND time_in_stamp >= :startTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModulesAndStartTime(List<String> moduleTags, long startTime);
 
-    @Query("SELECT * FROM db_app_track WHERE moduleTag IN (:moduleTags) AND timeInStamp < :endTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) AND time_in_stamp < :endTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModulesAndEndTime(List<String> moduleTags, long endTime);
 
-    @Query("SELECT * FROM db_app_track WHERE moduleTag IN (:moduleTags) AND timeInStamp >= :startTime AND timeInStamp < :endTime ORDER BY timeInStamp ASC")
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) AND time_in_stamp >= :startTime AND time_in_stamp < :endTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModulesAndTime(List<String> moduleTags, long startTime, long endTime);
 
     @Delete

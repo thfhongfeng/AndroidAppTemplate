@@ -8,10 +8,10 @@ import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.pine.base.db.dao.AppAttachCacheDao;
 import com.pine.base.db.dao.AppTrackDao;
-import com.pine.base.db.entity.AppAttachCache;
+import com.pine.base.db.dao.DownloadInfoDao;
 import com.pine.base.db.entity.AppTrack;
+import com.pine.base.db.entity.DownloadInfo;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
@@ -20,7 +20,7 @@ import com.tencent.wcdb.room.db.WCDBOpenHelperFactory;
 
 import java.io.File;
 
-@Database(entities = {AppTrack.class, AppAttachCache.class}, version = 2, exportSchema = false)
+@Database(entities = {AppTrack.class, DownloadInfo.class}, version = 2, exportSchema = false)
 public abstract class DbRoomDatabase extends RoomDatabase {
     private static final String TAG = LogUtils.makeLogTag(DbRoomDatabase.class);
 
@@ -28,7 +28,7 @@ public abstract class DbRoomDatabase extends RoomDatabase {
 
     public abstract AppTrackDao appTrackDao();
 
-    public abstract AppAttachCacheDao appAttachCacheDao();
+    public abstract DownloadInfoDao downloadInfoDao();
 
     private static final String PASSPHRASE = "pine123";
 
@@ -70,10 +70,13 @@ public abstract class DbRoomDatabase extends RoomDatabase {
     private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE IF NOT EXISTS app_attach_cache" +
-                    " (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,module TEXT NOT NULL," +
-                    "file_name TEXT,file_size INTEGER NOT NULL,url TEXT NOT NULL," +
-                    "cache_url TEXT NOT NULL,remark TEXT,invalid INTEGER NOT NULL)");
+            database.execSQL("CREATE TABLE IF NOT EXISTS db_download_info " +
+                    "(_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,type INTEGER NOT NULL," +
+                    "module_tag TEXT NOT NULL,relate_id TEXT NOT NULL,remote_url TEXT NOT NULL," +
+                    "local_url TEXT NOT NULL,file_name TEXT NOT NULL,file_size INTEGER NOT NULL," +
+                    "downloaded_size INTEGER NOT NULL,download_speed INTEGER NOT NULL," +
+                    "download_state INTEGER NOT NULL,extra_info TEXT,remark TEXT," +
+                    "invalid INTEGER NOT NULL,update_time INTEGER NOT NULL,create_time INTEGER NOT NULL)");
         }
     };
 
