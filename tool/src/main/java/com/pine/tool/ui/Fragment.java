@@ -1,5 +1,6 @@
 package com.pine.tool.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -47,6 +48,7 @@ public abstract class Fragment extends android.support.v4.app.Fragment
 
         findViewOnCreateView(layout);
 
+        // 进入界面准入流程
         mUiAccessReady = true;
         if (!UiAccessManager.getInstance().checkCanAccess(this)) {
             mUiAccessReady = false;
@@ -76,6 +78,9 @@ public abstract class Fragment extends android.support.v4.app.Fragment
      */
     protected abstract void findViewOnCreateView(View layout);
 
+    /**
+     * 尝试进入界面初始化（先判断界面进入限制是否都已经解除）
+     */
     private void tryOnAllRestrictionReleased() {
         if (mUiAccessReady) {
             if (!parseArguments()) {
@@ -200,11 +205,33 @@ public abstract class Fragment extends android.support.v4.app.Fragment
         return mPermissionRequestMap;
     }
 
+    /**
+     * 判断是否有相应的权限
+     *
+     * @param perms
+     * @return
+     */
+    public boolean hasPermissions(@Size(min = 1) @NonNull String... perms) {
+        return PermissionManager.hasPermissions(getContext(), perms);
+    }
+
+    /**
+     * 申请对应的权限
+     *
+     * @param requestCode
+     * @param callback
+     * @param perms       {@link Manifest}
+     */
     public void requestPermission(int requestCode, IPermissionCallback callback,
                                   @Size(min = 1) @NonNull String... perms) {
         PermissionManager.requestPermission(this, requestCode, callback, perms);
     }
 
+    /**
+     * 申请对应的权限
+     *
+     * @param bean
+     */
     public void requestPermission(PermissionBean bean) {
         PermissionManager.requestPermission(this, bean);
     }

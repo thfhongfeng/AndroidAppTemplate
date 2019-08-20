@@ -3,6 +3,7 @@ package com.pine.tool.permission;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
+import android.text.TextUtils;
 
 import com.pine.tool.R;
 import com.pine.tool.permission.easy.AppSettingsDialog;
@@ -68,11 +69,17 @@ public class PermissionManager {
                                                   PermissionBean bean,
                                                   @NonNull String... perms) {
         if (EasyPermissions.somePermissionPermanentlyDenied(activity, Arrays.asList(perms))) {
-            new AppSettingsDialog.Builder(activity)
-                    .setRationale(bean != null && bean.getGoSettingContent() != null ?
-                            bean.getGoSettingContent() : getDefaultGoSettingContent(perms))
-                    .setPermRequestCode(requestCode)
-                    .build(perms).show();
+            AppSettingsDialog.Builder builder = new AppSettingsDialog.Builder(activity).setPermRequestCode(requestCode);
+            if (bean != null) {
+                builder.setTitle(bean.getGoSettingContent())
+                        .setThemeResId(bean.getGoSettingTheme())
+                        .setRationale(bean.getGoSettingContent())
+                        .setPositiveButton(bean.getGoSettingPositiveBtnText())
+                        .setNegativeButton(bean.getGoSettingPositiveBtnText())
+                        .setRationale(bean.getGoSettingContent() != null ?
+                                bean.getGoSettingContent() : getDefaultGoSettingContent(activity, perms));
+            }
+            builder.build(perms).show();
             return true;
         }
         return false;
@@ -83,19 +90,26 @@ public class PermissionManager {
                                                   PermissionBean bean,
                                                   @NonNull String... perms) {
         if (EasyPermissions.somePermissionPermanentlyDenied(fragment, Arrays.asList(perms))) {
-            new AppSettingsDialog.Builder(fragment)
-                    .setRationale(bean != null && bean.getGoSettingContent() != null ?
-                            bean.getGoSettingContent() : getDefaultGoSettingContent(perms))
-                    .setPermRequestCode(requestCode)
-                    .build(perms).show();
+            AppSettingsDialog.Builder builder = new AppSettingsDialog.Builder(fragment).setPermRequestCode(requestCode);
+            if (bean != null) {
+                builder.setTitle(bean.getGoSettingContent())
+                        .setThemeResId(bean.getGoSettingTheme())
+                        .setRationale(bean.getGoSettingContent())
+                        .setPositiveButton(bean.getGoSettingPositiveBtnText())
+                        .setNegativeButton(bean.getGoSettingPositiveBtnText())
+                        .setRationale(bean.getGoSettingContent() != null ?
+                                bean.getGoSettingContent() : getDefaultGoSettingContent(fragment.getContext(), perms));
+            }
+            builder.build(perms).show();
             return true;
         }
         return false;
     }
 
-    private static String getDefaultGoSettingContent(@NonNull String... perms) {
-        String rational = "没有授予" + PermissionTranslate.translate(perms) +
-                "等权限，应用可能无法正常运行。请打开应用设置允许相应权限。";
+    private static String getDefaultGoSettingContent(Context context, @NonNull String... perms) {
+        String permsStr = PermissionTranslate.translate(perms);
+        String rational = TextUtils.isEmpty(permsStr) ? context.getString(R.string.tool_content_1_settings_dialog) :
+                context.getString(R.string.tool_content_2_settings_dialog, permsStr);
         return rational;
     }
 }

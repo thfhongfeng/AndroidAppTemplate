@@ -1,8 +1,10 @@
 <resources>
     <string name="tool_rationale_ask">没有授予相应权限，应用可能无法正常运行。</string>
     <string name="tool_rationale_ask_again">没有授予相应权限，应用可能无法正常运行。请打开应用设置允许相应权限。</string>
-    <string name="tool_title_settings_dialog">权限需求</string>
     <string name="tool_rationale_need">需要授予相应权限(点击确定进行权限授予)</string>
+    <string name="tool_title_settings_dialog">权限需求</string>
+    <string name="tool_content_1_settings_dialog">没有授予相应权限，应用可能无法正常运行。请打开应用设置允许相应权限。</string>
+    <string name="tool_content_2_settings_dialog">没有授予%s等权限，应用可能无法正常运行。请打开应用设置允许相应权限。</string>
 
     <string name="tool_network_err">网络错误，请检查网络后重试</string>
     <string name="tool_server_err">服务器错误，请稍后重试</string>

@@ -1,5 +1,6 @@
 package com.pine.tool.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -72,6 +73,7 @@ public abstract class Activity extends AppCompatActivity
 
         findViewOnCreate();
 
+        // 进入界面准入流程
         mUiAccessReady = true;
         if (!UiAccessManager.getInstance().checkCanAccess(this)) {
             mUiAccessReady = false;
@@ -81,6 +83,7 @@ public abstract class Activity extends AppCompatActivity
             }
         }
 
+        // 进入动态权限判断和申请流程
         mPermissionReady = true;
         PermissionsAnnotation annotation = getClass().getAnnotation(PermissionsAnnotation.class);
         if (annotation != null) {
@@ -132,6 +135,9 @@ public abstract class Activity extends AppCompatActivity
         return mOnAllAccessRestrictionReleasedMethodCalled;
     }
 
+    /**
+     * 在界面进入限制都被解除后，进行界面初始化
+     */
     private void onAllAccessRestrictionReleased() {
         if (!parseIntentData()) {
             init();
@@ -349,6 +355,9 @@ public abstract class Activity extends AppCompatActivity
         }
     }
 
+    /**
+     * 尝试进入界面初始化（先判断界面进入限制是否都已经解除）
+     */
     private void tryInitOnAllRestrictionReleased() {
         if (!mOnAllAccessRestrictionReleasedMethodCalled &&
                 mUiAccessReady && mPermissionReady) {
@@ -362,19 +371,38 @@ public abstract class Activity extends AppCompatActivity
         return mPermissionRequestMap;
     }
 
+    /**
+     * 判断是否有相应的权限
+     *
+     * @param perms
+     * @return
+     */
     public boolean hasPermissions(@Size(min = 1) @NonNull String... perms) {
         return PermissionManager.hasPermissions(this, perms);
     }
 
+    /**
+     * 申请对应的权限
+     *
+     * @param requestCode
+     * @param callback
+     * @param perms       {@link Manifest}
+     */
     public void requestPermission(int requestCode, IPermissionCallback callback,
                                   @Size(min = 1) @NonNull String... perms) {
         PermissionManager.requestPermission(this, requestCode, callback, perms);
     }
 
+    /**
+     * 申请对应的权限
+     *
+     * @param bean
+     */
     public void requestPermission(PermissionBean bean) {
         PermissionManager.requestPermission(this, bean);
     }
 
+    // 绑定具有Activity生命周期的View（使得该View能知晓Activity的生命周期）
     public void attachCircleView(ILifeCircleView view) {
         mLifeCircleViewMap.put(view.hashCode(), view);
     }

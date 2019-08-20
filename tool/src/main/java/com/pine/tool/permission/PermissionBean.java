@@ -1,25 +1,48 @@
 package com.pine.tool.permission;
 
+import android.Manifest;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
+import android.support.annotation.StyleRes;
 
 /**
  * Created by tanghongfeng on 2019/2/27
  */
 
 public class PermissionBean {
+    /**
+     * 权限数组  {@link Manifest}
+     */
     private String[] perms;
+    // 请求code
     private int requestCode;
+    // 回调
     private IPermissionCallback callback;
+
+    // 如果上一次申请的权限没有被全部授予，则再次进入申请时会弹出Rationale弹出框提示是否要进行权限授予。
+    // Rationale弹出框标题
     private String rationaleTitle = null;
+    // Rationale弹出框描述内容
     private String rationaleContent = null;
+    // Rationale弹出框同意按键文本
     private String rationalePositiveBtnText = null;
+    // Rationale弹出框不同意按键文本
     private String rationaleNegativeBtnText = null;
+    // Rationale弹出框样式id
+    @StyleRes
     private int rationaleTheme = -1;
+
+    // 如果申请的权限没有被全部授予，且有未被授予的权限勾选了“禁止后不在询问”选项，则会弹出goSetting弹出框提示是否要进入设置里去开启权限。
+    // goSetting弹出框标题
     private String goSettingTitle = null;
+    // goSetting弹出框描述内容
     private String goSettingContent = null;
+    // goSetting弹出框同意按键文本
     private String goSettingPositiveBtnText = null;
+    // goSetting弹出框不同意按键文本
     private String goSettingNegativeBtnText = null;
+    // goSetting弹出框样式id
+    @StyleRes
     private int goSettingTheme = -1;
 
     public PermissionBean(int requestCode, @Size(min = 1) @NonNull String... perms) {
@@ -83,11 +106,12 @@ public class PermissionBean {
         this.rationaleNegativeBtnText = rationaleNegativeBtnText;
     }
 
+    @StyleRes
     public int getRationaleTheme() {
         return rationaleTheme;
     }
 
-    public void setRationaleTheme(int rationaleTheme) {
+    public void setRationaleTheme(@StyleRes int rationaleTheme) {
         this.rationaleTheme = rationaleTheme;
     }
 
@@ -123,11 +147,12 @@ public class PermissionBean {
         this.goSettingNegativeBtnText = goSettingNegativeBtnText;
     }
 
+    @StyleRes
     public int getGoSettingTheme() {
         return goSettingTheme;
     }
 
-    public void setGoSettingTheme(int goSettingTheme) {
+    public void setGoSettingTheme(@StyleRes int goSettingTheme) {
         this.goSettingTheme = goSettingTheme;
     }
 }
