@@ -34,9 +34,9 @@ public class RequestManager {
     private static IRequestManager mRequestManager;
 
     // 正在进行的请求
-    private static Map<String, RequestBean> mLoadingRequestMap = null;
+    private static HashMap<String, RequestBean> mLoadingRequestMap = null;
     // 错误返回的请求
-    private static Map<String, RequestBean> mErrorRequestMap = null;
+    private static HashMap<String, RequestBean> mErrorRequestMap = null;
 
     private static List<IRequestInterceptor> mRequestInterceptorList = new ArrayList<>();
 
@@ -417,6 +417,9 @@ public class RequestManager {
                     requestBean = mLoadingRequestMap.remove(requestKey);
                     requestBean.setResponse(response);
                 }
+                if (mErrorRequestMap.containsKey(requestKey)) {
+                    mErrorRequestMap.remove(requestKey);
+                }
                 if (mResponseInterceptorList != null) {
                     for (int i = 0; i < mResponseInterceptorList.size(); i++) {
                         if (mResponseInterceptorList.get(i).onIntercept(what, requestBean, response)) {
@@ -438,10 +441,12 @@ public class RequestManager {
                     if (mErrorRequestMap == null) {
                         mErrorRequestMap = new HashMap<>();
                     }
-                    if (mErrorRequestMap.containsKey(requestKey)) {
+                    // 该请求第一次失败则加到mErrorRequestMap中，否则移除（error的请求只尝试一次）
+                    if (!mErrorRequestMap.containsKey(requestKey)) {
+                        mErrorRequestMap.put(requestKey, mLoadingRequestMap.get(requestKey));
+                    } else {
                         mErrorRequestMap.remove(requestKey);
                     }
-                    mErrorRequestMap.put(requestKey, mLoadingRequestMap.get(requestKey));
                     requestBean = mLoadingRequestMap.remove(requestKey);
                     requestBean.setResponse(response);
                 }
@@ -479,10 +484,12 @@ public class RequestManager {
                     if (mErrorRequestMap == null) {
                         mErrorRequestMap = new HashMap<>();
                     }
-                    if (mErrorRequestMap.containsKey(requestKey)) {
+                    // 该请求第一次失败则加到mErrorRequestMap中，否则移除（error的请求只尝试一次）
+                    if (!mErrorRequestMap.containsKey(requestKey)) {
+                        mErrorRequestMap.put(requestKey, mLoadingRequestMap.get(requestKey));
+                    } else {
                         mErrorRequestMap.remove(requestKey);
                     }
-                    mErrorRequestMap.put(requestKey, mLoadingRequestMap.get(requestKey));
                     mLoadingRequestMap.remove(requestKey);
                 }
                 if (!callback.onError(what, exception)) {
@@ -512,6 +519,9 @@ public class RequestManager {
                         "(what:" + what + ")" + "\r\n- filePath: " + filePath);
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
                     mLoadingRequestMap.remove(requestKey);
+                }
+                if (mErrorRequestMap.containsKey(requestKey)) {
+                    mErrorRequestMap.remove(requestKey);
                 }
                 callback.onFinish(what, filePath);
             }
