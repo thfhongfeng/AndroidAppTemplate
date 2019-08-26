@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.pine.router.IServiceCallback;
 import com.pine.router.annotation.RouterCommand;
-import com.pine.router.command.RouterUserCommand;
+import com.pine.base.router.command.RouterUserCommand;
 import com.pine.user.ui.activity.UserHomeActivity;
 
 /**

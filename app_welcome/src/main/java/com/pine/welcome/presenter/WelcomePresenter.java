@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.pine.router.IRouterCallback;
-import com.pine.router.command.RouterMainCommand;
+import com.pine.base.router.command.RouterMainCommand;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.contract.IWelcomeContract;

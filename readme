@@ -83,7 +83,7 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
 5. 业务模块arouter通信的搭建（结合arouter的通信方式说明文档来理解）：
    a. 模块中编写XxxRemote（可参考已有模块，基本内容都差不多）和XxxRemoteService类（通信方法写在该类中，使用注解方式），用于向外部模块提供统一的跨模块服务。
    b. 模块中编写XxxClientManager（可参考已有模块），用于统一调用外部模块的跨模块方法。
-   c. router模块中编写通信命令常量类RouterXxxCommand，添加相关注解（可参考已有模块）。
+   c. base模块中编写通信命令常量类RouterXxxCommand，添加相关注解（可参考已有模块）。
    d. 模块间通信使用方式：
      RouterManager.getInstance(xxxBundleKey).callYyCommand(Context context, final String commandName, final Bundle args, final IRouterCallback callback);
      该调用统一写在XxxClientManager中

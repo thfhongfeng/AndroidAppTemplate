@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import com.pine.mvvm.ui.activity.MvvmHomeActivity;
 import com.pine.router.IServiceCallback;
 import com.pine.router.annotation.RouterCommand;
-import com.pine.router.command.RouterMvvmCommand;
+import com.pine.base.router.command.RouterMvvmCommand;
 
 /**
  * Created by tanghongfeng on 2018/9/13

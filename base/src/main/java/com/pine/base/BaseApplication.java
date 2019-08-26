@@ -16,20 +16,28 @@ import com.pine.tool.util.LogUtils;
 
 public class BaseApplication {
     private final static String TAG = LogUtils.makeLogTag(BaseApplication.class);
+    private static volatile boolean mIsInit;
     public static volatile Activity mCurResumedActivity;
     public static Application mApplication;
     private static volatile boolean mIsLogin;
 
-    public static boolean isLogin() {
+    protected BaseApplication() {
+        throw new IllegalArgumentException(getClass() + " prohibited from being constructed");
+    }
+
+    public final synchronized static boolean isLogin() {
         return mIsLogin;
     }
 
-    public static void setLogin(boolean isLogin) {
+    public final synchronized static void setLogin(boolean isLogin) {
         mIsLogin = isLogin;
         ConfigSwitcherServer.getInstance().setLogin(isLogin);
     }
 
-    public static void init(Application application) {
+    public final synchronized static void init(Application application) {
+        if (mIsInit) {
+            return;
+        }
         mApplication = application;
         registerActivity();
         RouterApplication.attach(mApplication);
@@ -38,9 +46,10 @@ public class BaseApplication {
             AppTrackManager.getInstance().init(application, BaseUrlConstants.APP_TRACK_UPLOAD);
             AppTrackManager.getInstance().uploadAllExistTrack(null);
         }
+        mIsInit = true;
     }
 
-    private static void registerActivity() {
+    private synchronized static void registerActivity() {
         mApplication.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {

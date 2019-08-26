@@ -1,7 +1,6 @@
 package com.pine.router.impl.arouter.manager;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -15,13 +14,10 @@ import com.pine.router.IRouterCallback;
 import com.pine.router.R;
 import com.pine.router.annotation.ARouterRemoteAction;
 import com.pine.router.impl.IRouterManager;
+import com.pine.router.impl.RouterManager;
 import com.pine.router.impl.arouter.ARouterBundleRemote;
-import com.pine.tool.util.AndroidClassUtils;
-import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,30 +32,17 @@ import static com.pine.router.RouterConstants.TYPE_UI_COMMAND;
 public class ARouterManager implements IRouterManager {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
-    private static volatile List<String> mClassNameList = new ArrayList<>();
     private static volatile HashMap<String, ARouterManager> mInstanceMap = new HashMap<>();
 
     private String mBundleKey = "";
     private String mRemoteAction = "";
 
-    static {
-        try {
-            mClassNameList = AndroidClassUtils.getFileNameByPackageName(AppUtils.getApplicationContext(),
-                    "com.pine.router.command");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     private ARouterManager(@NonNull String bundleKey) {
         mBundleKey = bundleKey;
-        for (int i = 0; i < mClassNameList.size(); i++) {
+        List<String> commandClassNameList = RouterManager.getCommandClassNameList();
+        for (int i = 0; i < commandClassNameList.size(); i++) {
             try {
-                Class<?> clazz = Class.forName(mClassNameList.get(i));
+                Class<?> clazz = Class.forName(commandClassNameList.get(i));
                 ARouterRemoteAction remoteAction = clazz.getAnnotation(ARouterRemoteAction.class);
                 if (remoteAction != null) {
                     if (mBundleKey.equals(remoteAction.Key())) {

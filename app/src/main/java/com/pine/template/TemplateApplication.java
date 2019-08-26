@@ -18,7 +18,7 @@ import com.pine.main.MainApplication;
 import com.pine.mvc.MvcApplication;
 import com.pine.mvp.MvpApplication;
 import com.pine.mvvm.MvvmApplication;
-import com.pine.router.command.RouterDbServerCommand;
+import com.pine.base.router.command.RouterDbServerCommand;
 import com.pine.router.impl.RouterManager;
 import com.pine.template.access.UiAccessLoginExecutor;
 import com.pine.template.access.UiAccessVipLevelExecutor;
@@ -87,6 +87,8 @@ public class TemplateApplication extends Application {
     }
 
     private void initManager() {
+        RouterManager.init("com.pine.base.router.command");
+
         ShareManager.getInstance().init(this);
 
         RequestManager.init(this, new IRequestManagerFactory() {

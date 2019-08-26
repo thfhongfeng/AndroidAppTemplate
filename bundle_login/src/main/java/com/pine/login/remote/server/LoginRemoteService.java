@@ -13,7 +13,7 @@ import com.pine.login.model.ILoginResponse;
 import com.pine.login.ui.activity.LoginActivity;
 import com.pine.router.IServiceCallback;
 import com.pine.router.annotation.RouterCommand;
-import com.pine.router.command.RouterLoginCommand;
+import com.pine.base.router.command.RouterLoginCommand;
 import com.pine.tool.util.SharePreferenceUtils;
 
 /**

@@ -1,4 +1,4 @@
-package com.pine.router.command;
+package com.pine.base.router.command;
 
 import com.pine.config.ConfigKey;
 import com.pine.router.annotation.ARouterRemoteAction;
