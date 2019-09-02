@@ -13,6 +13,10 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+/**
+ * Created by tanghongfeng on 2018/10/10
+ */
+
 public class NetWorkUtils {
 
     public static boolean checkNetWork(Context context) {

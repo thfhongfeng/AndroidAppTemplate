@@ -10,6 +10,10 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+/**
+ * Created by tanghongfeng on 2018/10/10
+ */
+
 public class UriUtils {
     public static String getRealPathFromURI(final Context context, Uri contentUri) {
         String res = null;

@@ -11,6 +11,10 @@ import com.pine.tool.ui.Activity;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+/**
+ * Created by tanghongfeng on 2018/9/12
+ */
+
 public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>>
         extends Activity implements IContract.Ui {
     protected P mPresenter;

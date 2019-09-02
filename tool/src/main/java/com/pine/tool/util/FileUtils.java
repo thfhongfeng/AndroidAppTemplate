@@ -30,6 +30,10 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * Created by tanghongfeng on 2018/10/10
+ */
+
 public class FileUtils {
     public final static String FILE_EXTENSION_SEPARATOR = ".";
 

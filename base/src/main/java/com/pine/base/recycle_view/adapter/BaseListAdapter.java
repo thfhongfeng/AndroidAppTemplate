@@ -17,6 +17,10 @@ import com.pine.base.R;
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 
+/**
+ * Created by tanghongfeng on 2018/9/28
+ */
+
 public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewHolder> {
     protected final static int DEFAULT_VIEW_HOLDER = -10000;
     protected final static int HEAD_VIEW_HOLDER = -100000;

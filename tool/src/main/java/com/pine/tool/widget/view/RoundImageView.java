@@ -13,6 +13,10 @@ import android.util.AttributeSet;
 
 import com.pine.tool.R;
 
+/**
+ * Created by tanghongfeng on 2018/10/10
+ */
+
 public class RoundImageView extends AppCompatImageView {
     private int mRadius;
     private float[] mSrcRadiusArr;

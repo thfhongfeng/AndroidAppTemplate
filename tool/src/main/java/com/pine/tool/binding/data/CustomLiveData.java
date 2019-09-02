@@ -2,6 +2,10 @@ package com.pine.tool.binding.data;
 
 import android.arch.lifecycle.MutableLiveData;
 
+/**
+ * Created by tanghongfeng on 2019/3/1
+ */
+
 public class CustomLiveData<T, O> extends MutableLiveData<T> {
     private O customData;
 

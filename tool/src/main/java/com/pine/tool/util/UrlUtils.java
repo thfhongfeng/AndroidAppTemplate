@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Created by tanghongfeng on 2018/10/10
+ */
+
 public class UrlUtils {
     /**
      * 获取url 中参数

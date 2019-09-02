@@ -22,6 +22,10 @@ import java.util.regex.Pattern;
 
 import dalvik.system.DexFile;
 
+/**
+ * Created by tanghongfeng on 2018/10/10
+ */
+
 public class AndroidClassUtils {
     private final static String TAG = LogUtils.makeLogTag(AndroidClassUtils.class);
 

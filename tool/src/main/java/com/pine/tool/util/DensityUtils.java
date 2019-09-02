@@ -13,6 +13,10 @@ import android.view.WindowManager;
 
 import java.math.BigDecimal;
 
+/**
+ * Created by tanghongfeng on 2018/10/10
+ */
+
 //常用单位转换的辅助类
 public class DensityUtils {
     public static final String TAG = LogUtils.makeLogTag(DensityUtils.class);

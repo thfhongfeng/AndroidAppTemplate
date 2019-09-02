@@ -8,6 +8,10 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Created by tanghongfeng on 2019/3/1
+ */
+
 public class Bean {
     public HashMap<String, String> toMapJson() {
         HashMap<String, String> map = new HashMap<>();

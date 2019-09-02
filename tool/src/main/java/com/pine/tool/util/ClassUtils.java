@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/**
+ * Created by tanghongfeng on 2018/10/10
+ */
+
 public class ClassUtils {
     private static final String CLASS_SUFFIX = ".class";
     private static final String CLASS_FILE_PREFIX = File.separator + "classes" + File.separator;

@@ -12,6 +12,10 @@ import com.pine.tool.ui.Fragment;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+/**
+ * Created by tanghongfeng on 2018/9/12
+ */
+
 public abstract class MvpFragment<V extends IContract.Ui, P extends Presenter<V>>
         extends Fragment implements IContract.Ui {
     protected P mPresenter;
