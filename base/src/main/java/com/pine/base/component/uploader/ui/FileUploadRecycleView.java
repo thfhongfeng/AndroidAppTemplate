@@ -1,5 +1,6 @@
 package com.pine.base.component.uploader.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -26,7 +27,6 @@ import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
-import com.pine.tool.ui.Activity;
 import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
@@ -453,7 +453,7 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
                     }
                     num_max_tv.setText("");
                     num_max_tv.setVisibility(View.GONE);
-                    show_container.setOnClickListener(new OnClickListener() {
+                    show_container.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             ArrayList<String> showList = getFileShowList();
@@ -480,7 +480,7 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
                     });
                     if (mCanDelete) {
                         delete_iv.setVisibility(View.VISIBLE);
-                        delete_iv.setOnClickListener(new OnClickListener() {
+                        delete_iv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mData.remove(position);
@@ -502,7 +502,7 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
                             file_desc_tv.setText(successSize + "/" + mMaxFileCount);
                         }
                     }
-                    show_container.setOnClickListener(new OnClickListener() {
+                    show_container.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             selectUploadObjects();

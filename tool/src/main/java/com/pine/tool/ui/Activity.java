@@ -25,6 +25,7 @@ import com.pine.tool.permission.easy.AppSettingsDialogHolderActivity;
 import com.pine.tool.permission.easy.EasyPermissions;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.widget.ILifeCircleView;
+import com.pine.tool.widget.ILifeCircleViewContainer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,8 @@ import java.util.Map;
  * 推荐通过重写onRealResume来解决以上问题。
  */
 public abstract class Activity extends AppCompatActivity
-        implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
+        implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks,
+        ILifeCircleViewContainer {
     public final int REQUEST_ACCESS_PERMISSION = 33333;
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     // UiAccess（比如需要登陆）是否检查通过，没有则结束当前界面；
@@ -403,6 +405,7 @@ public abstract class Activity extends AppCompatActivity
     }
 
     // 绑定具有Activity生命周期的View（使得该View能知晓Activity的生命周期）
+    @Override
     public void attachCircleView(ILifeCircleView view) {
         mLifeCircleViewMap.put(view.hashCode(), view);
     }

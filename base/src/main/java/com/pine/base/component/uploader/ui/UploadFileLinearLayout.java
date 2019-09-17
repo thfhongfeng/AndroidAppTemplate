@@ -1,5 +1,6 @@
 package com.pine.base.component.uploader.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,12 +23,12 @@ import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
-import com.pine.tool.ui.Activity;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
 import com.pine.tool.util.UriUtils;
 import com.pine.tool.widget.ILifeCircleView;
+import com.pine.tool.widget.ILifeCircleViewContainer;
 
 import org.json.JSONObject;
 
@@ -88,20 +89,20 @@ public abstract class UploadFileLinearLayout extends LinearLayout implements ILi
 
     public void initUpload(@NonNull Activity activity) {
         mActivity = activity;
-        if (mActivity == null) {
-            throw new IllegalStateException("Activity should not be empty");
+        if (mActivity == null || !(mActivity instanceof ILifeCircleView)) {
+            throw new IllegalStateException("Activity should not be empty or instance of ILifeCircleViewContainer");
         }
-        activity.attachCircleView(this);
+        ((ILifeCircleViewContainer) activity).attachCircleView(this);
         mIsInit = true;
     }
 
     protected void initUpload(@NonNull Activity activity,
                               @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
         mActivity = activity;
-        if (mActivity == null) {
-            throw new IllegalStateException("Activity should not be empty");
+        if (mActivity == null || !(mActivity instanceof ILifeCircleView)) {
+            throw new IllegalStateException("Activity should not be empty or instance of ILifeCircleViewContainer");
         }
-        activity.attachCircleView(this);
+        ((ILifeCircleViewContainer) activity).attachCircleView(this);
         mTogetherUploadMode = false;
         if (TextUtils.isEmpty(adapter.getUploadUrl())) {
             throw new IllegalStateException("Upload url should not be empty");
@@ -117,10 +118,10 @@ public abstract class UploadFileLinearLayout extends LinearLayout implements ILi
     public void initUpload(@NonNull Activity activity,
                            @NonNull TogetherUploadAdapter adapter, int requestCodeSelectFile) {
         mActivity = activity;
-        if (mActivity == null) {
-            throw new IllegalStateException("Activity should not be empty");
+        if (mActivity == null || !(mActivity instanceof ILifeCircleView)) {
+            throw new IllegalStateException("Activity should not be empty or instance of ILifeCircleViewContainer");
         }
-        activity.attachCircleView(this);
+        ((ILifeCircleViewContainer) activity).attachCircleView(this);
         mTogetherUploadMode = true;
         if (TextUtils.isEmpty(adapter.getUploadUrl())) {
             throw new IllegalStateException("Upload url should not be empty");
@@ -291,7 +292,7 @@ public abstract class UploadFileLinearLayout extends LinearLayout implements ILi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == mRequestCodeCrop) {
-            if (resultCode == android.app.Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 List<String> newSelectList = new ArrayList<>();
                 newSelectList.add(mCurCropPhotoPath);
                 LogUtils.d(TAG, "onActivityResult REQUEST_CODE_CROP" +
@@ -299,7 +300,7 @@ public abstract class UploadFileLinearLayout extends LinearLayout implements ILi
                 uploadFileOneByOne(newSelectList);
             }
         } else if (requestCode == mRequestCodeSelectFile) {
-            if (resultCode == android.app.Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 if (getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
                     List<String> newSelectList = data.getStringArrayListExtra(
                             ImageSelector.INTENT_SELECTED_IMAGE_LIST);
