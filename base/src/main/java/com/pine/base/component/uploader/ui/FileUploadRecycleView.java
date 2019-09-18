@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.uploader.FileUploadComponent;
+import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
+import com.pine.base.component.uploader.FileUploadComponent.TogetherUploadAdapter;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.recycle_view.BaseListViewHolder;

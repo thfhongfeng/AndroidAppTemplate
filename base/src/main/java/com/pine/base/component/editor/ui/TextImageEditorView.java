@@ -18,6 +18,8 @@ import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.uploader.FileUploadComponent;
+import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
+import com.pine.base.component.uploader.FileUploadComponent.TogetherUploadAdapter;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
@@ -271,7 +273,7 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         }
         invalidate();
     }
-    
+
     @Override
     public int getUploadFileType() {
         return FileUploadComponent.TYPE_IMAGE;

@@ -8,8 +8,8 @@ import com.google.gson.Gson;
 import com.pine.base.BaseConstants;
 import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
+import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
-import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
@@ -46,8 +46,8 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
     }
 
     @NonNull
-    public UploadFileLinearLayout.OneByOneUploadAdapter getUploadAdapter() {
-        return new UploadFileLinearLayout.OneByOneUploadAdapter() {
+    public FileUploadComponent.OneByOneUploadAdapter getUploadAdapter() {
+        return new FileUploadComponent.OneByOneUploadAdapter() {
 
             @Override
             public String getUploadUrl() {

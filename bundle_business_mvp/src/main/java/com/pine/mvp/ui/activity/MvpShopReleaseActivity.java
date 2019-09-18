@@ -17,6 +17,7 @@ import com.pine.base.BaseConstants;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.base.component.map.MapSdkManager;
+import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.ui.ImageUploadRecycleView;
 import com.pine.base.util.DialogUtils;
@@ -97,7 +98,7 @@ public class MvpShopReleaseActivity extends
         );
         swipe_refresh_layout.setEnabled(false);
 
-        photo_iuv.init(this, true, new ImageUploadRecycleView.OneByOneUploadAdapter() {
+        photo_iuv.init(this, true, new FileUploadComponent.OneByOneUploadAdapter() {
             @Override
             public String getUploadUrl() {
                 return MvpUrlConstants.Upload_Single_File;

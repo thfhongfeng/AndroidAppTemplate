@@ -14,8 +14,8 @@ import com.pine.base.BaseConstants;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.component.editor.bean.TextImageEntity;
+import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
-import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -47,7 +47,7 @@ public class MvvmTravelNoteReleaseActivity extends
     private final int REQUEST_CODE_SELECT_BELONG_SHOP = 1;
     private InputTextDialog mDayCountInputDialog;
     private DateSelectDialog mSetOutDateSelectDialog;
-    private UploadFileLinearLayout.OneByOneUploadAdapter mUploadAdapter = new UploadFileLinearLayout.OneByOneUploadAdapter() {
+    private FileUploadComponent.OneByOneUploadAdapter mUploadAdapter = new FileUploadComponent.OneByOneUploadAdapter() {
 
         @Override
         public String getUploadUrl() {

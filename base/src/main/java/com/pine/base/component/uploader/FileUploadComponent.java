@@ -478,4 +478,28 @@ public class FileUploadComponent {
 
         }
     }
+
+    public interface OneByOneUploadAdapter {
+        // 获取上传文件的服务器地址
+        String getUploadUrl();
+
+        String getFileKey(FileUploadBean fileUploadBean);
+
+        Map<String, String> getUploadParam(FileUploadBean fileUploadBean);
+
+        String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject response);
+    }
+
+    public interface TogetherUploadAdapter {
+        // 获取上传文件的服务器地址
+        String getUploadUrl();
+
+        String getFileKey(FileUploadBean fileUploadBean);
+
+        String getFilesKey(List<FileUploadBean> fileUploadBeanList);
+
+        Map<String, String> getUploadParam(List<FileUploadBean> fileUploadBeanList);
+
+        List<String> getRemoteUrlListFromResponse(List<FileUploadBean> fileUploadBeanList, JSONObject response);
+    }
 }

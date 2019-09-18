@@ -21,6 +21,8 @@ import com.pine.base.R;
 import com.pine.base.component.image_selector.ImageSelector;
 import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.uploader.FileUploadComponent;
+import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
+import com.pine.base.component.uploader.FileUploadComponent.TogetherUploadAdapter;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.tool.util.FileUtils;
@@ -35,7 +37,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by tanghongfeng on 2018/11/13
@@ -605,29 +606,4 @@ public abstract class UploadFileRecyclerView extends RecyclerView implements ILi
     public abstract void onFileUploadFail(List<FileUploadBean> uploadBeanList);
 
     public abstract void onFileUploadSuccess(List<FileUploadBean> uploadBeanList);
-
-
-    public interface OneByOneUploadAdapter {
-        // 获取上传文件的服务器地址
-        String getUploadUrl();
-
-        String getFileKey(FileUploadBean fileUploadBean);
-
-        Map<String, String> getUploadParam(FileUploadBean fileUploadBean);
-
-        String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject response);
-    }
-
-    public interface TogetherUploadAdapter {
-        // 获取上传文件的服务器地址
-        String getUploadUrl();
-
-        String getFileKey(FileUploadBean fileUploadBean);
-
-        String getFilesKey(List<FileUploadBean> fileUploadBeanList);
-
-        Map<String, String> getUploadParam(List<FileUploadBean> fileUploadBeanList);
-
-        List<String> getRemoteUrlListFromResponse(List<FileUploadBean> fileUploadBeanList, JSONObject response);
-    }
 }

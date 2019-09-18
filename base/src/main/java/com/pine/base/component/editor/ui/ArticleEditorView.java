@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import com.pine.base.component.editor.bean.TextImageEntity;
-import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
+import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
 import com.pine.tool.ui.Activity;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class ArticleEditorView extends LinearLayout {
     }
 
     public void setSectionCount(Activity activity, int sectionCount, List<String> sectionTitleList,
-                                UploadFileLinearLayout.OneByOneUploadAdapter adapter) {
+                                OneByOneUploadAdapter adapter) {
         int childCount = getChildCount();
         if (sectionCount > childCount) {
             for (int i = childCount; i < sectionCount; i++) {
@@ -54,7 +54,7 @@ public class ArticleEditorView extends LinearLayout {
     }
 
     private void addSectionView(Activity activity, String title, int section,
-                                UploadFileLinearLayout.OneByOneUploadAdapter adapter) {
+                                OneByOneUploadAdapter adapter) {
         TextImageEditorView view = new TextImageEditorView(getContext());
         view.init(activity, section, title, adapter, 100 + section);
         addView(view);

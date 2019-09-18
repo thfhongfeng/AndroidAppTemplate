@@ -14,8 +14,8 @@ import com.pine.base.BaseConstants;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.component.map.MapSdkManager;
+import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
-import com.pine.base.component.uploader.ui.ImageUploadRecycleView;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -97,7 +97,7 @@ public class MvvmShopReleaseActivity extends
         );
         mBinding.swipeRefreshLayout.setEnabled(false);
 
-        mBinding.photoIuv.init(this, true, new ImageUploadRecycleView.OneByOneUploadAdapter() {
+        mBinding.photoIuv.init(this, true, new FileUploadComponent.OneByOneUploadAdapter() {
             @Override
             public String getUploadUrl() {
                 return MvvmUrlConstants.Upload_Single_File;
