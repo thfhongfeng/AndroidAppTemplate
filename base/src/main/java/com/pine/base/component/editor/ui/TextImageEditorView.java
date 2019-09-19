@@ -1,5 +1,6 @@
 package com.pine.base.component.editor.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
@@ -19,12 +20,12 @@ import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
-import com.pine.base.component.uploader.FileUploadComponent.TogetherUploadAdapter;
+import com.pine.base.component.uploader.IFileOneByOneUploader;
+import com.pine.base.component.uploader.IFileUploaderConfig;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
 import com.pine.base.util.DialogUtils;
-import com.pine.tool.ui.Activity;
 import com.pine.tool.util.KeyboardUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -38,7 +39,7 @@ import static com.pine.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
  * Created by tanghongfeng on 2018/11/13
  */
 
-public class TextImageEditorView extends UploadFileLinearLayout {
+public class TextImageEditorView extends UploadFileLinearLayout implements IFileUploaderConfig, IFileOneByOneUploader {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     // 编辑器索引
@@ -51,6 +52,10 @@ public class TextImageEditorView extends UploadFileLinearLayout {
     private View mTopTitleView;
     // 当前子编辑条目View
     private View mCurAddNoteView;
+    // 最大允许上传文件数
+    protected int mMaxFileCount = 30;
+    // 最大允许上传文件大小
+    protected long mMaxFileSize = 1024 * 1024;
 
     public TextImageEditorView(Context context) {
         super(context);
@@ -70,15 +75,17 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
     }
 
-    public void init(@NonNull Activity activity, int index, String title,
-                     @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
-        initUpload(activity, adapter, requestCodeSelectImage);
-        initView(index, title);
+    @Override
+    public void init(@NonNull Activity activity,
+                     @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
+        mHelper.init(activity, adapter, requestCodeSelectFile);
+        mHelper.setMaxFileCount(mMaxFileCount);
+        mHelper.setMaxFileSize(mMaxFileSize);
     }
 
     public void init(@NonNull Activity activity, int index, String title,
-                     @NonNull TogetherUploadAdapter adapter, int requestCodeSelectImage) {
-        initUpload(activity, adapter, requestCodeSelectImage);
+                     @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectImage) {
+        init(activity, adapter, requestCodeSelectImage);
         initView(index, title);
     }
 
@@ -88,7 +95,7 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         mTitle = title;
 
         mInitChildViewCount = 0;
-        mTopTitleView = LayoutInflater.from(mActivity).inflate(R.layout.base_text_image_editor_top, null);
+        mTopTitleView = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_editor_top, null);
         ((TextView) mTopTitleView.findViewById(R.id.title_tv)).setText(mTitle);
         mTopTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
         addView(mTopTitleView);
@@ -99,7 +106,7 @@ public class TextImageEditorView extends UploadFileLinearLayout {
     }
 
     private void addText(int position, @NonNull TextImageEditorItemData data, boolean needFocus) {
-        final View view = LayoutInflater.from(mActivity).inflate(R.layout.base_text_image_editor_item_text, null);
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_editor_item_text, null);
 
         setupEditorView(position, view);
         if (position == mInitChildViewCount - 1) {
@@ -113,12 +120,12 @@ public class TextImageEditorView extends UploadFileLinearLayout {
         text_et.setText(data.getText());
         if (needFocus) {
             text_et.requestFocus();
-            KeyboardUtils.openSoftKeyboard(mActivity, text_et);
+            KeyboardUtils.openSoftKeyboard(getContext(), text_et);
         }
     }
 
     private void addImage(final int position, @NonNull TextImageEditorItemData data) {
-        final View view = LayoutInflater.from(mActivity).inflate(R.layout.base_text_image_editor_item_image, null);
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_editor_item_image, null);
 
         setupEditorView(position, view);
 
@@ -136,13 +143,13 @@ public class TextImageEditorView extends UploadFileLinearLayout {
             }
         }
         final String url = imageUrl;
-        ImageLoaderManager.getInstance().loadImage(mActivity, imageUrl, image_iv);
+        ImageLoaderManager.getInstance().loadImage(getContext(), imageUrl, image_iv);
         image_iv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<String> urlList = new ArrayList<>();
                 urlList.add(url);
-                displayUploadObject(urlList, 0);
+                mHelper.displayUploadObject(urlList, 0);
             }
         });
         text_et.setText(data.getText());
@@ -154,8 +161,8 @@ public class TextImageEditorView extends UploadFileLinearLayout {
             view.findViewById(R.id.delete_iv).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogUtils.showConfirmDialog(mActivity,
-                            mActivity.getString(R.string.base_delete_content_confirm_msg),
+                    DialogUtils.showConfirmDialog(getContext(),
+                            getContext().getString(R.string.base_delete_content_confirm_msg),
                             new DialogUtils.IActionListener() {
                                 @Override
                                 public void onLeftBtnClick() {
@@ -181,7 +188,7 @@ public class TextImageEditorView extends UploadFileLinearLayout {
             @Override
             public void onClick(View v) {
                 mCurAddNoteView = view;
-                selectUploadObjects();
+                mHelper.selectUploadObjects();
             }
         });
     }
@@ -333,39 +340,6 @@ public class TextImageEditorView extends UploadFileLinearLayout {
             copyUploadData(uploadBean);
             refreshImageState(uploadBean.getAttachView(), uploadBean.getUploadState(),
                     uploadBean.getUploadProgress());
-        }
-    }
-
-    @Override
-    public void onFileUploadProgress(List<FileUploadBean> uploadBeanList) {
-        for (FileUploadBean bean : uploadBeanList) {
-            if (bean != null && bean.getAttachView() != null) {
-                copyUploadData(bean);
-                refreshImageState(bean.getAttachView(), bean.getUploadState(),
-                        bean.getUploadProgress());
-            }
-        }
-    }
-
-    @Override
-    public void onFileUploadFail(List<FileUploadBean> uploadBeanList) {
-        for (FileUploadBean bean : uploadBeanList) {
-            if (bean != null && bean.getAttachView() != null) {
-                copyUploadData(bean);
-                refreshImageState(bean.getAttachView(), bean.getUploadState(),
-                        bean.getUploadProgress());
-            }
-        }
-    }
-
-    @Override
-    public void onFileUploadSuccess(List<FileUploadBean> uploadBeanList) {
-        for (FileUploadBean bean : uploadBeanList) {
-            if (bean != null && bean.getAttachView() != null) {
-                copyUploadData(bean);
-                refreshImageState(bean.getAttachView(), bean.getUploadState(),
-                        bean.getUploadProgress());
-            }
         }
     }
 

@@ -22,7 +22,8 @@ import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
-import com.pine.base.component.uploader.FileUploadComponent.TogetherUploadAdapter;
+import com.pine.base.component.uploader.IFileOneByOneUploader;
+import com.pine.base.component.uploader.IFileUploaderConfig;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.recycle_view.BaseListViewHolder;
@@ -38,11 +39,15 @@ import java.util.List;
  * Created by tanghongfeng on 2018/11/1
  */
 
-public class FileUploadRecycleView extends UploadFileRecyclerView {
+public class FileUploadRecycleView extends UploadFileRecyclerView implements IFileUploaderConfig, IFileOneByOneUploader {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private UploadFileAdapter mUploadFileAdapter;
     // RecyclerView列数（一行可容纳image数量）
     protected int mColumnSize = 3;
+    // 最大允许上传文件数
+    protected int mMaxFileCount = 30;
+    // 最大允许上传文件大小
+    protected long mMaxFileSize = 1024 * 1024;
 
     public FileUploadRecycleView(Context context) {
         super(context);
@@ -67,8 +72,11 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
     }
 
     @Override
-    public int getUploadFileType() {
-        return FileUploadComponent.TYPE_ALL;
+    public void init(@NonNull Activity activity,
+                     @NonNull FileUploadComponent.OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
+        mHelper.init(activity, adapter, requestCodeSelectFile);
+        mHelper.setMaxFileCount(mMaxFileCount);
+        mHelper.setMaxFileSize(mMaxFileSize);
     }
 
     public void init(@NonNull Activity activity) {
@@ -76,14 +84,15 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
     }
 
     public void init(@NonNull Activity activity, boolean canDelete) {
-        initUpload(activity);
+        init(activity, null, -1);
+
         mUploadFileAdapter = new UploadFileAdapter(
                 UploadFileAdapter.UPLOAD_FILE_VIEW_HOLDER, false, canDelete, mMaxFileCount);
         addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.dp_10)));
         if (getUploadFileType() != FileUploadComponent.TYPE_IMAGE) {
             mColumnSize = 1;
         }
-        GridLayoutManager layoutManager = new GridLayoutManager(mActivity, mColumnSize);
+        GridLayoutManager layoutManager = new GridLayoutManager(activity, mColumnSize);
         setLayoutManager(layoutManager);
         setAdapter(mUploadFileAdapter);
         mUploadFileAdapter.setData(null);
@@ -92,34 +101,24 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
 
     public void init(@NonNull Activity activity, boolean canDelete,
                      @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
-        initUpload(activity, adapter, requestCodeSelectFile);
+        init(activity, adapter, requestCodeSelectFile);
+
         mUploadFileAdapter = new UploadFileAdapter(
                 UploadFileAdapter.UPLOAD_FILE_VIEW_HOLDER, true, canDelete, mMaxFileCount);
         addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.dp_10)));
         if (getUploadFileType() != FileUploadComponent.TYPE_IMAGE) {
             mColumnSize = 1;
         }
-        GridLayoutManager layoutManager = new GridLayoutManager(mActivity, mColumnSize);
+        GridLayoutManager layoutManager = new GridLayoutManager(activity, mColumnSize);
         setLayoutManager(layoutManager);
         setAdapter(mUploadFileAdapter);
         mUploadFileAdapter.setData(null);
         notifyAdapterDataChanged();
     }
 
-    public void init(@NonNull Activity activity, boolean canDelete,
-                     @NonNull TogetherUploadAdapter adapter, int requestCodeSelectFile) {
-        initUpload(activity, adapter, requestCodeSelectFile);
-        mUploadFileAdapter = new UploadFileAdapter(
-                UploadFileAdapter.UPLOAD_FILE_VIEW_HOLDER, true, canDelete, mMaxFileCount);
-        addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.dp_10)));
-        if (getUploadFileType() != FileUploadComponent.TYPE_IMAGE) {
-            mColumnSize = 1;
-        }
-        GridLayoutManager layoutManager = new GridLayoutManager(mActivity, mColumnSize);
-        setLayoutManager(layoutManager);
-        setAdapter(mUploadFileAdapter);
-        mUploadFileAdapter.setData(null);
-        notifyAdapterDataChanged();
+    @Override
+    public int getUploadFileType() {
+        return FileUploadComponent.TYPE_ALL;
     }
 
     @Override
@@ -154,21 +153,6 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
     public void onFileUploadSuccess(FileUploadBean uploadBean) {
         notifyAdapterItemChanged(uploadBean.getOrderIndex());
         notifyAdapterItemChanged(0);
-    }
-
-    @Override
-    public void onFileUploadProgress(List<FileUploadBean> uploadBeanList) {
-        notifyAdapterDataChanged();
-    }
-
-    @Override
-    public void onFileUploadFail(List<FileUploadBean> uploadBeanList) {
-        notifyAdapterDataChanged();
-    }
-
-    @Override
-    public void onFileUploadSuccess(List<FileUploadBean> uploadBeanList) {
-        notifyAdapterDataChanged();
     }
 
     public void setRemoteFiles(String remoteFiles, String joinStr) {
@@ -455,7 +439,7 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
                     }
                     num_max_tv.setText("");
                     num_max_tv.setVisibility(View.GONE);
-                    show_container.setOnClickListener(new View.OnClickListener() {
+                    show_container.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             ArrayList<String> showList = getFileShowList();
@@ -477,16 +461,16 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
                                     break;
                                 }
                             }
-                            displayUploadObject(showList, curPos);
+                            mHelper.displayUploadObject(showList, curPos);
                         }
                     });
                     if (mCanDelete) {
                         delete_iv.setVisibility(View.VISIBLE);
-                        delete_iv.setOnClickListener(new View.OnClickListener() {
+                        delete_iv.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mData.remove(position);
-                                mFileUploadComponent.cancel(fileBean);
+                                mHelper.getFileUploadComponent().cancel(fileBean);
                                 notifyAdapterDataChanged();
                             }
                         });
@@ -504,10 +488,10 @@ public class FileUploadRecycleView extends UploadFileRecyclerView {
                             file_desc_tv.setText(successSize + "/" + mMaxFileCount);
                         }
                     }
-                    show_container.setOnClickListener(new View.OnClickListener() {
+                    show_container.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectUploadObjects();
+                            mHelper.selectUploadObjects();
                         }
                     });
                     state_rl.setVisibility(View.GONE);
