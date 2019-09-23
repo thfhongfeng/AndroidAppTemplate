@@ -76,9 +76,6 @@ public class FileUploadHelper implements ILifeCircleView {
     private boolean mTogetherUploadMode;
 
     public FileUploadHelper(@NonNull View view) {
-        if (!(view instanceof IFileUploaderConfig)) {
-            throw new IllegalStateException("view must be a instance of IFileUploaderConfig");
-        }
         mFileUploaderConfig = (IFileUploaderConfig) view;
         if ((view instanceof IFileOneByOneUploader)) {
             mFileOneByOneUploader = (IFileOneByOneUploader) view;

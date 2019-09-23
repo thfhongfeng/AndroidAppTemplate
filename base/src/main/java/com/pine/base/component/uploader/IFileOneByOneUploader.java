@@ -11,7 +11,7 @@ import java.util.List;
  * Created by tanghongfeng on 2019/9/19.
  */
 
-public interface IFileOneByOneUploader {
+public interface IFileOneByOneUploader extends IFileUploaderConfig {
     void init(@NonNull Activity activity,
               @NonNull FileUploadComponent.OneByOneUploadAdapter adapter, int requestCodeSelectFile);
 

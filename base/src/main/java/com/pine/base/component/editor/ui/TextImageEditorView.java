@@ -21,7 +21,6 @@ import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
 import com.pine.base.component.uploader.IFileOneByOneUploader;
-import com.pine.base.component.uploader.IFileUploaderConfig;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
@@ -39,7 +38,7 @@ import static com.pine.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
  * Created by tanghongfeng on 2018/11/13
  */
 
-public class TextImageEditorView extends UploadFileLinearLayout implements IFileUploaderConfig, IFileOneByOneUploader {
+public class TextImageEditorView extends UploadFileLinearLayout implements IFileOneByOneUploader {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     // 编辑器索引

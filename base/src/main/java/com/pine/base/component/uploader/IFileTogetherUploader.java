@@ -11,7 +11,7 @@ import java.util.List;
  * Created by tanghongfeng on 2019/9/19.
  */
 
-public interface IFileTogetherUploader {
+public interface IFileTogetherUploader extends IFileUploaderConfig {
     void init(@NonNull Activity activity,
               @NonNull FileUploadComponent.TogetherUploadAdapter adapter, int requestCodeSelectFile);
 

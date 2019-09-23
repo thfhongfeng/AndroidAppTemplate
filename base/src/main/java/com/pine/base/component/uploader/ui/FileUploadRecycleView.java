@@ -23,7 +23,6 @@ import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
 import com.pine.base.component.uploader.IFileOneByOneUploader;
-import com.pine.base.component.uploader.IFileUploaderConfig;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.recycle_view.BaseListViewHolder;
@@ -39,7 +38,7 @@ import java.util.List;
  * Created by tanghongfeng on 2018/11/1
  */
 
-public class FileUploadRecycleView extends UploadFileRecyclerView implements IFileUploaderConfig, IFileOneByOneUploader {
+public class FileUploadRecycleView extends UploadFileRecyclerView implements IFileOneByOneUploader {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private UploadFileAdapter mUploadFileAdapter;
     // RecyclerView列数（一行可容纳image数量）
