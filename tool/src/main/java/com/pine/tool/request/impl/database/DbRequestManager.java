@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IResponseListener;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.Response;
+import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONException;
@@ -87,7 +89,7 @@ public class DbRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setDownloadRequest(final @NonNull RequestBean requestBean,
+    public void setDownloadRequest(final @NonNull DownloadRequestBean requestBean,
                                    final @NonNull IResponseListener.OnDownloadListener listener) {
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
         // Test code begin
@@ -122,10 +124,10 @@ public class DbRequestManager implements IRequestManager {
     private HashMap<Integer, Integer> mUploadCountMap = new HashMap<>();
 
     @Override
-    public void setUploadRequest(final @NonNull RequestBean requestBean,
+    public void setUploadRequest(final @NonNull UploadRequestBean requestBean,
                                  final @NonNull IResponseListener.OnUploadListener processListener,
                                  final @NonNull IResponseListener.OnResponseListener responseListener) {
-        List<RequestBean.FileBean> fileBeanList = requestBean.getUploadFileList();
+        List<UploadRequestBean.FileBean> fileBeanList = requestBean.getUploadFileList();
         responseListener.onStart(requestBean.getWhat());
         if (fileBeanList == null || fileBeanList.size() < 1) {
             Exception exception = new Exception("file is null");
@@ -144,7 +146,7 @@ public class DbRequestManager implements IRequestManager {
         mUploadCountMap.put(requestBean.hashCode(), fileBeanList.size());
         HashMap<String, String> cookies = new HashMap<>();
         final List<Object> respDataList = new ArrayList<>();
-        for (final RequestBean.FileBean fileBean : fileBeanList) {
+        for (final UploadRequestBean.FileBean fileBean : fileBeanList) {
             final DbRequestBean bean = toDbRequestBean(requestBean);
             ArrayList<DbRequestBean.FileBean> list = new ArrayList<>();
             list.add(new DbRequestBean.FileBean(fileBean.getFileKey(), fileBean.getFileName(), fileBean.getFile(), fileBean.getPosition()));
@@ -325,21 +327,25 @@ public class DbRequestManager implements IRequestManager {
         dbRequestBean.setNeedLogin(requestBean.isNeedLogin());
         dbRequestBean.setActionType(requestBean.getActionType());
 
-        dbRequestBean.setSaveFolder(requestBean.getSaveFolder());
-        dbRequestBean.setSaveFileName(requestBean.getSaveFileName());
-        dbRequestBean.setContinue(requestBean.isContinue());
-        dbRequestBean.setDeleteOld(requestBean.isDeleteOld());
+        if (requestBean instanceof DownloadRequestBean) {
+            dbRequestBean.setSaveFolder(((DownloadRequestBean) requestBean).getSaveFolder());
+            dbRequestBean.setSaveFileName(((DownloadRequestBean) requestBean).getSaveFileName());
+            dbRequestBean.setContinue(((DownloadRequestBean) requestBean).isContinue());
+            dbRequestBean.setDeleteOld(((DownloadRequestBean) requestBean).isDeleteOld());
+        }
 
-        dbRequestBean.setUpLoadFileKey(requestBean.getUpLoadFileKey());
-        List<RequestBean.FileBean> fileBeanList = requestBean.getUploadFileList();
-        if (fileBeanList != null && requestBean.getUploadFileList().size() > 0) {
-            List<DbRequestBean.FileBean> dbFileBeanList = new ArrayList<>();
-            for (RequestBean.FileBean entity : fileBeanList) {
-                DbRequestBean.FileBean fileBean = new DbRequestBean.FileBean(entity.getFileKey(),
-                        entity.getFileName(), entity.getFile(), entity.getPosition());
-                dbFileBeanList.add(fileBean);
+        if (requestBean instanceof UploadRequestBean) {
+            dbRequestBean.setUpLoadFileKey(((UploadRequestBean) requestBean).getUpLoadFileKey());
+            List<UploadRequestBean.FileBean> fileBeanList = ((UploadRequestBean) requestBean).getUploadFileList();
+            if (fileBeanList != null && ((UploadRequestBean) requestBean).getUploadFileList().size() > 0) {
+                List<DbRequestBean.FileBean> dbFileBeanList = new ArrayList<>();
+                for (UploadRequestBean.FileBean entity : fileBeanList) {
+                    DbRequestBean.FileBean fileBean = new DbRequestBean.FileBean(entity.getFileKey(),
+                            entity.getFileName(), entity.getFile(), entity.getPosition());
+                    dbFileBeanList.add(fileBean);
+                }
+                dbRequestBean.setUploadFileList(dbFileBeanList);
             }
-            dbRequestBean.setUploadFileList(dbFileBeanList);
         }
         return dbRequestBean;
     }

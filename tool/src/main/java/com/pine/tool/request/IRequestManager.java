@@ -18,9 +18,9 @@ public interface IRequestManager {
     void setJsonRequest(@NonNull RequestBean requestBean,
                         @NonNull IResponseListener.OnResponseListener listener);
 
-    void setDownloadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener);
+    void setDownloadRequest(@NonNull DownloadRequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener);
 
-    void setUploadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
+    void setUploadRequest(@NonNull UploadRequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
                           @NonNull IResponseListener.OnResponseListener responseListener);
 
     void cancelBySign(Object sign);

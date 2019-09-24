@@ -10,6 +10,7 @@ import com.pine.config.UrlConstants;
 import com.pine.config.bean.ConfigSwitcherEntity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.BusinessException;
+import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
@@ -31,8 +32,9 @@ public class ConfigSwitcherModel {
     public boolean requestBundleSwitcherData(@NonNull IModelAsyncResponse<ArrayList<ConfigSwitcherEntity>> callback) {
         String url = UrlConstants.Query_BundleSwitcher_Data;
         JsonCallback httpStringCallback = handleResponse(callback);
-        return RequestManager.setJsonRequest(url, new HashMap<String, String>(),
-                TAG, REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER, httpStringCallback);
+        RequestBean requestBean = new RequestBean(url, REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER, new HashMap<String, String>());
+        requestBean.setModuleTag(TAG);
+        return RequestManager.setJsonRequest(requestBean, httpStringCallback);
     }
 
     private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {

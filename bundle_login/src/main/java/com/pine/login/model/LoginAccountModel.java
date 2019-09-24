@@ -11,6 +11,7 @@ import com.pine.login.bean.AccountBean;
 import com.pine.login.model.callback.LoginCallback;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.BusinessException;
+import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
@@ -27,22 +28,25 @@ public class LoginAccountModel {
     public boolean requestLogin(final HashMap<String, String> params, int requestCode, ILoginResponse callback) {
         String url = LoginUrlConstants.Login;
         RequestManager.clearCookie();
-        return RequestManager.setJsonRequest(url, params, TAG,
-                requestCode, new LoginCallback(callback));
+        RequestBean requestBean = new RequestBean(url, requestCode, params);
+        requestBean.setModuleTag(TAG);
+        return RequestManager.setJsonRequest(requestBean, new LoginCallback(callback));
     }
 
     public void requestLogout() {
         String url = LoginUrlConstants.Logout;
         RequestManager.clearCookie();
-        RequestManager.setJsonRequest(url, new HashMap<String, String>(), TAG,
-                LoginCallback.LOGOUT_CODE, new LoginCallback());
+        RequestBean requestBean = new RequestBean(url, LoginCallback.LOGOUT_CODE, new HashMap<String, String>());
+        requestBean.setModuleTag(TAG);
+        RequestManager.setJsonRequest(requestBean, new LoginCallback());
     }
 
     public void requestRegister(final HashMap<String, String> params,
                                 @NonNull final IModelAsyncResponse<AccountBean> callback) {
         String url = LoginUrlConstants.Register_Account;
-        RequestManager.setJsonRequest(url, params, TAG, REQUEST_REGISTER,
-                handleResponse(callback));
+        RequestBean requestBean = new RequestBean(url, REQUEST_REGISTER, params);
+        requestBean.setModuleTag(TAG);
+        RequestManager.setJsonRequest(requestBean, handleResponse(callback));
     }
 
     private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {

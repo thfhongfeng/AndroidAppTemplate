@@ -4,11 +4,13 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IResponseListener;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestMethod;
 import com.pine.tool.request.Response;
+import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.util.LogUtils;
 import com.yanzhenjie.nohttp.BasicBinary;
 import com.yanzhenjie.nohttp.Binary;
@@ -149,7 +151,7 @@ public class NoRequestManager implements IRequestManager {
     }
 
     private OnUploadListener getUploadListener(final IResponseListener.OnUploadListener listener,
-                                               final RequestBean.FileBean fileBean) {
+                                               final UploadRequestBean.FileBean fileBean) {
         return new OnUploadListener() {
             @Override
             public void onStart(int what) {
@@ -224,7 +226,7 @@ public class NoRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setDownloadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener) {
+    public void setDownloadRequest(@NonNull DownloadRequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener) {
         IBasicRequest request = NoHttp.createDownloadRequest(requestBean.getUrl(),
                 transferToNoHttpHttpMethod(requestBean.getRequestMethod()),
                 requestBean.getSaveFolder(), requestBean.getSaveFileName(),
@@ -238,7 +240,7 @@ public class NoRequestManager implements IRequestManager {
     }
 
     @Override
-    public void setUploadRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
+    public void setUploadRequest(@NonNull UploadRequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
                                  @NonNull IResponseListener.OnResponseListener responseListener) {
         if (requestBean.getUploadFileList() == null) {
             return;
@@ -247,7 +249,7 @@ public class NoRequestManager implements IRequestManager {
         List<Binary> binaries = new ArrayList<>();
         boolean isMulFileKey = TextUtils.isEmpty(requestBean.getUpLoadFileKey());
         for (int i = 0; i < requestBean.getUploadFileList().size(); i++) {
-            RequestBean.FileBean fileBean = requestBean.getUploadFileList().get(i);
+            UploadRequestBean.FileBean fileBean = requestBean.getUploadFileList().get(i);
             BasicBinary binary = null;
             try {
                 binary = new InputStreamBinary(new FileInputStream(fileBean.getFile()), fileBean.getFileName());

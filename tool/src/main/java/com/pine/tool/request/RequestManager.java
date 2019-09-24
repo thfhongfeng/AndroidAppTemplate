@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.pine.tool.R;
-import com.pine.tool.request.IRequestManager.ActionType;
 import com.pine.tool.request.IRequestManager.RequestType;
 import com.pine.tool.request.callback.DownloadCallback;
 import com.pine.tool.request.callback.JsonCallback;
@@ -17,7 +16,6 @@ import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.yanzhenjie.nohttp.error.NetworkError;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,12 +29,10 @@ import java.util.Map;
 public class RequestManager {
     private final static String TAG = LogUtils.makeLogTag(RequestManager.class);
     private static Context mApplicationContext;
-    private static IRequestManager mRequestManager;
+    private static IRequestManager mRequestManagerImpl;
 
     // 正在进行的请求
     private static HashMap<String, RequestBean> mLoadingRequestMap = null;
-    // 错误返回的请求
-    private static HashMap<String, RequestBean> mErrorRequestMap = null;
 
     private static List<IRequestInterceptor> mRequestInterceptorList = new ArrayList<>();
 
@@ -58,9 +54,8 @@ public class RequestManager {
         } else {
             mApplicationContext = AppUtils.getApplication();
         }
-        mRequestManager = factory.makeRequestManager(context, head);
+        mRequestManagerImpl = factory.makeRequestManager(context, head);
         mLoadingRequestMap = new HashMap<>();
-        mErrorRequestMap = new HashMap<>();
     }
 
     public static void addGlobalResponseInterceptor(IResponseInterceptor interceptor) {
@@ -78,91 +73,22 @@ public class RequestManager {
     }
 
     // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, JsonCallback callback) {
-        return setJsonRequest(url, params, moduleTag, -1, RequestType.STRING, callback);
-    }
-
-    // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, JsonCallback callback) {
-        return setJsonRequest(url, params, moduleTag, what, IRequestManager.RequestType.STRING, callback);
-    }
-
-    // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, boolean needLogin, JsonCallback callback) {
-        return setJsonRequest(url, params, moduleTag, what, RequestType.STRING, needLogin, callback);
-    }
-
-    // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, Object sign, JsonCallback callback) {
-        return setJsonRequest(url, RequestMethod.POST, params, moduleTag, what, sign, false, RequestType.STRING, callback);
-    }
-
-    // json请求
-    public static boolean setJsonRequest(String url, Map<String, String> params, String moduleTag, int what, Object sign, boolean needLogin, JsonCallback callback) {
-        return setJsonRequest(url, RequestMethod.POST, params, moduleTag, what, sign, needLogin, RequestType.STRING, callback);
-    }
-
-    // json请求
-    public static boolean setJsonRequest(String url, RequestMethod method, Map<String, String> params, String moduleTag,
-                                         int what, JsonCallback callback) {
-        return setJsonRequest(url, method, params, moduleTag, what, null, false, RequestType.STRING, callback);
-    }
-
-    // json请求
-    public static boolean setJsonRequest(RequestBean requestBean, ActionType actionType) {
-        requestBean.setActionType(actionType);
-        return setJsonRequest(requestBean.getUrl(), requestBean.getRequestMethod(), requestBean.getParams(),
-                requestBean.getModuleTag(), requestBean.getWhat(), requestBean.getSign(), requestBean.isNeedLogin(),
-                requestBean.getRequestType(), (JsonCallback) requestBean.getCallback());
-    }
-
-    // json请求
-    public static boolean setJsonRequest(RequestBean requestBean) {
-        return setJsonRequest(requestBean.getUrl(), requestBean.getRequestMethod(), requestBean.getParams(),
-                requestBean.getModuleTag(), requestBean.getWhat(), requestBean.getSign(), requestBean.isNeedLogin(),
-                requestBean.getRequestType(), (JsonCallback) requestBean.getCallback());
-    }
-
-    /**
-     * json请求
-     *
-     * @param url         地址
-     * @param method      请求方式：GET、POST等
-     * @param params      参数
-     * @param moduleTag   模块标识
-     * @param what        请求标识code
-     * @param sign        cancel标识
-     * @param needLogin   是否需要登陆
-     * @param requestType 请求分类，目前只区分通用和登录
-     * @param callback    回调
-     * @return false表示请求没有被发送出去；true表示请求正常发出
-     */
-    public static boolean setJsonRequest(String url, RequestMethod method, Map<String, String> params, String moduleTag,
-                                         int what, Object sign, boolean needLogin, RequestType requestType, JsonCallback callback) {
+    public static boolean setJsonRequest(@NonNull RequestBean requestBean, JsonCallback callback) {
         //设置模块名
-        if (!TextUtils.isEmpty(moduleTag)) {
-            callback.setModuleTag(moduleTag);
+        if (!TextUtils.isEmpty(requestBean.getModuleTag())) {
+            callback.setModuleTag(requestBean.getModuleTag());
         }
-        callback.setUrl(url);
-        callback.setWhat(what);
+        callback.setUrl(requestBean.getUrl());
+        callback.setWhat(requestBean.getWhat());
 
-        RequestBean requestBean = new RequestBean(what, callback);
-        requestBean.setUrl(url);
-        requestBean.setRequestMethod(method);
-        requestBean.setParams(params);
-        requestBean.setModuleTag(moduleTag);
-        requestBean.setWhat(what);
-        requestBean.setSign(sign);
-        if (!TextUtils.isEmpty(moduleTag)) {
-            requestBean.setModuleTag(moduleTag);
-        }
-        requestBean.setNeedLogin(needLogin);
-        requestBean.setRequestType(requestType);
+        requestBean.setRequestType(RequestType.STRING);
         requestBean.setCallback(callback);
         if (mRequestInterceptorList != null) {
             for (int i = 0; i < mRequestInterceptorList.size(); i++) {
-                if (mRequestInterceptorList.get(i).onIntercept(what, requestBean)) {
-                    callback.onCancel(what);
+                if (mRequestInterceptorList.get(i).onIntercept(requestBean.getWhat(), requestBean)) {
+                    if (callback != null) {
+                        callback.onCancel(requestBean.getWhat());
+                    }
                     return false;
                 }
             }
@@ -173,97 +99,27 @@ public class RequestManager {
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- url: " +
                 requestBean.getUrl() + "\r\n- params:" + requestBean.getParams() +
                 "\r\n- Cookies: " + getCookiesLog());
-        mRequestManager.setJsonRequest(requestBean, getResponseListener(requestBean.getKey(), callback));
+        mRequestManagerImpl.setJsonRequest(requestBean, getResponseListener(requestBean.getKey(), callback));
         return true;
     }
 
     // 下载文件
-    public static boolean setDownloadRequest(String url, String fileFolder, String fileName,
-                                             int what, Object sign, DownloadCallback callback) {
-        return setDownloadRequest(url, fileFolder, fileName, RequestMethod.GET, new HashMap<String, String>(),
-                null, false, true, what, sign, false, callback);
-    }
-
-    // 下载文件
-    public static boolean setDownloadRequest(String url, String fileFolder, String fileName, String moduleTag,
-                                             int what, DownloadCallback callback) {
-        return setDownloadRequest(url, fileFolder, fileName, RequestMethod.GET, new HashMap<String, String>(),
-                moduleTag, false, true, what, null, false, callback);
-    }
-
-    // 下载文件
-    public static boolean setDownloadRequest(String url, String fileFolder, String fileName, String moduleTag,
-                                             int what, boolean needLogin, DownloadCallback callback) {
-        return setDownloadRequest(url, fileFolder, fileName, RequestMethod.GET, new HashMap<String, String>(),
-                moduleTag, false, true, what, null, needLogin, callback);
-    }
-
-    // 下载文件
-    public static boolean setDownloadRequest(String url, String fileFolder, String fileName,
-                                             String moduleTag, boolean isContinue, boolean isDeleteOld,
-                                             int what, boolean needLogin, DownloadCallback callback) {
-        return setDownloadRequest(url, fileFolder, fileName, RequestMethod.GET, new HashMap<String, String>(),
-                moduleTag, isContinue, isDeleteOld, what, null, needLogin, callback);
-    }
-
-    // 下载文件
-    public static boolean setDownloadRequest(String url, String fileFolder, String fileName, RequestMethod method,
-                                             HashMap<String, String> params, String moduleTag, boolean isContinue, boolean isDeleteOld,
-                                             int what, boolean needLogin, DownloadCallback callback) {
-        return setDownloadRequest(url, fileFolder, fileName, method, params, moduleTag, isContinue,
-                isDeleteOld, what, null, needLogin, callback);
-    }
-
-    /**
-     * 下载文件
-     *
-     * @param url         地址
-     * @param fileFolder  下载文件保存目录
-     * @param fileName    下载文件保存文件名
-     * @param method      请求方式：GET、POST等
-     * @param params      参数
-     * @param moduleTag   模块标识
-     * @param isContinue  是否继续之前的下载
-     * @param isDeleteOld 是否删除之前的下载
-     * @param what        请求标识code
-     * @param sign        cancel标识
-     * @param needLogin   是否需要登陆
-     * @param callback    回调
-     * @return false表示请求没有被发送出去；true表示请求正常发出
-     */
-    public static boolean setDownloadRequest(String url, String fileFolder, String fileName,
-                                             RequestMethod method, HashMap<String, String> params,
-                                             String moduleTag, boolean isContinue, boolean isDeleteOld,
-                                             int what, Object sign, boolean needLogin, DownloadCallback callback) {
+    public static boolean setDownloadRequest(@NonNull DownloadRequestBean requestBean, DownloadCallback callback) {
         //设置模块名
-        if (!TextUtils.isEmpty(moduleTag)) {
-            callback.setModuleTag(moduleTag);
+        if (!TextUtils.isEmpty(requestBean.getModuleTag())) {
+            callback.setModuleTag(requestBean.getModuleTag());
         }
-        callback.setUrl(url);
-        callback.setWhat(what);
+        callback.setUrl(requestBean.getUrl());
+        callback.setWhat(requestBean.getWhat());
 
-        RequestBean requestBean = new RequestBean(what, callback);
-        requestBean.setUrl(url);
-        requestBean.setSaveFolder(fileFolder);
-        requestBean.setSaveFileName(fileName);
-        requestBean.setRequestMethod(method);
-        requestBean.setParams(params);
-        requestBean.setModuleTag(moduleTag);
-        requestBean.setContinue(isContinue);
-        requestBean.setDeleteOld(isDeleteOld);
-        requestBean.setWhat(what);
-        requestBean.setSign(sign);
-        if (!TextUtils.isEmpty(moduleTag)) {
-            requestBean.setModuleTag(moduleTag);
-        }
         requestBean.setRequestType(RequestType.DOWNLOAD);
-        requestBean.setNeedLogin(needLogin);
         requestBean.setCallback(callback);
-
         if (mRequestInterceptorList != null) {
             for (int i = 0; i < mRequestInterceptorList.size(); i++) {
-                if (mRequestInterceptorList.get(i).onIntercept(what, requestBean)) {
-                    callback.onCancel(what);
+                if (mRequestInterceptorList.get(i).onIntercept(requestBean.getWhat(), requestBean)) {
+                    if (callback != null) {
+                        callback.onCancel(requestBean.getWhat());
+                    }
                     return false;
                 }
             }
@@ -274,109 +130,38 @@ public class RequestManager {
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- url: " +
                 requestBean.getUrl() + "\r\n -params: " + requestBean.getParams() +
                 "\r\n- Cookies: " + getCookiesLog());
-        mRequestManager.setDownloadRequest(requestBean, getDownloadListener(requestBean.getKey(), callback));
+        mRequestManagerImpl.setDownloadRequest(requestBean, getDownloadListener(requestBean.getKey(), callback));
         return true;
     }
 
     /**
-     * 上传单个文件
-     */
-    public static boolean setUploadRequest(String url, Map<String, String> params,
-                                           String fileKey, String fileName, File file,
-                                           int what, Object sign,
-                                           UploadCallback processCallback, JsonCallback requestCallback) {
-        return setUploadRequest(url, params, null, fileKey, fileName, file, what, sign,
-                false, processCallback, requestCallback);
-    }
-
-    /**
-     * 上传单个文件
-     */
-    public static boolean setUploadRequest(String url, Map<String, String> params, String moduleTag,
-                                           String fileKey, String fileName, File file,
-                                           int what, Object sign, boolean needLogin,
-                                           UploadCallback processCallback,
-                                           JsonCallback requestCallback) {
-        ArrayList<RequestBean.FileBean> fileList = new ArrayList<>();
-        RequestBean.FileBean fileBean = new RequestBean.FileBean(fileKey,
-                fileName, file, 0);
-        fileList.add(fileBean);
-        ArrayList<String> fileNameList = new ArrayList<>();
-        fileNameList.add(fileName);
-        return setUploadRequest(url, params, moduleTag, null, fileList, what,
-                sign, needLogin, processCallback, requestCallback);
-    }
-
-    /**
-     * 上传多个文件
-     */
-    public static boolean setUploadRequest(String url, Map<String, String> params,
-                                           List<RequestBean.FileBean> httpFileList,
-                                           int what, Object sign,
-                                           UploadCallback processCallback,
-                                           JsonCallback requestCallback) {
-        return setUploadRequest(url, params, null, null, httpFileList,
-                what, sign, false, processCallback, requestCallback);
-    }
-
-    /**
-     * 上传多个文件
-     */
-    public static boolean setUploadRequest(String url, Map<String, String> params, String fileKey,
-                                           List<RequestBean.FileBean> httpFileList,
-                                           int what, Object sign,
-                                           UploadCallback processCallback,
-                                           JsonCallback requestCallback) {
-        return setUploadRequest(url, params, null, fileKey, httpFileList,
-                what, sign, false, processCallback, requestCallback);
-    }
-
-    /**
-     * 上传多个文件
+     * 上传文件
      *
-     * @param url             地址
-     * @param params          普通参数
-     * @param moduleTag       模块标识
-     * @param fileKey         文件的key
-     * @param httpFileList    上传文件集合
-     * @param what            请求标识code
-     * @param sign            用于取消的sign
-     * @param needLogin       是否需要登陆
+     * @param requestBean
      * @param processCallback
      * @param requestCallback
      * @return false表示请求没有被发送出去；true表示请求正常发出
      */
-    public static boolean setUploadRequest(String url, Map<String, String> params, String moduleTag,
-                                           String fileKey, List<RequestBean.FileBean> httpFileList,
-                                           int what, Object sign, boolean needLogin,
+    public static boolean setUploadRequest(@NonNull UploadRequestBean requestBean,
                                            UploadCallback processCallback, JsonCallback requestCallback) {
-        if (!TextUtils.isEmpty(moduleTag)) {
-            requestCallback.setModuleTag(moduleTag);
-            processCallback.setModuleTag(moduleTag);
+        if (!TextUtils.isEmpty(requestBean.getModuleTag())) {
+            requestCallback.setModuleTag(requestBean.getModuleTag());
+            processCallback.setModuleTag(requestBean.getModuleTag());
         }
-        requestCallback.setUrl(url);
-        processCallback.setUrl(url);
-        requestCallback.setWhat(what);
-        processCallback.setWhat(what);
+        requestCallback.setUrl(requestBean.getUrl());
+        processCallback.setUrl(requestBean.getUrl());
+        requestCallback.setWhat(requestBean.getWhat());
+        processCallback.setWhat(requestBean.getWhat());
 
-        RequestBean requestBean = new RequestBean(what, requestCallback);
-        requestBean.setUrl(url);
-        requestBean.setUploadFileList(httpFileList);
-        requestBean.setUpLoadFileKey(fileKey);
-        requestBean.setRequestMethod(RequestMethod.POST);
-        requestBean.setParams(params);
-        requestBean.setWhat(what);
-        requestBean.setSign(sign);
-        if (!TextUtils.isEmpty(moduleTag)) {
-            requestBean.setModuleTag(moduleTag);
-        }
         requestBean.setRequestType(RequestType.UPLOAD);
-        requestBean.setNeedLogin(needLogin);
+        requestBean.setUploadCallback(processCallback);
         requestBean.setCallback(requestCallback);
         if (mRequestInterceptorList != null) {
             for (int i = 0; i < mRequestInterceptorList.size(); i++) {
-                if (mRequestInterceptorList.get(i).onIntercept(what, requestBean)) {
-                    requestCallback.onCancel(what);
+                if (mRequestInterceptorList.get(i).onIntercept(requestBean.getWhat(), requestBean)) {
+                    if (requestCallback != null) {
+                        requestCallback.onCancel(requestBean.getWhat());
+                    }
                     return false;
                 }
             }
@@ -387,7 +172,7 @@ public class RequestManager {
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- url: " +
                 requestBean.getUrl() + "\r\n- params: " + requestBean.getParams() +
                 "\r\n- Cookies: " + getCookiesLog());
-        mRequestManager.setUploadRequest(requestBean, getUploadListener(processCallback),
+        mRequestManagerImpl.setUploadRequest(requestBean, getUploadListener(processCallback),
                 getResponseListener(requestBean.getKey(), requestCallback));
         return true;
     }
@@ -412,22 +197,20 @@ public class RequestManager {
                         "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
                         "\r\n- response: " + response.getData() +
                         "\r\n- Cookies: " + getCookiesLog());
-                RequestBean requestBean = null;
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
-                    requestBean = mLoadingRequestMap.remove(requestKey);
+                    RequestBean requestBean = mLoadingRequestMap.remove(requestKey);
                     requestBean.setResponse(response);
-                }
-                if (mErrorRequestMap.containsKey(requestKey)) {
-                    mErrorRequestMap.remove(requestKey);
-                }
-                if (mResponseInterceptorList != null) {
-                    for (int i = 0; i < mResponseInterceptorList.size(); i++) {
-                        if (mResponseInterceptorList.get(i).onIntercept(what, requestBean, response)) {
-                            return;
+                    if (mResponseInterceptorList != null) {
+                        for (int i = 0; i < mResponseInterceptorList.size(); i++) {
+                            if (mResponseInterceptorList.get(i).onIntercept(what, requestBean, response)) {
+                                return;
+                            }
                         }
                     }
                 }
-                callback.onResponse(what, response);
+                if (callback != null) {
+                    callback.onResponse(what, response);
+                }
             }
 
             @Override
@@ -436,29 +219,19 @@ public class RequestManager {
                         "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
                         "\r\n- response: " + response.getData() +
                         "\r\n- Cookies: " + getCookiesLog());
-                RequestBean requestBean = null;
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
-                    if (mErrorRequestMap == null) {
-                        mErrorRequestMap = new HashMap<>();
-                    }
-                    // 该请求第一次失败则加到mErrorRequestMap中，否则移除（error的请求只尝试一次）
-                    if (!mErrorRequestMap.containsKey(requestKey)) {
-                        mErrorRequestMap.put(requestKey, mLoadingRequestMap.get(requestKey));
-                    } else {
-                        mErrorRequestMap.remove(requestKey);
-                    }
-                    requestBean = mLoadingRequestMap.remove(requestKey);
+                    RequestBean requestBean = mLoadingRequestMap.remove(requestKey);
                     requestBean.setResponse(response);
-                }
-                if (mResponseInterceptorList != null) {
-                    for (int i = 0; i < mResponseInterceptorList.size(); i++) {
-                        if (mResponseInterceptorList.get(i).onIntercept(what, requestBean, response)) {
-                            return;
+                    if (mResponseInterceptorList != null) {
+                        for (int i = 0; i < mResponseInterceptorList.size(); i++) {
+                            if (mResponseInterceptorList.get(i).onIntercept(what, requestBean, response)) {
+                                return;
+                            }
                         }
                     }
                 }
                 Exception exception = response.getException();
-                if (!callback.onFail(what, exception)) {
+                if (callback != null && !callback.onFail(what, exception)) {
                     defaultDeduceErrorResponse(exception);
                 }
             }
@@ -481,18 +254,9 @@ public class RequestManager {
                 LogUtils.d(TAG, "Response onDownloadError in download queue - " + callback.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- exception: " + exception.toString());
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
-                    if (mErrorRequestMap == null) {
-                        mErrorRequestMap = new HashMap<>();
-                    }
-                    // 该请求第一次失败则加到mErrorRequestMap中，否则移除（error的请求只尝试一次）
-                    if (!mErrorRequestMap.containsKey(requestKey)) {
-                        mErrorRequestMap.put(requestKey, mLoadingRequestMap.get(requestKey));
-                    } else {
-                        mErrorRequestMap.remove(requestKey);
-                    }
                     mLoadingRequestMap.remove(requestKey);
                 }
-                if (!callback.onError(what, exception)) {
+                if (callback != null && !callback.onError(what, exception)) {
                     defaultDeduceErrorResponse(exception);
                 }
             }
@@ -505,12 +269,16 @@ public class RequestManager {
                         "\r\n- rangeSize: " + rangeSize +
                         "\r\n- allCount: " + allCount +
                         "\r\n- Cookies: " + getCookiesLog());
-                callback.onStart(what, isResume, rangeSize, allCount);
+                if (callback != null) {
+                    callback.onStart(what, isResume, rangeSize, allCount);
+                }
             }
 
             @Override
             public void onProgress(int what, int progress, long fileCount, long speed) {
-                callback.onProgress(what, progress, fileCount, speed);
+                if (callback != null) {
+                    callback.onProgress(what, progress, fileCount, speed);
+                }
             }
 
             @Override
@@ -520,10 +288,9 @@ public class RequestManager {
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
                     mLoadingRequestMap.remove(requestKey);
                 }
-                if (mErrorRequestMap.containsKey(requestKey)) {
-                    mErrorRequestMap.remove(requestKey);
+                if (callback != null) {
+                    callback.onFinish(what, filePath);
                 }
-                callback.onFinish(what, filePath);
             }
 
             @Override
@@ -533,7 +300,9 @@ public class RequestManager {
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
                     mLoadingRequestMap.remove(requestKey);
                 }
-                callback.onCancel(what);
+                if (callback != null) {
+                    callback.onCancel(what);
+                }
             }
         };
     }
@@ -541,35 +310,43 @@ public class RequestManager {
     public static IResponseListener.OnUploadListener getUploadListener(final UploadCallback callback) {
         return new IResponseListener.OnUploadListener() {
             @Override
-            public void onStart(int what, RequestBean.FileBean fileBean) {
+            public void onStart(int what, UploadRequestBean.FileBean fileBean) {
                 LogUtils.d(TAG, "Response onStart in upload queue - " + callback.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
                         "\r\n- Cookies: " + getCookiesLog());
-                callback.onStart(what, fileBean);
+                if (callback != null) {
+                    callback.onStart(what, fileBean);
+                }
             }
 
             @Override
-            public void onCancel(int what, RequestBean.FileBean fileBean) {
-                callback.onCancel(what, fileBean);
+            public void onCancel(int what, UploadRequestBean.FileBean fileBean) {
+                if (callback != null) {
+                    callback.onCancel(what, fileBean);
+                }
             }
 
             @Override
-            public void onProgress(int what, RequestBean.FileBean fileBean, int progress) {
-                callback.onProgress(what, fileBean, progress);
+            public void onProgress(int what, UploadRequestBean.FileBean fileBean, int progress) {
+                if (callback != null) {
+                    callback.onProgress(what, fileBean, progress);
+                }
             }
 
             @Override
-            public void onFinish(int what, RequestBean.FileBean fileBean) {
+            public void onFinish(int what, UploadRequestBean.FileBean fileBean) {
                 LogUtils.d(TAG, "Response onFinish in upload queue - " + callback.getModuleTag() +
                         "(what:" + what + ")");
-                callback.onFinish(what, fileBean);
+                if (callback != null) {
+                    callback.onFinish(what, fileBean);
+                }
             }
 
             @Override
-            public void onError(int what, RequestBean.FileBean fileBean, Exception exception) {
+            public void onError(int what, UploadRequestBean.FileBean fileBean, Exception exception) {
                 LogUtils.d(TAG, "Response onError in upload queue - " + callback.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- exception: " + exception.toString());
-                if (!callback.onError(what, fileBean, exception)) {
+                if (callback != null && !callback.onError(what, fileBean, exception)) {
                     defaultDeduceErrorResponse(exception);
                 }
             }
@@ -587,45 +364,14 @@ public class RequestManager {
         }
     }
 
-    //重新发起一次已失败的网络请求
-    public static void reloadErrorRequest(String key) {
-        if (mErrorRequestMap == null) {
-            return;
-        }
-        RequestBean bean = mErrorRequestMap.get(key);
-        if (bean == null) {
-            return;
-        }
-        bean.setActionType(ActionType.RETRY_WHEN_ERROR);
-        if (bean.getRequestType() == RequestType.UPLOAD) {
-            mRequestManager.setUploadRequest(bean, getUploadListener((UploadCallback) bean.getCallback()),
-                    getResponseListener(bean.getKey(), (JsonCallback) bean.getCallback()));
-        } else if (bean.getRequestType() == RequestType.DOWNLOAD) {
-            mRequestManager.setDownloadRequest(bean, getDownloadListener(bean.getKey(), (DownloadCallback) bean.getCallback()));
-        } else {
-            mRequestManager.setJsonRequest(bean, getResponseListener(bean.getKey(), (JsonCallback) bean.getCallback()));
-        }
-    }
-
-    //重新发起所有失败的网络请求
-    public static void reloadAllErrorRequest() {
-        if (mErrorRequestMap == null) {
-            return;
-        }
-        Iterator<String> iterator = mErrorRequestMap.keySet().iterator();
-        while (iterator.hasNext()) {
-            reloadErrorRequest(iterator.next());
-        }
-    }
-
     // 根据sign标识中断对应网络请求
     public static void cancelBySign(Object sign) {
-        mRequestManager.cancelBySign(sign);
+        mRequestManagerImpl.cancelBySign(sign);
     }
 
     // 中断所有网络请求
     public static void cancelAll() {
-        mRequestManager.cancelAll();
+        mRequestManagerImpl.cancelAll();
         mLoadingRequestMap = new HashMap<>();
     }
 
@@ -634,35 +380,25 @@ public class RequestManager {
         return mLoadingRequestMap == null ? 0 : mLoadingRequestMap.size();
     }
 
-    // 获取请求失败的网络请求数
-    public static int getErrorRequestCount() {
-        return mErrorRequestMap == null ? 0 : mErrorRequestMap.size();
-    }
-
     //获取所有正在进行中的网络请求
     public static Map<String, RequestBean> getAllLoadingRequest() {
         return mLoadingRequestMap;
     }
 
-    //获取所有请求失败的网络请求
-    public static Map<String, RequestBean> getAllErrorRequest() {
-        return mErrorRequestMap;
-    }
-
     public static String getSessionId() {
-        return mRequestManager.getSessionId();
+        return mRequestManagerImpl.getSessionId();
     }
 
     public static void setSessionId(String sessionId) {
-        mRequestManager.setSessionId(sessionId);
+        mRequestManagerImpl.setSessionId(sessionId);
     }
 
     public static Map<String, String> getSessionCookie() {
-        return mRequestManager.getSessionCookie();
+        return mRequestManagerImpl.getSessionCookie();
     }
 
     public static void clearCookie() {
-        mRequestManager.clearCookie();
+        mRequestManagerImpl.clearCookie();
     }
 
     private static String getCookiesLog() {

@@ -6,8 +6,8 @@ import android.text.TextUtils;
 
 import com.pine.base.R;
 import com.pine.base.component.uploader.bean.FileUploadBean;
-import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.request.callback.UploadCallback;
 import com.pine.tool.util.FileUtils;
@@ -70,80 +70,80 @@ public class FileUploadComponent {
             return;
         }
         mRequestMap.put(uploadBean.hashCode(), uploadBean);
-        RequestManager.setUploadRequest(uploadBean.getRequestUrl(), uploadBean.getParams(),
-                uploadBean.getFileKey(), uploadBean.getFileName(), file, uploadBean.hashCode(),
-                uploadBean.hashCode(), new UploadCallback() {
-                    @Override
-                    public void onStart(int what, RequestBean.FileBean fileBean) {
-                        LogUtils.d(TAG, "onStart what :" + what);
-                        if (callback != null) {
-                            callback.onStart(uploadBean);
-                        }
-                    }
+        UploadRequestBean requestBean = new UploadRequestBean(uploadBean.getRequestUrl(), uploadBean.hashCode(),
+                uploadBean.getParams(), uploadBean.getFileKey(), uploadBean.getFileName(), file);
+        RequestManager.setUploadRequest(requestBean, new UploadCallback() {
+            @Override
+            public void onStart(int what, UploadRequestBean.FileBean fileBean) {
+                LogUtils.d(TAG, "onStart what :" + what);
+                if (callback != null) {
+                    callback.onStart(uploadBean);
+                }
+            }
 
-                    @Override
-                    public void onCancel(int what, RequestBean.FileBean fileBean) {
-                        mRequestMap.remove(uploadBean.hashCode());
-                        LogUtils.d(TAG, "onCancel what :" + what);
-                        if (callback != null) {
-                            callback.onCancel(uploadBean);
-                        }
-                        deleteTempFile(uploadBean);
-                    }
+            @Override
+            public void onCancel(int what, UploadRequestBean.FileBean fileBean) {
+                mRequestMap.remove(uploadBean.hashCode());
+                LogUtils.d(TAG, "onCancel what :" + what);
+                if (callback != null) {
+                    callback.onCancel(uploadBean);
+                }
+                deleteTempFile(uploadBean);
+            }
 
-                    @Override
-                    public void onProgress(int what, RequestBean.FileBean fileBean, int progress) {
-                        LogUtils.d(TAG, "onProgress what:" + what + ", progress:" + progress);
-                        if (callback != null) {
-                            callback.onProgress(uploadBean, progress);
-                        }
-                    }
+            @Override
+            public void onProgress(int what, UploadRequestBean.FileBean fileBean, int progress) {
+                LogUtils.d(TAG, "onProgress what:" + what + ", progress:" + progress);
+                if (callback != null) {
+                    callback.onProgress(uploadBean, progress);
+                }
+            }
 
-                    @Override
-                    public boolean onError(int what, RequestBean.FileBean fileBean, Exception e) {
-                        mRequestMap.remove(uploadBean.hashCode());
-                        LogUtils.d(TAG, "onError Exception :" + e);
-                        deleteTempFile(uploadBean);
-                        return false;
-                    }
+            @Override
+            public boolean onError(int what, UploadRequestBean.FileBean fileBean, Exception e) {
+                mRequestMap.remove(uploadBean.hashCode());
+                LogUtils.d(TAG, "onError Exception :" + e);
+                deleteTempFile(uploadBean);
+                return false;
+            }
 
-                    @Override
-                    public void onFinish(int what, RequestBean.FileBean fileBean) {
-                        mRequestMap.remove(uploadBean.hashCode());
-                        LogUtils.d(TAG, "onFinish what:" + what);
-                        deleteTempFile(uploadBean);
-                    }
-                }, new JsonCallback() {
+            @Override
+            public void onFinish(int what, UploadRequestBean.FileBean fileBean) {
+                mRequestMap.remove(uploadBean.hashCode());
+                LogUtils.d(TAG, "onFinish what:" + what);
+                deleteTempFile(uploadBean);
+            }
+        }, new JsonCallback() {
 
-                    @Override
-                    public void onResponse(int what, JSONObject jsonObject) {
-                        mRequestMap.remove(uploadBean.hashCode());
-                        LogUtils.d(TAG, "onResponse what:" + what);
-                        if (callback != null) {
-                            callback.onSuccess(uploadBean, jsonObject);
-                        }
-                    }
+            @Override
+            public void onResponse(int what, JSONObject jsonObject) {
+                mRequestMap.remove(uploadBean.hashCode());
+                LogUtils.d(TAG, "onResponse what:" + what);
+                if (callback != null) {
+                    callback.onSuccess(uploadBean, jsonObject);
+                }
+            }
 
-                    @Override
-                    public boolean onFail(int what, Exception e) {
-                        mRequestMap.remove(uploadBean.hashCode());
-                        LogUtils.d(TAG, "onError what:" + what);
-                        if (callback != null) {
-                            callback.onFailed(uploadBean, e.toString());
-                        }
-                        return false;
-                    }
+            @Override
+            public boolean onFail(int what, Exception e) {
+                mRequestMap.remove(uploadBean.hashCode());
+                LogUtils.d(TAG, "onError what:" + what);
+                if (callback != null) {
+                    callback.onFailed(uploadBean, e.toString());
+                }
+                return false;
+            }
 
-                    @Override
-                    public void onCancel(int what) {
-                        mRequestMap.remove(uploadBean.hashCode());
-                        LogUtils.d(TAG, "onCancel what :" + what);
-                        if (callback != null) {
-                            callback.onCancel(uploadBean);
-                        }
-                        deleteTempFile(uploadBean);
-                    }
-                });
+            @Override
+            public void onCancel(int what) {
+                mRequestMap.remove(uploadBean.hashCode());
+                LogUtils.d(TAG, "onCancel what :" + what);
+                if (callback != null) {
+                    callback.onCancel(uploadBean);
+                }
+                deleteTempFile(uploadBean);
+            }
+        });
     }
 
     public void startOneByOne(@NonNull List<FileUploadBean> fileBeanList, OneByOneUploadCallback callback) {
@@ -157,7 +157,7 @@ public class FileUploadComponent {
     public void startTogether(@NonNull String url, @NonNull Map<String, String> params,
                               String fileKey, final @NonNull List<FileUploadBean> uploadBeanList,
                               final TogetherUploadListCallback callback) {
-        List<RequestBean.FileBean> checkFileList = checkFileList(uploadBeanList, callback);
+        List<UploadRequestBean.FileBean> checkFileList = checkFileList(uploadBeanList, callback);
         if (checkFileList == null) {
             LogUtils.d(TAG, "upload check fail");
             return;
@@ -165,94 +165,95 @@ public class FileUploadComponent {
         final Map<Integer, Integer> progressMap = new HashMap<>();
         final int totalProgress = checkFileList.size() * 100;
         mRequestMap.put(uploadBeanList.hashCode(), uploadBeanList);
-        RequestManager.setUploadRequest(url, params, fileKey, checkFileList,
-                uploadBeanList.hashCode(), uploadBeanList.hashCode(), new UploadCallback() {
-                    int preActualProgress = -10;
+        UploadRequestBean requestBean = new UploadRequestBean(url, uploadBeanList.hashCode(),
+                params, fileKey, checkFileList);
+        RequestManager.setUploadRequest(requestBean, new UploadCallback() {
+            int preActualProgress = -10;
 
-                    @Override
-                    public void onStart(int what, RequestBean.FileBean fileBean) {
-                        LogUtils.d(TAG, "onStart what :" + what);
-                        if (callback != null) {
-                            callback.onSingleFileStart(uploadBeanList.get(fileBean.getPosition()));
-                        }
-                    }
+            @Override
+            public void onStart(int what, UploadRequestBean.FileBean fileBean) {
+                LogUtils.d(TAG, "onStart what :" + what);
+                if (callback != null) {
+                    callback.onSingleFileStart(uploadBeanList.get(fileBean.getPosition()));
+                }
+            }
 
-                    @Override
-                    public void onCancel(int what, RequestBean.FileBean fileBean) {
-                        LogUtils.d(TAG, "onCancel what :" + what);
-                        if (callback != null) {
-                            callback.onSingleFileCancel(uploadBeanList.get(fileBean.getPosition()));
-                        }
-                    }
+            @Override
+            public void onCancel(int what, UploadRequestBean.FileBean fileBean) {
+                LogUtils.d(TAG, "onCancel what :" + what);
+                if (callback != null) {
+                    callback.onSingleFileCancel(uploadBeanList.get(fileBean.getPosition()));
+                }
+            }
 
-                    @Override
-                    public void onProgress(int what, RequestBean.FileBean fileBean, int progress) {
-                        progressMap.put(what, progress);
-                        int curProgress = 0;
-                        Iterator<Map.Entry<Integer, Integer>> iterator = progressMap.entrySet().iterator();
-                        while (iterator.hasNext()) {
-                            Map.Entry<Integer, Integer> entry = iterator.next();
-                            curProgress += entry.getValue();
-                        }
-                        int actualPro = curProgress * 100 / totalProgress;
-                        if (preActualProgress + 1 <= actualPro) {
-                            LogUtils.d(TAG, "onProgress what:" + what + ", progress:" + actualPro);
-                            if (callback != null) {
-                                callback.onProgress(uploadBeanList, actualPro);
-                                preActualProgress = actualPro;
-                            }
-                        }
+            @Override
+            public void onProgress(int what, UploadRequestBean.FileBean fileBean, int progress) {
+                progressMap.put(what, progress);
+                int curProgress = 0;
+                Iterator<Map.Entry<Integer, Integer>> iterator = progressMap.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<Integer, Integer> entry = iterator.next();
+                    curProgress += entry.getValue();
+                }
+                int actualPro = curProgress * 100 / totalProgress;
+                if (preActualProgress + 1 <= actualPro) {
+                    LogUtils.d(TAG, "onProgress what:" + what + ", progress:" + actualPro);
+                    if (callback != null) {
+                        callback.onProgress(uploadBeanList, actualPro);
+                        preActualProgress = actualPro;
                     }
+                }
+            }
 
-                    @Override
-                    public boolean onError(int what, RequestBean.FileBean fileBean, Exception e) {
-                        LogUtils.d(TAG, "onError Exception :" + e);
-                        if (callback != null) {
-                            callback.onSingleFileError(uploadBeanList.get(fileBean.getPosition()));
-                        }
-                        return false;
-                    }
+            @Override
+            public boolean onError(int what, UploadRequestBean.FileBean fileBean, Exception e) {
+                LogUtils.d(TAG, "onError Exception :" + e);
+                if (callback != null) {
+                    callback.onSingleFileError(uploadBeanList.get(fileBean.getPosition()));
+                }
+                return false;
+            }
 
-                    @Override
-                    public void onFinish(int what, RequestBean.FileBean fileBean) {
-                        LogUtils.d(TAG, "onFinish what:" + what);
-                        if (callback != null) {
-                            callback.onSingleFileFinish(uploadBeanList.get(fileBean.getPosition()));
-                        }
-                    }
-                }, new JsonCallback() {
+            @Override
+            public void onFinish(int what, UploadRequestBean.FileBean fileBean) {
+                LogUtils.d(TAG, "onFinish what:" + what);
+                if (callback != null) {
+                    callback.onSingleFileFinish(uploadBeanList.get(fileBean.getPosition()));
+                }
+            }
+        }, new JsonCallback() {
 
-                    @Override
-                    public void onResponse(int what, JSONObject jsonObject) {
-                        mRequestMap.remove(uploadBeanList.hashCode());
-                        LogUtils.d(TAG, "onResponse what:" + what);
-                        if (callback != null) {
-                            callback.onSuccess(uploadBeanList, jsonObject);
-                        }
-                        deleteTempFileList(uploadBeanList);
-                    }
+            @Override
+            public void onResponse(int what, JSONObject jsonObject) {
+                mRequestMap.remove(uploadBeanList.hashCode());
+                LogUtils.d(TAG, "onResponse what:" + what);
+                if (callback != null) {
+                    callback.onSuccess(uploadBeanList, jsonObject);
+                }
+                deleteTempFileList(uploadBeanList);
+            }
 
-                    @Override
-                    public boolean onFail(int what, Exception e) {
-                        mRequestMap.remove(uploadBeanList.hashCode());
-                        LogUtils.d(TAG, "onFail what:" + what);
-                        if (callback != null) {
-                            callback.onFailed(uploadBeanList, e.toString());
-                        }
-                        deleteTempFileList(uploadBeanList);
-                        return false;
-                    }
+            @Override
+            public boolean onFail(int what, Exception e) {
+                mRequestMap.remove(uploadBeanList.hashCode());
+                LogUtils.d(TAG, "onFail what:" + what);
+                if (callback != null) {
+                    callback.onFailed(uploadBeanList, e.toString());
+                }
+                deleteTempFileList(uploadBeanList);
+                return false;
+            }
 
-                    @Override
-                    public void onCancel(int what) {
-                        mRequestMap.remove(uploadBeanList.hashCode());
-                        LogUtils.d(TAG, "onCancel what:" + what);
-                        if (callback != null) {
-                            callback.onCancel(uploadBeanList);
-                        }
-                        deleteTempFileList(uploadBeanList);
-                    }
-                });
+            @Override
+            public void onCancel(int what) {
+                mRequestMap.remove(uploadBeanList.hashCode());
+                LogUtils.d(TAG, "onCancel what:" + what);
+                if (callback != null) {
+                    callback.onCancel(uploadBeanList);
+                }
+                deleteTempFileList(uploadBeanList);
+            }
+        });
     }
 
     private File checkFile(FileUploadBean fileBean, OneByOneUploadCallback callback) {
@@ -290,8 +291,8 @@ public class FileUploadComponent {
         return file;
     }
 
-    private List<RequestBean.FileBean> checkFileList(@NonNull List<FileUploadBean> fileBeanList,
-                                                     TogetherUploadListCallback callback) {
+    private List<UploadRequestBean.FileBean> checkFileList(@NonNull List<FileUploadBean> fileBeanList,
+                                                           TogetherUploadListCallback callback) {
         if (fileBeanList == null && fileBeanList.size() < 1) {
             LogUtils.d(TAG, "no file bean in list");
             return null;
@@ -307,7 +308,7 @@ public class FileUploadComponent {
             }
             return null;
         }
-        List<RequestBean.FileBean> httpFileBeanList = new ArrayList<>();
+        List<UploadRequestBean.FileBean> httpFileBeanList = new ArrayList<>();
         for (int i = 0; i < fileBeanList.size(); i++) {
             FileUploadBean fileBean = fileBeanList.get(i);
             if (TextUtils.isEmpty(fileBean.getLocalFilePath())) {
@@ -332,7 +333,7 @@ public class FileUploadComponent {
                 }
                 fileBean.setLocalTempFilePath(file.getPath());
             }
-            RequestBean.FileBean httpFile = new RequestBean.FileBean(fileBean.getFileKey(),
+            UploadRequestBean.FileBean httpFile = new UploadRequestBean.FileBean(fileBean.getFileKey(),
                     fileBean.getFileName(), file, i);
             httpFileBeanList.add(httpFile);
         }

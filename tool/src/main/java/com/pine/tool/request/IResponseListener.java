@@ -34,19 +34,19 @@ public interface IResponseListener {
     }
 
     interface OnUploadListener {
-        void onStart(int what, RequestBean.FileBean fileBean);
+        void onStart(int what, UploadRequestBean.FileBean fileBean);
 
-        void onCancel(int what, RequestBean.FileBean fileBean);
+        void onCancel(int what, UploadRequestBean.FileBean fileBean);
 
         /**
          * @param what
          * @param fileBean
          * @param progress 0-100
          */
-        void onProgress(int what, RequestBean.FileBean fileBean, int progress);
+        void onProgress(int what, UploadRequestBean.FileBean fileBean, int progress);
 
-        void onFinish(int what, RequestBean.FileBean fileBean);
+        void onFinish(int what, UploadRequestBean.FileBean fileBean);
 
-        void onError(int what, RequestBean.FileBean fileBean, Exception exception);
+        void onError(int what, UploadRequestBean.FileBean fileBean, Exception exception);
     }
 }

@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pine.config.BuildConfig;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.BusinessException;
+import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
@@ -29,9 +30,9 @@ public class VersionModel {
 
     public boolean requestUpdateVersionData(@NonNull IModelAsyncResponse<VersionEntity> callback) {
         String url = WelcomeUrlConstants.Query_Version_Data;
-        JsonCallback httpStringCallback = handleResponse(callback);
-        return RequestManager.setJsonRequest(url, new HashMap<String, String>(),
-                TAG, REQUEST_QUERY_VERSION_INFO, httpStringCallback);
+        RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_VERSION_INFO, new HashMap<String, String>());
+        requestBean.setModuleTag(TAG);
+        return RequestManager.setJsonRequest(requestBean, handleResponse(callback));
     }
 
     private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {

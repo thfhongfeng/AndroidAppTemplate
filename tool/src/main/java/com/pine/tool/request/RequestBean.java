@@ -1,12 +1,11 @@
 package com.pine.tool.request;
 
+import android.support.annotation.NonNull;
+
 import com.pine.tool.request.IRequestManager.ActionType;
 import com.pine.tool.request.IRequestManager.RequestType;
 import com.pine.tool.request.callback.AbstractBaseCallback;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,34 +15,53 @@ import java.util.Map;
 public class RequestBean {
     // 该callback对应的请求的key
     private String key;
+    // 请求URL
     private String url;
+    // 请求方式：GET、POST等
     private RequestMethod requestMethod;
+    // 请求参数
     private Map<String, String> params;
-    //模块标识，默认common
+    // 模块标识，默认common
     private String moduleTag = "common";
+    // 请求标识code
     private int what;
+    // cancel标识
     private Object sign;
+    // 该请求是否需要登陆
     private boolean needLogin;
+    // 请求类型：JSON数据请求；下载请求；上传请求等
     private RequestType requestType;
+    // 请求响应回调
     private AbstractBaseCallback callback;
-
-    // for download
-    private String saveFolder;
-    private String saveFileName;
-    private boolean isContinue;
-    private boolean isDeleteOld;
-
-    // for upload
-    private String upLoadFileKey;
-    private List<FileBean> uploadFileList;
-
+    // 请求动作类别：一般请求动作；重登陆后的请求重发；请求返回错误后的请求重发等
     private ActionType actionType = ActionType.COMMON;
-
+    // 请求响应体
     private Response response;
 
-    public RequestBean(int what, AbstractBaseCallback callback) {
+    // 该请求出现ResponseCode.NOT_LOGIN(401)时，是否允许在重新登陆后重新发出这些请求
+    private boolean reloadForNoAuthWhenReLogin;
+
+    public RequestBean(@NonNull String url, int what, Map<String, String> params) {
+        this(url, what, params, false, null, RequestMethod.POST);
+    }
+
+    public RequestBean(@NonNull String url, int what, Map<String, String> params, boolean needLogin) {
+        this(url, what, params, needLogin, null, RequestMethod.POST);
+    }
+
+    public RequestBean(@NonNull String url, int what, Map<String, String> params, boolean needLogin,
+                       Object sign) {
+        this(url, what, params, needLogin, sign, RequestMethod.POST);
+    }
+
+    public RequestBean(@NonNull String url, int what, Map<String, String> params, boolean needLogin,
+                       Object sign, RequestMethod requestMethod) {
+        this.url = url;
         this.what = what;
-        this.callback = callback;
+        this.params = params;
+        this.needLogin = needLogin;
+        this.sign = sign;
+        this.requestMethod = requestMethod;
         this.key = hashCode() + "_ " + what;
     }
 
@@ -55,7 +73,7 @@ public class RequestBean {
         return url;
     }
 
-    protected void setUrl(String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
@@ -63,7 +81,7 @@ public class RequestBean {
         return requestMethod;
     }
 
-    protected void setRequestMethod(RequestMethod requestMethod) {
+    public void setRequestMethod(RequestMethod requestMethod) {
         this.requestMethod = requestMethod;
     }
 
@@ -71,7 +89,7 @@ public class RequestBean {
         return params;
     }
 
-    protected void setParams(Map<String, String> params) {
+    public void setParams(Map<String, String> params) {
         this.params = params;
     }
 
@@ -79,7 +97,7 @@ public class RequestBean {
         return moduleTag;
     }
 
-    protected void setModuleTag(String moduleTag) {
+    public void setModuleTag(String moduleTag) {
         this.moduleTag = moduleTag;
     }
 
@@ -87,7 +105,7 @@ public class RequestBean {
         return what;
     }
 
-    protected void setWhat(int what) {
+    public void setWhat(int what) {
         this.what = what;
     }
 
@@ -95,7 +113,7 @@ public class RequestBean {
         return sign;
     }
 
-    protected void setSign(Object sign) {
+    public void setSign(Object sign) {
         this.sign = sign;
     }
 
@@ -103,7 +121,7 @@ public class RequestBean {
         return needLogin;
     }
 
-    protected void setNeedLogin(boolean needLogin) {
+    public void setNeedLogin(boolean needLogin) {
         this.needLogin = needLogin;
     }
 
@@ -119,7 +137,7 @@ public class RequestBean {
         return callback;
     }
 
-    public void setCallback(AbstractBaseCallback callback) {
+    protected void setCallback(AbstractBaseCallback callback) {
         this.callback = callback;
     }
 
@@ -127,7 +145,7 @@ public class RequestBean {
         return actionType;
     }
 
-    protected void setActionType(ActionType actionType) {
+    public void setActionType(ActionType actionType) {
         this.actionType = actionType;
     }
 
@@ -139,99 +157,11 @@ public class RequestBean {
         this.response = response;
     }
 
-    public String getSaveFolder() {
-        return saveFolder;
+    public boolean isReloadForNoAuthWhenReLogin() {
+        return reloadForNoAuthWhenReLogin;
     }
 
-    protected void setSaveFolder(String saveFolder) {
-        this.saveFolder = saveFolder;
-    }
-
-    public String getSaveFileName() {
-        return saveFileName;
-    }
-
-    protected void setSaveFileName(String saveFileName) {
-        this.saveFileName = saveFileName;
-    }
-
-    public boolean isContinue() {
-        return isContinue;
-    }
-
-    protected void setContinue(boolean aContinue) {
-        isContinue = aContinue;
-    }
-
-    public boolean isDeleteOld() {
-        return isDeleteOld;
-    }
-
-    protected void setDeleteOld(boolean deleteOld) {
-        isDeleteOld = deleteOld;
-    }
-
-    public String getUpLoadFileKey() {
-        return upLoadFileKey;
-    }
-
-    protected void setUpLoadFileKey(String upLoadFileKey) {
-        this.upLoadFileKey = upLoadFileKey;
-    }
-
-    public List<FileBean> getUploadFileList() {
-        return uploadFileList;
-    }
-
-    protected void setUploadFileList(List<FileBean> uploadFileList) {
-        this.uploadFileList = uploadFileList;
-    }
-
-    public static class FileBean implements Serializable {
-        private int what;
-        private String fileKey;
-        private String fileName;
-        private File file;
-        private int position;
-
-        public FileBean(String fileKey, String fileName, File file, int position) {
-            this.what = hashCode();
-            this.fileKey = fileKey;
-            this.fileName = fileName;
-            this.file = file;
-            this.position = position;
-        }
-
-        public int getWhat() {
-            return what;
-        }
-
-        public String getFileKey() {
-            return fileKey;
-        }
-
-        public void setFileKey(String fileKey) {
-            this.fileKey = fileKey;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
-
-        public File getFile() {
-            return file;
-        }
-
-        public void setFile(File file) {
-            this.file = file;
-        }
-
-        public int getPosition() {
-            return position;
-        }
+    public void setReloadForNoAuthWhenReLogin(boolean reloadForNoAuthWhenReLogin) {
+        this.reloadForNoAuthWhenReLogin = reloadForNoAuthWhenReLogin;
     }
 }

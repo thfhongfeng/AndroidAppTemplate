@@ -12,7 +12,9 @@ import android.text.TextUtils;
 import com.pine.config.SPKeyConstants;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.BusinessException;
+import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.RequestMethod;
 import com.pine.tool.request.callback.DownloadCallback;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
@@ -23,6 +25,7 @@ import com.pine.welcome.bean.VersionEntity;
 import com.pine.welcome.model.VersionModel;
 
 import java.io.File;
+import java.util.HashMap;
 
 /**
  * Created by tanghongfeng on 2018/9/25
@@ -113,45 +116,48 @@ public class ApkVersionManager {
             return;
         }
         deleteOldApk();
-        RequestManager.setDownloadRequest(mVersionEntity.getPath(), mDownloadDir,
-                mVersionEntity.getFileName(), HTTP_REQUEST_DOWNLOAD, CANCEL_SIGN, new DownloadCallback() {
-                    @Override
-                    public void onStart(int what, boolean isResume, long rangeSize, long allCount) {
-                        if (listener != null) {
-                            listener.onDownloadStart(isResume, rangeSize, allCount);
-                        }
-                    }
+        DownloadRequestBean requestBean = new DownloadRequestBean(mVersionEntity.getPath(),
+                HTTP_REQUEST_DOWNLOAD, new HashMap<String, String>(), mDownloadDir, mVersionEntity.getFileName());
+        requestBean.setRequestMethod(RequestMethod.GET);
+        requestBean.setSign(CANCEL_SIGN);
+        RequestManager.setDownloadRequest(requestBean, new DownloadCallback() {
+            @Override
+            public void onStart(int what, boolean isResume, long rangeSize, long allCount) {
+                if (listener != null) {
+                    listener.onDownloadStart(isResume, rangeSize, allCount);
+                }
+            }
 
-                    @Override
-                    public void onProgress(int what, int progress, long fileCount, long speed) {
-                        if (listener != null) {
-                            listener.onDownloadProgress(progress, fileCount, speed);
-                        }
-                    }
+            @Override
+            public void onProgress(int what, int progress, long fileCount, long speed) {
+                if (listener != null) {
+                    listener.onDownloadProgress(progress, fileCount, speed);
+                }
+            }
 
-                    @Override
-                    public void onFinish(int what, String filePath) {
-                        SharePreferenceUtils.saveToConfig(SPKeyConstants.APK_DOWNLOAD_FILE_PATH, filePath);
-                        if (listener != null) {
-                            listener.onDownloadComplete(filePath);
-                        }
-                    }
+            @Override
+            public void onFinish(int what, String filePath) {
+                SharePreferenceUtils.saveToConfig(SPKeyConstants.APK_DOWNLOAD_FILE_PATH, filePath);
+                if (listener != null) {
+                    listener.onDownloadComplete(filePath);
+                }
+            }
 
-                    @Override
-                    public void onCancel(int what) {
-                        if (listener != null) {
-                            listener.onDownloadCancel();
-                        }
-                    }
+            @Override
+            public void onCancel(int what) {
+                if (listener != null) {
+                    listener.onDownloadCancel();
+                }
+            }
 
-                    @Override
-                    public boolean onError(int what, Exception e) {
-                        if (listener != null) {
-                            listener.onDownloadError(e);
-                        }
-                        return true;
-                    }
-                });
+            @Override
+            public boolean onError(int what, Exception e) {
+                if (listener != null) {
+                    listener.onDownloadError(e);
+                }
+                return true;
+            }
+        });
     }
 
     public boolean installNewVersionApk(Context context) {

@@ -13,6 +13,7 @@ import com.pine.mvvm.bean.MvvmShopDetailEntity;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.exception.BusinessException;
+import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.DecimalUtils;
@@ -43,36 +44,41 @@ public class MvvmShopModel {
     public void requestAddShop(final Map<String, String> params,
                                @NonNull final IModelAsyncResponse<MvvmShopDetailEntity> callback) {
         String url = MvvmUrlConstants.Add_Shop;
-        RequestManager.setJsonRequest(url, params, TAG, REQUEST_ADD_SHOP,
-                handleResponse(callback, params));
+        RequestBean requestBean = new RequestBean(url, REQUEST_ADD_SHOP, params);
+        requestBean.setModuleTag(TAG);
+        RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
     }
 
     public void requestShopDetailData(final Map<String, String> params,
                                       @NonNull final IModelAsyncResponse<MvvmShopDetailEntity> callback) {
         String url = MvvmUrlConstants.Query_ShopDetail;
-        RequestManager.setJsonRequest(url, params, TAG, REQUEST_QUERY_SHOP_DETAIL,
-                handleResponse(callback, params));
+        RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_DETAIL, params);
+        requestBean.setModuleTag(TAG);
+        RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
     }
 
     public void requestShopListData(final Map<String, String> params,
                                     @NonNull final IModelAsyncResponse<ArrayList<MvvmShopItemEntity>> callback) {
         String url = MvvmUrlConstants.Query_ShopList;
-        RequestManager.setJsonRequest(url, params, TAG, REQUEST_QUERY_SHOP_LIST,
-                handleResponse(callback, params));
+        RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_LIST, params);
+        requestBean.setModuleTag(TAG);
+        RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
     }
 
     public void requestShopAndProductListData(Map<String, String> params,
                                               @NonNull final IModelAsyncResponse<ArrayList<MvvmShopAndProductEntity>> callback) {
         String url = MvvmUrlConstants.Query_ShopAndProductList;
-        RequestManager.setJsonRequest(url, params, TAG, REQUEST_QUERY_SHOP_AND_PRODUCT_LIST,
-                handleResponse(callback, params));
+        RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_AND_PRODUCT_LIST, params);
+        requestBean.setModuleTag(TAG);
+        RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
     }
 
     public void requestAddProduct(final Map<String, String> params,
                                   @NonNull final IModelAsyncResponse<MvvmProductDetailEntity> callback) {
         String url = MvvmUrlConstants.Add_Product;
-        RequestManager.setJsonRequest(url, params, TAG, REQUEST_ADD_PRODUCT,
-                handleResponse(callback, params));
+        RequestBean requestBean = new RequestBean(url, REQUEST_ADD_PRODUCT, params);
+        requestBean.setModuleTag(TAG);
+        RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
     }
 
     private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback,

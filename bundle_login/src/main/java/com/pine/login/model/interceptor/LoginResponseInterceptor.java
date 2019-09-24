@@ -54,7 +54,7 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
                 } catch (JSONException e) {
                 }
             }
-        } else {
+        } else if (requestBean.getRequestType() == IRequestManager.RequestType.STRING && requestBean.isReloadForNoAuthWhenReLogin()) {
             if (response.getResponseCode() == ResponseCode.NOT_LOGIN) { // 拦截401错误
                 if (mNoAuthRequestMap != null &&
                         !mNoAuthRequestMap.containsKey(requestBean.getKey())) {
@@ -99,10 +99,11 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
             return;
         }
         RequestBean bean = mNoAuthRequestMap.get(key);
-        if (bean == null) {
+        if (bean == null || bean.getRequestType() != IRequestManager.RequestType.STRING) {
             return;
         }
-        RequestManager.setJsonRequest(bean, IRequestManager.ActionType.RETRY_AFTER_RE_LOGIN);
+        bean.setActionType(IRequestManager.ActionType.RETRY_AFTER_RE_LOGIN);
+        RequestManager.setJsonRequest(bean, (JsonCallback) bean.getCallback());
     }
 
     // 重新发起之前所有因401终止的请求
@@ -121,7 +122,7 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
             return;
         }
         RequestBean bean = mNoAuthRequestMap.get(key);
-        if (bean == null) {
+        if (bean == null || bean.getCallback() == null || bean.getRequestType() != IRequestManager.RequestType.STRING) {
             return;
         }
         if (bean.getResponse().isSucceed()) {
