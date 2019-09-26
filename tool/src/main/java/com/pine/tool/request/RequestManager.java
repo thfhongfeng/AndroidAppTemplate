@@ -195,8 +195,8 @@ public class RequestManager {
             public void onSucceed(int what, Response response) {
                 LogUtils.d(TAG, "Response onSucceed in json queue - " + callback.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
-                        "\r\n- response: " + response.getData() +
-                        "\r\n- Cookies: " + getCookiesLog());
+                        "\r\n- Cookies: " + getCookiesLog() +
+                        "\r\n- response: " + getResponseLog(response));
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
                     RequestBean requestBean = mLoadingRequestMap.remove(requestKey);
                     requestBean.setResponse(response);
@@ -217,8 +217,8 @@ public class RequestManager {
             public void onFailed(int what, Response response) {
                 LogUtils.d(TAG, "Response onFailed in json queue - " + callback.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
-                        "\r\n- response: " + response.getData() +
-                        "\r\n- Cookies: " + getCookiesLog());
+                        "\r\n- Cookies: " + getCookiesLog() +
+                        "\r\n- response: " + getResponseLog(response));
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestKey)) {
                     RequestBean requestBean = mLoadingRequestMap.remove(requestKey);
                     requestBean.setResponse(response);
@@ -386,29 +386,44 @@ public class RequestManager {
     }
 
     public static String getSessionId() {
-        return mRequestManagerImpl.getSessionId();
+        return mRequestManagerImpl.getSessionId("main");
     }
 
     public static void setSessionId(String sessionId) {
-        mRequestManagerImpl.setSessionId(sessionId);
+        mRequestManagerImpl.setSessionId("main", sessionId);
     }
 
-    public static Map<String, String> getSessionCookie() {
-        return mRequestManagerImpl.getSessionCookie();
+    public static Map<String, String> getLastSessionCookie() {
+        return mRequestManagerImpl.getLastSessionCookie();
+    }
+
+    public String getSessionId(String sysTag) {
+        return mRequestManagerImpl.getSessionId(sysTag);
+    }
+
+    public void setSessionId(String sysTag, String sessionId) {
+        mRequestManagerImpl.setSessionId(sysTag, sessionId);
     }
 
     public static void clearCookie() {
         mRequestManagerImpl.clearCookie();
     }
 
+    private static String getResponseLog(Response response) {
+        if (response.getData() == null) {
+            return "";
+        }
+        return response.getData().toString();
+    }
+
     private static String getCookiesLog() {
-        Map<String, String> cookies = getSessionCookie();
+        Map<String, String> cookies = getLastSessionCookie();
         String cookiesStr = "";
         if (cookies != null && cookies.size() > 0) {
             Iterator<Map.Entry<String, String>> iterator = cookies.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry entry = iterator.next();
-                cookiesStr += entry.getKey() + ":" + entry.getValue() + ",";
+                cookiesStr += entry.getKey() + "=" + entry.getValue() + ";";
             }
             cookiesStr = cookiesStr.substring(0, cookiesStr.length() - 1);
         }

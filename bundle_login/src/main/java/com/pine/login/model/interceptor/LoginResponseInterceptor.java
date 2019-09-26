@@ -7,6 +7,7 @@ import com.pine.login.manager.LoginManager;
 import com.pine.login.model.callback.LoginCallback;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.RequestExtraSwitcher;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
@@ -54,7 +55,8 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
                 } catch (JSONException e) {
                 }
             }
-        } else if (requestBean.getRequestType() == IRequestManager.RequestType.STRING && requestBean.isReloadForNoAuthWhenReLogin()) {
+        } else if (requestBean.getRequestType() == IRequestManager.RequestType.STRING &&
+                requestBean.isExtraSwitcherOpen(RequestExtraSwitcher.RELOAD_FOR_NO_AUTH_WHEN_RE_LOGIN)) {
             if (response.getResponseCode() == ResponseCode.NOT_LOGIN) { // 拦截401错误
                 if (mNoAuthRequestMap != null &&
                         !mNoAuthRequestMap.containsKey(requestBean.getKey())) {

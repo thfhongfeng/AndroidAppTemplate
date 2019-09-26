@@ -2,8 +2,6 @@ package com.pine.tool.request;
 
 import android.support.annotation.NonNull;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,28 +13,71 @@ public interface IRequestManager {
     String COOKIE_KEY = "Cookie";
     String MOBILE_MODEL_KEY = "mobileModel";
 
+    /**
+     * JSON请求
+     *
+     * @param requestBean 请求实体
+     * @param listener    请求响应监听
+     */
     void setJsonRequest(@NonNull RequestBean requestBean,
                         @NonNull IResponseListener.OnResponseListener listener);
 
+    /**
+     * 下载请求
+     *
+     * @param requestBean 请求实体
+     * @param listener    请求响应监听
+     */
     void setDownloadRequest(@NonNull DownloadRequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener);
 
+    /**
+     * 上传请求
+     *
+     * @param requestBean      请求实体
+     * @param processListener  文件上传响应监听
+     * @param responseListener 上传请求响应监听
+     */
     void setUploadRequest(@NonNull UploadRequestBean requestBean, @NonNull IResponseListener.OnUploadListener processListener,
                           @NonNull IResponseListener.OnResponseListener responseListener);
 
+    /**
+     * 取消sign标记的正在进行的请求
+     *
+     * @param sign 取消标识
+     */
     void cancelBySign(Object sign);
 
+    /**
+     * 取消所有正在进行的请求
+     */
     void cancelAll();
 
-    void addGlobalSessionCookie(HashMap<String, String> headerMap);
+    /**
+     * 获取最近一次请求的SessionCookies
+     *
+     * @return
+     */
+    Map<String, String> getLastSessionCookie();
 
-    void removeGlobalSessionCookie(List<String> keyList);
+    /**
+     * 获取sysTag标识的sessionId
+     *
+     * @param sysTag 系统标识。默认为“main”，代表应用本体后台服务。用于多系统的请求的session管理
+     * @return
+     */
+    String getSessionId(String sysTag);
 
-    Map<String, String> getSessionCookie();
+    /**
+     * 设置sessionId
+     *
+     * @param sysTag    sysTag 系统标识。默认为“main”，代表应用本体后台服务。用于多系统的请求的session管理
+     * @param sessionId
+     */
+    void setSessionId(String sysTag, String sessionId);
 
-    String getSessionId();
-
-    void setSessionId(String sessionId);
-
+    /**
+     * 清理cookies
+     */
     void clearCookie();
 
     enum RequestType {

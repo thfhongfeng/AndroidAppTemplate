@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -33,7 +34,7 @@ public class DbRequestManager implements IRequestManager {
     private static HashMap<String, String> mHeaderParams = new HashMap<>();
     private static HashMap<String, String> mCookies = new HashMap<>();
     private static IDbRequestServer mRequestServer;
-    private String mSessionId;
+    private HashMap<String, String> mSessionIdMap = new HashMap<>();
 
     private DbRequestManager() {
 
@@ -77,7 +78,7 @@ public class DbRequestManager implements IRequestManager {
             listener.onFailed(requestBean.getWhat(), failRsp);
             return;
         }
-        Response response = toResponse(dbResponse);
+        Response response = toResponse(dbResponse, requestBean);
 
         mCookies = dbResponse.getCookies();
         if (response.isSucceed()) {
@@ -163,7 +164,7 @@ public class DbRequestManager implements IRequestManager {
             } else {
                 cookies = dbResponse.getCookies();
             }
-            final Response response = toResponse(dbResponse);
+            final Response response = toResponse(dbResponse, requestBean);
             if (response.isSucceed()) {
                 isAllSuccess = isAllSuccess && true;
                 new Handler().post(new Runnable() {
@@ -282,41 +283,23 @@ public class DbRequestManager implements IRequestManager {
     }
 
     @Override
-    public void addGlobalSessionCookie(HashMap<String, String> headerMap) {
-        if (headerMap == null) {
-            return;
-        }
-        mHeaderParams.putAll(headerMap);
-    }
-
-    @Override
-    public void removeGlobalSessionCookie(List<String> keyList) {
-        if (keyList == null || keyList.size() < 1) {
-            return;
-        }
-        for (String key : keyList) {
-            mHeaderParams.remove(key);
-        }
-    }
-
-    @Override
-    public String getSessionId() {
-        return mSessionId;
-    }
-
-    @Override
-    public void setSessionId(String sessionId) {
-        mSessionId = sessionId;
-    }
-
-    @Override
     public void clearCookie() {
         mCookies = new HashMap<>();
     }
 
     @Override
-    public Map<String, String> getSessionCookie() {
+    public Map<String, String> getLastSessionCookie() {
         return mCookies;
+    }
+
+    @Override
+    public String getSessionId(String sysTag) {
+        return mSessionIdMap.get(sysTag);
+    }
+
+    @Override
+    public void setSessionId(String sysTag, String sessionId) {
+        mSessionIdMap.put(sysTag, sessionId);
     }
 
     private DbRequestBean toDbRequestBean(@NonNull RequestBean requestBean) {
@@ -350,12 +333,22 @@ public class DbRequestManager implements IRequestManager {
         return dbRequestBean;
     }
 
-    private Response toResponse(@NonNull DbResponse dbResponse) {
+    private Response toResponse(@NonNull DbResponse dbResponse, RequestBean requestBean) {
         Response response = new Response();
         response.setSucceed(dbResponse.isSucceed());
         response.setTag(dbResponse.getTag());
         response.setResponseCode(dbResponse.getResponseCode());
         response.setData(dbResponse.getData());
+        HashMap<String, String> cookies = dbResponse.getCookies();
+        if (cookies != null && cookies.size() > 0) {
+            Iterator<Map.Entry<String, String>> iterator = cookies.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> entry = iterator.next();
+                if (SESSION_ID.equals(entry.getKey().toUpperCase())) {
+                    setSessionId(requestBean.getSysTag(), entry.getValue());
+                }
+            }
+        }
         response.setCookies(dbResponse.getCookies());
         response.setException(dbResponse.getException());
         return response;
