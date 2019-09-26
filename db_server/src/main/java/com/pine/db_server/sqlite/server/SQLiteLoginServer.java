@@ -43,6 +43,8 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
             requestParams.put("account", account);
             requestParams.put("name", account);
             requestParams.put("state", "1");
+            requestParams.put("accountType", "10");
+            requestParams.put("curLoginTimeStamp", Calendar.getInstance().getTimeInMillis() + "");
             requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
             requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
             long id = insert(db, ACCOUNT_TABLE_NAME, requestParams);
