@@ -12,6 +12,7 @@ import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 import com.pine.tool.architecture.mvp.contract.IContract;
+import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -157,7 +158,7 @@ public abstract class Presenter<V extends IContract.Ui> {
     /**
      * UI状态回调
      *
-     * @param state UI_STATE_ON_CREATE,UI_STATE_ON_START,UI_STATE_ON_RESUME,UI_STATE_ON_PAUSE,
+     * @param state UI_STATE_ON_INIT,UI_STATE_ON_RESUME,UI_STATE_ON_PAUSE,
      *              UI_STATE_ON_STOP,UI_STATE_ON_DETACH
      */
     @CallSuper
@@ -191,15 +192,5 @@ public abstract class Presenter<V extends IContract.Ui> {
         if (isUiAlive()) {
             Toast.makeText(getContext(), resId, Toast.LENGTH_LONG).show();
         }
-    }
-
-    public enum UiState {
-        UI_STATE_UNDEFINE,
-        UI_STATE_ON_CREATE,
-        UI_STATE_ON_START,
-        UI_STATE_ON_RESUME,
-        UI_STATE_ON_PAUSE,
-        UI_STATE_ON_STOP,
-        UI_STATE_ON_DETACH
     }
 }

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.SupportActivity;
 
+import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.util.LogUtils;
 
 /**
@@ -29,7 +30,7 @@ public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
     /**
      * UI状态回调
      *
-     * @param state UI_STATE_ON_CREATE,UI_STATE_ON_START,UI_STATE_ON_RESUME,UI_STATE_ON_PAUSE,
+     * @param state UI_STATE_ON_INIT,UI_STATE_ON_RESUME,UI_STATE_ON_PAUSE,
      *              UI_STATE_ON_STOP,UI_STATE_ON_DETACH
      */
     @CallSuper
@@ -39,22 +40,6 @@ public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
 
     public UiState getUiState() {
         return mUiState;
-    }
-
-    public enum UiState {
-        UI_STATE_UNDEFINE,
-        UI_STATE_ON_CREATE,
-        UI_STATE_ON_START,
-        UI_STATE_ON_RESUME,
-        UI_STATE_ON_PAUSE,
-        UI_STATE_ON_STOP,
-        UI_STATE_ON_DETACH
-    }
-
-    public enum DialogState {
-        DIALOG_STATE_SHOW,
-        DIALOG_STATE_HIDE,
-        DIALOG_STATE_DISMISS
     }
 
     /**
@@ -67,7 +52,7 @@ public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
     }
 
     /**
-     * 用于分析传入参数是否非法，在View init之后调用
+     * 在View init之后调用
      *
      * @return
      */

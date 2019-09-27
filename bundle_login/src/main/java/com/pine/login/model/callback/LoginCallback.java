@@ -75,7 +75,7 @@ public class LoginCallback extends JsonCallback {
             final AccountBean accountBean = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), AccountBean.class);
             LoginManager.saveLoginInfo(accountBean);
             LoginApplication.setLogin(true);
-            ConfigSwitcherServer.getInstance().setupConfigSwitcher(new ConfigSwitcherServer.IConfigSwitcherCallback() {
+            ConfigSwitcherServer.getInstance().setupConfigSwitcher(true, new ConfigSwitcherServer.IConfigSwitcherCallback() {
                 @Override
                 public void onSetupComplete() {
                     loginSuccess(what, accountBean, "登陆成功！");

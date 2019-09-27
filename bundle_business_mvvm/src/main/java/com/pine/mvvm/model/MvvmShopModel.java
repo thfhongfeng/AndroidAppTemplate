@@ -216,9 +216,9 @@ public class MvvmShopModel {
         }
         String res = "{success:true,code:200,message:'',data:" +
                 "{id:'" + id + "',name:'Shop Item " + index +
-                "',type:'2',typeName:'食品',mainImgUrl:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg'" +
+                "',type:'2',typeName:'食品',mainImgUrl:'http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg'" +
                 ",distance:'" + distanceStr + "',latitude:'" + endLatBd + "',longitude:'" + endLonBd +
-                "',imgUrls:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg,https://hellorfimg.zcool.cn/preview/70789213.jpg'" +
+                "',imgUrls:'http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg,https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg'" +
                 ",onlineDate:'2019-03-01',mobile:'18672943566'" +
                 ",addressDistrict:'上海市浦东新区浦东新区',addressZipCode:'310115'" +
                 ",addressStreet:'盛夏路888号'" +
@@ -262,7 +262,7 @@ public class MvvmShopModel {
             index++;
             id = "1100201903281020000000" + (index > 9 ? index : "0" + index);
             res += ",{id:'" + id + "',name:'Shop Item " + index +
-                    "', distance:'" + distanceStr + "',mainImgUrl:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg'}";
+                    "', distance:'" + distanceStr + "',mainImgUrl:'http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg'}";
         }
         res += "]}";
         try {
@@ -306,7 +306,7 @@ public class MvvmShopModel {
             shopIndex++;
             shopId = "1100201903281020000000" + (shopIndex > 9 ? shopIndex : "0" + shopIndex);
             res += ",{id:'" + shopId + "',name:'Shop Item " + shopIndex +
-                    "', distance:'" + distanceStr + "',mainImgUrl:'http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg', " +
+                    "', distance:'" + distanceStr + "',mainImgUrl:'http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg', " +
                     "products:[{name:'Product Item 1'}, {name:'Product Item 2'}]}";
         }
         res += "]}";

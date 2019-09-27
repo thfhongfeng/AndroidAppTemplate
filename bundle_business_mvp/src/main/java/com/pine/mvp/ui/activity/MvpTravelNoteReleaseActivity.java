@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pine.base.access.UiAccessArgs;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.base.component.editor.bean.TextImageEntity;
@@ -38,11 +39,12 @@ import java.util.List;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, Args = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN},
+        Args = {UiAccessArgs.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
+                UiAccessArgs.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI})
 public class MvpTravelNoteReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpTravelNoteReleaseContract.Ui, MvpTravelNoteReleasePresenter>
         implements IMvpTravelNoteReleaseContract.Ui, View.OnClickListener {
-    private final int REQUEST_CODE_BAIDU_MAP = 1;
     private SwipeRefreshLayout swipe_refresh_layout;
     private NestedScrollView nested_scroll_view;
     private TextView preview_note_btn_tv;
@@ -75,11 +77,6 @@ public class MvpTravelNoteReleaseActivity extends
         set_out_date_tv = findViewById(R.id.set_out_date_tv);
         day_count_tv = findViewById(R.id.day_count_tv);
         belong_shop_tv = findViewById(R.id.belong_shop_tv);
-    }
-
-    @Override
-    protected boolean onUiAccessForbidden() {
-        return true;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.pine.tool.access;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -39,43 +41,29 @@ public class UiAccessManager {
         mAccessExecutorMap.clear();
     }
 
-    public boolean checkCanAccess(Activity activity) {
-        if (activity == null) {
-            return false;
+    public boolean checkCanAccess(@NonNull Activity activity, UiAccessTimeInterval accessTimeInterval,
+                                  @NonNull String[] types, @NonNull HashMap<String, String> argsMap) {
+        if (activity == null || types == null || types.length < 1) {
+            return true;
         }
-        UiAccessAnnotation annotation = activity.getClass().getAnnotation(UiAccessAnnotation.class);
-        if (annotation != null) {
-            String[] types = annotation.AccessTypes();
-            String[] args = annotation.Args();
-            if (types == null || args == null || types.length != args.length) {
+        for (int i = 0; i < types.length; i++) {
+            if (mAccessExecutorMap.get(types[i]) != null &&
+                    !mAccessExecutorMap.get(types[i]).onExecute(activity, argsMap, accessTimeInterval)) {
                 return false;
-            }
-            for (int i = 0; i < types.length; i++) {
-                if (mAccessExecutorMap.get(types[i]) != null &&
-                        !mAccessExecutorMap.get(types[i]).onExecute(activity, args[i])) {
-                    return false;
-                }
             }
         }
         return true;
     }
 
-    public boolean checkCanAccess(Fragment fragment) {
-        if (fragment == null) {
-            return false;
+    public boolean checkCanAccess(@NonNull Fragment fragment, UiAccessTimeInterval accessTimeInterval,
+                                  @NonNull String[] types, @NonNull HashMap<String, String> argsMap) {
+        if (fragment == null || types == null || types.length < 1) {
+            return true;
         }
-        UiAccessAnnotation annotation = fragment.getClass().getAnnotation(UiAccessAnnotation.class);
-        if (annotation != null) {
-            String[] types = annotation.AccessTypes();
-            String[] args = annotation.Args();
-            if (types == null || args == null || types.length != args.length) {
+        for (int i = 0; i < types.length; i++) {
+            if (mAccessExecutorMap.get(types[i]) != null &&
+                    !mAccessExecutorMap.get(types[i]).onExecute(fragment, argsMap, accessTimeInterval)) {
                 return false;
-            }
-            for (int i = 0; i < types.length; i++) {
-                if (mAccessExecutorMap.get(types[i]) != null &&
-                        !mAccessExecutorMap.get(types[i]).onExecute(fragment, args[i])) {
-                    return false;
-                }
             }
         }
         return true;

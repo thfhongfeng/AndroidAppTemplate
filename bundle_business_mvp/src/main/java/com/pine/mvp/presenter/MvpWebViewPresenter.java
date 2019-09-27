@@ -7,6 +7,7 @@ import com.pine.base.component.share.bean.UrlTextShareBean;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.contract.IMvpWebViewContract;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.architecture.state.UiState;
 
 import java.util.ArrayList;
 
@@ -25,9 +26,9 @@ public class MvpWebViewPresenter extends Presenter<IMvpWebViewContract.Ui>
     }
 
     @Override
-    public void onUiState(Presenter.UiState state) {
+    public void onUiState(UiState state) {
         super.onUiState(state);
-        if (state == UiState.UI_STATE_ON_CREATE) {
+        if (state == UiState.UI_STATE_ON_INIT) {
             getUi().loadUrl(mH5Url);
         }
     }

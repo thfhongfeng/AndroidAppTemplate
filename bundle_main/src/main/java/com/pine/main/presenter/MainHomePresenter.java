@@ -2,14 +2,14 @@ package com.pine.main.presenter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pine.base.router.command.RouterMvcCommand;
+import com.pine.base.router.command.RouterMvpCommand;
+import com.pine.base.router.command.RouterMvvmCommand;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.contract.IMainHomeContract;
 import com.pine.main.model.MainHomeModel;
-import com.pine.base.router.command.RouterMvcCommand;
-import com.pine.base.router.command.RouterMvpCommand;
-import com.pine.base.router.command.RouterMvvmCommand;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 
 import org.json.JSONArray;

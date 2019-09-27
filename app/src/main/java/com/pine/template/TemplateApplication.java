@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 import com.pine.base.BaseApplication;
+import com.pine.base.access.UiAccessLoginExecutor;
 import com.pine.base.access.UiAccessType;
+import com.pine.base.access.UiAccessVipLevelExecutor;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.share.manager.ShareManager;
+import com.pine.base.router.command.RouterDbServerCommand;
 import com.pine.config.BuildConfig;
 import com.pine.config.ConfigKey;
 import com.pine.db_server.DbServerApplication;
@@ -18,10 +21,7 @@ import com.pine.main.MainApplication;
 import com.pine.mvc.MvcApplication;
 import com.pine.mvp.MvpApplication;
 import com.pine.mvvm.MvvmApplication;
-import com.pine.base.router.command.RouterDbServerCommand;
 import com.pine.router.impl.RouterManager;
-import com.pine.template.access.UiAccessLoginExecutor;
-import com.pine.template.access.UiAccessVipLevelExecutor;
 import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IRequestManagerFactory;
@@ -117,9 +117,9 @@ public class TemplateApplication extends Application {
         MapSdkManager.getInstance().init(this);
 
         UiAccessManager.getInstance().addAccessExecutor(UiAccessType.LOGIN,
-                new UiAccessLoginExecutor(com.pine.base.R.string.base_ui_access_login_forbidden, null));
+                new UiAccessLoginExecutor());
 
         UiAccessManager.getInstance().addAccessExecutor(UiAccessType.VIP_LEVEL,
-                new UiAccessVipLevelExecutor(com.pine.base.R.string.base_ui_access_vip_level_forbidden, null));
+                new UiAccessVipLevelExecutor());
     }
 }

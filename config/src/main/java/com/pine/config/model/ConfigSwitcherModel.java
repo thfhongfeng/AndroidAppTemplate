@@ -85,7 +85,7 @@ public class ConfigSwitcherModel {
                 "[{configKey:'bundle_welcome', state:1},{configKey:'bundle_login', state:1}," +
                 "{configKey:'bundle_main', state:1},{configKey:'bundle_user', state:1}," +
                 "{configKey:'bundle_business_mvc', state:1},{configKey:'bundle_business_mvp', state:1}," +
-                "{configKey:'bundle_business_mvvm', state:1},{configKey:'business_demo_bundle', state:1}," +
+                "{configKey:'bundle_business_mvvm', state:1}," +
                 "{configKey:'fun_add_shop', state:1},{configKey:'fun_add_product', state:1}," +
                 "{configKey:'fun_add_travel_note', state:1}]}";
         try {

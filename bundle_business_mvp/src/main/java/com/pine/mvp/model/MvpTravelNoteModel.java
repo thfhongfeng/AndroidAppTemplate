@@ -164,15 +164,15 @@ public class MvpTravelNoteModel {
     }
 
     // Test code begin
-    private final String[] IMAGE_ARR = {"http://pic9.nipic.com/20100824/2531170_082435310724_2.jpg",
+    private final String[] IMAGE_ARR = {"http://img.sccnn.com/bimg/337/31660.jpg",
             "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg",
-            "http://img3.imgtn.bdimg.com/it/u=1568060428,2727116091&fm=26&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=2189972113,381634258&fm=26&gp=0.jpg",
-            "http://pic31.nipic.com/20130720/5793914_122325176000_2.jpg",
-            "http://img4.imgtn.bdimg.com/it/u=3528623204,755864954&fm=26&gp=0.jpg",
-            "http://img3.imgtn.bdimg.com/it/u=1922419374,2716826347&fm=26&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=3130635505,2228339018&fm=26&gp=0.jpg",
-            "http://img2.imgtn.bdimg.com/it/u=1372993673,3445969129&fm=26&gp=0.jpg"};
+            "https://c-ssl.duitang.com/uploads/item/201404/24/20140424154030_hyiBw.thumb.700_0.jpeg",
+            "http://pic1.win4000.com/wallpaper/2018-12-04/5c062a2388f3a.jpg",
+            "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg",
+            "https://hbimg.huabanimg.com/146b38721f241d26f389be9b1f7155533116f299caa99-RJwASk_fw658",
+            "https://hbimg.huabanimg.com/45858c1f11e0b3c30bd0113c6f7ab88f5847034e51d57-Hprwwb_fw658",
+            "https://c-ssl.duitang.com/uploads/item/201207/02/20120702194505_8V2yi.jpeg",
+            "http://img.juimg.com/tuku/yulantu/110516/1717-11051604500688.jpg"};
 
     private JSONObject getTravelNoteDetailData(Object paramsObj) {
         Map<String, String> params = (HashMap<String, String>) paramsObj;

@@ -77,8 +77,8 @@ public class ConfigSwitcherServer {
         }
     }
 
-    public void setConfig(List<ConfigSwitcherEntity> switcherEntityList) {
-        if (mIsLogin) {
+    public void setConfig(boolean isLogin, List<ConfigSwitcherEntity> switcherEntityList) {
+        if (isLogin) {
             synchronized (mUserConfigStateMap) {
                 mUserConfigStateMap.clear();
                 if (switcherEntityList != null && switcherEntityList.size() > 0) {
@@ -99,12 +99,12 @@ public class ConfigSwitcherServer {
         }
     }
 
-    public void setupConfigSwitcher(final IConfigSwitcherCallback callback) {
+    public void setupConfigSwitcher(final boolean isLogin, final IConfigSwitcherCallback callback) {
         mConfigSwitcherModel.requestBundleSwitcherData(new IModelAsyncResponse<ArrayList<ConfigSwitcherEntity>>() {
             @Override
             public void onResponse(ArrayList<ConfigSwitcherEntity> switcherEntities) {
                 if (switcherEntities != null) {
-                    setConfig(switcherEntities);
+                    setConfig(isLogin, switcherEntities);
                 }
                 if (callback != null) {
                     callback.onSetupComplete();

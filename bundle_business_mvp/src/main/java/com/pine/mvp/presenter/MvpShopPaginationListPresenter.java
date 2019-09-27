@@ -12,6 +12,7 @@ import com.pine.mvp.contract.IMvpShopPaginationContract;
 import com.pine.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -43,10 +44,10 @@ public class MvpShopPaginationListPresenter extends Presenter<IMvpShopPagination
     }
 
     @Override
-    public void onUiState(Presenter.UiState state) {
+    public void onUiState(UiState state) {
         super.onUiState(state);
         switch (state) {
-            case UI_STATE_ON_CREATE:
+            case UI_STATE_ON_INIT:
                 break;
             case UI_STATE_ON_RESUME:
                 if (MapSdkManager.getInstance().getLocation() == null) {

@@ -17,7 +17,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.access.UiAccessManager;
+import com.pine.tool.access.UiAccessTimeInterval;
 import com.pine.tool.permission.IPermissionCallback;
 import com.pine.tool.permission.PermissionBean;
 import com.pine.tool.permission.PermissionManager;
@@ -37,7 +39,10 @@ import java.util.List;
 public abstract class Fragment extends android.support.v4.app.Fragment
         implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
+    // UiAccess（比如需要登陆）是否检查通过，没有则结束当前界面；
     private boolean mUiAccessReady;
+    public String[] mUiAccessTypes;
+    public HashMap<String, String> mUiAccessArgsMap = new HashMap<>();
     private HashMap<Integer, PermissionBean> mPermissionRequestMap = new HashMap<>();
 
     @Override
@@ -50,8 +55,21 @@ public abstract class Fragment extends android.support.v4.app.Fragment
 
         // 进入界面准入流程
         mUiAccessReady = true;
-        if (!UiAccessManager.getInstance().checkCanAccess(this)) {
+        UiAccessAnnotation uiAccessAnnotation = getClass().getAnnotation(UiAccessAnnotation.class);
+        if (uiAccessAnnotation != null) {
+            mUiAccessTypes = uiAccessAnnotation.AccessTypes();
+            String[] args = uiAccessAnnotation.Args();
+            if (args != null && args.length > 0) {
+                for (String arg : args) {
+                    mUiAccessArgsMap.put(arg, arg);
+                }
+            }
+        }
+        if (mUiAccessTypes != null && mUiAccessTypes.length > 0 &&
+                !UiAccessManager.getInstance().checkCanAccess(
+                        this, UiAccessTimeInterval.UI_ACCESS_ON_CREATE, mUiAccessTypes, mUiAccessArgsMap)) {
             mUiAccessReady = false;
+            onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_CREATE);
         }
 
         tryOnAllRestrictionReleased();
@@ -106,6 +124,15 @@ public abstract class Fragment extends android.support.v4.app.Fragment
      * onCreate中结束初始化
      */
     protected abstract void afterInit();
+
+    /**
+     * 当UiAccess准入条件不具备时的回调
+     *
+     * @param accessTimeInterval UiAccess检查阶段
+     * @return
+     */
+    protected void onUiAccessForbidden(UiAccessTimeInterval accessTimeInterval) {
+    }
 
     @CallSuper
     @Override

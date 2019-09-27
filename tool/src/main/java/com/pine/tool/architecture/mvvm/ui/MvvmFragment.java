@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.ui.Fragment;
 
 import java.lang.reflect.ParameterizedType;
@@ -105,7 +106,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     @Override
     protected void afterInit() {
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_CREATE);
+            mViewModel.onUiState(UiState.UI_STATE_ON_INIT);
         }
         if (mViewModel != null) {
             mViewModel.afterViewInit();
@@ -113,18 +114,10 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_START);
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_RESUME);
+            mViewModel.onUiState(UiState.UI_STATE_ON_RESUME);
         }
     }
 
@@ -132,14 +125,14 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     public void onPause() {
         super.onPause();
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_PAUSE);
+            mViewModel.onUiState(UiState.UI_STATE_ON_PAUSE);
         }
     }
 
     @Override
     public void onStop() {
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_STOP);
+            mViewModel.onUiState(UiState.UI_STATE_ON_STOP);
         }
         super.onStop();
     }
@@ -147,7 +140,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     @Override
     public void onDestroyView() {
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_DETACH);
+            mViewModel.onUiState(UiState.UI_STATE_ON_DETACH);
         }
         super.onDestroyView();
     }

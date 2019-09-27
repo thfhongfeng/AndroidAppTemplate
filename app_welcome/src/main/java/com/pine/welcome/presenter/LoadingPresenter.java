@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.pine.base.BaseApplication;
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
@@ -39,7 +40,7 @@ public class LoadingPresenter extends Presenter<ILoadingContract.Ui> implements 
 
     @Override
     public void setupConfigSwitcher() {
-        ConfigSwitcherServer.getInstance().setupConfigSwitcher(new ConfigSwitcherServer.IConfigSwitcherCallback() {
+        ConfigSwitcherServer.getInstance().setupConfigSwitcher(BaseApplication.isLogin(), new ConfigSwitcherServer.IConfigSwitcherCallback() {
             @Override
             public void onSetupComplete() {
                 if (isUiAlive()) {

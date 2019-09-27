@@ -9,6 +9,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.ui.Activity;
 
 import java.lang.reflect.ParameterizedType;
@@ -94,7 +95,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
     @Override
     protected void afterInit() {
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_CREATE);
+            mViewModel.onUiState(UiState.UI_STATE_ON_INIT);
         }
         if (mViewModel != null) {
             mViewModel.afterViewInit();
@@ -102,18 +103,10 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_START);
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_RESUME);
+            mViewModel.onUiState(UiState.UI_STATE_ON_RESUME);
         }
     }
 
@@ -121,14 +114,14 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
     protected void onPause() {
         super.onPause();
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_PAUSE);
+            mViewModel.onUiState(UiState.UI_STATE_ON_PAUSE);
         }
     }
 
     @Override
     protected void onStop() {
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_STOP);
+            mViewModel.onUiState(UiState.UI_STATE_ON_STOP);
         }
         super.onStop();
     }
@@ -138,7 +131,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         super.onDestroy();
         //解除绑定
         if (mViewModel != null) {
-            mViewModel.onUiState(ViewModel.UiState.UI_STATE_ON_DETACH);
+            mViewModel.onUiState(UiState.UI_STATE_ON_DETACH);
         }
     }
 

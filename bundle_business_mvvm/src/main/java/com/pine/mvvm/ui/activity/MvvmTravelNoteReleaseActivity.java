@@ -1,5 +1,6 @@
 package com.pine.mvvm.ui.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.BaseConstants;
+import com.pine.base.access.UiAccessArgs;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.component.editor.bean.TextImageEntity;
@@ -26,6 +28,7 @@ import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.databinding.MvvmTravelNoteReleaseActivityBinding;
 import com.pine.mvvm.vm.MvvmTravelNoteReleaseVm;
 import com.pine.tool.access.UiAccessAnnotation;
+import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.util.StringUtils;
 
 import org.json.JSONObject;
@@ -41,7 +44,9 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, Args = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN},
+        Args = {UiAccessArgs.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
+                UiAccessArgs.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI})
 public class MvvmTravelNoteReleaseActivity extends
         BaseMvvmActionBarTextMenuActivity<MvvmTravelNoteReleaseActivityBinding, MvvmTravelNoteReleaseVm> {
     private final int REQUEST_CODE_SELECT_BELONG_SHOP = 1;
@@ -95,11 +100,6 @@ public class MvvmTravelNoteReleaseActivity extends
     @Override
     protected int getActivityLayoutResId() {
         return R.layout.mvvm_activity_travel_note_release;
-    }
-
-    @Override
-    protected boolean onUiAccessForbidden() {
-        return true;
     }
 
     @Override

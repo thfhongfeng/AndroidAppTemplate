@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.ui.Activity;
 
 import java.lang.reflect.ParameterizedType;
@@ -62,16 +63,8 @@ public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>
     @Override
     protected void afterInit() {
         if (mPresenter != null) {
-            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_CREATE);
+            mPresenter.onUiState(UiState.UI_STATE_ON_INIT);
             mPresenter.afterViewInit();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mPresenter != null) {
-            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_START);
         }
     }
 
@@ -79,7 +72,7 @@ public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>
     protected void onResume() {
         super.onResume();
         if (mPresenter != null) {
-            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_RESUME);
+            mPresenter.onUiState(UiState.UI_STATE_ON_RESUME);
         }
     }
 
@@ -87,14 +80,14 @@ public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>
     protected void onPause() {
         super.onPause();
         if (mPresenter != null) {
-            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_PAUSE);
+            mPresenter.onUiState(UiState.UI_STATE_ON_PAUSE);
         }
     }
 
     @Override
     protected void onStop() {
         if (mPresenter != null) {
-            mPresenter.onUiState(Presenter.UiState.UI_STATE_ON_STOP);
+            mPresenter.onUiState(UiState.UI_STATE_ON_STOP);
         }
         super.onStop();
     }

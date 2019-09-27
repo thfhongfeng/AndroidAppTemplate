@@ -15,7 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.access.UiAccessManager;
+import com.pine.tool.access.UiAccessTimeInterval;
 import com.pine.tool.permission.IPermissionCallback;
 import com.pine.tool.permission.PermissionBean;
 import com.pine.tool.permission.PermissionManager;
@@ -57,6 +59,8 @@ public abstract class Activity extends AppCompatActivity
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     // UiAccess（比如需要登陆）是否检查通过，没有则结束当前界面；
     public boolean mUiAccessReady;
+    public String[] mUiAccessTypes;
+    public HashMap<String, String> mUiAccessArgsMap = new HashMap<>();
     // 权限（比如需要登陆）是否检查通过，没有则弹出授权界面给用户授权；
     public boolean mPermissionReady;
     // onAllAccessRestrictionReleased方法是否被调用过（该方法在activity的生命周期中只会调用一次，onCreate，onNewIntent才会重置）；
@@ -77,19 +81,28 @@ public abstract class Activity extends AppCompatActivity
 
         // 进入界面准入流程
         mUiAccessReady = true;
-        if (!UiAccessManager.getInstance().checkCanAccess(this)) {
-            mUiAccessReady = false;
-            if (!onUiAccessForbidden()) {
-                finish();
-                return;
+        UiAccessAnnotation uiAccessAnnotation = getClass().getAnnotation(UiAccessAnnotation.class);
+        if (uiAccessAnnotation != null) {
+            mUiAccessTypes = uiAccessAnnotation.AccessTypes();
+            String[] args = uiAccessAnnotation.Args();
+            if (args != null && args.length > 0) {
+                for (String arg : args) {
+                    mUiAccessArgsMap.put(arg, arg);
+                }
             }
+        }
+        if (mUiAccessTypes != null && mUiAccessTypes.length > 0 &&
+                !UiAccessManager.getInstance().checkCanAccess(
+                        this, UiAccessTimeInterval.UI_ACCESS_ON_CREATE, mUiAccessTypes, mUiAccessArgsMap)) {
+            mUiAccessReady = false;
+            onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_CREATE);
         }
 
         // 进入动态权限判断和申请流程
         mPermissionReady = true;
-        PermissionsAnnotation annotation = getClass().getAnnotation(PermissionsAnnotation.class);
-        if (annotation != null) {
-            String[] permissions = annotation.Permissions();
+        PermissionsAnnotation permissionsAnnotation = getClass().getAnnotation(PermissionsAnnotation.class);
+        if (permissionsAnnotation != null) {
+            String[] permissions = permissionsAnnotation.Permissions();
             if (permissions != null) {
                 if (!hasPermissions(permissions)) {
                     mPermissionReady = false;
@@ -124,15 +137,6 @@ public abstract class Activity extends AppCompatActivity
      */
     protected abstract void findViewOnCreate();
 
-    /**
-     * 当UiAccess准入条件不具备时的回调，重写该方法定制用户自己的处理方式
-     *
-     * @return false:默认处理方式（finish()）执行；true:默认处理方式（finish()）不执行
-     */
-    protected boolean onUiAccessForbidden() {
-        return false;
-    }
-
     protected boolean isInit() {
         return mOnAllAccessRestrictionReleasedMethodCalled;
     }
@@ -164,6 +168,15 @@ public abstract class Activity extends AppCompatActivity
      */
     protected abstract void afterInit();
 
+    /**
+     * 当UiAccess准入条件不具备时的回调
+     *
+     * @param accessTimeInterval UiAccess检查阶段
+     * @return
+     */
+    protected void onUiAccessForbidden(UiAccessTimeInterval accessTimeInterval) {
+    }
+
     @CallSuper
     @Override
     protected void onNewIntent(Intent intent) {
@@ -172,12 +185,11 @@ public abstract class Activity extends AppCompatActivity
         mPrePause = false;
 
         mUiAccessReady = true;
-        if (!UiAccessManager.getInstance().checkCanAccess(this)) {
+        if (mUiAccessTypes != null && mUiAccessTypes.length > 0 &&
+                !UiAccessManager.getInstance().checkCanAccess(
+                        this, UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT, mUiAccessTypes, mUiAccessArgsMap)) {
             mUiAccessReady = false;
-            if (!onUiAccessForbidden()) {
-                finish();
-                return;
-            }
+            onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT);
         }
 
         mPermissionReady = true;
@@ -201,12 +213,11 @@ public abstract class Activity extends AppCompatActivity
         if (mPrePause) {
             mPrePause = false;
             mUiAccessReady = true;
-            if (!UiAccessManager.getInstance().checkCanAccess(this)) {
+            if (mUiAccessTypes != null && mUiAccessTypes.length > 0 &&
+                    !UiAccessManager.getInstance().checkCanAccess(
+                            this, UiAccessTimeInterval.UI_ACCESS_ON_RESUME, mUiAccessTypes, mUiAccessArgsMap)) {
                 mUiAccessReady = false;
-                if (!onUiAccessForbidden()) {
-                    finish();
-                    return;
-                }
+                onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_RESUME);
             } else {
                 tryInitOnAllRestrictionReleased();
             }
