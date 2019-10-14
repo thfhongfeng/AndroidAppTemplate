@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +24,14 @@ import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.image_selector.bean.ImageItemBean;
 import com.pine.base.ui.BaseActionBarTextMenuActivity;
 import com.pine.tool.permission.PermissionsAnnotation;
-import com.pine.tool.widget.view.ZoomImageView;
+import com.pine.tool.widget.view.TransformImageView;
 
 import java.util.ArrayList;
 
 @PermissionsAnnotation(Permissions = {Manifest.permission.READ_EXTERNAL_STORAGE})
 public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
     private ViewPager view_pager;
+    private RelativeLayout action_container_rl;
     private TextView choose_tv;
     private Button check_btn;
     private TextView mTitleTv, mMenuBtnTv;
@@ -42,6 +44,10 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
     private boolean mNoImageList;
     private ContentResolver mContentResolver;
 
+    private boolean mEnableImageScale = false; // 是否开启图片缩放功能
+    private boolean mEnableImageTranslate = false; // 是否开启图片平移功能
+    private boolean mEnableImageRotate = false; // 是否开启图片旋转功能
+
     @Override
     protected int getActivityLayoutResId() {
         return R.layout.base_activity_image_display;
@@ -50,6 +56,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
     @Override
     protected void findViewOnCreate() {
         view_pager = findViewById(R.id.view_pager);
+        action_container_rl = findViewById(R.id.action_container_rl);
         choose_tv = findViewById(R.id.choose_tv);
         check_btn = findViewById(R.id.check_btn);
     }
@@ -73,6 +80,9 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
         mMaxImgCount = intent.getIntExtra(ImageViewer.INTENT_MAX_SELECTED_COUNT,
                 ImageSelectActivity.DEFAULT_MAX_IMAGE_COUNT);
         mCanSelected = intent.getBooleanExtra(ImageViewer.INTENT_CAN_SELECT, false);
+        mEnableImageScale = intent.getBooleanExtra(ImageViewer.INTENT_ENABLE_IMAGE_SCALE, false);
+        mEnableImageTranslate = intent.getBooleanExtra(ImageViewer.INTENT_ENABLE_IMAGE_TRANSLATE, false);
+        mEnableImageRotate = intent.getBooleanExtra(ImageViewer.INTENT_ENABLE_IMAGE_ROTATE, false);
         return false;
     }
 
@@ -130,11 +140,9 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
                     updateDoneButton();
                 }
             });
-            choose_tv.setVisibility(View.VISIBLE);
-            check_btn.setVisibility(View.VISIBLE);
+            action_container_rl.setVisibility(View.VISIBLE);
         } else {
-            choose_tv.setVisibility(View.GONE);
-            check_btn.setVisibility(View.GONE);
+            action_container_rl.setVisibility(View.GONE);
         }
     }
 
@@ -224,18 +232,22 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            ZoomImageView zoomImageView = new ZoomImageView(ImageDisplayActivity.this);
+            TransformImageView imageView = new TransformImageView(ImageDisplayActivity.this);
+            imageView.enableImageScale(mEnableImageScale);
+            imageView.enableImageImageScale(mEnableImageTranslate);
+            imageView.enableImageRotate(mEnableImageRotate);
             String path = mImageBeanList.get(position).path;
-            if (!TextUtils.isEmpty(path) && path.startsWith("http")) {
+            if (!TextUtils.isEmpty(path) && (path.startsWith("http://") ||
+                    path.startsWith("https://") || path.startsWith("file://"))) {
                 ImageLoaderManager.getInstance().loadImage(ImageDisplayActivity.this,
-                        path, zoomImageView);
+                        path, imageView);
             } else {
                 ImageLoaderManager.getInstance().loadImage(ImageDisplayActivity.this,
-                        "file://" + path, zoomImageView);
+                        "file://" + path, imageView);
             }
-            zoomImageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            container.addView(zoomImageView);
-            return zoomImageView;
+            imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            container.addView(imageView);
+            return imageView;
         }
 
         @Override

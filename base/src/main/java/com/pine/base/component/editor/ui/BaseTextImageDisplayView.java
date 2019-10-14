@@ -26,24 +26,24 @@ import static com.pine.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
  * Created by tanghongfeng on 2018/11/13
  */
 
-public class TextImageDisplayView extends LinearLayout {
+public class BaseTextImageDisplayView extends LinearLayout {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     // View标题
     private String mTitle;
     private List<TextImageItemEntity> mContent;
 
-    public TextImageDisplayView(Context context) {
+    public BaseTextImageDisplayView(Context context) {
         super(context);
         setOrientation(VERTICAL);
     }
 
-    public TextImageDisplayView(Context context, @Nullable AttributeSet attrs) {
+    public BaseTextImageDisplayView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
     }
 
-    public TextImageDisplayView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public BaseTextImageDisplayView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setOrientation(VERTICAL);
     }

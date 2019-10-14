@@ -36,10 +36,10 @@ public class ThousandthNumberEditText extends android.support.v7.widget.AppCompa
         super(context, attrs);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ThousandthNumberEditText);
-        mDecimalNum = typedArray.getInteger(R.styleable.ThousandthNumberEditText_editText_decimalNum, 2);
-        mNumberMaxLength = typedArray.getInteger(R.styleable.ThousandthNumberEditText_editText_numberMaxLength, 99);
-        mDecimalAllow = typedArray.getBoolean(R.styleable.ThousandthNumberEditText_editText_decimalAllow, false);
-        mSpaceChar = typedArray.getString(R.styleable.ThousandthNumberEditText_editText_spaceChar);
+        mDecimalNum = typedArray.getInteger(R.styleable.ThousandthNumberEditText_tnet_decimalNum, 2);
+        mNumberMaxLength = typedArray.getInteger(R.styleable.ThousandthNumberEditText_tnet_numberMaxLength, 99);
+        mDecimalAllow = typedArray.getBoolean(R.styleable.ThousandthNumberEditText_tnet_decimalAllow, false);
+        mSpaceChar = typedArray.getString(R.styleable.ThousandthNumberEditText_tnet_spaceChar);
         if (TextUtils.isEmpty(mSpaceChar)) {
             mSpaceChar = ",";
         }

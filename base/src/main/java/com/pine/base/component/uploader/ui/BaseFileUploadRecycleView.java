@@ -38,7 +38,7 @@ import java.util.List;
  * Created by tanghongfeng on 2018/11/1
  */
 
-public class FileUploadRecycleView extends UploadFileRecyclerView implements IFileOneByOneUploader {
+public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFileOneByOneUploader {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private UploadFileAdapter mUploadFileAdapter;
     // RecyclerView列数（一行可容纳image数量）
@@ -48,34 +48,29 @@ public class FileUploadRecycleView extends UploadFileRecyclerView implements IFi
     // 最大允许上传文件大小
     protected long mMaxFileSize = 1024 * 1024;
 
-    public FileUploadRecycleView(Context context) {
+    public BaseFileUploadRecycleView(Context context) {
         super(context);
     }
 
-    public FileUploadRecycleView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        int defaultColumnSize = getResources().getDisplayMetrics().widthPixels / getResources().getDimensionPixelOffset(R.dimen.dp_106);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseFileUploadView);
-        mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileCount, 10);
-        mColumnSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseColumnSize, defaultColumnSize);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
+    public BaseFileUploadRecycleView(Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    public FileUploadRecycleView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public BaseFileUploadRecycleView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         int defaultColumnSize = getResources().getDisplayMetrics().widthPixels / getResources().getDimensionPixelOffset(R.dimen.dp_106);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseFileUploadView);
-        mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileCount, 10);
-        mColumnSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseColumnSize, defaultColumnSize);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseFileUploadRecycleView);
+        mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadRecycleView_base_maxFileCount, 10);
+        mColumnSize = typedArray.getInt(R.styleable.BaseFileUploadRecycleView_base_columnSize, defaultColumnSize);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadRecycleView_base_maxFileSize, 1024 * 1024);
+        mHelper.setMaxFileCount(mMaxFileCount);
+        mHelper.setMaxFileSize(mMaxFileSize);
     }
 
     @Override
     public void init(@NonNull Activity activity,
                      @NonNull FileUploadComponent.OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
         mHelper.init(activity, adapter, requestCodeSelectFile);
-        mHelper.setMaxFileCount(mMaxFileCount);
-        mHelper.setMaxFileSize(mMaxFileSize);
     }
 
     public void init(@NonNull Activity activity) {
@@ -460,7 +455,7 @@ public class FileUploadRecycleView extends UploadFileRecyclerView implements IFi
                                     break;
                                 }
                             }
-                            mHelper.displayUploadObject(showList, curPos);
+                            mHelper.displayBigImages(showList, curPos);
                         }
                     });
                     if (mCanDelete) {

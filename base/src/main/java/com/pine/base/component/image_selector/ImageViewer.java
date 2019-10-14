@@ -20,12 +20,18 @@ public class ImageViewer {
     public static final String INTENT_IMAGE_BEAN_LIST = "intent_image_bean_list";
     public static final String INTENT_CAN_SELECT = "intent_can_select";
     public static final String INTENT_RETURN_TYPE = "intent_return_type";
+    public static final String INTENT_ENABLE_IMAGE_SCALE = "intent_enable_image_scale";
+    public static final String INTENT_ENABLE_IMAGE_TRANSLATE = "intent_enable_image_translate";
+    public static final String INTENT_ENABLE_IMAGE_ROTATE = "intent_enable_image_rotate";
     public static ArrayList<ImageItemBean> mBigOriginBeanData;
     private int mMaxCount = 9;
     private int mCurPosition = 0;
     private boolean mCanSelect = false;
     private ArrayList<ImageItemBean> mOriginBeanData;
     private ArrayList<String> mSelectedData;
+    private boolean mEnableImageScale = false; // 是否开启图片缩放功能
+    private boolean mEnableImageTranslate = false; // 是否开启图片平移功能
+    private boolean mEnableImageRotate = false; // 是否开启图片旋转功能
 
     private ImageViewer() {
         mBigOriginBeanData = null;
@@ -68,11 +74,26 @@ public class ImageViewer {
         return this;
     }
 
+    public ImageViewer enableImageScale(boolean enable) {
+        mEnableImageScale = enable;
+        return this;
+    }
+
+    public ImageViewer enableImageTranslate(boolean enable) {
+        mEnableImageTranslate = enable;
+        return this;
+    }
+
+    public ImageViewer enableImageRotate(boolean enable) {
+        mEnableImageRotate = enable;
+        return this;
+    }
+
     public void start(Activity activity) {
         if (mOriginBeanData != null || mSelectedData != null) {
             Intent intent = new Intent(activity, ImageDisplayActivity.class);
+            intent.putExtra(INTENT_CAN_SELECT, mCanSelect);
             if (mCanSelect) {
-                intent.putExtra(INTENT_CAN_SELECT, mCanSelect);
                 intent.putExtra(INTENT_MAX_SELECTED_COUNT, mMaxCount);
                 intent.putStringArrayListExtra(INTENT_SELECTED_IMAGE_LIST, mSelectedData);
             }
@@ -84,6 +105,9 @@ public class ImageViewer {
                 mOriginBeanData = null;
             }
             intent.putExtra(INTENT_CUR_POSITION, mCurPosition);
+            intent.putExtra(INTENT_ENABLE_IMAGE_SCALE, mEnableImageScale);
+            intent.putExtra(INTENT_ENABLE_IMAGE_TRANSLATE, mEnableImageTranslate);
+            intent.putExtra(INTENT_ENABLE_IMAGE_ROTATE, mEnableImageRotate);
             activity.startActivity(intent);
         }
     }
@@ -91,8 +115,8 @@ public class ImageViewer {
     public void start(Activity activity, int requestCode) {
         if (mOriginBeanData != null || mSelectedData != null) {
             Intent intent = new Intent(activity, ImageDisplayActivity.class);
+            intent.putExtra(INTENT_CAN_SELECT, mCanSelect);
             if (mCanSelect) {
-                intent.putExtra(INTENT_CAN_SELECT, mCanSelect);
                 intent.putExtra(INTENT_MAX_SELECTED_COUNT, mMaxCount);
                 intent.putStringArrayListExtra(INTENT_SELECTED_IMAGE_LIST, mSelectedData);
             }
@@ -104,6 +128,9 @@ public class ImageViewer {
                 mOriginBeanData = null;
             }
             intent.putExtra(INTENT_CUR_POSITION, mCurPosition);
+            intent.putExtra(INTENT_ENABLE_IMAGE_SCALE, mEnableImageScale);
+            intent.putExtra(INTENT_ENABLE_IMAGE_TRANSLATE, mEnableImageTranslate);
+            intent.putExtra(INTENT_ENABLE_IMAGE_ROTATE, mEnableImageRotate);
             activity.startActivityForResult(intent, requestCode);
         }
     }

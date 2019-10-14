@@ -2,12 +2,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
+    <com.pine.tool.widget.view.FitChildScrollViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <RelativeLayout
+        android:id="@+id/action_container_rl"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_48"
         android:layout_alignParentBottom="true"

@@ -1,6 +1,5 @@
 package com.pine.mvvm.ui.activity;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
@@ -18,6 +17,7 @@ import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActi
 import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
+import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -28,7 +28,6 @@ import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.databinding.MvvmTravelNoteReleaseActivityBinding;
 import com.pine.mvvm.vm.MvvmTravelNoteReleaseVm;
 import com.pine.tool.access.UiAccessAnnotation;
-import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.util.StringUtils;
 
 import org.json.JSONObject;
@@ -79,7 +78,7 @@ public class MvvmTravelNoteReleaseActivity extends
         }
 
         @Override
-        public String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject
+        public RemoteUploadFileInfo getRemoteFileInfoFromResponse(FileUploadBean fileUploadBean, JSONObject
                 response) {
             // Test code begin
             if (response == null) {
@@ -92,7 +91,9 @@ public class MvvmTravelNoteReleaseActivity extends
             if (data == null) {
                 return null;
             }
-            return data.optString("fileUrl");
+            RemoteUploadFileInfo fileInfo = new RemoteUploadFileInfo();
+            fileInfo.setUrl(data.optString("fileUrl"));
+            return fileInfo;
             // Test code end
         }
     };

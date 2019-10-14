@@ -1,59 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ThousandthNumberTextView">
-        <attr name="textView_decimalNum" format="integer"></attr>
-        <attr name="textView_decimalAllow" format="boolean"></attr>
-        <attr name="textView_spaceChar" format="string"></attr>
-        <attr name="textView_numberMaxLength" format="integer"></attr>
+        <attr name="tntv_decimalNum" format="integer" />
+        <attr name="tntv_decimalAllow" format="boolean" />
+        <attr name="tntv_spaceChar" format="string" />
+        <attr name="tntv_numberMaxLength" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="ThousandthNumberEditText">
-        <attr name="editText_decimalNum" format="integer"></attr>
-        <attr name="editText_decimalAllow" format="boolean"></attr>
-        <attr name="editText_spaceChar" format="string"></attr>
-        <attr name="editText_numberMaxLength" format="integer"></attr>
+        <attr name="tnet_decimalNum" format="integer" />
+        <attr name="tnet_decimalAllow" format="boolean" />
+        <attr name="tnet_spaceChar" format="string" />
+        <attr name="tnet_numberMaxLength" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="RingScaleDiagramView">
-        <attr name="innerRadius" format="dimension"></attr>
-        <attr name="outerRadius" format="dimension"></attr>
-        <attr name="ringBackgroundColor" format="color"></attr>
-        <attr name="foldFirstLineLength" format="dimension"></attr>
-        <attr name="foldLineWidth" format="dimension"></attr>
-        <attr name="startAngle" format="integer"></attr>
-        <attr name="nameTextColor" format="color"></attr>
-        <attr name="nameTextSize" format="dimension"></attr>
-        <attr name="scaleTextColor" format="color"></attr>
-        <attr name="scaleTextSize" format="dimension"></attr>
-        <attr name="isTwoTextLine" format="boolean"></attr>
+        <attr name="rsdv_innerRadius" format="dimension" />
+        <attr name="rsdv_outerRadius" format="dimension" />
+        <attr name="rsdv_ringBackgroundColor" format="color" />
+        <attr name="rsdv_foldFirstLineLength" format="dimension" />
+        <attr name="rsdv_foldLineWidth" format="dimension" />
+        <attr name="rsdv_startAngle" format="integer" />
+        <attr name="rsdv_nameTextColor" format="color" />
+        <attr name="rsdv_nameTextSize" format="dimension" />
+        <attr name="rsdv_scaleTextColor" format="color" />
+        <attr name="rsdv_scaleTextSize" format="dimension" />
+        <attr name="rsdv_isTwoTextLine" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ViewPagerTabLayout">
-        <attr name="tabLayout_divider" format="reference" />
-        <attr name="tabLayout_showDividers">
+        <attr name="vptl_divider" format="reference" />
+        <attr name="vptl_showDividers">
             <flag name="none" value="0" />
             <flag name="beginning" value="1" />
             <flag name="middle" value="2" />
             <flag name="end" value="4" />
         </attr>
-        <attr name="tabLayout_margin" format="dimension" />
-        <attr name="tabLayout_marginLeft" format="dimension" />
-        <attr name="tabLayout_marginTop" format="dimension" />
-        <attr name="tabLayout_marginRight" format="dimension" />
-        <attr name="tabLayout_marginBottom" format="dimension" />
-        <attr name="tabLayout_marginStart" format="dimension" />
-        <attr name="tabLayout_marginEnd" format="dimension" />
-        <attr name="tabLayout_bottomDivider" format="reference" />
+        <attr name="vptl_margin" format="dimension" />
+        <attr name="vptl_marginLeft" format="dimension" />
+        <attr name="vptl_marginTop" format="dimension" />
+        <attr name="vptl_marginRight" format="dimension" />
+        <attr name="vptl_marginBottom" format="dimension" />
+        <attr name="vptl_marginStart" format="dimension" />
+        <attr name="vptl_marginEnd" format="dimension" />
+        <attr name="vptl_bottomDivider" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="CircleImageView">
-        <attr name="civ_border_width" format="dimension" />
-        <attr name="civ_border_color" format="color" />
-        <attr name="civ_border_overlay" format="boolean" />
-        <attr name="civ_fill_color" format="color" />
+        <attr name="civ_borderWidth" format="dimension" />
+        <attr name="civ_borderColor" format="color" />
+        <attr name="civ_borderOverlay" format="boolean" />
+        <attr name="civ_fillColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="RoundImageView">
         <attr name="riv_radius" format="dimension" />
+    </declare-styleable>
+
+    <attr name="enableImageScale" format="boolean" />
+    <attr name="enableImageTranslate" format="boolean" />
+    <attr name="enableImageRotate" format="boolean" />
+
+    <declare-styleable name="TransformImageView">
+        <attr name="tiv_maxScale" format="float" />
+        <attr name="tiv_minScale" format="float" />
+        <attr name="enableImageScale" />
+        <attr name="enableImageTranslate" />
+        <attr name="enableImageRotate" />
+        <attr name="tiv_revertDuration" format="integer" />
+        <attr name="tiv_openScaleRevert" format="boolean" />
+        <attr name="tiv_openRotateRevert" format="boolean" />
+        <attr name="tiv_openTranslateRevert" format="boolean" />
+        <attr name="tiv_openAnimator" format="boolean" />
+        <attr name="tiv_scaleCenter" format="enum">
+            <enum name="img_center" value="0" />
+            <enum name="finger_center" value="1" />
+        </attr>
     </declare-styleable>
 </resources>

@@ -16,11 +16,11 @@
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10">
 
-        <com.pine.base.component.editor.ui.TextImageDisplayView
+        <com.pine.base.component.editor.ui.BaseTextImageDisplayView
             android:id="@+id/day_content_tidv"
             contentList="@{travelNoteDayDetail.getTextImageContentList()}"
             title="@{travelNoteDayDetail.day}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.pine.base.component.editor.ui.TextImageDisplayView>
+            android:layout_height="wrap_content"></com.pine.base.component.editor.ui.BaseTextImageDisplayView>
     </LinearLayout>
 </layout>

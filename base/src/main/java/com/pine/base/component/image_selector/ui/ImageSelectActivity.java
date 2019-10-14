@@ -53,6 +53,7 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
     private TextView mMenuBtnTv;
     private int mMaxImgCount = DEFAULT_MAX_IMAGE_COUNT;
     private ArrayList<String> mSelectedImageList = new ArrayList<>();
+    private boolean mIsReselect = false;
     private String mCameraPath = null;
     private FolderAdapter mFolderAdapter;
     private ImageFolderBean mAllImageFolder, mCurrentImageFolder;
@@ -84,6 +85,9 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
         }
         if (getIntent().hasExtra(ImageSelector.INTENT_SELECTED_IMAGE_LIST)) {
             mSelectedImageList = getIntent().getStringArrayListExtra(ImageSelector.INTENT_SELECTED_IMAGE_LIST);
+        }
+        if (getIntent().hasExtra(ImageSelector.INTENT_IS_RESELECT)) {
+            mIsReselect = getIntent().getBooleanExtra(ImageSelector.INTENT_IS_RESELECT, false);
         }
         if (mTmpDir == null) {
             mTmpDir = new HashMap<>();
@@ -165,7 +169,7 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
         menuBtnTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goBack();
+                goComplete();
             }
         });
     }
@@ -186,10 +190,7 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
                 Uri contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 sendBroadcast(mediaScanIntent);
-                Intent intent = new Intent();
-                intent.putExtra(ImageSelector.INTENT_SELECTED_IMAGE_LIST, mSelectedImageList);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                goComplete();
             } else if (requestCode == PREVIEW_PICTURE) {
                 mSelectedImageList = data.getStringArrayListExtra(ImageViewer.INTENT_SELECTED_IMAGE_LIST);
                 mImageAdapter.notifyDataSetChanged();
@@ -217,9 +218,10 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
         }
     }
 
-    private void goBack() {
+    private void goComplete() {
         Intent data = new Intent();
         data.putExtra(ImageSelector.INTENT_SELECTED_IMAGE_LIST, mSelectedImageList);
+        data.putExtra(ImageSelector.INTENT_IS_RESELECT, mIsReselect);
         setResult(Activity.RESULT_OK, data);
         finish();
     }

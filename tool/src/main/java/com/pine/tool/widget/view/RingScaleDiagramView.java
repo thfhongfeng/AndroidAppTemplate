@@ -112,19 +112,19 @@ public class RingScaleDiagramView extends View {
         super(context, attrs, defStyleAttr);
         mContext = context;
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RingScaleDiagramView);
-        mInnerRadius = typedArray.getDimensionPixelOffset(R.styleable.RingScaleDiagramView_innerRadius, 40);
-        mOuterRadius = typedArray.getDimensionPixelOffset(R.styleable.RingScaleDiagramView_outerRadius, 80);
-        mFoldLineWidth = typedArray.getDimensionPixelOffset(R.styleable.RingScaleDiagramView_foldLineWidth, 3);
-        mFoldFirstLineLength = typedArray.getDimensionPixelOffset(R.styleable.RingScaleDiagramView_foldFirstLineLength, (int) (mOuterRadius * 0.5f));
+        mInnerRadius = typedArray.getDimensionPixelOffset(R.styleable.RingScaleDiagramView_rsdv_innerRadius, 40);
+        mOuterRadius = typedArray.getDimensionPixelOffset(R.styleable.RingScaleDiagramView_rsdv_outerRadius, 80);
+        mFoldLineWidth = typedArray.getDimensionPixelOffset(R.styleable.RingScaleDiagramView_rsdv_foldLineWidth, 3);
+        mFoldFirstLineLength = typedArray.getDimensionPixelOffset(R.styleable.RingScaleDiagramView_rsdv_foldFirstLineLength, (int) (mOuterRadius * 0.5f));
         mFoldSecondLineLength = (int) (mFoldFirstLineLength * 0.4f);
-        mScaleTextColor = typedArray.getColor(R.styleable.RingScaleDiagramView_nameTextColor, Color.BLACK);
-        mScaleTextSize = typedArray.getDimensionPixelSize(R.styleable.RingScaleDiagramView_nameTextSize, 28);
-        mNameTextColor = typedArray.getColor(R.styleable.RingScaleDiagramView_nameTextColor, Color.BLACK);
-        mNameTextSize = typedArray.getDimensionPixelSize(R.styleable.RingScaleDiagramView_nameTextSize, 28);
-        mIsTwoTextLine = typedArray.getBoolean(R.styleable.RingScaleDiagramView_isTwoTextLine, true);
-        mRingBackgroundColor = typedArray.getColor(R.styleable.RingScaleDiagramView_ringBackgroundColor, Color.LTGRAY);
-        int startAngle = typedArray.getInteger(R.styleable.RingScaleDiagramView_startAngle, -90);
-        mRingStartAngle = new BigDecimal(String.valueOf((startAngle % 360 + 450) % 360 - 90));
+        mScaleTextColor = typedArray.getColor(R.styleable.RingScaleDiagramView_rsdv_nameTextColor, Color.BLACK);
+        mScaleTextSize = typedArray.getDimensionPixelSize(R.styleable.RingScaleDiagramView_rsdv_nameTextSize, 28);
+        mNameTextColor = typedArray.getColor(R.styleable.RingScaleDiagramView_rsdv_nameTextColor, Color.BLACK);
+        mNameTextSize = typedArray.getDimensionPixelSize(R.styleable.RingScaleDiagramView_rsdv_nameTextSize, 28);
+        mIsTwoTextLine = typedArray.getBoolean(R.styleable.RingScaleDiagramView_rsdv_isTwoTextLine, true);
+        mRingBackgroundColor = typedArray.getColor(R.styleable.RingScaleDiagramView_rsdv_ringBackgroundColor, Color.LTGRAY);
+        int rsdv_startAngle = typedArray.getInteger(R.styleable.RingScaleDiagramView_rsdv_startAngle, -90);
+        mRingStartAngle = new BigDecimal(String.valueOf((rsdv_startAngle % 360 + 450) % 360 - 90));
         int foldLineAngles = 30;
         mFoldLineAngle = (foldLineAngles % 360 + 360) % 360;
         mActualOuterRadius = mOuterRadius;
@@ -660,7 +660,7 @@ public class RingScaleDiagramView extends View {
         // 指示线开始的角度
         private float lineStartAngle;
         // 开始角度
-        private float startAngle;
+        private float rsdv_startAngle;
         // 覆盖度数
         private float sweepAngle;
         // 折线X坐标轨迹
@@ -761,11 +761,11 @@ public class RingScaleDiagramView extends View {
         }
 
         public float getStartAngle() {
-            return startAngle;
+            return rsdv_startAngle;
         }
 
-        public void setStartAngle(float startAngle) {
-            this.startAngle = startAngle;
+        public void setStartAngle(float rsdv_startAngle) {
+            this.rsdv_startAngle = rsdv_startAngle;
         }
 
         public float getSweepAngle() {

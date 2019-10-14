@@ -5,9 +5,9 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.template.IProvider;
 import com.pine.router.IRouterCallback;
+import com.pine.router.IRouterManager;
 import com.pine.router.IServiceCallback;
 import com.pine.router.annotation.RouterCommand;
-import com.pine.router.impl.IRouterManager;
 import com.pine.tool.util.LogUtils;
 
 import java.lang.reflect.InvocationTargetException;

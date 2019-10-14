@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_1"></View>
+
+    <com.purang.pbd_common.component.uploader.ui.BaseSingleImageUploadView
+        android:id="@+id/left_sfuv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/dp_1"
+        android:layout_weight="1"
+        android:gravity="left"
+        tool:base_imageHeight="@dimen/dp_78"
+        tool:base_imageWidth="@dimen/dp_147"></com.purang.pbd_common.component.uploader.ui.BaseSingleImageUploadView>
+
+    <com.purang.pbd_common.component.uploader.ui.BaseSingleImageUploadView
+        android:id="@+id/right_sfuv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dp_1"
+        android:layout_weight="1"
+        android:gravity="right"
+        tool:base_imageHeight="@dimen/dp_78"
+        tool:base_imageWidth="@dimen/dp_147"></com.purang.pbd_common.component.uploader.ui.BaseSingleImageUploadView>
+
+    <LinearLayout
+        android:id="@+id/delete_ll"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_78"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingRight="@dimen/dp_5">
+
+        <ImageView
+            android:id="@+id/delete_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_5"
+            android:src="@mipmap/base_ic_delete_border_red" />
+    </LinearLayout>
+</LinearLayout>

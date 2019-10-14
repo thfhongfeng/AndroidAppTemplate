@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tip_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_50"
+        android:layout_marginBottom="@dimen/dp_13"
+        android:text=""
+        android:textColor="#D11414"
+        android:textSize="@dimen/sp_11" />
+
+    <TextView
+        android:id="@+id/add_btn_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/base_shape_border_1d97d1"
+        android:drawableLeft="@mipmap/base_ic_add_big_blue"
+        android:drawablePadding="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_18"
+        android:paddingBottom="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_30"
+        android:layout_marginBottom="@dimen/dp_30"
+        android:text="增加"
+        android:textColor="#1E97D1"
+        android:textSize="@dimen/sp_18" />
+
+</LinearLayout>

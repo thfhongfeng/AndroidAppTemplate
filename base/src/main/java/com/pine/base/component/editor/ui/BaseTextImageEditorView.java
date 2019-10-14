@@ -23,7 +23,7 @@ import com.pine.base.component.uploader.FileUploadComponent.OneByOneUploadAdapte
 import com.pine.base.component.uploader.IFileOneByOneUploader;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
-import com.pine.base.component.uploader.ui.UploadFileLinearLayout;
+import com.pine.base.component.uploader.ui.UploadLinearLayout;
 import com.pine.base.util.DialogUtils;
 import com.pine.tool.util.KeyboardUtils;
 import com.pine.tool.util.LogUtils;
@@ -38,7 +38,7 @@ import static com.pine.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
  * Created by tanghongfeng on 2018/11/13
  */
 
-public class TextImageEditorView extends UploadFileLinearLayout implements IFileOneByOneUploader {
+public class BaseTextImageEditorView extends UploadLinearLayout implements IFileOneByOneUploader {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     // 编辑器索引
@@ -56,30 +56,37 @@ public class TextImageEditorView extends UploadFileLinearLayout implements IFile
     // 最大允许上传文件大小
     protected long mMaxFileSize = 1024 * 1024;
 
-    public TextImageEditorView(Context context) {
+    public BaseTextImageEditorView(Context context) {
         super(context);
     }
 
-    public TextImageEditorView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseFileUploadView);
-        mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileCount, 10);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
+    public BaseTextImageEditorView(Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    public TextImageEditorView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public BaseTextImageEditorView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseFileUploadView);
-        mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileCount, 10);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadView_baseMaxFileSize, 1024 * 1024);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseTextImageEditorView);
+        mMaxFileCount = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileCount, 10);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileSize, 1024 * 1024);
+        mHelper.setMaxFileCount(mMaxFileCount);
+        mHelper.setMaxFileSize(mMaxFileSize);
+
+        boolean enableImageScale = typedArray.getBoolean(
+                R.styleable.BaseTextImageEditorView_base_enableImageScale, false);
+        boolean enableImageTranslate = typedArray.getBoolean(
+                R.styleable.BaseTextImageEditorView_base_enableImageTranslate, false);
+        boolean enableImageRotate = typedArray.getBoolean(
+                R.styleable.BaseTextImageEditorView_base_enableImageRotate, false);
+        mHelper.enableImageScale(enableImageScale);
+        mHelper.enableImageTranslate(enableImageTranslate);
+        mHelper.enableImageRotate(enableImageRotate);
     }
 
     @Override
     public void init(@NonNull Activity activity,
                      @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
         mHelper.init(activity, adapter, requestCodeSelectFile);
-        mHelper.setMaxFileCount(mMaxFileCount);
-        mHelper.setMaxFileSize(mMaxFileSize);
     }
 
     public void init(@NonNull Activity activity, int index, String title,
@@ -227,6 +234,18 @@ public class TextImageEditorView extends UploadFileLinearLayout implements IFile
         mTitle = title;
         ((TextView) mTopTitleView.findViewById(R.id.title_tv)).setText(mTitle);
         mTopTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
+    }
+
+    public void enableImageScale(boolean enable) {
+        mHelper.enableImageScale(enable);
+    }
+
+    public void enableImageTranslate(boolean enable) {
+        mHelper.enableImageTranslate(enable);
+    }
+
+    public void enableImageRotate(boolean enable) {
+        mHelper.enableImageRotate(enable);
     }
 
     public List<TextImageEditorItemData> getValidImageDataList() {

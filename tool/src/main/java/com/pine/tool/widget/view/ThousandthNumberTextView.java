@@ -34,10 +34,10 @@ public class ThousandthNumberTextView extends android.support.v7.widget.AppCompa
         super(context, attrs);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ThousandthNumberTextView);
-        mDecimalNum = typedArray.getInteger(R.styleable.ThousandthNumberTextView_textView_decimalNum, 2);
-        mNumberMaxLength = typedArray.getInteger(R.styleable.ThousandthNumberTextView_textView_numberMaxLength, 99);
-        mDecimalAllow = typedArray.getBoolean(R.styleable.ThousandthNumberTextView_textView_decimalAllow, false);
-        mSpaceChar = typedArray.getString(R.styleable.ThousandthNumberTextView_textView_spaceChar);
+        mDecimalNum = typedArray.getInteger(R.styleable.ThousandthNumberTextView_tntv_decimalNum, 2);
+        mNumberMaxLength = typedArray.getInteger(R.styleable.ThousandthNumberTextView_tntv_numberMaxLength, 99);
+        mDecimalAllow = typedArray.getBoolean(R.styleable.ThousandthNumberTextView_tntv_decimalAllow, false);
+        mSpaceChar = typedArray.getString(R.styleable.ThousandthNumberTextView_tntv_spaceChar);
         if (TextUtils.isEmpty(mSpaceChar)) {
             mSpaceChar = ",";
         }

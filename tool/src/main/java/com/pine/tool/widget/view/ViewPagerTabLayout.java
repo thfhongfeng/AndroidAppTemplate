@@ -42,23 +42,23 @@ public class ViewPagerTabLayout extends TabLayout {
     public ViewPagerTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ViewPagerTabLayout, defStyleAttr, 0);
-        mDivider = typedArray.getDrawable(R.styleable.ViewPagerTabLayout_tabLayout_divider);
-        mShowDividers = typedArray.getInt(R.styleable.ViewPagerTabLayout_tabLayout_showDividers, 0);
-        int margin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_tabLayout_margin, -1);
+        mDivider = typedArray.getDrawable(R.styleable.ViewPagerTabLayout_vptl_divider);
+        mShowDividers = typedArray.getInt(R.styleable.ViewPagerTabLayout_vptl_showDividers, 0);
+        int margin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_vptl_margin, -1);
         if (margin >= 0) {
             mLeftMargin = margin;
             mTopMargin = margin;
             mRightMargin = margin;
             mBottomMargin = margin;
         } else {
-            mLeftMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_tabLayout_marginLeft, 0);
-            mRightMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_tabLayout_marginRight, 0);
-            mTopMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_tabLayout_marginTop, 0);
-            mBottomMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_tabLayout_marginBottom, 0);
-            mStartMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_tabLayout_marginStart, 0);
-            mEndMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_tabLayout_marginEnd, 0);
+            mLeftMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_vptl_marginLeft, 0);
+            mRightMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_vptl_marginRight, 0);
+            mTopMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_vptl_marginTop, 0);
+            mBottomMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_vptl_marginBottom, 0);
+            mStartMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_vptl_marginStart, 0);
+            mEndMargin = typedArray.getDimensionPixelSize(R.styleable.ViewPagerTabLayout_vptl_marginEnd, 0);
         }
-        mBottomDivider = typedArray.getDrawable(R.styleable.ViewPagerTabLayout_tabLayout_bottomDivider);
+        mBottomDivider = typedArray.getDrawable(R.styleable.ViewPagerTabLayout_vptl_bottomDivider);
         typedArray.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

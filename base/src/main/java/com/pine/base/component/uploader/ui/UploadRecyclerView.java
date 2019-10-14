@@ -2,8 +2,8 @@ package com.pine.base.component.uploader.ui;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
 
 import com.pine.base.component.uploader.FileUploadHelper;
 import com.pine.tool.util.LogUtils;
@@ -12,21 +12,21 @@ import com.pine.tool.util.LogUtils;
  * Created by tanghongfeng on 2018/11/13
  */
 
-public abstract class UploadFileLinearLayout extends LinearLayout {
+public abstract class UploadRecyclerView extends RecyclerView {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     public FileUploadHelper mHelper;
 
-    public UploadFileLinearLayout(Context context) {
+    public UploadRecyclerView(Context context) {
         super(context);
         mHelper = new FileUploadHelper(this);
     }
 
-    public UploadFileLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public UploadRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mHelper = new FileUploadHelper(this);
     }
 
-    public UploadFileLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public UploadRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mHelper = new FileUploadHelper(this);
     }

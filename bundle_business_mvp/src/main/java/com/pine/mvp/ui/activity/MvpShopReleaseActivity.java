@@ -19,7 +19,8 @@ import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivi
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
-import com.pine.base.component.uploader.ui.ImageUploadRecycleView;
+import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
+import com.pine.base.component.uploader.ui.BaseImageUploadRecycleView;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -54,7 +55,7 @@ public class MvpShopReleaseActivity extends
     private LinearLayout type_ll, online_date_ll;
     private EditText name_et, address_street_et, description_et, remark_et;
     private TextView type_tv, online_date_tv, contact_tv, address_district_tv, address_marker_tv;
-    private ImageUploadRecycleView photo_iuv;
+    private BaseImageUploadRecycleView photo_iuv;
     private InputTextDialog mContactInputDialog;
     private DateSelectDialog mOnLineDateSelectDialog;
     private SelectItemDialog mTypeSelectDialog;
@@ -117,7 +118,7 @@ public class MvpShopReleaseActivity extends
             }
 
             @Override
-            public String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject response) {
+            public RemoteUploadFileInfo getRemoteFileInfoFromResponse(FileUploadBean fileUploadBean, JSONObject response) {
                 // Test code begin
                 if (response == null) {
                     return null;
@@ -129,7 +130,9 @@ public class MvpShopReleaseActivity extends
                 if (data == null) {
                     return null;
                 }
-                return data.optString("fileUrl");
+                RemoteUploadFileInfo fileInfo = new RemoteUploadFileInfo();
+                fileInfo.setUrl(data.optString("fileUrl"));
+                return fileInfo;
                 // Test code end
             }
         }, 100);
@@ -182,7 +185,7 @@ public class MvpShopReleaseActivity extends
     public void onClick(View v) {
         if (v.getId() == R.id.type_ll) {
             if (mTypeSelectDialog == null) {
-                mTypeSelectDialog = DialogUtils.createItemSelectDialog(this,
+                mTypeSelectDialog = DialogUtils.createItemSelectDialog(this, "",
                         mPresenter.getShopTypeNameArr(), 0, new SelectItemDialog.IDialogSelectListener() {
                             @Override
                             public void onSelect(String selectText, int position) {

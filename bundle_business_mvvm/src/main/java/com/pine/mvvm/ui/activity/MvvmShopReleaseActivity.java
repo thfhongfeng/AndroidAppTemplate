@@ -16,6 +16,7 @@ import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActi
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
+import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -76,7 +77,7 @@ public class MvvmShopReleaseActivity extends
                     if (mTypeSelectDialog != null) {
                         mTypeSelectDialog.dismiss();
                     }
-                    mTypeSelectDialog = DialogUtils.createItemSelectDialog(MvvmShopReleaseActivity.this,
+                    mTypeSelectDialog = DialogUtils.createItemSelectDialog(MvvmShopReleaseActivity.this, "",
                             strings, 0, new SelectItemDialog.IDialogSelectListener() {
                                 @Override
                                 public void onSelect(String selectText, int position) {
@@ -116,7 +117,7 @@ public class MvvmShopReleaseActivity extends
             }
 
             @Override
-            public String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject response) {
+            public RemoteUploadFileInfo getRemoteFileInfoFromResponse(FileUploadBean fileUploadBean, JSONObject response) {
                 // Test code begin
                 if (response == null) {
                     return null;
@@ -128,7 +129,9 @@ public class MvvmShopReleaseActivity extends
                 if (data == null) {
                     return null;
                 }
-                return data.optString("fileUrl");
+                RemoteUploadFileInfo fileInfo = new RemoteUploadFileInfo();
+                fileInfo.setUrl(data.optString("fileUrl"));
+                return fileInfo;
                 // Test code end
             }
         }, 100);

@@ -10,6 +10,7 @@ import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.base.component.uploader.bean.FileUploadBean;
+import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.mvp.MvpUrlConstants;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
@@ -74,7 +75,7 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
             }
 
             @Override
-            public String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject response) {
+            public RemoteUploadFileInfo getRemoteFileInfoFromResponse(FileUploadBean fileUploadBean, JSONObject response) {
                 // Test code begin
                 if (response == null) {
                     return null;
@@ -86,7 +87,9 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
                 if (data == null) {
                     return null;
                 }
-                return data.optString("fileUrl");
+                RemoteUploadFileInfo fileInfo = new RemoteUploadFileInfo();
+                fileInfo.setUrl(data.optString("fileUrl"));
+                return fileInfo;
                 // Test code end
             }
         };

@@ -11,10 +11,10 @@ import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.router.IRouterCallback;
+import com.pine.router.IRouterManager;
 import com.pine.router.R;
+import com.pine.router.RouterManager;
 import com.pine.router.annotation.ARouterRemoteAction;
-import com.pine.router.impl.IRouterManager;
-import com.pine.router.impl.RouterManager;
 import com.pine.router.impl.arouter.ARouterBundleRemote;
 import com.pine.tool.util.LogUtils;
 

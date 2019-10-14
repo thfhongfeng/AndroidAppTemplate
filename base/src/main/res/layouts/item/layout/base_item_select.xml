@@ -21,5 +21,5 @@
         android:gravity="center"
         android:padding="@dimen/dp_15"
         android:textColor="#3B99FC"
-        android:textSize="@dimen/sp_18" />\
+        android:textSize="@dimen/sp_16" />\
 </RelativeLayout>

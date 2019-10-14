@@ -54,8 +54,8 @@
                 imageUrl="@{travelNoteDetail.headImgUrl}"
                 android:layout_width="@dimen/dp_22"
                 android:layout_height="@dimen/dp_22"
-                app:civ_border_color="@color/white"
-                app:civ_border_width="@dimen/dp_2" />
+                app:civ_borderColor="@color/white"
+                app:civ_borderWidth="@dimen/dp_2" />
 
             <TextView
                 android:id="@+id/author_tv"

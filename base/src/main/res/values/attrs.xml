@@ -1,12 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BaseBottomTabNavigationBar">
-        <attr name="baseSelectedItem" format="integer"></attr>
+        <attr name="base_bbtnb_SelectedItem" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="BaseFileUploadView">
-        <attr name="baseMaxFileCount" format="integer"></attr>
-        <attr name="baseColumnSize" format="integer"></attr>
-        <attr name="baseMaxFileSize" format="integer"></attr>
+    <attr name="base_maxFileCount" format="boolean" />
+    <attr name="base_columnSize" format="boolean" />
+    <attr name="base_maxFileSize" format="boolean" />
+    <attr name="base_imageWidth" format="integer"></attr>
+    <attr name="base_imageHeight" format="integer"></attr>
+    <attr name="base_enableImageScale" format="boolean" />
+    <attr name="base_enableImageTranslate" format="boolean" />
+    <attr name="base_enableImageRotate" format="boolean" />
+
+    <declare-styleable name="BaseFileUploadRecycleView">
+        <attr name="base_maxFileCount" />
+        <attr name="base_columnSize" />
+        <attr name="base_maxFileSize" />
+    </declare-styleable>
+
+    <declare-styleable name="BaseImageUploadRecycleView">
+        <attr name="base_maxFileCount" />
+        <attr name="base_columnSize" />
+        <attr name="base_maxFileSize" />
+        <attr name="base_enableImageScale" />
+        <attr name="base_enableImageTranslate" />
+        <attr name="base_enableImageRotate" />
+    </declare-styleable>
+
+    <declare-styleable name="BaseTextImageEditorView">
+        <attr name="base_maxFileCount" />
+        <attr name="base_maxFileSize" />
+        <attr name="base_enableImageScale" />
+        <attr name="base_enableImageTranslate" />
+        <attr name="base_enableImageRotate" />
+    </declare-styleable>
+
+    <declare-styleable name="BaseSingleImageUploadView">
+        <attr name="baseMaxFileSize"></attr>
+        <attr name="base_imageWidth"></attr>
+        <attr name="base_imageHeight"></attr>
+        <attr name="base_enableImageScale"></attr>
+        <attr name="base_enableImageTranslate"></attr>
+        <attr name="base_enableImageRotate"></attr>
+        <attr name="base_bsiuv_itemText" format="string|reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="BasePairImageUploadView">
+        <attr name="base_maxFileCount"></attr>
+        <attr name="base_maxFileSize"></attr>
+        <attr name="base_imageWidth"></attr>
+        <attr name="base_imageHeight"></attr>
+        <attr name="base_enableImageScale"></attr>
+        <attr name="base_enableImageTranslate"></attr>
+        <attr name="base_enableImageRotate"></attr>
+        <attr name="base_bpiuv_tipText" format="string|reference"></attr>
+        <attr name="base_bpiuv_addText" format="string|reference"></attr>
+        <attr name="base_bpiuv_leftItemText" format="string|reference"></attr>
+        <attr name="base_bpiuv_rightItemText" format="string|reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="BaseTransformImageView">
+        <attr name="base_tiv_maxScale" format="float" />
+        <attr name="base_tiv_minScale" format="float" />
+        <attr name="base_enableImageScale"></attr>
+        <attr name="base_enableImageTranslate"></attr>
+        <attr name="base_enableImageRotate"></attr>
+        <attr name="base_tiv_revertDuration" format="integer" />
+        <attr name="base_tiv_openScaleRevert" format="boolean" />
+        <attr name="base_tiv_openRotateRevert" format="boolean" />
+        <attr name="base_tiv_openTranslateRevert" format="boolean" />
+        <attr name="base_tiv_openAnimator" format="boolean" />
+        <attr name="base_tiv_scaleCenter" format="enum">
+            <enum name="img_center" value="0" />
+            <enum name="finger_center" value="1" />
+        </attr>
     </declare-styleable>
 </resources>

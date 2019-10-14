@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pine.base.component.editor.ui.TextImageDisplayView;
+import com.pine.base.component.editor.ui.BaseTextImageDisplayView;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseComplexListAdapter;
@@ -144,7 +144,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
 
     public class TravelNoteDayViewHolder extends BaseListViewHolder<MvpTravelNoteDetailEntity.DayBean> {
         private Context mContext;
-        private TextImageDisplayView day_tv;
+        private BaseTextImageDisplayView day_tv;
 
         public TravelNoteDayViewHolder(Context context, View itemView) {
             super(itemView);

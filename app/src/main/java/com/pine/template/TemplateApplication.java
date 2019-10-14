@@ -21,7 +21,10 @@ import com.pine.main.MainApplication;
 import com.pine.mvc.MvcApplication;
 import com.pine.mvp.MvpApplication;
 import com.pine.mvvm.MvvmApplication;
-import com.pine.router.impl.RouterManager;
+import com.pine.router.IRouterManager;
+import com.pine.router.IRouterManagerFactory;
+import com.pine.router.RouterManager;
+import com.pine.router.impl.arouter.manager.ARouterManager;
 import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IRequestManagerFactory;
@@ -87,7 +90,17 @@ public class TemplateApplication extends Application {
     }
 
     private void initManager() {
-        RouterManager.init("com.pine.base.router.command");
+        RouterManager.init("com.pine.base.router.command", new IRouterManagerFactory() {
+            @Override
+            public IRouterManager makeRouterManager(String bundleKey) {
+                switch (BuildConfig.APP_THIRD_ROUTER_PROVIDER) {
+                    case "arouter":
+                        return ARouterManager.getInstance(bundleKey);
+                    default:
+                        return ARouterManager.getInstance(bundleKey);
+                }
+            }
+        });
 
         ShareManager.getInstance().init(this);
 

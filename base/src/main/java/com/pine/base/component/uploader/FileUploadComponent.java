@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.pine.base.R;
 import com.pine.base.component.uploader.bean.FileUploadBean;
+import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.request.callback.JsonCallback;
@@ -488,7 +489,7 @@ public class FileUploadComponent {
 
         Map<String, String> getUploadParam(FileUploadBean fileUploadBean);
 
-        String getRemoteUrlFromResponse(FileUploadBean fileUploadBean, JSONObject response);
+        RemoteUploadFileInfo getRemoteFileInfoFromResponse(FileUploadBean fileUploadBean, JSONObject response);
     }
 
     public interface TogetherUploadAdapter {
@@ -501,6 +502,6 @@ public class FileUploadComponent {
 
         Map<String, String> getUploadParam(List<FileUploadBean> fileUploadBeanList);
 
-        List<String> getRemoteUrlListFromResponse(List<FileUploadBean> fileUploadBeanList, JSONObject response);
+        List<RemoteUploadFileInfo> getRemoteFileInfoListFromResponse(List<FileUploadBean> fileUploadBeanList, JSONObject response);
     }
 }

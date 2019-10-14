@@ -17,7 +17,7 @@ import com.pine.base.remote.BaseRouterClient;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class BottomTabNavigationBar extends FrameLayout implements View.OnClickListener {
+public class BaseBottomTabNavigationBar extends FrameLayout implements View.OnClickListener {
 
     private Context mContext;
     private ImageView bottom_main_home_iv, bottom_user_center_iv;
@@ -26,17 +26,17 @@ public class BottomTabNavigationBar extends FrameLayout implements View.OnClickL
     private int mCurrentItem = 0;
     private IOnItemClickListener mListener;
 
-    public BottomTabNavigationBar(Context context) {
+    public BaseBottomTabNavigationBar(Context context) {
         super(context);
         mContext = context;
         initView();
     }
 
-    public BottomTabNavigationBar(Context context, AttributeSet attrs) {
+    public BaseBottomTabNavigationBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.BaseBottomTabNavigationBar);
-        mCurrentItem = typedArray.getInt(R.styleable.BaseBottomTabNavigationBar_baseSelectedItem, 0);
+        mCurrentItem = typedArray.getInt(R.styleable.BaseBottomTabNavigationBar_base_bbtnb_SelectedItem, 0);
         initView();
     }
 

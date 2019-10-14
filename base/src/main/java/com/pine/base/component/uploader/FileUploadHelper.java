@@ -19,6 +19,7 @@ import com.pine.base.component.image_selector.ImageSelector;
 import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
+import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
@@ -74,6 +75,11 @@ public class FileUploadHelper implements ILifeCircleView {
     private FileUploadComponent.OneByOneUploadAdapter mOneByOneUploadAdapter;
     private FileUploadComponent.TogetherUploadAdapter mTogetherUploadAdapter;
     private boolean mTogetherUploadMode;
+
+    private boolean mIsReUpload = false;
+    private boolean mEnableImageScale = false; // 是否开启图片缩放功能
+    private boolean mEnableImageTranslate = false; // 是否开启图片平移功能
+    private boolean mEnableImageRotate = false; // 是否开启图片旋转功能
 
     public FileUploadHelper(@NonNull View view) {
         mFileUploaderConfig = (IFileUploaderConfig) view;
@@ -175,6 +181,18 @@ public class FileUploadHelper implements ILifeCircleView {
         return mMaxFileSize;
     }
 
+    public void enableImageScale(boolean enable) {
+        mEnableImageScale = enable;
+    }
+
+    public void enableImageTranslate(boolean enable) {
+        mEnableImageTranslate = enable;
+    }
+
+    public void enableImageRotate(boolean enable) {
+        mEnableImageRotate = enable;
+    }
+
     /**
      * 打开系统裁剪功能
      */
@@ -215,17 +233,26 @@ public class FileUploadHelper implements ILifeCircleView {
 
     public void selectUploadObjects() {
         if (mFileUploaderConfig.getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
-            selectImages();
+            selectImages(false);
         } else {
-            selectFiles();
+            selectFiles(false);
+        }
+    }
+
+    public void reSelectUploadObjects() {
+        if (mFileUploaderConfig.getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
+            selectImages(true);
+        } else {
+            selectFiles(true);
         }
     }
 
     /**
      * 打开相册或者照相机选择图片，最多mMaxFileCount张
      */
-    private void selectImages() {
+    private void selectImages(boolean reSelect) {
         int validCount = mFileUploaderConfig.getValidFileCount();
+        validCount = reSelect ? 0 : validCount;
         if (validCount >= mMaxFileCount) {
             Toast.makeText(mActivity, mActivity.getResources().getString(R.string.base_upload_image_count_exceeding_msg,
                     mMaxFileCount), Toast.LENGTH_SHORT).show();
@@ -243,8 +270,9 @@ public class FileUploadHelper implements ILifeCircleView {
     /**
      * 打开文件管理选择文件，最多mMaxFileCount张
      */
-    private void selectFiles() {
+    private void selectFiles(boolean reSelect) {
         int validCount = mFileUploaderConfig.getValidFileCount();
+        validCount = reSelect ? 0 : validCount;
         if (validCount >= mMaxFileCount) {
             Toast.makeText(mActivity, mActivity.getResources().getString(R.string.base_upload_file_count_exceeding_msg,
                     mMaxFileCount), Toast.LENGTH_SHORT).show();
@@ -268,14 +296,17 @@ public class FileUploadHelper implements ILifeCircleView {
         }
     }
 
-    private void displayBigImages(ArrayList<String> displayList, int position) {
+    public void displayBigImages(ArrayList<String> displayList, int position) {
         ImageViewer.create()
                 .origin(displayList)
                 .position(position < 0 ? 0 : position)
+                .enableImageScale(mEnableImageScale)
+                .enableImageTranslate(mEnableImageTranslate)
+                .enableImageRotate(mEnableImageRotate)
                 .start(mActivity);
     }
 
-    private void displayFiles(ArrayList<String> displayList, int position) {
+    public void displayFiles(ArrayList<String> displayList, int position) {
         if (position < 0) {
             return;
         }
@@ -317,6 +348,8 @@ public class FileUploadHelper implements ILifeCircleView {
                 if (mFileUploaderConfig.getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
                     List<String> newSelectList = data.getStringArrayListExtra(
                             ImageSelector.INTENT_SELECTED_IMAGE_LIST);
+                    mIsReUpload = data.getBooleanExtra(
+                            ImageSelector.INTENT_IS_RESELECT, false);
                     if (newSelectList.size() < 1) {
                         return;
                     }
@@ -388,6 +421,7 @@ public class FileUploadHelper implements ILifeCircleView {
             fileUploadBean.setOrderIndex(i);
             fileUploadBean.setRequestUrl(mOneByOneUploadAdapter.getUploadUrl());
             fileUploadBean.setUploadState(FileUploadState.UPLOAD_STATE_PREPARING);
+            fileUploadBean.setReUpload(mIsReUpload);
             uploadBeanList.add(fileUploadBean);
         }
         if (uploadBeanList.size() < 1) {
@@ -459,13 +493,14 @@ public class FileUploadHelper implements ILifeCircleView {
                                 mMainHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        String url = mOneByOneUploadAdapter
-                                                .getRemoteUrlFromResponse(fileBean, response);
-                                        if (TextUtils.isEmpty(url)) {
+                                        fileBean.setResponseData(response.toString());
+                                        RemoteUploadFileInfo fileInfo = mOneByOneUploadAdapter
+                                                .getRemoteFileInfoFromResponse(fileBean, response);
+                                        if (fileInfo == null || TextUtils.isEmpty(fileInfo.getUrl())) {
                                             onFailed(fileBean, "");
                                             return;
                                         }
-                                        fileBean.setRemoteFilePath(url);
+                                        fileBean.setRemoteFilePath(fileInfo.getUrl());
                                         fileBean.setUploadState(FileUploadState.UPLOAD_STATE_SUCCESS);
                                         mFileOneByOneUploader.onFileUploadSuccess(fileBean);
                                     }
@@ -504,6 +539,7 @@ public class FileUploadHelper implements ILifeCircleView {
             fileUploadBean.setOrderIndex(i);
             fileUploadBean.setRequestUrl(mTogetherUploadAdapter.getUploadUrl());
             fileUploadBean.setUploadState(FileUploadState.UPLOAD_STATE_PREPARING);
+            fileUploadBean.setReUpload(mIsReUpload);
             uploadBeanList.add(fileUploadBean);
         }
         if (uploadBeanList.size() < 1) {
@@ -578,16 +614,17 @@ public class FileUploadHelper implements ILifeCircleView {
                                 mMainHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        List<String> urlList = mTogetherUploadAdapter
-                                                .getRemoteUrlListFromResponse(fileBeanList, response);
-                                        if (urlList == null || urlList.size() < 1 ||
-                                                urlList.size() != fileBeanList.size()) {
+                                        List<RemoteUploadFileInfo> fileInfoList = mTogetherUploadAdapter
+                                                .getRemoteFileInfoListFromResponse(fileBeanList, response);
+                                        if (fileInfoList == null || fileInfoList.size() < 1 ||
+                                                fileInfoList.size() != fileBeanList.size()) {
                                             onFailed(fileBeanList, "");
                                             return;
                                         }
                                         for (int i = 0; i < fileBeanList.size(); i++) {
                                             FileUploadBean fileBean = fileBeanList.get(i);
-                                            fileBean.setRemoteFilePath(urlList.get(i));
+                                            fileBean.setResponseData(response.toString());
+                                            fileBean.setRemoteFilePath(fileInfoList.get(i) == null ? "" : fileInfoList.get(i).getUrl());
                                             fileBean.setUploadState(FileUploadState.UPLOAD_STATE_SUCCESS);
                                         }
                                         mFileTogetherUploader.onFileUploadSuccess(fileBeanList);

@@ -1,9 +1,8 @@
-package com.pine.router.impl;
+package com.pine.router;
 
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 
-import com.pine.config.BuildConfig;
-import com.pine.router.impl.arouter.manager.ARouterManager;
 import com.pine.tool.util.AndroidClassUtils;
 import com.pine.tool.util.AppUtils;
 
@@ -18,6 +17,7 @@ import java.util.List;
 public class RouterManager {
     private static String mCommandPackage = "com.pine.base.router.command";
     private static volatile boolean mIsInit;
+    private static volatile IRouterManagerFactory mRouterManagerFactory;
 
     private static volatile List<String> mCommandClassNameList = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class RouterManager {
         return mCommandClassNameList;
     }
 
-    public static void init(String commandPackage) {
+    public static void init(String commandPackage, @NonNull IRouterManagerFactory factory) {
         mCommandPackage = commandPackage;
         try {
             mCommandClassNameList = AndroidClassUtils.getFileNameByPackageName(AppUtils.getApplicationContext(),
@@ -37,6 +37,7 @@ public class RouterManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        mRouterManagerFactory = factory;
         mIsInit = true;
     }
 
@@ -44,12 +45,7 @@ public class RouterManager {
         if (!mIsInit) {
             throw new IllegalArgumentException("RouterManager should be init first");
         } else {
-            switch (BuildConfig.APP_THIRD_ROUTER_PROVIDER) {
-                case "arouter":
-                    return ARouterManager.getInstance(bundleKey);
-                default:
-                    return ARouterManager.getInstance(bundleKey);
-            }
+            return mRouterManagerFactory.makeRouterManager(bundleKey);
         }
     }
 }

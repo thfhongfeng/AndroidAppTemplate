@@ -2,6 +2,7 @@ package com.pine.base.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class SelectItemDialog extends Dialog {
 
     public static class Builder {
         private Context context;
+        private TextView title_tv;
         private ListView list_view;
         private View cancel_btn_tv;
 
@@ -39,18 +41,19 @@ public class SelectItemDialog extends Dialog {
             this.context = context;
         }
 
-        public SelectItemDialog create(String[] itemTextList, int currentPosition,
+        public SelectItemDialog create(String title, String[] itemTextList, int currentPosition,
                                        IDialogSelectListener listener) {
-            return this.create(itemTextList, null, currentPosition, listener);
+            return this.create(title, itemTextList, null, currentPosition, listener);
         }
 
-        public SelectItemDialog create(String[] itemTextList, int[] textColors,
+        public SelectItemDialog create(String title, String[] itemTextList, int[] textColors,
                                        int currentPosition, final IDialogSelectListener listener) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final SelectItemDialog dialog = new SelectItemDialog(context, R.style.BaseSelectItemDialog);
             View layout = inflater.inflate(R.layout.base_dialog_item_select, null);
             dialog.setContentView(layout);
+            title_tv = layout.findViewById(R.id.title_tv);
             cancel_btn_tv = layout.findViewById(R.id.cancel_btn_tv);
             cancel_btn_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,6 +62,12 @@ public class SelectItemDialog extends Dialog {
                 }
             });
             list_view = layout.findViewById(R.id.list_view);
+            if (TextUtils.isEmpty(title)) {
+                title_tv.setVisibility(View.GONE);
+            } else {
+                title_tv.setText(title);
+                title_tv.setVisibility(View.VISIBLE);
+            }
             DialogListAdapter dialogListAdapter = new DialogListAdapter(context, itemTextList,
                     textColors, currentPosition, new SelectItemDialog.IDialogSelectListener() {
                 @Override

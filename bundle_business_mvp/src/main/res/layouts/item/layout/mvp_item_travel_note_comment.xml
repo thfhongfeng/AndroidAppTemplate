@@ -20,8 +20,8 @@
             android:layout_height="@dimen/dp_38"
             android:layout_marginLeft="@dimen/dp_20"
             android:src="@mipmap/base_iv_portrait_default"
-            app:civ_border_color="@color/white"
-            app:civ_border_width="@dimen/dp_2" />
+            app:civ_borderColor="@color/white"
+            app:civ_borderWidth="@dimen/dp_2" />
 
         <LinearLayout
             android:layout_width="match_parent"

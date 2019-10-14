@@ -3,7 +3,7 @@ package com.pine.base.binding.adapter;
 import android.databinding.BindingAdapter;
 
 import com.pine.base.component.editor.bean.TextImageItemEntity;
-import com.pine.base.component.editor.ui.TextImageDisplayView;
+import com.pine.base.component.editor.ui.BaseTextImageDisplayView;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class BaseCustomBindingAdapter {
     // requireAll值：true表示必须所有参数均被设置才会调用；false则不用全部设置也会调用。
 
     @BindingAdapter(value = {"title", "contentList"}, requireAll = false)
-    public static void setTitle(TextImageDisplayView view, String title, List<TextImageItemEntity> contentList) {
+    public static void setTitle(BaseTextImageDisplayView view, String title, List<TextImageItemEntity> contentList) {
         view.setupView(title, contentList);
     }
 }

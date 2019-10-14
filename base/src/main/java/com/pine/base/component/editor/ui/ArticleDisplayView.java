@@ -39,7 +39,7 @@ public class ArticleDisplayView extends LinearLayout {
             if (dayContentList == null || dayContentList.size() < 1) {
                 return;
             }
-            TextImageDisplayView itemView = new TextImageDisplayView(getContext());
+            BaseTextImageDisplayView itemView = new BaseTextImageDisplayView(getContext());
             itemView.setupView(day);
             addView(itemView);
         }

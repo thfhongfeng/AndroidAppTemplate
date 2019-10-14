@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto">
 
     <data class="MvvmShopDetailActivityBinding">
 
@@ -282,7 +283,10 @@
                         initImgUrls="@{shopDetail.imgUrls}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp_10"></com.pine.base.binding.widget.custom.view.BindingImageUploadRecycleView>
+                        android:layout_margin="@dimen/dp_10"
+                        tool:base_enableImageRotate="true"
+                        tool:base_enableImageScale="true"
+                        tool:base_enableImageTranslate="true"></com.pine.base.binding.widget.custom.view.BindingImageUploadRecycleView>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
 

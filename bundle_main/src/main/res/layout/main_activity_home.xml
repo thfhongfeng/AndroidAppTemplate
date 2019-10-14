@@ -25,11 +25,11 @@
             android:layout_weight="1"
             android:padding="@dimen/dp_20"></android.support.v7.widget.RecyclerView>
 
-        <com.pine.base.widget.view.BottomTabNavigationBar
+        <com.pine.base.widget.view.BaseBottomTabNavigationBar
             android:id="@+id/bottom_tab_nb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:baseSelectedItem="0"></com.pine.base.widget.view.BottomTabNavigationBar>
+            app:base_bbtnb_SelectedItem="0"></com.pine.base.widget.view.BaseBottomTabNavigationBar>
     </LinearLayout>
 
 </FrameLayout>

@@ -31,7 +31,7 @@ public class ArticleEditorView extends LinearLayout {
     public List<TextImageEntity> getSectionList() {
         List<TextImageEntity> list = new ArrayList<>();
         for (int i = 0; i < getChildCount(); i++) {
-            list.add(((TextImageEditorView) getChildAt(i)).getData());
+            list.add(((BaseTextImageEditorView) getChildAt(i)).getData());
         }
         return list;
     }
@@ -48,14 +48,14 @@ public class ArticleEditorView extends LinearLayout {
         } else if (sectionCount < childCount) {
             removeViews(sectionCount, childCount - sectionCount);
         }
-        ((TextImageEditorView) getChildAt(0))
+        ((BaseTextImageEditorView) getChildAt(0))
                 .setTitle(sectionTitleList != null && sectionTitleList.size() > 0 ? sectionTitleList.get(0) : "");
         invalidate();
     }
 
     private void addSectionView(Activity activity, String title, int section,
                                 OneByOneUploadAdapter adapter) {
-        TextImageEditorView view = new TextImageEditorView(getContext());
+        BaseTextImageEditorView view = new BaseTextImageEditorView(getContext());
         view.init(activity, section, title, adapter, 100 + section);
         addView(view);
     }

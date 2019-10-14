@@ -27,11 +27,11 @@
             android:background="@color/white"
             app:tabIndicatorColor="@color/dark_red"
             app:tabIndicatorHeight="@dimen/dp_2"
-            app:tabLayout_bottomDivider="@drawable/base_shape_dv_light_gray"
-            app:tabLayout_divider="@drawable/base_inset_dv_light_gray"
-            app:tabLayout_marginEnd="@dimen/dp_10"
-            app:tabLayout_marginStart="@dimen/dp_10"
-            app:tabLayout_showDividers="middle"
+            app:vptl_bottomDivider="@drawable/base_shape_dv_light_gray"
+            app:vptl_divider="@drawable/base_inset_dv_light_gray"
+            app:vptl_marginEnd="@dimen/dp_10"
+            app:vptl_marginStart="@dimen/dp_10"
+            app:vptl_showDividers="middle"
             app:tabSelectedTextColor="@color/dark_red"
             app:tabTextColor="@color/dim_gray"></com.pine.tool.widget.view.ViewPagerTabLayout>
 

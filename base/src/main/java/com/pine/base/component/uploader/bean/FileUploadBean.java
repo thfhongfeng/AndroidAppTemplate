@@ -20,11 +20,13 @@ public class FileUploadBean {
     private String localTempFilePath;
     private String remoteFilePath;
     private Map<String, String> params;
-    private Object originalBean;
+    private String responseData;
     private View attachView;
     private int orderIndex;
     private int uploadProgress;
     private FileUploadState uploadState = FileUploadState.UPLOAD_STATE_DEFAULT;
+
+    private boolean reUpload;
 
     public int getId() {
         return id;
@@ -114,12 +116,12 @@ public class FileUploadBean {
         this.params = params;
     }
 
-    public Object getOriginalBean() {
-        return originalBean;
+    public String getResponseData() {
+        return responseData;
     }
 
-    public void setOriginalBean(Object originalBean) {
-        this.originalBean = originalBean;
+    public void setResponseData(String responseData) {
+        this.responseData = responseData;
     }
 
     public View getAttachView() {
@@ -152,5 +154,13 @@ public class FileUploadBean {
 
     public void setUploadState(FileUploadState uploadState) {
         this.uploadState = uploadState;
+    }
+
+    public boolean isReUpload() {
+        return reUpload;
+    }
+
+    public void setReUpload(boolean reUpload) {
+        this.reUpload = reUpload;
     }
 }

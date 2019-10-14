@@ -7,9 +7,9 @@ import android.databinding.InverseBindingListener;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.pine.base.component.uploader.ui.ImageUploadRecycleView;
+import com.pine.base.component.uploader.ui.BaseImageUploadRecycleView;
 
-public class BindingImageUploadRecycleView extends ImageUploadRecycleView {
+public class BindingImageUploadRecycleView extends BaseImageUploadRecycleView {
     private InverseBindingListener bindingDataListener;
     private String imgUrlsJoinStr = ",";
 
