@@ -4,9 +4,9 @@ package com.pine.tool.exception;
  * Created by tanghongfeng on 2018/10/12
  */
 
-// 业务异常（即请求过程是成功，但业务处理结果异常）
-public class BusinessException extends Exception {
-    public BusinessException(String message) {
+// 提示信息异常
+public class MessageException extends Exception {
+    public MessageException(String message) {
         super(message);
     }
 

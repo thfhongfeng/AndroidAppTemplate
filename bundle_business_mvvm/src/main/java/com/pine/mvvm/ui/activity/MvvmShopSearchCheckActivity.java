@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -14,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
+import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmShopCheckListPaginationAdapter;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
@@ -110,14 +110,13 @@ public class MvvmShopSearchCheckActivity extends
         mShopCheckListPaginationAdapter = new MvvmShopCheckListPaginationAdapter(
                 mViewModel.mInitBelongShopList,
                 MvvmShopCheckListPaginationAdapter.SHOP_CHECK_VIEW_HOLDER);
-        mBinding.recycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (mShopCheckListPaginationAdapter.isLastViewMoreView(recyclerView)) {
-                    onLoadingMore();
-                }
-            }
-        });
+        mShopCheckListPaginationAdapter.setOnScrollListener(mBinding.recycleView,
+                new BaseListAdapter.IOnScrollListener() {
+                    @Override
+                    public void onLoadMore() {
+                        onLoadingMore();
+                    }
+                });
         mBinding.recycleView.setAdapter(mShopCheckListPaginationAdapter);
 
         mBinding.swipeRefreshLayout.post(new Runnable() {

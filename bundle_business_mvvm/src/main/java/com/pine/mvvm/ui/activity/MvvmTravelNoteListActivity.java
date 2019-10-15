@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarCustomMenuActivity;
+import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvvm.R;
@@ -82,14 +82,13 @@ public class MvvmTravelNoteListActivity extends
                 MvvmTravelNoteListPaginationAdapter.TRAVEL_NOTE_VIEW_HOLDER);
         View headView = LayoutInflater.from(this).inflate(R.layout.mvvm_item_travle_note_list_head, null);
         mMvvmTravelListItemAdapter.setHeadView(headView);
-        mBinding.recycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (mMvvmTravelListItemAdapter.isLastViewMoreView(recyclerView)) {
-                    onLoadingMore();
-                }
-            }
-        });
+        mMvvmTravelListItemAdapter.setOnScrollListener(mBinding.recycleView,
+                new BaseListAdapter.IOnScrollListener() {
+                    @Override
+                    public void onLoadMore() {
+                        onLoadingMore();
+                    }
+                });
         mBinding.recycleView.setAdapter(mMvvmTravelListItemAdapter);
 
         mBinding.swipeRefreshLayout.post(new Runnable() {

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;
@@ -29,6 +30,7 @@ import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
+import com.pine.base.util.ExceptionUtils;
 import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
@@ -139,8 +141,12 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
     }
 
     @Override
-    public void onFileUploadFail(FileUploadBean uploadBean) {
+    public void onFileUploadFail(FileUploadBean uploadBean, Exception exception) {
         notifyAdapterItemChanged(uploadBean.getOrderIndex());
+        String failMsg = ExceptionUtils.parseException(exception);
+        if (!TextUtils.isEmpty(failMsg)) {
+            Toast.makeText(getContext(), failMsg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

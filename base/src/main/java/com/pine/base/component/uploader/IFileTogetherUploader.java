@@ -21,7 +21,7 @@ public interface IFileTogetherUploader extends IFileUploaderConfig {
 
     void onFileUploadProgress(List<FileUploadBean> uploadBeanList);
 
-    void onFileUploadFail(List<FileUploadBean> uploadBeanList);
+    void onFileUploadFail(List<FileUploadBean> uploadBeanList, Exception exception);
 
     void onFileUploadSuccess(List<FileUploadBean> uploadBeanList);
 }

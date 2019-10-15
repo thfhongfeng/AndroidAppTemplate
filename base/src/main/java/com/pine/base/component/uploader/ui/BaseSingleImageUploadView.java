@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;
@@ -24,6 +25,7 @@ import com.pine.base.component.uploader.IFileOneByOneUploader;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadItemData;
 import com.pine.base.component.uploader.bean.FileUploadState;
+import com.pine.base.util.ExceptionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -345,10 +347,14 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
     }
 
     @Override
-    public void onFileUploadFail(FileUploadBean uploadBean) {
+    public void onFileUploadFail(FileUploadBean uploadBean, Exception exception) {
         if (uploadBean != null) {
             copyUploadData(uploadBean);
             setupView();
+        }
+        String failMsg = ExceptionUtils.parseException(exception);
+        if (!TextUtils.isEmpty(failMsg)) {
+            Toast.makeText(getContext(), failMsg, Toast.LENGTH_SHORT).show();
         }
     }
 

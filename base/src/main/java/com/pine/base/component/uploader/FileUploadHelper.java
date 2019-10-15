@@ -20,6 +20,7 @@ import com.pine.base.component.image_selector.ImageViewer;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
@@ -472,7 +473,7 @@ public class FileUploadHelper implements ILifeCircleView {
                             }
 
                             @Override
-                            public void onFailed(final FileUploadBean fileBean, String message) {
+                            public void onFailed(final FileUploadBean fileBean, final Exception exception) {
                                 if (mMainHandler == null) {
                                     return;
                                 }
@@ -480,7 +481,7 @@ public class FileUploadHelper implements ILifeCircleView {
                                     @Override
                                     public void run() {
                                         fileBean.setUploadState(FileUploadState.UPLOAD_STATE_FAIL);
-                                        mFileOneByOneUploader.onFileUploadFail(fileBean);
+                                        mFileOneByOneUploader.onFileUploadFail(fileBean, exception);
                                     }
                                 });
                             }
@@ -497,7 +498,7 @@ public class FileUploadHelper implements ILifeCircleView {
                                         RemoteUploadFileInfo fileInfo = mOneByOneUploadAdapter
                                                 .getRemoteFileInfoFromResponse(fileBean, response);
                                         if (fileInfo == null || TextUtils.isEmpty(fileInfo.getUrl())) {
-                                            onFailed(fileBean, "");
+                                            onFailed(fileBean, new MessageException(mActivity.getResources().getString(R.string.base_json_data_err)));
                                             return;
                                         }
                                         fileBean.setRemoteFilePath(fileInfo.getUrl());
@@ -591,7 +592,7 @@ public class FileUploadHelper implements ILifeCircleView {
                             }
 
                             @Override
-                            public void onFailed(final List<FileUploadBean> fileBeanList, String message) {
+                            public void onFailed(final List<FileUploadBean> fileBeanList, final Exception exception) {
                                 if (mMainHandler == null) {
                                     return;
                                 }
@@ -601,7 +602,7 @@ public class FileUploadHelper implements ILifeCircleView {
                                         for (FileUploadBean fileBean : fileBeanList) {
                                             fileBean.setUploadState(FileUploadState.UPLOAD_STATE_FAIL);
                                         }
-                                        mFileTogetherUploader.onFileUploadFail(fileBeanList);
+                                        mFileTogetherUploader.onFileUploadFail(fileBeanList, exception);
                                     }
                                 });
                             }
@@ -618,7 +619,7 @@ public class FileUploadHelper implements ILifeCircleView {
                                                 .getRemoteFileInfoListFromResponse(fileBeanList, response);
                                         if (fileInfoList == null || fileInfoList.size() < 1 ||
                                                 fileInfoList.size() != fileBeanList.size()) {
-                                            onFailed(fileBeanList, "");
+                                            onFailed(fileBeanList, new MessageException(mActivity.getResources().getString(R.string.base_json_data_err)));
                                             return;
                                         }
                                         for (int i = 0; i < fileBeanList.size(); i++) {

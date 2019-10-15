@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.pine.base.R;
 import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.request.callback.JsonCallback;
@@ -130,9 +131,9 @@ public class FileUploadComponent {
                 mRequestMap.remove(uploadBean.hashCode());
                 LogUtils.d(TAG, "onError what:" + what);
                 if (callback != null) {
-                    callback.onFailed(uploadBean, e.toString());
+                    callback.onFailed(uploadBean, e);
                 }
-                return false;
+                return true;
             }
 
             @Override
@@ -212,7 +213,7 @@ public class FileUploadComponent {
                 if (callback != null) {
                     callback.onSingleFileError(uploadBeanList.get(fileBean.getPosition()));
                 }
-                return false;
+                return true;
             }
 
             @Override
@@ -239,10 +240,10 @@ public class FileUploadComponent {
                 mRequestMap.remove(uploadBeanList.hashCode());
                 LogUtils.d(TAG, "onFail what:" + what);
                 if (callback != null) {
-                    callback.onFailed(uploadBeanList, e.toString());
+                    callback.onFailed(uploadBeanList, e);
                 }
                 deleteTempFileList(uploadBeanList);
-                return false;
+                return true;
             }
 
             @Override
@@ -269,14 +270,14 @@ public class FileUploadComponent {
         if (mRequestMap.get(fileBean.hashCode()) != null) {
             LogUtils.d(TAG, "request is in processing");
             if (callback != null) {
-                callback.onFailed(fileBean, context.getString(R.string.base_file_upload_file_is_uploading));
+                callback.onFailed(fileBean, new MessageException(context.getString(R.string.base_file_upload_file_is_uploading)));
             }
             return null;
         }
         File file = new File(fileBean.getLocalFilePath());
         if (!file.exists()) {
             if (callback != null) {
-                callback.onFailed(fileBean, context.getString(R.string.base_file_upload_file_null));
+                callback.onFailed(fileBean, new MessageException(context.getString(R.string.base_file_upload_file_null)));
             }
             return null;
         }
@@ -284,7 +285,7 @@ public class FileUploadComponent {
             String targetPath = context.getExternalCacheDir() + File.separator + fileBean.getFileName();
             file = compressImage(fileBean.getLocalFilePath(), targetPath);
             if (file == null) {
-                callback.onFailed(fileBean, context.getString(R.string.base_file_upload_compress_file_null));
+                callback.onFailed(fileBean, new MessageException(context.getString(R.string.base_file_upload_compress_file_null)));
                 return null;
             }
             fileBean.setLocalTempFilePath(file.getPath());
@@ -305,7 +306,7 @@ public class FileUploadComponent {
         if (mRequestMap.get(fileBeanList.hashCode()) != null) {
             LogUtils.d(TAG, "request is in processing");
             if (callback != null) {
-                callback.onFailed(fileBeanList, context.getString(R.string.base_file_upload_file_is_uploading));
+                callback.onFailed(fileBeanList, new MessageException(context.getString(R.string.base_file_upload_file_is_uploading)));
             }
             return null;
         }
@@ -314,14 +315,14 @@ public class FileUploadComponent {
             FileUploadBean fileBean = fileBeanList.get(i);
             if (TextUtils.isEmpty(fileBean.getLocalFilePath())) {
                 if (callback != null) {
-                    callback.onFailed(fileBeanList, context.getString(R.string.base_file_upload_file_null));
+                    callback.onFailed(fileBeanList, new MessageException(context.getString(R.string.base_file_upload_file_null)));
                 }
                 return null;
             }
             File file = new File(fileBean.getLocalFilePath());
             if (!file.exists()) {
                 if (callback != null) {
-                    callback.onFailed(fileBeanList, context.getString(R.string.base_file_upload_file_null));
+                    callback.onFailed(fileBeanList, new MessageException((context.getString(R.string.base_file_upload_file_null))));
                 }
                 return null;
             }
@@ -329,7 +330,7 @@ public class FileUploadComponent {
                 String targetPath = context.getExternalCacheDir() + File.separator + fileBean.getFileName();
                 file = compressImage(fileBean.getLocalFilePath(), targetPath);
                 if (file == null) {
-                    callback.onFailed(fileBeanList, context.getString(R.string.base_file_upload_compress_file_null));
+                    callback.onFailed(fileBeanList, new MessageException(context.getString(R.string.base_file_upload_compress_file_null)));
                     return null;
                 }
                 fileBean.setLocalTempFilePath(file.getPath());
@@ -411,7 +412,7 @@ public class FileUploadComponent {
         void onCancel(FileUploadBean uploadBean);
 
         // 请求出错回调
-        void onFailed(FileUploadBean uploadBean, String message);
+        void onFailed(FileUploadBean uploadBean, Exception exception);
 
         // 请求成功回调
         void onSuccess(FileUploadBean uploadBean, JSONObject response);
@@ -444,7 +445,7 @@ public class FileUploadComponent {
         void onCancel(List<FileUploadBean> uploadBeanList);
 
         // 请求出错回调
-        void onFailed(List<FileUploadBean> uploadBeanList, String message);
+        void onFailed(List<FileUploadBean> uploadBeanList, Exception exception);
 
         // 请求成功回调
         void onSuccess(List<FileUploadBean> uploadBeanList, JSONObject response);

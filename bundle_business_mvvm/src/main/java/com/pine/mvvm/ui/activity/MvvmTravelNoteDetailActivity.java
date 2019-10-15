@@ -4,11 +4,11 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
+import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmTravelNoteDetailComplexAdapter;
 import com.pine.mvvm.bean.MvvmTravelNoteCommentEntity;
@@ -78,14 +78,13 @@ public class MvvmTravelNoteDetailActivity extends
         mBinding.recycleView.setLayoutManager(linearLayoutManager);
         mBinding.recycleView.setHasFixedSize(true);
         mTravelNoteDetailAdapter = new MvvmTravelNoteDetailComplexAdapter();
-        mBinding.recycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (mTravelNoteDetailAdapter.isLastViewMoreView(recyclerView)) {
-                    onLoadingMore();
-                }
-            }
-        });
+        mTravelNoteDetailAdapter.setOnScrollListener(mBinding.recycleView,
+                new BaseListAdapter.IOnScrollListener() {
+                    @Override
+                    public void onLoadMore() {
+                        onLoadingMore();
+                    }
+                });
         mBinding.recycleView.setAdapter(mTravelNoteDetailAdapter);
 
         mBinding.swipeRefreshLayout.post(new Runnable() {

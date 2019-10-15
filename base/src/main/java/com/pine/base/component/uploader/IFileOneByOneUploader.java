@@ -25,7 +25,7 @@ public interface IFileOneByOneUploader extends IFileUploaderConfig {
 
     void onFileUploadCancel(FileUploadBean uploadBean);
 
-    void onFileUploadFail(FileUploadBean uploadBean);
+    void onFileUploadFail(FileUploadBean uploadBean, Exception exception);
 
     void onFileUploadSuccess(FileUploadBean uploadBean);
 }

@@ -4,11 +4,11 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
+import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmShopListPaginationTreeAdapter;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
@@ -77,15 +77,14 @@ public class MvvmShopTreeListFragment extends MvvmFragment<MvvmShopTreeListFragm
         mBinding.recycleView.setLayoutManager(linearLayoutManager);
         mBinding.recycleView.setHasFixedSize(true);
         mMvvmHomeItemAdapter = new MvvmShopListPaginationTreeAdapter();
+        mMvvmHomeItemAdapter.setOnScrollListener(mBinding.recycleView,
+                new BaseListAdapter.IOnScrollListener() {
+                    @Override
+                    public void onLoadMore() {
+                        onLoadingMore();
+                    }
+                });
         mBinding.recycleView.setAdapter(mMvvmHomeItemAdapter);
-        mBinding.recycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (mMvvmHomeItemAdapter.isLastViewMoreView(recyclerView)) {
-                    onLoadingMore();
-                }
-            }
-        });
 
         mBinding.swipeRefreshLayout.post(new Runnable() {
             @Override

@@ -19,6 +19,10 @@ import java.util.Enumeration;
 
 public class NetWorkUtils {
 
+    public static boolean checkNetWork() {
+        return checkNetWork(AppUtils.getApplicationContext());
+    }
+
     public static boolean checkNetWork(Context context) {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -40,6 +44,10 @@ public class NetWorkUtils {
             }
         }
         return false;
+    }
+
+    public static int getNetworkType() {
+        return getNetworkType(AppUtils.getApplicationContext());
     }
 
     /**

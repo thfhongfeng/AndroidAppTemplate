@@ -12,6 +12,8 @@ import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.NetWorkUtils;
+import com.yanzhenjie.nohttp.error.NetworkError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,6 +65,16 @@ public class DbRequestManager implements IRequestManager {
 
     @Override
     public void setJsonRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnResponseListener listener) {
+        if (!NetWorkUtils.checkNetWork()) {
+            Response response = new Response();
+            NetworkError error = new NetworkError();
+            response.setSucceed(false);
+            response.setData(new JSONObject());
+            response.setException(error);
+            listener.onFailed(requestBean.getWhat(), response);
+            return;
+        }
+
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
 
         Bundle bundle = new Bundle();
@@ -92,6 +104,12 @@ public class DbRequestManager implements IRequestManager {
     @Override
     public void setDownloadRequest(final @NonNull DownloadRequestBean requestBean,
                                    final @NonNull IResponseListener.OnDownloadListener listener) {
+        if (!NetWorkUtils.checkNetWork()) {
+            NetworkError error = new NetworkError();
+            listener.onDownloadError(requestBean.getWhat(), error);
+            return;
+        }
+
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
         // Test code begin
         listener.onStart(requestBean.getWhat(), false, 10000, 100000);
@@ -128,6 +146,16 @@ public class DbRequestManager implements IRequestManager {
     public void setUploadRequest(final @NonNull UploadRequestBean requestBean,
                                  final @NonNull IResponseListener.OnUploadListener processListener,
                                  final @NonNull IResponseListener.OnResponseListener responseListener) {
+        if (!NetWorkUtils.checkNetWork()) {
+            Response response = new Response();
+            NetworkError error = new NetworkError();
+            response.setSucceed(false);
+            response.setData(new JSONObject());
+            response.setException(error);
+            responseListener.onFailed(requestBean.getWhat(), response);
+            return;
+        }
+
         List<UploadRequestBean.FileBean> fileBeanList = requestBean.getUploadFileList();
         responseListener.onStart(requestBean.getWhat());
         if (fileBeanList == null || fileBeanList.size() < 1) {

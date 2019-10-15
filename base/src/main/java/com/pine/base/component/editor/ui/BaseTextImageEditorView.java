@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pine.base.R;
 import com.pine.base.component.editor.bean.TextImageEditorItemData;
@@ -25,6 +26,7 @@ import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.FileUploadState;
 import com.pine.base.component.uploader.ui.UploadLinearLayout;
 import com.pine.base.util.DialogUtils;
+import com.pine.base.util.ExceptionUtils;
 import com.pine.tool.util.KeyboardUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -344,11 +346,15 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
     }
 
     @Override
-    public void onFileUploadFail(FileUploadBean uploadBean) {
+    public void onFileUploadFail(FileUploadBean uploadBean, Exception exception) {
         if (uploadBean != null && uploadBean.getAttachView() != null) {
             copyUploadData(uploadBean);
             refreshImageState(uploadBean.getAttachView(), uploadBean.getUploadState(),
                     uploadBean.getUploadProgress());
+        }
+        String failMsg = ExceptionUtils.parseException(exception);
+        if (!TextUtils.isEmpty(failMsg)) {
+            Toast.makeText(getContext(), failMsg, Toast.LENGTH_SHORT).show();
         }
     }
 
