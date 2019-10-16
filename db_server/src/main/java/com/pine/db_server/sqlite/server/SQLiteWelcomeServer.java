@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.APP_VERSION_TABLE_NAME;
@@ -31,6 +32,16 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                                                  @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
+            Map<String, String> requestParams = requestBean.getParams();
+            String versionCodeStr = requestParams.get("versionCode");
+            String versionName = requestParams.get("versionName");
+            int versionCode = 1;
+            if (TextUtils.isEmpty(versionCodeStr)) {
+                try {
+                    versionCode = Integer.parseInt(versionCodeStr);
+                } catch (NumberFormatException nfe) {
+                }
+            }
             DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
             String accountType = "0";
             if (!TextUtils.isEmpty(session.getAccountId())) {
@@ -74,14 +85,29 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                                              @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
-            Cursor cursor = query(db, APP_VERSION_TABLE_NAME, requestBean.getParams());
+            Map<String, String> requestParams = requestBean.getParams();
+            String versionCodeStr = requestParams.get("versionCode");
+            String versionName = requestParams.get("versionName");
+            int userVersionCode = 1;
+            if (TextUtils.isEmpty(versionCodeStr)) {
+                try {
+                    userVersionCode = Integer.parseInt(versionCodeStr);
+                } catch (NumberFormatException nfe) {
+                }
+            }
+            Cursor cursor = query(db, APP_VERSION_TABLE_NAME, new HashMap<String, String>());
             try {
                 JSONObject jsonObject = null;
+                boolean hasNewVersion = false;
                 if (cursor.moveToFirst()) {
                     jsonObject = new JSONObject();
+                    int curVersionCode = cursor.getInt(cursor.getColumnIndex("versionCode"));
+                    if (curVersionCode > userVersionCode) {
+                        hasNewVersion = true;
+                    }
                     jsonObject.put("packageName", cursor.getString(cursor.getColumnIndex("packageName")));
                     jsonObject.put("versionName", cursor.getString(cursor.getColumnIndex("versionName")));
-                    jsonObject.put("versionCode", cursor.getInt(cursor.getColumnIndex("versionCode")));
+                    jsonObject.put("versionCode", curVersionCode);
                     jsonObject.put("minSupportedVersion", cursor.getInt(cursor.getColumnIndex("minSupportedVersion")));
                     jsonObject.put("force", cursor.getString(cursor.getColumnIndex("force")));
                     jsonObject.put("fileName", cursor.getString(cursor.getColumnIndex("fileName")));
@@ -90,7 +116,11 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }
                 cursor.close();
-                return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject == null ? "" : jsonObject.toString());
+                if (hasNewVersion) {
+                    return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject == null ? "" : jsonObject.toString());
+                } else {
+                    return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, "");
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
                 cursor.close();

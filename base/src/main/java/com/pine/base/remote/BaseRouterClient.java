@@ -36,4 +36,9 @@ public class BaseRouterClient {
         RouterManager.getInstance(ConfigKey.BUNDLE_USER_KEY).callUiCommand(context,
                 RouterUserCommand.goUserHomeActivity, args, callback);
     }
+
+    public static void goUserVipActivity(Context context, Bundle args, IRouterCallback callback) {
+        RouterManager.getInstance(ConfigKey.BUNDLE_USER_KEY).callUiCommand(context,
+                RouterUserCommand.goUserVipActivity, args, callback);
+    }
 }

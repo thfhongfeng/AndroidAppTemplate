@@ -10,7 +10,7 @@ import com.pine.mvvm.bean.MvvmShopSearchBean;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.tool.binding.data.CustomLiveData;
+import com.pine.tool.binding.data.ParametricLiveData;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -90,13 +90,13 @@ public class MvvmShopSearchCheckVm extends ViewModel {
         return mSearchKeyData;
     }
 
-    CustomLiveData<ArrayList<MvvmShopItemEntity>, Boolean> mShopListData = new CustomLiveData<>();
+    ParametricLiveData<ArrayList<MvvmShopItemEntity>, Boolean> mShopListData = new ParametricLiveData<>();
 
     public void setShopList(ArrayList<MvvmShopItemEntity> list, boolean refresh) {
         mShopListData.setValue(list, refresh);
     }
 
-    public CustomLiveData<ArrayList<MvvmShopItemEntity>, Boolean> getShopListData() {
+    public ParametricLiveData<ArrayList<MvvmShopItemEntity>, Boolean> getShopListData() {
         return mShopListData;
     }
 }

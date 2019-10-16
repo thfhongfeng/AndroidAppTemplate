@@ -2,8 +2,6 @@ package com.pine.welcome.manager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -60,27 +58,24 @@ public class ApkVersionManager {
     }
 
     public void checkVersion(@NonNull final Context context, final ICheckCallback callback) {
-        mVersionModel.requestUpdateVersionData(new IModelAsyncResponse<VersionEntity>() {
+        final String versionName = AppUtils.getVersionName();
+        final int versionCode = AppUtils.getVersionCode();
+        HashMap<String, String> params = new HashMap<>();
+        params.put("versionName", versionName);
+        params.put("versionCode", versionCode + "");
+        mVersionModel.requestUpdateVersionData(params, new IModelAsyncResponse<VersionEntity>() {
             @Override
             public void onResponse(VersionEntity versionEntity) {
                 if (versionEntity != null) {
                     ApkVersionManager.getInstance().setVersionEntity(versionEntity);
-                    try {
-                        PackageInfo packageInfo = context.getPackageManager()
-                                .getPackageInfo(context.getPackageName(), 0);
-                        if (packageInfo.versionCode < versionEntity.getVersionCode()) {
-                            if (callback != null) {
-                                callback.onNewVersionFound(versionEntity.getForce() == 1, versionEntity);
-                            }
-                        } else {
-                            if (callback != null) {
-                                callback.onNoNewVersion();
-                            }
-                        }
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
+
+                    if (versionEntity != null && versionCode < versionEntity.getVersionCode()) {
                         if (callback != null) {
-                            callback.onRequestFail();
+                            callback.onNewVersionFound(versionEntity.getForce() == 1, versionEntity);
+                        }
+                    } else {
+                        if (callback != null) {
+                            callback.onNoNewVersion();
                         }
                     }
                 } else {

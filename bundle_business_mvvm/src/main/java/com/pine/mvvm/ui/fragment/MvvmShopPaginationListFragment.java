@@ -28,17 +28,7 @@ public class MvvmShopPaginationListFragment extends
     private MvvmShopListPaginationAdapter mMvvmHomeItemAdapter;
 
     @Override
-    protected int getFragmentLayoutResId() {
-        return R.layout.mvvm_fragment_shop_pagination_list;
-    }
-
-    @Override
-    protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
+    public void initLiveDataObserver() {
         mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
@@ -49,6 +39,16 @@ public class MvvmShopPaginationListFragment extends
                 }
             }
         });
+    }
+
+    @Override
+    protected int getFragmentLayoutResId() {
+        return R.layout.mvvm_fragment_shop_pagination_list;
+    }
+
+    @Override
+    protected void init() {
+        initView();
     }
 
     private void initView() {

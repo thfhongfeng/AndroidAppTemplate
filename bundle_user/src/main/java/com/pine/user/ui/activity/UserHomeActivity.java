@@ -2,26 +2,27 @@ package com.pine.user.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import com.pine.base.access.UiAccessType;
-import com.pine.base.architecture.mvp.ui.activity.BaseMvpNoActionBarActivity;
+import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
 import com.pine.router.IRouterCallback;
 import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.user.R;
-import com.pine.user.contract.IUserHomeContract;
-import com.pine.user.presenter.UserHomePresenter;
+import com.pine.user.databinding.UserHomeActivityBinding;
 import com.pine.user.remote.UserRouterClient;
+import com.pine.user.vm.UserHomeVm;
 
 /**
  * Created by tanghongfeng on 2018/9/13
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.VIP_LEVEL}, Args = {"", "1"})
-public class UserHomeActivity extends BaseMvpNoActionBarActivity<IUserHomeContract.Ui, UserHomePresenter>
-        implements IUserHomeContract.Ui {
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""}, AccessActions = {""})
+public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivityBinding, UserHomeVm> {
 
-    private TextView logout_btn_tv;
+    @Override
+    public void initLiveDataObserver() {
+
+    }
 
     @Override
     protected int getActivityLayoutResId() {
@@ -29,28 +30,29 @@ public class UserHomeActivity extends BaseMvpNoActionBarActivity<IUserHomeContra
     }
 
     @Override
-    protected void findViewOnCreate() {
-        logout_btn_tv = findViewById(R.id.logout_btn_tv);
+    protected void init() {
+        mBinding.setPresenter(new Presenter());
     }
 
     @Override
-    protected void init() {
-        logout_btn_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserRouterClient.logout(UserHomeActivity.this, null,
-                        new IRouterCallback() {
-                            @Override
-                            public void onSuccess(Bundle responseBundle) {
-                                finish();
-                            }
+    public void onSyncLiveDataInit(int liveDataObjTag) {
 
-                            @Override
-                            public boolean onFail(int failCode, String errorInfo) {
-                                return false;
-                            }
-                        });
-            }
-        });
+    }
+
+    public class Presenter {
+        public void onLogoutClick(View view) {
+            UserRouterClient.logout(UserHomeActivity.this, null,
+                    new IRouterCallback() {
+                        @Override
+                        public void onSuccess(Bundle responseBundle) {
+                            finish();
+                        }
+
+                        @Override
+                        public boolean onFail(int failCode, String errorInfo) {
+                            return false;
+                        }
+                    });
+        }
     }
 }

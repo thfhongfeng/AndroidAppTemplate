@@ -16,7 +16,12 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UiAccessAnnotation {
+    // 准入类别
     String[] AccessTypes();
 
-    String[] Args();
+    // 准入参数，元素个数与准入类别一一对应
+    String[] AccessArgs();
+
+    // 准入行为
+    String[] AccessActions();
 }

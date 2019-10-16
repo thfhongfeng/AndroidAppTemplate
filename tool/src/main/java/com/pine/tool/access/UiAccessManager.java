@@ -42,13 +42,15 @@ public class UiAccessManager {
     }
 
     public boolean checkCanAccess(@NonNull Activity activity, UiAccessTimeInterval accessTimeInterval,
-                                  @NonNull String[] types, @NonNull HashMap<String, String> argsMap) {
-        if (activity == null || types == null || types.length < 1) {
+                                  @NonNull String[] types, @NonNull String[] args,
+                                  @NonNull HashMap<String, String> actionsMap) {
+        if (activity == null || types == null || args == null ||
+                types.length < 1 || types.length != args.length) {
             return true;
         }
         for (int i = 0; i < types.length; i++) {
             if (mAccessExecutorMap.get(types[i]) != null &&
-                    !mAccessExecutorMap.get(types[i]).onExecute(activity, argsMap, accessTimeInterval)) {
+                    !mAccessExecutorMap.get(types[i]).onExecute(activity, args[i], actionsMap, accessTimeInterval)) {
                 return false;
             }
         }
@@ -56,13 +58,15 @@ public class UiAccessManager {
     }
 
     public boolean checkCanAccess(@NonNull Fragment fragment, UiAccessTimeInterval accessTimeInterval,
-                                  @NonNull String[] types, @NonNull HashMap<String, String> argsMap) {
-        if (fragment == null || types == null || types.length < 1) {
+                                  @NonNull String[] types, @NonNull String[] args,
+                                  @NonNull HashMap<String, String> actionsMap) {
+        if (fragment == null || types == null || args == null ||
+                types.length < 1 || types.length != args.length) {
             return true;
         }
         for (int i = 0; i < types.length; i++) {
             if (mAccessExecutorMap.get(types[i]) != null &&
-                    !mAccessExecutorMap.get(types[i]).onExecute(fragment, argsMap, accessTimeInterval)) {
+                    !mAccessExecutorMap.get(types[i]).onExecute(fragment, args[i], actionsMap, accessTimeInterval)) {
                 return false;
             }
         }

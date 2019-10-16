@@ -29,10 +29,11 @@ public class ConfigSwitcherModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER = 1;
 
-    public boolean requestBundleSwitcherData(@NonNull IModelAsyncResponse<ArrayList<ConfigSwitcherEntity>> callback) {
+    public boolean requestBundleSwitcherData(HashMap<String, String> params,
+                                             @NonNull IModelAsyncResponse<ArrayList<ConfigSwitcherEntity>> callback) {
         String url = UrlConstants.Query_BundleSwitcher_Data;
         JsonCallback httpStringCallback = handleResponse(callback);
-        RequestBean requestBean = new RequestBean(url, REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER, new HashMap<String, String>());
+        RequestBean requestBean = new RequestBean(url, REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER, params);
         requestBean.setModuleTag(TAG);
         return RequestManager.setJsonRequest(requestBean, httpStringCallback);
     }

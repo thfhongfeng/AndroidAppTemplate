@@ -29,6 +29,17 @@ import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
 
 public class MvvmWebViewFragment extends
         MvvmFragment<MvvmWebViewFragmentBinding, MvvmWebViewVm> {
+
+    @Override
+    public void initLiveDataObserver() {
+        mViewModel.getH5UrlData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                loadUrl();
+            }
+        });
+    }
+
     @Override
     protected int getFragmentLayoutResId() {
         return R.layout.mvvm_fragment_web_view;
@@ -36,18 +47,8 @@ public class MvvmWebViewFragment extends
 
     @Override
     protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
         mBinding.setPresenter(new Presenter());
-        mViewModel.getH5UrlData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                loadUrl();
-            }
-        });
+        initView();
     }
 
     private void initView() {

@@ -1,10 +1,15 @@
 package com.pine.base.access;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.pine.base.BaseSPKeyConstants;
+import com.pine.base.remote.BaseRouterClient;
+import com.pine.router.IRouterCallback;
 import com.pine.tool.access.IUiAccessExecutor;
 import com.pine.tool.access.UiAccessTimeInterval;
+import com.pine.tool.util.SharePreferenceUtils;
 
 import java.util.HashMap;
 
@@ -17,13 +22,75 @@ public class UiAccessVipLevelExecutor implements IUiAccessExecutor {
 
     }
 
+    /**
+     * @param activity
+     * @param arg                整型字符串
+     * @param actionsMap
+     * @param accessTimeInterval
+     * @return
+     */
     @Override
-    public boolean onExecute(Activity activity, HashMap<String, String> argsMap, UiAccessTimeInterval accessTimeInterval) {
+    public boolean onExecute(final Activity activity, String arg, HashMap<String, String> actionsMap,
+                             UiAccessTimeInterval accessTimeInterval) {
+        try {
+            int accountType = SharePreferenceUtils.readIntFromAppLivedCache(BaseSPKeyConstants.ACCOUNT_TYPE, 0);
+            int vipLevelNeed = Integer.parseInt(arg);
+            boolean canAccess = accountType >= vipLevelNeed;
+            if (!canAccess) {
+                if (!doNotGoVipActivity(actionsMap, accessTimeInterval)) {
+                    BaseRouterClient.goUserVipActivity(activity, null, new IRouterCallback() {
+                        @Override
+                        public void onSuccess(Bundle responseBundle) {
+
+                        }
+
+                        @Override
+                        public boolean onFail(int failCode, String errorInfo) {
+                            if (activity != null && !activity.isFinishing()) {
+                                activity.finish();
+                            }
+                            return true;
+                        }
+                    });
+                }
+                if (!doNotFinishActivity(actionsMap, accessTimeInterval)) {
+                    activity.finish();
+                }
+            }
+            return canAccess;
+        } catch (NumberFormatException nfe) {
+            return true;
+        }
+    }
+
+    /**
+     * @param fragment
+     * @param arg                整型字符串
+     * @param actionsMap
+     * @param accessTimeInterval
+     * @return
+     */
+    @Override
+    public boolean onExecute(Fragment fragment, String arg, HashMap<String, String> actionsMap,
+                             UiAccessTimeInterval accessTimeInterval) {
         return true;
     }
 
-    @Override
-    public boolean onExecute(Fragment fragment, HashMap<String, String> argsMap, UiAccessTimeInterval accessTimeInterval) {
-        return true;
+    private boolean doNotFinishActivity(HashMap<String, String> actionsMap, UiAccessTimeInterval accessTimeInterval) {
+        return accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_CREATE &&
+                actionsMap.containsKey(UiAccessAction.VIP_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI) ||
+                accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT &&
+                        actionsMap.containsKey(UiAccessAction.VIP_ACCESS_FALSE_ON_NEW_INTENT_NOT_FINISH_UI) ||
+                accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_RESUME &&
+                        actionsMap.containsKey(UiAccessAction.VIP_ACCESS_FALSE_ON_RESUME_NOT_FINISH_UI);
+    }
+
+    private boolean doNotGoVipActivity(HashMap<String, String> actionsMap, UiAccessTimeInterval accessTimeInterval) {
+        return accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_CREATE &&
+                actionsMap.containsKey(UiAccessAction.VIP_ACCESS_FALSE_ON_CREATE_NOT_GO_VIP_UI) ||
+                accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT &&
+                        actionsMap.containsKey(UiAccessAction.VIP_ACCESS_FALSE_ON_NEW_INTENT_NOT_GO_VIP_UI) ||
+                accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_RESUME &&
+                        actionsMap.containsKey(UiAccessAction.VIP_ACCESS_FALSE_ON_RESUME_NOT_GO_VIP_UI);
     }
 }

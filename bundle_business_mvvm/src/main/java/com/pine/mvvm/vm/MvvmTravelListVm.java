@@ -8,7 +8,7 @@ import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
 import com.pine.mvvm.model.MvvmTravelNoteModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.tool.binding.data.CustomLiveData;
+import com.pine.tool.binding.data.ParametricLiveData;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -63,9 +63,9 @@ public class MvvmTravelListVm extends ViewModel {
         });
     }
 
-    CustomLiveData<ArrayList<MvvmTravelNoteItemEntity>, Boolean> travelListData = new CustomLiveData<>();
+    ParametricLiveData<ArrayList<MvvmTravelNoteItemEntity>, Boolean> travelListData = new ParametricLiveData<>();
 
-    public CustomLiveData<ArrayList<MvvmTravelNoteItemEntity>, Boolean> getTravelListData() {
+    public ParametricLiveData<ArrayList<MvvmTravelNoteItemEntity>, Boolean> getTravelListData() {
         return travelListData;
     }
 

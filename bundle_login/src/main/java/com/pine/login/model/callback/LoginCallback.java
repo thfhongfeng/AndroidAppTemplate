@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.pine.config.BuildConfig;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
@@ -72,7 +73,19 @@ public class LoginCallback extends JsonCallback {
                 }
                 return;
             }
-            final AccountBean accountBean = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), AccountBean.class);
+            AccountBean responseAccount = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), AccountBean.class);
+            // Test code begin
+            if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
+                responseAccount = new AccountBean();
+                responseAccount.setId(jsonObject.optString("userId"));
+                responseAccount.setAccount(jsonObject.optString("mobile"));
+                responseAccount.setName(jsonObject.optString("userRealName"));
+                responseAccount.setMobile(jsonObject.optString("mobile"));
+                responseAccount.setState(1);
+                responseAccount.setAccountType(100);
+            }
+            // Test code end
+            final AccountBean accountBean = responseAccount;
             LoginManager.saveLoginInfo(accountBean);
             LoginApplication.setLogin(true);
             ConfigSwitcherServer.getInstance().setupConfigSwitcher(true, new ConfigSwitcherServer.IConfigSwitcherCallback() {

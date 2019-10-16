@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pine.base.BaseConstants;
-import com.pine.base.access.UiAccessArgs;
+import com.pine.base.access.UiAccessAction;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.component.editor.bean.TextImageEntity;
@@ -43,9 +43,9 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN},
-        Args = {UiAccessArgs.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
-                UiAccessArgs.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.VIP_LEVEL}, AccessArgs = {"", "100"},
+        AccessActions = {UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
+                UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI})
 public class MvvmTravelNoteReleaseActivity extends
         BaseMvvmActionBarTextMenuActivity<MvvmTravelNoteReleaseActivityBinding, MvvmTravelNoteReleaseVm> {
     private final int REQUEST_CODE_SELECT_BELONG_SHOP = 1;
@@ -99,18 +99,7 @@ public class MvvmTravelNoteReleaseActivity extends
     };
 
     @Override
-    protected int getActivityLayoutResId() {
-        return R.layout.mvvm_activity_travel_note_release;
-    }
-
-    @Override
-    protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
-        mBinding.setPresenter(new Presenter());
+    public void initLiveDataObserver() {
         mViewModel.getBelongShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> list) {
@@ -135,6 +124,17 @@ public class MvvmTravelNoteReleaseActivity extends
         });
     }
 
+    @Override
+    protected int getActivityLayoutResId() {
+        return R.layout.mvvm_activity_travel_note_release;
+    }
+
+    @Override
+    protected void init() {
+        mBinding.setPresenter(new Presenter());
+        initView();
+    }
+
     private void initView() {
         mBinding.swipeRefreshLayout.setColorSchemeResources(
                 R.color.red,
@@ -142,11 +142,6 @@ public class MvvmTravelNoteReleaseActivity extends
                 R.color.green
         );
         mBinding.swipeRefreshLayout.setEnabled(false);
-    }
-
-    @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
-
     }
 
     @Override
@@ -159,6 +154,11 @@ public class MvvmTravelNoteReleaseActivity extends
                 onAddNoteBtnClicked();
             }
         });
+    }
+
+    @Override
+    public void onSyncLiveDataInit(int liveDataObjTag) {
+
     }
 
     @Override

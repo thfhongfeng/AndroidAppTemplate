@@ -39,15 +39,19 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
             if (isAccountExist(db, account)) {
                 return DbResponseGenerator.getExistAccountJsonRep(requestBean, cookies, "账号已存在");
             }
-            requestParams.put("id", "1000" + new Date().getTime());
-            requestParams.put("account", account);
-            requestParams.put("name", account);
-            requestParams.put("state", "1");
-            requestParams.put("accountType", "10");
-            requestParams.put("curLoginTimeStamp", Calendar.getInstance().getTimeInMillis() + "");
-            requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-            requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-            long id = insert(db, ACCOUNT_TABLE_NAME, requestParams);
+            String verifyCode = requestParams.remove("verify_code");
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("id", "1000" + new Date().getTime());
+            contentValues.put("account", account);
+            contentValues.put("mobile", account);
+            contentValues.put("password", requestParams.get("password"));
+            contentValues.put("name", account);
+            contentValues.put("state", "1");
+            contentValues.put("accountType", "10");
+            contentValues.put("curLoginTimeStamp", Calendar.getInstance().getTimeInMillis() + "");
+            contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+            contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+            long id = insert(db, ACCOUNT_TABLE_NAME, "account", contentValues);
             if (id == -1) {
                 return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
             } else {
@@ -56,6 +60,7 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                     jsonObject.put("id", requestParams.get("id"));
                     jsonObject.put("account", requestParams.get("account"));
                     jsonObject.put("password", requestParams.get("password"));
+                    jsonObject.put("accountType", requestParams.get("accountType"));
                     jsonObject.put("state", requestParams.get("state"));
                     jsonObject.put("mobile", requestParams.get("mobile"));
                     jsonObject.put("createTime", requestParams.get("createTime"));
@@ -79,9 +84,9 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
             Map<String, String> requestParams = requestBean.getParams();
-            String account = requestParams.remove("mobile");
-            requestParams.put("account", account);
-            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, requestParams);
+            Map<String, String> params = new HashMap<>();
+            params.put("account", requestParams.get("mobile"));
+            Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
             if (!cursor.moveToFirst()) {
                 return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "用户名密码错误");
             } else {
@@ -95,6 +100,7 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                     jsonObject.put("id", cursor.getString(cursor.getColumnIndex("id")));
                     jsonObject.put("account", cursor.getString(cursor.getColumnIndex("account")));
                     jsonObject.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                    jsonObject.put("accountType", cursor.getString(cursor.getColumnIndex("accountType")));
                     jsonObject.put("state", cursor.getInt(cursor.getColumnIndex("state")));
                     jsonObject.put("mobile", cursor.getString(cursor.getColumnIndex("mobile")));
                     jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));

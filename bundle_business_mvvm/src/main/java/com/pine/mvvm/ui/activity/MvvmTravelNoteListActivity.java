@@ -32,22 +32,7 @@ public class MvvmTravelNoteListActivity extends
     private MvvmTravelNoteListPaginationAdapter mMvvmTravelListItemAdapter;
 
     @Override
-    protected int getMenuBarLayoutResId() {
-        return R.layout.mvvm_travel_note_list_menu;
-    }
-
-    @Override
-    protected int getActivityLayoutResId() {
-        return R.layout.mvvm_activity_travel_note_list;
-    }
-
-    @Override
-    protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
+    public void initLiveDataObserver() {
         mViewModel.getTravelListData().observe(this,
                 new Observer<ArrayList<MvvmTravelNoteItemEntity>>() {
                     @Override
@@ -59,6 +44,21 @@ public class MvvmTravelNoteListActivity extends
                         }
                     }
                 });
+    }
+
+    @Override
+    protected int getMenuBarLayoutResId() {
+        return R.layout.mvvm_travel_note_list_menu;
+    }
+
+    @Override
+    protected int getActivityLayoutResId() {
+        return R.layout.mvvm_activity_travel_note_list;
+    }
+
+    @Override
+    protected void init() {
+        initView();
     }
 
     private void initView() {

@@ -28,25 +28,24 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
         implements SwipeRefreshLayout.OnRefreshListener {
 
     @Override
-    protected int getActivityLayoutResId() {
-        return R.layout.mvvm_activity_shop_detail;
-    }
-
-    @Override
-    protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
-        mBinding.setPresenter(new Presenter());
-
+    public void initLiveDataObserver() {
         mViewModel.getShopDetailData().observe(this, new Observer<MvvmShopDetailEntity>() {
             @Override
             public void onChanged(@Nullable MvvmShopDetailEntity mvvmShopDetailEntity) {
                 mBinding.setShopDetail(mvvmShopDetailEntity);
             }
         });
+    }
+
+    @Override
+    protected int getActivityLayoutResId() {
+        return R.layout.mvvm_activity_shop_detail;
+    }
+
+    @Override
+    protected void init() {
+        mBinding.setPresenter(new Presenter());
+        initView();
     }
 
     private void initView() {

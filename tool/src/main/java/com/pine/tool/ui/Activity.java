@@ -60,7 +60,8 @@ public abstract class Activity extends AppCompatActivity
     // UiAccess（比如需要登陆）是否检查通过，没有则结束当前界面；
     public boolean mUiAccessReady;
     public String[] mUiAccessTypes;
-    public HashMap<String, String> mUiAccessArgsMap = new HashMap<>();
+    public String[] mUiAccessArgs;
+    public HashMap<String, String> mUiAccessActionsMap = new HashMap<>();
     // 权限（比如需要登陆）是否检查通过，没有则弹出授权界面给用户授权；
     public boolean mPermissionReady;
     // onAllAccessRestrictionReleased方法是否被调用过（该方法在activity的生命周期中只会调用一次，onCreate，onNewIntent才会重置）；
@@ -84,16 +85,17 @@ public abstract class Activity extends AppCompatActivity
         UiAccessAnnotation uiAccessAnnotation = getClass().getAnnotation(UiAccessAnnotation.class);
         if (uiAccessAnnotation != null) {
             mUiAccessTypes = uiAccessAnnotation.AccessTypes();
-            String[] args = uiAccessAnnotation.Args();
-            if (args != null && args.length > 0) {
-                for (String arg : args) {
-                    mUiAccessArgsMap.put(arg, arg);
+            mUiAccessArgs = uiAccessAnnotation.AccessArgs();
+            String[] actions = uiAccessAnnotation.AccessActions();
+            if (actions != null && actions.length > 0) {
+                for (String action : actions) {
+                    mUiAccessActionsMap.put(action, action);
                 }
             }
         }
-        if (mUiAccessTypes != null && mUiAccessTypes.length > 0 &&
-                !UiAccessManager.getInstance().checkCanAccess(
-                        this, UiAccessTimeInterval.UI_ACCESS_ON_CREATE, mUiAccessTypes, mUiAccessArgsMap)) {
+        if (!UiAccessManager.getInstance().checkCanAccess(this,
+                        UiAccessTimeInterval.UI_ACCESS_ON_CREATE, mUiAccessTypes, mUiAccessArgs,
+                        mUiAccessActionsMap)) {
             mUiAccessReady = false;
             onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_CREATE);
         }
@@ -142,6 +144,17 @@ public abstract class Activity extends AppCompatActivity
     }
 
     /**
+     * 尝试进入界面初始化（先判断界面进入限制是否都已经解除）
+     */
+    private void tryInitOnAllRestrictionReleased() {
+        if (!mOnAllAccessRestrictionReleasedMethodCalled &&
+                mUiAccessReady && mPermissionReady) {
+            mOnAllAccessRestrictionReleasedMethodCalled = true;
+            onAllAccessRestrictionReleased();
+        }
+    }
+
+    /**
      * 在界面进入限制都被解除后，进行界面初始化
      */
     private void onAllAccessRestrictionReleased() {
@@ -185,9 +198,9 @@ public abstract class Activity extends AppCompatActivity
         mPrePause = false;
 
         mUiAccessReady = true;
-        if (mUiAccessTypes != null && mUiAccessTypes.length > 0 &&
-                !UiAccessManager.getInstance().checkCanAccess(
-                        this, UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT, mUiAccessTypes, mUiAccessArgsMap)) {
+        if (!UiAccessManager.getInstance().checkCanAccess(
+                        this, UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT,
+                        mUiAccessTypes, mUiAccessArgs, mUiAccessActionsMap)) {
             mUiAccessReady = false;
             onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT);
         }
@@ -213,9 +226,9 @@ public abstract class Activity extends AppCompatActivity
         if (mPrePause) {
             mPrePause = false;
             mUiAccessReady = true;
-            if (mUiAccessTypes != null && mUiAccessTypes.length > 0 &&
-                    !UiAccessManager.getInstance().checkCanAccess(
-                            this, UiAccessTimeInterval.UI_ACCESS_ON_RESUME, mUiAccessTypes, mUiAccessArgsMap)) {
+            if (!UiAccessManager.getInstance().checkCanAccess(
+                            this, UiAccessTimeInterval.UI_ACCESS_ON_RESUME,
+                            mUiAccessTypes, mUiAccessArgs, mUiAccessActionsMap)) {
                 mUiAccessReady = false;
                 onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_RESUME);
             } else {
@@ -365,17 +378,6 @@ public abstract class Activity extends AppCompatActivity
         if (REQUEST_ACCESS_PERMISSION == requestCode) {
             mPermissionReady = true;
             tryInitOnAllRestrictionReleased();
-        }
-    }
-
-    /**
-     * 尝试进入界面初始化（先判断界面进入限制是否都已经解除）
-     */
-    private void tryInitOnAllRestrictionReleased() {
-        if (!mOnAllAccessRestrictionReleasedMethodCalled &&
-                mUiAccessReady && mPermissionReady) {
-            mOnAllAccessRestrictionReleasedMethodCalled = true;
-            onAllAccessRestrictionReleased();
         }
     }
 

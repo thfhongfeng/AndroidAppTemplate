@@ -41,7 +41,7 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, Args = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""}, AccessActions = {""})
 public class MvvmShopReleaseActivity extends
         BaseMvvmActionBarTextMenuActivity<MvvmShopReleaseActivityBinding, MvvmShopReleaseVm> {
     private final int REQUEST_CODE_BAIDU_MAP = 1;
@@ -51,19 +51,7 @@ public class MvvmShopReleaseActivity extends
     private ProvinceSelectDialog mProvinceSelectDialog;
 
     @Override
-    protected int getActivityLayoutResId() {
-        return R.layout.mvvm_activity_shop_release;
-    }
-
-    @Override
-    protected void init() {
-        bindingData();
-        initView();
-    }
-
-    private void bindingData() {
-        mBinding.setPresenter(new Presenter());
-
+    public void initLiveDataObserver() {
         mViewModel.getShopDetailData().observe(this, new Observer<MvvmShopDetailEntity>() {
             @Override
             public void onChanged(@Nullable MvvmShopDetailEntity mvvmShopDetailEntity) {
@@ -88,6 +76,17 @@ public class MvvmShopReleaseActivity extends
                 }
             }
         });
+    }
+
+    @Override
+    protected int getActivityLayoutResId() {
+        return R.layout.mvvm_activity_shop_release;
+    }
+
+    @Override
+    protected void init() {
+        mBinding.setPresenter(new Presenter());
+        initView();
     }
 
     private void initView() {

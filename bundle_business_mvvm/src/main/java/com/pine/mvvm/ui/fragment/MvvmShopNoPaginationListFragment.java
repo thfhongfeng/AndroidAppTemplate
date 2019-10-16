@@ -40,24 +40,24 @@ public class MvvmShopNoPaginationListFragment extends
     };
 
     @Override
-    protected int getFragmentLayoutResId() {
-        return R.layout.mvvm_fragment_shop_no_pagination_list;
-    }
-
-    @Override
-    protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
-        mBinding.setPresenter(new Presenter());
+    public void initLiveDataObserver() {
         mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
                 mMvvmHomeItemAdapter.setData(mvvmShopItemEntities);
             }
         });
+    }
+
+    @Override
+    protected int getFragmentLayoutResId() {
+        return R.layout.mvvm_fragment_shop_no_pagination_list;
+    }
+
+    @Override
+    protected void init() {
+        mBinding.setPresenter(new Presenter());
+        initView();
     }
 
     private void initView() {

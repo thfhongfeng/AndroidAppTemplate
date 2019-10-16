@@ -20,11 +20,19 @@ public class UiAccessLoginExecutor implements IUiAccessExecutor {
     public UiAccessLoginExecutor() {
     }
 
+    /**
+     * @param activity
+     * @param arg                传空即可
+     * @param actionsMap
+     * @param accessTimeInterval
+     * @return
+     */
     @Override
-    public boolean onExecute(final Activity activity, HashMap<String, String> argsMap, UiAccessTimeInterval accessTimeInterval) {
+    public boolean onExecute(final Activity activity, String arg, HashMap<String, String> actionsMap,
+                             UiAccessTimeInterval accessTimeInterval) {
         boolean canAccess = BaseApplication.isLogin();
         if (!canAccess) {
-            if (!doNotGoLoginActivity(argsMap, accessTimeInterval)) {
+            if (!doNotGoLoginActivity(actionsMap, accessTimeInterval)) {
                 BaseRouterClient.goLoginActivity(activity, null, new IRouterCallback() {
                     @Override
                     public void onSuccess(Bundle responseBundle) {
@@ -40,33 +48,41 @@ public class UiAccessLoginExecutor implements IUiAccessExecutor {
                     }
                 });
             }
-            if (!doNotFinishActivity(argsMap, accessTimeInterval)) {
+            if (!doNotFinishActivity(actionsMap, accessTimeInterval)) {
                 activity.finish();
             }
         }
         return canAccess;
     }
 
+    /**
+     * @param fragment
+     * @param arg                传空即可
+     * @param actionsMap
+     * @param accessTimeInterval
+     * @return
+     */
     @Override
-    public boolean onExecute(Fragment fragment, HashMap<String, String> argsMap, UiAccessTimeInterval accessTimeInterval) {
+    public boolean onExecute(Fragment fragment, String arg, HashMap<String, String> actionsMap,
+                             UiAccessTimeInterval accessTimeInterval) {
         return true;
     }
 
-    private boolean doNotFinishActivity(HashMap<String, String> argsMap, UiAccessTimeInterval accessTimeInterval) {
+    private boolean doNotFinishActivity(HashMap<String, String> actionsMap, UiAccessTimeInterval accessTimeInterval) {
         return accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_CREATE &&
-                argsMap.containsKey(UiAccessArgs.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI) ||
+                actionsMap.containsKey(UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI) ||
                 accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT &&
-                        argsMap.containsKey(UiAccessArgs.LOGIN_ACCESS_FALSE_ON_NEW_INTENT_NOT_FINISH_UI) ||
+                        actionsMap.containsKey(UiAccessAction.LOGIN_ACCESS_FALSE_ON_NEW_INTENT_NOT_FINISH_UI) ||
                 accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_RESUME &&
-                        argsMap.containsKey(UiAccessArgs.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_FINISH_UI);
+                        actionsMap.containsKey(UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_FINISH_UI);
     }
 
-    private boolean doNotGoLoginActivity(HashMap<String, String> argsMap, UiAccessTimeInterval accessTimeInterval) {
+    private boolean doNotGoLoginActivity(HashMap<String, String> actionsMap, UiAccessTimeInterval accessTimeInterval) {
         return accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_CREATE &&
-                argsMap.containsKey(UiAccessArgs.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_GO_LOGIN) ||
+                actionsMap.containsKey(UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_GO_LOGIN) ||
                 accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT &&
-                        argsMap.containsKey(UiAccessArgs.LOGIN_ACCESS_FALSE_ON_NEW_INTENT_NOT_GO_LOGIN) ||
+                        actionsMap.containsKey(UiAccessAction.LOGIN_ACCESS_FALSE_ON_NEW_INTENT_NOT_GO_LOGIN) ||
                 accessTimeInterval == UiAccessTimeInterval.UI_ACCESS_ON_RESUME &&
-                        argsMap.containsKey(UiAccessArgs.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN);
+                        actionsMap.containsKey(UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN);
     }
 }

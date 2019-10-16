@@ -23,20 +23,74 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
     protected T mBinding;
     protected VM mViewModel;
 
+    private Observer<Integer> mSyncLiveDataInitDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer tag) {
+            onSyncLiveDataInit(tag);
+        }
+    };
+
+    private Observer<Boolean> mResetUiDataObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable Boolean aBoolean) {
+            if (aBoolean) {
+                finish();
+                startActivity(getIntent());
+            }
+        }
+    };
+
+    private Observer<Boolean> mFinishDataObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable Boolean aBoolean) {
+            if (aBoolean) {
+                finish();
+            }
+        }
+    };
+
+    private Observer<Boolean> mUiLoadingDataObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable Boolean aBoolean) {
+            setLoadingUiVisibility(aBoolean);
+        }
+    };
+
+    private Observer<String> mToastMsgDataObserver = new Observer<String>() {
+        @Override
+        public void onChanged(@Nullable String msg) {
+            showShortToast(msg);
+        }
+    };
+
+    private Observer<Integer> mToastResIdDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer resId) {
+            showShortToast(resId);
+        }
+    };
+
     @CallSuper
     @Override
     protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
-        // 创建ViewModel
-        if (mViewModel == null) {
-            Type type = getClass().getGenericSuperclass();
-            if (type instanceof ParameterizedType) {
-                Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
-                mViewModel = (VM) ViewModelProviders.of(this).get(presenterClazz);
-                mViewModel.getUiLoadingData().setValue(false);
-                mViewModel.setUi(this);
-            }
+        // 创建ViewModel{
+        Type type = getClass().getGenericSuperclass();
+        if (type instanceof ParameterizedType) {
+            Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
+            mViewModel = (VM) ViewModelProviders.of(this).get(presenterClazz);
+            mViewModel.getUiLoadingData().setValue(false);
+            mViewModel.setUi(this);
         }
+        mViewModel.getSyncLiveDataInitData().observe(this, mSyncLiveDataInitDataObserver);
+        mViewModel.getResetUiData().observe(this, mResetUiDataObserver);
+        mViewModel.getFinishData().observe(this, mFinishDataObserver);
+        mViewModel.getUiLoadingData().observe(this, mUiLoadingDataObserver);
+        mViewModel.getToastMsgData().observe(this, mToastMsgDataObserver);
+        mViewModel.getToastResIdData().observe(this, mToastResIdDataObserver);
+        initLiveDataObserver();
     }
+
+    public abstract void initLiveDataObserver();
 
     protected void setContentView(Bundle savedInstanceState) {
         mBinding = DataBindingUtil.setContentView(this, getActivityLayoutResId());
@@ -44,41 +98,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
 
     @Override
     protected final void findViewOnCreate() {
-        mViewModel.getSyncLiveDataInitData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer tag) {
-                onSyncLiveDataInit(tag);
-            }
-        });
-        mViewModel.getResetUiData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean) {
-                    finish();
-                    startActivity(getIntent());
-                }
-            }
-        });
-        mViewModel.getFinishData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean) {
-                    finish();
-                }
-            }
-        });
-        mViewModel.getToastMsgData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String msg) {
-                showShortToast(msg);
-            }
-        });
-        mViewModel.getToastResIdData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer resId) {
-                showShortToast(resId);
-            }
-        });
+
     }
 
     @CallSuper
@@ -133,6 +153,10 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         if (mViewModel != null) {
             mViewModel.onUiState(UiState.UI_STATE_ON_DETACH);
         }
+    }
+
+    public void setLoadingUiVisibility(boolean visibility) {
+
     }
 
     /**

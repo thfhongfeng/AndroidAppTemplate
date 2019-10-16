@@ -9,7 +9,7 @@ import com.pine.mvvm.bean.MvvmShopItemEntity;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.tool.binding.data.CustomLiveData;
+import com.pine.tool.binding.data.ParametricLiveData;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -57,9 +57,9 @@ public class MvvmShopPaginationListVm extends ViewModel {
         });
     }
 
-    CustomLiveData<ArrayList<MvvmShopItemEntity>, Boolean> shopListData = new CustomLiveData<>();
+    ParametricLiveData<ArrayList<MvvmShopItemEntity>, Boolean> shopListData = new ParametricLiveData<>();
 
-    public CustomLiveData<ArrayList<MvvmShopItemEntity>, Boolean> getShopListData() {
+    public ParametricLiveData<ArrayList<MvvmShopItemEntity>, Boolean> getShopListData() {
         return shopListData;
     }
 

@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -28,9 +29,10 @@ public class VersionModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int REQUEST_QUERY_VERSION_INFO = 1;
 
-    public boolean requestUpdateVersionData(@NonNull IModelAsyncResponse<VersionEntity> callback) {
+    public boolean requestUpdateVersionData(final HashMap<String, String> params,
+                                            @NonNull IModelAsyncResponse<VersionEntity> callback) {
         String url = WelcomeUrlConstants.Query_Version_Data;
-        RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_VERSION_INFO, new HashMap<String, String>());
+        RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_VERSION_INFO, params);
         requestBean.setModuleTag(TAG);
         return RequestManager.setJsonRequest(requestBean, handleResponse(callback));
     }

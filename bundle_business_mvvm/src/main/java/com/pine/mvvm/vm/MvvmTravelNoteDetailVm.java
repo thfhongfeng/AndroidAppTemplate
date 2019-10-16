@@ -10,7 +10,7 @@ import com.pine.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.mvvm.model.MvvmTravelNoteModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.tool.binding.data.CustomLiveData;
+import com.pine.tool.binding.data.ParametricLiveData;
 import com.pine.tool.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -115,9 +115,9 @@ public class MvvmTravelNoteDetailVm extends ViewModel {
         travelNoteDetailDate.setValue(travelNoteDetail);
     }
 
-    private CustomLiveData<List<MvvmTravelNoteCommentEntity>, Boolean> travelNoteCommentListDate = new CustomLiveData<>();
+    private ParametricLiveData<List<MvvmTravelNoteCommentEntity>, Boolean> travelNoteCommentListDate = new ParametricLiveData<>();
 
-    public CustomLiveData<List<MvvmTravelNoteCommentEntity>, Boolean> getTravelNoteCommentListDate() {
+    public ParametricLiveData<List<MvvmTravelNoteCommentEntity>, Boolean> getTravelNoteCommentListDate() {
         return travelNoteCommentListDate;
     }
 

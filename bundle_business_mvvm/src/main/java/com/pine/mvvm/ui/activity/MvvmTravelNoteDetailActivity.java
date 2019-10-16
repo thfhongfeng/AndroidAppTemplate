@@ -29,17 +29,7 @@ public class MvvmTravelNoteDetailActivity extends
     private MvvmTravelNoteDetailComplexAdapter mTravelNoteDetailAdapter;
 
     @Override
-    protected int getActivityLayoutResId() {
-        return R.layout.mvvm_activity_travel_note_detail;
-    }
-
-    @Override
-    protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
+    public void initLiveDataObserver() {
         mViewModel.getTravelNoteDetailDate().observe(this, new Observer<MvvmTravelNoteDetailEntity>() {
             @Override
             public void onChanged(@Nullable MvvmTravelNoteDetailEntity mvvmTravelNoteDetailEntity) {
@@ -58,6 +48,16 @@ public class MvvmTravelNoteDetailActivity extends
                 }
             }
         });
+    }
+
+    @Override
+    protected int getActivityLayoutResId() {
+        return R.layout.mvvm_activity_travel_note_detail;
+    }
+
+    @Override
+    protected void init() {
+        initView();
     }
 
     private void initView() {

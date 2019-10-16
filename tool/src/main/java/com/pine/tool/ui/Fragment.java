@@ -42,12 +42,17 @@ public abstract class Fragment extends android.support.v4.app.Fragment
     // UiAccess（比如需要登陆）是否检查通过，没有则结束当前界面；
     private boolean mUiAccessReady;
     public String[] mUiAccessTypes;
-    public HashMap<String, String> mUiAccessArgsMap = new HashMap<>();
+    public String[] mUiAccessArgs;
+    public HashMap<String, String> mUiAccessActionsMap = new HashMap<>();
     private HashMap<Integer, PermissionBean> mPermissionRequestMap = new HashMap<>();
+    // onAllAccessRestrictionReleased方法是否被调用过（该方法在fragment的生命周期中只会调用一次，onCreateView才会重置）；
+    // 该参数保证一次生命周期中init方法只会执行一次，并且可以用来判断init是否已经执行。
+    private boolean mOnAllAccessRestrictionReleasedMethodCalled;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mOnAllAccessRestrictionReleasedMethodCalled = false;
         beforeInitOnCreateView(savedInstanceState);
         View layout = setContentView(inflater, container, savedInstanceState);
 
@@ -58,21 +63,22 @@ public abstract class Fragment extends android.support.v4.app.Fragment
         UiAccessAnnotation uiAccessAnnotation = getClass().getAnnotation(UiAccessAnnotation.class);
         if (uiAccessAnnotation != null) {
             mUiAccessTypes = uiAccessAnnotation.AccessTypes();
-            String[] args = uiAccessAnnotation.Args();
-            if (args != null && args.length > 0) {
-                for (String arg : args) {
-                    mUiAccessArgsMap.put(arg, arg);
+            mUiAccessArgs = uiAccessAnnotation.AccessArgs();
+            String[] actions = uiAccessAnnotation.AccessActions();
+            if (actions != null && actions.length > 0) {
+                for (String action : actions) {
+                    mUiAccessActionsMap.put(action, action);
                 }
             }
         }
-        if (mUiAccessTypes != null && mUiAccessTypes.length > 0 &&
-                !UiAccessManager.getInstance().checkCanAccess(
-                        this, UiAccessTimeInterval.UI_ACCESS_ON_CREATE, mUiAccessTypes, mUiAccessArgsMap)) {
+        if (!UiAccessManager.getInstance().checkCanAccess(this,
+                UiAccessTimeInterval.UI_ACCESS_ON_CREATE, mUiAccessTypes, mUiAccessArgs,
+                mUiAccessActionsMap)) {
             mUiAccessReady = false;
             onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_CREATE);
         }
 
-        tryOnAllRestrictionReleased();
+        tryInitOnAllRestrictionReleased();
 
         return layout;
     }
@@ -96,15 +102,29 @@ public abstract class Fragment extends android.support.v4.app.Fragment
      */
     protected abstract void findViewOnCreateView(View layout);
 
+
+    protected boolean isInit() {
+        return mOnAllAccessRestrictionReleasedMethodCalled;
+    }
+
     /**
      * 尝试进入界面初始化（先判断界面进入限制是否都已经解除）
      */
-    private void tryOnAllRestrictionReleased() {
-        if (mUiAccessReady) {
-            if (!parseArguments()) {
-                init();
-                afterInit();
-            }
+    private void tryInitOnAllRestrictionReleased() {
+        if (!mOnAllAccessRestrictionReleasedMethodCalled &&
+                mUiAccessReady) {
+            mOnAllAccessRestrictionReleasedMethodCalled = true;
+            onAllAccessRestrictionReleased();
+        }
+    }
+
+    /**
+     * 在界面进入限制都被解除后，进行界面初始化
+     */
+    private void onAllAccessRestrictionReleased() {
+        if (!parseArguments()) {
+            init();
+            afterInit();
         }
     }
 

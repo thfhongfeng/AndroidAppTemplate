@@ -1,5 +1,6 @@
 package com.pine.db_server.sqlite.server;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -24,6 +25,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.pine.base.BaseConstants.PAGE_NO;
+import static com.pine.base.BaseConstants.PAGE_SIZE;
 import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.SHOP_TABLE_NAME;
 import static com.pine.db_server.DbConstants.TRAVEL_NOTE_COMMENT_TABLE_NAME;
@@ -45,15 +48,21 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", session.getAccountId());
                 Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
+                ContentValues contentValues = new ContentValues();
                 if (cursor.moveToFirst()) {
-                    requestParams.put("authorId", cursor.getString(cursor.getColumnIndex("id")));
-                    requestParams.put("author", cursor.getString(cursor.getColumnIndex("name")));
-                    requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                    requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    contentValues.put("title", requestParams.get("title"));
+                    contentValues.put("setOutDate", requestParams.get("setOutDate"));
+                    contentValues.put("dayCount", requestParams.get("dayCount"));
+                    contentValues.put("preface", requestParams.get("preface"));
+                    contentValues.put("days", requestParams.get("days"));
+                    contentValues.put("authorId", cursor.getString(cursor.getColumnIndex("id")));
+                    contentValues.put("author", cursor.getString(cursor.getColumnIndex("name")));
+                    contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                     cursor.close();
                     String travelNoteId = "1102" + new Date().getTime();
-                    requestParams.put("id", travelNoteId);
-                    String belongShopsStr = requestParams.remove("belongShops");
+                    contentValues.put("id", travelNoteId);
+                    String belongShopsStr = requestParams.get("belongShops");
                     JSONArray belongShops = null;
                     try {
                         belongShops = new JSONArray();
@@ -78,7 +87,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                             isSuccess = isSuccess && insert(db, TRAVEL_NOTE_SHOP_TABLE_NAME, belongShop) >= 0;
                         }
                     }
-                    long id = insert(db, TRAVEL_NOTE_TABLE_NAME, requestParams);
+                    long id = insert(db, TRAVEL_NOTE_TABLE_NAME, "id", contentValues);
                     isSuccess = isSuccess && id >= 0;
                     if (isSuccess) {
                         db.setTransactionSuccessful();
@@ -106,7 +115,9 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
             db.beginTransaction();
-            Cursor cursor = query(db, TRAVEL_NOTE_TABLE_NAME, requestBean.getParams());
+            Map<String, String> params = new HashMap<>();
+            params.put("id", requestBean.getParams().get("id"));
+            Cursor cursor = query(db, TRAVEL_NOTE_TABLE_NAME, params);
             try {
                 JSONObject jsonObject = new JSONObject();
                 if (cursor.moveToFirst()) {
@@ -160,12 +171,19 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                                                  @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
-            Map<String, String> params = requestBean.getParams();
-            if (params.containsKey("id")) {
-                params.put("shopId", params.remove("id"));
+            Map<String, String> requestParams = requestBean.getParams();
+            Map<String, String> params = new HashMap<>();
+            if (requestParams.containsKey("id")) {
+                params.put("shopId", requestParams.get("id"));
+            }
+            if (requestParams.containsKey(PAGE_NO)) {
+                params.put(PAGE_NO, requestParams.get(PAGE_NO));
+            }
+            if (requestParams.containsKey(PAGE_SIZE)) {
+                params.put(PAGE_SIZE, requestParams.get(PAGE_SIZE));
             }
             db.beginTransaction();
-            Cursor cursor = query(db, TRAVEL_NOTE_SHOP_TABLE_NAME, requestBean.getParams());
+            Cursor cursor = query(db, TRAVEL_NOTE_SHOP_TABLE_NAME, params);
             try {
                 JSONArray jsonArray = new JSONArray();
                 while (cursor.moveToNext()) {
@@ -208,11 +226,18 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                                                         @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
-            Map<String, String> params = requestBean.getParams();
-            if (params.containsKey("id")) {
-                params.put("travelNoteId", params.remove("id"));
+            Map<String, String> requestParams = requestBean.getParams();
+            Map<String, String> params = new HashMap<>();
+            if (requestParams.containsKey("id")) {
+                params.put("travelNoteId", requestParams.get("id"));
             }
-            Cursor cursor = query(db, TRAVEL_NOTE_COMMENT_TABLE_NAME, requestBean.getParams());
+            if (requestParams.containsKey(PAGE_NO)) {
+                params.put(PAGE_NO, requestParams.get(PAGE_NO));
+            }
+            if (requestParams.containsKey(PAGE_SIZE)) {
+                params.put(PAGE_SIZE, requestParams.get(PAGE_SIZE));
+            }
+            Cursor cursor = query(db, TRAVEL_NOTE_COMMENT_TABLE_NAME, params);
             try {
                 JSONArray jsonArray = new JSONArray();
                 while (cursor.moveToNext()) {

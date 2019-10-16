@@ -1,4 +1,6 @@
-package com.pine.main.presenter;
+package com.pine.main.vm;
+
+import android.arch.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -8,9 +10,8 @@ import com.pine.base.router.command.RouterMvvmCommand;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.main.bean.MainBusinessItemEntity;
-import com.pine.main.contract.IMainHomeContract;
 import com.pine.main.model.MainHomeModel;
-import com.pine.tool.architecture.mvp.presenter.Presenter;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,18 +19,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by tanghongfeng on 2018/9/13
- */
+public class MainHomeVm extends ViewModel {
+    private MainHomeModel mHomeModel = new MainHomeModel();
 
-public class MainHomePresenter extends Presenter<IMainHomeContract.Ui> implements IMainHomeContract.Presenter {
-    private MainHomeModel mHomeModel;
-
-    public MainHomePresenter() {
-        mHomeModel = new MainHomeModel();
-    }
-
-    @Override
     public void loadBusinessBundleData() {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject;
@@ -61,6 +53,16 @@ public class MainHomePresenter extends Presenter<IMainHomeContract.Ui> implement
         ArrayList<MainBusinessItemEntity> entityList = new Gson().fromJson(jsonArray.toString(),
                 new TypeToken<ArrayList<MainBusinessItemEntity>>() {
                 }.getType());
-        getUi().setBusinessBundleData(entityList);
+        setBusinessBundleList(entityList);
+    }
+
+    private MutableLiveData<ArrayList<MainBusinessItemEntity>> businessBundleListData = new MutableLiveData<>();
+
+    public MutableLiveData<ArrayList<MainBusinessItemEntity>> getBusinessBundleListData() {
+        return businessBundleListData;
+    }
+
+    public void setBusinessBundleList(ArrayList<MainBusinessItemEntity> list) {
+        businessBundleListData.setValue(list);
     }
 }

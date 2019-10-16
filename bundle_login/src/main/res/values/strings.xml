@@ -17,6 +17,8 @@
     <string name="login_register_btn">注 册</string>
     <string name="login_register_agreement_before">点击注册默认您同意</string>
     <string name="login_register_agreement">《会员注册协议》</string>
+    <string name="login_register_verify_code_empty_msg">验证码不能为空</string>
+    <string name="login_register_pwd_need_same">两次输入密码不一致</string>
     <string name="login_register_success">注册成功</string>
     <string name="login_register_fail">注册失败</string>
 </resources>

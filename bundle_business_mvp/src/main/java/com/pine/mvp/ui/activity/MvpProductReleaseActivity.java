@@ -30,7 +30,7 @@ import java.util.List;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, Args = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""}, AccessActions = {""})
 public class MvpProductReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpProductReleaseContract.Ui, MvpProductReleasePresenter>
         implements IMvpProductReleaseContract.Ui, View.OnClickListener {

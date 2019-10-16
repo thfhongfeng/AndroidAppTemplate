@@ -1,33 +1,34 @@
 package com.pine.login.ui.activity;
 
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.Observer;
+import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
-import com.pine.base.widget.view.PicVerifyCodeImageView;
+import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.login.LoginUrlConstants;
 import com.pine.login.R;
-import com.pine.login.contract.IRegisterContract;
-import com.pine.login.presenter.RegisterPresenter;
-import com.pine.tool.bean.InputParam;
+import com.pine.login.bean.RegisterBean;
+import com.pine.login.databinding.RegisterActivityBinding;
+import com.pine.login.vm.RegisterVm;
 
 /**
  * Created by tanghongfeng on 2018/11/15
  */
 
 public class RegisterActivity extends
-        BaseMvpActionBarActivity<IRegisterContract.Ui, RegisterPresenter>
-        implements IRegisterContract.Ui, View.OnClickListener {
+        BaseMvvmActionBarActivity<RegisterActivityBinding, RegisterVm> {
 
-    private ScrollView scroll_view;
-    private TextView register_btn_tv;
-    private PicVerifyCodeImageView verify_code_iv;
-    private EditText mobile_et, verify_code_et;
-    private EditText password_et, confirm_pwd_et;
+    @Override
+    public void initLiveDataObserver() {
+        mViewModel.getRegisterBeanData().observe(this, new Observer<RegisterBean>() {
+            @Override
+            public void onChanged(@Nullable RegisterBean registerBean) {
+                mBinding.setRegisterBean(registerBean);
+            }
+        });
+    }
 
     @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
@@ -40,60 +41,29 @@ public class RegisterActivity extends
     }
 
     @Override
-    protected void findViewOnCreate() {
-        scroll_view = findViewById(R.id.scroll_view);
-        mobile_et = findViewById(R.id.mobile_et);
-        verify_code_et = findViewById(R.id.verify_code_et);
-        verify_code_iv = findViewById(R.id.verify_code_iv);
-        password_et = findViewById(R.id.password_et);
-        confirm_pwd_et = findViewById(R.id.confirm_pwd_et);
-        register_btn_tv = findViewById(R.id.register_btn_tv);
+    protected void init() {
+        mBinding.setPresenter(new Presenter());
+        initView();
+    }
+
+    private void initView() {
+        mBinding.verifyCodeIv.init(LoginUrlConstants.Verify_Code_Image);
     }
 
     @Override
-    protected void init() {
-        verify_code_iv.init(LoginUrlConstants.Verify_Code_Image);
-        register_btn_tv.setOnClickListener(this);
+    public void onSyncLiveDataInit(int liveDataObjTag) {
+
     }
 
     @Override
     public void onResume() {
-        verify_code_iv.onResume();
+        mBinding.verifyCodeIv.onResume();
         super.onResume();
     }
 
-    @NonNull
-    @Override
-    public InputParam getUserMobileParam(String key) {
-        return new InputParam(this, key, mobile_et.getText().toString(),
-                scroll_view, mobile_et);
-    }
-
-    @NonNull
-    @Override
-    public InputParam getVerificationCodeParam(String key) {
-        return new InputParam(this, key, verify_code_et.getText().toString(),
-                scroll_view, verify_code_et);
-    }
-
-    @NonNull
-    @Override
-    public InputParam getUserPasswordParam(String key) {
-        return new InputParam(this, key, password_et.getText().toString(),
-                scroll_view, password_et);
-    }
-
-    @NonNull
-    @Override
-    public InputParam getUserConfirmPasswordParam(String key) {
-        return new InputParam(this, key, confirm_pwd_et.getText().toString(),
-                scroll_view, confirm_pwd_et);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.register_btn_tv) {
-            mPresenter.register();
+    public class Presenter {
+        public void onRegisterClick(View view) {
+            mViewModel.register();
         }
     }
 }

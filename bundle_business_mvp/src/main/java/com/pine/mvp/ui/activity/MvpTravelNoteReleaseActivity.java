@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.pine.base.access.UiAccessArgs;
+import com.pine.base.access.UiAccessAction;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.base.component.editor.bean.TextImageEntity;
@@ -39,9 +39,9 @@ import java.util.List;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN},
-        Args = {UiAccessArgs.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
-                UiAccessArgs.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.VIP_LEVEL}, AccessArgs = {"", "100"},
+        AccessActions = {UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
+                UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI})
 public class MvpTravelNoteReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpTravelNoteReleaseContract.Ui, MvpTravelNoteReleasePresenter>
         implements IMvpTravelNoteReleaseContract.Ui, View.OnClickListener {

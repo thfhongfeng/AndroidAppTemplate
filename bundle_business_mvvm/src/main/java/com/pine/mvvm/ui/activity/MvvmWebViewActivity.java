@@ -39,18 +39,7 @@ public class MvvmWebViewActivity extends
     private AlertDialog mShareDialog;
 
     @Override
-    protected int getActivityLayoutResId() {
-        return R.layout.mvvm_activity_web_view;
-    }
-
-    @Override
-    protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
-        mBinding.setPresenter(new Presenter());
+    public void initLiveDataObserver() {
         mViewModel.getH5UrlData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -69,6 +58,17 @@ public class MvvmWebViewActivity extends
                 }
             }
         });
+    }
+
+    @Override
+    protected int getActivityLayoutResId() {
+        return R.layout.mvvm_activity_web_view;
+    }
+
+    @Override
+    protected void init() {
+        mBinding.setPresenter(new Presenter());
+        initView();
     }
 
     private void initView() {

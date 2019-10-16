@@ -60,7 +60,7 @@ public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
 
     }
 
-    protected void onCleared() {
+    public void onCleared() {
         mUi = null;
     }
 

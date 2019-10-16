@@ -39,17 +39,7 @@ public class MvvmShopTreeListFragment extends MvvmFragment<MvvmShopTreeListFragm
     };
 
     @Override
-    protected int getFragmentLayoutResId() {
-        return R.layout.mvvm_fragment_shop_tree_list;
-    }
-
-    @Override
-    protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
+    public void initLiveDataObserver() {
         mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopAndProductEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopAndProductEntity> mvvmShopAndProductEntity) {
@@ -60,6 +50,16 @@ public class MvvmShopTreeListFragment extends MvvmFragment<MvvmShopTreeListFragm
                 }
             }
         });
+    }
+
+    @Override
+    protected int getFragmentLayoutResId() {
+        return R.layout.mvvm_fragment_shop_tree_list;
+    }
+
+    @Override
+    protected void init() {
+        initView();
     }
 
     private void initView() {

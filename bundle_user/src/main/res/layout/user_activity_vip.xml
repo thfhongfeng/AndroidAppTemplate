@@ -2,11 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data class="UserHomeActivityBinding">
+    <data class="UserVipActivityBinding">
 
-        <variable
-            name="presenter"
-            type="com.pine.user.ui.activity.UserHomeActivity.Presenter"></variable>
     </data>
 
     <LinearLayout
@@ -20,18 +17,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="User Center" />
-
-        <TextView
-            android:id="@+id/logout_btn_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_30"
-            android:background="@drawable/base_shape_round_70b642_8bb96c"
-            android:gravity="center"
-            android:onClick="@{presenter::onLogoutClick}"
-            android:padding="@dimen/dp_20"
-            android:text="@string/user_logout" />
+            android:text="User Vip" />
 
         <com.pine.base.widget.view.BaseBottomTabNavigationBar
             android:id="@+id/bottom_tab_nb"

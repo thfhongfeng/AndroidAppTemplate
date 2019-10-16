@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 
 public interface IUiAccessExecutor {
-    boolean onExecute(Activity activity, HashMap<String, String> argsMap, UiAccessTimeInterval accessTimeInterval);
+    boolean onExecute(Activity activity, String arg, HashMap<String, String> actionsMap, UiAccessTimeInterval accessTimeInterval);
 
-    boolean onExecute(Fragment fragment, HashMap<String, String> argsMap, UiAccessTimeInterval accessTimeInterval);
+    boolean onExecute(Fragment fragment, String arg, HashMap<String, String> actionsMap, UiAccessTimeInterval accessTimeInterval);
 }

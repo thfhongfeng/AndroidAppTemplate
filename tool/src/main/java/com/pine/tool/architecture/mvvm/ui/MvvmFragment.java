@@ -26,20 +26,74 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     protected T mBinding;
     protected VM mViewModel;
 
-    @CallSuper
-    @Override
-    protected void beforeInitOnCreateView(@Nullable Bundle savedInstanceState) {
-        // 创建ViewModel
-        if (mViewModel == null) {
-            Type type = getClass().getGenericSuperclass();
-            if (type instanceof ParameterizedType) {
-                Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
-                mViewModel = (VM) ViewModelProviders.of(getActivity()).get(presenterClazz);
-                mViewModel.getUiLoadingData().setValue(false);
-                mViewModel.setUi(getActivity());
+    private Observer<Integer> mSyncLiveDataInitDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer tag) {
+            onSyncLiveDataInit(tag);
+        }
+    };
+
+    private Observer<Boolean> mResetUiDataObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable Boolean aBoolean) {
+            if (aBoolean) {
+                getActivity().finish();
+                startActivity(getActivity().getIntent());
             }
         }
+    };
+
+    private Observer<Boolean> mFinishDataObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable Boolean aBoolean) {
+            if (aBoolean) {
+                getActivity().finish();
+            }
+        }
+    };
+
+    private Observer<Boolean> mUiLoadingDataObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable Boolean aBoolean) {
+            setLoadingUiVisibility(aBoolean);
+        }
+    };
+
+    private Observer<String> mToastMsgDataObserver = new Observer<String>() {
+        @Override
+        public void onChanged(@Nullable String msg) {
+            showShortToast(msg);
+        }
+    };
+
+    private Observer<Integer> mToastResIdDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer resId) {
+            showShortToast(resId);
+        }
+    };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 创建ViewModel
+        Type type = getClass().getGenericSuperclass();
+        if (type instanceof ParameterizedType) {
+            Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
+            mViewModel = (VM) ViewModelProviders.of(getActivity()).get(presenterClazz);
+            mViewModel.getUiLoadingData().setValue(false);
+            mViewModel.setUi(getActivity());
+        }
+        mViewModel.getSyncLiveDataInitData().observe(this, mSyncLiveDataInitDataObserver);
+        mViewModel.getResetUiData().observe(this, mResetUiDataObserver);
+        mViewModel.getFinishData().observe(this, mFinishDataObserver);
+        mViewModel.getUiLoadingData().observe(this, mUiLoadingDataObserver);
+        mViewModel.getToastMsgData().observe(this, mToastMsgDataObserver);
+        mViewModel.getToastResIdData().observe(this, mToastResIdDataObserver);
+        initLiveDataObserver();
     }
+
+    public abstract void initLiveDataObserver();
 
     @Override
     protected View setContentView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -50,47 +104,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
 
     @Override
     protected final void findViewOnCreateView(View layout) {
-        mViewModel.getSyncLiveDataInitData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer tag) {
-                onSyncLiveDataInit(tag);
-            }
-        });
-        mViewModel.getResetUiData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean && getActivity() != null && !getActivity().isFinishing()) {
-                    getActivity().finish();
-                    startActivity(getActivity().getIntent());
-                }
-            }
-        });
-        mViewModel.getFinishData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean && getActivity() != null && !getActivity().isFinishing()) {
-                    getActivity().finish();
-                }
-            }
-        });
-        mViewModel.getUiLoadingData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                setLoadingUiVisibility(aBoolean);
-            }
-        });
-        mViewModel.getToastMsgData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String msg) {
-                showShortToast(msg);
-            }
-        });
-        mViewModel.getToastResIdData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer resId) {
-                showShortToast(resId);
-            }
-        });
+
     }
 
     @CallSuper

@@ -34,6 +34,27 @@ public class MvvmShopSearchCheckActivity extends
     private MvvmShopCheckListPaginationAdapter mShopCheckListPaginationAdapter;
 
     @Override
+    public void initLiveDataObserver() {
+        mViewModel.getSearchKey().observe(this, new Observer<MvvmShopSearchBean>() {
+            @Override
+            public void onChanged(@Nullable MvvmShopSearchBean searchBean) {
+                mBinding.setSearchBean(searchBean);
+            }
+        });
+
+        mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
+                if (mViewModel.getShopListData().getCustomData()) {
+                    mShopCheckListPaginationAdapter.setData(mvvmShopItemEntities, mViewModel.mSearchMode);
+                } else {
+                    mShopCheckListPaginationAdapter.addData(mvvmShopItemEntities);
+                }
+            }
+        });
+    }
+
+    @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
         titleTv.setText(R.string.mvvm_shop_check_title);
         menuBtnTv.setText(R.string.mvvm_complete);
@@ -52,30 +73,8 @@ public class MvvmShopSearchCheckActivity extends
 
     @Override
     protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
         mBinding.setPresenter(new Presenter());
-
-        mViewModel.getSearchKey().observe(this, new Observer<MvvmShopSearchBean>() {
-            @Override
-            public void onChanged(@Nullable MvvmShopSearchBean searchBean) {
-                mBinding.setSearchBean(searchBean);
-            }
-        });
-
-        mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
-                if (mViewModel.getShopListData().getCustomData()) {
-                    mShopCheckListPaginationAdapter.setData(mvvmShopItemEntities, mViewModel.mSearchMode);
-                } else {
-                    mShopCheckListPaginationAdapter.addData(mvvmShopItemEntities);
-                }
-            }
-        });
+        initView();
     }
 
     private void initView() {

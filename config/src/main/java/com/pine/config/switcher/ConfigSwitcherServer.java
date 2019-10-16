@@ -4,6 +4,7 @@ import com.pine.config.ConfigKey;
 import com.pine.config.bean.ConfigSwitcherEntity;
 import com.pine.config.model.ConfigSwitcherModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
@@ -100,7 +101,12 @@ public class ConfigSwitcherServer {
     }
 
     public void setupConfigSwitcher(final boolean isLogin, final IConfigSwitcherCallback callback) {
-        mConfigSwitcherModel.requestBundleSwitcherData(new IModelAsyncResponse<ArrayList<ConfigSwitcherEntity>>() {
+        final String versionName = AppUtils.getVersionName();
+        final int versionCode = AppUtils.getVersionCode();
+        HashMap<String, String> params = new HashMap<>();
+        params.put("versionName", versionName);
+        params.put("versionCode", versionCode + "");
+        mConfigSwitcherModel.requestBundleSwitcherData(params, new IModelAsyncResponse<ArrayList<ConfigSwitcherEntity>>() {
             @Override
             public void onResponse(ArrayList<ConfigSwitcherEntity> switcherEntities) {
                 if (switcherEntities != null) {

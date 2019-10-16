@@ -30,6 +30,11 @@ import com.pine.tool.permission.PermissionsAnnotation;
 public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHomeActivityBinding, MvvmHomeVm> {
 
     @Override
+    public void initLiveDataObserver() {
+        
+    }
+
+    @Override
     protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         super.beforeInitOnCreate(savedInstanceState);
         setActionBarTag(ACTION_BAR_CENTER_TITLE_TAG | ACTION_BAR_NO_GO_BACK_TAG);
@@ -42,12 +47,8 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
 
     @Override
     protected void init() {
-        initBindingAndVm();
-        initView();
-    }
-
-    private void initBindingAndVm() {
         mBinding.setPresenter(new Presenter());
+        initView();
     }
 
     private void initView() {

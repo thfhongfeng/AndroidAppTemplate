@@ -1,5 +1,6 @@
 package com.pine.db_server.sqlite.server;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -26,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.pine.base.BaseConstants.PAGE_NO;
+import static com.pine.base.BaseConstants.PAGE_SIZE;
 import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.PRODUCT_TABLE_NAME;
 import static com.pine.db_server.DbConstants.SHOP_TABLE_NAME;
@@ -46,11 +49,26 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
                 if (cursor.moveToFirst()) {
                     Map<String, String> requestParams = requestBean.getParams();
-                    requestParams.put("id", "1100" + new Date().getTime());
-                    requestParams.put("accountId", cursor.getString(cursor.getColumnIndex("id")));
-                    requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                    requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                    long id = insert(db, SHOP_TABLE_NAME, requestParams);
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("name", requestParams.get("name"));
+                    contentValues.put("type", requestParams.get("type"));
+                    contentValues.put("typeName", requestParams.get("typeName"));
+                    contentValues.put("onlineDate", requestParams.get("onlineDate"));
+                    contentValues.put("mobile", requestParams.get("mobile"));
+                    contentValues.put("addressDistrict", requestParams.get("addressDistrict"));
+                    contentValues.put("addressZipCode", requestParams.get("addressZipCode"));
+                    contentValues.put("latitude", requestParams.get("latitude"));
+                    contentValues.put("longitude", requestParams.get("longitude"));
+                    contentValues.put("addressStreet", requestParams.get("addressStreet"));
+                    contentValues.put("description", requestParams.get("description"));
+                    contentValues.put("remark", requestParams.get("remark"));
+                    contentValues.put("mainImgUrl", requestParams.get("mainImgUrl"));
+                    contentValues.put("imgUrls", requestParams.get("imgUrls"));
+                    contentValues.put("id", "1100" + new Date().getTime());
+                    contentValues.put("accountId", cursor.getString(cursor.getColumnIndex("id")));
+                    contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    long id = insert(db, SHOP_TABLE_NAME, "accountId", contentValues);
                     if (id == -1) {
                         return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
                     } else {
@@ -72,7 +90,9 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                              @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
-            Map<String, String> params = requestBean.getParams();
+            Map<String, String> requestParams = requestBean.getParams();
+            Map<String, String> params = new HashMap<>();
+            params.put("id", requestParams.get("id"));
             Cursor cursor = query(db, SHOP_TABLE_NAME, params);
             try {
                 JSONObject jsonObject = new JSONObject();
@@ -114,11 +134,18 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                            @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
-            Map<String, String> params = requestBean.getParams();
-            String latitudeStr = params.remove("latitude");
-            String longitudeStr = params.remove("longitude");
-            String searchKey = params.remove("searchKey");
+            Map<String, String> requestParams = requestBean.getParams();
+            String latitudeStr = requestParams.get("latitude");
+            String longitudeStr = requestParams.get("longitude");
+            String searchKey = requestParams.get("searchKey");
             Cursor cursor = null;
+            Map<String, String> params = new HashMap<>();
+            if (requestParams.containsKey(PAGE_NO)) {
+                params.put(PAGE_NO, requestParams.get(PAGE_NO));
+            }
+            if (requestParams.containsKey(PAGE_SIZE)) {
+                params.put(PAGE_SIZE, requestParams.get(PAGE_SIZE));
+            }
             if (!TextUtils.isEmpty(searchKey)) {
                 params.put("name", searchKey);
                 cursor = dimSearch(db, SHOP_TABLE_NAME, params);
@@ -164,9 +191,16 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                                                   @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
-            Map<String, String> params = requestBean.getParams();
-            String latitudeStr = params.remove("latitude");
-            String longitudeStr = params.remove("longitude");
+            Map<String, String> requestParams = requestBean.getParams();
+            String latitudeStr = requestParams.get("latitude");
+            String longitudeStr = requestParams.get("longitude");
+            Map<String, String> params = new HashMap<>();
+            if (requestParams.containsKey(PAGE_NO)) {
+                params.put(PAGE_NO, requestParams.get(PAGE_NO));
+            }
+            if (requestParams.containsKey(PAGE_SIZE)) {
+                params.put(PAGE_SIZE, requestParams.get(PAGE_SIZE));
+            }
             db.beginTransaction();
             Cursor cursor = query(db, SHOP_TABLE_NAME, params);
             try {
@@ -232,10 +266,18 @@ public class SQLiteShopServer extends SQLiteBaseServer {
                 Cursor cursor = query(db, ACCOUNT_TABLE_NAME, queryParams);
                 if (cursor.moveToFirst()) {
                     Map<String, String> requestParams = requestBean.getParams();
-                    requestParams.put("id", "1101" + new Date().getTime());
-                    requestParams.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                    requestParams.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                    long id = insert(db, PRODUCT_TABLE_NAME, requestParams);
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("name", requestParams.get("name"));
+                    contentValues.put("price", requestParams.get("price"));
+                    contentValues.put("shelvePrice", requestParams.get("shelvePrice"));
+                    contentValues.put("shelveDate", requestParams.get("shelveDate"));
+                    contentValues.put("description", requestParams.get("description"));
+                    contentValues.put("remark", requestParams.get("remark"));
+                    contentValues.put("shopId", requestParams.get("shopId"));
+                    contentValues.put("id", "1101" + new Date().getTime());
+                    contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    long id = insert(db, PRODUCT_TABLE_NAME, "id", contentValues);
                     if (id == -1) {
                         return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
                     } else {

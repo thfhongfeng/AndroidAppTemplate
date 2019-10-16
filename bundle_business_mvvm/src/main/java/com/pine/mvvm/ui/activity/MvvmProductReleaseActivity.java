@@ -27,11 +27,16 @@ import java.util.List;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, Args = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""}, AccessActions = {""})
 public class MvvmProductReleaseActivity extends
         BaseMvvmActionBarTextMenuActivity<MvvmProductReleaseActivityBinding, MvvmProductReleaseVm> {
     private InputTextDialog mPriceInputDialog, mShelvePriceInputDialog;
     private DateSelectDialog mShelveDateSelectDialog;
+
+    @Override
+    public void initLiveDataObserver() {
+
+    }
 
     @Override
     protected int getActivityLayoutResId() {

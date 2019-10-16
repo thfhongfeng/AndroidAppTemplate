@@ -10,4 +10,5 @@ import com.pine.router.annotation.ARouterRemoteAction;
 @ARouterRemoteAction(Key = ConfigKey.BUNDLE_USER_KEY, RemoteAction = "/user/service")
 public interface RouterUserCommand {
     String goUserHomeActivity = "goUserHomeActivity";
+    String goUserVipActivity = "goUserVipActivity";
 }

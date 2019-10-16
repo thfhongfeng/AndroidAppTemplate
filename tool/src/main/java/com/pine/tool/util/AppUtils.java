@@ -81,6 +81,9 @@ public class AppUtils {
         return getApplication().getApplicationInfo().loadLabel(getApplication().getPackageManager()).toString();
     }
 
+    public static int getVersionCode() {
+        return getVersionCode(AppUtils.getApplicationContext());
+    }
 
     /**
      * 得到软件版本号
@@ -96,6 +99,10 @@ public class AppUtils {
             e.printStackTrace();
         }
         return versionCode;
+    }
+
+    public static String getVersionName() {
+        return getVersionName(AppUtils.getApplicationContext());
     }
 
     /**

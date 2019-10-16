@@ -10,6 +10,7 @@ public interface BaseConstants extends Constants {
     String LOGIN_ACCOUNT_ID = "accountId";
     String LOGIN_ACCOUNT = "mobile";
     String LOGIN_PASSWORD = "password";
+    String LOGIN_VERIFY_CODE = "verify_code";
 
     // list adapter key
     String PAGE_NO = "pageNo";

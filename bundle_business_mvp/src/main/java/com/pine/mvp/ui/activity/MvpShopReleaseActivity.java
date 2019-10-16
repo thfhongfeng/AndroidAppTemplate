@@ -45,7 +45,7 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, Args = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""}, AccessActions = {""})
 public class MvpShopReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpShopReleaseContract.Ui, MvpShopReleasePresenter>
         implements IMvpShopReleaseContract.Ui, View.OnClickListener {
