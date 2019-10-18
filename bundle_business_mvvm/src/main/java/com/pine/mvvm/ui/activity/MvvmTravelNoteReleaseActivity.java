@@ -99,7 +99,7 @@ public class MvvmTravelNoteReleaseActivity extends
     };
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getBelongShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> list) {
@@ -157,7 +157,7 @@ public class MvvmTravelNoteReleaseActivity extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

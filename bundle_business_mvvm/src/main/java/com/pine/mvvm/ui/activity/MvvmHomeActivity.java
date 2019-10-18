@@ -30,7 +30,7 @@ import com.pine.tool.permission.PermissionsAnnotation;
 public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHomeActivityBinding, MvvmHomeVm> {
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         
     }
 
@@ -61,7 +61,7 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

@@ -28,7 +28,7 @@ public class MvvmShopPaginationListFragment extends
     private MvvmShopListPaginationAdapter mMvvmHomeItemAdapter;
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
@@ -97,7 +97,7 @@ public class MvvmShopPaginationListFragment extends
     };
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

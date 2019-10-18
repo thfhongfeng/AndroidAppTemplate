@@ -28,7 +28,7 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
         implements SwipeRefreshLayout.OnRefreshListener {
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getShopDetailData().observe(this, new Observer<MvvmShopDetailEntity>() {
             @Override
             public void onChanged(@Nullable MvvmShopDetailEntity mvvmShopDetailEntity) {
@@ -72,7 +72,7 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

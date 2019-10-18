@@ -34,7 +34,7 @@ public class MvvmShopSearchCheckActivity extends
     private MvvmShopCheckListPaginationAdapter mShopCheckListPaginationAdapter;
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getSearchKey().observe(this, new Observer<MvvmShopSearchBean>() {
             @Override
             public void onChanged(@Nullable MvvmShopSearchBean searchBean) {
@@ -128,7 +128,7 @@ public class MvvmShopSearchCheckActivity extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

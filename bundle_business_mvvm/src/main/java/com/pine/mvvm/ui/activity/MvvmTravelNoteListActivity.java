@@ -32,7 +32,7 @@ public class MvvmTravelNoteListActivity extends
     private MvvmTravelNoteListPaginationAdapter mMvvmTravelListItemAdapter;
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getTravelListData().observe(this,
                 new Observer<ArrayList<MvvmTravelNoteItemEntity>>() {
                     @Override
@@ -101,7 +101,7 @@ public class MvvmTravelNoteListActivity extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

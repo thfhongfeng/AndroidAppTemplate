@@ -39,7 +39,7 @@ public class MvvmWebViewActivity extends
     private AlertDialog mShareDialog;
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getH5UrlData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -130,7 +130,7 @@ public class MvvmWebViewActivity extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

@@ -31,7 +31,7 @@ public class MvvmWebViewFragment extends
         MvvmFragment<MvvmWebViewFragmentBinding, MvvmWebViewVm> {
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getH5UrlData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -110,7 +110,7 @@ public class MvvmWebViewFragment extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

@@ -39,7 +39,7 @@ public class MvvmShopTreeListFragment extends MvvmFragment<MvvmShopTreeListFragm
     };
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopAndProductEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopAndProductEntity> mvvmShopAndProductEntity) {
@@ -95,7 +95,7 @@ public class MvvmShopTreeListFragment extends MvvmFragment<MvvmShopTreeListFragm
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

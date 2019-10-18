@@ -34,7 +34,7 @@ public class MvvmProductReleaseActivity extends
     private DateSelectDialog mShelveDateSelectDialog;
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
 
     }
 
@@ -70,7 +70,7 @@ public class MvvmProductReleaseActivity extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

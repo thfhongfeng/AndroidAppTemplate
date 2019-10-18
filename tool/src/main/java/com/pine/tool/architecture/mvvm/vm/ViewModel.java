@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.app.SupportActivity;
 
 import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.util.LogUtils;
@@ -17,15 +16,6 @@ import com.pine.tool.util.LogUtils;
 public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     private UiState mUiState = UiState.UI_STATE_UNDEFINE;
-    private SupportActivity mUi;
-
-    public SupportActivity getUi() {
-        return mUi;
-    }
-
-    public void setUi(SupportActivity ui) {
-        mUi = ui;
-    }
 
     /**
      * UI状态回调
@@ -61,21 +51,24 @@ public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
     }
 
     public void onCleared() {
-        mUi = null;
+
     }
 
-    // 用于LiveData是异步操作返回（不是在VM中初始化）的情况，
-    // 在异步LiveData返回时调用callOnSyncLiveDataInit来告诉UI开始绑定Observer，
-    // 参数liveDataObjTag用来标识对应的异步LiveData(由调用者自己标识)
-    // UI中的必须实现onSyncLiveDataInit，同时所有的异步返回的LiveData只能在此方法中进行绑定
-    MutableLiveData<Integer> syncLiveDataInitData = new MutableLiveData<>();
+    MutableLiveData<Integer> observeSyncLiveData = new MutableLiveData<>();
 
-    public MutableLiveData<Integer> getSyncLiveDataInitData() {
-        return syncLiveDataInitData;
+    public MutableLiveData<Integer> getObserveSyncLiveDataData() {
+        return observeSyncLiveData;
     }
 
-    public void callOnSyncLiveDataInit(int liveDataObjTag) {
-        syncLiveDataInitData.setValue(liveDataObjTag);
+    /**
+     * 用于LiveData是其它功能操作返回（不是在VM中初始化赋值）的情况，
+     * 在LiveData返回时通过调用setSyncLiveDataTag来告诉UI开始绑定Observer，
+     * UI中的必须实现observeSyncLiveData，同时所有其它功能操作返回的LiveData只能在此方法中进行绑定Observer
+     *
+     * @param liveDataObjTag 用来标识对应的LiveData(由调用者自己确定)
+     */
+    public void setSyncLiveDataTag(int liveDataObjTag) {
+        observeSyncLiveData.setValue(liveDataObjTag);
     }
 
     // 重置UI

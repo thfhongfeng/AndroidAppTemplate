@@ -51,7 +51,7 @@ public class MvvmShopReleaseActivity extends
     private ProvinceSelectDialog mProvinceSelectDialog;
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getShopDetailData().observe(this, new Observer<MvvmShopDetailEntity>() {
             @Override
             public void onChanged(@Nullable MvvmShopDetailEntity mvvmShopDetailEntity) {
@@ -138,7 +138,7 @@ public class MvvmShopReleaseActivity extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

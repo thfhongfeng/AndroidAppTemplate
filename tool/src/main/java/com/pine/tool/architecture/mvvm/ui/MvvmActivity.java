@@ -23,10 +23,10 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
     protected T mBinding;
     protected VM mViewModel;
 
-    private Observer<Integer> mSyncLiveDataInitDataObserver = new Observer<Integer>() {
+    private Observer<Integer> mSyncLiveDataObserver = new Observer<Integer>() {
         @Override
         public void onChanged(@Nullable Integer tag) {
-            onSyncLiveDataInit(tag);
+            observeSyncLiveData(tag);
         }
     };
 
@@ -79,18 +79,24 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
             Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
             mViewModel = (VM) ViewModelProviders.of(this).get(presenterClazz);
             mViewModel.getUiLoadingData().setValue(false);
-            mViewModel.setUi(this);
         }
-        mViewModel.getSyncLiveDataInitData().observe(this, mSyncLiveDataInitDataObserver);
+        mViewModel.getObserveSyncLiveDataData().observe(this, mSyncLiveDataObserver);
         mViewModel.getResetUiData().observe(this, mResetUiDataObserver);
         mViewModel.getFinishData().observe(this, mFinishDataObserver);
         mViewModel.getUiLoadingData().observe(this, mUiLoadingDataObserver);
         mViewModel.getToastMsgData().observe(this, mToastMsgDataObserver);
         mViewModel.getToastResIdData().observe(this, mToastResIdDataObserver);
-        initLiveDataObserver();
+        observeInitLiveData();
     }
 
-    public abstract void initLiveDataObserver();
+    /**
+     * 用于在VM中初始化赋值的LiveData的进行监听观察
+     * 此方法在Activity onCreate的时候自动调用
+     * （注意区别于observeSyncLiveData）
+     * observeInitLiveData：用于对在VM中初始化的LiveData的进行监听观察。
+     * observeSyncLiveData ：用于对不是在VM中初始化赋值的LiveData的进行监听观察，需要在VM中主动调用setSyncLiveDataTag。
+     */
+    public abstract void observeInitLiveData();
 
     protected void setContentView(Bundle savedInstanceState) {
         mBinding = DataBindingUtil.setContentView(this, getActivityLayoutResId());
@@ -160,9 +166,13 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
     }
 
     /**
-     * 此方法的调用需要在VM中主动调用callOnSyncLiveDataInit方法，否则不会执行
+     * 对不是在VM中初始化赋值的LiveData的进行监听观察（通过其它功能返回的LiveData）。
+     * 此方法的调用需要在VM获取到LiveData后中主动调用setSyncLiveDataTag方法。
+     * （注意区别于observeInitLiveData）
+     * observeInitLiveData：用于对在VM中初始化的LiveData的进行监听观察。
+     * observeSyncLiveData ：用于对不是在VM中初始化赋值的LiveData的进行监听观察，需要在VM中主动调用setSyncLiveDataTag。
      *
-     * @param liveDataObjTag 用来标识对应的异步LiveData(由调用者自己标识)
+     * @param liveDataObjTag 用来标识对应的LiveData(由调用者自己标识)
      */
-    public abstract void onSyncLiveDataInit(int liveDataObjTag);
+    public abstract void observeSyncLiveData(int liveDataObjTag);
 }

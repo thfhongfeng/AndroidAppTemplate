@@ -20,7 +20,7 @@ import com.pine.login.vm.LoginVm;
 public class LoginActivity extends BaseMvvmActionBarActivity<LoginActivityBinding, LoginVm> {
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getLoginBeanData().observe(this, new Observer<LoginBean>() {
             @Override
             public void onChanged(@Nullable LoginBean loginBean) {
@@ -50,7 +50,7 @@ public class LoginActivity extends BaseMvvmActionBarActivity<LoginActivityBindin
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

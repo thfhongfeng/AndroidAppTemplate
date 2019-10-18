@@ -29,7 +29,7 @@ public class MvvmTravelNoteDetailActivity extends
     private MvvmTravelNoteDetailComplexAdapter mTravelNoteDetailAdapter;
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getTravelNoteDetailDate().observe(this, new Observer<MvvmTravelNoteDetailEntity>() {
             @Override
             public void onChanged(@Nullable MvvmTravelNoteDetailEntity mvvmTravelNoteDetailEntity) {
@@ -97,7 +97,7 @@ public class MvvmTravelNoteDetailActivity extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

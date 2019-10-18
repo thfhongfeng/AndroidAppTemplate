@@ -18,7 +18,7 @@ public class MainHomeActivity extends BaseMvvmNoActionBarActivity<MainHomeActivi
     private MainBusinessAdapter mMainBusinessAdapter;
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getBusinessBundleListData().observe(this,
                 new Observer<ArrayList<MainBusinessItemEntity>>() {
                     @Override
@@ -57,7 +57,7 @@ public class MainHomeActivity extends BaseMvvmNoActionBarActivity<MainHomeActivi
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 }

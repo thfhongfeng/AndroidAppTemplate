@@ -21,7 +21,7 @@ public class RegisterActivity extends
         BaseMvvmActionBarActivity<RegisterActivityBinding, RegisterVm> {
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
         mViewModel.getRegisterBeanData().observe(this, new Observer<RegisterBean>() {
             @Override
             public void onChanged(@Nullable RegisterBean registerBean) {
@@ -51,7 +51,7 @@ public class RegisterActivity extends
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

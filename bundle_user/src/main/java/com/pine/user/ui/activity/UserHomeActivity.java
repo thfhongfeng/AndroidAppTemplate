@@ -20,7 +20,7 @@ import com.pine.user.vm.UserHomeVm;
 public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivityBinding, UserHomeVm> {
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
 
     }
 
@@ -35,7 +35,7 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 

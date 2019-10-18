@@ -34,12 +34,12 @@ public class UserVipActivity extends BaseMvvmActionBarActivity<UserVipActivityBi
     }
 
     @Override
-    public void initLiveDataObserver() {
+    public void observeInitLiveData() {
 
     }
 
     @Override
-    public void onSyncLiveDataInit(int liveDataObjTag) {
+    public void observeSyncLiveData(int liveDataObjTag) {
 
     }
 }
