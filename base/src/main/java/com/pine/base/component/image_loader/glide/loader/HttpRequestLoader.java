@@ -27,16 +27,19 @@ public class HttpRequestLoader implements ModelLoader<GlideUrl, InputStream> {
      */
     public static final Option<Integer> TIMEOUT = Option.memory(
             "com.pine.base.component.image_loader.glide.model_loader.HttpRequestLoader.Timeout", 2500);
-    public static IImageDownloadListener listener;
+
     @Nullable
     private final ModelCache<GlideUrl, GlideUrl> modelCache;
+    public IImageDownloadListener listener;
 
     public HttpRequestLoader() {
-        this(null);
+        this(null, null);
     }
 
-    public HttpRequestLoader(@Nullable ModelCache<GlideUrl, GlideUrl> modelCache) {
+    public HttpRequestLoader(@Nullable ModelCache<GlideUrl, GlideUrl> modelCache,
+                             IImageDownloadListener listener) {
         this.modelCache = modelCache;
+        this.listener = listener;
     }
 
     @Override
@@ -67,10 +70,14 @@ public class HttpRequestLoader implements ModelLoader<GlideUrl, InputStream> {
     public static class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
         private final ModelCache<GlideUrl, GlideUrl> modelCache = new ModelCache<>(500);
 
+        public IImageDownloadListener listener;
+
         @NonNull
         @Override
         public ModelLoader<GlideUrl, InputStream> build(MultiModelLoaderFactory multiFactory) {
-            return new HttpRequestLoader(modelCache);
+            ModelLoader modelLoader = new HttpRequestLoader(modelCache, listener);
+            listener = null;
+            return modelLoader;
         }
 
         @Override

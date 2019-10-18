@@ -25,9 +25,15 @@ import java.io.InputStream;
 @GlideModule
 public class GlideImageLoaderConfig extends AppGlideModule {
 
+    private static HttpRequestLoader.Factory mUrlModelLoaderFactory = new HttpRequestLoader.Factory();
+
+    public static HttpRequestLoader.Factory getUrlModelLoaderFactory() {
+        return mUrlModelLoaderFactory;
+    }
+
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        registry.replace(GlideUrl.class, InputStream.class, new HttpRequestLoader.Factory());
+        registry.replace(GlideUrl.class, InputStream.class, mUrlModelLoaderFactory);
     }
 
     @Override

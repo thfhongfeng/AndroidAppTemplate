@@ -13,7 +13,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.pine.base.component.image_loader.IImageDownloadListener;
 import com.pine.base.component.image_loader.IImageLoaderManager;
 import com.pine.base.component.image_loader.ImageCacheStrategy;
-import com.pine.base.component.image_loader.glide.loader.HttpRequestLoader;
 import com.pine.tool.util.LogUtils;
 
 import java.io.File;
@@ -39,7 +38,6 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
                 }
             }
         }
-        HttpRequestLoader.listener = null;
         return mInstance;
     }
 
@@ -62,7 +60,7 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
 
     @Override
     public IImageLoaderManager downloadListener(IImageDownloadListener listener) {
-        HttpRequestLoader.listener = listener;
+        GlideImageLoaderConfig.getUrlModelLoaderFactory().listener = listener;
         return mInstance;
     }
 
