@@ -346,7 +346,18 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg",
             "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg",
             "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp",
-            "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg"};
+            "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg",
+            "http://www.xdfpr.com/uploadfile/2017/0629/20170629023457170.jpg",
+            "http://pic1.win4000.com/wallpaper/2018-12-04/5c062a2388f3a.jpg",
+            "https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg",
+            "https://hbimg.huabanimg.com/146b38721f241d26f389be9b1f7155533116f299caa99-RJwASk_fw658",
+            "https://hbimg.huabanimg.com/45858c1f11e0b3c30bd0113c6f7ab88f5847034e51d57-Hprwwb_fw658",
+            "http://pic.lvmama.com/uploads/pc/place2/2017-07-25/dfb764eb-f294-4e44-92c0-2f0e0db5542b.jpg",
+            "http://static.jisutui.vip/data/upload/2019/05/4dbe54b546jhkudt.jpg",
+            "http://static.jisutui.vip/data/upload/2019/05/5424747238ryipcc.jpg",
+            "http://www.xdfpr.com/uploadfile/2017/0204/20170204053005927.jpg",
+            "http://static.jisutui.vip/data/upload/2019/05/63edd9d032smord6.jpg",
+            "https://c-ssl.duitang.com/uploads/item/201207/02/20120702194505_8V2yi.jpeg"};
 
     private void createShopTable(SQLiteDatabase db) {
         try {
@@ -370,7 +381,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("typeName", i % 3 == 0 ? "食品店" : "景点");
                 int r = new Random().nextInt(3);
                 int hasImageInt = new Random().nextInt(15);
-                int index = i + r;
+                int index = new Random().nextInt(100);
                 if (r == 1) {
                     contentValues.put("accountId", "100020190328102000000001");
                     contentValues.put("mobile", "15221464292");
@@ -474,13 +485,21 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     }
 
     private final String[] TRAVEL_NOTE_IMAGES = {"http://img.sccnn.com/bimg/337/31660.jpg",
+            "http://img.mp.itc.cn/upload/20161230/415c05319f0a4318a5cb2662ae314a84_th.jpeg",
             "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg",
             "https://c-ssl.duitang.com/uploads/item/201404/24/20140424154030_hyiBw.thumb.700_0.jpeg",
             "http://pic1.win4000.com/wallpaper/2018-12-04/5c062a2388f3a.jpg",
+            "https://n.sinaimg.cn/translate/666/w400h266/20191002/84ae-ifmectk3880839.jpg",
+            "http://img.mp.itc.cn/upload/20161230/b92cb3c2841b40b9994c709a4a365bd1_th.jpeg",
             "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg",
+            "https://img1.qunarzz.com/travel/d2/1807/c1/9b4f4b705cce1b5.jpg_480x360x95_784166eb.jpg",
             "https://hbimg.huabanimg.com/146b38721f241d26f389be9b1f7155533116f299caa99-RJwASk_fw658",
+            "http://img.mp.itc.cn/upload/20161230/20aecebf989547588677d7247e782c12_th.jpeg",
+            "http://n.sinaimg.cn/sinacn10113/208/w640h368/20190629/88dd-hyzpvis2421955.jpg",
             "https://hbimg.huabanimg.com/45858c1f11e0b3c30bd0113c6f7ab88f5847034e51d57-Hprwwb_fw658",
+            "http://img.mp.itc.cn/upload/20161230/4328110b663444b09ddf39e450ff2772_th.jpeg",
             "https://c-ssl.duitang.com/uploads/item/201207/02/20120702194505_8V2yi.jpeg",
+            "https://img1.qunarzz.com/travel/d0/1807/5b/40f7d2eb06e4ebb5.jpg_480x360x95_89f62ae3.jpg",
             "http://img.juimg.com/tuku/yulantu/110516/1717-11051604500688.jpg"};
 
     private void createTravelNoteTable(SQLiteDatabase db) {
@@ -521,7 +540,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("preface", "这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言");
                 String days = "[{id:'1',day:'第1天',contentList:[{type:'text',index:'1',text:'第1天第1段'}," +
                         "{type:'text',index:'2',text:'第1天第2段'}]}";
-                for (int j = 1; j < new Random().nextInt(10) + 1; j++) {
+                for (int j = 1; j < new Random().nextInt(20) + 1; j++) {
                     String str = "[{type:'text',index:'1',text:'第" + (j + 1) + "天第1段'}," +
                             "{type:'image',index:'2',remoteFilePath:'" + TRAVEL_NOTE_IMAGES[(j - 1) % imageTotalCount] + "',text:'第" + (j + 1) + "天第2段'}," +
                             "{type:'text',index:'3',text:'第" + (j + 1) + "天第3段'}]";

@@ -205,7 +205,18 @@ public class MvpShopModel {
             "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg",
             "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg",
             "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp",
-            "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg"};
+            "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg",
+            "http://www.xdfpr.com/uploadfile/2017/0629/20170629023457170.jpg",
+            "http://pic1.win4000.com/wallpaper/2018-12-04/5c062a2388f3a.jpg",
+            "https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg",
+            "https://hbimg.huabanimg.com/146b38721f241d26f389be9b1f7155533116f299caa99-RJwASk_fw658",
+            "https://hbimg.huabanimg.com/45858c1f11e0b3c30bd0113c6f7ab88f5847034e51d57-Hprwwb_fw658",
+            "http://pic.lvmama.com/uploads/pc/place2/2017-07-25/dfb764eb-f294-4e44-92c0-2f0e0db5542b.jpg",
+            "http://static.jisutui.vip/data/upload/2019/05/4dbe54b546jhkudt.jpg",
+            "http://static.jisutui.vip/data/upload/2019/05/5424747238ryipcc.jpg",
+            "http://www.xdfpr.com/uploadfile/2017/0204/20170204053005927.jpg",
+            "http://static.jisutui.vip/data/upload/2019/05/63edd9d032smord6.jpg",
+            "https://c-ssl.duitang.com/uploads/item/201207/02/20120702194505_8V2yi.jpeg"};
 
     private JSONObject getShopDetailData(Object paramsObj) {
         Map<String, String> params = (HashMap<String, String>) paramsObj;
