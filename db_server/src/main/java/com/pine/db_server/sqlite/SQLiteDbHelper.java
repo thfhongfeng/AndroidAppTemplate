@@ -369,35 +369,34 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("type", i % 3 == 0 ? "2" : "1");
                 contentValues.put("typeName", i % 3 == 0 ? "食品店" : "景点");
                 int r = new Random().nextInt(3);
+                int hasImageInt = new Random().nextInt(15);
+                int index = i + r;
                 if (r == 1) {
                     contentValues.put("accountId", "100020190328102000000001");
                     contentValues.put("mobile", "15221464292");
-                    int hasImageInt = new Random().nextInt(15);
                     if (hasImageInt > 1) {
-                        contentValues.put("mainImgUrl", SHOP_IMAGES[r % imageTotalCount]);
-                        contentValues.put("imgUrls", SHOP_IMAGES[r % imageTotalCount] + "," +
-                                SHOP_IMAGES[(r + 1) % imageTotalCount] + "," +
-                                SHOP_IMAGES[(r + 2) % imageTotalCount] + "," +
-                                SHOP_IMAGES[(r + 3) % imageTotalCount]);
+                        contentValues.put("mainImgUrl", SHOP_IMAGES[index % imageTotalCount]);
+                        contentValues.put("imgUrls", SHOP_IMAGES[index % imageTotalCount] + "," +
+                                SHOP_IMAGES[(index + 1) % imageTotalCount] + "," +
+                                SHOP_IMAGES[(index + 2) % imageTotalCount] + "," +
+                                SHOP_IMAGES[(index + 3) % imageTotalCount]);
                     }
                 } else if (r == 2) {
                     contentValues.put("accountId", "100020190328102000000002");
                     contentValues.put("mobile", "15221464296");
-                    int hasImageInt = new Random().nextInt(15);
                     if (hasImageInt > 1) {
-                        contentValues.put("mainImgUrl", SHOP_IMAGES[r % imageTotalCount]);
-                        contentValues.put("imgUrls", SHOP_IMAGES[r % imageTotalCount] + "," +
-                                SHOP_IMAGES[(r + 1) % imageTotalCount] + "," +
-                                SHOP_IMAGES[(r + 2) % imageTotalCount]);
+                        contentValues.put("mainImgUrl", SHOP_IMAGES[index % imageTotalCount]);
+                        contentValues.put("imgUrls", SHOP_IMAGES[index % imageTotalCount] + "," +
+                                SHOP_IMAGES[(index + 1) % imageTotalCount] + "," +
+                                SHOP_IMAGES[(index + 2) % imageTotalCount]);
                     }
                 } else {
                     contentValues.put("accountId", "100020190328102000000000");
                     contentValues.put("mobile", "18672943565");
-                    int hasImageInt = new Random().nextInt(15);
                     if (hasImageInt > 1) {
-                        contentValues.put("mainImgUrl", SHOP_IMAGES[r % imageTotalCount]);
-                        contentValues.put("imgUrls", SHOP_IMAGES[r % imageTotalCount] + "," +
-                                SHOP_IMAGES[(r + 1) % imageTotalCount]);
+                        contentValues.put("mainImgUrl", SHOP_IMAGES[index % imageTotalCount]);
+                        contentValues.put("imgUrls", SHOP_IMAGES[index % imageTotalCount] + "," +
+                                SHOP_IMAGES[(index + 1) % imageTotalCount]);
                     }
                 }
                 contentValues.put("latitude", String.valueOf(DecimalUtils.add(31.221367d, (i + 1) / 2000.0d, 6)));
