@@ -130,7 +130,7 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
         if (bean.getResponse().isSucceed()) {
             ((JsonCallback) bean.getCallback()).onResponse(bean.getWhat(), bean.getResponse());
         } else {
-            ((JsonCallback) bean.getCallback()).onFail(bean.getWhat(), bean.getResponse().getException());
+            ((JsonCallback) bean.getCallback()).onFail(bean.getWhat(), bean.getResponse().getException(), bean.getResponse());
         }
     }
 

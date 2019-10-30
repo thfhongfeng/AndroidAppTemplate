@@ -94,8 +94,8 @@ public abstract class Activity extends AppCompatActivity
             }
         }
         if (!UiAccessManager.getInstance().checkCanAccess(this,
-                        UiAccessTimeInterval.UI_ACCESS_ON_CREATE, mUiAccessTypes, mUiAccessArgs,
-                        mUiAccessActionsMap)) {
+                UiAccessTimeInterval.UI_ACCESS_ON_CREATE, mUiAccessTypes, mUiAccessArgs,
+                mUiAccessActionsMap)) {
             mUiAccessReady = false;
             onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_CREATE);
         }
@@ -194,13 +194,11 @@ public abstract class Activity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mOnAllAccessRestrictionReleasedMethodCalled = false;
-        mPrePause = false;
 
         mUiAccessReady = true;
         if (!UiAccessManager.getInstance().checkCanAccess(
-                        this, UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT,
-                        mUiAccessTypes, mUiAccessArgs, mUiAccessActionsMap)) {
+                this, UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT,
+                mUiAccessTypes, mUiAccessArgs, mUiAccessActionsMap)) {
             mUiAccessReady = false;
             onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT);
         }
@@ -227,8 +225,8 @@ public abstract class Activity extends AppCompatActivity
             mPrePause = false;
             mUiAccessReady = true;
             if (!UiAccessManager.getInstance().checkCanAccess(
-                            this, UiAccessTimeInterval.UI_ACCESS_ON_RESUME,
-                            mUiAccessTypes, mUiAccessArgs, mUiAccessActionsMap)) {
+                    this, UiAccessTimeInterval.UI_ACCESS_ON_RESUME,
+                    mUiAccessTypes, mUiAccessArgs, mUiAccessActionsMap)) {
                 mUiAccessReady = false;
                 onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_RESUME);
             } else {
@@ -439,11 +437,19 @@ public abstract class Activity extends AppCompatActivity
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
     }
 
+    public void showShortToast(@StringRes int resId, Object... formatArgs) {
+        Toast.makeText(this, getString(resId, formatArgs), Toast.LENGTH_SHORT).show();
+    }
+
     public void showLongToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     public void showLongToast(@StringRes int resId) {
         Toast.makeText(this, resId, Toast.LENGTH_LONG).show();
+    }
+
+    public void showLongToast(@StringRes int resId, Object... formatArgs) {
+        Toast.makeText(this, getString(resId, formatArgs), Toast.LENGTH_LONG).show();
     }
 }

@@ -96,7 +96,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
      * 用于在VM中初始化赋值的LiveData的进行监听观察
      * 此方法在Fragment onCreate的时候自动调用
      * （注意区别于observeSyncLiveData）
-     * observeInitLiveData：用于对在VM中初始化的LiveData的进行监听观察。
+     * observeInitLiveData：用于在VM中初始化的LiveData的进行监听观察。
      * observeSyncLiveData ：用于对不是在VM中初始化赋值的LiveData的进行监听观察，需要在VM中主动调用setSyncLiveDataTag。
      */
     public abstract void observeInitLiveData();
@@ -173,7 +173,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
      * 对不是在VM中初始化赋值的LiveData的进行监听观察（通过其它功能返回的LiveData）。
      * 此方法的调用需要在VM获取到LiveData后中主动调用setSyncLiveDataTag方法。
      * （注意区别于observeInitLiveData）
-     * observeInitLiveData：用于对在VM中初始化的LiveData的进行监听观察。
+     * observeInitLiveData：用于在VM中初始化的LiveData的进行监听观察。
      * observeSyncLiveData ：用于对不是在VM中初始化赋值的LiveData的进行监听观察，需要在VM中主动调用setSyncLiveDataTag。
      *
      * @param liveDataObjTag 用来标识对应的LiveData(由调用者自己标识)

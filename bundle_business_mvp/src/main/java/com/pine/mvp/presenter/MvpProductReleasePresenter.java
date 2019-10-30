@@ -10,7 +10,7 @@ import com.pine.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.bean.InputParam;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 
 import java.util.HashMap;
 
@@ -86,7 +86,7 @@ public class MvpProductReleasePresenter extends Presenter<IMvpProductReleaseCont
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         showShortToast(e.getMessage());
                     }

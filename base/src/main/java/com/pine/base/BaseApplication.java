@@ -79,7 +79,7 @@ public class BaseApplication {
 
             @Override
             public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
+                LogUtils.d(TAG, activity + " on saveInstanceState");
             }
 
             @Override

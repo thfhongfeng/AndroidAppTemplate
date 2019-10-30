@@ -13,24 +13,30 @@ import com.pine.tool.request.Response;
 import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.util.LogUtils;
 import com.yanzhenjie.nohttp.BasicBinary;
+import com.yanzhenjie.nohttp.BasicRequest;
 import com.yanzhenjie.nohttp.Binary;
 import com.yanzhenjie.nohttp.Headers;
-import com.yanzhenjie.nohttp.IBasicRequest;
+import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.InputStreamBinary;
+import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
 import com.yanzhenjie.nohttp.OnUploadListener;
+import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yanzhenjie.nohttp.download.DownloadQueue;
 import com.yanzhenjie.nohttp.download.DownloadRequest;
+import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.tools.HeaderUtil;
+import com.yanzhenjie.nohttp.ssl.TLSSocketFactory;
+import com.yanzhenjie.nohttp.tools.HeaderUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.ConnectException;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.ArrayList;
@@ -39,6 +45,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -54,7 +63,8 @@ public class NoRequestManager implements IRequestManager {
     private HashMap<String, String> mSessionIdMap = new HashMap<>();
 
     private NoRequestManager() {
-
+        Logger.setDebug(true);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
+        Logger.setTag("NoHttp");// 打印Log的tag
     }
 
     public static NoRequestManager getInstance() {
@@ -88,6 +98,7 @@ public class NoRequestManager implements IRequestManager {
                 httpResponse.setTag(response.getTag());
                 httpResponse.setData(response.get());
                 httpResponse.setException(response.getException());
+                httpResponse.setHeaders(response.getHeaders().toResponseHeaders());
                 List<HttpCookie> list = response.getHeaders().getCookies();
                 HashMap<String, String> cookies = new HashMap<>();
                 for (int i = 0; i < list.size(); i++) {
@@ -108,7 +119,9 @@ public class NoRequestManager implements IRequestManager {
                 httpResponse.setResponseCode(response.responseCode());
                 httpResponse.setTag(response.getTag());
                 httpResponse.setData(response.get());
-                httpResponse.setException(response.getException());
+                httpResponse.setException(response.getException() instanceof NetworkError ?
+                        new ConnectException(response.getException().getMessage()) : response.getException());
+                httpResponse.setHeaders(response.getHeaders().toResponseHeaders());
                 List<HttpCookie> list = response.getHeaders().getCookies();
                 HashMap<String, String> cookies = new HashMap<>();
                 for (int i = 0; i < list.size(); i++) {
@@ -134,12 +147,12 @@ public class NoRequestManager implements IRequestManager {
         return new DownloadListener() {
             @Override
             public void onDownloadError(int what, Exception exception) {
-                listener.onDownloadError(what, exception);
+                listener.onDownloadError(what, exception instanceof NetworkError ? new ConnectException(exception.getMessage()) : exception);
             }
 
             @Override
             public void onStart(int what, boolean isResume, long rangeSize, Headers responseHeaders, long allCount) {
-                listener.onStart(what, isResume, rangeSize, allCount);
+                listener.onStart(what, isResume, rangeSize, responseHeaders.toResponseHeaders(), allCount);
             }
 
             @Override
@@ -184,22 +197,21 @@ public class NoRequestManager implements IRequestManager {
 
             @Override
             public void onError(int what, Exception exception) {
-                listener.onError(what, fileBean, exception);
+                listener.onError(what, fileBean, exception instanceof NetworkError ? new ConnectException(exception.getMessage()) : exception);
             }
         };
     }
 
-    public IRequestManager init(@NonNull Context context, HashMap<String, String> head) {
-        if (head != null) {
-            mHeaderParams = head;
-        }
+    public IRequestManager init(@NonNull Context context, HashMap<String, String> header) {
+        mHeaderParams = header;
+
         DBCookieStore dbCookieStore = (DBCookieStore) new DBCookieStore(context).setEnable(true);
         dbCookieStore.setCookieStoreListener(new DBCookieStore.CookieStoreListener() {
             // 当NoHttp的Cookie被保存的时候被调用
             @Override
             public void onSaveCookie(URI uri, HttpCookie cookie) {
                 if (SESSION_ID.equals(cookie.getName().toUpperCase())) {
-                    cookie.setMaxAge(HeaderUtil.getMaxExpiryMillis());
+                    cookie.setMaxAge(HeaderUtils.getMaxExpiryMillis());
                 }
 //                LogUtils.d(TAG, "onCookieSave url:" + uri.toString() +
 //                        "\r\ncookie:" + cookie.toString());
@@ -212,39 +224,97 @@ public class NoRequestManager implements IRequestManager {
                         "\r\ncookie:" + cookie.toString());
             }
         });
+
         // NoHttp初始化
-        NoHttp.initialize(context, new NoHttp.Config()
-                .setCookieStore(dbCookieStore) // 设置cookie
-                .setNetworkExecutor(new OkHttpNetworkExecutor())); // OkHttp请求
+        InitializationConfig.Builder configBuilder = InitializationConfig.newBuilder(context)
+                // 全局连接服务器超时时间，单位毫秒，默认10s。
+                .connectionTimeout(10 * 1000)
+                // 全局等待服务器响应超时时间，单位毫秒，默认10s。
+                .readTimeout(10 * 1000)
+                // 配置缓存，默认保存数据库DBCacheStore，保存到SD卡使用DiskCacheStore。
+                .cacheStore(
+                        // 如果不使用缓存，setEnable(false)禁用。
+                        new DBCacheStore(context).setEnable(true)
+                )
+                // 配置Cookie，默认保存数据库DBCookieStore，开发者可以自己实现CookieStore接口。
+                .cookieStore(dbCookieStore)
+                // 配置网络层，默认URLConnectionNetworkExecutor，如果想用OkHttp：OkHttpNetworkExecutor。
+                .networkExecutor(new OkHttpNetworkExecutor())
+                // 全局通用Header，add是添加，多次调用add不会覆盖上次add。
+                .addHeader(MOBILE_MODEL_KEY, mMobileModel);
+        if (mHeaderParams != null && mHeaderParams.size() > 0) {
+            Collection keys = mHeaderParams.keySet();
+            for (Iterator iterator = keys.iterator(); iterator.hasNext(); ) {
+                Object key = iterator.next();
+                configBuilder.addHeader(key.toString(), mHeaderParams.get(key));
+            }
+        }
+        configBuilder
+                // 全局SSLSocketFactory。默认TLSSocketFactory
+                .sslSocketFactory(new TLSSocketFactory())
+                // 全局HostnameVerifier。
+                .hostnameVerifier(new HostnameVerifier() {
+                    public boolean verify(String hostname, SSLSession session) {
+                        LogUtils.d(TAG, "HostnameVerifier hostname:" + hostname +
+                                "\r\nSSLSession:" + session.toString());
+                        return true;
+                    }
+                })
+                // 全局重试次数，配置后每个请求失败都会重试x次。
+                .retry(0);
+        NoHttp.initialize(configBuilder.build());
+
         mRequestQueue = NoHttp.newRequestQueue();
         mDownloadQueue = NoHttp.newDownloadQueue();
         return this;
     }
 
     @Override
-    public void setJsonRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnResponseListener listener) {
-        IBasicRequest request = NoHttp.createStringRequest(requestBean.getUrl(),
+    public void setBytesRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnResponseListener listener) {
+        BasicRequest request = NoHttp.createByteArrayRequest(requestBean.getUrl(),
                 transferToNoHttpHttpMethod(requestBean.getRequestMethod()));
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
         }
-        insertGlobalSessionCookie(request);
-        insertExtraSessionCookie(request, requestBean.getHeaderParam());
+        insertExtraRequestHeader(request, requestBean.getHeaderParam());
+        mRequestQueue.add(requestBean.getWhat(), (Request) addParams(request,
+                requestBean.getParams()), getResponseListener(listener, requestBean));
+    }
+
+    @Override
+    public void setStringRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnResponseListener listener) {
+        BasicRequest request = NoHttp.createStringRequest(requestBean.getUrl(),
+                transferToNoHttpHttpMethod(requestBean.getRequestMethod()));
+        if (requestBean.getSign() != null) {
+            request.setCancelSign(requestBean.getSign());
+        }
+        insertExtraRequestHeader(request, requestBean.getHeaderParam());
+        mRequestQueue.add(requestBean.getWhat(), (Request) addParams(request,
+                requestBean.getParams()), getResponseListener(listener, requestBean));
+    }
+
+    @Override
+    public void setBitmapRequest(@NonNull RequestBean requestBean, @NonNull IResponseListener.OnResponseListener listener) {
+        BasicRequest request = NoHttp.createImageRequest(requestBean.getUrl(),
+                transferToNoHttpHttpMethod(requestBean.getRequestMethod()));
+        if (requestBean.getSign() != null) {
+            request.setCancelSign(requestBean.getSign());
+        }
+        insertExtraRequestHeader(request, requestBean.getHeaderParam());
         mRequestQueue.add(requestBean.getWhat(), (Request) addParams(request,
                 requestBean.getParams()), getResponseListener(listener, requestBean));
     }
 
     @Override
     public void setDownloadRequest(@NonNull DownloadRequestBean requestBean, @NonNull IResponseListener.OnDownloadListener listener) {
-        IBasicRequest request = NoHttp.createDownloadRequest(requestBean.getUrl(),
+        BasicRequest request = NoHttp.createDownloadRequest(requestBean.getUrl(),
                 transferToNoHttpHttpMethod(requestBean.getRequestMethod()),
                 requestBean.getSaveFolder(), requestBean.getSaveFileName(),
                 requestBean.isContinue(), requestBean.isDeleteOld());
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
         }
-        insertGlobalSessionCookie(request);
-        insertExtraSessionCookie(request, requestBean.getHeaderParam());
+        insertExtraRequestHeader(request, requestBean.getHeaderParam());
         mDownloadQueue.add(requestBean.getWhat(), (DownloadRequest) addParams(request,
                 requestBean.getParams()), getDownloadListener(listener));
     }
@@ -286,28 +356,16 @@ public class NoRequestManager implements IRequestManager {
         }
         request.setCancelSign(requestBean.getSign());
 
-        insertGlobalSessionCookie(request);
-        insertExtraSessionCookie(request, requestBean.getHeaderParam());
+        insertExtraRequestHeader(request, requestBean.getHeaderParam());
         mRequestQueue.add(requestBean.getWhat(), request, getResponseListener(responseListener, requestBean));
     }
 
-    private void insertGlobalSessionCookie(IBasicRequest request) {
-        if (mHeaderParams != null && mHeaderParams.size() > 0) {
-            Collection keys = mHeaderParams.keySet();
-            for (Iterator iterator = keys.iterator(); iterator.hasNext(); ) {
-                Object key = iterator.next();
-                request.add(key.toString(), mHeaderParams.get(key));
-            }
-        }
-        request.addHeader(MOBILE_MODEL_KEY, mMobileModel);
-    }
-
-    private void insertExtraSessionCookie(IBasicRequest request, HashMap<String, String> headerParams) {
+    private void insertExtraRequestHeader(BasicRequest request, HashMap<String, String> headerParams) {
         if (headerParams != null && headerParams.size() > 0) {
             Collection keys = headerParams.keySet();
             for (Iterator iterator = keys.iterator(); iterator.hasNext(); ) {
                 Object key = iterator.next();
-                request.add(key.toString(), headerParams.get(key));
+                request.addHeader(key.toString(), headerParams.get(key));
             }
         }
     }
@@ -336,12 +394,12 @@ public class NoRequestManager implements IRequestManager {
 
     @Override
     public void clearCookie() {
-        NoHttp.getCookieManager().getCookieStore().removeAll();
+        NoHttp.getInitializeConfig().getCookieManager().getCookieStore().removeAll();
     }
 
     @Override
     public Map<String, String> getLastSessionCookie() {
-        List<HttpCookie> list = NoHttp.getCookieManager().getCookieStore().getCookies();
+        List<HttpCookie> list = NoHttp.getInitializeConfig().getCookieManager().getCookieStore().getCookies();
         HashMap<String, String> cookies = new HashMap<>();
         for (int i = 0; i < list.size(); i++) {
             cookies.put(list.get(i).getName(), list.get(i).getValue());
@@ -350,7 +408,7 @@ public class NoRequestManager implements IRequestManager {
     }
 
     // 添加参数
-    private IBasicRequest addParams(IBasicRequest request, Map<String, String> params) {
+    private BasicRequest addParams(BasicRequest request, Map<String, String> params) {
         if (params == null) {
             return request;
         }

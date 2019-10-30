@@ -12,9 +12,10 @@ import com.pine.mvp.bean.MvpShopAndProductEntity;
 import com.pine.mvp.bean.MvpShopDetailEntity;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.DecimalUtils;
 import com.pine.tool.util.GPSUtils;
@@ -85,7 +86,7 @@ public class MvpShopModel {
                                             final Object carryData) {
         return new JsonCallback() {
             @Override
-            public void onResponse(int what, JSONObject jsonObject) {
+            public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (what == REQUEST_ADD_SHOP) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
@@ -104,7 +105,7 @@ public class MvpShopModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 } else if (what == REQUEST_QUERY_SHOP_DETAIL) {
@@ -121,7 +122,7 @@ public class MvpShopModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 } else if (what == REQUEST_QUERY_SHOP_LIST) {
@@ -138,7 +139,7 @@ public class MvpShopModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 } else if (what == REQUEST_QUERY_SHOP_AND_PRODUCT_LIST) {
@@ -155,7 +156,7 @@ public class MvpShopModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 } else if (what == REQUEST_ADD_PRODUCT) {
@@ -176,14 +177,14 @@ public class MvpShopModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 }
             }
 
             @Override
-            public boolean onFail(int what, Exception e) {
+            public boolean onFail(int what, Exception e, Response response) {
                 if (callback != null) {
                     return callback.onFail(e);
                 }
@@ -200,6 +201,12 @@ public class MvpShopModel {
     }
 
     // Test code begin
+    private final String[] SHOP_IMAGES = {"http://img.sccnn.com/bimg/337/31660.jpg",
+            "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg",
+            "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg",
+            "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp",
+            "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg"};
+
     private JSONObject getShopDetailData(Object paramsObj) {
         Map<String, String> params = (HashMap<String, String>) paramsObj;
         double endLatBd = 31.221367;
@@ -211,18 +218,17 @@ public class MvpShopModel {
                 startLatBd, startLonBd);
         String distanceStr = String.valueOf(distance);
         String id = params.get("id");
-        String index = id.substring(id.length() - 2);
-        if ("0".equals(index.substring(0, 1))) {
-            index = index.substring(1, 2);
+        String indexStr = id.substring(id.length() - 2);
+        if ("0".equals(indexStr.substring(0, 1))) {
+            indexStr = indexStr.substring(1, 2);
         }
-        String imgUrls = new Random().nextInt(10) > 1 ?
-                "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg,https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg"
-                : "";
+        int index = Integer.parseInt(indexStr);
+        int imageTotalCount = SHOP_IMAGES.length;
         String res = "{success:true,code:200,message:'',data:" +
                 "{id:'" + id + "',name:'Shop Item " + index +
-                "',type:'2',typeName:'食品',mainImgUrl:'http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg'" +
+                "',type:'2',typeName:'食品',mainImgUrl:'" + SHOP_IMAGES[index % imageTotalCount] + "'" +
                 ",distance:'" + distanceStr + "',latitude:'" + endLatBd + "',longitude:'" + endLonBd +
-                "',imgUrls:'" + imgUrls + "'" +
+                "',imgUrls:'" + SHOP_IMAGES[index % imageTotalCount] + "," + SHOP_IMAGES[(index + 1) % imageTotalCount] + "'" +
                 ",onlineDate:'2019-03-01',mobile:'18672943566'" +
                 ",addressDistrict:'上海市浦东新区浦东新区',addressZipCode:'310115'" +
                 ",addressStreet:'盛夏路888号'" +
@@ -244,6 +250,7 @@ public class MvpShopModel {
             }
             return null;
         }
+        int imageTotalCount = SHOP_IMAGES.length;
         Map<String, String> params = (HashMap<String, String>) paramsObj;
         int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
         int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
@@ -266,7 +273,7 @@ public class MvpShopModel {
             index++;
             id = "1100201903281020000000" + (index > 9 ? index : "0" + index);
             res += ",{id:'" + id + "',name:'Shop Item " + index +
-                    "', distance:'" + distanceStr + "',mainImgUrl:'http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg'}";
+                    "', distance:'" + distanceStr + "',mainImgUrl:'" + SHOP_IMAGES[index % imageTotalCount] + "'}";
         }
         res += "]}";
         try {
@@ -286,6 +293,7 @@ public class MvpShopModel {
             }
             return null;
         }
+        int imageTotalCount = SHOP_IMAGES.length;
         Map<String, String> params = (HashMap<String, String>) paramsObj;
         int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
         int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
@@ -310,7 +318,7 @@ public class MvpShopModel {
             shopIndex++;
             shopId = "1100201903281020000000" + (shopIndex > 9 ? shopIndex : "0" + shopIndex);
             res += ",{id:'" + shopId + "',name:'Shop Item " + shopIndex +
-                    "', distance:'" + distanceStr + "',mainImgUrl:'http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg', " +
+                    "', distance:'" + distanceStr + "',mainImgUrl:'" + SHOP_IMAGES[shopIndex % imageTotalCount] + "', " +
                     "products:[{name:'Product Item 1'}, {name:'Product Item 2'}]}";
         }
         res += "]}";

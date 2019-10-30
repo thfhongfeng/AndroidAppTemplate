@@ -12,9 +12,10 @@ import com.pine.mvp.bean.MvpTravelNoteCommentEntity;
 import com.pine.mvp.bean.MvpTravelNoteDetailEntity;
 import com.pine.mvp.bean.MvpTravelNoteItemEntity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
 
@@ -74,7 +75,7 @@ public class MvpTravelNoteModel {
                                             final Object carryData) {
         return new JsonCallback() {
             @Override
-            public void onResponse(int what, JSONObject jsonObject) {
+            public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (what == REQUEST_ADD_TRAVEL_NOTE) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
@@ -89,7 +90,7 @@ public class MvpTravelNoteModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 } else if (what == REQUEST_QUERY_TRAVEL_NOTE_DETAIL) {
@@ -106,7 +107,7 @@ public class MvpTravelNoteModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 } else if (what == REQUEST_QUERY_TRAVEL_NOTE_LIST) {
@@ -123,7 +124,7 @@ public class MvpTravelNoteModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 } else if (what == REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST) {
@@ -140,14 +141,14 @@ public class MvpTravelNoteModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 }
             }
 
             @Override
-            public boolean onFail(int what, Exception e) {
+            public boolean onFail(int what, Exception e, Response response) {
                 if (callback != null) {
                     return callback.onFail(e);
                 }
@@ -164,7 +165,7 @@ public class MvpTravelNoteModel {
     }
 
     // Test code begin
-    private final String[] IMAGE_ARR = {"http://img.sccnn.com/bimg/337/31660.jpg",
+    private final String[] TRAVEL_NOTE_IMAGES = {"http://img.sccnn.com/bimg/337/31660.jpg",
             "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg",
             "https://c-ssl.duitang.com/uploads/item/201404/24/20140424154030_hyiBw.thumb.700_0.jpeg",
             "http://pic1.win4000.com/wallpaper/2018-12-04/5c062a2388f3a.jpg",
@@ -173,6 +174,10 @@ public class MvpTravelNoteModel {
             "https://hbimg.huabanimg.com/45858c1f11e0b3c30bd0113c6f7ab88f5847034e51d57-Hprwwb_fw658",
             "https://c-ssl.duitang.com/uploads/item/201207/02/20120702194505_8V2yi.jpeg",
             "http://img.juimg.com/tuku/yulantu/110516/1717-11051604500688.jpg"};
+
+    private final String[] COMMENTER_HEAD_IMAGES = {"http://i1.sinaimg.cn/ent/d/2008-06-04/U105P28T3D2048907F326DT20080604225106.jpg",
+            "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp",
+            "http://image2.sina.com.cn/IT/d/2005-10-31/U1235P2T1D752393F13DT20051031133235.jpg"};
 
     private JSONObject getTravelNoteDetailData(Object paramsObj) {
         Map<String, String> params = (HashMap<String, String>) paramsObj;
@@ -184,6 +189,7 @@ public class MvpTravelNoteModel {
                 index = index.substring(1, 2);
             }
         }
+        int imageTotalCount = TRAVEL_NOTE_IMAGES.length;
         String res = "{success:true,code:200,message:'',data:" +
                 "{id:'" + id + "',title:'Travel Note Item " + index + "', setOutDate:'2018-10-11 10:10',headImgUrl:''," +
                 "author:'作者',belongShops:[{id:'110020190328102000000001', name:'Shop Item 1'},{id:'110020190328102000000002', name:'Shop Item 2'}]," +
@@ -194,7 +200,7 @@ public class MvpTravelNoteModel {
                 "{type:'text',index:'2',text:'第1天第2段'}]}";
         for (int i = 1; i < 10; i++) {
             String str = "[{type:'text',index:'1',text:'第" + (i + 1) + "天第1段'}," +
-                    "{type:'image',index:'2',remoteFilePath:'" + IMAGE_ARR[i - 1] + "',text:'第" + (i + 1) + "天第2段'}," +
+                    "{type:'image',index:'2',remoteFilePath:'" + TRAVEL_NOTE_IMAGES[(i - 1) % imageTotalCount] + "',text:'第" + (i + 1) + "天第2段'}," +
                     "{type:'text',index:'3',text:'第" + (i + 1) + "天第3段'}]";
             res += ",{id:'" + (i + 1) + "',day:'第" + (i + 1) + "天',contentList:" + str + "}";
         }
@@ -249,6 +255,7 @@ public class MvpTravelNoteModel {
             }
             return null;
         }
+        int imageTotalCount = COMMENTER_HEAD_IMAGES.length;
         Map<String, String> params = (HashMap<String, String>) paramsObj;
         int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
         int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
@@ -256,7 +263,7 @@ public class MvpTravelNoteModel {
         String id = "1103201903281020000000" + (index > 9 ? index : "0" + index);
         String res = "{success:true,code:200,message:'',data:" +
                 "[{id:'" + id + "',content:'Comment Item " + index + "',authorId:1," +
-                "author:'评论人员1',headImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +
+                "author:'评论人员1',headImgUrl:'" + COMMENTER_HEAD_IMAGES[index % imageTotalCount] + "'," +
                 "createTime:'2018-10-10 10:10'}";
         for (int i = 1; i < pageSize; i++) {
             index++;
@@ -264,7 +271,7 @@ public class MvpTravelNoteModel {
             res += ",{id:'" + id + "'," +
                     "content:'Comment Item " + index + "'," +
                     "author:'评论人员" + index + "',authorId:" + i + "," +
-                    "headImgUrl:'https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp'," +
+                    "headImgUrl:'" + COMMENTER_HEAD_IMAGES[index % imageTotalCount] + "'," +
                     "createTime:'2018-10-10 10:10'}";
         }
         res += "]}";

@@ -20,6 +20,8 @@ public class DbRequestBean implements Serializable {
     private String moduleTag = "common";
     private int what;
     private boolean needLogin;
+    // 请求类型：JSON数据请求；下载请求；上传请求等
+    private IRequestManager.RequestType requestType;
 
     // for download
     private String saveFolder;
@@ -80,6 +82,14 @@ public class DbRequestBean implements Serializable {
 
     public void setNeedLogin(boolean needLogin) {
         this.needLogin = needLogin;
+    }
+
+    public IRequestManager.RequestType getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(IRequestManager.RequestType requestType) {
+        this.requestType = requestType;
     }
 
     public void setKey(String key) {

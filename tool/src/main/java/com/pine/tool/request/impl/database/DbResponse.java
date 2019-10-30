@@ -2,6 +2,8 @@ package com.pine.tool.request.impl.database;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -13,6 +15,7 @@ public class DbResponse implements Serializable {
     private Object tag;
     private Object data;
     private Exception exception;
+    private Map<String, List<String>> headers;
     private HashMap<String, String> cookies;
 
     // for upload
@@ -56,6 +59,14 @@ public class DbResponse implements Serializable {
 
     public void setException(Exception exception) {
         this.exception = exception;
+    }
+
+    public Map<String, List<String>> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, List<String>> headers) {
+        this.headers = headers;
     }
 
     public HashMap<String, String> getCookies() {

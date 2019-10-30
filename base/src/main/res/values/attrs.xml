@@ -4,9 +4,10 @@
         <attr name="base_bbtnb_SelectedItem" format="integer" />
     </declare-styleable>
 
-    <attr name="base_maxFileCount" format="boolean" />
-    <attr name="base_columnSize" format="boolean" />
-    <attr name="base_maxFileSize" format="boolean" />
+    <attr name="base_maxFileCount" format="integer" />
+    <attr name="base_columnSize" format="integer" />
+    <!-- 单位K -->
+    <attr name="base_maxFileSize" format="integer" />
     <attr name="base_imageWidth" format="integer"></attr>
     <attr name="base_imageHeight" format="integer"></attr>
     <attr name="base_enableImageScale" format="boolean" />

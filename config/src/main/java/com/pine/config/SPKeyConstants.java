@@ -12,7 +12,5 @@ public interface SPKeyConstants {
     String ACCOUNT_CREATE_TIME = "account_create_time";
     String ACCOUNT_UPDATE_TIME = "account_update_time";
 
-
-    // preference key
     String APK_DOWNLOAD_FILE_PATH = "apk_download_file_path";
 }

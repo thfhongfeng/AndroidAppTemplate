@@ -12,7 +12,7 @@ import com.pine.mvp.model.MvpTravelNoteModel;
 import com.pine.mvp.ui.activity.MvpTravelNoteReleaseActivity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,7 +86,7 @@ public class MvpTravelNoteListPresenter extends Presenter<IMvpTravelNoteListCont
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         showShortToast(e.getMessage());
                     }

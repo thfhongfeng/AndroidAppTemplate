@@ -28,6 +28,8 @@ public class RequestBean {
     private Object sign;
     // 请求方式：GET、POST等
     private RequestMethod requestMethod;
+    // 请求优先级，默认100，数字越大，优先级越小
+    private int priority = 100;
 
     // 请求的服务系统标识，默认main，代表应用本体后台服务请求。
     // 主要用于session的管理（不同的后台服务系统应该维护不同的session，不能混在一起）。
@@ -126,6 +128,14 @@ public class RequestBean {
 
     public void setRequestMethod(RequestMethod requestMethod) {
         this.requestMethod = requestMethod;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public String getSysTag() {

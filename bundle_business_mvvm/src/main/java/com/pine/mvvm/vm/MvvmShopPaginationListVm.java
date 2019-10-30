@@ -10,7 +10,7 @@ import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.binding.data.ParametricLiveData;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +41,7 @@ public class MvvmShopPaginationListVm extends ViewModel {
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         setToastMsg(e.getMessage());
                     }

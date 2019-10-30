@@ -44,7 +44,8 @@ def build_dependency = [
         "google_gson"                 : 'com.google.code.gson:gson:2.6.2',
 
         // 第三方 dependency
-        "nohttp_okhttp"               : 'com.yanzhenjie.nohttp:okhttp:1.1.1',
+        "nohttp_nohttp"               : 'com.yanzhenjie.nohttp:nohttp:1.1.11',
+        "nohttp_okhttp"               : 'com.yanzhenjie.nohttp:okhttp:1.1.11',
         "aigestudio_wheelpicker"      : 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2',
         "safewebviewbridge"           : 'cn.pedant.safewebviewbridge:library:1.4',
         "bumptech_glide"              : 'com.github.bumptech.glide:glide:4.8.0',

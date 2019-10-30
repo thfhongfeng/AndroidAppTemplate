@@ -2,6 +2,7 @@ package com.pine.base.component.image_loader.glide.loader;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.bumptech.glide.load.Option;
 import com.bumptech.glide.load.Options;
@@ -11,6 +12,7 @@ import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.pine.base.component.image_loader.IImageDownloadListener;
+import com.pine.tool.util.LogUtils;
 
 import java.io.InputStream;
 
@@ -19,6 +21,8 @@ import java.io.InputStream;
  */
 
 public class HttpRequestLoader implements ModelLoader<GlideUrl, InputStream> {
+    private static final String TAG = LogUtils.makeLogTag(HttpRequestLoader.class);
+
     /**
      * An integer option that is used to determine the maximum connect and read timeout durations (in
      * milliseconds) for network connections.
@@ -30,21 +34,20 @@ public class HttpRequestLoader implements ModelLoader<GlideUrl, InputStream> {
 
     @Nullable
     private final ModelCache<GlideUrl, GlideUrl> modelCache;
-    public IImageDownloadListener listener;
+    public static IImageDownloadListener listener;
 
     public HttpRequestLoader() {
-        this(null, null);
+        this(null);
     }
 
-    public HttpRequestLoader(@Nullable ModelCache<GlideUrl, GlideUrl> modelCache,
-                             IImageDownloadListener listener) {
+    public HttpRequestLoader(@Nullable ModelCache<GlideUrl, GlideUrl> modelCache) {
         this.modelCache = modelCache;
-        this.listener = listener;
     }
 
     @Override
     public LoadData<InputStream> buildLoadData(@NonNull GlideUrl model, int width, int height,
                                                @NonNull Options options) {
+        Log.d(TAG, "GlideLoader: buildLoadData");
         // GlideUrls memoize parsed URLs so caching them saves a few object instantiations and time
         // spent parsing urls.
         GlideUrl url = model;
@@ -70,13 +73,11 @@ public class HttpRequestLoader implements ModelLoader<GlideUrl, InputStream> {
     public static class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
         private final ModelCache<GlideUrl, GlideUrl> modelCache = new ModelCache<>(500);
 
-        public IImageDownloadListener listener;
-
         @NonNull
         @Override
         public ModelLoader<GlideUrl, InputStream> build(MultiModelLoaderFactory multiFactory) {
-            ModelLoader modelLoader = new HttpRequestLoader(modelCache, listener);
-            listener = null;
+            Log.d(TAG, "GlideLoader: Factory build ModelLoader");
+            ModelLoader modelLoader = new HttpRequestLoader(modelCache);
             return modelLoader;
         }
 

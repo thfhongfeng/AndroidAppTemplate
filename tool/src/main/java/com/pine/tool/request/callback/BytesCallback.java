@@ -1,7 +1,6 @@
 package com.pine.tool.request.callback;
 
 import android.app.Application;
-import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import com.pine.tool.R;
@@ -13,13 +12,13 @@ import com.pine.tool.util.AppUtils;
  * Created by tanghongfeng on 2018/9/10.
  */
 
-public abstract class BitmapCallback extends DataResponseCallback {
+public abstract class BytesCallback extends DataResponseCallback {
 
     @Override
     public void onResponse(int what, Response response) {
-        if (response.getData() instanceof Bitmap) {
-            Bitmap bitmap = (Bitmap) response.getData();
-            onResponse(what, bitmap, response);
+        if (response.getData() instanceof byte[]) {
+            byte[] res = (byte[]) response.getData();
+            onResponse(what, res, response);
         } else {
             Application application = AppUtils.getApplication();
             String errMsg = application.getString(R.string.tool_data_type_err);
@@ -29,5 +28,5 @@ public abstract class BitmapCallback extends DataResponseCallback {
         }
     }
 
-    public abstract void onResponse(int what, Bitmap bitmap, Response response);
+    public abstract void onResponse(int what, byte[] bytes, Response response);
 }

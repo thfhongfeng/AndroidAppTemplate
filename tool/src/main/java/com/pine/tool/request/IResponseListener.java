@@ -1,5 +1,8 @@
 package com.pine.tool.request;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by tanghongfeng on 2018/9/16
  */
@@ -18,7 +21,7 @@ public interface IResponseListener {
     interface OnDownloadListener {
         void onDownloadError(int what, Exception exception);
 
-        void onStart(int what, boolean isResume, long rangeSize, long allCount);
+        void onStart(int what, boolean isResume, long rangeSize, Map<String, List<String>> responseHeaders, long allCount);
 
         /**
          * @param what

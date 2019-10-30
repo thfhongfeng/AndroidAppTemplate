@@ -59,7 +59,7 @@ public class LoginCallback extends JsonCallback {
     }
 
     @Override
-    public void onResponse(final int what, final JSONObject jsonObject) {
+    public void onResponse(final int what, final JSONObject jsonObject, Response response) {
         if (LOGOUT_CODE == what) {
             LoginManager.clearLoginInfo();
             LoginApplication.setLogin(false);
@@ -123,11 +123,11 @@ public class LoginCallback extends JsonCallback {
     }
 
     @Override
-    public boolean onFail(int what, Exception e) {
+    public boolean onFail(int what, Exception e, Response response) {
         LoginApplication.setLogin(false);
         boolean consumed = false;
         if (mCallback != null) {
-            consumed = mCallback.onLoginResponse(false, "");
+            consumed = mCallback.onLoginResponse(false, e.getMessage());
         }
         if (AUTO_LOGIN_CODE != what) {
             goLoginActivity();

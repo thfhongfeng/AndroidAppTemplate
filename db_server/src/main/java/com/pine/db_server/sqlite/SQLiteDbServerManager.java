@@ -13,6 +13,7 @@ import com.pine.db_server.sqlite.server.SQLiteLoginServer;
 import com.pine.db_server.sqlite.server.SQLiteShopServer;
 import com.pine.db_server.sqlite.server.SQLiteTravelNoteServer;
 import com.pine.db_server.sqlite.server.SQLiteWelcomeServer;
+import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.util.AppUtils;
@@ -68,48 +69,109 @@ public class SQLiteDbServerManager implements IDbServerManager {
 
     @Override
     @NonNull
-    public synchronized DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                               HashMap<String, String> header) {
-        LogUtils.d(TAG, "callCommand");
+    public DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
+                                  HashMap<String, String> header) {
+        LogUtils.d(TAG, "callCommand url:" + requestBean.getUrl());
+        if (DbUrlConstants.Query_BundleSwitcher_Data.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteWelcomeServer.queryConfigSwitcher(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Query_Version_Data.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteWelcomeServer.queryAppVersion(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Login.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteLoginServer.login(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Logout.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteLoginServer.logout(context, requestBean, header);
+            }
+        } else if (requestBean.getUrl() != null && requestBean.getUrl().startsWith(DbUrlConstants.Verify_Code_Image)) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteLoginServer.getVerifyCode(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Register_Account.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteLoginServer.register(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Add_Shop.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteShopServer.addShop(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Query_ShopDetail.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteShopServer.queryShopDetail(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Query_ShopList.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteShopServer.queryShopList(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Query_ShopAndProductList.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteShopServer.queryShopProductList(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Add_Product.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteShopServer.addProduct(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Add_TravelNote.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteTravelNoteServer.addTravelNote(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Query_TravelNoteDetail.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteTravelNoteServer.queryTravelNoteDetail(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Query_TravelNoteList.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteTravelNoteServer.queryTravelNoteList(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Query_TravelNoteCommentList.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteTravelNoteServer.queryTravelNoteCommentList(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Upload_Single_File.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteFileServer.uploadSingleFile(context, requestBean, header);
+            }
+        } else if (DbUrlConstants.Upload_Multi_File.equals(requestBean.getUrl())) {
+            synchronized (this) {
+                setupSession(header);
+                return SQLiteFileServer.uploadMultiFile(context, requestBean, header);
+            }
+        } else if (requestBean.getRequestType() == IRequestManager.RequestType.BITMAP) {
+            return DbResponseGenerator.getSuccessUrlBitmapBytesRep(requestBean, header, requestBean.getUrl());
+        } else {
+            synchronized (this) {
+                setupSession(header);
+                return DbResponseGenerator.getNoSuchTableJsonRep(requestBean, header);
+            }
+        }
+    }
+
+    private synchronized void setupSession(HashMap<String, String> header) {
         if (TextUtils.isEmpty(header.get(SESSION_ID))) {
             String sessionId = generateSessionId();
             header.put(SESSION_ID, sessionId);
             getOrGenerateSession(sessionId);
-        }
-        if (DbUrlConstants.Query_BundleSwitcher_Data.equals(requestBean.getUrl())) {
-            return SQLiteWelcomeServer.queryConfigSwitcher(context, requestBean, header);
-        } else if (DbUrlConstants.Query_Version_Data.equals(requestBean.getUrl())) {
-            return SQLiteWelcomeServer.queryAppVersion(context, requestBean, header);
-        } else if (DbUrlConstants.Login.equals(requestBean.getUrl())) {
-            return SQLiteLoginServer.login(context, requestBean, header);
-        } else if (DbUrlConstants.Logout.equals(requestBean.getUrl())) {
-            return SQLiteLoginServer.logout(context, requestBean, header);
-        } else if (DbUrlConstants.Register_Account.equals(requestBean.getUrl())) {
-            return SQLiteLoginServer.register(context, requestBean, header);
-        } else if (DbUrlConstants.Add_Shop.equals(requestBean.getUrl())) {
-            return SQLiteShopServer.addShop(context, requestBean, header);
-        } else if (DbUrlConstants.Query_ShopDetail.equals(requestBean.getUrl())) {
-            return SQLiteShopServer.queryShopDetail(context, requestBean, header);
-        } else if (DbUrlConstants.Query_ShopList.equals(requestBean.getUrl())) {
-            return SQLiteShopServer.queryShopList(context, requestBean, header);
-        } else if (DbUrlConstants.Query_ShopAndProductList.equals(requestBean.getUrl())) {
-            return SQLiteShopServer.queryShopProductList(context, requestBean, header);
-        } else if (DbUrlConstants.Add_Product.equals(requestBean.getUrl())) {
-            return SQLiteShopServer.addProduct(context, requestBean, header);
-        } else if (DbUrlConstants.Add_TravelNote.equals(requestBean.getUrl())) {
-            return SQLiteTravelNoteServer.addTravelNote(context, requestBean, header);
-        } else if (DbUrlConstants.Query_TravelNoteDetail.equals(requestBean.getUrl())) {
-            return SQLiteTravelNoteServer.queryTravelNoteDetail(context, requestBean, header);
-        } else if (DbUrlConstants.Query_TravelNoteList.equals(requestBean.getUrl())) {
-            return SQLiteTravelNoteServer.queryTravelNoteList(context, requestBean, header);
-        } else if (DbUrlConstants.Query_TravelNoteCommentList.equals(requestBean.getUrl())) {
-            return SQLiteTravelNoteServer.queryTravelNoteCommentList(context, requestBean, header);
-        } else if (DbUrlConstants.Upload_Single_File.equals(requestBean.getUrl())) {
-            return SQLiteFileServer.uploadSingleFile(context, requestBean, header);
-        } else if (DbUrlConstants.Upload_Multi_File.equals(requestBean.getUrl())) {
-            return SQLiteFileServer.uploadMultiFile(context, requestBean, header);
-        } else {
-            return DbResponseGenerator.getNoSuchTableJsonRep(requestBean, header);
         }
     }
 }

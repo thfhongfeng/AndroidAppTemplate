@@ -52,6 +52,9 @@ public class ConfigSwitcherServer {
         mIsLogin = isLogin;
     }
 
+    public boolean isLogin() {
+        return mIsLogin;
+    }
 
     public void setEnable(String key, boolean enable) {
         if (mIsLogin) {

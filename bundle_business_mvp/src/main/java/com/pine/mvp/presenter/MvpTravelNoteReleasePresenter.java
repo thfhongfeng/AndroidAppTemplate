@@ -21,7 +21,7 @@ import com.pine.mvp.ui.activity.MvpShopSearchCheckActivity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.bean.InputParam;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -226,7 +226,7 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         showShortToast(e.getMessage());
                     }

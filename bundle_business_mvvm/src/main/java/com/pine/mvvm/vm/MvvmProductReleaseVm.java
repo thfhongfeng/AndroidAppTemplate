@@ -9,7 +9,7 @@ import com.pine.mvvm.bean.MvvmProductDetailEntity;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 
 /**
  * Created by tanghongfeng on 2019/3/1
@@ -68,7 +68,7 @@ public class MvvmProductReleaseVm extends ViewModel {
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         setToastMsg(e.getMessage());
                     }

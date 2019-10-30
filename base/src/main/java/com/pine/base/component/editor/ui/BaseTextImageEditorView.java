@@ -55,8 +55,8 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
     private View mCurAddNoteView;
     // 最大允许上传文件数
     protected int mMaxFileCount = 30;
-    // 最大允许上传文件大小
-    protected long mMaxFileSize = 1024 * 1024;
+    // 最大允许上传文件大小（单位K）
+    protected long mMaxFileSize = 1024;
 
     public BaseTextImageEditorView(Context context) {
         super(context);
@@ -70,7 +70,7 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
         super(context, attrs, defStyle);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseTextImageEditorView);
         mMaxFileCount = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileCount, 10);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileSize, 1024 * 1024);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileSize, 1024);
         mHelper.setMaxFileCount(mMaxFileCount);
         mHelper.setMaxFileSize(mMaxFileSize);
 

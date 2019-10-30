@@ -8,7 +8,7 @@ import com.pine.mvvm.bean.MvvmShopDetailEntity;
 import com.pine.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.RegexUtils;
 
@@ -98,7 +98,7 @@ public class MvvmShopReleaseVm extends ViewModel {
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         setToastMsg(e.getMessage());
                     }

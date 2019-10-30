@@ -14,6 +14,7 @@ import com.pine.db_server.sqlite.SQLiteDbHelper;
 import com.pine.db_server.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
+import com.pine.tool.util.RandomUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,17 +30,34 @@ import static com.pine.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteLoginServer extends SQLiteBaseServer {
+    public static DbResponse getVerifyCode(@NonNull Context context, @NonNull DbRequestBean requestBean,
+                                           @NonNull HashMap<String, String> cookies) {
+        DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+        String verifyCode = RandomUtils.getRandomNumbersAndLetters(4);
+        session.setVerifyCode(verifyCode);
+        return DbResponseGenerator.getSuccessCodeBitmapBytesRep(requestBean, cookies, verifyCode);
+    }
 
     public static DbResponse register(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                       @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
             Map<String, String> requestParams = requestBean.getParams();
+            String verifyCode = requestParams.remove("verifyCode");
+            if (TextUtils.isEmpty(verifyCode)) {
+                return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies, "验证码不能为空");
+            }
+            DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
+            if (TextUtils.isEmpty(session.getVerifyCode())) {
+                return DbResponseGenerator.getServerFailJsonRep(requestBean, cookies, "服务器错误");
+            }
+            if (!verifyCode.toUpperCase().equals(session.getVerifyCode().toUpperCase())) {
+                return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies, "验证码不正确");
+            }
             String account = requestParams.get("mobile");
             if (isAccountExist(db, account)) {
                 return DbResponseGenerator.getExistAccountJsonRep(requestBean, cookies, "账号已存在");
             }
-            String verifyCode = requestParams.remove("verify_code");
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", "1000" + new Date().getTime());
             contentValues.put("account", account);
@@ -86,6 +104,7 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
             Map<String, String> requestParams = requestBean.getParams();
             Map<String, String> params = new HashMap<>();
             params.put("account", requestParams.get("mobile"));
+            params.put("password", requestParams.get("password"));
             Cursor cursor = query(db, ACCOUNT_TABLE_NAME, params);
             if (!cursor.moveToFirst()) {
                 return DbResponseGenerator.getLoginFailJsonRep(requestBean, cookies, "用户名密码错误");

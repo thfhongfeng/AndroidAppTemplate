@@ -70,16 +70,20 @@ public class BaseBottomTabNavigationBar extends FrameLayout implements View.OnCl
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.bottom_main_home_ll) {
-            if (mListener != null) {
-                mListener.onItemClick(view, mCurrentItem, 0);
-            } else {
-                BaseRouterClient.goMainHomeActivity(mContext, null, null);
+            if (mCurrentItem != 0) {
+                if (mListener != null) {
+                    mListener.onItemClick(view, mCurrentItem, 0);
+                } else {
+                    BaseRouterClient.goMainHomeActivity(mContext, null, null);
+                }
             }
         } else if (id == R.id.bottom_user_center_ll) {
-            if (mListener != null) {
-                mListener.onItemClick(view, mCurrentItem, 1);
-            } else {
-                BaseRouterClient.goUserHomeActivity(mContext, null, null);
+            if (mCurrentItem != 1) {
+                if (mListener != null) {
+                    mListener.onItemClick(view, mCurrentItem, 1);
+                } else {
+                    BaseRouterClient.goUserHomeActivity(mContext, null, null);
+                }
             }
         }
     }

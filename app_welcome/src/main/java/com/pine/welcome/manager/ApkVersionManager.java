@@ -1,15 +1,13 @@
 package com.pine.welcome.manager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.pine.config.SPKeyConstants;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.RequestMethod;
@@ -24,6 +22,8 @@ import com.pine.welcome.model.VersionModel;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tanghongfeng on 2018/9/25
@@ -57,7 +57,7 @@ public class ApkVersionManager {
         mVersionEntity = entity;
     }
 
-    public void checkVersion(@NonNull final Context context, final ICheckCallback callback) {
+    public void checkVersion(final ICheckCallback callback) {
         final String versionName = AppUtils.getVersionName();
         final int versionCode = AppUtils.getVersionCode();
         HashMap<String, String> params = new HashMap<>();
@@ -105,7 +105,7 @@ public class ApkVersionManager {
     public void startUpdate(final UpdateListener listener) {
         if (TextUtils.isEmpty(mDownloadDir)) {
             if (listener != null) {
-                listener.onDownloadError(new BusinessException(AppUtils.getApplication()
+                listener.onDownloadError(new MessageException(AppUtils.getApplication()
                         .getString(R.string.wel_version_get_download_path_fail, mDownloadDir)));
             }
             return;
@@ -117,7 +117,8 @@ public class ApkVersionManager {
         requestBean.setSign(CANCEL_SIGN);
         RequestManager.setDownloadRequest(requestBean, new DownloadCallback() {
             @Override
-            public void onStart(int what, boolean isResume, long rangeSize, long allCount) {
+            public void onStart(int what, boolean isResume, long rangeSize,
+                                Map<String, List<String>> responseHeaders, long allCount) {
                 if (listener != null) {
                     listener.onDownloadStart(isResume, rangeSize, allCount);
                 }
@@ -155,14 +156,14 @@ public class ApkVersionManager {
         });
     }
 
-    public boolean installNewVersionApk(Context context) {
+    public boolean installNewVersionApk() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         File file = ApkVersionManager.getInstance().getDownLoadFile();
         if (file != null && file.exists()) {
             intent.setDataAndType(Uri.fromFile(file),
                     "application/vnd.android.package-archive");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            AppUtils.getApplicationContext().startActivity(intent);
             return true;
         } else {
             return false;

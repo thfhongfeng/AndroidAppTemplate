@@ -6,10 +6,10 @@ import android.arch.lifecycle.MutableLiveData;
  * Created by tanghongfeng on 2019/3/1
  */
 
-public class ParametricLiveData<T, O> extends MutableLiveData<T> {
-    private O customData;
+public class ParametricLiveData<T, P> extends MutableLiveData<T> {
+    private P customData;
 
-    public O getCustomData() {
+    public P getCustomData() {
         return customData;
     }
 
@@ -22,12 +22,12 @@ public class ParametricLiveData<T, O> extends MutableLiveData<T> {
 
     }
 
-    public void setValue(T value, O customData) {
+    public void setValue(T value, P customData) {
         this.customData = customData;
         super.setValue(value);
     }
 
-    public void postValue(T value, O customData) {
+    public void postValue(T value, P customData) {
         this.customData = customData;
         super.postValue(value);
     }

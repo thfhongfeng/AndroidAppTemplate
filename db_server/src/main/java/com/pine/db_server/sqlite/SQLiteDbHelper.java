@@ -342,6 +342,12 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
+    private final String[] SHOP_IMAGES = {"http://img.sccnn.com/bimg/337/31660.jpg",
+            "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg",
+            "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg",
+            "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp",
+            "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg"};
+
     private void createShopTable(SQLiteDatabase db) {
         try {
             db.execSQL("create table if not exists " + SHOP_TABLE_NAME +
@@ -355,6 +361,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, -500);
+            int imageTotalCount = SHOP_IMAGES.length;
             for (int i = 0; i < 24; i++) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", "1100" + "20190328102000000" + "0" + (i > 9 ? i : "0" + i));
@@ -365,29 +372,32 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 if (r == 1) {
                     contentValues.put("accountId", "100020190328102000000001");
                     contentValues.put("mobile", "15221464292");
-                    if (new Random().nextInt(10) > 1) {
-                        contentValues.put("mainImgUrl", "http://img.sccnn.com/bimg/337/31660.jpg");
-                        contentValues.put("imgUrls", "http://img.sccnn.com/bimg/337/31660.jpg," +
-                                "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp," +
-                                "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg");
+                    int hasImageInt = new Random().nextInt(15);
+                    if (hasImageInt > 1) {
+                        contentValues.put("mainImgUrl", SHOP_IMAGES[r % imageTotalCount]);
+                        contentValues.put("imgUrls", SHOP_IMAGES[r % imageTotalCount] + "," +
+                                SHOP_IMAGES[(r + 1) % imageTotalCount] + "," +
+                                SHOP_IMAGES[(r + 2) % imageTotalCount] + "," +
+                                SHOP_IMAGES[(r + 3) % imageTotalCount]);
                     }
                 } else if (r == 2) {
                     contentValues.put("accountId", "100020190328102000000002");
                     contentValues.put("mobile", "15221464296");
-                    if (new Random().nextInt(10) > 1) {
-                        contentValues.put("mainImgUrl", "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg");
-                        contentValues.put("imgUrls", "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg," +
-                                "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp," +
-                                "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg");
+                    int hasImageInt = new Random().nextInt(15);
+                    if (hasImageInt > 1) {
+                        contentValues.put("mainImgUrl", SHOP_IMAGES[r % imageTotalCount]);
+                        contentValues.put("imgUrls", SHOP_IMAGES[r % imageTotalCount] + "," +
+                                SHOP_IMAGES[(r + 1) % imageTotalCount] + "," +
+                                SHOP_IMAGES[(r + 2) % imageTotalCount]);
                     }
                 } else {
                     contentValues.put("accountId", "100020190328102000000000");
                     contentValues.put("mobile", "18672943565");
-                    if (new Random().nextInt(10) > 1) {
-                        contentValues.put("mainImgUrl", "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg");
-                        contentValues.put("imgUrls", "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg," +
-                                "http://img.qqzhi.com/uploads/2019-02-28/093640204.jpg," +
-                                "https://c-ssl.duitang.com/uploads/item/201510/08/20151008100856_uGVh5.thumb.700_0.jpeg");
+                    int hasImageInt = new Random().nextInt(15);
+                    if (hasImageInt > 1) {
+                        contentValues.put("mainImgUrl", SHOP_IMAGES[r % imageTotalCount]);
+                        contentValues.put("imgUrls", SHOP_IMAGES[r % imageTotalCount] + "," +
+                                SHOP_IMAGES[(r + 1) % imageTotalCount]);
                     }
                 }
                 contentValues.put("latitude", String.valueOf(DecimalUtils.add(31.221367d, (i + 1) / 2000.0d, 6)));
@@ -464,7 +474,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
-    private final String[] IMAGE_ARR = {"http://img.sccnn.com/bimg/337/31660.jpg",
+    private final String[] TRAVEL_NOTE_IMAGES = {"http://img.sccnn.com/bimg/337/31660.jpg",
             "http://img.juimg.com/tuku/yulantu/140218/330598-14021R23A410.jpg",
             "https://c-ssl.duitang.com/uploads/item/201404/24/20140424154030_hyiBw.thumb.700_0.jpeg",
             "http://pic1.win4000.com/wallpaper/2018-12-04/5c062a2388f3a.jpg",
@@ -488,6 +498,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, -51);
+            int imageTotalCount = TRAVEL_NOTE_IMAGES.length;
             for (int i = 0; i < 50; i++) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", "1102" + "20190328102000000" + "0" + (i > 9 ? i : "0" + i));
@@ -511,9 +522,9 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("preface", "这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言");
                 String days = "[{id:'1',day:'第1天',contentList:[{type:'text',index:'1',text:'第1天第1段'}," +
                         "{type:'text',index:'2',text:'第1天第2段'}]}";
-                for (int j = 1; j < 10; j++) {
+                for (int j = 1; j < new Random().nextInt(10) + 1; j++) {
                     String str = "[{type:'text',index:'1',text:'第" + (j + 1) + "天第1段'}," +
-                            "{type:'image',index:'2',remoteFilePath:'" + IMAGE_ARR[j - 1] + "',text:'第" + (j + 1) + "天第2段'}," +
+                            "{type:'image',index:'2',remoteFilePath:'" + TRAVEL_NOTE_IMAGES[(j - 1) % imageTotalCount] + "',text:'第" + (j + 1) + "天第2段'}," +
                             "{type:'text',index:'3',text:'第" + (j + 1) + "天第3段'}]";
                     days += ",{id:'" + (j + 1) + "',day:'第" + (j + 1) + "天',contentList:" + str + "}";
                 }
@@ -594,6 +605,10 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
+    private final String[] COMMENTER_HEAD_IMAGES = {"http://i1.sinaimg.cn/ent/d/2008-06-04/U105P28T3D2048907F326DT20080604225106.jpg",
+            "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp",
+            "http://image2.sina.com.cn/IT/d/2005-10-31/U1235P2T1D752393F13DT20051031133235.jpg"};
+
     private void createTravelNoteCommentTable(SQLiteDatabase db) {
         try {
             db.execSQL("create table if not exists " + TRAVEL_NOTE_COMMENT_TABLE_NAME +
@@ -604,6 +619,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.SECOND, -10000);
+            int imageTotalCount = COMMENTER_HEAD_IMAGES.length;
             for (int i = 0; i < 900; i++) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", "1103" + "20190328102000000" + (i > 9 ? (i > 99 ? i : "0" + i) : "00" + i));
@@ -622,7 +638,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     contentValues.put("authorId", "100020190328102000000000");
                     contentValues.put("author", "admin");
                 }
-                contentValues.put("headImgUrl", "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp");
+                contentValues.put("headImgUrl", COMMENTER_HEAD_IMAGES[r % imageTotalCount]);
                 calendar.add(Calendar.SECOND, new Random().nextInt(10));
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));

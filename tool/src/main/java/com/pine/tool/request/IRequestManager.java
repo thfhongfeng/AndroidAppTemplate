@@ -14,13 +14,31 @@ public interface IRequestManager {
     String MOBILE_MODEL_KEY = "mobileModel";
 
     /**
-     * JSON请求
+     * Byte[]请求
      *
      * @param requestBean 请求实体
      * @param listener    请求响应监听
      */
-    void setJsonRequest(@NonNull RequestBean requestBean,
-                        @NonNull IResponseListener.OnResponseListener listener);
+    void setBytesRequest(@NonNull RequestBean requestBean,
+                         @NonNull IResponseListener.OnResponseListener listener);
+
+    /**
+     * String请求
+     *
+     * @param requestBean 请求实体
+     * @param listener    请求响应监听
+     */
+    void setStringRequest(@NonNull RequestBean requestBean,
+                          @NonNull IResponseListener.OnResponseListener listener);
+
+    /**
+     * Bitmap请求
+     *
+     * @param requestBean 请求实体
+     * @param listener    请求响应监听
+     */
+    void setBitmapRequest(@NonNull RequestBean requestBean,
+                          @NonNull IResponseListener.OnResponseListener listener);
 
     /**
      * 下载请求
@@ -81,10 +99,17 @@ public interface IRequestManager {
     void clearCookie();
 
     enum RequestType {
+        BYTES, // bytesRequest
+        JSON, // jsonRequest
         STRING, // stringRequest
-        UPLOAD, //  uploadRequest
+        BITMAP,   // bitmapRequest
         DOWNLOAD, // downloadRequest
-        BITMAP   // bitmapRequest
+        UPLOAD; //  uploadRequest
+
+        @Override
+        public String toString() {
+            return super.toString();
+        }
     }
 
     enum ActionType {

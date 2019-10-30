@@ -6,9 +6,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.config.BuildConfig;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.WelcomeConstants;
@@ -19,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -40,7 +40,7 @@ public class VersionModel {
     private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {
         return new JsonCallback() {
             @Override
-            public void onResponse(int what, JSONObject jsonObject) {
+            public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (REQUEST_QUERY_VERSION_INFO == what) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
@@ -55,14 +55,14 @@ public class VersionModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 }
             }
 
             @Override
-            public boolean onFail(int what, Exception e) {
+            public boolean onFail(int what, Exception e, Response response) {
                 if (callback != null) {
                     return callback.onFail(e);
                 }

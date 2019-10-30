@@ -106,10 +106,10 @@ public class TemplateApplication extends Application {
 
         RequestManager.init(this, new IRequestManagerFactory() {
             @Override
-            public IRequestManager makeRequestManager(Context context, HashMap<String, String> head) {
+            public IRequestManager makeRequestManager(Context context, HashMap<String, String> header) {
                 switch (com.pine.config.BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
                     case "local":
-                        return DbRequestManager.getInstance().init(context, head, new IDbRequestServer() {
+                        return DbRequestManager.getInstance().init(context, header, new IDbRequestServer() {
                             @Override
                             public DbResponse request(Bundle bundle) {
                                 return RouterManager.getInstance(ConfigKey.BUNDLE_DB_SEVER_KEY).callDataCommandDirect(mApplication,
@@ -119,9 +119,9 @@ public class TemplateApplication extends Application {
                     default:
                         switch (BuildConfig.APP_THIRD_HTTP_REQUEST_PROVIDER) {
                             case "nohttp":
-                                return NoRequestManager.getInstance().init(context, head);
+                                return NoRequestManager.getInstance().init(context, header);
                             default:
-                                return NoRequestManager.getInstance().init(context, head);
+                                return NoRequestManager.getInstance().init(context, header);
                         }
                 }
             }

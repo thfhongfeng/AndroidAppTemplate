@@ -56,8 +56,8 @@ public class FileUploadHelper implements ILifeCircleView {
     private int mCropHeight = 360;
     // 最大允许上传文件数
     private int mMaxFileCount = 30;
-    // 最大允许上传文件大小
-    private long mMaxFileSize = 1024 * 1024;
+    // 最大允许上传文件大小（单位K）
+    private long mMaxFileSize = 1024;
     // 文件上传组件
     private FileUploadComponent mFileUploadComponent;
     private int mRequestCodeCrop = 90100;

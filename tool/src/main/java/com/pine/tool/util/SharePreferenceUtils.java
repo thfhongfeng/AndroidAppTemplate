@@ -429,7 +429,7 @@ public class SharePreferenceUtils {
      */
     public static void cleanDataKey(Context context, String db, String key) {
         SharedPreferences.Editor editor = context.getSharedPreferences(db, Context.MODE_PRIVATE).edit();
-        editor.putString(key, "");
+        editor.remove(key);
         editor.commit();
     }
 

@@ -9,6 +9,7 @@ import com.pine.base.component.uploader.bean.FileUploadBean;
 import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.Response;
 import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.request.callback.UploadCallback;
@@ -42,7 +43,8 @@ public class FileUploadComponent {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private WeakReference<Context> mContext;
     private Map<Integer, Object> mRequestMap;
-    private long mMaxFileSize = 1024 * 1024;
+    // 最大允许上传文件大小（单位K）
+    private long mMaxFileSize = 1024;
     private int mOutFileWidth = 1440;
     private int mOutFileHeight = 2550;
 
@@ -118,7 +120,7 @@ public class FileUploadComponent {
         }, new JsonCallback() {
 
             @Override
-            public void onResponse(int what, JSONObject jsonObject) {
+            public void onResponse(int what, JSONObject jsonObject, Response response) {
                 mRequestMap.remove(uploadBean.hashCode());
                 LogUtils.d(TAG, "onResponse what:" + what);
                 if (callback != null) {
@@ -127,7 +129,7 @@ public class FileUploadComponent {
             }
 
             @Override
-            public boolean onFail(int what, Exception e) {
+            public boolean onFail(int what, Exception e, Response response) {
                 mRequestMap.remove(uploadBean.hashCode());
                 LogUtils.d(TAG, "onError what:" + what);
                 if (callback != null) {
@@ -226,7 +228,7 @@ public class FileUploadComponent {
         }, new JsonCallback() {
 
             @Override
-            public void onResponse(int what, JSONObject jsonObject) {
+            public void onResponse(int what, JSONObject jsonObject, Response response) {
                 mRequestMap.remove(uploadBeanList.hashCode());
                 LogUtils.d(TAG, "onResponse what:" + what);
                 if (callback != null) {
@@ -236,7 +238,7 @@ public class FileUploadComponent {
             }
 
             @Override
-            public boolean onFail(int what, Exception e) {
+            public boolean onFail(int what, Exception e, Response response) {
                 mRequestMap.remove(uploadBeanList.hashCode());
                 LogUtils.d(TAG, "onFail what:" + what);
                 if (callback != null) {
@@ -345,7 +347,7 @@ public class FileUploadComponent {
     private File compressImage(String srcFilePath, String targetFilePath) {
         FileUtils.deleteFile(targetFilePath);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        ImageUtils.compressBySize(srcFilePath, mMaxFileSize, mOutFileWidth, mOutFileHeight, bao);
+        ImageUtils.compressBySize(srcFilePath, mMaxFileSize * 1024, mOutFileWidth, mOutFileHeight, bao);
         File targetFile = new File(targetFilePath);
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(targetFile));

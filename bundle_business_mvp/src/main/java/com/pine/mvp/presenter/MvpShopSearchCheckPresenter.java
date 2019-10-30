@@ -14,7 +14,7 @@ import com.pine.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.bean.InputParam;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +90,7 @@ public class MvpShopSearchCheckPresenter extends Presenter<IMvpShopSearchCheckCo
 
             @Override
             public boolean onFail(Exception e) {
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         showShortToast(e.getMessage());
                     }

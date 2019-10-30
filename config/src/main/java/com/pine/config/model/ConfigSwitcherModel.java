@@ -5,13 +5,16 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.config.BuildConfig;
+import com.pine.config.ConfigKey;
 import com.pine.config.Constants;
 import com.pine.config.UrlConstants;
 import com.pine.config.bean.ConfigSwitcherEntity;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
 
@@ -41,7 +44,7 @@ public class ConfigSwitcherModel {
     private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {
         return new JsonCallback() {
             @Override
-            public void onResponse(int what, JSONObject jsonObject) {
+            public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER == what) {
                     // Test code begin
                     if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
@@ -57,14 +60,14 @@ public class ConfigSwitcherModel {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onFail(new BusinessException(jsonObject.optString("message")));
+                            callback.onFail(new MessageException(jsonObject.optString("message")));
                         }
                     }
                 }
             }
 
             @Override
-            public boolean onFail(int what, Exception e) {
+            public boolean onFail(int what, Exception e, Response response) {
                 if (callback != null) {
                     return callback.onFail(e);
                 }
@@ -82,13 +85,17 @@ public class ConfigSwitcherModel {
 
     // Test code begin
     private JSONObject getBundleSwitcherData() {
-        String res = "{success:true,code:200,message:'',data:" +
-                "[{configKey:'bundle_welcome', state:1},{configKey:'bundle_login', state:1}," +
-                "{configKey:'bundle_main', state:1},{configKey:'bundle_user', state:1}," +
-                "{configKey:'bundle_business_mvc', state:1},{configKey:'bundle_business_mvp', state:1}," +
-                "{configKey:'bundle_business_mvvm', state:1}," +
-                "{configKey:'fun_add_shop', state:1},{configKey:'fun_add_product', state:1}," +
-                "{configKey:'fun_add_travel_note', state:1}]}";
+        String content = "[{configKey:'" + ConfigKey.BUNDLE_WELCOME_KEY + "', state:1},{configKey:'" + ConfigKey.BUNDLE_LOGIN_KEY + "', state:1}," +
+                "{configKey:'" + ConfigKey.BUNDLE_MAIN_KEY + "', state:1},{configKey:'" + ConfigKey.BUNDLE_USER_KEY + "', state:1}," +
+                "{configKey:'" + ConfigKey.BUNDLE_BUSINESS_MVP_KEY + "', state:1}," +
+                "{configKey:'" + ConfigKey.BUNDLE_BUSINESS_MVVM_KEY + "', state:1}," +
+                "{configKey:'" + ConfigKey.FUN_ADD_SHOP_KEY + "', state:1},{configKey:'" + ConfigKey.FUN_ADD_PRODUCT_KEY + "', state:1}," +
+                "{configKey:'" + ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY + "', state:1}";
+        if (ConfigSwitcherServer.getInstance().isLogin()) {
+            content += ",{configKey:'" + ConfigKey.BUNDLE_BUSINESS_MVC_KEY + "', state:1}";
+        }
+        content += "]";
+        String res = "{success:true,code:200,message:'',data:" + content + "}";
         try {
             return new JSONObject(res);
         } catch (JSONException e) {

@@ -37,8 +37,8 @@ public class BasePairImageUploadView extends LinearLayout {
 
     // 最大允许上传文件数
     protected int mMaxFileCount = 20;
-    // 最大允许上传单个文件大小
-    protected long mMaxFileSize = 1024 * 1024;
+    // 最大允许上传单个文件大小（单位M）
+    protected long mMaxFileSize = 1024;
     private int mImageContainerWidth;
     private int mImageContainerHeight;
 
@@ -71,7 +71,7 @@ public class BasePairImageUploadView extends LinearLayout {
     private void resolveAttrs(Context context, @Nullable AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BasePairImageUploadView);
         mMaxFileCount = typedArray.getInt(R.styleable.BasePairImageUploadView_base_maxFileCount, 20);
-        mMaxFileSize = typedArray.getInt(R.styleable.BasePairImageUploadView_base_maxFileSize, 1024 * 1024);
+        mMaxFileSize = typedArray.getInt(R.styleable.BasePairImageUploadView_base_maxFileSize, 1024);
         mImageContainerWidth = typedArray.getDimensionPixelOffset(R.styleable.BasePairImageUploadView_base_imageWidth, context.getResources().getDimensionPixelOffset(R.dimen.dp_147));
         mImageContainerHeight = typedArray.getDimensionPixelOffset(R.styleable.BasePairImageUploadView_base_imageHeight, context.getResources().getDimensionPixelOffset(R.dimen.dp_78));
         mEnableImageScale = typedArray.getBoolean(

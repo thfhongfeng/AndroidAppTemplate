@@ -108,14 +108,6 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
 
         mImageAdapter = new ImageAdapter();
         grid_view.setAdapter(mImageAdapter);
-        grid_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    goCamera();
-                }
-            }
-        });
         mFolderAdapter = new FolderAdapter();
         list_view.setAdapter(mFolderAdapter);
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -394,8 +386,14 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
             if (position == 0) {
-                holder.iv.setImageResource(R.mipmap.base_iv_camera);
+                ImageLoaderManager.getInstance().loadImage(ImageSelectActivity.this, R.mipmap.base_iv_camera, holder.iv);
                 holder.checkBox.setVisibility(View.INVISIBLE);
+                holder.iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        goCamera();
+                    }
+                });
             } else {
                 final int currPos = position - 1;
                 holder.checkBox.setVisibility(View.VISIBLE);

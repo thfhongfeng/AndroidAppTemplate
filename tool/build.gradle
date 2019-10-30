@@ -45,6 +45,7 @@ dependencies {
     // google官方 dependency end
 
     // 第三方 dependency begin
+    api build_dependency["nohttp_nohttp"]
     api build_dependency["nohttp_okhttp"]
     implementation build_dependency["vdurmont_emoji"]
     // 第三方 dependency end

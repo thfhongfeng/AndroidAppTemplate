@@ -11,7 +11,7 @@ import com.pine.login.manager.LoginManager;
 import com.pine.login.model.LoginAccountModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.util.RegexUtils;
 import com.pine.tool.util.SecurityUtils;
 
@@ -64,7 +64,7 @@ public class RegisterVm extends ViewModel {
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         setToastMsg(e.getMessage());
                     } else {

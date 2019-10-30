@@ -14,7 +14,7 @@ import com.pine.mvp.ui.activity.MvpTravelNoteListActivity;
 import com.pine.mvp.ui.activity.MvpWebViewActivity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
-import com.pine.tool.exception.BusinessException;
+import com.pine.tool.exception.MessageException;
 import com.pine.tool.util.DecimalUtils;
 
 import java.util.HashMap;
@@ -64,7 +64,7 @@ public class MvpShopDetailPresenter extends Presenter<IMvpShopDetailContract.Ui>
             @Override
             public boolean onFail(Exception e) {
                 setUiLoading(false);
-                if (e instanceof BusinessException) {
+                if (e instanceof MessageException) {
                     if (!TextUtils.isEmpty(e.getMessage())) {
                         showShortToast(e.getMessage());
                     }
