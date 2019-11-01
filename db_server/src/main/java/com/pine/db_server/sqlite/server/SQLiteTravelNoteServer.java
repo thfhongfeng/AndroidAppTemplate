@@ -57,6 +57,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
                     contentValues.put("days", requestParams.get("days"));
                     contentValues.put("authorId", cursor.getString(cursor.getColumnIndex("id")));
                     contentValues.put("author", cursor.getString(cursor.getColumnIndex("name")));
+                    contentValues.put("headImgUrl", cursor.getString(cursor.getColumnIndex("headImgUrl")));
                     contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                     contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                     cursor.close();

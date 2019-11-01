@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
 import com.pine.base.router.command.RouterMainCommand;
-import com.pine.router.IRouterCallback;
+import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.util.LogUtils;
 import com.pine.welcome.R;
 import com.pine.welcome.databinding.WelcomeActivityBinding;

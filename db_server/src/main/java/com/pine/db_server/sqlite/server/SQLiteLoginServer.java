@@ -58,31 +58,40 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
             if (isAccountExist(db, account)) {
                 return DbResponseGenerator.getExistAccountJsonRep(requestBean, cookies, "账号已存在");
             }
+            String accountId = "1000" + new Date().getTime();
+            String mobile = account;
+            String password = requestParams.get("password");
+            String name = account;
+            String state = "1";
+            String accountType = "100";
+            String curLoginTimeStamp = Calendar.getInstance().getTimeInMillis() + "";
+            String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+            String updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
             ContentValues contentValues = new ContentValues();
-            contentValues.put("id", "1000" + new Date().getTime());
+            contentValues.put("id", accountId);
             contentValues.put("account", account);
-            contentValues.put("mobile", account);
-            contentValues.put("password", requestParams.get("password"));
-            contentValues.put("name", account);
-            contentValues.put("state", "1");
-            contentValues.put("accountType", "10");
-            contentValues.put("curLoginTimeStamp", Calendar.getInstance().getTimeInMillis() + "");
-            contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-            contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+            contentValues.put("mobile", mobile);
+            contentValues.put("password", password);
+            contentValues.put("name", name);
+            contentValues.put("state", state);
+            contentValues.put("accountType", accountType);
+            contentValues.put("curLoginTimeStamp", curLoginTimeStamp);
+            contentValues.put("createTime", createTime);
+            contentValues.put("updateTime", updateTime);
             long id = insert(db, ACCOUNT_TABLE_NAME, "account", contentValues);
             if (id == -1) {
                 return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
             } else {
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("id", requestParams.get("id"));
-                    jsonObject.put("account", requestParams.get("account"));
-                    jsonObject.put("password", requestParams.get("password"));
-                    jsonObject.put("accountType", requestParams.get("accountType"));
-                    jsonObject.put("state", requestParams.get("state"));
-                    jsonObject.put("mobile", requestParams.get("mobile"));
-                    jsonObject.put("createTime", requestParams.get("createTime"));
-                    jsonObject.put("updateTime", requestParams.get("updateTime"));
+                    jsonObject.put("id", accountId);
+                    jsonObject.put("account", account);
+                    jsonObject.put("password", password);
+                    jsonObject.put("accountType", accountType);
+                    jsonObject.put("state", state);
+                    jsonObject.put("mobile", mobile);
+                    jsonObject.put("createTime", createTime);
+                    jsonObject.put("updateTime", updateTime);
                     return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies, jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -122,6 +131,7 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
                     jsonObject.put("accountType", cursor.getString(cursor.getColumnIndex("accountType")));
                     jsonObject.put("state", cursor.getInt(cursor.getColumnIndex("state")));
                     jsonObject.put("mobile", cursor.getString(cursor.getColumnIndex("mobile")));
+                    jsonObject.put("headImgUrl", cursor.getString(cursor.getColumnIndex("headImgUrl")));
                     jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                     if (cookies == null) {

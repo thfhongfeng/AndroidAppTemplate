@@ -4,11 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.pine.base.BaseSPKeyConstants;
+import com.pine.base.bean.AccountBean;
 import com.pine.base.db.entity.AppTrack;
+import com.pine.base.remote.BaseRouterClient;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.NetWorkUtils;
-import com.pine.tool.util.SharePreferenceUtils;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -63,10 +63,11 @@ public class AppTrackManager {
     }
 
     /**
+     * @param context
      * @param trackModuleTag see {@link TrackModuleTag}
      * @param appTrack
      */
-    public void track(@NonNull String trackModuleTag, @NonNull AppTrack appTrack) {
+    public void track(@NonNull Context context, @NonNull String trackModuleTag, @NonNull AppTrack appTrack) {
         if (!canTrack(trackModuleTag)) {
             return;
         }
@@ -75,19 +76,20 @@ public class AppTrackManager {
     }
 
     /**
+     * @param context
      * @param trackModuleTag
      * @param curClass
      * @param preClass
      * @param title
      * @param buttonName
      */
-    public void trackButton(@NonNull String trackModuleTag, @NonNull String curClass, @NonNull String preClass,
-                            @NonNull String title, @NonNull String buttonName) {
+    public void trackButton(@NonNull Context context, @NonNull String trackModuleTag, @NonNull String curClass,
+                            @NonNull String preClass, @NonNull String title, @NonNull String buttonName) {
         if (!canTrack(trackModuleTag)) {
             return;
         }
         AppTrack appTrack = new AppTrack();
-        setUserInfoAndIp(appTrack);
+        setUserInfoAndIp(context, appTrack);
         appTrack.setModuleTag(trackModuleTag);
         appTrack.setTrackType(0);
         appTrack.setCurClass(curClass);
@@ -101,6 +103,7 @@ public class AppTrackManager {
     }
 
     /**
+     * @param context
      * @param trackModuleTag
      * @param curClass
      * @param preClass
@@ -108,13 +111,14 @@ public class AppTrackManager {
      * @param startTimeStamp
      * @param endTimeStamp
      */
-    public void trackPageUi(@NonNull String trackModuleTag, @NonNull String curClass, @NonNull String preClass,
+    public void trackPageUi(@NonNull Context context, @NonNull String trackModuleTag,
+                            @NonNull String curClass, @NonNull String preClass,
                             @NonNull String title, long startTimeStamp, long endTimeStamp) {
         if (!canTrack(trackModuleTag) || startTimeStamp < 0 || endTimeStamp < 0 || startTimeStamp > endTimeStamp) {
             return;
         }
         AppTrack appTrack = new AppTrack();
-        setUserInfoAndIp(appTrack);
+        setUserInfoAndIp(context, appTrack);
         appTrack.setModuleTag(trackModuleTag);
         appTrack.setTrackType(1);
         appTrack.setCurClass(curClass);
@@ -126,13 +130,20 @@ public class AppTrackManager {
         mHelper.track(appTrack);
     }
 
-    private void setUserInfoAndIp(AppTrack appTrack) {
-        String accountId = SharePreferenceUtils.readStringFromAppLivedCache(BaseSPKeyConstants.ACCOUNT_ID, "");
-        String name = SharePreferenceUtils.readStringFromAppLivedCache(BaseSPKeyConstants.ACCOUNT_NAME, "");
-        int accountType = SharePreferenceUtils.readIntFromAppLivedCache(BaseSPKeyConstants.ACCOUNT_TYPE, 0);
-        appTrack.setAccountId(TextUtils.isEmpty(accountId) ? "" : accountId);
-        appTrack.setUserName(TextUtils.isEmpty(name) ? "" : name);
+    private void setUserInfoAndIp(@NonNull Context context, AppTrack appTrack) {
+        AccountBean accountBean = BaseRouterClient.getLoginAccount(context, null);
+        String accountId = "";
+        String name = "";
+        int accountType = 0;
+        if (accountBean != null) {
+            accountId = accountBean.getId();
+            name = accountBean.getName();
+            accountType = accountBean.getAccountType();
+        }
+        appTrack.setAccountId(accountId);
+        appTrack.setUserName(name);
         appTrack.setAccountType(accountType);
+
         String ip = NetWorkUtils.getIpAddress();
         appTrack.setIp(TextUtils.isEmpty(ip) ? "" : ip);
     }

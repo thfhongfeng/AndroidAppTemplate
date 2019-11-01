@@ -67,7 +67,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:padding="@dimen/dp_10"
                                 android:text="@{shopDetail.name}"
                                 android:textColor="#929292"
@@ -91,7 +91,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:padding="@dimen/dp_10"
                                 android:text="@{shopDetail.typeName}"
                                 android:textColor="#929292"
@@ -116,7 +116,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:padding="@dimen/dp_10"
                                 android:text="@{shopDetail.onlineDate}"
                                 android:textColor="#929292"
@@ -140,7 +140,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:maxLines="1"
                                 android:padding="@dimen/dp_10"
                                 android:text="@{shopDetail.mobile}"
@@ -164,7 +164,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:maxLines="1"
                                 android:padding="@dimen/dp_10"
                                 android:text="@{shopDetail.addressDistrict}"
@@ -190,7 +190,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:maxLines="1"
                                 android:onClick="@{presenter::onAddressMarkerTvClick}"
                                 android:padding="@dimen/dp_10"
@@ -215,7 +215,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:gravity="top"
                                 android:lines="2"
                                 android:padding="@dimen/dp_10"
@@ -241,7 +241,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:gravity="top"
                                 android:lines="3"
                                 android:padding="@dimen/dp_10"
@@ -267,7 +267,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/base_shape_round_f3f3f3"
+                                android:background="@drawable/res_shape_round_f3f3f3"
                                 android:gravity="top"
                                 android:lines="3"
                                 android:padding="@dimen/dp_10"
@@ -292,7 +292,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0.5"
+                android:layout_height="@dimen/dp_0_5"
                 android:background="#999999"></View>
 
             <TextView
@@ -307,7 +307,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0.5"
+                android:layout_height="@dimen/dp_0_5"
                 android:background="#999999"></View>
 
             <TextView
@@ -322,7 +322,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0.5"
+                android:layout_height="@dimen/dp_0_5"
                 android:background="#999999"></View>
 
             <TextView

@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.pine.base.BaseSPKeyConstants;
+import com.pine.base.bean.AccountBean;
 import com.pine.base.remote.BaseRouterClient;
-import com.pine.router.IRouterCallback;
 import com.pine.tool.access.IUiAccessExecutor;
 import com.pine.tool.access.UiAccessTimeInterval;
-import com.pine.tool.util.SharePreferenceUtils;
+import com.pine.tool.router.IRouterCallback;
 
 import java.util.HashMap;
 
@@ -33,7 +32,8 @@ public class UiAccessVipLevelExecutor implements IUiAccessExecutor {
     public boolean onExecute(final Activity activity, String arg, HashMap<String, String> actionsMap,
                              UiAccessTimeInterval accessTimeInterval) {
         try {
-            int accountType = SharePreferenceUtils.readIntFromAppLivedCache(BaseSPKeyConstants.ACCOUNT_TYPE, 0);
+            AccountBean accountBean = BaseRouterClient.getLoginAccount(activity, null);
+            int accountType = accountBean.getAccountType();
             int vipLevelNeed = Integer.parseInt(arg);
             boolean canAccess = accountType >= vipLevelNeed;
             if (!canAccess) {

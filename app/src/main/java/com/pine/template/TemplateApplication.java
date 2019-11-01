@@ -7,24 +7,23 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 import com.pine.base.BaseApplication;
+import com.pine.base.BaseUrlConstants;
 import com.pine.base.access.UiAccessLoginExecutor;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.access.UiAccessVipLevelExecutor;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.base.router.command.RouterDbServerCommand;
+import com.pine.base.track.AppTrackManager;
 import com.pine.config.BuildConfig;
 import com.pine.config.ConfigKey;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.db_server.DbServerApplication;
 import com.pine.login.LoginApplication;
 import com.pine.main.MainApplication;
 import com.pine.mvc.MvcApplication;
 import com.pine.mvp.MvpApplication;
 import com.pine.mvvm.MvvmApplication;
-import com.pine.router.IRouterManager;
-import com.pine.router.IRouterManagerFactory;
-import com.pine.router.RouterManager;
-import com.pine.router.impl.arouter.manager.ARouterManager;
 import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IRequestManagerFactory;
@@ -33,6 +32,10 @@ import com.pine.tool.request.impl.database.DbRequestManager;
 import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.request.impl.database.IDbRequestServer;
 import com.pine.tool.request.impl.http.nohttp.NoRequestManager;
+import com.pine.tool.router.IRouterManager;
+import com.pine.tool.router.IRouterManagerFactory;
+import com.pine.tool.router.RouterManager;
+import com.pine.tool.router.impl.arouter.manager.ARouterManager;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.user.UserApplication;
@@ -63,17 +66,22 @@ public class TemplateApplication extends Application {
 
         LogUtils.setDebuggable(AppUtils.isApkDebuggable(this));
 
-        BaseApplication.init(this);
-        initManager();
+        // 主进程初始化
+        if (mApplication.getPackageName().equals(AppUtils.getCurProcessName(mApplication))) {
+            BaseApplication.init(this);
+            initManager();
 
-        WelcomeApplication.attach();
-        LoginApplication.attach();
-        MainApplication.attach();
-        UserApplication.attach();
-        MvcApplication.attach();
-        MvpApplication.attach();
-        MvvmApplication.attach();
-        DbServerApplication.attach();
+            WelcomeApplication.attach();
+            LoginApplication.attach();
+            MainApplication.attach();
+            UserApplication.attach();
+            MvcApplication.attach();
+            MvpApplication.attach();
+            MvvmApplication.attach();
+            DbServerApplication.attach();
+
+            doStartupBusiness();
+        }
     }
 
     @Override
@@ -81,16 +89,8 @@ public class TemplateApplication extends Application {
         super.attachBaseContext(baseContext);
     }
 
-    public static Application getApplication() {
-        return mApplication;
-    }
-
-    public static Context getContext() {
-        return mApplication.getApplicationContext();
-    }
-
     private void initManager() {
-        RouterManager.init("com.pine.base.router.command", new IRouterManagerFactory() {
+        RouterManager.init(this, "com.pine.base.router.command", new IRouterManagerFactory() {
             @Override
             public IRouterManager makeRouterManager(String bundleKey) {
                 switch (BuildConfig.APP_THIRD_ROUTER_PROVIDER) {
@@ -100,14 +100,19 @@ public class TemplateApplication extends Application {
                         return ARouterManager.getInstance(bundleKey);
                 }
             }
+
+            @Override
+            public boolean isBundleEnable(String bundleKey) {
+                return ConfigSwitcherServer.getInstance().isEnable(bundleKey);
+            }
         });
 
-        ShareManager.getInstance().init(this);
+        ShareManager.getInstance().init(this, R.mipmap.res_ic_launcher);
 
         RequestManager.init(this, new IRequestManagerFactory() {
             @Override
             public IRequestManager makeRequestManager(Context context, HashMap<String, String> header) {
-                switch (com.pine.config.BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
+                switch (BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
                     case "local":
                         return DbRequestManager.getInstance().init(context, header, new IDbRequestServer() {
                             @Override
@@ -134,5 +139,10 @@ public class TemplateApplication extends Application {
 
         UiAccessManager.getInstance().addAccessExecutor(UiAccessType.VIP_LEVEL,
                 new UiAccessVipLevelExecutor());
+    }
+
+    private void doStartupBusiness() {
+        AppTrackManager.getInstance().init(this, BaseUrlConstants.APP_TRACK_UPLOAD);
+        AppTrackManager.getInstance().uploadAllExistTrack(null);
     }
 }

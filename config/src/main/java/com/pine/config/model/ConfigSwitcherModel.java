@@ -5,11 +5,11 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.config.BuildConfig;
+import com.pine.config.ConfigApplication;
 import com.pine.config.ConfigKey;
 import com.pine.config.Constants;
 import com.pine.config.UrlConstants;
 import com.pine.config.bean.ConfigSwitcherEntity;
-import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
@@ -91,7 +91,7 @@ public class ConfigSwitcherModel {
                 "{configKey:'" + ConfigKey.BUNDLE_BUSINESS_MVVM_KEY + "', state:1}," +
                 "{configKey:'" + ConfigKey.FUN_ADD_SHOP_KEY + "', state:1},{configKey:'" + ConfigKey.FUN_ADD_PRODUCT_KEY + "', state:1}," +
                 "{configKey:'" + ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY + "', state:1}";
-        if (ConfigSwitcherServer.getInstance().isLogin()) {
+        if (ConfigApplication.isLogin()) {
             content += ",{configKey:'" + ConfigKey.BUNDLE_BUSINESS_MVC_KEY + "', state:1}";
         }
         content += "]";

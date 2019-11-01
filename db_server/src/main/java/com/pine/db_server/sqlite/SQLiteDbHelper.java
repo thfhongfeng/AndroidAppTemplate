@@ -78,17 +78,19 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             List<ContentValues> list = new ArrayList<>();
             HashMap<Integer, Integer> accountTypeMap = new HashMap<>();
             accountTypeMap.put(0, 999999);
-            accountTypeMap.put(1, 100);
-            accountTypeMap.put(2, 10);
-            accountTypeMap.put(3, 0);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 1; i < 11; i++) {
+                accountTypeMap.put(i, 9000 + i * 10);
+            }
+            accountTypeMap.put(11, 100);
+            accountTypeMap.put(12, 0);
+            for (int i = 0; i < 13; i++) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", ConfigKey.BUNDLE_DB_SEVER_KEY);
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
@@ -96,14 +98,14 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", ConfigKey.BUNDLE_LOGIN_KEY);
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
@@ -111,7 +113,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
@@ -119,15 +121,15 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVC_KEY);
-                contentValues.put("state", i < 3 ? 1 : 0); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", i < 12 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
@@ -135,7 +137,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关
@@ -143,24 +145,24 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
 
                 contentValues = new ContentValues();
                 contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", ConfigKey.FUN_ADD_SHOP_KEY);
-                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", i < 11 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", ConfigKey.FUN_ADD_PRODUCT_KEY);
-                contentValues.put("state", i < 2 ? 1 : 0); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", i < 11 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关
@@ -168,7 +170,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+                contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
                 list.add(contentValues);
             }
             boolean insertSuccess = true;
@@ -219,6 +221,10 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    private final String[] HEAD_IMAGES = {"http://i1.sinaimg.cn/ent/d/2008-06-04/U105P28T3D2048907F326DT20080604225106.jpg",
+            "https://c-ssl.duitang.com/uploads/item/201704/04/20170404153225_EiMHP.thumb.700_0.jpeg",
+            "http://image2.sina.com.cn/IT/d/2005-10-31/U1235P2T1D752393F13DT20051031133235.jpg"};
+
     private void createAccountTable(SQLiteDatabase db) {
         try {
             db.execSQL("create table if not exists " + ACCOUNT_TABLE_NAME +
@@ -227,16 +233,18 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     "name text not null,password text not null, headImgUrl text,state integer not null," +
                     "mobile text not null,curLoginTimeStamp integer not null,createTime text," +
                     "updateTime text)");
+            int imageTotalCount = HEAD_IMAGES.length;
             Calendar calendar = Calendar.getInstance();
             List<ContentValues> list = new ArrayList<>();
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", "1000" + "20190328102000000" + "000");
             contentValues.put("account", "admin");
-            contentValues.put("accountType", 999999); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+            contentValues.put("accountType", 999999); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
             contentValues.put("name", "admin");
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
             contentValues.put("mobile", "18672943565");
+            contentValues.put("headImgUrl", HEAD_IMAGES[0 % imageTotalCount]);
             contentValues.put("curLoginTimeStamp", 0);
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
@@ -244,11 +252,12 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues = new ContentValues();
             contentValues.put("id", "1000" + "20190328102000000" + "001");
             contentValues.put("account", "15221464292");
-            contentValues.put("accountType", 100); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+            contentValues.put("accountType", 9100); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
             contentValues.put("name", "15221464292");
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
             contentValues.put("mobile", "15221464292");
+            contentValues.put("headImgUrl", HEAD_IMAGES[1 % imageTotalCount]);
             contentValues.put("curLoginTimeStamp", 0);
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
@@ -256,11 +265,12 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues = new ContentValues();
             contentValues.put("id", "1000" + "20190328102000000" + "002");
             contentValues.put("account", "15221464296");
-            contentValues.put("accountType", 10); // 账户类型:0-游客（临时账户），999999-超级管理员，其他(0-999之间)
+            contentValues.put("accountType", 9010); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)
             contentValues.put("name", "15221464296");
             contentValues.put("password", SecurityUtils.generateMD5("111aaa"));
             contentValues.put("state", 1); // 账户状态:0-删除，1-激活，2-未激活
             contentValues.put("mobile", "15221464296");
+            contentValues.put("headImgUrl", HEAD_IMAGES[2 % imageTotalCount]);
             contentValues.put("curLoginTimeStamp", 0);
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
@@ -517,11 +527,13 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, -51);
             int imageTotalCount = TRAVEL_NOTE_IMAGES.length;
+            int headImageTotalCount = HEAD_IMAGES.length;
             for (int i = 0; i < 50; i++) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", "1102" + "20190328102000000" + "0" + (i > 9 ? i : "0" + i));
                 contentValues.put("title", "Travel Note Item " + (i + 1));
                 int r = new Random().nextInt(3);
+                contentValues.put("headImgUrl", HEAD_IMAGES[r % headImageTotalCount]);
                 if (r == 1) {
                     contentValues.put("authorId", "100020190328102000000001");
                     contentValues.put("author", "15221464292");
@@ -540,7 +552,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues.put("preface", "这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言这是一段前言");
                 String days = "[{id:'1',day:'第1天',contentList:[{type:'text',index:'1',text:'第1天第1段'}," +
                         "{type:'text',index:'2',text:'第1天第2段'}]}";
-                for (int j = 1; j < new Random().nextInt(20) + 1; j++) {
+                for (int j = 1; j < new Random().nextInt(8) * 3 + 1; j++) {
                     String str = "[{type:'text',index:'1',text:'第" + (j + 1) + "天第1段'}," +
                             "{type:'image',index:'2',remoteFilePath:'" + TRAVEL_NOTE_IMAGES[(j - 1) % imageTotalCount] + "',text:'第" + (j + 1) + "天第2段'}," +
                             "{type:'text',index:'3',text:'第" + (j + 1) + "天第3段'}]";
@@ -623,10 +635,6 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
-    private final String[] COMMENTER_HEAD_IMAGES = {"http://i1.sinaimg.cn/ent/d/2008-06-04/U105P28T3D2048907F326DT20080604225106.jpg",
-            "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp",
-            "http://image2.sina.com.cn/IT/d/2005-10-31/U1235P2T1D752393F13DT20051031133235.jpg"};
-
     private void createTravelNoteCommentTable(SQLiteDatabase db) {
         try {
             db.execSQL("create table if not exists " + TRAVEL_NOTE_COMMENT_TABLE_NAME +
@@ -637,7 +645,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             List<ContentValues> list = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.SECOND, -10000);
-            int imageTotalCount = COMMENTER_HEAD_IMAGES.length;
+            int imageTotalCount = HEAD_IMAGES.length;
             for (int i = 0; i < 900; i++) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", "1103" + "20190328102000000" + (i > 9 ? (i > 99 ? i : "0" + i) : "00" + i));
@@ -656,7 +664,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     contentValues.put("authorId", "100020190328102000000000");
                     contentValues.put("author", "admin");
                 }
-                contentValues.put("headImgUrl", COMMENTER_HEAD_IMAGES[r % imageTotalCount]);
+                contentValues.put("headImgUrl", HEAD_IMAGES[r % imageTotalCount]);
                 calendar.add(Calendar.SECOND, new Random().nextInt(10));
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));

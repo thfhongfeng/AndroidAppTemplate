@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.pine.mvp.ui.activity.MvpHomeActivity;
-import com.pine.router.IServiceCallback;
-import com.pine.router.annotation.RouterCommand;
+import com.pine.tool.router.IServiceCallback;
+import com.pine.tool.router.annotation.RouterCommand;
 import com.pine.base.router.command.RouterMvpCommand;
 
 /**

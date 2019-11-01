@@ -16,13 +16,21 @@ public interface IImageLoaderManager {
 
     /**
      * 初始化基本配置项
+     *
+     * @param errorImageResId 加载错误时的默认图
+     * @return
      */
-    IImageLoaderManager initConfig(@NonNull int errorImageResId);
+    void initConfig(@NonNull int errorImageResId);
 
     /**
      * 初始化基本配置项
+     *
+     * @param errorImageResId       加载错误时的默认图
+     * @param placeholderImageResId 加载中的占位图
+     * @param emptyImageResId       无图片的占位图
+     * @return
      */
-    IImageLoaderManager initConfig(@NonNull int errorImageResId, @NonNull int loadingImageResId);
+    void initConfig(@NonNull int errorImageResId, @NonNull int placeholderImageResId, @NonNull int emptyImageResId);
 
     /**
      * 设置下载请求监听
@@ -30,83 +38,47 @@ public interface IImageLoaderManager {
      * @param listener
      * @return
      */
-    IImageLoaderManager downloadListener(IImageDownloadListener listener);
-
-    /**
-     * 加载本地Res图片
-     *
-     * @param context   Context
-     * @param res       DrawableRes
-     * @param imageView
-     */
-    void loadImage(@NonNull Context context, @DrawableRes int res,
-                   @NonNull ImageView imageView);
+    void downloadListener(IImageDownloadListener listener);
 
     /**
      * 加载本地Res图片
      *
      * @param context     Context
-     * @param res         DrawableRes
-     * @param error       DrawableRes
-     * @param placeholder DrawableRes
+     * @param res         加载的图
+     * @param error       加载错误时的默认图
+     * @param placeholder 加载中的占位图
+     * @param empty       无图片的占位图
      * @param imageView
      */
     void loadImage(@NonNull Context context, @DrawableRes int res, @DrawableRes int error,
-                   @DrawableRes int placeholder, @NonNull ImageView imageView);
+                   @DrawableRes int placeholder, @DrawableRes int empty, @NonNull ImageView imageView);
 
     /**
      * 加载本地Res图片
      *
      * @param context     Context
-     * @param res         DrawableRes
-     * @param error       Drawable
-     * @param placeholder Drawable
+     * @param res         加载的图
+     * @param error       加载错误时的默认图
+     * @param placeholder 加载中的占位图
+     * @param empty       无图片的占位图
      * @param imageView
      */
     void loadImage(@NonNull Context context, @DrawableRes int res, Drawable error,
-                   Drawable placeholder, @NonNull ImageView imageView);
+                   Drawable placeholder, Drawable empty, @NonNull ImageView imageView);
 
     /**
      * 加载网络图片
      *
-     * @param context   Context
-     * @param url       图片地址
+     * @param context       Context
+     * @param url           图片地址
+     * @param error         加载错误时的默认图
+     * @param placeholder   加载中的占位图
+     * @param empty         无图片的占位图
      * @param imageView
-     */
-    void loadImage(@NonNull Context context, @NonNull String url, @NonNull ImageView imageView);
-
-    /**
-     * 加载网络图片
-     *
-     * @param context     Context
-     * @param url         图片地址
-     * @param error       DrawableRes
-     * @param placeholder DrawableRes
-     * @param imageView
+     * @param cacheStrategy ImageCacheStrategy
      */
     void loadImage(@NonNull Context context, @NonNull String url, @DrawableRes int error,
-                   @DrawableRes int placeholder, @NonNull ImageView imageView);
-
-    /**
-     * 加载网络图片
-     *
-     * @param context     Context
-     * @param url         图片地址
-     * @param error       Drawable
-     * @param placeholder Drawable
-     * @param imageView
-     */
-    void loadImage(@NonNull Context context, @NonNull String url, Drawable error,
-                   Drawable placeholder, @NonNull ImageView imageView);
-
-    /**
-     * 加载网络图片
-     *
-     * @param context   Context
-     * @param url       图片地址
-     * @param imageView
-     */
-    void loadImage(@NonNull Context context, @NonNull String url, @NonNull ImageView imageView,
+                   @DrawableRes int placeholder, @DrawableRes int empty, @NonNull ImageView imageView,
                    ImageCacheStrategy cacheStrategy);
 
     /**
@@ -114,62 +86,41 @@ public interface IImageLoaderManager {
      *
      * @param context       Context
      * @param url           图片地址
-     * @param error         DrawableRes
-     * @param placeholder   DrawableRes
-     * @param imageView
-     * @param cacheStrategy ImageCacheStrategy
-     */
-    void loadImage(@NonNull Context context, @NonNull String url, @DrawableRes int error,
-                   @DrawableRes int placeholder, @NonNull ImageView imageView,
-                   ImageCacheStrategy cacheStrategy);
-
-    /**
-     * 加载网络图片
-     *
-     * @param context       Context
-     * @param url           图片地址
-     * @param error         Drawable
-     * @param placeholder   Drawable
+     * @param error         加载错误时的默认图
+     * @param placeholder   加载中的占位图
+     * @param empty         无图片的占位图
      * @param imageView
      * @param cacheStrategy ImageCacheStrategy
      */
     void loadImage(@NonNull Context context, @NonNull String url, Drawable error,
-                   Drawable placeholder, @NonNull ImageView imageView,
+                   Drawable placeholder, Drawable empty, @NonNull ImageView imageView,
                    ImageCacheStrategy cacheStrategy);
-
-    /**
-     * 加载本地File图片
-     *
-     * @param context   Context
-     * @param file      图片地址
-     * @param imageView
-     */
-    void loadImage(@NonNull Context context, @NonNull File file,
-                   @NonNull ImageView imageView);
 
     /**
      * 加载本地File图片
      *
      * @param context     Context
      * @param file        图片地址
-     * @param error       DrawableRes
-     * @param placeholder DrawableRes
+     * @param error       加载错误时的默认图
+     * @param placeholder 加载中的占位图
+     * @param empty       无图片的占位图
      * @param imageView
      */
     void loadImage(@NonNull Context context, @NonNull File file, @DrawableRes int error,
-                   @DrawableRes int placeholder, @NonNull ImageView imageView);
+                   @DrawableRes int placeholder, @DrawableRes int empty, @NonNull ImageView imageView);
 
     /**
      * 加载本地File图片
      *
      * @param context     Context
      * @param file        图片地址
-     * @param error       Drawable
-     * @param placeholder Drawable
+     * @param error       加载错误时的默认图
+     * @param placeholder 加载中的占位图
+     * @param empty       无图片的占位图
      * @param imageView
      */
     void loadImage(@NonNull Context context, @NonNull File file, Drawable error,
-                   Drawable placeholder, @NonNull ImageView imageView);
+                   Drawable placeholder, Drawable empty, @NonNull ImageView imageView);
 
     /**
      * 清空缓存

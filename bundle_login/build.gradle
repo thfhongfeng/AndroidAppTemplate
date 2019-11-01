@@ -76,5 +76,6 @@ dependencies {
 
     // 主体基础模块 begin
     api project(':base')
+    api project(':resource')
     // 主体基础模块 end
 }

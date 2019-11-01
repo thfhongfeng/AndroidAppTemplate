@@ -6,8 +6,8 @@ import android.os.Bundle;
 import com.pine.base.router.command.RouterLoginCommand;
 import com.pine.base.router.command.RouterMainCommand;
 import com.pine.config.ConfigKey;
-import com.pine.router.IRouterCallback;
-import com.pine.router.RouterManager;
+import com.pine.tool.router.IRouterCallback;
+import com.pine.tool.router.RouterManager;
 
 public class WelcomeRouterClient {
     public static void callCommand(Context context, String bundleKey,

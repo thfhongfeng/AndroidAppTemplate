@@ -17,7 +17,7 @@ import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
-import com.pine.router.IRouterCallback;
+import com.pine.tool.router.IRouterCallback;
 import com.pine.welcome.R;
 import com.pine.welcome.WelcomeApplication;
 import com.pine.welcome.databinding.LoadingActivityBinding;

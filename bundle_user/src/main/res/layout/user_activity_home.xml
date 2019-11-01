@@ -4,9 +4,15 @@
 
     <data class="UserHomeActivityBinding">
 
+        <import type="com.pine.user.R"></import>
+
         <variable
             name="presenter"
             type="com.pine.user.ui.activity.UserHomeActivity.Presenter"></variable>
+
+        <variable
+            name="accountBean"
+            type="com.pine.base.bean.AccountBean"></variable>
     </data>
 
     <LinearLayout
@@ -15,19 +21,56 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="User Center" />
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_sky_blue"
+                android:padding="@dimen/dp_20">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.pine.tool.widget.view.CircleImageView
+                        errorSrc="@{R.mipmap.res_iv_portrait_default}"
+                        imageUrl="@{accountBean.headImgUrl}"
+                        emptySrc="@{R.mipmap.res_iv_portrait_default}"
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_80" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:text="@{accountBean.name}"
+                        android:textSize="@dimen/sp_16" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:onClick="@{presenter::onScanClick}"
+                    android:src="@mipmap/res_ic_scan" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/logout_btn_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_30"
-            android:background="@drawable/base_shape_round_70b642_8bb96c"
+            android:background="@drawable/res_shape_round_70b642_8bb96c"
             android:gravity="center"
             android:onClick="@{presenter::onLogoutClick}"
             android:padding="@dimen/dp_20"

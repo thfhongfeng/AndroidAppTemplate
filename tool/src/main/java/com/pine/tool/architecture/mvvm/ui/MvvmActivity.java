@@ -112,7 +112,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
 
     @Override
     protected final void findViewOnCreate() {
-
+        mViewModel.setContext(this);
     }
 
     @CallSuper

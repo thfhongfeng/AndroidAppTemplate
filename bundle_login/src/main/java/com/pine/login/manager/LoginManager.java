@@ -1,9 +1,9 @@
 package com.pine.login.manager;
 
-import com.pine.config.SPKeyConstants;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
-import com.pine.login.bean.AccountBean;
+import com.pine.login.LoginSPKeyConstants;
+import com.pine.base.bean.AccountBean;
 import com.pine.login.model.ILoginResponse;
 import com.pine.login.model.LoginAccountModel;
 import com.pine.login.model.callback.LoginCallback;
@@ -61,8 +61,8 @@ public class LoginManager {
             return false;
         }
         HashMap<String, String> params = new HashMap<>();
-        String account = SharePreferenceUtils.readStringFromCache(SPKeyConstants.ACCOUNT_ACCOUNT, "");
-        String password = SharePreferenceUtils.readStringFromCache(SPKeyConstants.ACCOUNT_PASSWORD, "");
+        String account = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, "");
+        String password = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, "");
         if (account.length() == 0 || password.length() == 0) {
             return false;
         }
@@ -76,37 +76,37 @@ public class LoginManager {
     }
 
     public static void saveLoginInfo(AccountBean accountBean) {
-        SharePreferenceUtils.saveToCache(SPKeyConstants.ACCOUNT_ACCOUNT, mAccount);
-        SharePreferenceUtils.saveToCache(SPKeyConstants.ACCOUNT_PASSWORD, mPassword);
+        SharePreferenceUtils.saveToCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, mAccount);
+        SharePreferenceUtils.saveToCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, mPassword);
 
         if (accountBean == null) {
             return;
         }
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_ID, accountBean.getId());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_ACCOUNT, accountBean.getAccount());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_PASSWORD, accountBean.getPassword());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_TYPE, accountBean.getAccountType());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_NAME, accountBean.getName());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_HEAD_IMG_URL, accountBean.getHeadImgUrl());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_STATE, accountBean.getState());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_MOBILE, accountBean.getMobile());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_CREATE_TIME, accountBean.getCreateTime());
-        SharePreferenceUtils.saveToAppLivedCache(SPKeyConstants.ACCOUNT_UPDATE_TIME, accountBean.getUpdateTime());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_ID, accountBean.getId());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, accountBean.getAccount());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, accountBean.getPassword());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_TYPE, accountBean.getAccountType());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_NAME, accountBean.getName());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_HEAD_IMG_URL, accountBean.getHeadImgUrl());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_STATE, accountBean.getState());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_MOBILE, accountBean.getMobile());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_CREATE_TIME, accountBean.getCreateTime());
+        SharePreferenceUtils.saveToAppLivedCache(LoginSPKeyConstants.ACCOUNT_UPDATE_TIME, accountBean.getUpdateTime());
     }
 
     public static void clearLoginInfo() {
-        SharePreferenceUtils.cleanCacheKey(SPKeyConstants.ACCOUNT_ACCOUNT);
-        SharePreferenceUtils.cleanCacheKey(SPKeyConstants.ACCOUNT_PASSWORD);
+        SharePreferenceUtils.cleanCacheKey(LoginSPKeyConstants.ACCOUNT_ACCOUNT);
+        SharePreferenceUtils.cleanCacheKey(LoginSPKeyConstants.ACCOUNT_PASSWORD);
 
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_ID);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_ACCOUNT);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_PASSWORD);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_TYPE);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_NAME);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_HEAD_IMG_URL);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_STATE);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_MOBILE);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_CREATE_TIME);
-        SharePreferenceUtils.cleanAppLivedCacheKey(SPKeyConstants.ACCOUNT_UPDATE_TIME);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_ID);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_ACCOUNT);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_PASSWORD);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_TYPE);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_NAME);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_HEAD_IMG_URL);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_STATE);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_MOBILE);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_CREATE_TIME);
+        SharePreferenceUtils.cleanAppLivedCacheKey(LoginSPKeyConstants.ACCOUNT_UPDATE_TIME);
     }
 }

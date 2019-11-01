@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
-import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.bean.UriListShareBean;
 import com.pine.base.component.share.bean.UrlTextShareBean;
@@ -43,9 +43,9 @@ public class ShareManager {
         return mInstance;
     }
 
-    public void init(Context context) {
+    public void init(Context context, @DrawableRes int iconId) {
         initTencent(BuildConfig.QQ_FOR_APP_ID, BuildConfig.WX_FOR_APP_ID, BuildConfig.WX_SECRET_KEY,
-                R.mipmap.base_ic_launcher, BuildConfig.APPLICATION_ID, BuildConfig.BASE_URL);
+                iconId, BuildConfig.APPLICATION_ID, BuildConfig.BASE_URL);
         initSina(context, BuildConfig.WEI_BO_FOR_APP_KEY, BuildConfig.WEI_BO_REDIRECT_URL);
     }
 

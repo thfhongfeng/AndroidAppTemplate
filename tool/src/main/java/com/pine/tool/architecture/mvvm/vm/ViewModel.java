@@ -1,6 +1,7 @@
 package com.pine.tool.architecture.mvvm.vm;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.pine.tool.util.LogUtils;
 public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     private UiState mUiState = UiState.UI_STATE_UNDEFINE;
+    private Context mContext;
 
     /**
      * UI状态回调
@@ -31,6 +33,17 @@ public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
 
     public UiState getUiState() {
         return mUiState;
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
+    public Context getContext() {
+        if (mContext == null) {
+            throw new IllegalStateException("Context not set yet, you can not use it.");
+        }
+        return mContext;
     }
 
     /**
@@ -52,7 +65,7 @@ public abstract class ViewModel extends android.arch.lifecycle.ViewModel {
     }
 
     public void onCleared() {
-
+        mContext = null;
     }
 
     MutableLiveData<Integer> observeSyncLiveData = new MutableLiveData<>();

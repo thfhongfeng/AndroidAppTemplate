@@ -7,7 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pine.config.BuildConfig;
 import com.pine.login.LoginConstants;
 import com.pine.login.LoginUrlConstants;
-import com.pine.login.bean.AccountBean;
+import com.pine.base.bean.AccountBean;
 import com.pine.login.model.callback.LoginCallback;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;

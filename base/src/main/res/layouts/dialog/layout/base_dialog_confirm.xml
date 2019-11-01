@@ -44,7 +44,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0.5"
+            android:layout_height="@dimen/dp_0_5"
             android:background="#dbdbdb"></View>
 
         <LinearLayout
@@ -64,7 +64,7 @@
                 android:textSize="@dimen/sp_14" />
 
             <View
-                android:layout_width="@dimen/dp_0.5"
+                android:layout_width="@dimen/dp_0_5"
                 android:layout_height="match_parent"
                 android:background="#dbdbdb"></View>
 

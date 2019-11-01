@@ -114,7 +114,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="@dimen/dp_12"
-                                android:src="@mipmap/base_ic_date_select" />
+                                android:src="@mipmap/res_ic_date_select" />
                         </RelativeLayout>
 
                     </TableRow>
@@ -211,7 +211,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="@dimen/dp_15"
-                                android:src="@mipmap/base_ic_solid_down" />
+                                android:src="@mipmap/res_ic_solid_down" />
                         </RelativeLayout>
 
                     </TableRow>

@@ -28,7 +28,7 @@
         <View
             android:id="@+id/title_divide"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0.5"
+            android:layout_height="@dimen/dp_0_5"
             android:background="#CACACA"></View>
 
         <ListView

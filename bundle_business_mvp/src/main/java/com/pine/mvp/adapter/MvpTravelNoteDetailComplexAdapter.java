@@ -130,7 +130,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
         @Override
         public void updateData(MvpTravelNoteDetailEntity content, BaseListAdapterItemProperty propertyEntity, int position) {
             ImageLoaderManager.getInstance().loadImage(mContext, content.getHeadImgUrl(),
-                    R.mipmap.base_iv_portrait_default, -1, person_civ);
+                    R.mipmap.res_iv_portrait_default, 0, R.mipmap.res_iv_portrait_default, person_civ);
             title_tv.setText(content.getTitle());
             set_out_date_tv.setText(mContext.getString(R.string.mvp_travel_note_detail_set_out_date, content.getSetOutDate()));
             author_tv.setText(content.getAuthor());

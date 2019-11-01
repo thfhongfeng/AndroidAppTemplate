@@ -3,8 +3,8 @@ package com.pine.base.component.image_loader.glide;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -26,6 +26,7 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
     private final static String TAG = LogUtils.makeLogTag(GlideImageLoaderManager.class);
     private static volatile IImageLoaderManager mInstance;
     private RequestOptions mDefaultOption = new RequestOptions();
+    private int mEmptyImageResId;
 
     private GlideImageLoaderManager() {
     }
@@ -44,62 +45,48 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
     }
 
     @Override
-    public IImageLoaderManager initConfig(@NonNull int errorImageResId) {
-        mDefaultOption.error(errorImageResId)    //错误加载
+    public void initConfig(@NonNull int errorImageResId) {
+        mDefaultOption.error(errorImageResId)    // 加载错误时的默认图
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
-        return mInstance;
     }
 
     @Override
-    public IImageLoaderManager initConfig(@NonNull int errorImageResId, @NonNull int loadingImageResId) {
-        mDefaultOption.error(errorImageResId)    //错误加载
-                .placeholder(loadingImageResId)   //加载图
+    public void initConfig(@NonNull int errorImageResId, @NonNull int placeholderImageResId,
+                           @NonNull int emptyImageResId) {
+        mDefaultOption.error(errorImageResId)    // 加载错误时的默认图
+                .placeholder(placeholderImageResId)   // 加载中的占位图
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
-        return mInstance;
+        mEmptyImageResId = emptyImageResId;
     }
 
     @Override
-    public IImageLoaderManager downloadListener(IImageDownloadListener listener) {
+    public void downloadListener(IImageDownloadListener listener) {
         HttpRequestLoader.listener = listener;
-        return mInstance;
-    }
-
-    /**
-     * 加载本地Res图片
-     *
-     * @param context   Context
-     * @param res       DrawableRes
-     * @param imageView
-     */
-    @Override
-    public void loadImage(@NonNull Context context, @DrawableRes int res,
-                          @NonNull ImageView imageView) {
-        loadImage(context, res, -1, -1, imageView);
     }
 
     @SuppressLint("ResourceType")
     @Override
-    public void loadImage(@NonNull Context context, int res, int error, int placeholder,
+    public void loadImage(@NonNull Context context, int res, int error, int placeholder, int empty,
                           @NonNull ImageView imageView) {
         RequestOptions options = mDefaultOption.clone()
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
-        if (error > 0) {
+        if (error != 0) {
             options.error(error);
         }
-        if (placeholder > 0) {
+        if (placeholder != 0) {
             options.placeholder(placeholder);
         }
         Glide.with(context)
-                .load(res)
+                .load(res == 0 ? (empty == 0 ? mEmptyImageResId : empty) : res)
                 .apply(options)
                 .into(imageView);
     }
 
     @Override
     public void loadImage(@NonNull Context context, int res, Drawable error,
-                          Drawable placeholder, @NonNull ImageView imageView) {
+                          Drawable placeholder, Drawable empty, @NonNull ImageView imageView) {
         RequestOptions options = mDefaultOption.clone()
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
         if (error != null) {
@@ -109,61 +96,21 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
             options.placeholder(placeholder);
         }
         Glide.with(context)
-                .load(res)
+                .load(res == 0 ? (empty == null ? mEmptyImageResId : empty) : res)
                 .apply(options)
                 .into(imageView);
     }
 
-    /**
-     * 加载网络图片
-     *
-     * @param context   Context
-     * @param url       图片地址
-     * @param imageView
-     */
-    @Override
-    public void loadImage(@NonNull Context context,
-                          @NonNull String url, @NonNull ImageView imageView) {
-        loadImage(context, url, -1, -1, imageView);
-    }
-
     @SuppressLint("ResourceType")
     @Override
     public void loadImage(@NonNull Context context, @NonNull String url, int error,
-                          int placeholder, @NonNull ImageView imageView) {
-        loadImage(context, url, error, placeholder, imageView, null);
-    }
-
-    @Override
-    public void loadImage(@NonNull Context context, @NonNull String url,
-                          Drawable error, Drawable placeholder, @NonNull ImageView imageView) {
-        loadImage(context, url, error, placeholder, imageView, null);
-    }
-
-    /**
-     * 加载网络图片
-     *
-     * @param context       Context
-     * @param url           图片地址
-     * @param imageView
-     * @param cacheStrategy
-     */
-    @Override
-    public void loadImage(@NonNull Context context, @NonNull String url,
-                          @NonNull ImageView imageView, ImageCacheStrategy cacheStrategy) {
-        loadImage(context, url, -1, -1, imageView, cacheStrategy);
-    }
-
-    @SuppressLint("ResourceType")
-    @Override
-    public void loadImage(@NonNull Context context, @NonNull String url, int error,
-                          int placeholder, @NonNull ImageView imageView, ImageCacheStrategy cacheStrategy) {
+                          int placeholder, int empty, @NonNull ImageView imageView, ImageCacheStrategy cacheStrategy) {
         RequestOptions options = mDefaultOption.clone()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-        if (error > 0) {
+        if (error != 0) {
             options.error(error);
         }
-        if (placeholder > 0) {
+        if (placeholder != 0) {
             options.placeholder(placeholder);
         }
         if (cacheStrategy != null) {
@@ -185,15 +132,18 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
                     break;
             }
         }
+        if (TextUtils.isEmpty(url)) {
+
+        }
         Glide.with(context)
-                .load(url)
+                .load(TextUtils.isEmpty(url) ? (empty == 0 ? mEmptyImageResId : empty) : url)
                 .apply(options)
                 .into(imageView);
     }
 
     @Override
     public void loadImage(@NonNull Context context, @NonNull String url, Drawable error,
-                          Drawable placeholder, @NonNull ImageView imageView, ImageCacheStrategy cacheStrategy) {
+                          Drawable placeholder, Drawable empty, @NonNull ImageView imageView, ImageCacheStrategy cacheStrategy) {
         RequestOptions options = mDefaultOption.clone()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
         if (error != null) {
@@ -222,45 +172,32 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
             }
         }
         Glide.with(context)
-                .load(url)
+                .load(TextUtils.isEmpty(url) ? (empty == null ? mEmptyImageResId : empty) : url)
                 .apply(options)
                 .into(imageView);
-    }
-
-    /**
-     * 加载本地File图片
-     *
-     * @param context   Context
-     * @param file      图片地址
-     * @param imageView
-     */
-    @Override
-    public void loadImage(@NonNull Context context, @NonNull File file,
-                          @NonNull ImageView imageView) {
-        loadImage(context, file, -1, -1, imageView);
     }
 
     @SuppressLint("ResourceType")
     @Override
     public void loadImage(@NonNull Context context, @NonNull File file, int error,
-                          int placeholder, @NonNull ImageView imageView) {
+                          int placeholder, int empty, @NonNull ImageView imageView) {
         RequestOptions options = mDefaultOption.clone()
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
-        if (error > 0) {
+        if (error != 0) {
             options.error(error);
         }
-        if (placeholder > 0) {
+        if (placeholder != 0) {
             options.placeholder(placeholder);
         }
         Glide.with(context)
-                .load(file)
+                .load(file == null ? (empty == 0 ? mEmptyImageResId : empty) : file)
                 .apply(options)
                 .into(imageView);
     }
 
     @Override
     public void loadImage(@NonNull Context context, @NonNull File file,
-                          Drawable error, Drawable placeholder, @NonNull ImageView imageView) {
+                          Drawable error, Drawable placeholder, Drawable empty, @NonNull ImageView imageView) {
         RequestOptions options = mDefaultOption.clone()
                 .diskCacheStrategy(DiskCacheStrategy.NONE);
         if (error != null) {
@@ -270,26 +207,16 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
             options.placeholder(placeholder);
         }
         Glide.with(context)
-                .load(file)
+                .load(file == null ? (empty == null ? mEmptyImageResId : empty) : file)
                 .apply(options)
                 .into(imageView);
     }
 
-    /**
-     * 清空图片缓存
-     *
-     * @param context Context
-     */
     @Override
     public void clearDiskCache(@NonNull Context context) {
         Glide.get(context).clearDiskCache();
     }
 
-    /**
-     * 清空图片内存
-     *
-     * @param context Context
-     */
     @Override
     public void clearMemory(@NonNull Context context) {
         Glide.get(context).clearMemory();

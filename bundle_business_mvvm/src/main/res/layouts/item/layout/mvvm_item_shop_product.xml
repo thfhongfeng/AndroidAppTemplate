@@ -37,7 +37,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0.5"
+                android:layout_height="@dimen/dp_0_5"
                 android:background="@color/light_gray"></View>
         </LinearLayout>
     </RelativeLayout>

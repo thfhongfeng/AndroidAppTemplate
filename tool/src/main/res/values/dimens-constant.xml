@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dp_0">0dp</dimen>
-    <dimen name="dp_0.5">0.48dp</dimen>
+    <dimen name="dp_0_5">0.48dp</dimen>
     <dimen name="dp_1">0.96dp</dimen>
-    <dimen name="dp_1.5">1.44dp</dimen>
+    <dimen name="dp_1_5">1.44dp</dimen>
     <dimen name="dp_2">1.92dp</dimen>
     <dimen name="dp_3">2.88dp</dimen>
     <dimen name="dp_4">3.84dp</dimen>

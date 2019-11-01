@@ -44,6 +44,10 @@ dependencies {
     api build_dependency["google_gson"]
     // google官方 dependency end
 
+    // ARouter配置 begin
+    implementation build_dependency["arouter_api"]
+    // ARouter配置 end
+
     // 第三方 dependency begin
     api build_dependency["nohttp_nohttp"]
     api build_dependency["nohttp_okhttp"]

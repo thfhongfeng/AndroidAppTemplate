@@ -15,7 +15,7 @@ import com.pine.base.track.TrackModuleTag;
 import com.pine.main.R;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.remote.MainRouterClient;
-import com.pine.router.IRouterCallback;
+import com.pine.tool.router.IRouterCallback;
 
 /**
  * Created by tanghongfeng on 2019/1/16
@@ -61,7 +61,7 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
                             new IRouterCallback() {
                                 @Override
                                 public void onSuccess(Bundle responseBundle) {
-                                    AppTrackManager.getInstance().trackButton(TrackModuleTag.MODULE_DEFAULT,
+                                    AppTrackManager.getInstance().trackButton(mContext, TrackModuleTag.MODULE_DEFAULT,
                                             "MainHomeActivity", "MainHomeActivity",
                                             "HomeGoBundle※" + content.getCommand(), content.getBundle());
                                 }

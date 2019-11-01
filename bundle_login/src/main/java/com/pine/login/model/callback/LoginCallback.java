@@ -8,7 +8,7 @@ import com.pine.config.BuildConfig;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
-import com.pine.login.bean.AccountBean;
+import com.pine.base.bean.AccountBean;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
 import com.pine.login.ui.activity.LoginActivity;
@@ -81,6 +81,7 @@ public class LoginCallback extends JsonCallback {
                 responseAccount.setAccount(jsonObject.optString("mobile"));
                 responseAccount.setName(jsonObject.optString("userRealName"));
                 responseAccount.setMobile(jsonObject.optString("mobile"));
+                responseAccount.setHeadImgUrl(jsonObject.optString("headImgUrl"));
                 responseAccount.setState(1);
                 responseAccount.setAccountType(100);
             }

@@ -39,7 +39,7 @@
             android:id="@+id/person_civ"
             android:layout_width="@dimen/dp_22"
             android:layout_height="@dimen/dp_22"
-            android:src="@mipmap/base_iv_portrait_default"
+            android:src="@mipmap/res_iv_portrait_default"
             app:civ_borderColor="@color/white"
             app:civ_borderWidth="@dimen/dp_2" />
 
@@ -65,7 +65,7 @@
             android:layout_height="@dimen/dp_12"
             android:layout_marginLeft="@dimen/dp_10"
             android:scaleType="center"
-            android:src="@drawable/base_selector_is_like" />
+            android:src="@drawable/res_selector_is_like" />
 
         <TextView
             android:id="@+id/like_count_tv"
@@ -80,7 +80,7 @@
             android:layout_height="@dimen/dp_12"
             android:layout_marginLeft="@dimen/dp_10"
             android:scaleType="center"
-            android:src="@mipmap/base_iv_has_read" />
+            android:src="@mipmap/res_iv_has_read" />
 
         <TextView
             android:id="@+id/read_count_tv"

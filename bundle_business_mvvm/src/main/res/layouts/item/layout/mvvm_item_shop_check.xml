@@ -29,7 +29,7 @@
                 android:id="@+id/item_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/base_selector_check"
+                android:button="@drawable/res_selector_check"
                 android:padding="@dimen/dp_5" />
 
             <ImageView
@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/dp_3"
-                        android:src="@mipmap/base_ic_location" />
+                        android:src="@mipmap/res_ic_location" />
 
                     <TextView
                         android:id="@+id/location_tv"
@@ -80,7 +80,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0.5"
+            android:layout_height="@dimen/dp_0_5"
             android:background="@color/light_gray"></View>
     </LinearLayout>
 </layout>

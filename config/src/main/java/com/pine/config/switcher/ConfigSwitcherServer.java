@@ -1,5 +1,6 @@
 package com.pine.config.switcher;
 
+import com.pine.config.ConfigApplication;
 import com.pine.config.ConfigKey;
 import com.pine.config.bean.ConfigSwitcherEntity;
 import com.pine.config.model.ConfigSwitcherModel;
@@ -20,8 +21,6 @@ public class ConfigSwitcherServer {
 
     private Map<String, Boolean> mGuestConfigStateMap = new HashMap();
     private Map<String, Boolean> mUserConfigStateMap = new HashMap();
-
-    private volatile boolean mIsLogin;
 
     private ConfigSwitcherServer() {
         synchronized (mGuestConfigStateMap) {
@@ -48,16 +47,8 @@ public class ConfigSwitcherServer {
         return mInstance;
     }
 
-    public void setLogin(boolean isLogin) {
-        mIsLogin = isLogin;
-    }
-
-    public boolean isLogin() {
-        return mIsLogin;
-    }
-
     public void setEnable(String key, boolean enable) {
-        if (mIsLogin) {
+        if (ConfigApplication.isLogin()) {
             synchronized (mUserConfigStateMap) {
                 mUserConfigStateMap.put(key, enable);
             }
@@ -70,7 +61,7 @@ public class ConfigSwitcherServer {
     }
 
     public boolean isEnable(String key) {
-        if (mIsLogin) {
+        if (ConfigApplication.isLogin()) {
             synchronized (mUserConfigStateMap) {
                 return mUserConfigStateMap.containsKey(key) && mUserConfigStateMap.get(key);
             }

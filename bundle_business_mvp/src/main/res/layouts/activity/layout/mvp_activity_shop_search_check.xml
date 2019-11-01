@@ -18,7 +18,7 @@
             android:layout_marginBottom="@dimen/dp_7"
             android:layout_marginTop="@dimen/dp_7"
             android:layout_weight="1"
-            android:background="@drawable/base_shape_round_semi_circle_dddddd"
+            android:background="@drawable/res_shape_round_semi_circle_dddddd"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/dp_4"
@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_8"
-                android:src="@mipmap/base_ic_search" />
+                android:src="@mipmap/res_ic_search" />
 
             <EditText
                 android:id="@+id/search_key_et"
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_8"
-                android:src="@mipmap/base_ic_delete_gray" />
+                android:src="@mipmap/res_ic_delete_gray" />
         </LinearLayout>
 
         <TextView

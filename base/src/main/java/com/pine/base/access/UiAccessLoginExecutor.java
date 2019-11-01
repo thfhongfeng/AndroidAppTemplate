@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 
 import com.pine.base.BaseApplication;
 import com.pine.base.remote.BaseRouterClient;
-import com.pine.router.IRouterCallback;
+import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.access.IUiAccessExecutor;
 import com.pine.tool.access.UiAccessTimeInterval;
 

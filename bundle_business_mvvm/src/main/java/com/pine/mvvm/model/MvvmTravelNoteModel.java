@@ -183,8 +183,8 @@ public class MvvmTravelNoteModel {
             "https://img1.qunarzz.com/travel/d0/1807/5b/40f7d2eb06e4ebb5.jpg_480x360x95_89f62ae3.jpg",
             "http://img.juimg.com/tuku/yulantu/110516/1717-11051604500688.jpg"};
 
-    private final String[] COMMENTER_HEAD_IMAGES = {"http://i1.sinaimg.cn/ent/d/2008-06-04/U105P28T3D2048907F326DT20080604225106.jpg",
-            "https://img.zcool.cn/community/019af55798a4090000018c1be7a078.jpg@1280w_1l_2o_100sh.webp",
+    private final String[] HEAD_IMAGES = {"http://i1.sinaimg.cn/ent/d/2008-06-04/U105P28T3D2048907F326DT20080604225106.jpg",
+            "https://c-ssl.duitang.com/uploads/item/201704/04/20170404153225_EiMHP.thumb.700_0.jpeg",
             "http://image2.sina.com.cn/IT/d/2005-10-31/U1235P2T1D752393F13DT20051031133235.jpg"};
 
     private JSONObject getTravelNoteDetailData(Object paramsObj) {
@@ -263,7 +263,7 @@ public class MvvmTravelNoteModel {
             }
             return null;
         }
-        int imageTotalCount = COMMENTER_HEAD_IMAGES.length;
+        int imageTotalCount = HEAD_IMAGES.length;
         Map<String, String> params = (HashMap<String, String>) paramsObj;
         int pageNo = params.containsKey(MvvmConstants.PAGE_NO) ? Integer.parseInt(params.get(MvvmConstants.PAGE_NO)) : 1;
         int pageSize = params.containsKey(MvvmConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvvmConstants.PAGE_SIZE)) : 12;
@@ -271,7 +271,7 @@ public class MvvmTravelNoteModel {
         String id = "1103201903281020000000" + (index > 9 ? index : "0" + index);
         String res = "{success:true,code:200,message:'',data:" +
                 "[{id:'" + id + "',content:'Comment Item " + index + "',authorId:1," +
-                "author:'评论人员1',headImgUrl:'" + COMMENTER_HEAD_IMAGES[index % imageTotalCount] + "'," +
+                "author:'评论人员1',headImgUrl:'" + HEAD_IMAGES[index % imageTotalCount] + "'," +
                 "createTime:'2018-10-10 10:10'}";
         for (int i = 1; i < pageSize; i++) {
             index++;
@@ -279,7 +279,7 @@ public class MvvmTravelNoteModel {
             res += ",{id:'" + id + "'," +
                     "content:'Comment Item " + index + "'," +
                     "author:'评论人员" + index + "',authorId:" + i + "," +
-                    "headImgUrl:'" + COMMENTER_HEAD_IMAGES[index % imageTotalCount] + "'," +
+                    "headImgUrl:'" + HEAD_IMAGES[index % imageTotalCount] + "'," +
                     "createTime:'2018-10-10 10:10'}";
         }
         res += "]}";

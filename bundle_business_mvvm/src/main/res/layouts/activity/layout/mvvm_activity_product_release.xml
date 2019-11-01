@@ -55,7 +55,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:background="@drawable/res_shape_round_f3f3f3"
                             android:ellipsize="end"
                             android:maxLength="20"
                             android:maxLines="2"
@@ -81,7 +81,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:background="@drawable/res_shape_round_f3f3f3"
                             android:maxLines="1"
                             android:onClick="@{presenter::onPriceTvClick}"
                             android:padding="@dimen/dp_10"
@@ -106,7 +106,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:background="@drawable/res_shape_round_f3f3f3"
                             android:maxLines="1"
                             android:onClick="@{presenter::onShelvePriceTvClick}"
                             android:padding="@dimen/dp_10"
@@ -132,7 +132,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:background="@drawable/res_shape_round_f3f3f3"
                             android:gravity="center_vertical"
                             android:onClick="@{presenter::onShelveDateSelectorClick}"
                             android:orientation="horizontal">
@@ -152,7 +152,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="@dimen/dp_10"
                                 android:padding="@dimen/dp_5"
-                                android:src="@mipmap/base_ic_date_select" />
+                                android:src="@mipmap/res_ic_date_select" />
                         </LinearLayout>
                     </TableRow>
 
@@ -173,7 +173,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:background="@drawable/res_shape_round_f3f3f3"
                             android:gravity="top"
                             android:lines="3"
                             android:padding="@dimen/dp_10"
@@ -199,7 +199,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/base_shape_round_f3f3f3"
+                            android:background="@drawable/res_shape_round_f3f3f3"
                             android:gravity="top"
                             android:lines="3"
                             android:padding="@dimen/dp_10"

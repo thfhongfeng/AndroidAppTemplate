@@ -31,7 +31,7 @@ import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.base.remote.BaseRouterClient;
 import com.pine.base.util.DialogUtils;
-import com.pine.router.IRouterCallback;
+import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.util.DensityUtils;

@@ -137,7 +137,7 @@ public class MvvmWebViewActivity extends
     @Override
     protected void setupActionBar(ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvvm_web_view_title);
-        menuBtnIv.setImageResource(R.mipmap.base_ic_share);
+        menuBtnIv.setImageResource(R.mipmap.res_ic_share);
 
         menuBtnIv.setOnClickListener(new View.OnClickListener() {
             @Override

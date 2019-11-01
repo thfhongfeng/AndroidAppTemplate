@@ -1,12 +1,15 @@
 package com.pine.user.ui.activity;
 
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
-import com.pine.router.IRouterCallback;
+import com.pine.base.bean.AccountBean;
 import com.pine.tool.access.UiAccessAnnotation;
+import com.pine.tool.router.IRouterCallback;
 import com.pine.user.R;
 import com.pine.user.databinding.UserHomeActivityBinding;
 import com.pine.user.remote.UserRouterClient;
@@ -21,7 +24,15 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
 
     @Override
     public void observeInitLiveData() {
-
+        mViewModel.getAccountBeanData().observe(this, new Observer<AccountBean>() {
+            @Override
+            public void onChanged(@Nullable AccountBean accountBean) {
+                if (accountBean == null) {
+                    accountBean = new AccountBean();
+                }
+                mBinding.setAccountBean(accountBean);
+            }
+        });
     }
 
     @Override
@@ -53,6 +64,10 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
                             return false;
                         }
                     });
+        }
+
+        public void onScanClick(View view) {
+
         }
     }
 }

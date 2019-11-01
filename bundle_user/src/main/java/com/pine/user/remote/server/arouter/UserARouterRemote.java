@@ -1,7 +1,7 @@
 package com.pine.user.remote.server.arouter;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.pine.router.impl.arouter.ARouterBundleRemote;
+import com.pine.tool.router.impl.arouter.ARouterBundleRemote;
 import com.pine.user.remote.server.UserRemoteService;
 
 /**

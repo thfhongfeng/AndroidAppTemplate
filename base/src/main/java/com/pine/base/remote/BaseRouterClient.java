@@ -3,12 +3,13 @@ package com.pine.base.remote;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.pine.base.bean.AccountBean;
 import com.pine.base.router.command.RouterLoginCommand;
 import com.pine.base.router.command.RouterMainCommand;
 import com.pine.base.router.command.RouterUserCommand;
 import com.pine.config.ConfigKey;
-import com.pine.router.IRouterCallback;
-import com.pine.router.RouterManager;
+import com.pine.tool.router.IRouterCallback;
+import com.pine.tool.router.RouterManager;
 
 public class BaseRouterClient {
     public static void callCommand(Context context, String bundleKey,
@@ -25,6 +26,10 @@ public class BaseRouterClient {
     public static void goLoginActivity(Context context, Bundle args, IRouterCallback callback) {
         RouterManager.getInstance(ConfigKey.BUNDLE_LOGIN_KEY).callUiCommand(context,
                 RouterLoginCommand.goLoginActivity, args, callback);
+    }
+
+    public static AccountBean getLoginAccount(Context context, Bundle args) {
+        return RouterManager.getInstance(ConfigKey.BUNDLE_LOGIN_KEY).callDataCommandDirect(context, RouterLoginCommand.getLoginAccount, args);
     }
 
     public static void goMainHomeActivity(Context context, Bundle args, IRouterCallback callback) {

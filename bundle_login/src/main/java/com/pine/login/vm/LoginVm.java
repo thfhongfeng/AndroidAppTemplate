@@ -3,21 +3,29 @@ package com.pine.login.vm;
 import android.arch.lifecycle.MutableLiveData;
 import android.text.TextUtils;
 
+import com.pine.login.LoginSPKeyConstants;
 import com.pine.login.R;
 import com.pine.login.bean.LoginBean;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.util.RegexUtils;
+import com.pine.tool.util.SharePreferenceUtils;
 
 public class LoginVm extends ViewModel {
     @Override
     public void afterViewInit() {
         LoginBean loginBean = new LoginBean();
+        String account = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, "");
+        String password = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, "");
         // Test code begin
-        loginBean.setMobile("15221464292");
-        loginBean.setPassword("111aaa");
+        if (TextUtils.isEmpty(account)) {
+            account = "15221464292";
+            password = "111aaa";
+        }
         // Test code end
+        loginBean.setMobile(account);
+        loginBean.setPassword(password);
         setLoginBean(loginBean);
     }
 

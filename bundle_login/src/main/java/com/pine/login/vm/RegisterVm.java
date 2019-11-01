@@ -1,14 +1,17 @@
 package com.pine.login.vm;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Intent;
 import android.text.TextUtils;
 
+import com.pine.base.bean.AccountBean;
 import com.pine.login.LoginConstants;
 import com.pine.login.R;
-import com.pine.login.bean.AccountBean;
 import com.pine.login.bean.RegisterBean;
 import com.pine.login.manager.LoginManager;
+import com.pine.login.model.ILoginResponse;
 import com.pine.login.model.LoginAccountModel;
+import com.pine.login.ui.activity.LoginActivity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.MessageException;
@@ -56,9 +59,24 @@ public class RegisterVm extends ViewModel {
             @Override
             public void onResponse(AccountBean accountBean) {
                 setUiLoading(false);
-                setToastResId(R.string.login_register_success);
-                LoginManager.autoLogin(accountBean.getAccount(), accountBean.getPassword(), null);
-                finishUi();
+                LoginManager.autoLogin(accountBean.getAccount(), accountBean.getPassword(), new ILoginResponse() {
+                    @Override
+                    public boolean onLoginResponse(boolean isSuccess, String msg) {
+                        setToastResId(R.string.login_register_success);
+                        if (!isSuccess) {
+                            goLoginActivity();
+                        }
+                        finishUi();
+                        return false;
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        setToastResId(R.string.login_register_success);
+                        goLoginActivity();
+                        finishUi();
+                    }
+                });
             }
 
             @Override
@@ -81,6 +99,12 @@ public class RegisterVm extends ViewModel {
                 setToastResId(R.string.login_register_fail);
             }
         });
+    }
+
+    private void goLoginActivity() {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(intent);
     }
 
     private MutableLiveData<RegisterBean> registerBeanData = new MutableLiveData<>();

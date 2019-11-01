@@ -240,10 +240,10 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
             if (!TextUtils.isEmpty(path) && (path.startsWith("http://") ||
                     path.startsWith("https://") || path.startsWith("file://"))) {
                 ImageLoaderManager.getInstance().loadImage(ImageDisplayActivity.this,
-                        path, imageView);
+                        path, -1, imageView);
             } else {
                 ImageLoaderManager.getInstance().loadImage(ImageDisplayActivity.this,
-                        "file://" + path, imageView);
+                        "file://" + path, -1, imageView);
             }
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             container.addView(imageView);

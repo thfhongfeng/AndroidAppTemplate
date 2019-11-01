@@ -110,7 +110,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
 
     @Override
     protected final void findViewOnCreateView(View layout) {
-
+        mViewModel.setContext(getActivity());
     }
 
     @CallSuper

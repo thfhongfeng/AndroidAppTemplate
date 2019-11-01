@@ -4,6 +4,8 @@
 
     <data class="MvvmTravelNoteCommentItemBinding">
 
+        <import type="com.pine.mvvm.R"></import>
+
         <variable
             name="travelNoteComment"
             type="com.pine.mvvm.bean.MvvmTravelNoteCommentEntity"></variable>
@@ -25,8 +27,9 @@
 
             <com.pine.tool.widget.view.CircleImageView
                 android:id="@+id/person_civ"
-                emptySrc="@mipmap/base_iv_portrait_default"
+                errorSrc="@{R.mipmap.res_iv_portrait_default}"
                 imageUrl="@{travelNoteComment.headImgUrl}"
+                emptySrc="@{R.mipmap.res_iv_portrait_default}"
                 android:layout_width="@dimen/dp_38"
                 android:layout_height="@dimen/dp_38"
                 android:layout_marginLeft="@dimen/dp_20"
