@@ -1,11 +1,9 @@
 package com.pine.base.architecture.mvvm.ui.activity;
 
-import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
@@ -19,8 +17,11 @@ import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
 public abstract class BaseMvvmActionBarImageMenuActivity<T extends ViewDataBinding, VM extends ViewModel>
         extends MvvmActivity<T, VM> {
+    // 默认ActionBar布局类型
     public static final int ACTION_BAR_TYPE_DEFAULT = 0x0;
+    // ActionBar布局Title居中
     public static final int ACTION_BAR_CENTER_TITLE_TAG = 0x0001;
+    // ActionBar布局无goBack按键
     public static final int ACTION_BAR_NO_GO_BACK_TAG = 0x0002;
     private int mActionBarTag = ACTION_BAR_TYPE_DEFAULT;
     private ImmersionBar mImmersionBar;
@@ -48,14 +49,8 @@ public abstract class BaseMvvmActionBarImageMenuActivity<T extends ViewDataBindi
         base_loading_layout.inflate();
         findViewById(R.id.base_loading_layout).setVisibility(View.GONE);
 
+        // 初始化沉浸式状态栏
         initImmersionBar();
-
-        mViewModel.getUiLoadingData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                setLoadingUiVisibility(aBoolean);
-            }
-        });
     }
 
     private void initImmersionBar() {

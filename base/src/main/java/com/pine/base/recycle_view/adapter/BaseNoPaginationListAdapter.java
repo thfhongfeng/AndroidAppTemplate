@@ -24,24 +24,21 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
 
     public final void enableEmptyComplete(boolean enableEmptyView,
                                           boolean enableCompleteView) {
-        super.enableEmptyMoreComplete(enableEmptyView, false,
+        super.enableEmptyMoreCompleteError(enableEmptyView, false,
                 enableCompleteView, false);
     }
 
-    public final void enableEmptyComplete(boolean enableEmptyView,
-                                          boolean enableCompleteView, boolean enableErrorView) {
-        super.enableEmptyMoreComplete(enableEmptyView, false,
+    public final void enableEmptyCompleteError(boolean enableEmptyView,
+                                               boolean enableCompleteView, boolean enableErrorView) {
+        super.enableEmptyMoreCompleteError(enableEmptyView, false,
                 enableCompleteView, enableErrorView);
     }
 
     @Override
     public void onBindViewHolder(BaseListViewHolder holder, int position) {
-        if (isHeadView(position)) {
+        if (isHeadView(position) || isInitLoadingView(position) || isErrorView(position) ||
+                isEmptyView(position) || isCompleteView(position)) {
             holder.updateData("", new BaseListAdapterItemProperty(), position);
-            return;
-        }
-        if (isErrorView(position) || isEmptyView(position) || isCompleteView(position)) {
-            holder.updateData("", new BaseListAdapterItemProperty(), 0);
             return;
         }
         int dataIndex = position - getHeadViewCount();
@@ -50,13 +47,10 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
 
     @Override
     public int getItemCount() {
-        onNoDataItemState(false);
+        setNoDataItemState(false);
         int headOffset = getHeadViewCount();
-        if (mEnableInitState) {
-            return 0 + headOffset;
-        }
-        if (showEmptyView() || isErrorViewState()) {
-            onNoDataItemState(true);
+        if (showInitLoadingView() || showEmptyView() || isErrorViewState()) {
+            setNoDataItemState(true);
             return 1 + headOffset;
         }
         int actualSize = mData == null ? 0 : mData.size();
@@ -70,6 +64,9 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
     public int getItemViewType(int position) {
         if (isHeadView(position)) {
             return HEAD_VIEW_HOLDER;
+        }
+        if (isInitLoadingView(position)) {
+            return INIT_LOADING_VIEW_HOLDER;
         }
         if (isErrorView(position)) {
             return ERROR_ALL_VIEW_HOLDER;
@@ -86,12 +83,20 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
                 itemEntity.getPropertyEntity().getItemViewType() : getDefaultItemViewType();
     }
 
+    private boolean showInitLoadingView() {
+        return isInitLoadingViewState() && !isErrorViewState() && (mData == null || mData.size() == 0);
+    }
+
     private boolean showEmptyView() {
-        return !isErrorViewState() && isEmptyViewEnabled() && (mData == null || mData.size() == 0);
+        return !isInitLoadingViewState() && !isErrorViewState() && isEmptyViewEnabled() && (mData == null || mData.size() == 0);
     }
 
     private boolean showCompleteView() {
-        return !isErrorViewState() && isCompleteViewEnabled() && mData != null && mData.size() != 0;
+        return !isInitLoadingViewState() && !isErrorViewState() && isCompleteViewEnabled() && mData != null && mData.size() != 0;
+    }
+
+    private boolean isInitLoadingView(int position) {
+        return showInitLoadingView() && position == (0 + getHeadViewCount());
     }
 
     private boolean isEmptyView(int position) {
@@ -108,22 +113,18 @@ public abstract class BaseNoPaginationListAdapter<T> extends BaseListAdapter {
 
     public final void setData(List<T> data) {
         onDataSet();
-        mIsErrorState = false;
-        mEnableInitState = false;
         mData = parseData(data, true);
         notifyDataSetChangedSafely();
     }
 
     public final void addData(List<T> newData) {
         onDataAdd();
-        mIsErrorState = false;
         List<BaseListAdapterItemEntity<T>> parseData = parseData(newData, false);
         if (parseData == null || parseData.size() == 0) {
             notifyDataSetChangedSafely();
             return;
         }
         if (mData == null) {
-            mEnableInitState = false;
             mData = parseData;
         } else {
             for (int i = 0; i < parseData.size(); i++) {

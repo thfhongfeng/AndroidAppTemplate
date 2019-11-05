@@ -9,15 +9,9 @@ import com.pine.user.remote.UserRouterClient;
 
 public class UserHomeVm extends ViewModel {
 
-    @Override
-    public void onUiState(UiState state) {
-        super.onUiState(state);
-        switch (state) {
-            case UI_STATE_ON_RESUME:
-                AccountBean accountBean = UserRouterClient.getLoginAccount(getContext(), null);
-                accountBeanData.setValue(accountBean);
-                break;
-        }
+    public void refreshUserData() {
+        AccountBean accountBean = UserRouterClient.getLoginAccount(getContext(), null);
+        accountBeanData.setValue(accountBean);
     }
 
     MutableLiveData<AccountBean> accountBeanData = new MutableLiveData<>();

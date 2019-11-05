@@ -16,40 +16,82 @@ import android.widget.TableRow;
 import com.pine.base.R;
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
+import com.pine.tool.util.LogUtils;
 
 /**
  * Created by tanghongfeng on 2018/9/28
  */
 
 public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewHolder> {
+    private final String TAG = LogUtils.makeLogTag(BaseListAdapter.class);
+
+    // 默认ViewHolder
     protected final static int DEFAULT_VIEW_HOLDER = -10000;
+    // 表头ViewHolder
     protected final static int HEAD_VIEW_HOLDER = -100000;
-    protected final static int EMPTY_BACKGROUND_VIEW_HOLDER = -10001;
-    protected final static int MORE_VIEW_HOLDER = -10002;
-    protected final static int COMPLETE_VIEW_HOLDER = -10003;
-    protected final static int ERROR_ALL_VIEW_HOLDER = -10004;
-    protected final static int ERROR_MORE_VIEW_HOLDER = -10005;
-    protected final static int TAIL_EMPTY_VIEW_HOLDER = -10006;
-    protected boolean mEnableInitState = false;
+    // 初始状态ViewHolder（还未填充数据时展示的View）
+    protected final static int INIT_LOADING_VIEW_HOLDER = -100001;
+    // 数据为空ViewHolder
+    protected final static int EMPTY_BACKGROUND_VIEW_HOLDER = -10002;
+    // 加载更多ViewHolder
+    protected final static int MORE_VIEW_HOLDER = -10003;
+    // 全部数据加载完全ViewHolder
+    protected final static int COMPLETE_VIEW_HOLDER = -10004;
+    // 数据加载发生错误ViewHolder（返回数据有问题时通过主动设置mEnableError来决定是否加载该ViewHolder）
+    protected final static int ERROR_ALL_VIEW_HOLDER = -10005;
+    // 加载更多时发生错误ViewHolder（返回数据有问题时通过主动设置mEnableError来决定是否加载该ViewHolder）
+    protected final static int ERROR_MORE_VIEW_HOLDER = -10006;
+    // 复杂布局的Adapter中，第二部分初始状态ViewHolder
+    protected final static int SECOND_PART_INIT_LOADING_HOLDER = -10007;
+    // 复杂布局的Adapter中，第二部分为空ViewHolder
+    protected final static int SECOND_PART_EMPTY_VIEW_HOLDER = -10008;
+    // Adapter的当前数据是否处于错误状态
     protected boolean mIsErrorState = false;
+    // Adapter当前是否处于初始状态（还未填充数据）
+    protected boolean mIsInitState = true;
+    // Adapter当前第二部分是否处于初始状态（还未填充数据）
+    protected boolean mIsSecondPartInitState = true;
+    // 是否开启初始状态ViewHolder
+    protected boolean mEnableInitLoading = true;
+    // 是否开启数据为空ViewHolder
     private boolean mEnableEmpty = true;
+    // 是否开启加载更多ViewHolder
     private boolean mEnableMore = true;
+    // 是否开启全部数据加载完全ViewHolder
     private boolean mEnableComplete = true;
-    private boolean mEnableTailEmpty = true;
+    // 是否开启第二部分初始状态ViewHolder
+    private boolean mEnableSecondPartInitLoading = true;
+    // 是否开启第二部分为空ViewHolder
+    private boolean mEnableSecondPartEmpty = true;
+    // 是否开启数据为空ViewHolder
     private boolean mEnableError = false;
+    // 初始状态ViewHolder默认布局
+    private int mInitLoadingLayoutId = R.layout.base_item_init_loading;
+    // 全部数据加载完全ViewHolder默认布局
     private int mCompleteLayoutId = R.layout.base_item_complete;
+    // 加载更多ViewHolder默认布局
     private int mMoreLayoutId = R.layout.base_item_more;
+    // 数据为空ViewHolder默认布局
     private int mEmptyLayoutId = R.layout.base_item_empty_background;
-    private int mTailEmptyLayoutId = R.layout.base_item_empty_background;
+    // 复杂布局的Adapter中，第二部分初始状态ViewHolder默认布局
+    private int mSecondPartInitLoadingLayoutId = R.layout.base_item_init_loading;
+    // 复杂布局的Adapter中，第二部分为空ViewHolder默认布局
+    private int mSecondPartEmptyLayoutId = R.layout.base_item_empty_background;
+    // 数据加载发生错误ViewHolder默认布局
     private int mErrorAllLayoutId = R.layout.base_item_error;
+    // 加载更多时发生错误ViewHolder默认布局
     private int mErrorMoreLayoutId = R.layout.base_item_error_more;
     private int mDefaultItemViewType = DEFAULT_VIEW_HOLDER;
+    // 表头View
     private View mHeadView = null;
 
+    // Adapter适配的RecyclerView
     protected RecyclerView mRecyclerView;
-
+    // Adapter适配的RecyclerView的LayoutManager
     private RecyclerView.LayoutManager mLayoutManager;
+    // Adapter的当前数据是否是空状态
     private boolean mIsNoDataItemState;
+    // Adapter适配的RecyclerView的LayoutManager是栅格布局时的列数
     private int mGridSpanCount;
 
     public BaseListAdapter() {
@@ -68,6 +110,9 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
             case HEAD_VIEW_HOLDER:
                 viewHolder = getHeadViewHolder(viewGroup);
                 break;
+            case INIT_LOADING_VIEW_HOLDER:
+                viewHolder = getInitLoadingViewHolder(viewGroup);
+                break;
             case EMPTY_BACKGROUND_VIEW_HOLDER:
                 viewHolder = getEmptyBackgroundViewHolder(viewGroup);
                 break;
@@ -83,8 +128,11 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
             case ERROR_MORE_VIEW_HOLDER:
                 viewHolder = getErrorMoreViewHolder(viewGroup);
                 break;
-            case TAIL_EMPTY_VIEW_HOLDER:
-                viewHolder = getTailEmptyBackgroundViewHolder(viewGroup);
+            case SECOND_PART_INIT_LOADING_HOLDER:
+                viewHolder = getSecondPartInitLoadingViewHolder(viewGroup);
+                break;
+            case SECOND_PART_EMPTY_VIEW_HOLDER:
+                viewHolder = getSecondPartEmptyViewHolder(viewGroup);
                 break;
             default:
                 viewHolder = getViewHolder(viewGroup, viewType);
@@ -93,12 +141,25 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         return viewHolder;
     }
 
+    /**
+     * 判断最后一个item是否加载更多View
+     *
+     * @param recyclerView
+     * @return
+     */
     public boolean isLastViewMoreView(RecyclerView recyclerView) {
         LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
         int index = manager.findLastCompletelyVisibleItemPosition();
         return index >= 0 && getItemViewType(index) == MORE_VIEW_HOLDER;
     }
 
+    /**
+     * 判断最后一个item是否加载更多View，用于RecyclerView的父View是NestedScrollView的情况
+     *
+     * @param recyclerView
+     * @param scrollView
+     * @return
+     */
     public boolean isLastViewMoreView(RecyclerView recyclerView, NestedScrollView scrollView) {
         if (scrollView.getChildCount() == 0) {
             return isLastViewMoreView(recyclerView);
@@ -113,6 +174,12 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         return false;
     }
 
+    /**
+     * 设置RecyclerView的IOnScrollListener
+     *
+     * @param recyclerView
+     * @param listener
+     */
     public void setOnScrollListener(@NonNull RecyclerView recyclerView, final IOnScrollListener listener) {
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -131,21 +198,16 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         });
     }
 
+    // 记录上一次onScrollChange的scrollX，scrollY
     private int lastOnLoadMoreScrollX, lastOnLoadMoreScrollY;
 
-    protected void onDataAdd() {
-
-    }
-
-    protected void onDataSet() {
-        lastOnLoadMoreScrollX = 0;
-        lastOnLoadMoreScrollY = 0;
-    }
-
-    protected void onNoDataItemState(boolean isNoDataState) {
-        mIsNoDataItemState = isNoDataState;
-    }
-
+    /**
+     * 设置RecyclerView的IOnScrollListener，用于RecyclerView的父View是NestedScrollView的情况
+     *
+     * @param recyclerView
+     * @param scrollView
+     * @param listener
+     */
     public void setOnScrollListener(@NonNull final RecyclerView recyclerView,
                                     final @NonNull NestedScrollView scrollView,
                                     final IOnScrollListener listener) {
@@ -215,16 +277,28 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         return viewHolder;
     }
 
-    protected void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
-                                           boolean enableCompleteView, boolean enableErrorView) {
+    public final void enableInitLoading(boolean enabled) {
+        mEnableInitLoading = enabled;
+    }
+
+    protected void enableEmptyMoreCompleteError(boolean enableEmptyView, boolean enableMoreView,
+                                                boolean enableCompleteView, boolean enableErrorView) {
         mEnableEmpty = enableEmptyView;
         mEnableMore = enableMoreView;
         mEnableComplete = enableCompleteView;
         mEnableError = enableErrorView;
     }
 
-    protected void enableTailEmpty(boolean enableTailEmptyView) {
-        mEnableTailEmpty = enableTailEmptyView;
+    public final void enableSecondPartInitLoading(boolean enabled) {
+        mEnableSecondPartInitLoading = enabled;
+    }
+
+    protected void enableSecondPartEmpty(boolean enableSecondPartEmptyView) {
+        mEnableSecondPartEmpty = enableSecondPartEmptyView;
+    }
+
+    public void setInitLoadingLayoutId(@LayoutRes int layoutResId) {
+        mInitLoadingLayoutId = layoutResId;
     }
 
     protected void setMoreLayoutId(@LayoutRes int layoutResId) {
@@ -247,8 +321,16 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         mErrorMoreLayoutId = layoutResId;
     }
 
-    protected void setTailEmptyLayoutId(@LayoutRes int layoutResId) {
-        mTailEmptyLayoutId = layoutResId;
+    protected void setSecondPartInitLoadingLayoutId(@LayoutRes int layoutResId) {
+        mSecondPartInitLoadingLayoutId = layoutResId;
+    }
+
+    protected void setSecondPartEmptyLayoutId(@LayoutRes int layoutResId) {
+        mSecondPartEmptyLayoutId = layoutResId;
+    }
+
+    public boolean isInitLoadingViewEnabled() {
+        return mEnableInitLoading;
     }
 
     public boolean isEmptyViewEnabled() {
@@ -263,8 +345,12 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         return mEnableComplete;
     }
 
-    public boolean isTailEmptyViewEnabled() {
-        return mEnableTailEmpty;
+    protected boolean isSecondPartInitLoadingViewEnabled() {
+        return mEnableSecondPartInitLoading;
+    }
+
+    protected boolean isSecondPartEmptyViewEnabled() {
+        return mEnableSecondPartEmpty;
     }
 
     public boolean isErrorViewEnabled() {
@@ -273,6 +359,18 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     public boolean isErrorViewState() {
         return isErrorViewEnabled() && mIsErrorState;
+    }
+
+    public boolean isInitLoadingViewState() {
+        return isInitLoadingViewEnabled() && mIsInitState;
+    }
+
+    public boolean isSecondPartInitLoadingViewState() {
+        return isSecondPartInitLoadingViewEnabled() && mIsSecondPartInitState;
+    }
+
+    public BaseListViewHolder<String> getInitLoadingViewHolder(ViewGroup parent) {
+        return new CompleteViewHolder(LayoutInflater.from(parent.getContext()).inflate(mInitLoadingLayoutId, parent, false));
     }
 
     public BaseListViewHolder<String> getMoreViewHolder(ViewGroup parent) {
@@ -297,12 +395,51 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
                 .inflate(mErrorMoreLayoutId, parent, false));
     }
 
-    protected BaseListViewHolder<String> getTailEmptyBackgroundViewHolder(ViewGroup parent) {
-        return new TailEmptyBackgroundViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(mTailEmptyLayoutId, parent, false));
+    protected BaseListViewHolder<String> getSecondPartInitLoadingViewHolder(ViewGroup parent) {
+        return new SecondPartInitLoadingViewHolder(LayoutInflater.from(parent.getContext()).inflate(mSecondPartInitLoadingLayoutId, parent, false));
+    }
+
+    protected BaseListViewHolder<String> getSecondPartEmptyViewHolder(ViewGroup parent) {
+        return new SecondPartEmptyViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(mSecondPartEmptyLayoutId, parent, false));
+    }
+
+    protected void setNoDataItemState(boolean isNoDataState) {
+        mIsNoDataItemState = isNoDataState;
+    }
+
+    /**
+     * 当有数据被设置时回调
+     */
+    protected void onDataSet() {
+        mIsErrorState = false;
+        mIsInitState = false;
+        lastOnLoadMoreScrollX = 0;
+        lastOnLoadMoreScrollY = 0;
+    }
+
+    /**
+     * 当有数据被设置时回调
+     */
+    protected void onSecondPartDataSet() {
+        mIsErrorState = false;
+        mIsSecondPartInitState = false;
+        lastOnLoadMoreScrollX = 0;
+        lastOnLoadMoreScrollY = 0;
+    }
+
+    /**
+     * 当有数据被追加时回调
+     */
+    protected void onDataAdd() {
+        mIsErrorState = false;
     }
 
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        LogUtils.d(TAG, this.getClass() + " onAttachedToRecyclerView");
+        mIsInitState = true;
+        mIsSecondPartInitState = true;
+        mIsErrorState = false;
         mRecyclerView = recyclerView;
         mLayoutManager = mRecyclerView.getLayoutManager();
         if (mLayoutManager instanceof GridLayoutManager) {
@@ -317,6 +454,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        LogUtils.d(TAG, this.getClass() + " onDetachedFromRecyclerView");
         mRecyclerView = null;
         mLayoutManager = null;
     }
@@ -325,14 +463,14 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         return mDefaultItemViewType;
     }
 
-    public final void enableInitState(boolean enabled) {
-        mEnableInitState = enabled;
-    }
-
+    // 必须在setData或者addData之后调用（即在数据设置完成之后调用）
     public final void setErrorState() {
         mIsErrorState = true;
     }
 
+    /**
+     * 解决RecyclerView的assertNotInLayoutOrScroll引起的IllegalStateException
+     */
     public final void notifyDataSetChangedSafely() {
         if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
             mRecyclerView.post(new Runnable() {
@@ -350,6 +488,13 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         notifyItemRangeChangedSafely(position, 1, payload);
     }
 
+    /**
+     * 解决RecyclerView的assertNotInLayoutOrScroll引起的IllegalStateException
+     *
+     * @param positionStart
+     * @param itemCount
+     * @param payload
+     */
     public final void notifyItemRangeChangedSafely(final int positionStart, final int itemCount,
                                                    final @Nullable Object payload) {
         if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
@@ -368,6 +513,12 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         notifyItemRangeChangedSafely(position, 1);
     }
 
+    /**
+     * 解决RecyclerView的assertNotInLayoutOrScroll引起的IllegalStateException
+     *
+     * @param positionStart
+     * @param itemCount
+     */
     public final void notifyItemRangeChangedSafely(final int positionStart, final int itemCount) {
         if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
             mRecyclerView.post(new Runnable() {
@@ -381,6 +532,12 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         }
     }
 
+    /**
+     * 解决RecyclerView的assertNotInLayoutOrScroll引起的IllegalStateException
+     *
+     * @param fromPosition
+     * @param toPosition
+     */
     public final void notifyItemMovedSafely(final int fromPosition, final int toPosition) {
         if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
             mRecyclerView.post(new Runnable() {
@@ -398,6 +555,12 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         notifyItemRangeInsertedSafely(position, 1);
     }
 
+    /**
+     * 解决RecyclerView的assertNotInLayoutOrScroll引起的IllegalStateException
+     *
+     * @param positionStart
+     * @param itemCount
+     */
     public final void notifyItemRangeInsertedSafely(final int positionStart, final int itemCount) {
         if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
             mRecyclerView.post(new Runnable() {
@@ -415,6 +578,12 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         notifyItemRangeRemovedSafely(position, 1);
     }
 
+    /**
+     * 解决RecyclerView的assertNotInLayoutOrScroll引起的IllegalStateException
+     *
+     * @param positionStart
+     * @param itemCount
+     */
     public final void notifyItemRangeRemovedSafely(final int positionStart, final int itemCount) {
         if (mRecyclerView != null && mRecyclerView.isComputingLayout()) {
             mRecyclerView.post(new Runnable() {
@@ -431,7 +600,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     public abstract BaseListViewHolder getViewHolder(ViewGroup parent, int viewType);
 
     /**
-     * Head ViewHolder
+     * 表头ViewHolder
      *
      * @param
      */
@@ -448,7 +617,30 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     /**
-     * 空背景
+     * 初始化时加载的ViewHolder
+     *
+     * @param
+     */
+    public class InitLoadingViewHolder extends BaseListViewHolder<String> {
+        private View container;
+
+        public InitLoadingViewHolder(View itemView) {
+            super(itemView);
+            container = itemView.getRootView();
+        }
+
+        @Override
+        public void updateData(String content, BaseListAdapterItemProperty propertyEntity, int position) {
+            if (container != null) {
+                TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT);
+                container.setLayoutParams(params);
+            }
+        }
+    }
+
+    /**
+     * 数据为空ViewHolder
      */
     public class EmptyBackgroundViewHolder extends BaseListViewHolder<String> {
         private View container;
@@ -469,7 +661,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     /**
-     * 加载更多holder
+     * 加载更多ViewHolder
      *
      * @param
      */
@@ -486,7 +678,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     /**
-     * 全部加载完成holder
+     * 全部加载完成ViewHolder
      *
      * @param
      */
@@ -503,12 +695,35 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     /**
-     * 尾部空背景
+     * 第二部分初始化时加载的ViewHolder
+     *
+     * @param
      */
-    public class TailEmptyBackgroundViewHolder extends BaseListViewHolder<String> {
+    public class SecondPartInitLoadingViewHolder extends BaseListViewHolder<String> {
         private View container;
 
-        public TailEmptyBackgroundViewHolder(View itemView) {
+        public SecondPartInitLoadingViewHolder(View itemView) {
+            super(itemView);
+            container = itemView.getRootView();
+        }
+
+        @Override
+        public void updateData(String content, BaseListAdapterItemProperty propertyEntity, int position) {
+            if (container != null) {
+                TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT);
+                container.setLayoutParams(params);
+            }
+        }
+    }
+
+    /**
+     * 第二部分空背景ViewHolder
+     */
+    public class SecondPartEmptyViewHolder extends BaseListViewHolder<String> {
+        private View container;
+
+        public SecondPartEmptyViewHolder(View itemView) {
             super(itemView);
             container = itemView.getRootView();
         }
@@ -524,7 +739,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     /**
-     * 刷新加载时的错误holder
+     * 刷新加载时的错误ViewHolder
      *
      * @param
      */
@@ -547,7 +762,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     }
 
     /**
-     * 加载更多时的错误holder
+     * 加载更多时的错误ViewHolder
      *
      * @param
      */

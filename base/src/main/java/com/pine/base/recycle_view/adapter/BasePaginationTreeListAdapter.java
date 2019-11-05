@@ -16,11 +16,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
+    protected List<BaseListAdapterItemEntity<T>> mData = new ArrayList<>();
     // 1: 表示第一页（计数从1开始）
     protected AtomicInteger mPageNo = new AtomicInteger(1);
     protected AtomicInteger mPageSize = new AtomicInteger(10);
     protected Boolean mHasMore = true;
-    protected List<BaseListAdapterItemEntity<T>> mData = new ArrayList<>();
 
     public BasePaginationTreeListAdapter() {
 
@@ -37,19 +37,14 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
 
     public final void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
                                               boolean enableCompleteView) {
-        super.enableEmptyMoreComplete(enableEmptyView, enableMoreView,
+        super.enableEmptyMoreCompleteError(enableEmptyView, enableMoreView,
                 enableCompleteView, false);
-    }
-
-    public final void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
-                                              boolean enableCompleteView, boolean enableErrorView) {
-        super.enableEmptyMoreComplete(enableEmptyView, enableMoreView,
-                enableCompleteView, enableErrorView);
     }
 
     @Override
     public void onBindViewHolder(BaseListViewHolder holder, int position) {
-        if (isHeadView(position)) {
+        if (isHeadView(position) || isInitLoadingView(position) || isErrorAllView(position) || isErrorMoreView(position) ||
+                isEmptyView(position) || isMoreView(position) || isCompleteView(position)) {
             holder.updateData("", new BaseListAdapterItemProperty(), position);
             return;
         }
@@ -64,13 +59,10 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
 
     @Override
     public int getItemCount() {
-        onNoDataItemState(false);
+        setNoDataItemState(false);
         int headOffset = getHeadViewCount();
-        if (mEnableInitState) {
-            return 0 + headOffset;
-        }
-        if (showEmptyView() || showErrorAllView()) {
-            onNoDataItemState(true);
+        if (showInitLoadingView() || showEmptyView() || showErrorAllView()) {
+            setNoDataItemState(true);
             return 1 + headOffset;
         }
         int actualSize = mData == null ? 0 : mData.size();
@@ -84,6 +76,9 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
     public int getItemViewType(int position) {
         if (isHeadView(position)) {
             return HEAD_VIEW_HOLDER;
+        }
+        if (isInitLoadingView(position)) {
+            return INIT_LOADING_VIEW_HOLDER;
         }
         if (isErrorAllView(position)) {
             return ERROR_ALL_VIEW_HOLDER;
@@ -105,24 +100,32 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
         return itemEntity.getPropertyEntity().getItemViewType();
     }
 
+    private boolean showInitLoadingView() {
+        return isInitLoadingViewState() && !isErrorViewState() && (mData == null || mData.size() == 0);
+    }
+
     private boolean showEmptyView() {
-        return !isErrorViewState() && isEmptyViewEnabled() && (mData == null || mData.size() == 0);
+        return !isInitLoadingViewState() && !isErrorViewState() && isEmptyViewEnabled() && (mData == null || mData.size() == 0);
     }
 
     private boolean showMoreView() {
-        return !isErrorViewState() && isMoreViewEnabled() && mHasMore && mData != null && mData.size() != 0;
+        return !isInitLoadingViewState() && !isErrorViewState() && isMoreViewEnabled() && mHasMore && mData != null && mData.size() != 0;
     }
 
     private boolean showCompleteView() {
-        return !isErrorViewState() && isCompleteViewEnabled() && !mHasMore && mData != null && mData.size() != 0;
+        return !isInitLoadingViewState() && !isErrorViewState() && isCompleteViewEnabled() && !mHasMore && mData != null && mData.size() != 0;
     }
 
     private boolean showErrorAllView() {
-        return isErrorViewState() && (mData == null || mData.size() == 0);
+        return !isInitLoadingViewState() && isErrorViewState() && (mData == null || mData.size() == 0);
     }
 
     private boolean showErrorMoreView() {
-        return isErrorViewState() && mHasMore && mData != null && mData.size() != 0;
+        return !isInitLoadingViewState() && isErrorViewState() && mHasMore && mData != null && mData.size() != 0;
+    }
+
+    private boolean isInitLoadingView(int position) {
+        return showInitLoadingView() && position == (0 + getHeadViewCount());
     }
 
     private boolean isEmptyView(int position) {
@@ -145,9 +148,16 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
         return showErrorMoreView() && position != 0 && position == (mData.size() + getHeadViewCount());
     }
 
+    public final void setData(List<T> data) {
+        onDataSet();
+        mData = parseTreeData(data, true);
+        resetAndGetPageNo();
+        mHasMore = mData != null && mData.size() >= getPageSize();
+        notifyDataSetChangedSafely();
+    }
+
     public final void addData(List<T> newData) {
         onDataAdd();
-        mIsErrorState = false;
         List<BaseListAdapterItemEntity<T>> parseData = parseTreeData(newData, false);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;
@@ -155,7 +165,6 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
             return;
         }
         if (mData == null) {
-            mEnableInitState = false;
             mData = parseData;
             resetAndGetPageNo();
         } else {
@@ -165,16 +174,6 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
             mPageNo.incrementAndGet();
         }
         mHasMore = parseData.size() >= getPageSize();
-        notifyDataSetChangedSafely();
-    }
-
-    public final void setData(List<T> data) {
-        onDataSet();
-        mIsErrorState = false;
-        mEnableInitState = false;
-        mData = parseTreeData(data, true);
-        resetAndGetPageNo();
-        mHasMore = mData != null && mData.size() >= getPageSize();
         notifyDataSetChangedSafely();
     }
 

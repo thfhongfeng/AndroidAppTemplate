@@ -40,7 +40,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
     }
 
     @Override
-    public List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> parseHeadData(List<MvpTravelNoteDetailEntity> data) {
+    public List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> parseFirstPartData(List<MvpTravelNoteDetailEntity> data) {
         List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> adapterData = new ArrayList<>();
         if (data != null) {
             BaseListAdapterItemEntity adapterEntity;
@@ -69,7 +69,7 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
     }
 
     @Override
-    public List<BaseListAdapterItemEntity<MvpTravelNoteCommentEntity>> parseTailData(List<MvpTravelNoteCommentEntity> data) {
+    public List<BaseListAdapterItemEntity<MvpTravelNoteCommentEntity>> parseSecondPartData(List<MvpTravelNoteCommentEntity> data) {
         List<BaseListAdapterItemEntity<MvpTravelNoteCommentEntity>> adapterData = new ArrayList<>();
         if (data != null) {
             BaseListAdapterItemEntity adapterEntity;

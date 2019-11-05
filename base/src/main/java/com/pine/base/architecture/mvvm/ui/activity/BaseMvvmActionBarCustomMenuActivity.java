@@ -1,11 +1,9 @@
 package com.pine.base.architecture.mvvm.ui.activity;
 
-import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
@@ -40,14 +38,8 @@ public abstract class BaseMvvmActionBarCustomMenuActivity<T extends ViewDataBind
         base_loading_layout.inflate();
         findViewById(R.id.base_loading_layout).setVisibility(View.GONE);
 
+        // 初始化沉浸式状态栏
         initImmersionBar();
-
-        mViewModel.getUiLoadingData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                setLoadingUiVisibility(aBoolean);
-            }
-        });
     }
 
     private void initImmersionBar() {

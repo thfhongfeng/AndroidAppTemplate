@@ -21,8 +21,8 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     protected AtomicInteger mPageNo = new AtomicInteger(1);
     protected AtomicInteger mPageSize = new AtomicInteger(10);
     protected Boolean mHasMore = true;
-    protected List<BaseListAdapterItemEntity<T>> mHeadNoPaginationData = new ArrayList<>();
-    protected List<BaseListAdapterItemEntity<B>> mTailPaginationData = new ArrayList<>();
+    protected List<BaseListAdapterItemEntity<T>> mFirstPartNoPaginationData = new ArrayList<>();
+    protected List<BaseListAdapterItemEntity<B>> mSecondPartPaginationData = new ArrayList<>();
 
     public BaseComplexListAdapter() {
 
@@ -39,55 +39,43 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
 
     public final void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
                                               boolean enableCompleteView) {
-        super.enableEmptyMoreComplete(enableEmptyView, enableMoreView,
+        super.enableEmptyMoreCompleteError(enableEmptyView, enableMoreView,
                 enableCompleteView, false);
     }
 
-    public final void enableTailEmpty(boolean enableTailEmptyView) {
-        super.enableTailEmpty(enableTailEmptyView);
-    }
-
-    public final void enableEmptyMoreComplete(boolean enableEmptyView, boolean enableMoreView,
-                                              boolean enableCompleteView, boolean enableErrorView) {
-        super.enableEmptyMoreComplete(enableEmptyView, enableMoreView,
-                enableCompleteView, enableErrorView);
+    public final void enableSecondPartEmpty(boolean enableSecondPartEmptyView) {
+        super.enableSecondPartEmpty(enableSecondPartEmptyView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseListViewHolder holder, int position) {
-        if (isHeadView(position)) {
+        if (isHeadView(position) || isInitLoadingView(position) || isEmptyView(position) ||
+                isMoreView(position) || isCompleteView(position) || isSecondPartInitLoadingView(position) ||
+                isSecondPartEmptyView(position)) {
             holder.updateData("", new BaseListAdapterItemProperty(), position);
             return;
         }
-        if (isEmptyView(position) || isMoreView(position) || isCompleteView(position) ||
-                isTailEmptyView(position)) {
-            holder.updateData("", new BaseListAdapterItemProperty(), 0);
-            return;
-        }
         int dataIndex = position - getHeadViewCount();
-        if (mHeadNoPaginationData != null && dataIndex < mHeadNoPaginationData.size()) {
-            holder.updateData(mHeadNoPaginationData.get(dataIndex).getData(), mHeadNoPaginationData.get(dataIndex).getPropertyEntity(), dataIndex);
+        if (mFirstPartNoPaginationData != null && dataIndex < mFirstPartNoPaginationData.size()) {
+            holder.updateData(mFirstPartNoPaginationData.get(dataIndex).getData(), mFirstPartNoPaginationData.get(dataIndex).getPropertyEntity(), dataIndex);
         } else {
-            int index = dataIndex - mHeadNoPaginationData.size();
-            holder.updateData(mTailPaginationData.get(index).getData(), mTailPaginationData.get(index).getPropertyEntity(), index);
+            int index = dataIndex - mFirstPartNoPaginationData.size();
+            holder.updateData(mSecondPartPaginationData.get(index).getData(), mSecondPartPaginationData.get(index).getPropertyEntity(), index);
         }
     }
 
     @Override
     public int getItemCount() {
-        onNoDataItemState(false);
+        setNoDataItemState(false);
         int headOffset = getHeadViewCount();
-        if (mEnableInitState) {
-            return 0 + headOffset;
-        }
-        int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
-        int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
-        if (showEmptyView() || showErrorAllView()) {
-            onNoDataItemState(true);
+        int topSize = mFirstPartNoPaginationData == null ? 0 : mFirstPartNoPaginationData.size();
+        int bottomSize = mSecondPartPaginationData == null ? 0 : mSecondPartPaginationData.size();
+        if (showInitLoadingView() || showEmptyView() || showErrorAllView()) {
+            setNoDataItemState(true);
             return 1 + headOffset;
         }
         int actualSize = topSize + bottomSize;
-        if (showMoreView() || showCompleteView() || showErrorMoreView() || showTailEmptyView()) {
+        if (showMoreView() || showCompleteView() || showErrorMoreView() || showSecondPartInitLoadingView() || showSecondPartEmptyView()) {
             return actualSize + 1 + headOffset;
         }
         return actualSize + headOffset;
@@ -97,6 +85,9 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     public int getItemViewType(int position) {
         if (isHeadView(position)) {
             return HEAD_VIEW_HOLDER;
+        }
+        if (isInitLoadingView(position)) {
+            return INIT_LOADING_VIEW_HOLDER;
         }
         if (isErrorAllView(position)) {
             return ERROR_ALL_VIEW_HOLDER;
@@ -113,84 +104,66 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         if (isCompleteView(position)) {
             return COMPLETE_VIEW_HOLDER;
         }
-        if (isTailEmptyView(position)) {
-            return TAIL_EMPTY_VIEW_HOLDER;
+        if (isSecondPartInitLoadingView(position)) {
+            return SECOND_PART_INIT_LOADING_HOLDER;
+        }
+        if (isSecondPartEmptyView(position)) {
+            return SECOND_PART_EMPTY_VIEW_HOLDER;
         }
         int dataIndex = position - getHeadViewCount();
-        if (mHeadNoPaginationData != null && dataIndex < mHeadNoPaginationData.size()) {
-            return mHeadNoPaginationData.get(dataIndex).getPropertyEntity().getItemViewType();
+        if (mFirstPartNoPaginationData != null && dataIndex < mFirstPartNoPaginationData.size()) {
+            return mFirstPartNoPaginationData.get(dataIndex).getPropertyEntity().getItemViewType();
         } else {
-            int index = mHeadNoPaginationData == null ? dataIndex : dataIndex - mHeadNoPaginationData.size();
-            return mTailPaginationData.get(index).getPropertyEntity().getItemViewType();
+            int index = mFirstPartNoPaginationData == null ? dataIndex : dataIndex - mFirstPartNoPaginationData.size();
+            return mSecondPartPaginationData.get(index).getPropertyEntity().getItemViewType();
         }
     }
 
-    public final void setHeadData(List<T> data) {
-        onDataSet();
-        mEnableInitState = false;
-        mHeadNoPaginationData = parseHeadData(data);
-        notifyDataSetChangedSafely();
-    }
-
-    public final void addTailData(List<B> newData) {
-        onDataAdd();
-        List<BaseListAdapterItemEntity<B>> parseData = parseTailData(newData);
-        if (parseData == null || parseData.size() == 0) {
-            mHasMore = false;
-            notifyDataSetChangedSafely();
-            return;
-        }
-        if (mTailPaginationData == null) {
-            mEnableInitState = false;
-            mTailPaginationData = parseData;
-            resetAndGetPageNo();
-        } else {
-            for (int i = 0; i < parseData.size(); i++) {
-                mTailPaginationData.add(parseData.get(i));
-            }
-            mPageNo.incrementAndGet();
-        }
-        mHasMore = parseData.size() >= getPageSize();
-        notifyDataSetChangedSafely();
-    }
-
-    public final void setTailData(List<B> data) {
-        onDataSet();
-        mEnableInitState = false;
-        mTailPaginationData = parseTailData(data);
-        resetAndGetPageNo();
-        mHasMore = mTailPaginationData != null && mTailPaginationData.size() >= getPageSize();
-        notifyDataSetChangedSafely();
+    private boolean showInitLoadingView() {
+        return isInitLoadingViewState() && isSecondPartInitLoadingViewState() && !isErrorViewState() &&
+                (mSecondPartPaginationData == null || mSecondPartPaginationData.size() == 0) &&
+                (mSecondPartPaginationData == null || mSecondPartPaginationData.size() == 0);
     }
 
     private boolean showEmptyView() {
-        return !isErrorViewState() && isEmptyViewEnabled() &&
-                (mHeadNoPaginationData == null || mHeadNoPaginationData.size() == 0) &&
-                (mTailPaginationData == null || mTailPaginationData.size() == 0);
+        return !isInitLoadingViewState() && !isSecondPartInitLoadingViewState() && !isErrorViewState() && isEmptyViewEnabled() &&
+                (mFirstPartNoPaginationData == null || mFirstPartNoPaginationData.size() == 0) &&
+                (mSecondPartPaginationData == null || mSecondPartPaginationData.size() == 0);
     }
 
     private boolean showMoreView() {
-        return !isErrorViewState() && isMoreViewEnabled() && mHasMore &&
-                mTailPaginationData != null && mTailPaginationData.size() != 0;
+        return !isSecondPartInitLoadingViewState() && !isErrorViewState() && isMoreViewEnabled() && mHasMore &&
+                mSecondPartPaginationData != null && mSecondPartPaginationData.size() != 0;
     }
 
     private boolean showCompleteView() {
-        return !isErrorViewState() && isCompleteViewEnabled() && !mHasMore &&
-                mTailPaginationData != null && mTailPaginationData.size() != 0;
+        return !isSecondPartInitLoadingViewState() && !isErrorViewState() && isCompleteViewEnabled() && !mHasMore &&
+                mSecondPartPaginationData != null && mSecondPartPaginationData.size() != 0;
     }
 
     private boolean showErrorAllView() {
-        return isErrorViewState() && (mHeadNoPaginationData == null || mHeadNoPaginationData.size() == 0) &&
-                (mTailPaginationData == null || mTailPaginationData.size() == 0);
+        return !isInitLoadingViewState() && !isSecondPartInitLoadingViewState() && isErrorViewState() &&
+                (mFirstPartNoPaginationData == null || mFirstPartNoPaginationData.size() == 0) &&
+                (mSecondPartPaginationData == null || mSecondPartPaginationData.size() == 0);
     }
 
-    private boolean showTailEmptyView() {
-        return !isErrorViewState() && isTailEmptyViewEnabled() &&
-                (mTailPaginationData == null || mTailPaginationData.size() == 0);
+    private boolean showSecondPartInitLoadingView() {
+        return isSecondPartInitLoadingViewState() && !isErrorViewState() &&
+                (mSecondPartPaginationData == null || mSecondPartPaginationData.size() == 0);
+    }
+
+    private boolean showSecondPartEmptyView() {
+        return !isSecondPartInitLoadingViewState() && !isErrorViewState() && isSecondPartEmptyViewEnabled() &&
+                (mSecondPartPaginationData == null || mSecondPartPaginationData.size() == 0);
     }
 
     private boolean showErrorMoreView() {
-        return isErrorViewState() && mHasMore && mTailPaginationData != null && mTailPaginationData.size() != 0;
+        return !isSecondPartInitLoadingViewState() && isErrorViewState() && mHasMore &&
+                mSecondPartPaginationData != null && mSecondPartPaginationData.size() != 0;
+    }
+
+    private boolean isInitLoadingView(int position) {
+        return showInitLoadingView() && position == (0 + getHeadViewCount());
     }
 
     private boolean isEmptyView(int position) {
@@ -198,20 +171,25 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     }
 
     private boolean isMoreView(int position) {
-        int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
-        int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
+        int topSize = mFirstPartNoPaginationData == null ? 0 : mFirstPartNoPaginationData.size();
+        int bottomSize = mSecondPartPaginationData == null ? 0 : mSecondPartPaginationData.size();
         return showMoreView() && position != 0 && position == (topSize + bottomSize + getHeadViewCount());
     }
 
     private boolean isCompleteView(int position) {
-        int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
-        int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
+        int topSize = mFirstPartNoPaginationData == null ? 0 : mFirstPartNoPaginationData.size();
+        int bottomSize = mSecondPartPaginationData == null ? 0 : mSecondPartPaginationData.size();
         return showCompleteView() && position != 0 && position == (topSize + bottomSize + getHeadViewCount());
     }
 
-    private boolean isTailEmptyView(int position) {
-        int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
-        return showTailEmptyView() && position != 0 && position == (topSize + getHeadViewCount());
+    private boolean isSecondPartInitLoadingView(int position) {
+        int topSize = mFirstPartNoPaginationData == null ? 0 : mFirstPartNoPaginationData.size();
+        return showSecondPartInitLoadingView() && position == (topSize + getHeadViewCount());
+    }
+
+    private boolean isSecondPartEmptyView(int position) {
+        int topSize = mFirstPartNoPaginationData == null ? 0 : mFirstPartNoPaginationData.size();
+        return showSecondPartEmptyView() && position != 0 && position == (topSize + getHeadViewCount());
     }
 
     private boolean isErrorAllView(int position) {
@@ -219,9 +197,44 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     }
 
     private boolean isErrorMoreView(int position) {
-        int topSize = mHeadNoPaginationData == null ? 0 : mHeadNoPaginationData.size();
-        int bottomSize = mTailPaginationData == null ? 0 : mTailPaginationData.size();
+        int topSize = mFirstPartNoPaginationData == null ? 0 : mFirstPartNoPaginationData.size();
+        int bottomSize = mSecondPartPaginationData == null ? 0 : mSecondPartPaginationData.size();
         return showErrorMoreView() && position != 0 && position == (topSize + bottomSize + getHeadViewCount());
+    }
+
+    public final void setFirstPartData(List<T> data) {
+        onDataSet();
+        mFirstPartNoPaginationData = parseFirstPartData(data);
+        notifyDataSetChangedSafely();
+    }
+
+    public final void setSecondPartData(List<B> data) {
+        onSecondPartDataSet();
+        mSecondPartPaginationData = parseSecondPartData(data);
+        resetAndGetPageNo();
+        mHasMore = mSecondPartPaginationData != null && mSecondPartPaginationData.size() >= getPageSize();
+        notifyDataSetChangedSafely();
+    }
+
+    public final void addSecondPartData(List<B> newData) {
+        onDataAdd();
+        List<BaseListAdapterItemEntity<B>> parseData = parseSecondPartData(newData);
+        if (parseData == null || parseData.size() == 0) {
+            mHasMore = false;
+            notifyDataSetChangedSafely();
+            return;
+        }
+        if (mSecondPartPaginationData == null) {
+            mSecondPartPaginationData = parseData;
+            resetAndGetPageNo();
+        } else {
+            for (int i = 0; i < parseData.size(); i++) {
+                mSecondPartPaginationData.add(parseData.get(i));
+            }
+            mPageNo.incrementAndGet();
+        }
+        mHasMore = parseData.size() >= getPageSize();
+        notifyDataSetChangedSafely();
     }
 
     public void resetAndGetPageNo() {
@@ -240,16 +253,20 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         return mPageSize.get();
     }
 
-    public abstract List<BaseListAdapterItemEntity<T>> parseHeadData(List<T> data);
+    public abstract List<BaseListAdapterItemEntity<T>> parseFirstPartData(List<T> data);
 
-    public abstract List<BaseListAdapterItemEntity<B>> parseTailData(List<B> data);
+    public abstract List<BaseListAdapterItemEntity<B>> parseSecondPartData(List<B> data);
 
     public boolean isMoreViewEnabled() {
         return super.isMoreViewEnabled();
     }
 
-    public boolean isTailEmptyViewEnabled() {
-        return super.isTailEmptyViewEnabled();
+    public boolean isSecondPartInitLoadingViewEnabled() {
+        return super.isSecondPartInitLoadingViewEnabled();
+    }
+
+    public boolean isSecondPartEmptyViewEnabled() {
+        return super.isSecondPartEmptyViewEnabled();
     }
 
     public void setErrorMoreLayoutId(@LayoutRes int layoutResId) {
@@ -260,7 +277,11 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         return super.getErrorMoreViewHolder(parent);
     }
 
-    public void setTailEmptyLayoutId(@LayoutRes int layoutResId) {
-        super.setTailEmptyLayoutId(layoutResId);
+    public void setSecondPartInitLoadingLayoutId(@LayoutRes int layoutResId) {
+        super.setSecondPartInitLoadingLayoutId(layoutResId);
+    }
+
+    public void setSecondPartEmptyLayoutId(@LayoutRes int layoutResId) {
+        super.setSecondPartEmptyLayoutId(layoutResId);
     }
 }

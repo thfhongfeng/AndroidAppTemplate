@@ -34,6 +34,7 @@ public abstract class BaseActionBarCustomMenuActivity extends Activity {
         base_loading_layout.inflate();
         findViewById(R.id.base_loading_layout).setVisibility(View.GONE);
 
+        // 初始化沉浸式状态栏
         initImmersionBar();
     }
 

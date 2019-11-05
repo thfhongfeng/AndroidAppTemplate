@@ -1,3 +1,10 @@
 <resources>
+    <string name="user_recharge">充值</string>
     <string name="user_logout">退出登录</string>
+
+    <string name="user_recharge_title">充值</string>
+    <string name="user_recharge_become_vip">充值成为VIP</string>
+    <string name="user_recharge_vip_tip">您的VIP等级：VIP</string>
+
+    <string name="user_scan_title">扫描</string>
 </resources>

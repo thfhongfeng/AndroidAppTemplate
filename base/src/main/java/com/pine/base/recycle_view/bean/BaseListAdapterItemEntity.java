@@ -5,8 +5,9 @@ package com.pine.base.recycle_view.bean;
  */
 
 public class BaseListAdapterItemEntity<T> {
+    // 列表元素数据
     private T data;
-
+    // 列表元素属性
     private BaseListAdapterItemProperty propertyEntity = new BaseListAdapterItemProperty();
 
     public T getData() {

@@ -64,7 +64,7 @@ public class MvpTravelNoteDetailPresenter extends Presenter<IMvpTravelNoteDetail
                 if (isUiAlive()) {
                     List<MvpTravelNoteDetailEntity> list = new ArrayList<>();
                     list.add(entity);
-                    mTravelNoteDetailAdapter.setHeadData(list);
+                    mTravelNoteDetailAdapter.setFirstPartData(list);
                 }
                 loadTravelNoteCommentData(true);
             }
@@ -108,9 +108,9 @@ public class MvpTravelNoteDetailPresenter extends Presenter<IMvpTravelNoteDetail
                 setUiLoading(false);
                 if (isUiAlive()) {
                     if (refresh) {
-                        mTravelNoteDetailAdapter.setTailData(list);
+                        mTravelNoteDetailAdapter.setSecondPartData(list);
                     } else {
-                        mTravelNoteDetailAdapter.addTailData(list);
+                        mTravelNoteDetailAdapter.addSecondPartData(list);
                     }
                 }
             }

@@ -15,6 +15,8 @@ public class AccountBean {
     private String createTime;
     private String updateTime;
 
+    private int vipLevel;
+
     public String getId() {
         return id;
     }
@@ -45,6 +47,13 @@ public class AccountBean {
 
     public void setAccountType(int accountType) {
         this.accountType = accountType;
+        if (accountType < 9000) {
+            this.vipLevel = 0;
+        } else if (accountType > 9999) {
+            this.vipLevel = 999;
+        } else {
+            this.vipLevel = (accountType - 9000) / 10;
+        }
     }
 
     public String getName() {
@@ -101,5 +110,9 @@ public class AccountBean {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getVipLevel() {
+        return vipLevel;
     }
 }

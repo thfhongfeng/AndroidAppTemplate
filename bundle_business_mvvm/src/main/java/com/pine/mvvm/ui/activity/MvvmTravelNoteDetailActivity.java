@@ -35,16 +35,16 @@ public class MvvmTravelNoteDetailActivity extends
             public void onChanged(@Nullable MvvmTravelNoteDetailEntity mvvmTravelNoteDetailEntity) {
                 List<MvvmTravelNoteDetailEntity> list = new ArrayList<>();
                 list.add(mvvmTravelNoteDetailEntity);
-                mTravelNoteDetailAdapter.setHeadData(list);
+                mTravelNoteDetailAdapter.setFirstPartData(list);
             }
         });
         mViewModel.getTravelNoteCommentListDate().observe(this, new Observer<List<MvvmTravelNoteCommentEntity>>() {
             @Override
             public void onChanged(@Nullable List<MvvmTravelNoteCommentEntity> mvvmTravelNoteCommentEntities) {
                 if (mViewModel.getTravelNoteCommentListDate().getCustomData()) {
-                    mTravelNoteDetailAdapter.setTailData(mvvmTravelNoteCommentEntities);
+                    mTravelNoteDetailAdapter.setSecondPartData(mvvmTravelNoteCommentEntities);
                 } else {
-                    mTravelNoteDetailAdapter.addTailData(mvvmTravelNoteCommentEntities);
+                    mTravelNoteDetailAdapter.addSecondPartData(mvvmTravelNoteCommentEntities);
                 }
             }
         });

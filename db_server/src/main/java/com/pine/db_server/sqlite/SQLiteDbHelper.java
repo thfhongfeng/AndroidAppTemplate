@@ -78,7 +78,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             List<ContentValues> list = new ArrayList<>();
             HashMap<Integer, Integer> accountTypeMap = new HashMap<>();
             accountTypeMap.put(0, 999999);
-            for (int i = 1; i < 11; i++) {
+            for (int i = 10; i >= 1; i--) {
                 accountTypeMap.put(i, 9000 + i * 10);
             }
             accountTypeMap.put(11, 100);
@@ -167,7 +167,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 contentValues = new ContentValues();
                 contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关
                 contentValues.put("configKey", ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY);
-                contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
+                contentValues.put("state", i < 12 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("accountType", accountTypeMap.get(i)); // 账户类型:0-游客（临时账户），100-注册用户，999999-超级管理员，会员(9000-9999之间)

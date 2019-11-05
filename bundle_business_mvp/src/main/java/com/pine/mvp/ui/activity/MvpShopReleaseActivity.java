@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.pine.base.BaseConstants;
 import com.pine.base.access.UiAccessType;
+import com.pine.base.access.VipLevel;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.uploader.FileUploadComponent;
@@ -45,7 +46,8 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""}, AccessActions = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.VIP_LEVEL},
+        AccessArgs = {"", VipLevel.VIP1}, AccessActions = {""})
 public class MvpShopReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpShopReleaseContract.Ui, MvpShopReleasePresenter>
         implements IMvpShopReleaseContract.Ui, View.OnClickListener {

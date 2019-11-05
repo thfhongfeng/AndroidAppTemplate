@@ -14,8 +14,11 @@ import com.pine.base.R;
 import com.pine.tool.ui.Activity;
 
 public abstract class BaseActionBarTextMenuActivity extends Activity {
+    // 默认ActionBar布局类型
     public static final int ACTION_BAR_TYPE_DEFAULT = 0x0;
+    // ActionBar布局Title居中
     public static final int ACTION_BAR_CENTER_TITLE_TAG = 0x0001;
+    // ActionBar布局无goBack按键
     public static final int ACTION_BAR_NO_GO_BACK_TAG = 0x0002;
     private int mActionBarTag = ACTION_BAR_TYPE_DEFAULT;
     private ImmersionBar mImmersionBar;
@@ -42,6 +45,7 @@ public abstract class BaseActionBarTextMenuActivity extends Activity {
         base_loading_layout.inflate();
         findViewById(R.id.base_loading_layout).setVisibility(View.GONE);
 
+        // 初始化沉浸式状态栏
         initImmersionBar();
     }
 

@@ -1,6 +1,7 @@
 package com.pine.user.ui.activity;
 
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.pine.user.vm.UserHomeVm;
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""}, AccessActions = {""})
 public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivityBinding, UserHomeVm> {
+    private final int REQUEST_CODE_GO_RECHARGE = 1;
 
     @Override
     public void observeInitLiveData() {
@@ -43,11 +45,22 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
     @Override
     protected void init() {
         mBinding.setPresenter(new Presenter());
+        mViewModel.refreshUserData();
     }
 
     @Override
     public void observeSyncLiveData(int liveDataObjTag) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_GO_RECHARGE) {
+            if (resultCode == RESULT_OK) {
+                mViewModel.refreshUserData();
+            }
+        }
     }
 
     public class Presenter {
@@ -67,7 +80,13 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
         }
 
         public void onScanClick(View view) {
+            Intent intent = new Intent(UserHomeActivity.this, UserScanActivity.class);
+            startActivity(intent);
+        }
 
+        public void onRechargeClick(View view) {
+            Intent intent = new Intent(UserHomeActivity.this, UserRechargeActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_GO_RECHARGE);
         }
     }
 }

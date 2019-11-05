@@ -116,6 +116,13 @@ public abstract class Activity extends AppCompatActivity
         tryInitOnAllRestrictionReleased();
     }
 
+    /**
+     * onCreate中前置初始化
+     */
+    protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
+
+    }
+
     protected void setContentView(Bundle savedInstanceState) {
         setContentView(getActivityLayoutResId());
     }
@@ -126,13 +133,6 @@ public abstract class Activity extends AppCompatActivity
      * @return Activity的内容布局资源id
      */
     protected abstract int getActivityLayoutResId();
-
-    /**
-     * onCreate中前置初始化
-     */
-    protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
-
-    }
 
     /**
      * onCreate中初始化View

@@ -83,19 +83,19 @@ public abstract class Fragment extends android.support.v4.app.Fragment
         return layout;
     }
 
-    protected View setContentView(LayoutInflater inflater, @Nullable ViewGroup container,
-                                  @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(getFragmentLayoutResId(), container, false);
-    }
-
-    protected abstract int getFragmentLayoutResId();
-
     /**
      * onCreateView中前置初始化
      */
     protected void beforeInitOnCreateView(@Nullable Bundle savedInstanceState) {
 
     }
+
+    protected View setContentView(LayoutInflater inflater, @Nullable ViewGroup container,
+                                  @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(getFragmentLayoutResId(), container, false);
+    }
+
+    protected abstract int getFragmentLayoutResId();
 
     /**
      * onCreateView中初始化View

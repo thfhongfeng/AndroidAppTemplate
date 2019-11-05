@@ -2,8 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data class="UserVipActivityBinding">
+    <data class="UserRechargeActivityBinding">
 
+        <variable
+            name="accountBean"
+            type="com.pine.base.bean.AccountBean"></variable>
     </data>
 
     <LinearLayout
@@ -17,12 +20,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="User Vip" />
-
-        <com.pine.base.widget.view.BaseBottomTabNavigationBar
-            android:id="@+id/bottom_tab_nb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:base_bbtnb_SelectedItem="1"></com.pine.base.widget.view.BaseBottomTabNavigationBar>
+            android:text="充值" />
     </LinearLayout>
 </layout>

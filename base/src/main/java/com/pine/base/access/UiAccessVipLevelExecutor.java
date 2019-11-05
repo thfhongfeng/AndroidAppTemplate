@@ -35,10 +35,10 @@ public class UiAccessVipLevelExecutor implements IUiAccessExecutor {
             AccountBean accountBean = BaseRouterClient.getLoginAccount(activity, null);
             int accountType = accountBean.getAccountType();
             int vipLevelNeed = Integer.parseInt(arg);
-            boolean canAccess = accountType >= vipLevelNeed;
+            boolean canAccess = accountType - 9000 >= vipLevelNeed * 10;
             if (!canAccess) {
                 if (!doNotGoVipActivity(actionsMap, accessTimeInterval)) {
-                    BaseRouterClient.goUserVipActivity(activity, null, new IRouterCallback() {
+                    BaseRouterClient.goUserRechargeActivity(activity, null, new IRouterCallback() {
                         @Override
                         public void onSuccess(Bundle responseBundle) {
 
