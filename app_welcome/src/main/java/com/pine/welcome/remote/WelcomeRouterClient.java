@@ -10,19 +10,14 @@ import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.router.RouterManager;
 
 public class WelcomeRouterClient {
-    public static void callCommand(Context context, String bundleKey,
-                                   String command, Bundle args, IRouterCallback callback) {
-        RouterManager.getInstance(bundleKey).callUiCommand(context,
-                command, args, callback);
-    }
 
     public static void autoLogin(Context context, Bundle args, IRouterCallback callback) {
-        RouterManager.getInstance(ConfigKey.BUNDLE_LOGIN_KEY).callOpCommand(context,
+        RouterManager.callOpCommand(context, ConfigKey.BUNDLE_LOGIN_KEY,
                 RouterLoginCommand.autoLogin, args, callback);
     }
 
     public static void goMainHomeActivity(Context context, Bundle args, IRouterCallback callback) {
-        RouterManager.getInstance(ConfigKey.BUNDLE_MAIN_KEY).callUiCommand(context,
+        RouterManager.callUiCommand(context, ConfigKey.BUNDLE_MAIN_KEY,
                 RouterMainCommand.goMainHomeActivity, args, callback);
     }
 }

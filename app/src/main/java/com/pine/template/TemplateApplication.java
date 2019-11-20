@@ -91,22 +91,23 @@ public class TemplateApplication extends Application {
     }
 
     private void initManager() {
-        RouterManager.init(this, "com.pine.base.router.command", new IRouterManagerFactory() {
-            @Override
-            public IRouterManager makeRouterManager(String bundleKey) {
-                switch (BuildConfig.APP_THIRD_ROUTER_PROVIDER) {
-                    case "arouter":
-                        return ARouterManager.getInstance(bundleKey);
-                    default:
-                        return ARouterManager.getInstance(bundleKey);
-                }
-            }
+        RouterManager.init(this, "com.pine.base.router.command",
+                new IRouterManagerFactory() {
+                    @Override
+                    public IRouterManager makeRouterManager() {
+                        switch (BuildConfig.APP_THIRD_ROUTER_PROVIDER) {
+                            case "arouter":
+                                return ARouterManager.getInstance();
+                            default:
+                                return ARouterManager.getInstance();
+                        }
+                    }
 
-            @Override
-            public boolean isBundleEnable(String bundleKey) {
-                return ConfigSwitcherServer.getInstance().isEnable(bundleKey);
-            }
-        });
+                    @Override
+                    public boolean isBundleEnable(String bundleKey) {
+                        return ConfigSwitcherServer.getInstance().isEnable(bundleKey);
+                    }
+                });
 
         ShareManager.getInstance().init(this, R.mipmap.res_ic_launcher);
 
@@ -118,7 +119,7 @@ public class TemplateApplication extends Application {
                         return DbRequestManager.getInstance(new IDbRequestServer() {
                             @Override
                             public DbResponse request(Bundle bundle) {
-                                return RouterManager.getInstance(ConfigKey.BUNDLE_DB_SEVER_KEY).callDataCommandDirect(mApplication,
+                                return RouterManager.callDataCommandDirect(mApplication, ConfigKey.BUNDLE_DB_SEVER_KEY,
                                         RouterDbServerCommand.callDbServerCommand, bundle);
                             }
                         });

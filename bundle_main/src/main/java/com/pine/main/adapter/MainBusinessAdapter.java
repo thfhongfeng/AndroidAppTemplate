@@ -16,6 +16,7 @@ import com.pine.main.R;
 import com.pine.main.bean.MainBusinessItemEntity;
 import com.pine.main.remote.MainRouterClient;
 import com.pine.tool.router.IRouterCallback;
+import com.pine.tool.router.RouterCommandType;
 
 /**
  * Created by tanghongfeng on 2019/1/16
@@ -57,8 +58,8 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MainRouterClient.callCommand(mContext, content.getBundle(), content.getCommand(), null,
-                            new IRouterCallback() {
+                    MainRouterClient.callCommand(mContext, content.getBundle(), RouterCommandType.TYPE_UI_COMMAND,
+                            content.getCommand(), null, new IRouterCallback() {
                                 @Override
                                 public void onSuccess(Bundle responseBundle) {
                                     AppTrackManager.getInstance().trackButton(mContext, TrackModuleTag.MODULE_DEFAULT,

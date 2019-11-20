@@ -5,7 +5,7 @@ package com.pine.tool.router;
  */
 
 public interface IRouterManagerFactory {
-    IRouterManager makeRouterManager(String bundleKey);
+    IRouterManager makeRouterManager();
 
     boolean isBundleEnable(String bundleKey);
 }

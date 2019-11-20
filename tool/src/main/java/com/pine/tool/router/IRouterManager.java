@@ -1,7 +1,10 @@
 package com.pine.tool.router;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+
+import java.util.List;
 
 /**
  * Created by tanghongfeng on 2018/9/12
@@ -13,15 +16,17 @@ public interface IRouterManager {
     int FAIL_CODE_INTERRUPT = 1003; // 请求被打断。
     int FAIL_CODE_ERROR = 1004; // 请求返回出错，被请求的服务出错。
 
-    void callUiCommand(Context context, final String commandName, final Bundle args, final IRouterCallback callback);
+    /**
+     * 初始化
+     *
+     * @param application
+     * @param commandClassNameList
+     */
+    void init(Application application, List<String> commandClassNameList);
 
-    void callDataCommand(Context context, final String commandName, final Bundle args, final IRouterCallback callback);
+    void callCommand(Context context, final String bundleKey, final String commandType,
+                     final String commandName, final Bundle args, final IRouterCallback callback);
 
-    void callOpCommand(Context context, final String commandName, final Bundle args, final IRouterCallback callback);
-
-    <R> R callUiCommandDirect(Context context, final String commandName, final Bundle args);
-
-    <R> R callDataCommandDirect(Context context, final String commandName, final Bundle args);
-
-    <R> R callOpCommandDirect(Context context, final String commandName, final Bundle args);
+    <R> R callCommandDirect(Context context, final String bundleKey, final String commandType,
+                            final String commandName, final Bundle args);
 }

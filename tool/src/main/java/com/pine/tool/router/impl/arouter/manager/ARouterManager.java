@@ -1,8 +1,8 @@
 package com.pine.tool.router.impl.arouter.manager;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -32,31 +32,34 @@ import static com.pine.tool.router.RouterCommandType.TYPE_UI_COMMAND;
 public class ARouterManager implements IRouterManager {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
-    private static volatile HashMap<String, ARouterManager> mInstanceMap = new HashMap<>();
+    private static HashMap<String, String> mBundleActionMap = new HashMap<>();
+    private static volatile ARouterManager mInstance;
 
-    private String mBundleKey = "";
-    private String mRemoteAction = "";
+    private ARouterManager() {
 
-    static {
+    }
+
+    public synchronized static ARouterManager getInstance() {
+        if (mInstance == null) {
+            mInstance = new ARouterManager();
+        }
+        return mInstance;
+    }
+
+    @Override
+    public void init(Application application, List<String> commandClassNameList) {
         if (AppUtils.isApkDebuggable(AppUtils.getApplication())) {
             ARouter.openLog();
             ARouter.openDebug();
         }
         ARouter.init(AppUtils.getApplication());
-    }
 
-    private ARouterManager(@NonNull String bundleKey) {
-        mBundleKey = bundleKey;
-        List<String> commandClassNameList = RouterManager.getCommandClassNameList();
         for (int i = 0; i < commandClassNameList.size(); i++) {
             try {
                 Class<?> clazz = Class.forName(commandClassNameList.get(i));
-                ARouterRemoteAction remoteAction = clazz.getAnnotation(ARouterRemoteAction.class);
-                if (remoteAction != null) {
-                    if (mBundleKey.equals(remoteAction.Key())) {
-                        mRemoteAction = remoteAction.RemoteAction();
-                        break;
-                    }
+                ARouterRemoteAction routerRemoteAction = clazz.getAnnotation(ARouterRemoteAction.class);
+                if (routerRemoteAction != null) {
+                    mBundleActionMap.put(routerRemoteAction.Key(), routerRemoteAction.RemoteAction());
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -64,40 +67,13 @@ public class ARouterManager implements IRouterManager {
         }
     }
 
-    public static ARouterManager getInstance(@NonNull String bundleKey) {
-        if (mInstanceMap.get(bundleKey) == null) {
-            synchronized (ARouterManager.class) {
-                if (mInstanceMap.get(bundleKey) == null) {
-                    mInstanceMap.put(bundleKey, new ARouterManager(bundleKey));
-                }
-            }
-        }
-        return mInstanceMap.get(bundleKey);
-    }
-
     @Override
-    public void callUiCommand(final Context context, String commandName,
-                              Bundle args, final IRouterCallback callback) {
-        callCommand(TYPE_UI_COMMAND, context, commandName, args, callback);
-    }
-
-    @Override
-    public void callDataCommand(final Context context, String commandName, Bundle args, final IRouterCallback callback) {
-        callCommand(TYPE_DATA_COMMAND, context, commandName, args, callback);
-    }
-
-    @Override
-    public void callOpCommand(final Context context, String commandName,
-                              Bundle args, final IRouterCallback callback) {
-        callCommand(TYPE_OP_COMMAND, context, commandName, args, callback);
-    }
-
-    public void callCommand(final String commandType, final Context context, String commandName,
+    public void callCommand(final Context context, final String bundleKey, final String commandType, String commandName,
                             Bundle args, final IRouterCallback callback) {
-        if (!checkBundleValidity(commandType, context, callback)) {
+        if (!checkBundleValidity(bundleKey, commandType, context, callback)) {
             return;
         }
-        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mRemoteAction)
+        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mBundleActionMap.get(bundleKey))
                 .navigation(context, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
@@ -131,26 +107,12 @@ public class ARouterManager implements IRouterManager {
     }
 
     @Override
-    public <R> R callUiCommandDirect(final Context context, String commandName, Bundle args) {
-        return callCommandDirect(TYPE_UI_COMMAND, context, commandName, args);
-    }
-
-    @Override
-    public <R> R callDataCommandDirect(final Context context, String commandName, Bundle args) {
-        return callCommandDirect(TYPE_DATA_COMMAND, context, commandName, args);
-    }
-
-    @Override
-    public <R> R callOpCommandDirect(final Context context, String commandName, Bundle args) {
-        return callCommandDirect(TYPE_OP_COMMAND, context, commandName, args);
-    }
-
-    private <R> R callCommandDirect(final String commandType, final Context context,
-                                    String commandName, Bundle args) {
-        if (!checkBundleValidity(commandType, context, null)) {
+    public <R> R callCommandDirect(final Context context, final String bundleKey, final String commandType,
+                                   String commandName, Bundle args) {
+        if (!checkBundleValidity(bundleKey, commandType, context, null)) {
             return null;
         }
-        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mRemoteAction)
+        ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mBundleActionMap.get(bundleKey))
                 .navigation(context, null));
         if (routerService != null) {
             return (R) routerService.callDirect(context, commandName, args);
@@ -158,9 +120,9 @@ public class ARouterManager implements IRouterManager {
         return null;
     }
 
-    private boolean checkBundleValidity(final String commandType, final Context context,
+    private boolean checkBundleValidity(final String bundleKey, final String commandType, final Context context,
                                         final IRouterCallback callback) {
-        if (TextUtils.isEmpty(mRemoteAction)) {
+        if (TextUtils.isEmpty(mBundleActionMap.get(bundleKey))) {
             LogUtils.releaseLog(TAG, "remote action is null");
             if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INVALID,
                     context.getString(R.string.tool_remote_action_empty))) {
@@ -169,8 +131,8 @@ public class ARouterManager implements IRouterManager {
             }
             return false;
         }
-        if (!RouterManager.isBundleEnable(mBundleKey)) {
-            LogUtils.releaseLog(TAG, mBundleKey + " is not opened");
+        if (!RouterManager.isBundleEnable(bundleKey)) {
+            LogUtils.releaseLog(TAG, bundleKey + " is not opened");
             if (callback != null && !callback.onFail(IRouterManager.FAIL_CODE_INVALID,
                     context.getString(R.string.tool_bundle_not_open))) {
                 onCommandFail(commandType, context, IRouterManager.FAIL_CODE_INVALID,
