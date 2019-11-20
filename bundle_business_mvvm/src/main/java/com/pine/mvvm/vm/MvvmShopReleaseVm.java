@@ -23,8 +23,8 @@ public class MvvmShopReleaseVm extends ViewModel {
 
     @Override
     public void afterViewInit() {
-        setShopTypeArr(AppUtils.getApplicationContext().getResources().getStringArray(R.array.mvvm_shop_type));
-        setShopTypeNameArr(AppUtils.getApplicationContext().getResources().getStringArray(R.array.mvvm_shop_name_type));
+        setShopTypeNameArr(AppUtils.getApplicationContext().getResources().getStringArray(R.array.mvvm_shop_type_name));
+        setShopTypeValueArr(AppUtils.getApplicationContext().getResources().getStringArray(R.array.mvvm_shop_type_value));
         setShopDetail(new MvvmShopDetailEntity());
     }
 
@@ -114,16 +114,6 @@ public class MvvmShopReleaseVm extends ViewModel {
         });
     }
 
-    private MutableLiveData<String[]> shopTypeArrData = new MutableLiveData<>();
-
-    public MutableLiveData<String[]> getShopTypeArrData() {
-        return shopTypeArrData;
-    }
-
-    public void setShopTypeArr(String[] shopTypeArr) {
-        shopTypeArrData.setValue(shopTypeArr);
-    }
-
     private MutableLiveData<String[]> shopTypeNameArrData = new MutableLiveData<>();
 
     public MutableLiveData<String[]> getShopTypeNameArrData() {
@@ -132,6 +122,16 @@ public class MvvmShopReleaseVm extends ViewModel {
 
     public void setShopTypeNameArr(String[] shopTypeNameArr) {
         shopTypeNameArrData.setValue(shopTypeNameArr);
+    }
+
+    private MutableLiveData<String[]> shopTypeValueArrData = new MutableLiveData<>();
+
+    public MutableLiveData<String[]> getShopTypeValueArrData() {
+        return shopTypeValueArrData;
+    }
+
+    public void setShopTypeValueArr(String[] shopTypeArr) {
+        shopTypeValueArrData.setValue(shopTypeArr);
     }
 
     private MutableLiveData<MvvmShopDetailEntity> shopDetailData = new MutableLiveData<>();

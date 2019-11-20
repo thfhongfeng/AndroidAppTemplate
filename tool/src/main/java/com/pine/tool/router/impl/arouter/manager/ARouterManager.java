@@ -15,6 +15,7 @@ import com.pine.tool.router.IRouterManager;
 import com.pine.tool.router.RouterManager;
 import com.pine.tool.router.annotation.ARouterRemoteAction;
 import com.pine.tool.router.impl.arouter.ARouterBundleRemote;
+import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
 import java.util.HashMap;
@@ -35,6 +36,14 @@ public class ARouterManager implements IRouterManager {
 
     private String mBundleKey = "";
     private String mRemoteAction = "";
+
+    static {
+        if (AppUtils.isApkDebuggable(AppUtils.getApplication())) {
+            ARouter.openLog();
+            ARouter.openDebug();
+        }
+        ARouter.init(AppUtils.getApplication());
+    }
 
     private ARouterManager(@NonNull String bundleKey) {
         mBundleKey = bundleKey;

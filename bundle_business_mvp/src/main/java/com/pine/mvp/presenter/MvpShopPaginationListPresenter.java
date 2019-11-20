@@ -50,16 +50,16 @@ public class MvpShopPaginationListPresenter extends Presenter<IMvpShopPagination
             case UI_STATE_ON_INIT:
                 break;
             case UI_STATE_ON_RESUME:
-                if (MapSdkManager.getInstance().getLocation() == null) {
-                    MapSdkManager.getInstance().registerLocationListener(mLocationListener);
-                    MapSdkManager.getInstance().startLocation();
+                if (MapSdkManager.getLocation() == null) {
+                    MapSdkManager.registerLocationListener(mLocationListener);
+                    MapSdkManager.startLocation();
                 }
                 break;
             case UI_STATE_ON_PAUSE:
                 break;
             case UI_STATE_ON_STOP:
-                MapSdkManager.getInstance().unregisterLocationListener(mLocationListener);
-                MapSdkManager.getInstance().stopLocation();
+                MapSdkManager.unregisterLocationListener(mLocationListener);
+                MapSdkManager.stopLocation();
                 break;
             case UI_STATE_ON_DETACH:
                 break;
@@ -87,7 +87,7 @@ public class MvpShopPaginationListPresenter extends Presenter<IMvpShopPagination
         }
         params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
         params.put(MvpConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));
-        LocationInfo location = MapSdkManager.getInstance().getLocation();
+        LocationInfo location = MapSdkManager.getLocation();
         if (location != null) {
             params.put("latitude", String.valueOf(location.getLatitude()));
             params.put("longitude", String.valueOf(location.getLongitude()));

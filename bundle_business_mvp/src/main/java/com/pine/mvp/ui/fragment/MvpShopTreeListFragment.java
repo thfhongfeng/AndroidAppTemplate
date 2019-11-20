@@ -88,16 +88,16 @@ public class MvpShopTreeListFragment extends MvpFragment<IMvpShopTreeListContrac
     @Override
     public void onResume() {
         super.onResume();
-        if (MapSdkManager.getInstance().getLocation() == null) {
-            MapSdkManager.getInstance().registerLocationListener(mLocationListener);
-            MapSdkManager.getInstance().startLocation();
+        if (MapSdkManager.getLocation() == null) {
+            MapSdkManager.registerLocationListener(mLocationListener);
+            MapSdkManager.startLocation();
         }
     }
 
     @Override
     public void onStop() {
-        MapSdkManager.getInstance().unregisterLocationListener(mLocationListener);
-        MapSdkManager.getInstance().stopLocation();
+        MapSdkManager.unregisterLocationListener(mLocationListener);
+        MapSdkManager.stopLocation();
         super.onStop();
     }
 

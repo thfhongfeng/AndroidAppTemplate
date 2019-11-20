@@ -20,18 +20,18 @@ public interface IMapManager {
 
     LocationInfo getLocation();
 
-    Intent getMapActivityIntent(Context context);
-
+    /**
+     * @param context
+     * @param type
+     * @return
+     */
     Intent getMapActivityIntent(Context context, MapSdkManager.MapType type);
-
-    Intent getMarkMapActivityIntent(Context context, double latitude, double longitude,
-                                    boolean canMark);
 
     /**
      * @param context
      * @param type
-     * @param latitude  Gcj_02坐标系 纬度
-     * @param longitude Gcj_02坐标系 经度
+     * @param latitude  Gcj_02坐标系 标记点纬度
+     * @param longitude Gcj_02坐标系 标记点经度
      * @param canMark   是否可以标记
      * @return
      */

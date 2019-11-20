@@ -28,12 +28,6 @@ public class RouterManager {
     }
 
     public static void init(Application application, String commandPackage, @NonNull IRouterManagerFactory factory) {
-        if (AppUtils.isApkDebuggable(application)) {
-            ARouter.openLog();
-            ARouter.openDebug();
-        }
-        ARouter.init(application);
-
         mCommandPackage = commandPackage;
         try {
             mCommandClassNameList = AndroidClassUtils.getFileNameByPackageName(AppUtils.getApplicationContext(),

@@ -117,22 +117,10 @@ public class BaiduMapManager implements IMapManager {
     }
 
     @Override
-    public Intent getMapActivityIntent(Context context) {
-        return getMapActivityIntent(context, MapSdkManager.MapType.MAP_TYPE_NORMAL);
-    }
-
-    @Override
     public Intent getMapActivityIntent(Context context, MapSdkManager.MapType mapType) {
         Intent intent = new Intent(context, BaiduMapActivity.class);
         intent.putExtra("mapTypeOrdinal", mapType.ordinal());
         return intent;
-    }
-
-    @Override
-    public Intent getMarkMapActivityIntent(Context context, double latitude, double longitude,
-                                           boolean canMark) {
-        return getMarkMapActivityIntent(context, MapSdkManager.MapType.MAP_TYPE_NORMAL,
-                latitude, longitude, canMark);
     }
 
     /**

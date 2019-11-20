@@ -29,7 +29,13 @@ public class MvpShopReleasePresenter extends Presenter<IMvpShopReleaseContract.U
     @NonNull
     @Override
     public String[] getShopTypeNameArr() {
-        return getContext().getResources().getStringArray(R.array.mvp_shop_type);
+        return getContext().getResources().getStringArray(R.array.mvp_shop_type_name);
+    }
+
+    @NonNull
+    @Override
+    public String[] getShopTypeValueArr() {
+        return getContext().getResources().getStringArray(R.array.mvp_shop_type_value);
     }
 
     @NonNull

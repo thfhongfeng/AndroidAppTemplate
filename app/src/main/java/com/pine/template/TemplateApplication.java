@@ -11,7 +11,10 @@ import com.pine.base.BaseUrlConstants;
 import com.pine.base.access.UiAccessLoginExecutor;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.access.UiAccessVipLevelExecutor;
+import com.pine.base.component.map.IMapManager;
+import com.pine.base.component.map.IMapManagerFactory;
 import com.pine.base.component.map.MapSdkManager;
+import com.pine.base.component.map.baidu.BaiduMapManager;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.base.router.command.RouterDbServerCommand;
 import com.pine.base.track.AppTrackManager;
@@ -40,8 +43,6 @@ import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.user.UserApplication;
 import com.pine.welcome.WelcomeApplication;
-
-import java.util.HashMap;
 
 /**
  * Created by tanghongfeng on 2018/7/3.
@@ -111,10 +112,10 @@ public class TemplateApplication extends Application {
 
         RequestManager.init(this, new IRequestManagerFactory() {
             @Override
-            public IRequestManager makeRequestManager(Context context, HashMap<String, String> header) {
+            public IRequestManager makeRequestManager() {
                 switch (BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
                     case "local":
-                        return DbRequestManager.getInstance().init(context, header, new IDbRequestServer() {
+                        return DbRequestManager.getInstance(new IDbRequestServer() {
                             @Override
                             public DbResponse request(Bundle bundle) {
                                 return RouterManager.getInstance(ConfigKey.BUNDLE_DB_SEVER_KEY).callDataCommandDirect(mApplication,
@@ -124,15 +125,25 @@ public class TemplateApplication extends Application {
                     default:
                         switch (BuildConfig.APP_THIRD_HTTP_REQUEST_PROVIDER) {
                             case "nohttp":
-                                return NoRequestManager.getInstance().init(context, header);
+                                return NoRequestManager.getInstance();
                             default:
-                                return NoRequestManager.getInstance().init(context, header);
+                                return NoRequestManager.getInstance();
                         }
                 }
             }
         });
 
-        MapSdkManager.getInstance().init(this);
+        MapSdkManager.init(this, new IMapManagerFactory() {
+            @Override
+            public IMapManager makeMapManager(Context context) {
+                switch (BuildConfig.APP_THIRD_MAP_PROVIDER) {
+                    case "baidu":
+                        return BaiduMapManager.getInstance();
+                    default:
+                        return BaiduMapManager.getInstance();
+                }
+            }
+        });
 
         UiAccessManager.getInstance().addAccessExecutor(UiAccessType.LOGIN,
                 new UiAccessLoginExecutor());

@@ -87,7 +87,7 @@ public class MvpShopDetailPresenter extends Presenter<IMvpShopDetailContract.Ui>
                 TextUtils.isEmpty(mShopDetailEntity.getLongitude())) {
             return;
         }
-        getContext().startActivity(MapSdkManager.getInstance().getMarkMapActivityIntent(
+        getContext().startActivity(MapSdkManager.getMarkMapActivityIntent(
                 getContext(),
                 DecimalUtils.format(mShopDetailEntity.getLatitude().trim(), 6),
                 DecimalUtils.format(mShopDetailEntity.getLongitude().trim(), 6), false));

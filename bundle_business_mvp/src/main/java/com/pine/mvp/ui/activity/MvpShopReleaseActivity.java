@@ -192,7 +192,7 @@ public class MvpShopReleaseActivity extends
                             @Override
                             public void onSelect(String selectText, int position) {
                                 type_tv.setText(selectText);
-                                type_tv.setTag(position);
+                                type_tv.setTag(mPresenter.getShopTypeValueArr()[position]);
                             }
                         });
             }
@@ -254,7 +254,7 @@ public class MvpShopReleaseActivity extends
                     latLng[1] = DecimalUtils.format(latLngStr[1].trim(), 6);
                 }
             }
-            startActivityForResult(MapSdkManager.getInstance().getMarkMapActivityIntent(this,
+            startActivityForResult(MapSdkManager.getMarkMapActivityIntent(this,
                     MapSdkManager.MapType.MAP_TYPE_NORMAL, latLng[0], latLng[1], true),
                     REQUEST_CODE_BAIDU_MAP);
         }

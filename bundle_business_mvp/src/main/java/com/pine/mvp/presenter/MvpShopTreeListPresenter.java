@@ -49,7 +49,7 @@ public class MvpShopTreeListPresenter extends Presenter<IMvpShopTreeListContract
         }
         params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
         params.put(MvpConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));
-        LocationInfo location = MapSdkManager.getInstance().getLocation();
+        LocationInfo location = MapSdkManager.getLocation();
         if (location != null) {
             params.put("latitude", String.valueOf(location.getLatitude()));
             params.put("longitude", String.valueOf(location.getLongitude()));

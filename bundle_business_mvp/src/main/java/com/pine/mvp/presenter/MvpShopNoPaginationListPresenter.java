@@ -43,7 +43,7 @@ public class MvpShopNoPaginationListPresenter extends Presenter<IMvpShopNoPagina
             return;
         }
         HashMap<String, String> params = new HashMap<>();
-        LocationInfo location = MapSdkManager.getInstance().getLocation();
+        LocationInfo location = MapSdkManager.getLocation();
         if (location != null) {
             params.put("latitude", String.valueOf(location.getLatitude()));
             params.put("longitude", String.valueOf(location.getLongitude()));

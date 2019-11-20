@@ -1,7 +1,9 @@
 package com.pine.tool.request;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,6 +14,13 @@ public interface IRequestManager {
     String SESSION_ID = "JSESSIONID";
     String COOKIE_KEY = "Cookie";
     String MOBILE_MODEL_KEY = "mobileModel";
+
+    /**
+     * 初始化
+     * @param context
+     * @param header
+     */
+    void init(Context context, HashMap<String, String> header);
 
     /**
      * Byte[]请求

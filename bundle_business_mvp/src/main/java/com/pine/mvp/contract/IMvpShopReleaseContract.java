@@ -58,6 +58,9 @@ public interface IMvpShopReleaseContract {
         String[] getShopTypeNameArr();
 
         @NonNull
+        String[] getShopTypeValueArr();
+
+        @NonNull
         HashMap<String, String> makeUploadDefaultParams();
 
         void addShop();

@@ -71,8 +71,10 @@ public class MvvmShopReleaseActivity extends
                             strings, 0, new SelectItemDialog.IDialogSelectListener() {
                                 @Override
                                 public void onSelect(String selectText, int position) {
-                                    mBinding.typeTv.setText(selectText);
-                                    mBinding.typeTv.setData(mViewModel.getShopTypeArrData().getValue()[position]);
+                                    MvvmShopDetailEntity entity = mBinding.getShopDetail();
+                                    entity.setTypeName(selectText);
+                                    entity.setType(mViewModel.getShopTypeValueArrData().getValue()[position]);
+                                    mBinding.setShopDetail(entity);
                                 }
                             });
                 }
@@ -184,9 +186,10 @@ public class MvvmShopReleaseActivity extends
             if (resultCode == RESULT_OK) {
                 double latitude = DecimalUtils.format(data.getDoubleExtra("latitude", 0d), 6);
                 double longitude = DecimalUtils.format(data.getDoubleExtra("longitude", 0d), 6);
-                mBinding.addressMarkerTv.setText(latitude + "," + longitude);
-                mBinding.addressMarkerTv.setData1(String.valueOf(latitude));
-                mBinding.addressMarkerTv.setData2(String.valueOf(longitude));
+                MvvmShopDetailEntity entity = mBinding.getShopDetail();
+                entity.setLatitude(String.valueOf(latitude));
+                entity.setLongitude(String.valueOf(longitude));
+                mBinding.setShopDetail(entity);
             }
         }
     }
@@ -205,9 +208,10 @@ public class MvvmShopReleaseActivity extends
                         year, year + 1, new DateSelectDialog.IDialogDateSelected() {
                             @Override
                             public void onSelected(Calendar calendar) {
-                                mBinding.onlineDateTv
-                                        .setText(new SimpleDateFormat("yyyy-MM-dd")
-                                                .format(calendar.getTime()));
+                                MvvmShopDetailEntity entity = mBinding.getShopDetail();
+                                entity.setOnlineDate(new SimpleDateFormat("yyyy-MM-dd")
+                                        .format(calendar.getTime()));
+                                mBinding.setShopDetail(entity);
                             }
                         });
             }
@@ -223,7 +227,9 @@ public class MvvmShopReleaseActivity extends
 
                             @Override
                             public void onSubmitClick(Dialog dialog, List<String> textList) {
-                                mBinding.contactTv.setText(textList.get(0));
+                                MvvmShopDetailEntity entity = mBinding.getShopDetail();
+                                entity.setMobile(textList.get(0));
+                                mBinding.setShopDetail(entity);
                             }
 
                             @Override
@@ -242,8 +248,10 @@ public class MvvmShopReleaseActivity extends
                             @Override
                             public void onSelected(String provinceName, String cityName,
                                                    String districtName, String zipCode) {
-                                mBinding.addressDistrictTv.setText(provinceName + cityName + districtName);
-                                mBinding.addressDistrictTv.setData(zipCode);
+                                MvvmShopDetailEntity entity = mBinding.getShopDetail();
+                                entity.setAddressDistrict(provinceName + cityName + districtName);
+                                entity.setAddressZipCode(zipCode);
+                                mBinding.setShopDetail(entity);
                             }
                         });
             }
@@ -251,18 +259,17 @@ public class MvvmShopReleaseActivity extends
         }
 
         public void onAddressMarkerTvClick(View view) {
-            String marker = mBinding.addressMarkerTv.getText().toString();
+            MvvmShopDetailEntity entity = mBinding.getShopDetail();
             double[] latLng = new double[2];
             latLng[0] = -1;
             latLng[1] = -1;
-            if (!TextUtils.isEmpty(marker)) {
-                String[] latLngStr = marker.split(",");
-                if (latLngStr.length == 2) {
-                    latLng[0] = DecimalUtils.format(latLngStr[0].trim(), 6);
-                    latLng[1] = DecimalUtils.format(latLngStr[1].trim(), 6);
-                }
+            if (!TextUtils.isEmpty(entity.getLatitude())) {
+                latLng[0] = DecimalUtils.format(entity.getLatitude().trim(), 6);
             }
-            startActivityForResult(MapSdkManager.getInstance().getMarkMapActivityIntent(
+            if (!TextUtils.isEmpty(entity.getLongitude())) {
+                latLng[1] = DecimalUtils.format(entity.getLongitude().trim(), 6);
+            }
+            startActivityForResult(MapSdkManager.getMarkMapActivityIntent(
                     MvvmShopReleaseActivity.this, latLng[0], latLng[1], true),
                     REQUEST_CODE_BAIDU_MAP);
         }

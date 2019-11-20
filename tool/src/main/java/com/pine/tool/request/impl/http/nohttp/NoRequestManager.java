@@ -202,7 +202,8 @@ public class NoRequestManager implements IRequestManager {
         };
     }
 
-    public IRequestManager init(@NonNull Context context, HashMap<String, String> header) {
+    @Override
+    public void init(@NonNull Context context, HashMap<String, String> header) {
         mHeaderParams = header;
 
         DBCookieStore dbCookieStore = (DBCookieStore) new DBCookieStore(context).setEnable(true);
@@ -266,7 +267,6 @@ public class NoRequestManager implements IRequestManager {
 
         mRequestQueue = NoHttp.newRequestQueue();
         mDownloadQueue = NoHttp.newDownloadQueue();
-        return this;
     }
 
     @Override

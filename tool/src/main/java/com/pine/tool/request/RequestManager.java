@@ -43,6 +43,11 @@ public class RequestManager {
 
     private static List<IResponseInterceptor> mResponseInterceptorList = new ArrayList<>();
 
+    /**
+     * 初始化
+     *
+     * @param context
+     */
     public static void init(Context context, @NonNull IRequestManagerFactory factory) {
         init(context, new HashMap<String, String>(), factory);
     }
@@ -59,7 +64,8 @@ public class RequestManager {
         } else {
             mApplicationContext = AppUtils.getApplication();
         }
-        mRequestManagerImpl = factory.makeRequestManager(context, header);
+        mRequestManagerImpl = factory.makeRequestManager();
+        mRequestManagerImpl.init(context, header);
         mLoadingRequestMap = new HashMap<>();
     }
 

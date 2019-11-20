@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="mvp_shop_type">
+    <string-array name="mvp_shop_type_name">
         <item>景点</item>
         <item>食品店</item>
         <item>服装店</item>
+    </string-array>
+
+    <string-array name="mvp_shop_type_value">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 </resources>

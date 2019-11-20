@@ -92,25 +92,25 @@ public class DbRequestManager implements IRequestManager {
         }
     }
 
-    public static DbRequestManager getInstance() {
+    public static DbRequestManager getInstance(IDbRequestServer requestServer) {
         if (mInstance == null) {
             synchronized (DbRequestManager.class) {
                 if (mInstance == null) {
                     LogUtils.releaseLog(TAG, "use request: db");
                     mInstance = new DbRequestManager();
+                    mRequestServer = requestServer;
                 }
             }
         }
         return mInstance;
     }
 
-    public IRequestManager init(@NonNull Context context, HashMap<String, String> head, IDbRequestServer requestServer) {
+    @Override
+    public void init(@NonNull Context context, HashMap<String, String> head) {
         mApplicationContext = context;
         if (head != null) {
             mHeaderParams = head;
         }
-        mRequestServer = requestServer;
-        return this;
     }
 
     private boolean isMainThread() {

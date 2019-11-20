@@ -103,7 +103,7 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
                 if (latLngStr.length == 2) {
                     latLng[0] = DecimalUtils.format(latLngStr[0].trim(), 6);
                     latLng[1] = DecimalUtils.format(latLngStr[1].trim(), 6);
-                    startActivity(MapSdkManager.getInstance().getMarkMapActivityIntent(
+                    startActivity(MapSdkManager.getMarkMapActivityIntent(
                             MvvmShopDetailActivity.this, latLng[0], latLng[1], false));
                 }
             }

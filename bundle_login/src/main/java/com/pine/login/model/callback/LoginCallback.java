@@ -83,7 +83,7 @@ public class LoginCallback extends JsonCallback {
                 responseAccount.setMobile(jsonObject.optString("mobile"));
                 responseAccount.setHeadImgUrl(jsonObject.optString("headImgUrl"));
                 responseAccount.setState(1);
-                responseAccount.setAccountType(100);
+                responseAccount.setAccountType(9100);
             }
             // Test code end
             final AccountBean accountBean = responseAccount;
