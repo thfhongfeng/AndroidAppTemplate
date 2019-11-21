@@ -9,6 +9,8 @@ import com.pine.tool.BuildConfig;
  */
 
 public class LogUtils {
+    private static final String LOG_PREFIX = "Pine_";
+    private static final int MAX_LOG_TAG_LENGTH = 23 - LOG_PREFIX.length();
 
     //各个Log级别定义的值，级别越高值越大
     /*
@@ -19,9 +21,7 @@ public class LogUtils {
         public static final int ERROR = 6;
         public static final int ASSERT = 7;
     */
-    private static final int LOG_LEVEL = Log.DEBUG;
-    private static final String LOG_PREFIX = "Pine_";
-    private static final int MAX_LOG_TAG_LENGTH = 23 - LOG_PREFIX.length();
+    private static int LOG_LEVEL = Log.DEBUG;
     private static boolean DEBUG = BuildConfig.DEBUG;
 
     private LogUtils() {
@@ -31,6 +31,11 @@ public class LogUtils {
     public static void setDebuggable(boolean isDebuggable) {
         Log.d("LogUtils", "setDebuggable isDebuggable:" + isDebuggable);
         DEBUG = isDebuggable;
+    }
+
+    public static void setDebugLevel(int level) {
+        Log.d("LogUtils", "setDebugLevel level:" + level);
+        LOG_LEVEL = level;
     }
 
     public static String makeLogTag(Class clz) {
@@ -52,62 +57,66 @@ public class LogUtils {
     }
 
     public static void v(String tag, String msg) {
-        if (DEBUG && (LOG_LEVEL <= Log.VERBOSE)) {
+        if (isLogEnable(Log.VERBOSE)) {
             Log.v(tag, msg);
         }
     }
 
     public static void v(String tag, String msg, Throwable cause) {
-        if (DEBUG && (LOG_LEVEL <= Log.VERBOSE)) {
+        if (isLogEnable(Log.VERBOSE)) {
             Log.v(tag, msg, cause);
         }
     }
 
     public static void d(String tag, String msg) {
-        if (DEBUG && (LOG_LEVEL <= Log.DEBUG)) {
+        if (isLogEnable(Log.DEBUG)) {
             Log.d(tag, msg);
         }
     }
 
     public static void d(String tag, String msg, Throwable cause) {
-        if (DEBUG && (LOG_LEVEL <= Log.DEBUG)) {
+        if (isLogEnable(Log.DEBUG)) {
             Log.d(tag, msg, cause);
         }
     }
 
     public static void i(String tag, String msg) {
-        if (DEBUG && (LOG_LEVEL <= Log.INFO)) {
+        if (isLogEnable(Log.INFO)) {
             Log.i(tag, msg);
         }
     }
 
     public static void i(String tag, String msg, Throwable cause) {
-        if (DEBUG && (LOG_LEVEL <= Log.INFO)) {
+        if (isLogEnable(Log.INFO)) {
             Log.i(tag, msg, cause);
         }
     }
 
     public static void w(String tag, String msg) {
-        if (DEBUG && (LOG_LEVEL <= Log.WARN)) {
+        if (isLogEnable(Log.WARN)) {
             Log.w(tag, msg);
         }
     }
 
     public static void w(String tag, String msg, Throwable cause) {
-        if (DEBUG && (LOG_LEVEL <= Log.WARN)) {
+        if (isLogEnable(Log.WARN)) {
             Log.w(tag, msg, cause);
         }
     }
 
     public static void e(String tag, String msg) {
-        if (DEBUG && (LOG_LEVEL <= Log.ERROR)) {
+        if (isLogEnable(Log.ERROR)) {
             Log.e(tag, msg);
         }
     }
 
     public static void e(String tag, String msg, Throwable cause) {
-        if (DEBUG && (LOG_LEVEL <= Log.ERROR)) {
+        if (isLogEnable(Log.ERROR)) {
             Log.e(tag, msg, cause);
         }
+    }
+
+    private static boolean isLogEnable(int level) {
+        return DEBUG && LOG_LEVEL <= level;
     }
 }

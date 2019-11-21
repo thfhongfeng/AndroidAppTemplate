@@ -21,7 +21,7 @@ public class RouterManager {
     private static volatile IRouterManagerFactory mRouterManagerFactory;
     private static volatile IRouterManager mRouterManagerImpl;
 
-    public static void init(Application application, String commandPackage, @NonNull IRouterManagerFactory factory) {
+    public static void init(Application application, @NonNull String commandPackage, @NonNull IRouterManagerFactory factory) {
         try {
             List<String> commandClassNameList = AndroidClassUtils.getFileNameByPackageName(AppUtils.getApplicationContext(),
                     commandPackage);
