@@ -22,6 +22,7 @@ import com.pine.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
+import com.pine.config.ConfigKey;
 import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
@@ -44,9 +45,11 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""},
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER},
+        AccessArgs = {"", ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY},
         AccessActions = {UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
-                UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI})
+                UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI,
+                UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
 public class MvvmTravelNoteReleaseActivity extends
         BaseMvvmActionBarTextMenuActivity<MvvmTravelNoteReleaseActivityBinding, MvvmTravelNoteReleaseVm> {
     private final int REQUEST_CODE_SELECT_BELONG_SHOP = 1;
@@ -254,9 +257,11 @@ public class MvvmTravelNoteReleaseActivity extends
         }
 
         public void onPreviewNoteClick(View view) {
-            mBinding.notePreviewRl.setVisibility(View.VISIBLE);
             List<TextImageEntity> noteDayList = mBinding.aevView.getSectionList();
-            mBinding.notePreviewAdv.init(noteDayList);
+            if (noteDayList != null && noteDayList.size() > 0) {
+                mBinding.notePreviewRl.setVisibility(View.VISIBLE);
+                mBinding.notePreviewAdv.init(noteDayList);
+            }
         }
 
         public void onPreviewContainerClick(View view) {

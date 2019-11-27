@@ -23,6 +23,7 @@ import com.pine.base.component.editor.ui.ArticleEditorView;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
+import com.pine.config.ConfigKey;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
 import com.pine.mvp.contract.IMvpTravelNoteReleaseContract;
@@ -40,9 +41,11 @@ import java.util.List;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN}, AccessArgs = {""},
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER},
+        AccessArgs = {"", ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY},
         AccessActions = {UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
-                UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI})
+                UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI,
+                UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
 public class MvpTravelNoteReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpTravelNoteReleaseContract.Ui, MvpTravelNoteReleasePresenter>
         implements IMvpTravelNoteReleaseContract.Ui, View.OnClickListener {
@@ -134,9 +137,11 @@ public class MvpTravelNoteReleaseActivity extends
         if (v.getId() == R.id.note_preview_rl) {
             note_preview_rl.setVisibility(View.GONE);
         } else if (v.getId() == R.id.preview_note_btn_tv) {
-            note_preview_rl.setVisibility(View.VISIBLE);
             List<TextImageEntity> noteDayList = aev_view.getSectionList();
-            note_preview_adv.init(noteDayList);
+            if (noteDayList != null && noteDayList.size() > 0) {
+                note_preview_rl.setVisibility(View.VISIBLE);
+                note_preview_adv.init(noteDayList);
+            }
         } else if (v.getId() == R.id.set_out_date_rl) {
             if (mSetOutDateSelectDialog == null) {
                 int year = Calendar.getInstance().get(Calendar.YEAR);

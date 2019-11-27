@@ -14,6 +14,8 @@
     <string name="base_item_complete">没有更多了</string>
     <string name="base_item_init_loading">正在加载中...</string>
 
+    <string name="base_fun_not_open">该功能暂不开放</string>
+
     <string name="base_share_to">分享至</string>
 
     <string name="base_cancel">取消</string>

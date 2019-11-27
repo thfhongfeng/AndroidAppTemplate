@@ -12,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.pine.base.access.UiAccessAction;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.access.VipLevel;
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
+import com.pine.config.ConfigKey;
 import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpProductReleaseContract;
 import com.pine.mvp.presenter.MvpProductReleasePresenter;
@@ -32,8 +34,9 @@ import java.util.List;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.VIP_LEVEL},
-        AccessArgs = {"", VipLevel.VIP1}, AccessActions = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER, UiAccessType.VIP_LEVEL},
+        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP_KEY, VipLevel.VIP1},
+        AccessActions = {"", UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
 public class MvpProductReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpProductReleaseContract.Ui, MvpProductReleasePresenter>
         implements IMvpProductReleaseContract.Ui, View.OnClickListener {

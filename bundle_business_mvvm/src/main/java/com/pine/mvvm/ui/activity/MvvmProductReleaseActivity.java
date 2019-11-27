@@ -9,12 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
+import com.pine.base.access.UiAccessAction;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.access.VipLevel;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
+import com.pine.config.ConfigKey;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmProductDetailEntity;
 import com.pine.mvvm.databinding.MvvmProductReleaseActivityBinding;
@@ -29,8 +31,9 @@ import java.util.List;
  * Created by tanghongfeng on 2018/10/23
  */
 
-@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.VIP_LEVEL},
-        AccessArgs = {"", VipLevel.VIP1}, AccessActions = {""})
+@UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER, UiAccessType.VIP_LEVEL},
+        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP_KEY, VipLevel.VIP1},
+        AccessActions = {"", UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
 public class MvvmProductReleaseActivity extends
         BaseMvvmActionBarTextMenuActivity<MvvmProductReleaseActivityBinding, MvvmProductReleaseVm> {
     private InputTextDialog mPriceInputDialog, mShelvePriceInputDialog;

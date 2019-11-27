@@ -8,6 +8,7 @@ import android.os.StrictMode;
 
 import com.pine.base.BaseApplication;
 import com.pine.base.BaseUrlConstants;
+import com.pine.base.access.UiAccessConfigSwitcherExecutor;
 import com.pine.base.access.UiAccessLoginExecutor;
 import com.pine.base.access.UiAccessType;
 import com.pine.base.access.UiAccessVipLevelExecutor;
@@ -148,7 +149,8 @@ public class TemplateApplication extends Application {
 
         UiAccessManager.getInstance().addAccessExecutor(UiAccessType.LOGIN,
                 new UiAccessLoginExecutor());
-
+        UiAccessManager.getInstance().addAccessExecutor(UiAccessType.CONFIG_SWITCHER,
+                new UiAccessConfigSwitcherExecutor());
         UiAccessManager.getInstance().addAccessExecutor(UiAccessType.VIP_LEVEL,
                 new UiAccessVipLevelExecutor());
     }
