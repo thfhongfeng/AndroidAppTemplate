@@ -44,11 +44,11 @@ public abstract class UploadRecyclerView extends RecyclerView {
         return mHelper.getMaxFileCount();
     }
 
-    protected void setMaxFileSize(long maxFileSize) {
+    protected void setMaxFileSize(int maxFileSize) {
         mHelper.setMaxFileSize(maxFileSize);
     }
 
-    public long getMaxFileSize() {
+    public int getMaxFileSize() {
         return mHelper.getMaxFileSize();
     }
 

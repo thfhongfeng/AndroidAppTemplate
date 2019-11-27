@@ -20,6 +20,11 @@ public interface IFileTogetherUploader extends IFileUploaderConfig {
 
     void onFileUploadCancel(FileUploadBean uploadBean);
 
+    // 如果文件是图片，上传前的图片压缩进度回调
+    void onImageCompressProgress(List<FileUploadBean> uploadBeanList);
+
+    void onFileUploadStart(List<FileUploadBean> uploadBeanList);
+
     void onFileUploadProgress(List<FileUploadBean> uploadBeanList);
 
     void onFileUploadFail(List<FileUploadBean> uploadBeanList, Exception exception);

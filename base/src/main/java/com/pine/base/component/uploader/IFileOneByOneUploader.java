@@ -22,6 +22,16 @@ public interface IFileOneByOneUploader extends IFileUploaderConfig {
 
     void onFileUploadPrepare(List<FileUploadBean> uploadBeanList);
 
+    /**
+     * 如果文件是图片，上传前的图片压缩进度回调
+     *
+     * @param uploadBean
+     * @param compressPercentage 压缩百分比，以100为基数。
+     */
+    void onImageCompressProgress(FileUploadBean uploadBean, int compressPercentage);
+
+    void onFileUploadStart(FileUploadBean uploadBean);
+
     void onFileUploadProgress(FileUploadBean uploadBean);
 
     void onFileUploadCancel(FileUploadBean uploadBean);

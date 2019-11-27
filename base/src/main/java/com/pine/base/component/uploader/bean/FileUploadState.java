@@ -10,10 +10,12 @@ import android.os.Parcelable;
 public enum FileUploadState implements Parcelable {
     UPLOAD_STATE_DEFAULT(0),
     UPLOAD_STATE_PREPARING(1),
-    UPLOAD_STATE_UPLOADING(2),
-    UPLOAD_STATE_CANCEL(3),
-    UPLOAD_STATE_FAIL(4),
-    UPLOAD_STATE_SUCCESS(5);
+    UPLOAD_STATE_IMAGE_COMPRESS(2),
+    UPLOAD_STATE_START(3),
+    UPLOAD_STATE_UPLOADING(4),
+    UPLOAD_STATE_CANCEL(5),
+    UPLOAD_STATE_FAIL(6),
+    UPLOAD_STATE_SUCCESS(7);
 
     private int mValue;
 

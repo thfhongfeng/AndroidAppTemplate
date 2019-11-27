@@ -57,7 +57,7 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
     // 最大允许上传文件数
     protected int mMaxFileCount = 30;
     // 最大允许上传文件大小（单位K）
-    protected long mMaxFileSize = 1024;
+    protected int mMaxFileSize = 1024;
 
     public BaseTextImageEditorView(Context context) {
         super(context);
@@ -70,8 +70,8 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
     public BaseTextImageEditorView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseTextImageEditorView);
-        mMaxFileCount = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileCount, 10);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileSize, 1024);
+        mMaxFileCount = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileCount, mMaxFileCount);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseTextImageEditorView_base_maxFileSize, mMaxFileSize);
         mHelper.setMaxFileCount(mMaxFileCount);
         mHelper.setMaxFileSize(mMaxFileSize);
 
@@ -208,6 +208,18 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
         View state_rl = view.findViewById(R.id.state_rl);
         switch (state) {
             case UPLOAD_STATE_PREPARING:
+                loading_tv.setText(getContext().getString(R.string.base_upload_preparing));
+                loading_tv.setVisibility(VISIBLE);
+                result_tv.setVisibility(GONE);
+                state_rl.setVisibility(VISIBLE);
+                break;
+            case UPLOAD_STATE_IMAGE_COMPRESS:
+                loading_tv.setText(getContext().getString(R.string.base_compressing));
+                loading_tv.setVisibility(VISIBLE);
+                result_tv.setVisibility(GONE);
+                state_rl.setVisibility(VISIBLE);
+                break;
+            case UPLOAD_STATE_START:
             case UPLOAD_STATE_UPLOADING:
                 loading_tv.setText(progress + "%");
                 loading_tv.setVisibility(VISIBLE);
@@ -215,18 +227,12 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
                 state_rl.setVisibility(VISIBLE);
                 break;
             case UPLOAD_STATE_CANCEL:
-                loading_tv.setVisibility(GONE);
-                result_tv.setVisibility(VISIBLE);
-                state_rl.setVisibility(VISIBLE);
-                break;
             case UPLOAD_STATE_FAIL:
                 loading_tv.setVisibility(GONE);
                 result_tv.setVisibility(VISIBLE);
                 state_rl.setVisibility(VISIBLE);
                 break;
             case UPLOAD_STATE_SUCCESS:
-                state_rl.setVisibility(GONE);
-                break;
             default:
                 state_rl.setVisibility(GONE);
                 break;
@@ -325,6 +331,23 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
             int viewIndex = indexOfChild(mCurAddNoteView) + 1 + i;
             addImage(viewIndex, data);
             bean.setAttachView(getChildAt(viewIndex));
+        }
+    }
+
+    @Override
+    public void onImageCompressProgress(FileUploadBean uploadBean, int compressPercentage) {
+        if (uploadBean != null && uploadBean.getAttachView() != null) {
+            refreshImageState(uploadBean.getAttachView(), uploadBean.getUploadState(),
+                    compressPercentage);
+        }
+    }
+
+    @Override
+    public void onFileUploadStart(FileUploadBean uploadBean) {
+        if (uploadBean != null && uploadBean.getAttachView() != null) {
+            copyUploadData(uploadBean);
+            refreshImageState(uploadBean.getAttachView(), uploadBean.getUploadState(),
+                    uploadBean.getUploadProgress());
         }
     }
 

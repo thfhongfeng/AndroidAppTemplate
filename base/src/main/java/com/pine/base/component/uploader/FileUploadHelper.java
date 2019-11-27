@@ -58,7 +58,7 @@ public class FileUploadHelper implements ILifeCircleView {
     // 最大允许上传文件数
     private int mMaxFileCount = 30;
     // 最大允许上传文件大小（单位K）
-    private long mMaxFileSize = 1024;
+    private int mMaxFileSize = 1024;
     // 文件上传组件
     private FileUploadComponent mFileUploadComponent;
     private int mRequestCodeCrop = 90100;
@@ -175,11 +175,11 @@ public class FileUploadHelper implements ILifeCircleView {
         return mMaxFileCount;
     }
 
-    public void setMaxFileSize(long maxFileSize) {
+    public void setMaxFileSize(int maxFileSize) {
         mMaxFileSize = maxFileSize;
     }
 
-    public long getMaxFileSize() {
+    public int getMaxFileSize() {
         return mMaxFileSize;
     }
 
@@ -442,7 +442,31 @@ public class FileUploadHelper implements ILifeCircleView {
                         new FileUploadComponent.OneByOneUploadCallback() {
 
                             @Override
+                            public void onImageCompressProgress(final FileUploadBean fileBean, final int compressPercentage) {
+                                if (mMainHandler == null) {
+                                    return;
+                                }
+                                mMainHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fileBean.setUploadState(FileUploadState.UPLOAD_STATE_IMAGE_COMPRESS);
+                                        mFileOneByOneUploader.onImageCompressProgress(fileBean, compressPercentage);
+                                    }
+                                });
+                            }
+
+                            @Override
                             public void onStart(final FileUploadBean fileBean) {
+                                if (mMainHandler == null) {
+                                    return;
+                                }
+                                mMainHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fileBean.setUploadState(FileUploadState.UPLOAD_STATE_START);
+                                        mFileOneByOneUploader.onFileUploadStart(fileBean);
+                                    }
+                                });
                             }
 
                             @Override
@@ -453,6 +477,7 @@ public class FileUploadHelper implements ILifeCircleView {
                                 mMainHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
+                                        fileBean.setUploadState(FileUploadState.UPLOAD_STATE_UPLOADING);
                                         fileBean.setUploadProgress(progress);
                                         mFileOneByOneUploader.onFileUploadProgress(fileBean);
                                     }
@@ -560,6 +585,39 @@ public class FileUploadHelper implements ILifeCircleView {
                         mTogetherUploadAdapter.getUploadParam(uploadBeanList),
                         mTogetherUploadAdapter.getFilesKey(uploadBeanList),
                         uploadBeanList, new FileUploadComponent.SimpleTogetherUploadListCallback() {
+
+                            @Override
+                            public void onImageCompressProgress(final List<FileUploadBean> fileBeanList) {
+                                if (mMainHandler == null) {
+                                    return;
+                                }
+                                mMainHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for (FileUploadBean fileBean : fileBeanList) {
+                                            fileBean.setUploadState(FileUploadState.UPLOAD_STATE_IMAGE_COMPRESS);
+                                        }
+                                        mFileTogetherUploader.onImageCompressProgress(fileBeanList);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onStart(final List<FileUploadBean> fileBeanList) {
+                                if (mMainHandler == null) {
+                                    return;
+                                }
+                                mMainHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for (FileUploadBean fileBean : fileBeanList) {
+                                            fileBean.setUploadState(FileUploadState.UPLOAD_STATE_START);
+                                        }
+                                        mFileTogetherUploader.onFileUploadProgress(fileBeanList);
+                                    }
+                                });
+                            }
+
                             @Override
                             public void onProgress(final List<FileUploadBean> fileBeanList, final int progress) {
                                 if (mMainHandler == null) {
@@ -569,6 +627,7 @@ public class FileUploadHelper implements ILifeCircleView {
                                     @Override
                                     public void run() {
                                         for (FileUploadBean fileBean : fileBeanList) {
+                                            fileBean.setUploadState(FileUploadState.UPLOAD_STATE_UPLOADING);
                                             fileBean.setUploadProgress(progress);
                                         }
                                         mFileTogetherUploader.onFileUploadProgress(fileBeanList);

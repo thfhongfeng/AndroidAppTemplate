@@ -45,7 +45,7 @@ public class FileUploadComponent {
     private WeakReference<Context> mContext;
     private Map<Integer, Object> mRequestMap;
     // 最大允许上传文件大小（单位K）
-    private long mMaxFileSize = 1024;
+    private int mMaxFileSize = 1024;
     private int mOutFileWidth = 1440;
     private int mOutFileHeight = 2550;
 
@@ -54,13 +54,13 @@ public class FileUploadComponent {
         mRequestMap = new HashMap<>();
     }
 
-    public FileUploadComponent(Context context, long maxFileSize) {
+    public FileUploadComponent(Context context, int maxFileSize) {
         mContext = new WeakReference<>(context);
         mRequestMap = new HashMap<>();
         mMaxFileSize = maxFileSize;
     }
 
-    public FileUploadComponent(Context context, long maxFileSize, int outFileWidth, int outFileHeight) {
+    public FileUploadComponent(Context context, int maxFileSize, int outFileWidth, int outFileHeight) {
         mContext = new WeakReference<>(context);
         mRequestMap = new HashMap<>();
         mMaxFileSize = maxFileSize;
@@ -172,6 +172,9 @@ public class FileUploadComponent {
         mRequestMap.put(uploadBeanList.hashCode(), uploadBeanList);
         UploadRequestBean requestBean = new UploadRequestBean(url, uploadBeanList.hashCode(),
                 params, fileKey, checkFileList);
+        if (callback != null) {
+            callback.onStart(uploadBeanList);
+        }
         RequestManager.setUploadRequest(requestBean, new UploadCallback() {
             int preActualProgress = -10;
 
@@ -285,8 +288,7 @@ public class FileUploadComponent {
             return null;
         }
         if (fileBean.getFileType() == TYPE_IMAGE) {
-            String targetPath = context.getExternalCacheDir() + File.separator + fileBean.getFileName();
-            file = compressImage(fileBean.getLocalFilePath(), targetPath);
+            file = compressImage(fileBean, callback);
             if (file == null) {
                 callback.onFailed(fileBean, new MessageException(context.getString(R.string.base_file_upload_compress_file_null)));
                 return null;
@@ -314,6 +316,9 @@ public class FileUploadComponent {
             return null;
         }
         List<UploadRequestBean.FileBean> httpFileBeanList = new ArrayList<>();
+        if (callback != null) {
+            callback.onImageCompressProgress(fileBeanList);
+        }
         for (int i = 0; i < fileBeanList.size(); i++) {
             FileUploadBean fileBean = fileBeanList.get(i);
             if (TextUtils.isEmpty(fileBean.getLocalFilePath())) {
@@ -330,8 +335,7 @@ public class FileUploadComponent {
                 return null;
             }
             if (fileBean.getFileType() == TYPE_IMAGE) {
-                String targetPath = context.getExternalCacheDir() + File.separator + fileBean.getFileName();
-                file = compressImage(fileBean.getLocalFilePath(), targetPath);
+                file = compressImage(fileBean);
                 if (file == null) {
                     callback.onFailed(fileBeanList, new MessageException(context.getString(R.string.base_file_upload_compress_file_null)));
                     return null;
@@ -345,10 +349,40 @@ public class FileUploadComponent {
         return httpFileBeanList.size() < 1 ? null : httpFileBeanList;
     }
 
-    private File compressImage(String srcFilePath, String targetFilePath) {
+    private File compressImage(final FileUploadBean fileBean, final OneByOneUploadCallback callback) {
+        String targetFilePath = mContext.get().getExternalCacheDir() + File.separator + fileBean.getFileName();
         FileUtils.deleteFile(targetFilePath);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        ImageUtils.compressBySize(srcFilePath, mMaxFileSize * 1024, mOutFileWidth, mOutFileHeight, bao);
+        ImageUtils.compressBySize(fileBean.getLocalFilePath(), mMaxFileSize * 1024, mOutFileWidth, mOutFileHeight, bao,
+                new ImageUtils.ICompressCallback() {
+                    @Override
+                    public void onCompress(int compressPercentage) {
+                        callback.onImageCompressProgress(fileBean, compressPercentage);
+                    }
+
+                    @Override
+                    public void onFinish(int compressPercentage) {
+
+                    }
+                });
+        File targetFile = new File(targetFilePath);
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(targetFile));
+            bao.writeTo(bos);
+            bos.flush();
+            bos.close();
+            return targetFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private File compressImage(final FileUploadBean fileBean) {
+        String targetFilePath = mContext.get().getExternalCacheDir() + File.separator + fileBean.getFileName();
+        FileUtils.deleteFile(targetFilePath);
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        ImageUtils.compressBySize(fileBean.getLocalFilePath(), mMaxFileSize * 1024, mOutFileWidth, mOutFileHeight, bao);
         File targetFile = new File(targetFilePath);
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(targetFile));
@@ -405,6 +439,14 @@ public class FileUploadComponent {
      * 一个一个上传文件的回调（n个文件对应n次请求）
      */
     public interface OneByOneUploadCallback {
+        /**
+         * 如果文件是图片，上传前的图片压缩进度回调
+         *
+         * @param uploadBean
+         * @param compressPercentage 压缩百分比，以100为基数。
+         */
+        void onImageCompressProgress(FileUploadBean uploadBean, int compressPercentage);
+
         // 文件开始上传回调
         void onStart(FileUploadBean uploadBean);
 
@@ -440,6 +482,12 @@ public class FileUploadComponent {
 
         // 文件上传取消回调
         void onSingleFileCancel(FileUploadBean uploadBean);
+
+        // 如果文件是图片，上传前的图片压缩进度回调
+        void onImageCompressProgress(List<FileUploadBean> uploadBeanList);
+
+        // 文件整体开始上传回调
+        void onStart(List<FileUploadBean> uploadBeanList);
 
         // 文件整体上传进度回调
         void onProgress(List<FileUploadBean> uploadBeanList, int progress);

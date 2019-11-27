@@ -6,6 +6,8 @@
 
     <string name="base_loading">加载中...</string>
     <string name="base_downloading">正在下载...</string>
+    <string name="base_upload_preparing">准备中...</string>
+    <string name="base_compressing">压缩中...</string>
     <string name="base_uploading">正在上传...</string>
     <string name="base_upload_fail">上传失败</string>
 

@@ -49,7 +49,7 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
     // 最大允许上传文件数
     protected int mMaxFileCount = 30;
     // 最大允许上传文件大小（单位K）
-    protected long mMaxFileSize = 1024;
+    protected int mMaxFileSize = 1024;
 
     public BaseFileUploadRecycleView(Context context) {
         super(context);
@@ -63,9 +63,9 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
         super(context, attrs, defStyle);
         int defaultColumnSize = getResources().getDisplayMetrics().widthPixels / getResources().getDimensionPixelOffset(R.dimen.dp_106);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseFileUploadRecycleView);
-        mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadRecycleView_base_maxFileCount, 10);
+        mMaxFileCount = typedArray.getInt(R.styleable.BaseFileUploadRecycleView_base_maxFileCount, mMaxFileCount);
         mColumnSize = typedArray.getInt(R.styleable.BaseFileUploadRecycleView_base_columnSize, defaultColumnSize);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadRecycleView_base_maxFileSize, 1024);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseFileUploadRecycleView_base_maxFileSize, mMaxFileSize);
         mHelper.setMaxFileCount(mMaxFileCount);
         mHelper.setMaxFileSize(mMaxFileSize);
     }
@@ -129,6 +129,16 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
         int startIndex = mUploadFileAdapter.getAdapterData().size();
         mUploadFileAdapter.addData(uploadBeanList);
         notifyAdapterItemRangeChanged(startIndex, mUploadFileAdapter.getAdapterData().size());
+    }
+
+    @Override
+    public void onImageCompressProgress(FileUploadBean uploadBean, int compressPercentage) {
+        notifyAdapterItemChanged(uploadBean.getOrderIndex());
+    }
+
+    @Override
+    public void onFileUploadStart(FileUploadBean uploadBean) {
+        notifyAdapterItemChanged(uploadBean.getOrderIndex());
     }
 
     @Override
@@ -417,22 +427,28 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
                     fail_tv.setVisibility(View.GONE);
                     switch (fileBean.getUploadState()) {
                         case UPLOAD_STATE_PREPARING:
-                        case UPLOAD_STATE_UPLOADING:
+                            loading_tv.setText(context.getString(R.string.base_upload_preparing));
                             state_rl.setVisibility(View.VISIBLE);
                             loading_iv.setVisibility(View.VISIBLE);
                             loading_tv.setVisibility(VISIBLE);
+                            break;
+                        case UPLOAD_STATE_IMAGE_COMPRESS:
+                            loading_tv.setText(context.getString(R.string.base_compressing));
+                            state_rl.setVisibility(View.VISIBLE);
+                            loading_iv.setVisibility(View.VISIBLE);
+                            loading_tv.setVisibility(VISIBLE);
+                            break;
+                        case UPLOAD_STATE_START:
+                        case UPLOAD_STATE_UPLOADING:
                             loading_tv.setText(fileBean.getUploadProgress() + "%");
+                            state_rl.setVisibility(View.VISIBLE);
+                            loading_iv.setVisibility(View.VISIBLE);
+                            loading_tv.setVisibility(VISIBLE);
                             break;
                         case UPLOAD_STATE_CANCEL:
-                            state_rl.setVisibility(View.VISIBLE);
-                            fail_tv.setVisibility(View.VISIBLE);
-                            break;
                         case UPLOAD_STATE_FAIL:
                             state_rl.setVisibility(View.VISIBLE);
                             fail_tv.setVisibility(View.VISIBLE);
-                            break;
-                        case UPLOAD_STATE_SUCCESS:
-                            state_rl.setVisibility(View.GONE);
                             break;
                         default:
                             state_rl.setVisibility(View.GONE);

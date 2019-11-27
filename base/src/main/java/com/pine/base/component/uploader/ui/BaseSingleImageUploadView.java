@@ -41,6 +41,7 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
     private RelativeLayout state_rl;
     private TextView result_tv;
     private LinearLayout loading_ll;
+    private LinearLayout progress_ll;
     private ProgressBar progress_bar;
     private TextView progress_tv;
     private LinearLayout upload_action_ll;
@@ -48,8 +49,8 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
     private LinearLayout bottom_ll;
     private TextView re_upload_tv;
 
-    // 最大允许上传文件大小
-    private long mMaxFileSize = 1024 * 1024;
+    // 最大允许上传文件大小（单位K）
+    private int mMaxFileSize = 1024;
     private int mImageContainerWidth;
     private int mImageContainerHeight;
 
@@ -75,7 +76,7 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
 
     private void resolveAttrs(Context context, @Nullable AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseSingleImageUploadView);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseSingleImageUploadView_baseMaxFileSize, 1024 * 1024);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseSingleImageUploadView_baseMaxFileSize, mMaxFileSize);
         mImageContainerWidth = typedArray.getDimensionPixelOffset(R.styleable.BaseSingleImageUploadView_base_imageWidth, context.getResources().getDimensionPixelOffset(R.dimen.dp_147));
         mImageContainerHeight = typedArray.getDimensionPixelOffset(R.styleable.BaseSingleImageUploadView_base_imageHeight, context.getResources().getDimensionPixelOffset(R.dimen.dp_78));
         boolean enableImageScale = typedArray.getBoolean(
@@ -123,7 +124,7 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
 
     public void init(@NonNull Activity activity, boolean canEdit,
                      @NonNull FileUploadComponent.OneByOneUploadAdapter adapter, int requestCodeSelectFile,
-                     Spanned itemSpanned, FileUploadItemData data, long maxFileSize) {
+                     Spanned itemSpanned, FileUploadItemData data, int maxFileSize) {
         mMaxFileSize = maxFileSize;
         mCanEdit = canEdit;
         mItemSpanned = itemSpanned;
@@ -143,6 +144,7 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
         state_rl = view.findViewById(R.id.state_rl);
         result_tv = view.findViewById(R.id.result_tv);
         loading_ll = view.findViewById(R.id.loading_ll);
+        progress_ll = view.findViewById(R.id.progress_ll);
         progress_bar = view.findViewById(R.id.progress_bar);
         progress_tv = view.findViewById(R.id.progress_tv);
         upload_action_ll = view.findViewById(R.id.upload_action_ll);
@@ -240,26 +242,35 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
             if (mShowUpdateState) {
                 switch (mData.getUploadState()) {
                     case UPLOAD_STATE_PREPARING:
+                        progress_tv.setText(getContext().getString(R.string.base_upload_preparing));
+                        progress_bar.setVisibility(GONE);
+                        loading_ll.setVisibility(VISIBLE);
+                        result_tv.setVisibility(GONE);
+                        state_rl.setVisibility(VISIBLE);
+                        break;
+                    case UPLOAD_STATE_IMAGE_COMPRESS:
+                        progress_tv.setText(getContext().getString(R.string.base_compressing));
+                        progress_bar.setVisibility(GONE);
+                        loading_ll.setVisibility(VISIBLE);
+                        result_tv.setVisibility(GONE);
+                        state_rl.setVisibility(VISIBLE);
+                        break;
+                    case UPLOAD_STATE_START:
                     case UPLOAD_STATE_UPLOADING:
                         progress_bar.setProgress(mData.getUploadProgress());
                         progress_tv.setText(mData.getUploadProgress() + "%");
+                        progress_bar.setVisibility(VISIBLE);
                         loading_ll.setVisibility(VISIBLE);
                         result_tv.setVisibility(GONE);
                         state_rl.setVisibility(VISIBLE);
                         break;
                     case UPLOAD_STATE_CANCEL:
-                        loading_ll.setVisibility(GONE);
-                        result_tv.setVisibility(VISIBLE);
-                        state_rl.setVisibility(VISIBLE);
-                        break;
                     case UPLOAD_STATE_FAIL:
                         loading_ll.setVisibility(GONE);
                         result_tv.setVisibility(VISIBLE);
                         state_rl.setVisibility(VISIBLE);
                         break;
                     case UPLOAD_STATE_SUCCESS:
-                        state_rl.setVisibility(GONE);
-                        break;
                     default:
                         state_rl.setVisibility(GONE);
                         break;
@@ -327,6 +338,22 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
     public void onFileUploadPrepare(List<FileUploadBean> uploadBeanList) {
         if (uploadBeanList != null && uploadBeanList.size() == 1) {
             copyUploadData(uploadBeanList.get(0));
+            setupView();
+        }
+    }
+
+    @Override
+    public void onImageCompressProgress(FileUploadBean uploadBean, int compressPercentage) {
+        if (uploadBean != null) {
+            copyUploadData(uploadBean);
+            setupView();
+        }
+    }
+
+    @Override
+    public void onFileUploadStart(FileUploadBean uploadBean) {
+        if (uploadBean != null) {
+            copyUploadData(uploadBean);
             setupView();
         }
     }
