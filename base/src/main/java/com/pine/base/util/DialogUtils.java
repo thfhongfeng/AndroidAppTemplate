@@ -6,8 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;

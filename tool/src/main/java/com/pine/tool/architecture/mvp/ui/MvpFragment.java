@@ -2,8 +2,9 @@ package com.pine.tool.architecture.mvp.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
 
 import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.architecture.mvp.presenter.Presenter;

@@ -1,10 +1,11 @@
 package com.pine.user.ui.activity;
 
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 
 import com.pine.base.access.UiAccessType;
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;

@@ -1,7 +1,8 @@
 package com.pine.mvvm.vm;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.text.TextUtils;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopDetailEntity;

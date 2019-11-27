@@ -1,9 +1,10 @@
 package com.pine.base.component.uploader.ui;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import com.pine.base.component.uploader.FileUploadHelper;
 import com.pine.tool.util.LogUtils;

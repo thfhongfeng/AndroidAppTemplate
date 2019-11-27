@@ -1,6 +1,6 @@
 package com.pine.tool.request;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.pine.tool.request.IRequestManager.ActionType;
 import com.pine.tool.request.IRequestManager.RequestType;

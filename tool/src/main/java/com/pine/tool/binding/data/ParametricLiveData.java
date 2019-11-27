@@ -1,6 +1,6 @@
 package com.pine.tool.binding.data;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 /**
  * Created by tanghongfeng on 2019/3/1

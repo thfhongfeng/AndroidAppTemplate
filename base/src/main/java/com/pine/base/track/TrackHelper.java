@@ -2,7 +2,8 @@ package com.pine.base.track;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

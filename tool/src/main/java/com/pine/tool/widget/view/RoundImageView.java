@@ -8,8 +8,9 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.pine.tool.R;
 

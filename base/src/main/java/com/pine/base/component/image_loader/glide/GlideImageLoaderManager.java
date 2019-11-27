@@ -3,9 +3,10 @@ package com.pine.base.component.image_loader.glide;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;

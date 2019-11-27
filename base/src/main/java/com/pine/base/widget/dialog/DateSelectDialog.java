@@ -3,8 +3,6 @@ package com.pine.base.widget.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +10,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.pine.base.R;

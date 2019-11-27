@@ -3,12 +3,13 @@ package com.pine.mvp.remote.server;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
+
+import com.pine.base.router.command.RouterMvpCommand;
 import com.pine.mvp.ui.activity.MvpHomeActivity;
 import com.pine.tool.router.IServiceCallback;
 import com.pine.tool.router.annotation.RouterCommand;
-import com.pine.base.router.command.RouterMvpCommand;
 
 /**
  * Created by tanghongfeng on 2018/9/13

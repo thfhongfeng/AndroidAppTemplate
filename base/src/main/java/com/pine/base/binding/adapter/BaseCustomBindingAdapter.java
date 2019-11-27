@@ -1,6 +1,6 @@
 package com.pine.base.binding.adapter;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 
 import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.editor.ui.BaseTextImageDisplayView;

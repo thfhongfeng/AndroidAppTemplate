@@ -1,8 +1,9 @@
 package com.pine.login.vm;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.text.TextUtils;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.pine.base.bean.AccountBean;
 import com.pine.login.LoginConstants;

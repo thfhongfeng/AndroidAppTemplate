@@ -2,13 +2,14 @@ package com.pine.base.access;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import com.pine.base.BaseApplication;
 import com.pine.base.remote.BaseRouterClient;
-import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.access.IUiAccessExecutor;
 import com.pine.tool.access.UiAccessTimeInterval;
+import com.pine.tool.router.IRouterCallback;
 
 import java.util.HashMap;
 

@@ -1,8 +1,9 @@
 package com.pine.mvvm.vm;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.text.TextUtils;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;

@@ -1,7 +1,8 @@
 package com.pine.mvvm.vm;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.os.Bundle;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.bean.UrlTextShareBean;

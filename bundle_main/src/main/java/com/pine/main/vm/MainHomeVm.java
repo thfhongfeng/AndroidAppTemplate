@@ -1,6 +1,6 @@
 package com.pine.main.vm;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

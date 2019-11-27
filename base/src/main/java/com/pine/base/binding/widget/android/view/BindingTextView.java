@@ -1,11 +1,12 @@
 package com.pine.base.binding.widget.android.view;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
-import android.databinding.InverseBindingAdapter;
-import android.databinding.InverseBindingListener;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
 
 public class BindingTextView extends AppCompatTextView {
     private InverseBindingListener bindingDataListener;

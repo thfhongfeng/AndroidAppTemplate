@@ -3,10 +3,11 @@ package com.pine.tool.permission.easy.helper;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.List;
 

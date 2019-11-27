@@ -1,7 +1,8 @@
 package com.pine.base.recycle_view.adapter;
 
-import android.support.annotation.LayoutRes;
 import android.view.ViewGroup;
+
+import androidx.annotation.LayoutRes;
 
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;

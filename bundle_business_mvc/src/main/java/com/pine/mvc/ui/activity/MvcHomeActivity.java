@@ -1,9 +1,10 @@
 package com.pine.mvc.ui.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.pine.base.architecture.mvc.activity.BaseMvcActionBarActivity;
 import com.pine.mvc.R;

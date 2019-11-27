@@ -1,9 +1,10 @@
 package com.pine.mvp.ui.activity;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
 import com.pine.base.component.uploader.ui.BaseImageUploadRecycleView;

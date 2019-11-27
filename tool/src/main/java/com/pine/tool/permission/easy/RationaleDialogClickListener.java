@@ -3,7 +3,8 @@ package com.pine.tool.permission.easy;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import com.pine.tool.permission.easy.helper.PermissionHelper;
 

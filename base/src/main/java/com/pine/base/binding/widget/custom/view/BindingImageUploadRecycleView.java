@@ -1,11 +1,12 @@
 package com.pine.base.binding.widget.custom.view;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
-import android.databinding.InverseBindingAdapter;
-import android.databinding.InverseBindingListener;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
 
 import com.pine.base.component.uploader.ui.BaseImageUploadRecycleView;
 

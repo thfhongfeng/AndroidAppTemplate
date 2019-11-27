@@ -1,8 +1,8 @@
 package com.pine.main.ui.activity;
 
-import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
 import com.pine.main.R;

@@ -3,7 +3,8 @@ package com.pine.main.remote.server;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.pine.base.router.command.RouterMainCommand;
 import com.pine.main.ui.activity.MainHomeActivity;

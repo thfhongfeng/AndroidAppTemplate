@@ -1,6 +1,6 @@
 package com.pine.mvp.contract;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.bean.InputParam;

@@ -1,11 +1,9 @@
 package com.pine.mvvm.ui.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -13,6 +11,9 @@ import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 
 import com.pine.mvvm.MvvmUrlConstants;
 import com.pine.mvvm.R;

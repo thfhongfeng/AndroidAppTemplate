@@ -1,16 +1,17 @@
 package com.pine.mvvm.ui.activity;
 
 import android.app.Activity;
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;

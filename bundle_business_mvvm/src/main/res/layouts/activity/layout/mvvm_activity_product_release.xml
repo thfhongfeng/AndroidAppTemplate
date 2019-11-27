@@ -14,14 +14,14 @@
             type="com.pine.mvvm.bean.MvvmProductDetailEntity"></variable>
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:padding="@dimen/dp_10">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -209,6 +209,6 @@
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

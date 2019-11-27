@@ -9,10 +9,11 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.pine.base.R;
 import com.pine.base.component.image_selector.ImageSelector;

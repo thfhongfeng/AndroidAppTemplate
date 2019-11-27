@@ -1,9 +1,10 @@
 package com.pine.tool.permission;
 
 import android.Manifest;
-import android.support.annotation.NonNull;
-import android.support.annotation.Size;
-import android.support.annotation.StyleRes;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
+import androidx.annotation.StyleRes;
 
 /**
  * Created by tanghongfeng on 2019/2/27

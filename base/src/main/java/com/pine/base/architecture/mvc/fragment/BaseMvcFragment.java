@@ -2,8 +2,9 @@ package com.pine.base.architecture.mvc.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
 
 import com.pine.tool.ui.Fragment;
 

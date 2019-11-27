@@ -6,10 +6,11 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.widget.Toast;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.architecture.state.UiState;
@@ -101,8 +102,8 @@ public abstract class Presenter<V extends IContract.Ui> {
                 return ((Activity) mUiRef.get()).getIntent();
             } else if (mUiRef.get() instanceof Fragment) {
                 return ((Fragment) mUiRef.get()).getActivity().getIntent();
-            } else if (mUiRef.get() instanceof android.support.v4.app.Fragment) {
-                return ((android.support.v4.app.Fragment) mUiRef.get()).getActivity().getIntent();
+            } else if (mUiRef.get() instanceof androidx.fragment.app.Fragment) {
+                return ((androidx.fragment.app.Fragment) mUiRef.get()).getActivity().getIntent();
             }
         }
         return new Intent();
@@ -124,8 +125,8 @@ public abstract class Presenter<V extends IContract.Ui> {
                 ((Activity) mUiRef.get()).finish();
             } else if (mUiRef.get() instanceof Fragment) {
                 ((Fragment) mUiRef.get()).getActivity().finish();
-            } else if (mUiRef.get() instanceof android.support.v4.app.Fragment) {
-                ((android.support.v4.app.Fragment) mUiRef.get()).getActivity().finish();
+            } else if (mUiRef.get() instanceof androidx.fragment.app.Fragment) {
+                ((androidx.fragment.app.Fragment) mUiRef.get()).getActivity().finish();
             }
     }
 

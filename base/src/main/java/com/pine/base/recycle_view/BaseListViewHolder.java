@@ -1,7 +1,8 @@
 package com.pine.base.recycle_view;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 

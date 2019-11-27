@@ -1,6 +1,6 @@
 package com.pine.welcome.vm;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.pine.base.BaseApplication;
 import com.pine.config.switcher.ConfigSwitcherServer;

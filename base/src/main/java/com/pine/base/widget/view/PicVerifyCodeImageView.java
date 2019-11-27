@@ -1,10 +1,11 @@
 package com.pine.base.widget.view;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.pine.base.component.image_loader.IImageDownloadListener;
 import com.pine.base.component.image_loader.ImageLoaderManager;

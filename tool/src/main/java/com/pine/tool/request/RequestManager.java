@@ -1,9 +1,10 @@
 package com.pine.tool.request;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.pine.tool.R;
 import com.pine.tool.exception.MessageException;

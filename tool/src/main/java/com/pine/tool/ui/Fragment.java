@@ -5,17 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Size;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 
 import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.access.UiAccessManager;
@@ -36,7 +37,7 @@ import java.util.List;
  * Created by tanghongfeng on 2018/9/28
  */
 
-public abstract class Fragment extends android.support.v4.app.Fragment
+public abstract class Fragment extends androidx.fragment.app.Fragment
         implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     // UiAccess（比如需要登陆）是否检查通过，没有则结束当前界面；

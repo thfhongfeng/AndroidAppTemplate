@@ -1,10 +1,11 @@
 package com.pine.base.ui;
 
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewStub;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;

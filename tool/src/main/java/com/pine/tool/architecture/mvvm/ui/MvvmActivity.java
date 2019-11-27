@@ -1,12 +1,13 @@
 package com.pine.tool.architecture.mvvm.ui;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.architecture.state.UiState;

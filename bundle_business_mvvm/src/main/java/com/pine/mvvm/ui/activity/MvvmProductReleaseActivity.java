@@ -1,12 +1,13 @@
 package com.pine.mvvm.ui.activity;
 
 import android.app.Dialog;
-import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 
 import com.pine.base.access.UiAccessType;
 import com.pine.base.access.VipLevel;

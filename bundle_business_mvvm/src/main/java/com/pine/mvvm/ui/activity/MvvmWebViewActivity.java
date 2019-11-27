@@ -1,12 +1,10 @@
 package com.pine.mvvm.ui.activity;
 
 import android.app.AlertDialog;
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -16,6 +14,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarImageMenuActivity;
 import com.pine.base.component.share.bean.ShareBean;

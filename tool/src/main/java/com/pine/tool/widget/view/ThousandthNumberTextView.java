@@ -14,7 +14,7 @@ import com.pine.tool.R;
  * Created by tanghongfeng on 2018/9/18
  */
 
-public class ThousandthNumberTextView extends android.support.v7.widget.AppCompatTextView {
+public class ThousandthNumberTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     // 千分位分隔符
     private String mSpaceChar = ",";

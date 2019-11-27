@@ -1,8 +1,9 @@
 package com.pine.db_server.sqlite;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.pine.db_server.DbResponseGenerator;
 import com.pine.db_server.DbSession;

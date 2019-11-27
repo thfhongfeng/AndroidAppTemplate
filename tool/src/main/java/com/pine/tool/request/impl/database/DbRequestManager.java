@@ -6,9 +6,9 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
 
-import com.pine.tool.R;
+import androidx.annotation.NonNull;
+
 import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IResponseListener;
@@ -16,14 +16,12 @@ import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.util.LogUtils;
-import com.pine.tool.util.NetWorkUtils;
 import com.pine.tool.util.TypeConvertUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

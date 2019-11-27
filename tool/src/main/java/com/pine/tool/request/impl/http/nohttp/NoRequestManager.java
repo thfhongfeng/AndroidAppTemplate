@@ -1,8 +1,9 @@
 package com.pine.tool.request.impl.http.nohttp;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.IRequestManager;

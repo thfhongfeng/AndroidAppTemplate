@@ -1,10 +1,11 @@
 package com.pine.base.architecture.mvvm.ui.activity;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;

@@ -2,9 +2,10 @@ package com.pine.base.component.image_loader;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
 import android.widget.ImageView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 import com.pine.base.R;
 import com.pine.base.component.image_loader.glide.GlideImageLoaderManager;

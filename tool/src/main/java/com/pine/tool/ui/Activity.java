@@ -5,15 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Size;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.access.UiAccessManager;

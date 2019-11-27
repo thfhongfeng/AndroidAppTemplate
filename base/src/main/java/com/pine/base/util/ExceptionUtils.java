@@ -2,7 +2,6 @@ package com.pine.base.util;
 
 import com.pine.base.R;
 import com.pine.tool.exception.MessageException;
-import com.pine.tool.exception.MessageException;
 import com.pine.tool.util.AppUtils;
 import com.yanzhenjie.nohttp.error.NetworkError;
 

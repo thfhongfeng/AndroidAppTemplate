@@ -1,8 +1,9 @@
 package com.pine.base.component.uploader;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.pine.base.R;
 import com.pine.base.component.uploader.bean.FileUploadBean;

@@ -1,8 +1,9 @@
 package com.pine.tool.widget.decor;
 
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by tanghongfeng on 2019/1/16

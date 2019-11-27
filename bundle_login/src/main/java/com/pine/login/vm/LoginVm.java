@@ -1,7 +1,8 @@
 package com.pine.login.vm;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.text.TextUtils;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.pine.login.LoginSPKeyConstants;
 import com.pine.login.R;

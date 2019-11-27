@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.pine.base.bean.AccountBean;
 import com.pine.config.BuildConfig;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
-import com.pine.base.bean.AccountBean;
 import com.pine.login.manager.LoginManager;
 import com.pine.login.model.ILoginResponse;
 import com.pine.login.ui.activity.LoginActivity;

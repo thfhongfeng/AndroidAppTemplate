@@ -26,7 +26,7 @@ android {
         buildConfigField "String", "APP_THIRD_HTTP_REQUEST_PROVIDER", "\"${app_third_sdk_provider.http_request_provider}\""
         buildConfigField "String", "APP_THIRD_DATA_SOURCE_PROVIDER", "\"${app_third_sdk_provider.data_source_provider}\""
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //必须要保证所有的flavor 都属于同一个维度
         flavorDimensions "default"

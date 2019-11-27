@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -22,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;

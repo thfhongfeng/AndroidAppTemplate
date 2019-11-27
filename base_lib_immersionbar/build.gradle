@@ -8,7 +8,7 @@ android {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -30,7 +30,7 @@ dependencies {
     // 测试 dependency end
 
     // android官方 dependency begin
-    implementation build_dependency["android_appcompat_v7"]
+    implementation build_dependency["android_appcompat"]
     implementation build_dependency["android_constraint_layout"]
     // android官方 dependency end
 }

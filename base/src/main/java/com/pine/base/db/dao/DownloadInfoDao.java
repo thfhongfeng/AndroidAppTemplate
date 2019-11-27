@@ -1,8 +1,8 @@
 package com.pine.base.db.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Update;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Update;
 
 import com.pine.base.db.entity.DownloadInfo;
 

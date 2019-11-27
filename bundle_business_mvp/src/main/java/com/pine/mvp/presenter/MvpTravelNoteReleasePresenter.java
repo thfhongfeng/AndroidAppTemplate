@@ -1,8 +1,9 @@
 package com.pine.mvp.presenter;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.pine.base.BaseConstants;

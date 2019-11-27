@@ -1,6 +1,6 @@
 package com.pine.base.component.editor.bean;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.pine.base.component.uploader.bean.FileUploadState;
 

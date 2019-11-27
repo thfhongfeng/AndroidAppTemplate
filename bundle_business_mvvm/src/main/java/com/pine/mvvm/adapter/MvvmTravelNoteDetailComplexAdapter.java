@@ -1,10 +1,11 @@
 package com.pine.mvvm.adapter;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseComplexListAdapter;

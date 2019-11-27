@@ -1,6 +1,6 @@
 package com.pine.base.component.share.bean;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.pine.base.R;
 import com.pine.tool.util.AppUtils;

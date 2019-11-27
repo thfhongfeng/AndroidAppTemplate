@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -17,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.pine.base.component.novice_guide.NoviceGuideView.GuideBean;
 

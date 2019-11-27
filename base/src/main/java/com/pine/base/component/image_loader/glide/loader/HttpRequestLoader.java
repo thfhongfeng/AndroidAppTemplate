@@ -1,8 +1,9 @@
 package com.pine.base.component.image_loader.glide.loader;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.load.Option;
 import com.bumptech.glide.load.Options;

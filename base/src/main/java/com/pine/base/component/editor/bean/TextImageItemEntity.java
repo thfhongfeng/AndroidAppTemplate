@@ -1,6 +1,6 @@
 package com.pine.base.component.editor.bean;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class TextImageItemEntity {
     // 子View条目类型null 空条目

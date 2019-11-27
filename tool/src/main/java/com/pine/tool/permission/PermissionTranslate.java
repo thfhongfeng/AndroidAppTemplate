@@ -1,8 +1,9 @@
 package com.pine.tool.permission;
 
 import android.Manifest;
-import android.support.annotation.NonNull;
-import android.support.annotation.Size;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
 
 import java.util.List;
 

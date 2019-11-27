@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.bean.UriListShareBean;

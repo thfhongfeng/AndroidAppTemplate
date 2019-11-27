@@ -11,7 +11,6 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.webkit.CookieManager;
@@ -26,14 +25,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.base.remote.BaseRouterClient;
 import com.pine.base.util.DialogUtils;
-import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.util.DensityUtils;
 import com.pine.tool.util.ImageUtils;
 import com.pine.tool.util.NetWorkUtils;

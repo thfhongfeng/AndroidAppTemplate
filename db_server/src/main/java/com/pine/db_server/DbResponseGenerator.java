@@ -2,8 +2,9 @@ package com.pine.db_server;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.impl.database.DbRequestBean;

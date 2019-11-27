@@ -2,7 +2,8 @@ package com.pine.base.access;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import com.pine.base.bean.AccountBean;
 import com.pine.base.remote.BaseRouterClient;

@@ -1,8 +1,9 @@
 package com.pine.base.binding.adapter;
 
-import android.databinding.BindingAdapter;
-import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
+
+import androidx.annotation.DrawableRes;
+import androidx.databinding.BindingAdapter;
 
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.tool.util.LogUtils;

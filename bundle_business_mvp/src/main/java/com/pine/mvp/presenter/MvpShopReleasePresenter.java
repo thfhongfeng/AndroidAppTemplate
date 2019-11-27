@@ -1,7 +1,8 @@
 package com.pine.mvp.presenter;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopDetailEntity;

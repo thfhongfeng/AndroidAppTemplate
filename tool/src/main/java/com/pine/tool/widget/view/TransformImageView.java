@@ -11,11 +11,12 @@ import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.pine.tool.R;
 import com.pine.tool.widget.IGestureView;

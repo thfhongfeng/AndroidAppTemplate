@@ -1,10 +1,11 @@
 package com.pine.base.component.editor.ui;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;

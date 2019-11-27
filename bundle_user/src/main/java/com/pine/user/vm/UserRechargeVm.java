@@ -1,6 +1,6 @@
 package com.pine.user.vm;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.pine.base.bean.AccountBean;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;

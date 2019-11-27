@@ -1,9 +1,9 @@
 package com.pine.login.manager;
 
+import com.pine.base.bean.AccountBean;
 import com.pine.login.LoginApplication;
 import com.pine.login.LoginConstants;
 import com.pine.login.LoginSPKeyConstants;
-import com.pine.base.bean.AccountBean;
 import com.pine.login.model.ILoginResponse;
 import com.pine.login.model.LoginAccountModel;
 import com.pine.login.model.callback.LoginCallback;

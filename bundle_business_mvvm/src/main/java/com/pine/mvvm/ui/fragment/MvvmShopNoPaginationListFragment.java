@@ -1,10 +1,11 @@
 package com.pine.mvvm.ui.fragment;
 
-import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;

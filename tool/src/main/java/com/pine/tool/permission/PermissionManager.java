@@ -1,9 +1,10 @@
 package com.pine.tool.permission;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Size;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
 
 import com.pine.tool.R;
 import com.pine.tool.permission.easy.AppSettingsDialog;

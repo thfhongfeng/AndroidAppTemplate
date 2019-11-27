@@ -1,7 +1,8 @@
 package com.pine.base.track;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.pine.base.db.DbRoomDatabase;
 import com.pine.base.db.dao.AppTrackDao;

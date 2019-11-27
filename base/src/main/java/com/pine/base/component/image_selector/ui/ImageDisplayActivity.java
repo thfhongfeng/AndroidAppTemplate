@@ -6,8 +6,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;

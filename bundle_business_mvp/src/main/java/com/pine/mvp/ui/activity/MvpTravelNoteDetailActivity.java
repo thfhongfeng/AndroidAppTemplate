@@ -1,11 +1,12 @@
 package com.pine.mvp.ui.activity;
 
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;

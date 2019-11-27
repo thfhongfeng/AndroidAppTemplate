@@ -1,6 +1,6 @@
 package com.pine.base.component.share.bean;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/11

@@ -1,11 +1,12 @@
 package com.pine.base.architecture.mvp.ui.activity;
 
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.CallSuper;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;

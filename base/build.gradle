@@ -10,7 +10,7 @@ android {
 
         manifestPlaceholders = [baidu_for_app_key: app_key.baidu_for_app_key]
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //必须要保证所有的flavor 都属于同一个维度
         flavorDimensions "default"

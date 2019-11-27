@@ -24,12 +24,12 @@
                 android:textSize="@dimen/sp_20"
                 android:textStyle="bold" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/business_rv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:padding="@dimen/dp_20"></android.support.v7.widget.RecyclerView>
+                android:padding="@dimen/dp_20"></androidx.recyclerview.widget.RecyclerView>
 
             <com.pine.base.widget.view.BaseBottomTabNavigationBar
                 android:id="@+id/bottom_tab_nb"

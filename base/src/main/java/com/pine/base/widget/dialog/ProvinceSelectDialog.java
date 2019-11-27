@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +11,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.pine.base.R;
