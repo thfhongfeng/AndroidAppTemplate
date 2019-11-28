@@ -50,6 +50,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
     // 该参数保证一次生命周期中init方法只会执行一次，并且可以用来判断init是否已经执行。
     private boolean mOnAllAccessRestrictionReleasedMethodCalled;
 
+    @CallSuper
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

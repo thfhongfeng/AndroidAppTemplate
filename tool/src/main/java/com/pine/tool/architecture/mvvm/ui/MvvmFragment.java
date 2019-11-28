@@ -74,6 +74,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         }
     };
 
+    @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +103,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
      */
     public abstract void observeInitLiveData();
 
+    @CallSuper
     @Override
     protected View setContentView(LayoutInflater inflater, @Nullable ViewGroup container,
                                   @Nullable Bundle savedInstanceState) {
@@ -109,6 +111,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         return mBinding.getRoot();
     }
 
+    @CallSuper
     @Override
     protected final void findViewOnCreateView(View layout) {
         mViewModel.setContext(getActivity());
@@ -134,6 +137,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         }
     }
 
+    @CallSuper
     @Override
     public void onResume() {
         super.onResume();
@@ -142,6 +146,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         }
     }
 
+    @CallSuper
     @Override
     public void onPause() {
         super.onPause();
@@ -150,6 +155,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         }
     }
 
+    @CallSuper
     @Override
     public void onStop() {
         if (mViewModel != null) {
@@ -158,6 +164,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         super.onStop();
     }
 
+    @CallSuper
     @Override
     public void onDestroyView() {
         if (mViewModel != null) {

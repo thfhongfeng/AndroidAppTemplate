@@ -1,1 +1,1 @@
-include ':tool', ':config', ':base_lib_immersionbar', ':base', ':resource', ':app', ':app_welcome', ':bundle_main', ':bundle_login', ':bundle_user', ':bundle_business_mvc', ':bundle_business_mvp', ':bundle_business_mvvm', ':db_server'
+include ':tool', ':config', ':base_lib_immersionbar', ':base_lib_zxing', ':base', ':resource', ':app', ':app_welcome', ':bundle_main', ':bundle_login', ':bundle_user', ':bundle_business_mvc', ':bundle_business_mvp', ':bundle_business_mvvm', ':db_server'

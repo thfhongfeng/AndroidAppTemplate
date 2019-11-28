@@ -51,6 +51,7 @@ public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>
         return null;
     }
 
+    @CallSuper
     @Override
     protected final boolean parseIntentData() {
         if (mPresenter != null) {
@@ -69,6 +70,7 @@ public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>
         }
     }
 
+    @CallSuper
     @Override
     protected void onResume() {
         super.onResume();
@@ -77,6 +79,7 @@ public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>
         }
     }
 
+    @CallSuper
     @Override
     protected void onPause() {
         super.onPause();
@@ -85,6 +88,7 @@ public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>
         }
     }
 
+    @CallSuper
     @Override
     protected void onStop() {
         if (mPresenter != null) {
@@ -93,6 +97,7 @@ public abstract class MvpActivity<V extends IContract.Ui, P extends Presenter<V>
         super.onStop();
     }
 
+    @CallSuper
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -1917,17 +1917,17 @@ public class ImageUtils {
             bitmap = BitmapFactory.decodeFile(pathName, opts);
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int quality = 100;
-        bitmap.compress(CompressFormat.JPEG, quality, baos);
-        LogUtils.d(TAG, "需要压缩到" + maxSize + "byte," +
-                "图片按尺寸压缩后大小：" + baos.toByteArray().length + "byte"
-        );
-        boolean isCompressed = false;
         if (callback != null) {
             callback.onCompress(100);
         }
+        int quality = 100;
+        bitmap.compress(CompressFormat.JPEG, quality, baos);
+        LogUtils.d(TAG, "需要压缩到" + maxSize + "byte，" +
+                "图片按尺寸压缩后大小：" + baos.toByteArray().length + "byte");
+        boolean isCompressed = false;
         while (baos.toByteArray().length > maxSize && quality >= 2) {
-            quality = quality <= 10 ? quality / 2 : quality - 10;
+            int factor = (int) (baos.toByteArray().length / maxSize);
+            quality = (factor > 8 || quality <= 10) ? quality / 2 : (quality - 10);
             baos.reset();
             bitmap.compress(CompressFormat.JPEG, quality, baos);
             LogUtils.d(TAG, "质量压缩到原来的" + quality + "%时大小为："

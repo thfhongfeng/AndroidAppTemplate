@@ -16,6 +16,10 @@ import com.pine.base.component.map.IMapManager;
 import com.pine.base.component.map.IMapManagerFactory;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.map.baidu.BaiduMapManager;
+import com.pine.base.component.scan.IScanManager;
+import com.pine.base.component.scan.IScanManagerFactory;
+import com.pine.base.component.scan.ScanManager;
+import com.pine.base.component.scan.zxing.ZXingScanManager;
 import com.pine.base.component.share.manager.ShareManager;
 import com.pine.base.router.command.RouterDbServerCommand;
 import com.pine.base.track.AppTrackManager;
@@ -143,6 +147,18 @@ public class TemplateApplication extends Application {
                         return BaiduMapManager.getInstance();
                     default:
                         return BaiduMapManager.getInstance();
+                }
+            }
+        });
+
+        ScanManager.init(this, new IScanManagerFactory() {
+            @Override
+            public IScanManager makeScanManager(Context context) {
+                switch (BuildConfig.APP_THIRD_SCAN_PROVIDER) {
+                    case "zxing":
+                        return ZXingScanManager.getInstance();
+                    default:
+                        return ZXingScanManager.getInstance();
                 }
             }
         });

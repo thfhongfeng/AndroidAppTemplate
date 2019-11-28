@@ -72,6 +72,7 @@ public abstract class Activity extends AppCompatActivity
     private HashMap<Integer, PermissionBean> mPermissionRequestMap = new HashMap<>();
     private Map<Integer, ILifeCircleView> mLifeCircleViewMap = new HashMap<>();
 
+    @CallSuper
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,6 +220,7 @@ public abstract class Activity extends AppCompatActivity
         tryInitOnAllRestrictionReleased();
     }
 
+    @CallSuper
     @Override
     protected void onResume() {
         super.onResume();
@@ -243,6 +245,7 @@ public abstract class Activity extends AppCompatActivity
 
     }
 
+    @CallSuper
     @Override
     protected void onPause() {
         hideSoftInputFromWindow();
@@ -250,6 +253,7 @@ public abstract class Activity extends AppCompatActivity
         mPrePause = true;
     }
 
+    @CallSuper
     @Override
     protected void onDestroy() {
         if (mLifeCircleViewMap != null && mLifeCircleViewMap.size() > 0) {

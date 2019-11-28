@@ -33,7 +33,6 @@
     <string name="base_add_label">添加：</string>
     <string name="base_delete_content_confirm_msg">是否确认删除此段内容？</string>
 
-
     <string name="base_image_select">选择图片</string>
     <string name="base_choose">选择</string>
     <string name="base_all_image">所有图片</string>
@@ -66,6 +65,8 @@
 
     <string name="base_baidu_map_title">百度地图</string>
     <string name="base_baidu_map_marker_need">请在地图上选择一个地点</string>
+
+    <string name="base_scan_forbidden_result">无效的链接</string>
 
     <string name="base_main_tab_home">首页</string>
     <string name="base_main_tab_mine">我的</string>

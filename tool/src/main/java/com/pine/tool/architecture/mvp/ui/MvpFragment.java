@@ -50,6 +50,7 @@ public abstract class MvpFragment<V extends IContract.Ui, P extends Presenter<V>
         return null;
     }
 
+    @CallSuper
     @Override
     protected final boolean parseArguments() {
         if (mPresenter != null) {
@@ -66,6 +67,7 @@ public abstract class MvpFragment<V extends IContract.Ui, P extends Presenter<V>
         }
     }
 
+    @CallSuper
     @Override
     public void onResume() {
         super.onResume();
@@ -74,6 +76,7 @@ public abstract class MvpFragment<V extends IContract.Ui, P extends Presenter<V>
         }
     }
 
+    @CallSuper
     @Override
     public void onPause() {
         super.onPause();
@@ -82,6 +85,7 @@ public abstract class MvpFragment<V extends IContract.Ui, P extends Presenter<V>
         }
     }
 
+    @CallSuper
     @Override
     public void onStop() {
         if (mPresenter != null) {
@@ -90,6 +94,7 @@ public abstract class MvpFragment<V extends IContract.Ui, P extends Presenter<V>
         super.onStop();
     }
 
+    @CallSuper
     @Override
     public void onDestroyView() {
         //解除绑定

@@ -111,6 +111,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         mBinding = DataBindingUtil.setContentView(this, getActivityLayoutResId());
     }
 
+    @CallSuper
     @Override
     protected final void findViewOnCreate() {
         mViewModel.setContext(this);
@@ -137,6 +138,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     }
 
+    @CallSuper
     @Override
     protected void onResume() {
         super.onResume();
@@ -145,6 +147,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     }
 
+    @CallSuper
     @Override
     protected void onPause() {
         super.onPause();
@@ -153,6 +156,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     }
 
+    @CallSuper
     @Override
     protected void onStop() {
         if (mViewModel != null) {
@@ -161,6 +165,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         super.onStop();
     }
 
+    @CallSuper
     @Override
     protected void onDestroy() {
         super.onDestroy();

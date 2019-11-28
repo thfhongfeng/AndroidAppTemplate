@@ -22,6 +22,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 相机-->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 震动-->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- 读取联系人-->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 

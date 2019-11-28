@@ -3,20 +3,38 @@
 
     <data class="UserScanActivityBinding">
 
+        <variable
+            name="presenter"
+            type="com.pine.user.ui.activity.UserScanActivity.Presenter" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:background="@color/black">
+
+        <FrameLayout
+            android:id="@+id/fragment_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_55"
+            android:layout_height="@dimen/dp_55"
+            android:layout_marginTop="@dimen/dp_10"
+            android:onClick="@{presenter::onGoBackClick}"
+            android:padding="@dimen/dp_10"
+            android:src="@mipmap/base_ic_go_back_white" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="扫码" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dp_170"
+            android:text="@string/user_scan_tip"
+            android:textColor="#DADADA"
+            android:textSize="@dimen/sp_12" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

@@ -1,9 +1,16 @@
 package com.pine.user.ui.activity;
 
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.Manifest;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.view.View;
 
-import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
+import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
+import com.pine.base.component.scan.IScanAnalyzeListener;
+import com.pine.base.component.scan.ScanManager;
+import com.pine.tool.permission.PermissionsAnnotation;
+import com.pine.tool.util.LogUtils;
 import com.pine.user.R;
 import com.pine.user.databinding.UserScanActivityBinding;
 import com.pine.user.vm.UserScanVm;
@@ -12,7 +19,8 @@ import com.pine.user.vm.UserScanVm;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public class UserScanActivity extends BaseMvvmActionBarActivity<UserScanActivityBinding, UserScanVm> {
+@PermissionsAnnotation(Permissions = {Manifest.permission.CAMERA})
+public class UserScanActivity extends BaseMvvmFullScreenActivity<UserScanActivityBinding, UserScanVm> {
 
     @Override
     public void observeInitLiveData() {
@@ -26,16 +34,46 @@ public class UserScanActivity extends BaseMvvmActionBarActivity<UserScanActivity
 
     @Override
     protected void init() {
+        mBinding.setPresenter(new Presenter());
 
+        ScanManager.attachScanSurface(this, R.id.fragment_content);
+        setAnalyzeListener();
     }
 
-    @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
-        titleTv.setText(R.string.user_scan_title);
+    private void setAnalyzeListener() {
+        ScanManager.setAnalyzeListener(new IScanAnalyzeListener() {
+            @Override
+            public void onAnalyzeSuccess(Bitmap bitmap, String result) {
+                LogUtils.d(TAG, "scan result:" + result);
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse(result);
+                intent.setData(content_url);
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onAnalyzeFailed() {
+                LogUtils.d(TAG, "scan analyze failed");
+                return false;
+            }
+        }, R.id.fragment_content);
     }
 
     @Override
     public void observeSyncLiveData(int liveDataObjTag) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        ScanManager.detachScanSurface(R.id.fragment_content);
+        super.onDestroy();
+    }
+
+    public class Presenter {
+        public void onGoBackClick(View view) {
+            finish();
+        }
     }
 }
