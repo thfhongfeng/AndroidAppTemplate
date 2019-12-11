@@ -83,6 +83,7 @@ dependencies {
     annotationProcessor build_dependency['bumptech_glide_compiler']
     api(name: build_dependency["sina_weibo_sdk"], ext: 'aar')
     annotationProcessor build_dependency["android_room_compiler"]
+    api build_dependency["android_room_runtime"]
     // CWAC-SafeRoom: A Room<->SQLCipher for Android Bridge
     // 腾讯WCDB: A Room<->SQLCipher for Android Bridge
     api build_dependency["tencent_wcdb_room"]

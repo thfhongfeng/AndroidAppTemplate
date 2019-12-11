@@ -30,7 +30,8 @@ def build_dependency = [
         "android_support_design"      : 'com.google.android.material:material:1.0.0',
         "android_constraint_layout"   : 'androidx.constraintlayout:constraintlayout:1.1.3',
         "android_lifecycle_extensions": 'androidx.lifecycle:lifecycle-extensions:2.0.0',
-        "android_room_compiler"       : 'androidx.room:room-compiler:2.0.0',
+        "android_room_compiler"       : 'androidx.room:room-compiler:2.2.2',
+        "android_room_runtime"        : 'androidx.room:room-runtime:2.2.2',
 
         // 测试 dependency
         "test_espresso_core"          : 'androidx.test.espresso:espresso-core:3.1.0',
