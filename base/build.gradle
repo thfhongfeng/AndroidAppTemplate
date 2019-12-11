@@ -93,7 +93,7 @@ dependencies {
     api project(':base_lib_zxing')
     // library project end
 
-    // 路由模块 begin
+    // 配置模块 begin
     api project(':config')
-    // 路由模块 end
+    // 配置模块 end
 }
