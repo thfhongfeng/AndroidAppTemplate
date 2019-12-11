@@ -1,5 +1,6 @@
 package com.pine.mvp.ui.fragment;
 
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,13 +29,13 @@ public class MvpShopPaginationListFragment extends MvpFragment<IMvpShopPaginatio
     }
 
     @Override
-    protected void findViewOnCreateView(View layout) {
+    protected void findViewOnCreateView(View layout, Bundle savedInstanceState) {
         swipe_refresh_layout = layout.findViewById(R.id.swipe_refresh_layout);
         recycle_view = layout.findViewById(R.id.recycle_view);
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         swipe_refresh_layout.setOnRefreshListener(this);
         swipe_refresh_layout.setColorSchemeResources(
                 R.color.red,

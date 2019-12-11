@@ -31,7 +31,7 @@ import com.pine.tool.permission.PermissionsAnnotation;
 public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHomeActivityBinding, MvvmHomeVm> {
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
 
     }
 
@@ -47,7 +47,7 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
         initView();
     }

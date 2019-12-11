@@ -1,5 +1,7 @@
 package com.pine.main.ui.activity;
 
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,7 +20,7 @@ public class MainHomeActivity extends BaseMvvmNoActionBarActivity<MainHomeActivi
     private MainBusinessAdapter mMainBusinessAdapter;
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getBusinessBundleListData().observe(this,
                 new Observer<ArrayList<MainBusinessItemEntity>>() {
                     @Override
@@ -34,7 +36,7 @@ public class MainHomeActivity extends BaseMvvmNoActionBarActivity<MainHomeActivi
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         initView();
     }
 

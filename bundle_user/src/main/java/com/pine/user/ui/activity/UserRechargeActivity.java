@@ -1,5 +1,6 @@
 package com.pine.user.ui.activity;
 
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ import com.pine.user.vm.UserRechargeVm;
 public class UserRechargeActivity extends BaseMvvmActionBarActivity<UserRechargeActivityBinding, UserRechargeVm> {
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getAccountBeanData().observe(this, new Observer<AccountBean>() {
             @Override
             public void onChanged(@Nullable AccountBean accountBean) {
@@ -37,7 +38,7 @@ public class UserRechargeActivity extends BaseMvvmActionBarActivity<UserRecharge
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
 
     }
 

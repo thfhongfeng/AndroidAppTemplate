@@ -2,6 +2,7 @@ package com.pine.mvvm.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -103,7 +104,7 @@ public class MvvmTravelNoteReleaseActivity extends
     };
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getBelongShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> list) {
@@ -134,7 +135,7 @@ public class MvvmTravelNoteReleaseActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
         initView();
     }

@@ -30,8 +30,8 @@ public class MapSdkManager {
         mMapManagerImpl.stopLocation();
     }
 
-    public static void registerLocationListener(ILocationListener locationListener) {
-        mMapManagerImpl.registerLocationListener(locationListener);
+    public static void registerLocationListener(ILocationListener locationListener, LocationActionType locationActionType) {
+        mMapManagerImpl.registerLocationListener(locationListener, locationActionType);
     }
 
     public static void unregisterLocationListener(ILocationListener locationListener) {

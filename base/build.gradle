@@ -8,7 +8,8 @@ android {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
 
-        manifestPlaceholders = [baidu_for_app_key: app_key.baidu_for_app_key]
+        manifestPlaceholders = [baidu_for_app_key: app_key.baidu_for_app_key,
+                                gaode_for_app_key: app_key.gaode_for_app_key]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

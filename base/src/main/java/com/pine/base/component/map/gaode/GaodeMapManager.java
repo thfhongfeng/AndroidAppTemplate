@@ -1,34 +1,32 @@
-package com.pine.base.component.map.baidu;
+package com.pine.base.component.map.gaode;
 
 import android.content.Context;
 import android.content.Intent;
 
-import com.baidu.mapapi.CoordType;
-import com.baidu.mapapi.SDKInitializer;
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.IMapManager;
-import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.LocationActionType;
+import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
-import com.pine.base.component.map.baidu.location.BaiduLocationManager;
-import com.pine.base.component.map.baidu.ui.BaiduMapActivity;
+import com.pine.base.component.map.gaode.loaction.GaodeLocationManager;
+import com.pine.base.component.map.gaode.ui.GaodeMapActivity;
 import com.pine.tool.util.LogUtils;
 
 /**
  * Created by tanghongfeng on 2018/10/31
  */
 
-public class BaiduMapManager implements IMapManager {
-    private final static String TAG = LogUtils.makeLogTag(BaiduMapManager.class);
+public class GaodeMapManager implements IMapManager {
+    private final static String TAG = LogUtils.makeLogTag(GaodeMapManager.class);
 
-    private static BaiduMapManager mInstance;
+    private static GaodeMapManager mInstance;
 
     public static IMapManager getInstance() {
         if (mInstance == null) {
-            synchronized (BaiduMapManager.class) {
+            synchronized (GaodeMapManager.class) {
                 if (mInstance == null) {
-                    LogUtils.releaseLog(TAG, "use third map: baidu");
-                    mInstance = new BaiduMapManager();
+                    LogUtils.releaseLog(TAG, "use third map: gaode");
+                    mInstance = new GaodeMapManager();
                 }
             }
         }
@@ -37,43 +35,38 @@ public class BaiduMapManager implements IMapManager {
 
     @Override
     public void init(Context context) {
-        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
-        SDKInitializer.initialize(context);
-        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
-        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
-        SDKInitializer.setCoordType(CoordType.BD09LL);
+
     }
 
     @Override
     public void startLocation() {
-        BaiduLocationManager.getInstance().start();
+        GaodeLocationManager.getInstance().start();
     }
 
     @Override
     public void stopLocation() {
-        BaiduLocationManager.getInstance().stop();
+        GaodeLocationManager.getInstance().stop();
     }
 
     @Override
     public void registerLocationListener(ILocationListener locationListener, LocationActionType locationActionType) {
-        BaiduLocationManager.getInstance().registerListener(locationListener, locationActionType);
+        GaodeLocationManager.getInstance().registerListener(locationListener, locationActionType);
         startLocation();
     }
 
     @Override
     public void unregisterLocationListener(ILocationListener locationListener) {
-        BaiduLocationManager.getInstance().unregisterListener(locationListener);
-        stopLocation();
+        GaodeLocationManager.getInstance().unregisterListener(locationListener);
     }
 
     @Override
     public LocationInfo getLocation() {
-        return BaiduLocationManager.getInstance().getLocation();
+        return GaodeLocationManager.getInstance().getLocation();
     }
 
     @Override
     public Intent getMapActivityIntent(Context context, MapSdkManager.MapType mapType) {
-        Intent intent = new Intent(context, BaiduMapActivity.class);
+        Intent intent = new Intent(context, GaodeMapActivity.class);
         intent.putExtra("mapTypeOrdinal", mapType.ordinal());
         return intent;
     }
@@ -88,7 +81,7 @@ public class BaiduMapManager implements IMapManager {
     @Override
     public Intent getMarkMapActivityIntent(Context context, MapSdkManager.MapType mapType,
                                            double latitude, double longitude, boolean canMark) {
-        Intent intent = new Intent(context, BaiduMapActivity.class);
+        Intent intent = new Intent(context, GaodeMapActivity.class);
         intent.putExtra("mapTypeOrdinal", mapType.ordinal());
         if (latitude != -1 && longitude != -1) {
             intent.putExtra("latitude", latitude);

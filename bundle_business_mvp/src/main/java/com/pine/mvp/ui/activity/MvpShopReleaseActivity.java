@@ -2,6 +2,7 @@ package com.pine.mvp.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -73,7 +74,7 @@ public class MvpShopReleaseActivity extends
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         nested_scroll_view = findViewById(R.id.nested_scroll_view);
         type_ll = findViewById(R.id.type_ll);
@@ -91,7 +92,7 @@ public class MvpShopReleaseActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         type_ll.setOnClickListener(this);
         online_date_ll.setOnClickListener(this);
         contact_tv.setOnClickListener(this);

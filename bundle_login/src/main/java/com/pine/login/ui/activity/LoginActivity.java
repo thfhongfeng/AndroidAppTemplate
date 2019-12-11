@@ -1,6 +1,7 @@
 package com.pine.login.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import com.pine.login.vm.LoginVm;
 public class LoginActivity extends BaseMvvmActionBarActivity<LoginActivityBinding, LoginVm> {
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getLoginBeanData().observe(this, new Observer<LoginBean>() {
             @Override
             public void onChanged(@Nullable LoginBean loginBean) {
@@ -36,7 +37,7 @@ public class LoginActivity extends BaseMvvmActionBarActivity<LoginActivityBindin
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
         initView();
     }

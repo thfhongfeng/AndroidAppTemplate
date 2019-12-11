@@ -1,5 +1,6 @@
 package com.pine.login.ui.activity;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +23,7 @@ public class RegisterActivity extends
         BaseMvvmActionBarActivity<RegisterActivityBinding, RegisterVm> {
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getRegisterBeanData().observe(this, new Observer<RegisterBean>() {
             @Override
             public void onChanged(@Nullable RegisterBean registerBean) {
@@ -42,7 +43,7 @@ public class RegisterActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
         initView();
     }

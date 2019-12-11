@@ -26,7 +26,7 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
     private final int REQUEST_CODE_GO_RECHARGE = 1;
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getAccountBeanData().observe(this, new Observer<AccountBean>() {
             @Override
             public void onChanged(@Nullable AccountBean accountBean) {
@@ -44,7 +44,7 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
         mViewModel.refreshUserData();
     }

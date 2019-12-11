@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;
+import com.pine.base.component.map.LocationActionType;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpShopListPaginationAdapter;
@@ -50,16 +51,12 @@ public class MvpShopPaginationListPresenter extends Presenter<IMvpShopPagination
             case UI_STATE_ON_INIT:
                 break;
             case UI_STATE_ON_RESUME:
-                if (MapSdkManager.getLocation() == null) {
-                    MapSdkManager.registerLocationListener(mLocationListener);
-                    MapSdkManager.startLocation();
-                }
+                MapSdkManager.registerLocationListener(mLocationListener, LocationActionType.ONCE);
                 break;
             case UI_STATE_ON_PAUSE:
                 break;
             case UI_STATE_ON_STOP:
                 MapSdkManager.unregisterLocationListener(mLocationListener);
-                MapSdkManager.stopLocation();
                 break;
             case UI_STATE_ON_DETACH:
                 break;

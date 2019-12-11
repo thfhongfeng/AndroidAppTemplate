@@ -46,13 +46,13 @@ public class MvpHomeActivity extends BaseMvpActionBarImageMenuActivity<IMvpHomeC
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
         view_pager_tab_layout = findViewById(R.id.view_pager_tab_layout);
         view_pager = findViewById(R.id.view_pager);
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         setupViewPage();
     }
 

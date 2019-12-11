@@ -16,6 +16,7 @@ import com.pine.base.component.map.IMapManager;
 import com.pine.base.component.map.IMapManagerFactory;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.component.map.baidu.BaiduMapManager;
+import com.pine.base.component.map.gaode.GaodeMapManager;
 import com.pine.base.component.scan.IScanManager;
 import com.pine.base.component.scan.IScanManagerFactory;
 import com.pine.base.component.scan.ScanManager;
@@ -71,6 +72,8 @@ public class TemplateApplication extends Application {
         }
 
         LogUtils.setDebuggable(AppUtils.isApkDebuggable(this));
+
+        LogUtils.d(TAG, "APP SHA1:" + AppUtils.SHA1(this));
 
         // 主进程初始化
         if (mApplication.getPackageName().equals(AppUtils.getCurProcessName(mApplication))) {
@@ -145,6 +148,8 @@ public class TemplateApplication extends Application {
                 switch (BuildConfig.APP_THIRD_MAP_PROVIDER) {
                     case "baidu":
                         return BaiduMapManager.getInstance();
+                    case "gaode":
+                        return GaodeMapManager.getInstance();
                     default:
                         return BaiduMapManager.getInstance();
                 }

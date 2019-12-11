@@ -2,6 +2,7 @@ package com.pine.mvp.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -66,7 +67,7 @@ public class MvpTravelNoteReleaseActivity extends
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         nested_scroll_view = findViewById(R.id.nested_scroll_view);
         note_preview_rl = findViewById(R.id.note_preview_rl);
@@ -84,7 +85,7 @@ public class MvpTravelNoteReleaseActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         preview_note_btn_tv.setOnClickListener(this);
         note_preview_rl.setOnClickListener(this);
         set_out_date_rl.setOnClickListener(this);

@@ -1,6 +1,7 @@
 package com.pine.mvp.ui.activity;
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -54,7 +55,7 @@ public class MvpProductReleaseActivity extends
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         nested_scroll_view = findViewById(R.id.nested_scroll_view);
         shelve_date_ll = findViewById(R.id.shelve_date_ll);
@@ -67,7 +68,7 @@ public class MvpProductReleaseActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         shelve_date_ll.setOnClickListener(this);
         price_tv.setOnClickListener(this);
         shelve_price_tv.setOnClickListener(this);

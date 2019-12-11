@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Bundle;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -40,13 +41,13 @@ public class MvpWebViewFragment extends MvpFragment implements View.OnClickListe
     }
 
     @Override
-    protected void findViewOnCreateView(View layout) {
+    protected void findViewOnCreateView(View layout, Bundle savedInstanceState) {
         refresh_btn_tv = layout.findViewById(R.id.refresh_btn_tv);
         web_view = layout.findViewById(R.id.web_view);
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         initWebView();
         initEvent();
         loadUrl();

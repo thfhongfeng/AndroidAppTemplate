@@ -1,5 +1,6 @@
 package com.pine.mvp.ui.activity;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
         name_tv = findViewById(R.id.name_tv);
         type_tv = findViewById(R.id.type_tv);
         online_date_tv = findViewById(R.id.online_date_tv);
@@ -63,7 +64,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         swipe_refresh_layout.setOnRefreshListener(this);
         swipe_refresh_layout.setColorSchemeResources(
                 R.color.red,

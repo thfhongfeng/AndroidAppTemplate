@@ -1,5 +1,6 @@
 package com.pine.mvp.ui.activity;
 
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -53,7 +54,7 @@ public class MvpShopSearchCheckActivity extends
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         recycle_view = findViewById(R.id.recycle_view);
         search_iv = findViewById(R.id.search_iv);
@@ -63,7 +64,7 @@ public class MvpShopSearchCheckActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         search_iv.setOnClickListener(this);
         search_key_clear_iv.setOnClickListener(this);
         clear_check_tv.setOnClickListener(this);

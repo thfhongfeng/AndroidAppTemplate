@@ -83,7 +83,7 @@ public abstract class BaseMvvmNoActionBarActivity<T extends ViewDataBinding, VM 
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
 
     }
 

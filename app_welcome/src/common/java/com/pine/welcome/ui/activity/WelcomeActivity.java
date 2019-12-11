@@ -16,7 +16,7 @@ import com.pine.welcome.vm.WelcomeVm;
 public class WelcomeActivity extends BaseMvvmNoActionBarActivity<WelcomeActivityBinding, WelcomeVm> {
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
 
     }
 
@@ -26,7 +26,7 @@ public class WelcomeActivity extends BaseMvvmNoActionBarActivity<WelcomeActivity
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         Toast.makeText(this, "这是common的客制化", Toast.LENGTH_SHORT).show();
         goMainHomeActivity();
     }

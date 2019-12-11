@@ -1,5 +1,6 @@
 package com.pine.mvvm.ui.activity;
 
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ public class MvvmTravelNoteDetailActivity extends
     private MvvmTravelNoteDetailComplexAdapter mTravelNoteDetailAdapter;
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getTravelNoteDetailDate().observe(this, new Observer<MvvmTravelNoteDetailEntity>() {
             @Override
             public void onChanged(@Nullable MvvmTravelNoteDetailEntity mvvmTravelNoteDetailEntity) {
@@ -57,7 +58,7 @@ public class MvvmTravelNoteDetailActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         initView();
     }
 

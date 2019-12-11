@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Bundle;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -32,7 +33,7 @@ public class MvvmWebViewFragment extends
         MvvmFragment<MvvmWebViewFragmentBinding, MvvmWebViewVm> {
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getH5UrlData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -47,7 +48,7 @@ public class MvvmWebViewFragment extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
         initView();
     }

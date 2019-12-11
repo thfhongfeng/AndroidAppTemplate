@@ -1,6 +1,7 @@
 package com.pine.mvvm.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarCustomMenuActivity;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;
+import com.pine.config.ConfigKey;
+import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmTravelNoteListPaginationAdapter;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
@@ -31,7 +34,7 @@ public class MvvmTravelNoteListActivity extends
     private MvvmTravelNoteListPaginationAdapter mMvvmTravelListItemAdapter;
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getTravelListData().observe(this,
                 new Observer<ArrayList<MvvmTravelNoteItemEntity>>() {
                     @Override
@@ -56,7 +59,7 @@ public class MvvmTravelNoteListActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         initView();
     }
 

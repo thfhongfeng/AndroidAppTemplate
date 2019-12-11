@@ -1,5 +1,6 @@
 package com.pine.welcome.ui.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.ProgressDialog;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
+import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.welcome.R;
 import com.pine.welcome.WelcomeApplication;
@@ -25,6 +27,8 @@ import com.pine.welcome.databinding.LoadingActivityBinding;
 import com.pine.welcome.remote.WelcomeRouterClient;
 import com.pine.welcome.vm.LoadingVm;
 
+@PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE})
 public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivityBinding, LoadingVm> {
     private final static long LOADING_MAX_TIME = 2000;
     private long mStartTimeMillis;
@@ -32,7 +36,7 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
     private ProgressDialog mUpdateProgressDialog;
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getNewVersionNameData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String newVersionName) {
@@ -69,7 +73,7 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mStartTimeMillis = System.currentTimeMillis();
         mViewModel.setupConfigSwitcher();
     }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
@@ -72,7 +73,7 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
         grid_view = findViewById(R.id.grid_view);
         folder_select_btn = findViewById(R.id.folder_select_btn);
         preview_btn = findViewById(R.id.preview_btn);
@@ -100,7 +101,7 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mContentResolver = getContentResolver();
         mAllImageFolder = new ImageFolderBean();
         mAllImageFolder.setDir("/" + getString(R.string.base_all_image));

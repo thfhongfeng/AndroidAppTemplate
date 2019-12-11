@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
@@ -55,7 +56,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
         view_pager = findViewById(R.id.view_pager);
         action_container_rl = findViewById(R.id.action_container_rl);
         choose_tv = findViewById(R.id.choose_tv);
@@ -88,7 +89,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mContentResolver = getContentResolver();
         if (mNoImageList) {
             getThumbnail();

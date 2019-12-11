@@ -1,6 +1,7 @@
 package com.pine.mvvm.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,7 +30,7 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
         implements SwipeRefreshLayout.OnRefreshListener {
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getShopDetailData().observe(this, new Observer<MvvmShopDetailEntity>() {
             @Override
             public void onChanged(@Nullable MvvmShopDetailEntity mvvmShopDetailEntity) {
@@ -44,7 +45,7 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
         initView();
     }

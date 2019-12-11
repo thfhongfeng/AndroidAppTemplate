@@ -1,5 +1,7 @@
 package com.pine.mvvm.ui.fragment;
 
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;
+import com.pine.base.component.map.LocationActionType;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvvm.R;
@@ -28,7 +31,7 @@ public class MvvmShopPaginationListFragment extends
     private MvvmShopListPaginationAdapter mMvvmHomeItemAdapter;
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getShopListData().observe(this, new Observer<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
@@ -47,7 +50,7 @@ public class MvvmShopPaginationListFragment extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         initView();
     }
 
@@ -104,16 +107,12 @@ public class MvvmShopPaginationListFragment extends
     @Override
     public void onResume() {
         super.onResume();
-        if (MapSdkManager.getLocation() == null) {
-            MapSdkManager.registerLocationListener(mLocationListener);
-            MapSdkManager.startLocation();
-        }
+        MapSdkManager.registerLocationListener(mLocationListener, LocationActionType.ONCE);
     }
 
     @Override
     public void onStop() {
         MapSdkManager.unregisterLocationListener(mLocationListener);
-        MapSdkManager.stopLocation();
         super.onStop();
     }
 

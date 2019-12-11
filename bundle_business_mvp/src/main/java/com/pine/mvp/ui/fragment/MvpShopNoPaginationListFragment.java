@@ -1,5 +1,6 @@
 package com.pine.mvp.ui.fragment;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;
+import com.pine.base.component.map.LocationActionType;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpShopNoPaginationListContract;
@@ -43,14 +45,14 @@ public class MvpShopNoPaginationListFragment extends MvpFragment<IMvpShopNoPagin
     }
 
     @Override
-    protected void findViewOnCreateView(View layout) {
+    protected void findViewOnCreateView(View layout, Bundle savedInstanceState) {
         swipe_refresh_layout = layout.findViewById(R.id.swipe_refresh_layout);
         recycle_view = layout.findViewById(R.id.recycle_view);
         refresh_btn_tv = layout.findViewById(R.id.refresh_btn_tv);
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         swipe_refresh_layout.setOnRefreshListener(this);
         swipe_refresh_layout.setColorSchemeResources(
                 R.color.red,
@@ -93,16 +95,12 @@ public class MvpShopNoPaginationListFragment extends MvpFragment<IMvpShopNoPagin
     @Override
     public void onResume() {
         super.onResume();
-        if (MapSdkManager.getLocation() == null) {
-            MapSdkManager.registerLocationListener(mLocationListener);
-            MapSdkManager.startLocation();
-        }
+        MapSdkManager.registerLocationListener(mLocationListener, LocationActionType.ONCE);
     }
 
     @Override
     public void onStop() {
         MapSdkManager.unregisterLocationListener(mLocationListener);
-        MapSdkManager.stopLocation();
         super.onStop();
     }
 

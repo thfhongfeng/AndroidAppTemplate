@@ -63,7 +63,7 @@ public abstract class BaseMvvmFullScreenActivity<T extends ViewDataBinding, VM e
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
 
     }
 

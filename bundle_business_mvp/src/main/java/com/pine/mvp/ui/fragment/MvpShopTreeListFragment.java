@@ -1,5 +1,6 @@
 package com.pine.mvp.ui.fragment;
 
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.component.map.ILocationListener;
 import com.pine.base.component.map.LocationInfo;
+import com.pine.base.component.map.LocationActionType;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.mvp.R;
@@ -43,13 +45,13 @@ public class MvpShopTreeListFragment extends MvpFragment<IMvpShopTreeListContrac
     }
 
     @Override
-    protected void findViewOnCreateView(View layout) {
+    protected void findViewOnCreateView(View layout, Bundle savedInstanceState) {
         swipe_refresh_layout = layout.findViewById(R.id.swipe_refresh_layout);
         recycle_view = layout.findViewById(R.id.recycle_view);
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         swipe_refresh_layout.setOnRefreshListener(this);
         swipe_refresh_layout.setColorSchemeResources(
                 R.color.red,
@@ -89,16 +91,12 @@ public class MvpShopTreeListFragment extends MvpFragment<IMvpShopTreeListContrac
     @Override
     public void onResume() {
         super.onResume();
-        if (MapSdkManager.getLocation() == null) {
-            MapSdkManager.registerLocationListener(mLocationListener);
-            MapSdkManager.startLocation();
-        }
+        MapSdkManager.registerLocationListener(mLocationListener, LocationActionType.ONCE);
     }
 
     @Override
     public void onStop() {
         MapSdkManager.unregisterLocationListener(mLocationListener);
-        MapSdkManager.stopLocation();
         super.onStop();
     }
 

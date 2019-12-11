@@ -64,7 +64,8 @@
     <string name="base_ui_access_vip_level_forbidden">您需要成为%s级会员</string>
 
     <string name="base_baidu_map_title">百度地图</string>
-    <string name="base_baidu_map_marker_need">请在地图上选择一个地点</string>
+    <string name="base_gaode_map_title">高德地图</string>
+    <string name="base_map_marker_need">请在地图上选择一个地点</string>
 
     <string name="base_scan_forbidden_result">无效的链接</string>
 

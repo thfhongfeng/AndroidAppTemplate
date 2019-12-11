@@ -53,6 +53,12 @@
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
         <activity
+            android:name=".component.map.gaode.ui.GaodeMapActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+
+        <activity
             android:name="com.pine.tool.permission.easy.AppSettingsDialogHolderActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -78,7 +84,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 腾讯SDK end-->
 
-        <!-- 百度SDK begin-->
+        <!-- 百度地图SDK begin-->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -86,6 +92,16 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="${baidu_for_app_key}" />
-        <!-- 百度SDK end-->
+        <!-- 百度地图SDK end-->
+
+        <!-- 高德地图SDK begin-->
+        <service
+            android:name="com.amap.api.location.APSService"
+            android:enabled="true"
+            android:process=":remote"></service>
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="${gaode_for_app_key}" />
+        <!-- 高德地图SDK end-->
     </application>
 </manifest>

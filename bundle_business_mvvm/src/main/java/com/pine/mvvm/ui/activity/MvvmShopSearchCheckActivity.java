@@ -2,6 +2,7 @@ package com.pine.mvvm.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -35,7 +36,7 @@ public class MvvmShopSearchCheckActivity extends
     private MvvmShopCheckListPaginationAdapter mShopCheckListPaginationAdapter;
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
         mViewModel.getSearchKey().observe(this, new Observer<MvvmShopSearchBean>() {
             @Override
             public void onChanged(@Nullable MvvmShopSearchBean searchBean) {
@@ -73,7 +74,7 @@ public class MvvmShopSearchCheckActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
         initView();
     }

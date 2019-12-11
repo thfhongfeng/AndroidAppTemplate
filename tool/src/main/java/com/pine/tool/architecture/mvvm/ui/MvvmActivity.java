@@ -95,7 +95,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         mViewModel.getToastMsgData().observe(this, mToastMsgDataObserver);
         mViewModel.getToastResIdData().observe(this, mToastResIdDataObserver);
         mViewModel.getToastResData().observe(this, mToastResDataObserver);
-        observeInitLiveData();
+        observeInitLiveData(savedInstanceState);
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
      * observeInitLiveData：用于在VM中初始化的LiveData的进行监听观察。
      * observeSyncLiveData ：用于对不是在VM中初始化赋值的LiveData的进行监听观察，需要在VM中主动调用setSyncLiveDataTag。
      */
-    public abstract void observeInitLiveData();
+    public abstract void observeInitLiveData(Bundle savedInstanceState);
 
     protected void setContentView(Bundle savedInstanceState) {
         mBinding = DataBindingUtil.setContentView(this, getActivityLayoutResId());
@@ -113,7 +113,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
 
     @CallSuper
     @Override
-    protected final void findViewOnCreate() {
+    protected final void findViewOnCreate(Bundle savedInstanceState) {
         mViewModel.setContext(this);
     }
 

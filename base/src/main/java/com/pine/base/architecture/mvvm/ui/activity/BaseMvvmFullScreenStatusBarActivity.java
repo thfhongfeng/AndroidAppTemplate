@@ -82,7 +82,7 @@ public abstract class BaseMvvmFullScreenStatusBarActivity<T extends ViewDataBind
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
 
     }
 

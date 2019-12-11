@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
@@ -23,7 +24,7 @@ import com.pine.user.vm.UserScanVm;
 public class UserScanActivity extends BaseMvvmFullScreenActivity<UserScanActivityBinding, UserScanVm> {
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
 
     }
 
@@ -33,7 +34,7 @@ public class UserScanActivity extends BaseMvvmFullScreenActivity<UserScanActivit
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
 
         ScanManager.attachScanSurface(this, R.id.fragment_content);

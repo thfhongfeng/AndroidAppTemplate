@@ -1,6 +1,7 @@
 package com.pine.mvvm.ui.activity;
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
@@ -40,7 +41,7 @@ public class MvvmProductReleaseActivity extends
     private DateSelectDialog mShelveDateSelectDialog;
 
     @Override
-    public void observeInitLiveData() {
+    public void observeInitLiveData(Bundle savedInstanceState) {
 
     }
 
@@ -50,7 +51,7 @@ public class MvvmProductReleaseActivity extends
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
         bindingData();
         initView();
     }

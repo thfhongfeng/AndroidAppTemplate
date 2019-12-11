@@ -50,15 +50,16 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
     // 该参数保证一次生命周期中init方法只会执行一次，并且可以用来判断init是否已经执行。
     private boolean mOnAllAccessRestrictionReleasedMethodCalled;
 
+    private Bundle mOnCreateSavedInstanceState;
+
     @CallSuper
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mOnCreateSavedInstanceState = savedInstanceState;
         mOnAllAccessRestrictionReleasedMethodCalled = false;
         beforeInitOnCreateView(savedInstanceState);
         View layout = setContentView(inflater, container, savedInstanceState);
-
-        findViewOnCreateView(layout);
 
         // 进入界面准入流程
         mUiAccessReady = true;
@@ -79,6 +80,8 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
             mUiAccessReady = false;
             onUiAccessForbidden(UiAccessTimeInterval.UI_ACCESS_ON_CREATE);
         }
+
+        findViewOnCreateView(layout, savedInstanceState);
 
         tryInitOnAllRestrictionReleased();
 
@@ -102,7 +105,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
     /**
      * onCreateView中初始化View
      */
-    protected abstract void findViewOnCreateView(View layout);
+    protected abstract void findViewOnCreateView(View layout, Bundle savedInstanceState);
 
 
     protected boolean isInit() {
@@ -125,7 +128,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
      */
     private void onAllAccessRestrictionReleased() {
         if (!parseArguments()) {
-            init();
+            init(mOnCreateSavedInstanceState);
             afterInit();
         }
     }
@@ -140,7 +143,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
     /**
      * 所有准入条件(如：登陆限制，权限限制等)全部解除后回调（界面的数据业务初始化动作推荐在此进行）
      */
-    protected abstract void init();
+    protected abstract void init(Bundle onCreateSavedInstanceState);
 
     /**
      * onCreate中结束初始化

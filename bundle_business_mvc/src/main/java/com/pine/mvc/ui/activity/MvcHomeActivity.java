@@ -32,7 +32,7 @@ public class MvcHomeActivity extends BaseMvcActionBarActivity {
     }
 
     @Override
-    protected void findViewOnCreate() {
+    protected void findViewOnCreate(Bundle savedInstanceState) {
 
     }
 
@@ -42,7 +42,7 @@ public class MvcHomeActivity extends BaseMvcActionBarActivity {
     }
 
     @Override
-    protected void init() {
+    protected void init(Bundle savedInstanceState) {
 
     }
 }

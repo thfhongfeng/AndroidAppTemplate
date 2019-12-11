@@ -72,15 +72,16 @@ public abstract class Activity extends AppCompatActivity
     private HashMap<Integer, PermissionBean> mPermissionRequestMap = new HashMap<>();
     private Map<Integer, ILifeCircleView> mLifeCircleViewMap = new HashMap<>();
 
+    private Bundle mOnCreateSavedInstanceState;
+
     @CallSuper
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mOnCreateSavedInstanceState = savedInstanceState;
         mOnAllAccessRestrictionReleasedMethodCalled = false;
         beforeInitOnCreate(savedInstanceState);
         setContentView(savedInstanceState);
-
-        findViewOnCreate();
 
         // 进入界面准入流程
         mUiAccessReady = true;
@@ -115,6 +116,8 @@ public abstract class Activity extends AppCompatActivity
             }
         }
 
+        findViewOnCreate(savedInstanceState);
+
         tryInitOnAllRestrictionReleased();
     }
 
@@ -139,7 +142,7 @@ public abstract class Activity extends AppCompatActivity
     /**
      * onCreate中初始化View
      */
-    protected abstract void findViewOnCreate();
+    protected abstract void findViewOnCreate(Bundle savedInstanceState);
 
     protected boolean isInit() {
         return mOnAllAccessRestrictionReleasedMethodCalled;
@@ -161,7 +164,7 @@ public abstract class Activity extends AppCompatActivity
      */
     private void onAllAccessRestrictionReleased() {
         if (!parseIntentData()) {
-            init();
+            init(mOnCreateSavedInstanceState);
             afterInit();
         }
     }
@@ -176,7 +179,7 @@ public abstract class Activity extends AppCompatActivity
     /**
      * 所有准入条件(如：登陆限制，权限限制等)全部解除后回调（界面的数据业务初始化动作推荐在此进行）
      */
-    protected abstract void init();
+    protected abstract void init(Bundle onCreateSavedInstanceState);
 
     /**
      * 初始化结束
