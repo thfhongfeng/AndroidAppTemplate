@@ -87,6 +87,7 @@ dependencies {
     // CWAC-SafeRoom: A Room<->SQLCipher for Android Bridge
     // 腾讯WCDB: A Room<->SQLCipher for Android Bridge
     api build_dependency["tencent_wcdb_room"]
+    api build_dependency["tencent_wcdb_android"]
     // 第三方 dependency end
 
     // library project begin
