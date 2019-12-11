@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.component.map.ILocationListener;
-import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.LocationActionType;
+import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvp.R;
 import com.pine.mvp.contract.IMvpShopNoPaginationListContract;

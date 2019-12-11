@@ -3,8 +3,8 @@ package com.pine.mvp.presenter;
 import android.text.TextUtils;
 
 import com.pine.base.component.map.ILocationListener;
-import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.LocationActionType;
+import com.pine.base.component.map.LocationInfo;
 import com.pine.base.component.map.MapSdkManager;
 import com.pine.mvp.MvpConstants;
 import com.pine.mvp.adapter.MvpShopListPaginationAdapter;

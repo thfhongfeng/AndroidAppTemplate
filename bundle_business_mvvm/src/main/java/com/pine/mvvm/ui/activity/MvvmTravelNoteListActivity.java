@@ -14,8 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarCustomMenuActivity;
 import com.pine.base.recycle_view.adapter.BaseListAdapter;
-import com.pine.config.ConfigKey;
-import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.mvvm.R;
 import com.pine.mvvm.adapter.MvvmTravelNoteListPaginationAdapter;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;

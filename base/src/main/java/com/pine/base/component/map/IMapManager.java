@@ -16,7 +16,7 @@ public interface IMapManager {
 
     /**
      * @param locationListener
-     * @param locationActionType     定位行为类型
+     * @param locationActionType 定位行为类型
      */
     void registerLocationListener(ILocationListener locationListener, LocationActionType locationActionType);
 
