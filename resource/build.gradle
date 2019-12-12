@@ -8,8 +8,6 @@ android {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
 
-        manifestPlaceholders = [baidu_for_app_key: app_key.baidu_for_app_key]
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //必须要保证所有的flavor 都属于同一个维度
@@ -25,22 +23,13 @@ android {
 
     productFlavors {
         common {
-            versionCode build_product_versionCode.common
-            versionName build_product_versionName.common
 
-            manifestPlaceholders = [app_name: build_product_appName.common]
         }
         huawei {
-            versionCode build_product_versionCode.huawei
-            versionName build_product_versionName.huawei
 
-            manifestPlaceholders = [app_name: build_product_appName.huawei]
         }
         xiaomi {
-            versionCode build_product_versionCode.xiaomi
-            versionName build_product_versionName.xiaomi
 
-            manifestPlaceholders = [app_name: build_product_appName.xiaomi]
         }
     }
 
