@@ -12,6 +12,6 @@
             android:id="@+id/wel_content_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome" />
+            android:text="@string/wel_welcome_content" />
     </LinearLayout>
 </layout>

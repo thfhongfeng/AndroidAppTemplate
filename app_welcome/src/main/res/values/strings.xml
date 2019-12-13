@@ -6,4 +6,6 @@
     <string name="wel_new_version_update_cancel">更新被取消</string>
 
     <string name="wel_version_get_download_path_fail">获取下载目录%s失败</string>
+
+    <string name="wel_welcome_content">欢迎</string>
 </resources>
