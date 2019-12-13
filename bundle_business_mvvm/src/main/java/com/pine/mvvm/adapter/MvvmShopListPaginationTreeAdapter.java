@@ -14,8 +14,8 @@ import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopAndProductEntity;
-import com.pine.mvvm.databinding.ShopProductItemBinding;
-import com.pine.mvvm.databinding.ShopTreeItemBinding;
+import com.pine.mvvm.databinding.MvvmShopProductItemBinding;
+import com.pine.mvvm.databinding.MvvmShopTreeItemBinding;
 import com.pine.mvvm.ui.activity.MvvmShopDetailActivity;
 
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
 
     public class ShopViewHolder extends BaseListViewHolder<MvvmShopAndProductEntity> {
         private Context mContext;
-        private ShopTreeItemBinding mBinding;
+        private MvvmShopTreeItemBinding mBinding;
 
         public ShopViewHolder(Context context, View itemView) {
             super(itemView);
@@ -112,7 +112,7 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
 
     public class ShopProductViewHolder extends BaseListViewHolder<MvvmShopAndProductEntity.ProductsBean> {
         private Context mContext;
-        private ShopProductItemBinding mBinding;
+        private MvvmShopProductItemBinding mBinding;
 
         public ShopProductViewHolder(Context context, View itemView) {
             super(itemView);

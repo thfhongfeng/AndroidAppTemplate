@@ -13,7 +13,7 @@ import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmShopItemEntity;
-import com.pine.mvvm.databinding.ShopItemBinding;
+import com.pine.mvvm.databinding.MvvmShopItemBinding;
 import com.pine.mvvm.ui.activity.MvvmShopDetailActivity;
 
 /**
@@ -41,7 +41,7 @@ public class MvvmShopListNoPaginationAdapter extends BaseNoPaginationListAdapter
 
     public class ShopViewHolder extends BaseListViewHolder<MvvmShopItemEntity> {
         private Context mContext;
-        private ShopItemBinding mBinding;
+        private MvvmShopItemBinding mBinding;
 
         public ShopViewHolder(Context context, View itemView) {
             super(itemView);

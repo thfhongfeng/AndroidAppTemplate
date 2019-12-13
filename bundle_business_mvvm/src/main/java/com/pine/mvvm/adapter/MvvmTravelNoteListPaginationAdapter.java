@@ -13,7 +13,7 @@ import com.pine.base.recycle_view.adapter.BasePaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvvm.R;
 import com.pine.mvvm.bean.MvvmTravelNoteItemEntity;
-import com.pine.mvvm.databinding.TravelNoteItemBinding;
+import com.pine.mvvm.databinding.MvvmTravelNoteItemBinding;
 import com.pine.mvvm.ui.activity.MvvmTravelNoteDetailActivity;
 
 /**
@@ -41,7 +41,7 @@ public class MvvmTravelNoteListPaginationAdapter extends BasePaginationListAdapt
 
     public class TravelNoteViewHolder extends BaseListViewHolder<MvvmTravelNoteItemEntity> {
         private Context mContext;
-        private TravelNoteItemBinding mBinding;
+        private MvvmTravelNoteItemBinding mBinding;
 
         public TravelNoteViewHolder(Context context, View itemView) {
             super(itemView);

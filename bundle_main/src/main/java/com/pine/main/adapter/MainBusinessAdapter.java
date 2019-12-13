@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.databinding.DataBindingUtil;
+
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
@@ -14,6 +16,7 @@ import com.pine.base.track.AppTrackManager;
 import com.pine.base.track.TrackModuleTag;
 import com.pine.main.R;
 import com.pine.main.bean.MainBusinessItemEntity;
+import com.pine.main.databinding.MainItemBinding;
 import com.pine.main.remote.MainRouterClient;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.router.RouterCommandType;
@@ -43,18 +46,18 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
 
     public class BusinessViewHolder extends BaseListViewHolder<MainBusinessItemEntity> {
         private Context mContext;
-        private TextView name_tv;
+        private MainItemBinding mBinding;
 
         public BusinessViewHolder(Context context, View itemView) {
             super(itemView);
             mContext = context;
-            name_tv = itemView.findViewById(R.id.name_tv);
+            mBinding = DataBindingUtil.bind(itemView);
         }
 
         @Override
         public void updateData(final MainBusinessItemEntity content,
                                BaseListAdapterItemProperty propertyEntity, int position) {
-            name_tv.setText(content.getName());
+            mBinding.nameTv.setText(content.getName());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
