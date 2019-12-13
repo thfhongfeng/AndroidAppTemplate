@@ -1,7 +1,6 @@
 package com.pine.tool.util;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -601,7 +600,7 @@ public class FileUtils {
      * @param fileUri
      */
     @TargetApi(19)
-    public static String getFileAbsolutePath(Activity context, Uri fileUri) {
+    public static String getFileAbsolutePath(Context context, Uri fileUri) {
         if (context == null || fileUri == null)
             return null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT
