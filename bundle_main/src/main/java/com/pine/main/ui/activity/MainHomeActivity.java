@@ -46,8 +46,7 @@ public class MainHomeActivity extends BaseMvvmNoActionBarActivity<MainHomeActivi
         mBinding.businessRv.addItemDecoration(new GridSpacingItemDecoration(3,
                 getResources().getDimensionPixelOffset(R.dimen.dp_10), true));
         mBinding.businessRv.setHasFixedSize(true);
-        mMainBusinessAdapter = new MainBusinessAdapter(
-                MainBusinessAdapter.BUSINESS_VIEW_HOLDER);
+        mMainBusinessAdapter = new MainBusinessAdapter();
         mMainBusinessAdapter.enableEmptyComplete(true, false);
         mBinding.businessRv.setAdapter(mMainBusinessAdapter);
     }

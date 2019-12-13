@@ -19,21 +19,11 @@ import com.pine.mvp.ui.activity.MvpTravelNoteDetailActivity;
  */
 
 public class MvpTravelNoteListPaginationAdapter extends BasePaginationListAdapter {
-    public static final int TRAVEL_NOTE_VIEW_HOLDER = 1;
-
-    public MvpTravelNoteListPaginationAdapter(int defaultItemViewType) {
-        super(defaultItemViewType);
-    }
 
     @Override
     public BaseListViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        BaseListViewHolder viewHolder = null;
-        switch (viewType) {
-            case TRAVEL_NOTE_VIEW_HOLDER:
-                viewHolder = new TravelNoteViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.mvp_item_travel_note, parent, false));
-                break;
-        }
+        BaseListViewHolder viewHolder = new TravelNoteViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.mvp_item_travel_note, parent, false));
         return viewHolder;
     }
 

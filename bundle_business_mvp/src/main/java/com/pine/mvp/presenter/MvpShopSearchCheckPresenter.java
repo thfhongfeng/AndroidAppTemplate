@@ -47,8 +47,8 @@ public class MvpShopSearchCheckPresenter extends Presenter<IMvpShopSearchCheckCo
     @Override
     public MvpShopCheckListPaginationAdapter getListAdapter() {
         if (mAdapter == null) {
-            mAdapter = new MvpShopCheckListPaginationAdapter(mBelongShopList,
-                    MvpShopCheckListPaginationAdapter.SHOP_CHECK_VIEW_HOLDER);
+            mAdapter = new MvpShopCheckListPaginationAdapter(mBelongShopList);
+            mAdapter.enableInitLoading(true);
         }
         return mAdapter;
     }

@@ -44,8 +44,8 @@ public class MvpTravelNoteListPresenter extends Presenter<IMvpTravelNoteListCont
     @Override
     public MvpTravelNoteListPaginationAdapter getListAdapter() {
         if (mMvpTravelNoteItemAdapter == null) {
-            mMvpTravelNoteItemAdapter = new MvpTravelNoteListPaginationAdapter(
-                    MvpTravelNoteListPaginationAdapter.TRAVEL_NOTE_VIEW_HOLDER);
+            mMvpTravelNoteItemAdapter = new MvpTravelNoteListPaginationAdapter();
+            mMvpTravelNoteItemAdapter.enableInitLoading(true);
         }
         return mMvpTravelNoteItemAdapter;
     }

@@ -23,21 +23,11 @@ import com.pine.mvvm.ui.activity.MvvmShopDetailActivity;
  */
 
 public class MvvmShopListPaginationAdapter extends BasePaginationListAdapter {
-    public static final int SHOP_VIEW_HOLDER = 1;
-
-    public MvvmShopListPaginationAdapter(int defaultItemViewType) {
-        super(defaultItemViewType);
-    }
 
     @Override
     public BaseListViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        BaseListViewHolder viewHolder = null;
-        switch (viewType) {
-            case SHOP_VIEW_HOLDER:
-                viewHolder = new ShopViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.mvvm_item_shop, parent, false));
-                break;
-        }
+        BaseListViewHolder viewHolder = new ShopViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.mvvm_item_shop, parent, false));
         return viewHolder;
     }
 

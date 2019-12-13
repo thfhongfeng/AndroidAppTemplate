@@ -12,14 +12,11 @@ import java.util.List;
  */
 
 public abstract class BaseNoPaginationTreeListAdapter<T> extends BaseListAdapter {
+    protected List<T> mOriginData;
     protected List<BaseListAdapterItemEntity<T>> mData = new ArrayList<>();
 
     public BaseNoPaginationTreeListAdapter() {
 
-    }
-
-    public BaseNoPaginationTreeListAdapter(int defaultItemViewType) {
-        super(defaultItemViewType);
     }
 
     public final void enableEmptyComplete(boolean enableEmptyView,
@@ -79,7 +76,7 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends BaseListAdapter
         int dataIndex = position - getHeadViewCount();
         BaseListAdapterItemEntity itemEntity = mData.get(dataIndex);
         return itemEntity != null && itemEntity.getPropertyEntity().getItemViewType() != DEFAULT_VIEW_HOLDER ?
-                itemEntity.getPropertyEntity().getItemViewType() : getDefaultItemViewType();
+                itemEntity.getPropertyEntity().getItemViewType() : getOriginDataItemViewType(dataIndex);
     }
 
     private boolean showInitLoadingView() {
@@ -112,6 +109,7 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends BaseListAdapter
 
     public final void setData(List<T> data) {
         onDataSet();
+        mOriginData = data;
         mData = parseTreeData(data, true);
         notifyDataSetChangedSafely();
     }
@@ -122,6 +120,11 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends BaseListAdapter
         if (parseData == null || parseData.size() == 0) {
             notifyDataSetChangedSafely();
             return;
+        }
+        if (mOriginData == null) {
+            mOriginData = newData;
+        } else {
+            mOriginData.addAll(newData);
         }
         if (mData == null) {
             mData = parseData;
@@ -135,6 +138,10 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends BaseListAdapter
 
     public List<BaseListAdapterItemEntity<T>> getAdapterData() {
         return mData;
+    }
+
+    public List<T> getOriginData() {
+        return mOriginData;
     }
 
     public abstract List<BaseListAdapterItemEntity<T>> parseTreeData(List<T> data, boolean reset);

@@ -45,6 +45,19 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            res.srcDirs += [
+                    'src/main/res/layouts/activity',
+                    'src/main/res/layouts/fragment',
+                    'src/main/res/layouts/widget',
+                    'src/main/res/layouts/dialog',
+                    'src/main/res/layouts/item'
+            ]
+            java.srcDirs = ['src/main/java']
+        }
+    }
+
     resourcePrefix "main_"
 }
 

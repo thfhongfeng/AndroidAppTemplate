@@ -22,15 +22,13 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     protected AtomicInteger mPageNo = new AtomicInteger(1);
     protected AtomicInteger mPageSize = new AtomicInteger(10);
     protected Boolean mHasMore = true;
+    protected List<T> mOriginFirstPartNoPaginationData;
     protected List<BaseListAdapterItemEntity<T>> mFirstPartNoPaginationData = new ArrayList<>();
+    protected List<B> mOriginSecondPartPaginationData;
     protected List<BaseListAdapterItemEntity<B>> mSecondPartPaginationData = new ArrayList<>();
 
     public BaseComplexListAdapter() {
 
-    }
-
-    public BaseComplexListAdapter(int defaultItemViewType) {
-        super(defaultItemViewType);
     }
 
     public final void setPage(int startPageNo, int pageSize) {
@@ -203,14 +201,20 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         return showErrorMoreView() && position != 0 && position == (topSize + bottomSize + getHeadViewCount());
     }
 
+    public final int getOriginDataItemViewType(int originDataPosition) {
+        return DEFAULT_VIEW_HOLDER;
+    }
+
     public final void setFirstPartData(List<T> data) {
         onDataSet();
+        mOriginFirstPartNoPaginationData = data;
         mFirstPartNoPaginationData = parseFirstPartData(data);
         notifyDataSetChangedSafely();
     }
 
     public final void setSecondPartData(List<B> data) {
         onSecondPartDataSet();
+        mOriginSecondPartPaginationData = data;
         mSecondPartPaginationData = parseSecondPartData(data);
         resetAndGetPageNo();
         mHasMore = mSecondPartPaginationData != null && mSecondPartPaginationData.size() >= getPageSize();
@@ -225,6 +229,11 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
             notifyDataSetChangedSafely();
             return;
         }
+        if (mOriginSecondPartPaginationData == null) {
+            mOriginSecondPartPaginationData = newData;
+        } else {
+            mOriginSecondPartPaginationData.addAll(newData);
+        }
         if (mSecondPartPaginationData == null) {
             mSecondPartPaginationData = parseData;
             resetAndGetPageNo();
@@ -236,6 +245,22 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
         }
         mHasMore = parseData.size() >= getPageSize();
         notifyDataSetChangedSafely();
+    }
+
+    public List<BaseListAdapterItemEntity<T>> getFirstPartNoPaginationAdapterData() {
+        return mFirstPartNoPaginationData;
+    }
+
+    public List<T> getOriginFirstPartNoPaginationData() {
+        return mOriginFirstPartNoPaginationData;
+    }
+
+    public List<BaseListAdapterItemEntity<B>> getSecondPartNoPaginationAdapterData() {
+        return mSecondPartPaginationData;
+    }
+
+    public List<B> getOriginSecondPartNoPaginationData() {
+        return mOriginSecondPartPaginationData;
     }
 
     public void resetAndGetPageNo() {

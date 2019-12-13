@@ -66,8 +66,8 @@ public class MvpShopPaginationListPresenter extends Presenter<IMvpShopPagination
     @Override
     public MvpShopListPaginationAdapter getListAdapter() {
         if (mMvpHomeItemAdapter == null) {
-            mMvpHomeItemAdapter = new MvpShopListPaginationAdapter(
-                    MvpShopListPaginationAdapter.SHOP_VIEW_HOLDER);
+            mMvpHomeItemAdapter = new MvpShopListPaginationAdapter();
+            mMvpHomeItemAdapter.enableInitLoading(true);
         }
         return mMvpHomeItemAdapter;
     }

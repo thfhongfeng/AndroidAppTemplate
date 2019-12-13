@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 
@@ -26,21 +25,11 @@ import com.pine.tool.router.RouterCommandType;
  */
 
 public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
-    public static final int BUSINESS_VIEW_HOLDER = 1;
-
-    public MainBusinessAdapter(int defaultItemViewType) {
-        super(defaultItemViewType);
-    }
 
     @Override
     public BaseListViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        BaseListViewHolder viewHolder = null;
-        switch (viewType) {
-            case BUSINESS_VIEW_HOLDER:
-                viewHolder = new BusinessViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.main_item_business, parent, false));
-                break;
-        }
+        BaseListViewHolder viewHolder = new BusinessViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.main_item_business, parent, false));
         return viewHolder;
     }
 

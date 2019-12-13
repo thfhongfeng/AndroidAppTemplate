@@ -80,6 +80,7 @@ public class MvvmShopTreeListFragment extends MvvmFragment<MvvmShopTreeListFragm
         mBinding.recycleView.setLayoutManager(linearLayoutManager);
         mBinding.recycleView.setHasFixedSize(true);
         mMvvmHomeItemAdapter = new MvvmShopListPaginationTreeAdapter();
+        mMvvmHomeItemAdapter.enableInitLoading(true);
         mMvvmHomeItemAdapter.setOnScrollListener(mBinding.recycleView,
                 new BaseListAdapter.IOnScrollListener() {
                     @Override

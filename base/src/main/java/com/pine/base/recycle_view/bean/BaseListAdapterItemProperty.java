@@ -1,12 +1,14 @@
 package com.pine.base.recycle_view.bean;
 
+import com.pine.base.recycle_view.adapter.BaseListAdapter;
+
 /**
  * Created by tanghongfeng on 2018/9/28
  */
 
 public class BaseListAdapterItemProperty {
     // item类别
-    private int itemViewType = -10000;
+    private int itemViewType = BaseListAdapter.DEFAULT_VIEW_HOLDER;
     // item是否需要显示
     private boolean isItemViewNeedShow = true;
     // item下属数量(用于多级列表)

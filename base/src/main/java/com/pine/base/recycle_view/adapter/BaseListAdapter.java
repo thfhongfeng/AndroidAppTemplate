@@ -27,7 +27,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     private final String TAG = LogUtils.makeLogTag(BaseListAdapter.class);
 
     // 默认ViewHolder
-    protected final static int DEFAULT_VIEW_HOLDER = -10000;
+    public final static int DEFAULT_VIEW_HOLDER = -10000;
     // 表头ViewHolder
     protected final static int HEAD_VIEW_HOLDER = -100000;
     // 初始状态ViewHolder（还未填充数据时展示的View）
@@ -53,7 +53,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     // Adapter当前第二部分是否处于初始状态（还未填充数据）
     protected boolean mIsSecondPartInitState = true;
     // 是否开启初始状态ViewHolder
-    protected boolean mEnableInitLoading = true;
+    protected boolean mEnableInitLoading = false;
     // 是否开启数据为空ViewHolder
     private boolean mEnableEmpty = true;
     // 是否开启加载更多ViewHolder
@@ -61,7 +61,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     // 是否开启全部数据加载完全ViewHolder
     private boolean mEnableComplete = true;
     // 是否开启第二部分初始状态ViewHolder
-    private boolean mEnableSecondPartInitLoading = true;
+    private boolean mEnableSecondPartInitLoading = false;
     // 是否开启第二部分为空ViewHolder
     private boolean mEnableSecondPartEmpty = true;
     // 是否开启数据为空ViewHolder
@@ -82,7 +82,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     private int mErrorAllLayoutId = R.layout.base_item_error;
     // 加载更多时发生错误ViewHolder默认布局
     private int mErrorMoreLayoutId = R.layout.base_item_error_more;
-    private int mDefaultItemViewType = DEFAULT_VIEW_HOLDER;
+
     // 表头View
     private View mHeadView = null;
 
@@ -97,10 +97,6 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
 
     public BaseListAdapter() {
 
-    }
-
-    public BaseListAdapter(int defaultItemViewType) {
-        mDefaultItemViewType = defaultItemViewType;
     }
 
     @NonNull
@@ -460,8 +456,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         mLayoutManager = null;
     }
 
-    public int getDefaultItemViewType() {
-        return mDefaultItemViewType;
+    public int getOriginDataItemViewType(int originDataPosition) {
+        return DEFAULT_VIEW_HOLDER;
     }
 
     // 必须在setData或者addData之后调用（即在数据设置完成之后调用）

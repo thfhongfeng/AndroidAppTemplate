@@ -45,6 +45,7 @@ public class MvpTravelNoteDetailPresenter extends Presenter<IMvpTravelNoteDetail
     public MvpTravelNoteDetailComplexAdapter getListAdapter() {
         if (mTravelNoteDetailAdapter == null) {
             mTravelNoteDetailAdapter = new MvpTravelNoteDetailComplexAdapter();
+            mTravelNoteDetailAdapter.enableInitLoading(true);
         }
         return mTravelNoteDetailAdapter;
     }

@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
+    protected List<T> mOriginData;
     protected List<BaseListAdapterItemEntity<T>> mData = new ArrayList<>();
     // 1: 表示第一页（计数从1开始）
     protected AtomicInteger mPageNo = new AtomicInteger(1);
@@ -25,10 +26,6 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
 
     public BasePaginationTreeListAdapter() {
 
-    }
-
-    public BasePaginationTreeListAdapter(int defaultItemViewType) {
-        super(defaultItemViewType);
     }
 
     public final void setPage(int startPageNo, int pageSize) {
@@ -98,7 +95,8 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
         }
         int dataIndex = position - getHeadViewCount();
         BaseListAdapterItemEntity itemEntity = mData.get(dataIndex);
-        return itemEntity.getPropertyEntity().getItemViewType();
+        return itemEntity != null && itemEntity.getPropertyEntity().getItemViewType() != DEFAULT_VIEW_HOLDER ?
+                itemEntity.getPropertyEntity().getItemViewType() : getOriginDataItemViewType(dataIndex);
     }
 
     private boolean showInitLoadingView() {
@@ -151,6 +149,7 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
 
     public final void setData(List<T> data) {
         onDataSet();
+        mOriginData = data;
         mData = parseTreeData(data, true);
         resetAndGetPageNo();
         mHasMore = mData != null && mData.size() >= getPageSize();
@@ -164,6 +163,11 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
             mHasMore = false;
             notifyDataSetChangedSafely();
             return;
+        }
+        if (mOriginData == null) {
+            mOriginData = newData;
+        } else {
+            mOriginData.addAll(newData);
         }
         if (mData == null) {
             mData = parseData;
@@ -180,6 +184,10 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
 
     public List<BaseListAdapterItemEntity<T>> getAdapterData() {
         return mData;
+    }
+
+    public List<T> getOriginData() {
+        return mOriginData;
     }
 
     public void resetAndGetPageNo() {

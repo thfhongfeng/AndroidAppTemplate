@@ -80,6 +80,7 @@ public class MvvmTravelNoteDetailActivity extends
         mBinding.recycleView.setLayoutManager(linearLayoutManager);
         mBinding.recycleView.setHasFixedSize(true);
         mTravelNoteDetailAdapter = new MvvmTravelNoteDetailComplexAdapter();
+        mTravelNoteDetailAdapter.enableInitLoading(true);
         mTravelNoteDetailAdapter.setOnScrollListener(mBinding.recycleView,
                 new BaseListAdapter.IOnScrollListener() {
                     @Override

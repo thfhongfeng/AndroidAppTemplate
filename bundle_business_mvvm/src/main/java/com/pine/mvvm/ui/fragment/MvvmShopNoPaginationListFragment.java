@@ -77,8 +77,8 @@ public class MvvmShopNoPaginationListFragment extends
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mBinding.recycleView.setLayoutManager(linearLayoutManager);
         mBinding.recycleView.setHasFixedSize(true);
-        mMvvmHomeItemAdapter = new MvvmShopListNoPaginationAdapter(
-                MvvmShopListNoPaginationAdapter.SHOP_VIEW_HOLDER);
+        mMvvmHomeItemAdapter = new MvvmShopListNoPaginationAdapter();
+        mMvvmHomeItemAdapter.enableInitLoading(true);
         mBinding.recycleView.setAdapter(mMvvmHomeItemAdapter);
         mBinding.swipeRefreshLayout.post(new Runnable() {
             @Override

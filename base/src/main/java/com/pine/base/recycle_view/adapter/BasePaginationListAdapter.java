@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
+    protected List<T> mOriginData;
     protected List<BaseListAdapterItemEntity<T>> mData = new ArrayList<>();
     // 1: 表示第一页（计数从1开始）
     protected AtomicInteger mPageNo = new AtomicInteger(1);
@@ -25,10 +26,6 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
 
     public BasePaginationListAdapter() {
 
-    }
-
-    public BasePaginationListAdapter(int defaultItemViewType) {
-        super(defaultItemViewType);
     }
 
     public final void setPage(int startPageNo, int pageSize) {
@@ -94,7 +91,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
         int dataIndex = position - getHeadViewCount();
         BaseListAdapterItemEntity itemEntity = mData.get(dataIndex);
         return itemEntity != null && itemEntity.getPropertyEntity().getItemViewType() != DEFAULT_VIEW_HOLDER ?
-                itemEntity.getPropertyEntity().getItemViewType() : getDefaultItemViewType();
+                itemEntity.getPropertyEntity().getItemViewType() : getOriginDataItemViewType(dataIndex);
     }
 
     private boolean showInitLoadingView() {
@@ -147,6 +144,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
 
     public final void setData(List<T> data) {
         onDataSet();
+        mOriginData = data;
         mData = parseData(data, true);
         resetAndGetPageNo();
         mHasMore = mData != null && mData.size() >= getPageSize();
@@ -160,6 +158,11 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
             mHasMore = false;
             notifyDataSetChangedSafely();
             return;
+        }
+        if (mOriginData == null) {
+            mOriginData = newData;
+        } else {
+            mOriginData.addAll(newData);
         }
         if (mData == null) {
             mData = parseData;
@@ -181,7 +184,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
             for (int i = 0; i < data.size(); i++) {
                 adapterEntity = new BaseListAdapterItemEntity();
                 adapterEntity.setData(data.get(i));
-                adapterEntity.getPropertyEntity().setItemViewType(getDefaultItemViewType());
+                adapterEntity.getPropertyEntity().setItemViewType(getOriginDataItemViewType(i));
                 adapterData.add(adapterEntity);
             }
         }
@@ -190,6 +193,10 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
 
     public List<BaseListAdapterItemEntity<T>> getAdapterData() {
         return mData;
+    }
+
+    public List<T> getOriginData() {
+        return mOriginData;
     }
 
     public void resetAndGetPageNo() {

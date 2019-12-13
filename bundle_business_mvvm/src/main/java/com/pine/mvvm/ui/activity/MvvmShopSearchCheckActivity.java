@@ -109,8 +109,8 @@ public class MvvmShopSearchCheckActivity extends
         mBinding.recycleView.setLayoutManager(linearLayoutManager);
         mBinding.recycleView.setHasFixedSize(true);
         mShopCheckListPaginationAdapter = new MvvmShopCheckListPaginationAdapter(
-                mViewModel.mInitBelongShopList,
-                MvvmShopCheckListPaginationAdapter.SHOP_CHECK_VIEW_HOLDER);
+                mViewModel.mInitBelongShopList);
+        mShopCheckListPaginationAdapter.enableInitLoading(true);
         mShopCheckListPaginationAdapter.setOnScrollListener(mBinding.recycleView,
                 new BaseListAdapter.IOnScrollListener() {
                     @Override

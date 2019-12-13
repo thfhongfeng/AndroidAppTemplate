@@ -83,8 +83,8 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
     public void init(@NonNull Activity activity, boolean canDelete) {
         init(activity, null, -1);
 
-        mUploadFileAdapter = new UploadFileAdapter(
-                UploadFileAdapter.UPLOAD_FILE_VIEW_HOLDER, false, canDelete, mMaxFileCount);
+        mUploadFileAdapter = new UploadFileAdapter(false, canDelete, mMaxFileCount);
+        mUploadFileAdapter.enableInitLoading(true);
         addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.dp_10)));
         if (getUploadFileType() != FileUploadComponent.TYPE_IMAGE) {
             mColumnSize = 1;
@@ -100,8 +100,8 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
                      @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
         init(activity, adapter, requestCodeSelectFile);
 
-        mUploadFileAdapter = new UploadFileAdapter(
-                UploadFileAdapter.UPLOAD_FILE_VIEW_HOLDER, true, canDelete, mMaxFileCount);
+        mUploadFileAdapter = new UploadFileAdapter(true, canDelete, mMaxFileCount);
+        mUploadFileAdapter.enableInitLoading(true);
         addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.dp_10)));
         if (getUploadFileType() != FileUploadComponent.TYPE_IMAGE) {
             mColumnSize = 1;
@@ -254,13 +254,11 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
     }
 
     public class UploadFileAdapter extends BaseNoPaginationListAdapter<FileUploadBean> {
-        public static final int UPLOAD_FILE_VIEW_HOLDER = 1;
         private boolean mCanUpload, mCanDelete;
         private int mMaxFileCount;
 
-        public UploadFileAdapter(int defaultItemViewType, boolean canUpload,
+        public UploadFileAdapter(boolean canUpload,
                                  boolean canDelete, int maxFileCount) {
-            super(defaultItemViewType);
             mCanUpload = canUpload;
             mCanDelete = canDelete;
             mMaxFileCount = maxFileCount;
@@ -272,15 +270,12 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
             List<BaseListAdapterItemEntity<FileUploadBean>> adapterData = new ArrayList<>();
             BaseListAdapterItemEntity adapterEntity;
             if (mCanUpload && reset) {
-                adapterEntity = new BaseListAdapterItemEntity();
-                adapterEntity.getPropertyEntity().setItemViewType(getDefaultItemViewType());
-                adapterData.add(adapterEntity);
+                adapterData.add(new BaseListAdapterItemEntity());
             }
             if (data != null) {
                 for (int i = 0; i < data.size(); i++) {
                     adapterEntity = new BaseListAdapterItemEntity();
                     adapterEntity.setData(data.get(i));
-                    adapterEntity.getPropertyEntity().setItemViewType(getDefaultItemViewType());
                     adapterData.add(adapterEntity);
                 }
             }
@@ -366,17 +361,13 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
 
         @Override
         public BaseListViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            BaseListViewHolder viewHolder = null;
-            switch (viewType) {
-                case UPLOAD_FILE_VIEW_HOLDER:
-                    if (getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
-                        viewHolder = new UploadFileViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.base_item_upload_image, parent, false));
-                    } else {
-                        viewHolder = new UploadFileViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.base_item_upload_file, parent, false));
-                    }
-                    break;
+            BaseListViewHolder viewHolder;
+            if (getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
+                viewHolder = new UploadFileViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.base_item_upload_image, parent, false));
+            } else {
+                viewHolder = new UploadFileViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.base_item_upload_file, parent, false));
             }
             return viewHolder;
         }

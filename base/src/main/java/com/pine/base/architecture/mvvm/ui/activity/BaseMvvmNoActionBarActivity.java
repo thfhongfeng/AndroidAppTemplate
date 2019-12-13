@@ -81,14 +81,4 @@ public abstract class BaseMvvmNoActionBarActivity<T extends ViewDataBinding, VM 
         hideSoftInputFromWindow();
         findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
-
-    @Override
-    protected void init(Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    protected void afterInit() {
-        super.afterInit();
-    }
 }

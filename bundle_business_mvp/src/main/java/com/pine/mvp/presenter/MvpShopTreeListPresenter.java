@@ -33,6 +33,7 @@ public class MvpShopTreeListPresenter extends Presenter<IMvpShopTreeListContract
     public MvpShopListPaginationTreeAdapter getListAdapter() {
         if (mMvpHomeItemAdapter == null) {
             mMvpHomeItemAdapter = new MvpShopListPaginationTreeAdapter();
+            mMvpHomeItemAdapter.enableInitLoading(true);
         }
         return mMvpHomeItemAdapter;
     }

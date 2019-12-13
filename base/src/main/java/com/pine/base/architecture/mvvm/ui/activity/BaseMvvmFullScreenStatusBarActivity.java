@@ -80,14 +80,4 @@ public abstract class BaseMvvmFullScreenStatusBarActivity<T extends ViewDataBind
         hideSoftInputFromWindow();
         findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
-
-    @Override
-    protected void init(Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    protected void afterInit() {
-        super.afterInit();
-    }
 }

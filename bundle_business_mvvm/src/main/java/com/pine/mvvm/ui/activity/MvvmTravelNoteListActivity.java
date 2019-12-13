@@ -78,8 +78,8 @@ public class MvvmTravelNoteListActivity extends
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mBinding.recycleView.setLayoutManager(linearLayoutManager);
         mBinding.recycleView.setHasFixedSize(true);
-        mMvvmTravelListItemAdapter = new MvvmTravelNoteListPaginationAdapter(
-                MvvmTravelNoteListPaginationAdapter.TRAVEL_NOTE_VIEW_HOLDER);
+        mMvvmTravelListItemAdapter = new MvvmTravelNoteListPaginationAdapter();
+        mMvvmTravelListItemAdapter.enableInitLoading(true);
         View headView = LayoutInflater.from(this).inflate(R.layout.mvvm_item_travle_note_list_head, null);
         mMvvmTravelListItemAdapter.setHeadView(headView);
         mMvvmTravelListItemAdapter.setOnScrollListener(mBinding.recycleView,

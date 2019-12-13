@@ -68,8 +68,8 @@ public class MvvmShopPaginationListFragment extends
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mBinding.recycleView.setLayoutManager(linearLayoutManager);
         mBinding.recycleView.setHasFixedSize(true);
-        mMvvmHomeItemAdapter = new MvvmShopListPaginationAdapter(
-                MvvmShopListPaginationAdapter.SHOP_VIEW_HOLDER);
+        mMvvmHomeItemAdapter = new MvvmShopListPaginationAdapter();
+        mMvvmHomeItemAdapter.enableInitLoading(true);
         mMvvmHomeItemAdapter.setOnScrollListener(mBinding.recycleView,
                 new BaseListAdapter.IOnScrollListener() {
                     @Override

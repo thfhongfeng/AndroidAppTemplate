@@ -13,14 +13,12 @@ import android.widget.TextView;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BasePaginationListAdapter;
-import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import com.pine.mvp.R;
 import com.pine.mvp.bean.MvpShopItemEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,14 +26,12 @@ import java.util.Map;
  */
 
 public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter<MvpShopItemEntity> {
-    public static final int SHOP_CHECK_VIEW_HOLDER = 1;
     private boolean mIsSearchMode;
     private ArrayList<MvpShopItemEntity> mInitCheckedList;
     private Map<String, MvpShopItemEntity> mAllCheckedMap = new HashMap<>();
     private Map<String, MvpShopItemEntity> mSearchModeCheckedMap = new HashMap<>();
 
-    public MvpShopCheckListPaginationAdapter(ArrayList<MvpShopItemEntity> initCheckedList, int defaultItemViewType) {
-        super(defaultItemViewType);
+    public MvpShopCheckListPaginationAdapter(ArrayList<MvpShopItemEntity> initCheckedList) {
         mInitCheckedList = initCheckedList;
         if (mInitCheckedList != null) {
             for (int j = mInitCheckedList.size() - 1; j >= 0; j--) {
@@ -47,13 +43,8 @@ public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter
 
     @Override
     public BaseListViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        BaseListViewHolder viewHolder = null;
-        switch (viewType) {
-            case SHOP_CHECK_VIEW_HOLDER:
-                viewHolder = new ShopCheckViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.mvp_item_shop_check, parent, false));
-                break;
-        }
+        BaseListViewHolder viewHolder = new ShopCheckViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.mvp_item_shop_check, parent, false));
         return viewHolder;
     }
 
@@ -61,22 +52,6 @@ public class MvpShopCheckListPaginationAdapter extends BasePaginationListAdapter
         mIsSearchMode = isSearchMode;
         mSearchModeCheckedMap.clear();
         setData(data);
-    }
-
-    @Override
-    protected List<BaseListAdapterItemEntity<MvpShopItemEntity>> parseData(List<MvpShopItemEntity> data, boolean reset) {
-        List<BaseListAdapterItemEntity<MvpShopItemEntity>> adapterData = new ArrayList<>();
-        if (data != null) {
-            BaseListAdapterItemEntity adapterEntity;
-            for (int i = 0; i < data.size(); i++) {
-                adapterEntity = new BaseListAdapterItemEntity();
-                MvpShopItemEntity entity = data.get(i);
-                adapterEntity.setData(entity);
-                adapterEntity.getPropertyEntity().setItemViewType(getDefaultItemViewType());
-                adapterData.add(adapterEntity);
-            }
-        }
-        return adapterData;
     }
 
     public Map<String, MvpShopItemEntity> getAllCheckedData() {

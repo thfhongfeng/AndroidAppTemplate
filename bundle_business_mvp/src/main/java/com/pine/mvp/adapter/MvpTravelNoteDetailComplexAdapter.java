@@ -35,10 +35,6 @@ public class MvpTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<Mv
 
     }
 
-    public MvpTravelNoteDetailComplexAdapter(int defaultItemViewType) {
-        super(defaultItemViewType);
-    }
-
     @Override
     public List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> parseFirstPartData(List<MvpTravelNoteDetailEntity> data) {
         List<BaseListAdapterItemEntity<MvpTravelNoteDetailEntity>> adapterData = new ArrayList<>();
