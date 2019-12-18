@@ -19,12 +19,6 @@ public class ImageCodeBuilder {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     };
-
-    private static ImageCodeBuilder mCodeUtils;
-    private int mPaddingLeft, mPaddingTop;
-    private StringBuilder mStringBuilder = new StringBuilder();
-    private Random mRandom = new Random();
-
     //Default Settings
     private static final int DEFAULT_CODE_LENGTH = 4;//验证码的长度  这里是4位
     private static final int DEFAULT_FONT_SIZE = 40;//字体大小
@@ -36,6 +30,10 @@ public class ImageCodeBuilder {
     private static final int DEFAULT_WIDTH = 120;//默认宽度.图片的总宽
     private static final int DEFAULT_HEIGHT = 60;//默认高度.图片的总高
     private static final String DEFAULT_COLOR = "#FFFFFF";//默认背景颜色值
+    private static ImageCodeBuilder mCodeUtils;
+    private int mPaddingLeft, mPaddingTop;
+    private StringBuilder mStringBuilder = new StringBuilder();
+    private Random mRandom = new Random();
 
     public static ImageCodeBuilder getInstance() {
         if (mCodeUtils == null) {

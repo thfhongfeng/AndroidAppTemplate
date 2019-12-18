@@ -5,6 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.pine.tool.util.type.ParameterizedTypeImpl;
+
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -247,12 +254,28 @@ public class SharePreferenceUtils {
         return readLong(context, CACHE_SP, key, def);
     }
 
-    public static Set<String> readSetStringLongFromCache(String key, Set<String> def) {
+    public static Set<String> readSetStringFromCache(String key, Set<String> def) {
         return readStringSet(mApplication, CACHE_SP, key, def);
     }
 
-    public static Set<String> readSetStringLongFromCache(Context context, String key, Set<String> def) {
+    public static Set<String> readSetStringFromCache(Context context, String key, Set<String> def) {
         return readStringSet(context, CACHE_SP, key, def);
+    }
+
+    public static <T> List<T> readListFromCache(String key, Class<T> clazz) {
+        return readList(mApplication, CACHE_SP, key, clazz);
+    }
+
+    public static <T> List<T> readListFromCache(Context context, String key, Class<T> clazz) {
+        return readList(context, CACHE_SP, key, clazz);
+    }
+
+    public static <K, V> Map<K, V> readMapFromCache(String key, Class<K> clazzK, Class<V> clazzV) {
+        return readMap(mApplication, CACHE_SP, key, clazzK, clazzV);
+    }
+
+    public static <K, V> Map<K, V> readMapFromCache(Context context, String key, Class<K> clazzK, Class<V> clazzV) {
+        return readMap(context, CACHE_SP, key, clazzK, clazzV);
     }
 
     public static String readStringFromConfig(String key, String def) {
@@ -295,12 +318,28 @@ public class SharePreferenceUtils {
         return readLong(context, CONFIG_SP, key, def);
     }
 
-    public static Set<String> readSetStringLongFromConfig(String key, Set<String> def) {
+    public static Set<String> readSetStringFromConfig(String key, Set<String> def) {
         return readStringSet(mApplication, CONFIG_SP, key, def);
     }
 
-    public static Set<String> readSetStringLongFromConfig(Context context, String key, Set<String> def) {
+    public static Set<String> readSetStringFromConfig(Context context, String key, Set<String> def) {
         return readStringSet(context, CONFIG_SP, key, def);
+    }
+
+    public static <T> List<T> readListFromConfig(String key, Class<T> clazz) {
+        return readList(mApplication, CONFIG_SP, key, clazz);
+    }
+
+    public static <T> List<T> readListFromConfig(Context context, String key, Class<T> clazz) {
+        return readList(context, CONFIG_SP, key, clazz);
+    }
+
+    public static <K, V> Map<K, V> readMapFromConfig(String key, Class<K> clazzK, Class<V> clazzV) {
+        return readMap(mApplication, CONFIG_SP, key, clazzK, clazzV);
+    }
+
+    public static <K, V> Map<K, V> readMapFromConfig(Context context, String key, Class<K> clazzK, Class<V> clazzV) {
+        return readMap(context, CONFIG_SP, key, clazzK, clazzV);
     }
 
     public static String readStringFromAppLivedCache(String key, String def) {
@@ -343,12 +382,28 @@ public class SharePreferenceUtils {
         return readLong(context, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static Set<String> readSetStringLongFromAppLivedCache(String key, Set<String> def) {
+    public static Set<String> readSetStringFromAppLivedCache(String key, Set<String> def) {
         return readStringSet(mApplication, APP_LIVED_CACHE_SP, key, def);
     }
 
-    public static Set<String> readSetStringLongFromAppLivedCache(Context context, String key, Set<String> def) {
+    public static Set<String> readSetStringFromAppLivedCache(Context context, String key, Set<String> def) {
         return readStringSet(context, APP_LIVED_CACHE_SP, key, def);
+    }
+
+    public static <T> List<T> readListFromAppLivedCache(String key, Class<T> clazz) {
+        return readList(mApplication, APP_LIVED_CACHE_SP, key, clazz);
+    }
+
+    public static <T> List<T> readListFromAppLivedCache(Context context, String key, Class<T> clazz) {
+        return readList(context, APP_LIVED_CACHE_SP, key, clazz);
+    }
+
+    public static <K, V> Map<K, V> readMapFromCAppLivedCache(String key, Class<K> clazzK, Class<V> clazzV) {
+        return readMap(mApplication, APP_LIVED_CACHE_SP, key, clazzK, clazzV);
+    }
+
+    public static <K, V> Map<K, V> readMapFromAppLivedCache(Context context, String key, Class<K> clazzK, Class<V> clazzV) {
+        return readMap(context, APP_LIVED_CACHE_SP, key, clazzK, clazzV);
     }
 
     /**
@@ -453,6 +508,10 @@ public class SharePreferenceUtils {
             saveLong(context, db, key, (long) value);
         } else if (value instanceof Set<?>) {
             saveStringSet(context, db, key, (Set<String>) value);
+        } else if (value instanceof List<?>) {
+            saveList(context, db, key, (List<?>) value);
+        } else if (value instanceof Map<?, ?>) {
+            saveMap(context, db, key, (Map<?, ?>) value);
         }
     }
 
@@ -559,6 +618,18 @@ public class SharePreferenceUtils {
         editor.commit();
     }
 
+    public static <T> void saveList(Context context, String db, String key, List<T> list) {
+        String json = new Gson().toJson(list, new TypeToken<List<T>>() {
+        }.getType());
+        saveString(context, db, key, json);
+    }
+
+    public static <K, V> void saveMap(Context context, String db, String key, Map<K, V> list) {
+        String json = new Gson().toJson(list, new TypeToken<Map<K, V>>() {
+        }.getType());
+        saveString(context, db, key, json);
+    }
+
     /**
      * 读取String数据
      *
@@ -653,6 +724,16 @@ public class SharePreferenceUtils {
     public static Set<String> readStringSet(Context context, String db, String key, Set<String> def) {
         SharedPreferences pref = context.getSharedPreferences(db, Context.MODE_PRIVATE);
         return pref.getStringSet(key, def);
+    }
+
+    public static <T> List<T> readList(Context context, String db, String key, Class<T> clazz) {
+        Type type = new ParameterizedTypeImpl(List.class, new Class[]{clazz});
+        return new Gson().fromJson(readString(context, db, key), type);
+    }
+
+    public static <K, V> Map<K, V> readMap(Context context, String db, String key, Class<K> clazzK, Class<V> clazzV) {
+        Type type = new ParameterizedTypeImpl(List.class, new Class[]{clazzK, clazzV});
+        return new Gson().fromJson(readString(context, db, key), type);
     }
 
     /**

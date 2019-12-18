@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -45,7 +46,7 @@ public class FileUtils {
      *
      * @param filePath    路径
      * @param charsetName The name of a supported {@link
-     *                    java.nio.charset.Charset </code>charset<code>}
+     *                    Charset </code>charset<code>}
      * @return if file not exist, return null, else return content of file
      * @throws RuntimeException if an error occurs while operator
      *                          BufferedReader
@@ -868,7 +869,7 @@ public class FileUtils {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             String fileType = MimeTypeMap.getSingleton()
-                    .getMimeTypeFromExtension(getFileExtensionFromPath(file.getPath()));
+                    .getMimeTypeFromExtension(getFileExtension(file.getPath()));
             intent.setDataAndType(Uri.fromFile(file), TextUtils.isEmpty(fileType) ? "*/*" : fileType);
             context.startActivity(intent);
         } catch (Exception ex) {
@@ -940,26 +941,52 @@ public class FileUtils {
         }
     }
 
-    public static String getFileExtensionFromPath(String filePath) {
-        if (!TextUtils.isEmpty(filePath)) {
-            int fragment = filePath.lastIndexOf('#');
-            if (fragment > 0) {
-                filePath = filePath.substring(0, fragment);
-            }
-            int query = filePath.lastIndexOf('?');
-            if (query > 0) {
-                filePath = filePath.substring(0, query);
-            }
-            int filenamePos = filePath.lastIndexOf('/');
-            String filename =
-                    0 <= filenamePos ? filePath.substring(filenamePos + 1) : filePath;
-            if (!filename.isEmpty()) {
-                int dotPos = filename.lastIndexOf('.');
-                if (0 <= dotPos) {
-                    return filename.substring(dotPos + 1);
+    /**
+     * 获取当前文件夹下所有文件 + 模糊查询（当不需要模糊查询时，queryStr传空或null即可）
+     * 1.当路径不存在时，map返回retType值为1
+     * 2.当路径为文件路径时，map返回retType值为2，文件名fileName值为文件名
+     * 3.当路径下有文件夹时，map返回retType值为3，文件名列表fileNameList，文件夹名列表folderNameList
+     *
+     * @param folderPath    路径
+     * @param nameSearchKey 模糊查询文件名字符串
+     * @param suffixList    指定文件后缀名集合
+     * @return
+     */
+    public static ArrayList<String> getFileList(String folderPath, String nameSearchKey, final String... suffixList) {
+        ArrayList<String> filePathList = new ArrayList<>();// 文件列表
+        File root = new File(folderPath);
+        if (root.exists()) {
+            if (root.isFile()) { // 路径为文件
+                filePathList.add(root.getPath());
+            } else { // 路径为文件夹
+                final String finalSearchKey = nameSearchKey == null ? "" : nameSearchKey;// 若queryStr传入为null,则替换为空（indexOf匹配值不能为null）
+                File files[] = root.listFiles(new FileFilter() {
+                    @Override
+                    public boolean accept(File file) {
+                        if (!file.isFile()) {
+                            return false;
+                        }
+                        boolean accept = false;
+                        if (suffixList != null && suffixList.length > 0) {
+                            for (String suffix : suffixList) {
+                                if (file.getPath().endsWith("." + suffix)) {
+                                    accept = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            accept = true;
+                        }
+                        return accept && file.getPath().indexOf(finalSearchKey) != -1;
+                    }
+                });
+                if (files != null && files.length > 0) {
+                    for (int i = 0; i < files.length; i++) {
+                        filePathList.add(files[i].getPath());
+                    }
                 }
             }
         }
-        return "";
+        return filePathList;
     }
 }

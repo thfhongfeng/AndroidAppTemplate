@@ -34,7 +34,13 @@ public class AndroidClassUtils {
     private static final int INIT_THREAD_COUNT = CPU_COUNT + 1;
     private static final int MAX_THREAD_COUNT = INIT_THREAD_COUNT;
     private static final long SURPLUS_THREAD_LIFE = 30L;
-
+    private static final String EXTRACTED_NAME_EXT = ".classes";
+    private static final String EXTRACTED_SUFFIX = ".zip";
+    private static final String SECONDARY_FOLDER_NAME = "code_cache" + File.separator + "secondary-dexes";
+    private static final String PREFS_FILE = "multidex.version";
+    private static final String KEY_DEX_NUMBER = "dex.number";
+    private static final int VM_WITH_MULTIDEX_VERSION_MAJOR = 2;
+    private static final int VM_WITH_MULTIDEX_VERSION_MINOR = 1;
     private static ThreadPoolExecutor mThreadPoolExecutor;
 
     public static ThreadPoolExecutor getThreadPoolExecutoInstance() {
@@ -52,17 +58,6 @@ public class AndroidClassUtils {
         }
         return mThreadPoolExecutor;
     }
-
-    private static final String EXTRACTED_NAME_EXT = ".classes";
-    private static final String EXTRACTED_SUFFIX = ".zip";
-
-    private static final String SECONDARY_FOLDER_NAME = "code_cache" + File.separator + "secondary-dexes";
-
-    private static final String PREFS_FILE = "multidex.version";
-    private static final String KEY_DEX_NUMBER = "dex.number";
-
-    private static final int VM_WITH_MULTIDEX_VERSION_MAJOR = 2;
-    private static final int VM_WITH_MULTIDEX_VERSION_MINOR = 1;
 
     private static SharedPreferences getMultiDexPreferences(Context context) {
         return context.getSharedPreferences(PREFS_FILE,
