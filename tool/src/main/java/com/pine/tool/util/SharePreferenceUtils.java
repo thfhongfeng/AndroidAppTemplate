@@ -723,6 +723,16 @@ public class SharePreferenceUtils {
      */
     public static Set<String> readStringSet(Context context, String db, String key, Set<String> def) {
         SharedPreferences pref = context.getSharedPreferences(db, Context.MODE_PRIVATE);
+        Set<String> value = pref.getStringSet(key, def);
+        try {
+            Set<String> retValue = value.getClass().newInstance();
+            retValue.addAll(value);
+            return retValue;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
         return pref.getStringSet(key, def);
     }
 
