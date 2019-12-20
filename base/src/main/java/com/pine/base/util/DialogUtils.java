@@ -123,19 +123,17 @@ public class DialogUtils {
         left_btn_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.onLeftBtnClick();
+                if (listener == null || !listener.onLeftBtnClick()) {
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
             }
         });
         right_btn_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.onRightBtnClick();
+                if (listener == null || !listener.onRightBtnClick()) {
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
             }
         });
         return dialog;
@@ -342,8 +340,8 @@ public class DialogUtils {
 
 
     public interface IActionListener {
-        void onLeftBtnClick();
+        boolean onLeftBtnClick();
 
-        void onRightBtnClick();
+        boolean onRightBtnClick();
     }
 }

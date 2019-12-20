@@ -132,13 +132,14 @@ public class MvpProductReleaseActivity extends
                         new InputTextDialog.IActionClickListener() {
 
                             @Override
-                            public void onSubmitClick(Dialog dialog, List<String> textList) {
+                            public boolean onSubmitClick(Dialog dialog, List<String> textList) {
                                 price_tv.setText(textList.get(0));
+                                return false;
                             }
 
                             @Override
-                            public void onCancelClick(Dialog dialog) {
-
+                            public boolean onCancelClick(Dialog dialog) {
+                                return false;
                             }
                         });
             }
@@ -151,13 +152,14 @@ public class MvpProductReleaseActivity extends
                         new InputTextDialog.IActionClickListener() {
 
                             @Override
-                            public void onSubmitClick(Dialog dialog, List<String> textList) {
+                            public boolean onSubmitClick(Dialog dialog, List<String> textList) {
                                 shelve_price_tv.setText(textList.get(0));
+                                return false;
                             }
 
                             @Override
-                            public void onCancelClick(Dialog dialog) {
-
+                            public boolean onCancelClick(Dialog dialog) {
+                                return false;
                             }
                         });
             }

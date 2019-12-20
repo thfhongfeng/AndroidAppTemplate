@@ -174,13 +174,14 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
                             getContext().getString(R.string.base_delete_content_confirm_msg),
                             new DialogUtils.IActionListener() {
                                 @Override
-                                public void onLeftBtnClick() {
-
+                                public boolean onLeftBtnClick() {
+                                    return false;
                                 }
 
                                 @Override
-                                public void onRightBtnClick() {
+                                public boolean onRightBtnClick() {
                                     removeView(view);
+                                    return false;
                                 }
                             });
                 }

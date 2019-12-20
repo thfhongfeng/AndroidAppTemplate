@@ -224,7 +224,7 @@ public class MvvmTravelNoteReleaseActivity extends
                         EditorInfo.TYPE_CLASS_NUMBER, new InputTextDialog.IActionClickListener() {
 
                             @Override
-                            public void onSubmitClick(Dialog dialog, List<String> textList) {
+                            public boolean onSubmitClick(Dialog dialog, List<String> textList) {
                                 if (textList != null && textList.size() > 0 &&
                                         !TextUtils.isEmpty(textList.get(0))) {
                                     mBinding.dayCountTv.setText(textList.get(0));
@@ -240,11 +240,12 @@ public class MvvmTravelNoteReleaseActivity extends
                                     mBinding.aevView.setSectionCount(MvvmTravelNoteReleaseActivity.this,
                                             count, titleList, mUploadAdapter);
                                 }
+                                return false;
                             }
 
                             @Override
-                            public void onCancelClick(Dialog dialog) {
-
+                            public boolean onCancelClick(Dialog dialog) {
+                                return false;
                             }
                         });
             }

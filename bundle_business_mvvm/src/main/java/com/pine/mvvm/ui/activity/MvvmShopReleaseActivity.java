@@ -231,15 +231,16 @@ public class MvvmShopReleaseActivity extends
                         EditorInfo.TYPE_CLASS_NUMBER, new InputTextDialog.IActionClickListener() {
 
                             @Override
-                            public void onSubmitClick(Dialog dialog, List<String> textList) {
+                            public boolean onSubmitClick(Dialog dialog, List<String> textList) {
                                 MvvmShopDetailEntity entity = mBinding.getShopDetail();
                                 entity.setMobile(textList.get(0));
                                 mBinding.setShopDetail(entity);
+                                return false;
                             }
 
                             @Override
-                            public void onCancelClick(Dialog dialog) {
-
+                            public boolean onCancelClick(Dialog dialog) {
+                                return false;
                             }
                         });
             }

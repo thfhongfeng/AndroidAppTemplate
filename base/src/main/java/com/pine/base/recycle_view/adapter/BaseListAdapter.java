@@ -778,4 +778,23 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     public interface IOnScrollListener {
         void onLoadMore();
     }
+
+    public IOnItemClickListener mItemClickListener;
+
+    public void setOnItemClickListener(IOnItemClickListener listener) {
+        mItemClickListener = listener;
+    }
+
+    /**
+     * @param <T> 自定义的传输数据类型
+     */
+    public interface IOnItemClickListener<T> {
+        /**
+         * @param view       被点击View
+         * @param position   被点击View所在item的position
+         * @param tag        被点击View的点击标识（用于区分item中不同部位的view点击事件）
+         * @param customData 自定义的传输数据
+         */
+        void onItemClick(View view, int position, String tag, T customData);
+    }
 }

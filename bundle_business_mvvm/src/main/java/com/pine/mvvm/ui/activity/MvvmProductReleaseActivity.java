@@ -121,13 +121,14 @@ public class MvvmProductReleaseActivity extends
                         new InputTextDialog.IActionClickListener() {
 
                             @Override
-                            public void onSubmitClick(Dialog dialog, List<String> textList) {
+                            public boolean onSubmitClick(Dialog dialog, List<String> textList) {
                                 mBinding.priceTv.setText(textList.get(0));
+                                return false;
                             }
 
                             @Override
-                            public void onCancelClick(Dialog dialog) {
-
+                            public boolean onCancelClick(Dialog dialog) {
+                                return false;
                             }
                         });
             }
@@ -143,13 +144,14 @@ public class MvvmProductReleaseActivity extends
                         new InputTextDialog.IActionClickListener() {
 
                             @Override
-                            public void onSubmitClick(Dialog dialog, List<String> textList) {
+                            public boolean onSubmitClick(Dialog dialog, List<String> textList) {
                                 mBinding.shelvePriceTv.setText(textList.get(0));
+                                return false;
                             }
 
                             @Override
-                            public void onCancelClick(Dialog dialog) {
-
+                            public boolean onCancelClick(Dialog dialog) {
+                                return false;
                             }
                         });
             }

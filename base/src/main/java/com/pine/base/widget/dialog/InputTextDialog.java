@@ -63,9 +63,9 @@ public class InputTextDialog extends Dialog {
     }
 
     public interface IActionClickListener {
-        void onSubmitClick(Dialog dialog, List<String> textList);
+        boolean onSubmitClick(Dialog dialog, List<String> textList);
 
-        void onCancelClick(Dialog dialog);
+        boolean onCancelClick(Dialog dialog);
     }
 
     public static class Builder {
@@ -118,9 +118,8 @@ public class InputTextDialog extends Dialog {
                 @Override
                 public void onClick(View v) {
                     hideKeyboard(input_et);
-                    dialog.dismiss();
-                    if (actionClickListener != null) {
-                        actionClickListener.onCancelClick(dialog);
+                    if (actionClickListener == null || !actionClickListener.onCancelClick(dialog)) {
+                        dialog.dismiss();
                     }
                 }
             });
@@ -128,12 +127,11 @@ public class InputTextDialog extends Dialog {
                 @Override
                 public void onClick(View v) {
                     hideKeyboard(input_et);
-                    dialog.dismiss();
-                    if (actionClickListener != null) {
-                        ArrayList<String> list = new ArrayList<>();
-                        list.add(input_et.getText().toString());
-                        list.add(input_et.getText().toString());
-                        actionClickListener.onSubmitClick(dialog, list);
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(input_et.getText().toString());
+                    list.add(input_et.getText().toString());
+                    if (actionClickListener == null || !actionClickListener.onSubmitClick(dialog, list)) {
+                        dialog.dismiss();
                     }
                 }
             });
@@ -212,9 +210,8 @@ public class InputTextDialog extends Dialog {
                 @Override
                 public void onClick(View v) {
                     hideKeyboard(input_et);
-                    dialog.dismiss();
-                    if (actionClickListener != null) {
-                        actionClickListener.onCancelClick(dialog);
+                    if (actionClickListener == null || !actionClickListener.onCancelClick(dialog)) {
+                        dialog.dismiss();
                     }
                 }
             });
@@ -222,12 +219,11 @@ public class InputTextDialog extends Dialog {
                 @Override
                 public void onClick(View v) {
                     hideKeyboard(input_et);
-                    dialog.dismiss();
-                    if (actionClickListener != null) {
-                        ArrayList<String> list = new ArrayList<>();
-                        list.add(input_et.getText().toString());
-                        list.add(((ThousandthNumberEditText) input_et).getOriginalText());
-                        actionClickListener.onSubmitClick(dialog, list);
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(input_et.getText().toString());
+                    list.add(((ThousandthNumberEditText) input_et).getOriginalText());
+                    if (actionClickListener == null || !actionClickListener.onSubmitClick(dialog, list)) {
+                        dialog.dismiss();
                     }
                 }
             });
