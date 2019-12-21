@@ -1,4 +1,4 @@
-package com.pine.base.architecture.mvp.ui.activity;
+package com.pine.base.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +11,7 @@ import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.architecture.mvp.ui.MvpActivity;
 
-public abstract class BaseMvpFullScreenStatusBarActivity<V extends IContract.Ui, P extends Presenter<V>>
+public abstract class BaseFullScreenStatusBarActivity<V extends IContract.Ui, P extends Presenter<V>>
         extends MvpActivity<V, P> implements IContract.Ui {
     private ImmersionBar mImmersionBar;
     private View mCustomRootView;
