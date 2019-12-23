@@ -106,7 +106,8 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
                     mContext.startActivity(intent);
                 }
             });
-
+            // 数据改变时立即刷新数据，解决DataBinding导致的刷新闪烁问题
+            mBinding.executePendingBindings();
         }
     }
 
@@ -130,6 +131,8 @@ public class MvvmShopListPaginationTreeAdapter extends BasePaginationTreeListAda
             mBinding.container.setVisibility(View.VISIBLE);
             mBinding.setProduct(content);
             mBinding.setShopProperty(propertyEntity);
+            // 数据改变时立即刷新数据，解决DataBinding导致的刷新闪烁问题
+            mBinding.executePendingBindings();
         }
     }
 }

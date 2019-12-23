@@ -66,6 +66,8 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
                             });
                 }
             });
+            // 数据改变时立即刷新数据，解决DataBinding导致的刷新闪烁问题
+            mBinding.executePendingBindings();
         }
     }
 }

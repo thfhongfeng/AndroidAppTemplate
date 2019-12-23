@@ -117,6 +117,8 @@ public class MvvmTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<M
         @Override
         public void updateData(MvvmTravelNoteDetailEntity content, BaseListAdapterItemProperty propertyEntity, int position) {
             mBinding.setTravelNoteDetail(content);
+            // 数据改变时立即刷新数据，解决DataBinding导致的刷新闪烁问题
+            mBinding.executePendingBindings();
         }
     }
 
@@ -133,6 +135,8 @@ public class MvvmTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<M
         @Override
         public void updateData(MvvmTravelNoteDetailEntity.DayBean content, BaseListAdapterItemProperty propertyEntity, int position) {
             mBinding.setTravelNoteDayDetail(content);
+            // 数据改变时立即刷新数据，解决DataBinding导致的刷新闪烁问题
+            mBinding.executePendingBindings();
         }
     }
 
@@ -162,6 +166,8 @@ public class MvvmTravelNoteDetailComplexAdapter extends BaseComplexListAdapter<M
         @Override
         public void updateData(MvvmTravelNoteCommentEntity content, BaseListAdapterItemProperty propertyEntity, int position) {
             mBinding.setTravelNoteComment(content);
+            // 数据改变时立即刷新数据，解决DataBinding导致的刷新闪烁问题
+            mBinding.executePendingBindings();
         }
     }
 }

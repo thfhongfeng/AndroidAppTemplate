@@ -52,6 +52,8 @@ public class MvvmShopListPaginationAdapter extends BasePaginationListAdapter {
                     mContext.startActivity(intent);
                 }
             });
+            // 数据改变时立即刷新数据，解决DataBinding导致的刷新闪烁问题
+            mBinding.executePendingBindings();
         }
     }
 }
