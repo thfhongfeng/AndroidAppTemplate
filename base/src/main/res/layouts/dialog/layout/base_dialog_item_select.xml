@@ -2,50 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:gravity="center"
     android:paddingLeft="@dimen/dp_10"
     android:paddingTop="@dimen/dp_10"
     android:paddingRight="@dimen/dp_10"
-    android:paddingBottom="@dimen/dp_20">
+    android:paddingBottom="@dimen/dp_40">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/dp_15">
 
         <TextView
             android:id="@+id/title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_5"
             android:background="@drawable/base_shape_round_white"
             android:gravity="center"
             android:padding="@dimen/dp_15"
-            android:textColor="#161616"
-            android:textSize="@dimen/sp_18" />
+            android:textColor="@color/dodger_blue"
+            android:textSize="@dimen/sp_17" />
 
-        <ListView
-            android:id="@+id/list_view"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/base_shape_round_white"
-            android:divider="#00000000"
-            android:dividerHeight="0dp"
-            android:scrollbars="none"></ListView>
+            android:background="@drawable/base_shape_round_white"></androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/cancel_btn_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             android:background="@drawable/base_shape_round_white"
             android:gravity="center"
             android:padding="@dimen/dp_15"
             android:text="@string/base_cancel"
-            android:textColor="#3B99FC"
-            android:textSize="@dimen/sp_18"
+            android:textColor="@color/dodger_blue"
+            android:textSize="@dimen/sp_16"
             android:textStyle="bold" />
 
     </LinearLayout>

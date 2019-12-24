@@ -259,6 +259,20 @@ public class DialogUtils {
      * @param context
      * @param title
      * @param itemTextList
+     * @param listener
+     * @return
+     */
+    public static SelectItemDialog createItemSelectDialog(final Context context, String title, String[] itemTextList,
+                                                          SelectItemDialog.IDialogSelectListener listener) {
+        return new SelectItemDialog.Builder(context).create(title, itemTextList, listener);
+    }
+
+    /**
+     * 元素选择弹出框
+     *
+     * @param context
+     * @param title
+     * @param itemTextList
      * @param currentPosition
      * @param listener
      * @return
@@ -266,6 +280,37 @@ public class DialogUtils {
     public static SelectItemDialog createItemSelectDialog(final Context context, String title, String[] itemTextList,
                                                           int currentPosition, SelectItemDialog.IDialogSelectListener listener) {
         return new SelectItemDialog.Builder(context).create(title, itemTextList, currentPosition, listener);
+    }
+
+    /**
+     * 元素选择弹出框
+     *
+     * @param context
+     * @param title
+     * @param itemImageList
+     * @param itemTextList
+     * @param listener
+     * @return
+     */
+    public static SelectItemDialog createItemSelectDialog(final Context context, String title, int[] itemImageList, String[] itemTextList,
+                                                          SelectItemDialog.IDialogSelectListener listener) {
+        return new SelectItemDialog.Builder(context).create(title, itemImageList, itemTextList, listener);
+    }
+
+    /**
+     * 元素选择弹出框
+     *
+     * @param context
+     * @param title
+     * @param itemImageList
+     * @param itemTextList
+     * @param currentPosition
+     * @param listener
+     * @return
+     */
+    public static SelectItemDialog createItemSelectDialog(final Context context, String title, int[] itemImageList, String[] itemTextList,
+                                                          int currentPosition, SelectItemDialog.IDialogSelectListener listener) {
+        return new SelectItemDialog.Builder(context).create(title, itemImageList, itemTextList, currentPosition, listener);
     }
 
     /**
@@ -281,6 +326,22 @@ public class DialogUtils {
     public static SelectMultiItemsDialog createMultiItemSelectDialog(final Context context, String title, String[] itemTextList,
                                                                      int[] selectPosArr, SelectMultiItemsDialog.IDialogSelectListener listener) {
         return new SelectMultiItemsDialog.Builder(context).create(title, itemTextList, selectPosArr, listener);
+    }
+
+    /**
+     * 元素选择（多选）弹出框
+     *
+     * @param context
+     * @param title
+     * @param itemImageList
+     * @param itemTextList
+     * @param selectPosArr
+     * @param listener
+     * @return
+     */
+    public static SelectMultiItemsDialog createMultiItemSelectDialog(final Context context, String title, int[] itemImageList, String[] itemTextList,
+                                                                     int[] selectPosArr, SelectMultiItemsDialog.IDialogSelectListener listener) {
+        return new SelectMultiItemsDialog.Builder(context).create(title, itemImageList, itemTextList, selectPosArr, listener);
     }
 
     /**

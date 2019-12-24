@@ -23,6 +23,7 @@
     <string name="base_cancel">取消</string>
     <string name="base_done">完成</string>
     <string name="base_confirm">确定</string>
+    <string name="base_affirm">确认</string>
     <string name="base_submit">提交</string>
     <string name="base_update">升级</string>
 

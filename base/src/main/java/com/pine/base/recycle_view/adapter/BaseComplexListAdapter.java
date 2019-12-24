@@ -188,7 +188,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
 
     private boolean isSecondPartEmptyView(int position) {
         int topSize = mFirstPartNoPaginationData == null ? 0 : mFirstPartNoPaginationData.size();
-        return showSecondPartEmptyView() && position != 0 && position == (topSize + getHeadViewCount());
+        return showSecondPartEmptyView() && position == (topSize + getHeadViewCount());
     }
 
     private boolean isErrorAllView(int position) {
