@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableRow;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -408,6 +409,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     /**
      * 当有数据被设置时回调
      */
+    @CallSuper
     protected void onDataSet() {
         mIsErrorState = false;
         mIsInitState = false;
@@ -418,6 +420,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     /**
      * 当有数据被设置时回调
      */
+    @CallSuper
     protected void onSecondPartDataSet() {
         mIsErrorState = false;
         mIsSecondPartInitState = false;
@@ -428,6 +431,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     /**
      * 当有数据被追加时回调
      */
+    @CallSuper
     protected void onDataAdd() {
         mIsErrorState = false;
     }
