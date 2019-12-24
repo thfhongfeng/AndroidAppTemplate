@@ -108,14 +108,13 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends BaseListAdapter
     }
 
     public final void setData(List<T> data) {
-        onDataSet();
         mOriginData = data;
         mData = parseTreeData(data, true);
+        onDataSet();
         notifyDataSetChangedSafely();
     }
 
     public final void addData(List<T> newData) {
-        onDataAdd();
         List<BaseListAdapterItemEntity<T>> parseData = parseTreeData(newData, false);
         if (parseData == null || parseData.size() == 0) {
             notifyDataSetChangedSafely();
@@ -133,6 +132,7 @@ public abstract class BaseNoPaginationTreeListAdapter<T> extends BaseListAdapter
                 mData.add(parseData.get(i));
             }
         }
+        onDataAdd();
         notifyDataSetChangedSafely();
     }
 

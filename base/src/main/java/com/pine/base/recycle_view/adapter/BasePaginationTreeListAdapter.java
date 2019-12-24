@@ -148,16 +148,15 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
     }
 
     public final void setData(List<T> data) {
-        onDataSet();
         mOriginData = data;
         mData = parseTreeData(data, true);
         resetAndGetPageNo();
         mHasMore = mData != null && mData.size() >= getPageSize();
+        onDataSet();
         notifyDataSetChangedSafely();
     }
 
     public final void addData(List<T> newData) {
-        onDataAdd();
         List<BaseListAdapterItemEntity<T>> parseData = parseTreeData(newData, false);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;
@@ -179,6 +178,7 @@ public abstract class BasePaginationTreeListAdapter<T> extends BaseListAdapter {
             mPageNo.incrementAndGet();
         }
         mHasMore = parseData.size() >= getPageSize();
+        onDataAdd();
         notifyDataSetChangedSafely();
     }
 

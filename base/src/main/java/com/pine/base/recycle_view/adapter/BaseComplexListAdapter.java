@@ -206,23 +206,22 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
     }
 
     public final void setFirstPartData(List<T> data) {
-        onDataSet();
         mOriginFirstPartNoPaginationData = data;
         mFirstPartNoPaginationData = parseFirstPartData(data);
+        onDataSet();
         notifyDataSetChangedSafely();
     }
 
     public final void setSecondPartData(List<B> data) {
-        onSecondPartDataSet();
         mOriginSecondPartPaginationData = data;
         mSecondPartPaginationData = parseSecondPartData(data);
         resetAndGetPageNo();
         mHasMore = mSecondPartPaginationData != null && mSecondPartPaginationData.size() >= getPageSize();
+        onSecondPartDataSet();
         notifyDataSetChangedSafely();
     }
 
     public final void addSecondPartData(List<B> newData) {
-        onDataAdd();
         List<BaseListAdapterItemEntity<B>> parseData = parseSecondPartData(newData);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;
@@ -244,6 +243,7 @@ public abstract class BaseComplexListAdapter<T, B> extends BaseListAdapter {
             mPageNo.incrementAndGet();
         }
         mHasMore = parseData.size() >= getPageSize();
+        onDataAdd();
         notifyDataSetChangedSafely();
     }
 
