@@ -12,8 +12,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.pine.base.R;
 
@@ -30,6 +28,8 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/30
@@ -148,7 +148,7 @@ public class ProvinceSelectDialog extends Dialog {
         public ProvinceSelectDialog create(IDialogDateSelected dialogSelect) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final ProvinceSelectDialog dialog = new ProvinceSelectDialog(context, R.style.BaseSelectDialogStyle);
+            final ProvinceSelectDialog dialog = new ProvinceSelectDialog(context, R.style.BaseDialogStyle);
             View layout = inflater.inflate(R.layout.base_dialog_locate_select, null);
             cancel_tv = layout.findViewById(R.id.cancel_tv);
             confirm_tv = layout.findViewById(R.id.confirm_tv);

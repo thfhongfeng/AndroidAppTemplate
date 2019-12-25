@@ -11,9 +11,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.StyleRes;
-
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.pine.base.R;
 
@@ -21,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 
 /**
  * Created by tanghongfeng on 2018/2/27.
@@ -86,7 +86,7 @@ public class DateSelectDialog extends Dialog {
             this.endMonth = endDate.get(Calendar.MONTH);
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final DateSelectDialog dialog = new DateSelectDialog(context, R.style.BaseSelectDialogStyle);
+            final DateSelectDialog dialog = new DateSelectDialog(context, R.style.BaseDialogStyle);
             View layout = inflater.inflate(R.layout.base_dialog_date_or_time_select, null);
             cancelBtn = (TextView) layout.findViewById(R.id.cancel_tv);
             confirmBtn = (TextView) layout.findViewById(R.id.confirm_tv);

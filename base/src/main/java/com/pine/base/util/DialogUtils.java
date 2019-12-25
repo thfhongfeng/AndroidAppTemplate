@@ -17,10 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
@@ -37,6 +33,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/7.
@@ -56,7 +56,7 @@ public class DialogUtils {
         LinearLayout layout = v.findViewById(R.id.dialog_loading_view);
         TextView tip_tv = v.findViewById(R.id.tip_tv);
         tip_tv.setText(msg);
-        Dialog loadingDialog = new Dialog(context, R.style.BaseDialogStyle);
+        Dialog loadingDialog = new Dialog(context, R.style.BaseCustomDialogStyle);
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,

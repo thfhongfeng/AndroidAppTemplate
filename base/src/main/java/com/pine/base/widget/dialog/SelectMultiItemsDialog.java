@@ -13,10 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.pine.base.R;
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.adapter.BaseNoPaginationListAdapter;
@@ -27,6 +23,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by tanghongfeng on 2018/10/24
@@ -92,7 +92,7 @@ public class SelectMultiItemsDialog extends Dialog {
                                              int[] selectPosArr, final IDialogSelectListener listener) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final SelectMultiItemsDialog dialog = new SelectMultiItemsDialog(context, R.style.BaseSelectItemDialog);
+            final SelectMultiItemsDialog dialog = new SelectMultiItemsDialog(context, R.style.BaseDialogStyle);
             View layout = inflater.inflate(R.layout.base_dialog_multi_item_select, null);
             dialog.setContentView(layout);
             title_tv = layout.findViewById(R.id.title_tv);

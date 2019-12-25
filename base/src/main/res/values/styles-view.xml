@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="BaseDialogStyle">
+    <style name="BaseCustomDialogStyle">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
         <item name="windowNoTitle">true</item>
@@ -12,7 +12,7 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="BaseSelectDialogStyle" parent="android:style/Theme.Dialog">
+    <style name="BaseDialogStyle" parent="android:style/Theme.Dialog">
         <item name="android:background">#00000000</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="windowNoTitle">true</item>
@@ -25,13 +25,6 @@
         <item name="windowNoTitle">true</item>
         <item name="android:layout_marginLeft">@dimen/dp_20</item>
         <item name="android:layout_marginRight">@dimen/dp_20</item>
-        <item name="android:windowIsFloating">true</item>
-    </style>
-
-    <style name="BaseSelectItemDialog" parent="android:style/Theme.Dialog">
-        <item name="android:background">#00000000</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
 </resources>
