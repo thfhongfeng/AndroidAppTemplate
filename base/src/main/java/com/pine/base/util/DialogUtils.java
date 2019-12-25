@@ -18,11 +18,13 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
+import com.pine.base.widget.dialog.CustomListDialog;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
 import com.pine.base.widget.dialog.ProgressDialog;
@@ -339,10 +341,27 @@ public class DialogUtils {
      * @param listener
      * @return
      */
-    public static SelectMultiItemsDialog createMultiItemSelectDialog(final Context context, String title, int[] itemImageList, String[] itemTextList,
+    public static SelectMultiItemsDialog createMultiItemSelectDialog(Context context, String title, int[] itemImageList, String[] itemTextList,
                                                                      int[] selectPosArr, SelectMultiItemsDialog.IDialogSelectListener listener) {
         return new SelectMultiItemsDialog.Builder(context).create(title, itemImageList, itemTextList, selectPosArr, listener);
     }
+
+    /**
+     * 自定义列表弹出框
+     *
+     * @param context
+     * @param titleLayoutId
+     * @param itemLayoutId
+     * @param itemList
+     * @param callback
+     * @param <T>
+     * @return
+     */
+    public static <T> CustomListDialog createCustomListDialog(Context context, int titleLayoutId, @LayoutRes int itemLayoutId,
+                                                              List<T> itemList, @NonNull CustomListDialog.IOnViewBindCallback<T> callback) {
+        return new CustomListDialog.Builder(context).create(titleLayoutId, itemLayoutId, itemList, callback);
+    }
+
 
     /**
      * 日期(年月日)选择弹出框

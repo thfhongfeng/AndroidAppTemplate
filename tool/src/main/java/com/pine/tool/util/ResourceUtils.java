@@ -7,8 +7,8 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.IdRes;
 
 public class ResourceUtils {
-    public static @IdRes
-    int[] getResIdArray(Context context, @ArrayRes int arrResId) {
+    @IdRes
+    public static int[] getResIdArray(Context context, @ArrayRes int arrResId) {
         TypedArray typedArray = context.getResources().obtainTypedArray(arrResId);
         int len = typedArray.length();
         int[] resIds = new int[len];

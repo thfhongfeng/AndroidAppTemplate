@@ -2,11 +2,12 @@ package com.pine.base.widget.dialog;
 
 import androidx.annotation.IdRes;
 
-public class SelectItemBean {
-    private @IdRes
-    int imgResId;
+public class SelectItemBean<T> {
+    @IdRes
+    private int imgResId;
     private String name;
     private String nameColor;
+    private T itemData;
 
     public SelectItemBean(String name) {
         this(-1, name, "");
@@ -48,5 +49,13 @@ public class SelectItemBean {
 
     public void setNameColor(String nameColor) {
         this.nameColor = nameColor;
+    }
+
+    public T getItemData() {
+        return itemData;
+    }
+
+    public void setItemData(T itemData) {
+        this.itemData = itemData;
     }
 }
