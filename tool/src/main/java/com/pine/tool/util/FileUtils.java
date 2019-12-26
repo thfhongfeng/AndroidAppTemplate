@@ -46,7 +46,7 @@ public class FileUtils {
      *
      * @param filePath    路径
      * @param charsetName The name of a supported {@link
-     *                    Charset </code>charset<code>}
+     *                    java.nio.charset.Charset </code>charset<code>}
      * @return if file not exist, return null, else return content of file
      * @throws RuntimeException if an error occurs while operator
      *                          BufferedReader

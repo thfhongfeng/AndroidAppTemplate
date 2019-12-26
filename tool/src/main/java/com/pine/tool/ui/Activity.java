@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.permission.easy.AppSettingsDialog;
 import com.pine.tool.permission.easy.AppSettingsDialogHolderActivity;
 import com.pine.tool.permission.easy.EasyPermissions;
+import com.pine.tool.util.FloatWindowPermissionUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.widget.ILifeCircleView;
 import com.pine.tool.widget.ILifeCircleViewContainer;
@@ -57,6 +60,7 @@ public abstract class Activity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks,
         ILifeCircleViewContainer {
     public final int REQUEST_ACCESS_PERMISSION = 33333;
+    public final int REQUEST_ACCESS_FLOAT_WINDOW_PERMISSION = 33336;
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     // UiAccess（比如需要登陆）是否检查通过，没有则结束当前界面；
     public boolean mUiAccessReady;
@@ -73,6 +77,8 @@ public abstract class Activity extends AppCompatActivity
     private Map<Integer, ILifeCircleView> mLifeCircleViewMap = new HashMap<>();
 
     private Bundle mOnCreateSavedInstanceState;
+
+    private boolean mFloatWindowPermissionReady = true;
 
     @CallSuper
     @Override
@@ -109,9 +115,20 @@ public abstract class Activity extends AppCompatActivity
         if (permissionsAnnotation != null) {
             String[] permissions = permissionsAnnotation.Permissions();
             if (permissions != null) {
-                if (!hasPermissions(permissions)) {
-                    mPermissionReady = false;
-                    requestPermission(REQUEST_ACCESS_PERMISSION, null, permissions);
+                List<String> validPermissions = new ArrayList<>();
+                for (String permission : permissions) {
+                    if (Settings.ACTION_MANAGE_OVERLAY_PERMISSION.equals(permission)) {
+                        mFloatWindowPermissionReady = FloatWindowPermissionUtils.hasPermission(this);
+                    } else {
+                        validPermissions.add(permission);
+                    }
+                }
+                if (validPermissions.size() > 0) {
+                    String[] validPermissionArr = validPermissions.toArray(new String[0]);
+                    if (!hasPermissions(validPermissionArr)) {
+                        mPermissionReady = false;
+                        requestPermission(REQUEST_ACCESS_PERMISSION, null, validPermissionArr);
+                    }
                 }
             }
         }
@@ -154,8 +171,14 @@ public abstract class Activity extends AppCompatActivity
     private void tryInitOnAllRestrictionReleased() {
         if (!mOnAllAccessRestrictionReleasedMethodCalled &&
                 mUiAccessReady && mPermissionReady) {
-            mOnAllAccessRestrictionReleasedMethodCalled = true;
-            onAllAccessRestrictionReleased();
+            if (mFloatWindowPermissionReady) {
+                mOnAllAccessRestrictionReleasedMethodCalled = true;
+                onAllAccessRestrictionReleased();
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, REQUEST_ACCESS_FLOAT_WINDOW_PERMISSION);
+            }
         }
     }
 
@@ -298,6 +321,14 @@ public abstract class Activity extends AppCompatActivity
                 } else {
                     onAllPermissionGranted(permRequestCode);
                 }
+            }
+        } else if (requestCode == REQUEST_ACCESS_FLOAT_WINDOW_PERMISSION) {
+            if (FloatWindowPermissionUtils.hasPermissionOnActivityResult(this)) {
+                mFloatWindowPermissionReady = true;
+                tryInitOnAllRestrictionReleased();
+            } else {
+                mFloatWindowPermissionReady = false;
+                finish();
             }
         }
 

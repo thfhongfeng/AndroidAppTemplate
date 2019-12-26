@@ -3,6 +3,8 @@ package com.pine.base.widget.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextUtils;
@@ -55,8 +57,19 @@ public class InputTextDialog extends Dialog {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (isShowing()) {
-                    mBuilder.showKeyboard(mBuilder.getInputEditText());
+                if (Looper.myLooper() != Looper.getMainLooper()) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isShowing()) {
+                                mBuilder.showKeyboard(mBuilder.getInputEditText());
+                            }
+                        }
+                    });
+                } else {
+                    if (isShowing()) {
+                        mBuilder.showKeyboard(mBuilder.getInputEditText());
+                    }
                 }
             }
         }, 100);

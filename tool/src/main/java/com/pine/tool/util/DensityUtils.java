@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 //常用单位转换的辅助类
 public class DensityUtils {
     public static final String TAG = LogUtils.makeLogTag(DensityUtils.class);
-    private static int[] deviceWidthHeight = new int[2];
 
     private DensityUtils() {
         throw new UnsupportedOperationException("cannot be instantiated");
@@ -107,6 +106,8 @@ public class DensityUtils {
         int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         view.measure(w, h);
     }
+
+    private static int[] deviceWidthHeight = new int[2];
 
     public static int[] getDeviceInfo(Context context) {
         if ((deviceWidthHeight[0] == 0) && (deviceWidthHeight[1] == 0)) {
