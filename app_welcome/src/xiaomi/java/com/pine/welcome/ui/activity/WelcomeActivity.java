@@ -14,6 +14,8 @@ import com.pine.welcome.remote.WelcomeRouterClient;
 import com.pine.welcome.vm.WelcomeVm;
 
 public class WelcomeActivity extends BaseMvvmNoActionBarActivity<WelcomeActivityBinding, WelcomeVm> {
+    private final static int WELCOME_STAY_MIN_TIME = 1000;
+    private long mStartTimeMillis;
 
     @Override
     public void observeInitLiveData(Bundle savedInstanceState) {
@@ -27,11 +29,14 @@ public class WelcomeActivity extends BaseMvvmNoActionBarActivity<WelcomeActivity
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        mStartTimeMillis = System.currentTimeMillis();
         Toast.makeText(this, "这是小米的客制化", Toast.LENGTH_SHORT).show();
         goMainHomeActivity();
     }
 
     private void goMainHomeActivity() {
+        long delay = WELCOME_STAY_MIN_TIME - (System.currentTimeMillis() - mStartTimeMillis);
+        delay = delay > 0 ? delay : 0;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -49,7 +54,7 @@ public class WelcomeActivity extends BaseMvvmNoActionBarActivity<WelcomeActivity
                     }
                 });
             }
-        }, 2000);
+        }, delay);
     }
 
     @Override

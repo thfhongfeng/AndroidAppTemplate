@@ -30,7 +30,8 @@ import com.pine.welcome.vm.LoadingVm;
 @PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE})
 public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivityBinding, LoadingVm> {
-    private final static long LOADING_MAX_TIME = 2000;
+    private final static int LOADING_STAY_MIN_TIME = 1000;
+    private final static int GO_NEXT_DELAY = 100;
     private long mStartTimeMillis;
     private Dialog mUpdateConfirmDialog;
     private ProgressDialog mUpdateProgressDialog;
@@ -179,7 +180,7 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
             if (isForce) {
                 finish();
             } else {
-                autoLogin(500);
+                autoLogin(GO_NEXT_DELAY);
             }
         }
     }
@@ -207,7 +208,7 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
     private void gotoNext(int delayTogo) {
         long delay = delayTogo;
         if (delayTogo <= 0) {
-            delay = LOADING_MAX_TIME - (System.currentTimeMillis() - mStartTimeMillis);
+            delay = LOADING_STAY_MIN_TIME - (System.currentTimeMillis() - mStartTimeMillis);
             delay = delay > 0 ? delay : 0;
         }
         new Handler().postDelayed(new Runnable() {
