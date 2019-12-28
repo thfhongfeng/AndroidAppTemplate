@@ -3,8 +3,6 @@ package com.pine.base.track;
 import android.content.Context;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-
 import com.pine.base.bean.AccountBean;
 import com.pine.base.db.entity.AppTrack;
 import com.pine.base.remote.BaseRouterClient;
@@ -15,6 +13,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 public class AppTrackManager {
     private final String TAG = LogUtils.makeLogTag(this.getClass());

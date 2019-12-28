@@ -1,7 +1,5 @@
 package com.pine.tool.request;
 
-import androidx.annotation.NonNull;
-
 import com.pine.tool.request.callback.UploadCallback;
 
 import java.io.File;
@@ -9,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/10.

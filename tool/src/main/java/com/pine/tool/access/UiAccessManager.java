@@ -2,11 +2,11 @@ package com.pine.tool.access;
 
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by tanghongfeng on 2018/9/16

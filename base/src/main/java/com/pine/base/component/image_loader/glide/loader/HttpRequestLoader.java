@@ -2,9 +2,6 @@ package com.pine.base.component.image_loader.glide.loader;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.bumptech.glide.load.Option;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -16,6 +13,9 @@ import com.pine.base.component.image_loader.IImageDownloadListener;
 import com.pine.tool.util.LogUtils;
 
 import java.io.InputStream;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by tanghongfeng on 2018/11/19

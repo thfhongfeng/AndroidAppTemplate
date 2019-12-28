@@ -25,8 +25,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import androidx.core.content.FileProvider;
-
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
@@ -49,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import androidx.core.content.FileProvider;
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
 
 public class CommonWebView extends WebView {

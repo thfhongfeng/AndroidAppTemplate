@@ -2,14 +2,14 @@ package com.pine.base.track;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import com.pine.base.db.DbRoomDatabase;
 import com.pine.base.db.dao.AppTrackDao;
 import com.pine.base.db.entity.AppTrack;
 import com.pine.tool.util.LogUtils;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 public class AppTrackRepository {
     private final String TAG = LogUtils.makeLogTag(this.getClass());

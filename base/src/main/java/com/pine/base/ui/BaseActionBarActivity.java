@@ -6,13 +6,12 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.Nullable;
-
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
 import com.pine.tool.ui.Activity;
+
+import androidx.annotation.CallSuper;
 
 public abstract class BaseActionBarActivity extends Activity {
     // 默认ActionBar布局类型
@@ -23,11 +22,6 @@ public abstract class BaseActionBarActivity extends Activity {
     public static final int ACTION_BAR_NO_GO_BACK_TAG = 0x0002;
     private int mActionBarTag = ACTION_BAR_TYPE_DEFAULT;
     private ImmersionBar mImmersionBar;
-
-    @Override
-    protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
-
-    }
 
     @Override
     protected final void setContentView(Bundle savedInstanceState) {

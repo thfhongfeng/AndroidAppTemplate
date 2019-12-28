@@ -2,10 +2,10 @@ package com.pine.tool.permission;
 
 import android.Manifest;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Size;
-
-import java.util.List;
 
 /**
  * Created by tanghongfeng on 2019/2/27

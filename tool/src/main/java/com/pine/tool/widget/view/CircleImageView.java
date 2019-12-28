@@ -17,12 +17,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 
+import com.pine.tool.R;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.widget.AppCompatImageView;
-
-import com.pine.tool.R;
 
 /**
  * Created by tanghongfeng on 2018/10/22

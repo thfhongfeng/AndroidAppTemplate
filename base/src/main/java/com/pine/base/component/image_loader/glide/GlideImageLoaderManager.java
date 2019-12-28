@@ -6,8 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -18,6 +16,8 @@ import com.pine.base.component.image_loader.glide.loader.HttpRequestLoader;
 import com.pine.tool.util.LogUtils;
 
 import java.io.File;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/11

@@ -3,11 +3,11 @@ package com.pine.base.component.uploader.ui;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.pine.base.component.uploader.FileUploadHelper;
 import com.pine.tool.util.LogUtils;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by tanghongfeng on 2018/11/13

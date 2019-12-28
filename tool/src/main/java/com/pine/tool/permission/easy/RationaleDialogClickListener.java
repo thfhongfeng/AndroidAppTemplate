@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 
-import androidx.fragment.app.Fragment;
-
 import com.pine.tool.permission.easy.helper.PermissionHelper;
 
 import java.util.Arrays;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * Click listener for either {@link RationaleDialogFragment} or {@link RationaleDialogFragmentCompat}.

@@ -3,12 +3,12 @@ package com.pine.base.binding.widget.custom.view;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.pine.base.component.uploader.ui.BaseImageUploadRecycleView;
+
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingAdapter;
 import androidx.databinding.InverseBindingListener;
-
-import com.pine.base.component.uploader.ui.BaseImageUploadRecycleView;
 
 public class BindingImageUploadRecycleView extends BaseImageUploadRecycleView {
     private InverseBindingListener bindingDataListener;

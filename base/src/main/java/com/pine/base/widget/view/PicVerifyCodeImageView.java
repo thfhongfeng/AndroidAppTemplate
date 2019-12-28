@@ -4,9 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
-
 import com.pine.base.component.image_loader.IImageDownloadListener;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.tool.util.LogUtils;
@@ -15,6 +12,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 /**
  * Created by tanghongfeng on 2018/11/15

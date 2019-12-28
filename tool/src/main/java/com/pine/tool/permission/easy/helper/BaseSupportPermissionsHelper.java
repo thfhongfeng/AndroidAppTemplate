@@ -2,12 +2,12 @@ package com.pine.tool.permission.easy.helper;
 
 import android.util.Log;
 
+import com.pine.tool.permission.easy.RationaleDialogFragmentCompat;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import com.pine.tool.permission.easy.RationaleDialogFragmentCompat;
 
 /**
  * Implementation of {@link PermissionHelper} for Support Library host classes.

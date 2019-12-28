@@ -2,11 +2,11 @@ package com.pine.base.component.uploader;
 
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
-
 import com.pine.base.component.uploader.bean.FileUploadBean;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2019/9/19.

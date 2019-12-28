@@ -5,11 +5,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.pine.tool.widget.IGestureView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
-
-import com.pine.tool.widget.IGestureView;
 
 /**
  * Created by tanghongfeng on 2019/10/10.

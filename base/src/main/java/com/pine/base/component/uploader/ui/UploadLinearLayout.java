@@ -4,10 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import androidx.annotation.Nullable;
-
 import com.pine.base.component.uploader.FileUploadHelper;
 import com.pine.tool.util.LogUtils;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by tanghongfeng on 2018/11/13

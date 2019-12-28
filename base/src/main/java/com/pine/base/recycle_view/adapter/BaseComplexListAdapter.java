@@ -2,9 +2,6 @@ package com.pine.base.recycle_view.adapter;
 
 import android.view.ViewGroup;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-
 import com.pine.base.recycle_view.BaseListViewHolder;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
@@ -12,6 +9,9 @@ import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/22

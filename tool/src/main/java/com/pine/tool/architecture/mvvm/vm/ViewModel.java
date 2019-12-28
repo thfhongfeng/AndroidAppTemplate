@@ -3,14 +3,14 @@ package com.pine.tool.architecture.mvvm.vm;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.pine.tool.architecture.state.UiState;
+import com.pine.tool.binding.data.ParametricLiveData;
+import com.pine.tool.util.LogUtils;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.MutableLiveData;
-
-import com.pine.tool.architecture.state.UiState;
-import com.pine.tool.binding.data.ParametricLiveData;
-import com.pine.tool.util.LogUtils;
 
 /**
  * Created by tanghongfeng on 2019/3/1

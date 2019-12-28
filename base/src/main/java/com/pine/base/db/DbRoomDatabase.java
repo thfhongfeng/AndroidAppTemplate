@@ -2,13 +2,6 @@ package com.pine.base.db;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import com.pine.base.db.dao.AppTrackDao;
 import com.pine.base.db.dao.DownloadInfoDao;
 import com.pine.base.db.entity.AppTrack;
@@ -20,6 +13,13 @@ import com.tencent.wcdb.database.SQLiteCipherSpec;
 import com.tencent.wcdb.room.db.WCDBOpenHelperFactory;
 
 import java.io.File;
+
+import androidx.annotation.NonNull;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {AppTrack.class, DownloadInfo.class}, version = 2, exportSchema = false)
 public abstract class DbRoomDatabase extends RoomDatabase {

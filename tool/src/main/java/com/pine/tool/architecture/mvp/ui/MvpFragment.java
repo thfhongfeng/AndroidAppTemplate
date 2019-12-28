@@ -3,9 +3,6 @@ package com.pine.tool.architecture.mvp.ui;
 import android.app.Activity;
 import android.os.Bundle;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.Nullable;
-
 import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.architecture.state.UiState;
@@ -13,6 +10,9 @@ import com.pine.tool.ui.Fragment;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
 
 /**
  * Created by tanghongfeng on 2018/9/12

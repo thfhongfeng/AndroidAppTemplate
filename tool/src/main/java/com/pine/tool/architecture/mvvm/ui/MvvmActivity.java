@@ -2,19 +2,19 @@ package com.pine.tool.architecture.mvvm.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.ui.Activity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 /**
  * Created by tanghongfeng on 2019/3/1
@@ -80,7 +80,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
 
     @CallSuper
     @Override
-    protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
+    protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         // 创建ViewModel{
         Type type = getClass().getGenericSuperclass();
         if (type instanceof ParameterizedType) {
@@ -96,6 +96,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         mViewModel.getToastResIdData().observe(this, mToastResIdDataObserver);
         mViewModel.getToastResData().observe(this, mToastResDataObserver);
         observeInitLiveData(savedInstanceState);
+        return false;
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.pine.tool.request;
 
-import androidx.annotation.NonNull;
-
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/10.

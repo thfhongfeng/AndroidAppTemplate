@@ -6,11 +6,11 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.util.Log;
 
+import com.pine.tool.permission.easy.RationaleDialogFragment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import androidx.core.app.ActivityCompat;
-
-import com.pine.tool.permission.easy.RationaleDialogFragment;
 
 /**
  * Permissions helper for {@link Activity}.

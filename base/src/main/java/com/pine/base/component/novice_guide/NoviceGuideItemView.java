@@ -17,9 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import com.pine.base.component.novice_guide.NoviceGuideView.GuideBean;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by tanghongfeng on 2019/1/11

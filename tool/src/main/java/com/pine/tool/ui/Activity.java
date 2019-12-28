@@ -10,14 +10,6 @@ import android.provider.Settings;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.Size;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.access.UiAccessTimeInterval;
@@ -38,6 +30,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by tanghongfeng on 2018/9/28
@@ -86,7 +86,11 @@ public abstract class Activity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mOnCreateSavedInstanceState = savedInstanceState;
         mOnAllAccessRestrictionReleasedMethodCalled = false;
-        beforeInitOnCreate(savedInstanceState);
+        if (beforeInitOnCreate(savedInstanceState)) {
+            finish();
+            return;
+        }
+
         setContentView(savedInstanceState);
 
         // 进入界面准入流程
@@ -140,9 +144,12 @@ public abstract class Activity extends AppCompatActivity
 
     /**
      * onCreate中前置初始化
+     *
+     * @param savedInstanceState
+     * @return true:中断启动；false:正常启动
      */
-    protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
-
+    protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
+        return false;
     }
 
     protected void setContentView(Bundle savedInstanceState) {

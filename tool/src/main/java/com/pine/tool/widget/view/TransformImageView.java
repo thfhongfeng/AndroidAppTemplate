@@ -15,11 +15,11 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
-
 import com.pine.tool.R;
 import com.pine.tool.widget.IGestureView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 
 /**

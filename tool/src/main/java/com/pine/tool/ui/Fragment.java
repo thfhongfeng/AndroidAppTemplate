@@ -11,13 +11,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.Size;
-import androidx.annotation.StringRes;
-import androidx.core.content.ContextCompat;
-
 import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.access.UiAccessTimeInterval;
@@ -32,6 +25,13 @@ import com.pine.tool.util.LogUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by tanghongfeng on 2018/9/28

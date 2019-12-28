@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
-import androidx.annotation.Nullable;
-
 import com.pine.base.R;
 import com.pine.base.component.uploader.FileUploadComponent;
 import com.pine.tool.util.LogUtils;
 
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by tanghongfeng on 2018/11/1

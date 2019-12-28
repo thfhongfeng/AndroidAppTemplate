@@ -7,8 +7,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 
-import androidx.annotation.NonNull;
-
 import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IResponseListener;
@@ -28,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/16

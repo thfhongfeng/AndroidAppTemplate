@@ -13,8 +13,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.pine.base.R;
 import com.pine.base.component.image_selector.ImageSelector;
 import com.pine.base.component.image_selector.ImageViewer;
@@ -34,6 +32,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2019/9/19.

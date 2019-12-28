@@ -2,10 +2,10 @@ package com.pine.tool.request;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/16

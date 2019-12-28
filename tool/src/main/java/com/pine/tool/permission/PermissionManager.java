@@ -3,9 +3,6 @@ package com.pine.tool.permission;
 import android.content.Context;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Size;
-
 import com.pine.tool.R;
 import com.pine.tool.permission.easy.AppSettingsDialog;
 import com.pine.tool.permission.easy.EasyPermissions;
@@ -14,6 +11,9 @@ import com.pine.tool.ui.Activity;
 import com.pine.tool.ui.Fragment;
 
 import java.util.Arrays;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
 
 /**
  * Created by tanghongfeng on 2019/2/28

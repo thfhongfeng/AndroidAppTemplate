@@ -4,8 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.pine.tool.R;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.IRequestManager.RequestType;
@@ -27,6 +25,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/7.

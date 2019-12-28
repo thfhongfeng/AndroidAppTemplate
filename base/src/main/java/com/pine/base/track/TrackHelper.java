@@ -3,8 +3,6 @@ package com.pine.base.track;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.base.db.entity.AppTrack;
@@ -20,6 +18,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 public class TrackHelper {
     private final String TAG = LogUtils.makeLogTag(this.getClass());

@@ -2,9 +2,9 @@ package com.pine.tool.access;
 
 import android.app.Activity;
 
-import androidx.fragment.app.Fragment;
-
 import java.util.HashMap;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by tanghongfeng on 2018/9/16

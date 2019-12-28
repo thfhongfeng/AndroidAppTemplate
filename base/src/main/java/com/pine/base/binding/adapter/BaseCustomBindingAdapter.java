@@ -1,11 +1,11 @@
 package com.pine.base.binding.adapter;
 
-import androidx.databinding.BindingAdapter;
-
 import com.pine.base.component.editor.bean.TextImageItemEntity;
 import com.pine.base.component.editor.ui.BaseTextImageDisplayView;
 
 import java.util.List;
+
+import androidx.databinding.BindingAdapter;
 
 // 对于名为android:zzz的属性，DataBinding库会自动尝试查找接受兼容类型作为参数的setZzz(arg)方法，
 // 但有些属性在android代码中有可能并没有对应的setter方法，这时候就需要提供自定义逻辑。

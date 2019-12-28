@@ -4,14 +4,14 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-
 import com.pine.base.R;
 import com.pine.base.component.image_loader.glide.GlideImageLoaderManager;
 import com.pine.config.BuildConfig;
 
 import java.io.File;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/12

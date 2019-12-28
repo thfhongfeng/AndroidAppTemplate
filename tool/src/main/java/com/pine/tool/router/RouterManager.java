@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-
 import com.pine.tool.util.AndroidClassUtils;
 import com.pine.tool.util.AppUtils;
 
 import java.io.IOException;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/12

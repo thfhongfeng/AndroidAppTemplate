@@ -6,6 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableRow;
 
+import com.pine.base.R;
+import com.pine.base.recycle_view.BaseListViewHolder;
+import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
+import com.pine.tool.util.LogUtils;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -14,11 +19,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.pine.base.R;
-import com.pine.base.recycle_view.BaseListViewHolder;
-import com.pine.base.recycle_view.bean.BaseListAdapterItemProperty;
-import com.pine.tool.util.LogUtils;
 
 /**
  * Created by tanghongfeng on 2018/9/28

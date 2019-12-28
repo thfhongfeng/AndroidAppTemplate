@@ -4,11 +4,11 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.annotation.DrawableRes;
-import androidx.databinding.BindingAdapter;
-
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.tool.util.LogUtils;
+
+import androidx.annotation.DrawableRes;
+import androidx.databinding.BindingAdapter;
 
 // 对于名为android:zzz的属性，DataBinding库会自动尝试查找接受兼容类型作为参数的setZzz(arg)方法，
 // 但有些属性在android代码中有可能并没有对应的setter方法，这时候就需要提供自定义逻辑。

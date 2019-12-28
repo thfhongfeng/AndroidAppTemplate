@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-
 import com.pine.tool.util.RegexUtils;
 import com.pine.tool.util.ViewActionUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 /**
  * Created by tanghongfeng on 2018/11/8

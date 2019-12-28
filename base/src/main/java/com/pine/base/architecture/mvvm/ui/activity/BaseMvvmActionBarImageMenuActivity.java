@@ -6,15 +6,15 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.CallSuper;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
 import com.pine.tool.architecture.mvvm.ui.MvvmActivity;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
+
+import androidx.annotation.CallSuper;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 
 public abstract class BaseMvvmActionBarImageMenuActivity<T extends ViewDataBinding, VM extends ViewModel>
         extends MvvmActivity<T, VM> {

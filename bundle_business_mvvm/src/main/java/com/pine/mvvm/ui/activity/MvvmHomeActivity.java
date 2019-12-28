@@ -7,9 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarImageMenuActivity;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
@@ -22,6 +19,9 @@ import com.pine.mvvm.ui.fragment.MvvmWebViewFragment;
 import com.pine.mvvm.vm.MvvmHomeVm;
 import com.pine.tool.adapter.TabFragmentPagerAdapter;
 import com.pine.tool.permission.PermissionsAnnotation;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by tanghongfeng on 2019/2/25
@@ -36,9 +36,10 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
     }
 
     @Override
-    protected void beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
+    protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         super.beforeInitOnCreate(savedInstanceState);
         setActionBarTag(ACTION_BAR_CENTER_TITLE_TAG | ACTION_BAR_NO_GO_BACK_TAG);
+        return false;
     }
 
     @Override

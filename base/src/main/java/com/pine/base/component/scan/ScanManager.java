@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-
 import com.pine.base.R;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * Created by tanghongfeng on 2019/11/28.

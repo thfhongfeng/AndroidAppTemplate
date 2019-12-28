@@ -4,14 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
 import com.pine.tool.architecture.mvvm.ui.MvvmActivity;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 
 /**
  * Created by tanghongfeng on 2019/3/1

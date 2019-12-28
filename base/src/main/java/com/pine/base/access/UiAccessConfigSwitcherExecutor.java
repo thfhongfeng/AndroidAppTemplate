@@ -3,14 +3,14 @@ package com.pine.base.access;
 import android.app.Activity;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
 import com.pine.base.R;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.access.IUiAccessExecutor;
 import com.pine.tool.access.UiAccessTimeInterval;
 
 import java.util.HashMap;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by tanghongfeng on 2018/9/16

@@ -8,16 +8,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-
 import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
 import java.lang.ref.WeakReference;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 /**
  * Created by tanghongfeng on 2018/9/12

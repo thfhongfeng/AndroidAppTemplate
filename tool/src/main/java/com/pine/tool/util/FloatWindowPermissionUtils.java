@@ -9,9 +9,9 @@ import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 
-import androidx.annotation.RequiresApi;
-
 import java.lang.reflect.Method;
+
+import androidx.annotation.RequiresApi;
 
 public class FloatWindowPermissionUtils {
     public static boolean hasPermission(Context context) {

@@ -17,9 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.image_selector.ImageViewer;
@@ -29,6 +26,9 @@ import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.widget.view.TransformImageView;
 
 import java.util.ArrayList;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 @PermissionsAnnotation(Permissions = {Manifest.permission.READ_EXTERNAL_STORAGE})
 public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {

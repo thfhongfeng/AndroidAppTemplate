@@ -5,9 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.bean.UriListShareBean;
 import com.pine.base.component.share.bean.UrlTextShareBean;
@@ -20,6 +17,9 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import java.util.ArrayList;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/11

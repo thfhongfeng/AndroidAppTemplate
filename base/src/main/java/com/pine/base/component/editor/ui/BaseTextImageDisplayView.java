@@ -9,9 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.pine.base.R;
 import com.pine.base.component.editor.bean.TextImageEntity;
 import com.pine.base.component.editor.bean.TextImageItemEntity;
@@ -19,6 +16,9 @@ import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.tool.util.LogUtils;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.pine.base.component.editor.bean.TextImageItemEntity.TYPE_IMAGE;
 import static com.pine.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;

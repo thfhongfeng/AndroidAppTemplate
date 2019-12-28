@@ -1,13 +1,13 @@
 package com.pine.tool.request;
 
-import androidx.annotation.NonNull;
-
 import com.pine.tool.request.IRequestManager.ActionType;
 import com.pine.tool.request.IRequestManager.RequestType;
 import com.pine.tool.request.callback.AbstractBaseCallback;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/10.

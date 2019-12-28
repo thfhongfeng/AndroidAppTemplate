@@ -10,9 +10,9 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
-import androidx.appcompat.widget.AppCompatImageView;
-
 import com.pine.tool.R;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 /**
  * Created by tanghongfeng on 2018/10/10

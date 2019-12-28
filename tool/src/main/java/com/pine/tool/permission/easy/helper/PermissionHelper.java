@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-
-import java.util.List;
 
 /**
  * Delegate class to make permission calls based on the 'host' (Fragment, Activity, etc).

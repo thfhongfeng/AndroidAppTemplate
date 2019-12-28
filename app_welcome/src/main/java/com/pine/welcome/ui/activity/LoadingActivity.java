@@ -10,10 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.ProgressDialog;
@@ -27,6 +23,10 @@ import com.pine.welcome.databinding.LoadingActivityBinding;
 import com.pine.welcome.remote.WelcomeRouterClient;
 import com.pine.welcome.vm.LoadingVm;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+
 @PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE})
 public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivityBinding, LoadingVm> {
@@ -35,6 +35,12 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
     private long mStartTimeMillis;
     private Dialog mUpdateConfirmDialog;
     private ProgressDialog mUpdateProgressDialog;
+
+    @Override
+    protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
+        super.beforeInitOnCreate(savedInstanceState);
+        return !isTaskRoot();
+    }
 
     @Override
     public void observeInitLiveData(Bundle savedInstanceState) {

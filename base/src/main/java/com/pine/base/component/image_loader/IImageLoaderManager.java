@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import java.io.File;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-
-import java.io.File;
 
 /**
  * Created by tanghongfeng on 2018/10/12
