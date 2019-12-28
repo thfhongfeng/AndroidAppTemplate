@@ -63,12 +63,6 @@ public class CustomListDialog extends Dialog {
             dialog.getWindow().setAttributes(p); //设置生效
             dialog.setCancelable(true);
             dialog.setCanceledOnTouchOutside(true);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
 
             RelativeLayout title_rl = layout.findViewById(R.id.title_rl);
             RecyclerView recycle_view = layout.findViewById(R.id.recycle_view);
