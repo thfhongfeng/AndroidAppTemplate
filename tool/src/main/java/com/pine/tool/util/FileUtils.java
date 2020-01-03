@@ -1,6 +1,7 @@
 package com.pine.tool.util;
 
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +47,7 @@ public class FileUtils {
      *
      * @param filePath    路径
      * @param charsetName The name of a supported {@link
-     *                    java.nio.charset.Charset </code>charset<code>}
+     *                    Charset </code>charset<code>}
      * @return if file not exist, return null, else return content of file
      * @throws RuntimeException if an error occurs while operator
      *                          BufferedReader
@@ -942,17 +943,14 @@ public class FileUtils {
     }
 
     /**
-     * 获取当前文件夹下所有文件 + 模糊查询（当不需要模糊查询时，queryStr传空或null即可）
-     * 1.当路径不存在时，map返回retType值为1
-     * 2.当路径为文件路径时，map返回retType值为2，文件名fileName值为文件名
-     * 3.当路径下有文件夹时，map返回retType值为3，文件名列表fileNameList，文件夹名列表folderNameList
+     * 目录查找方式获取当前文件夹下所有文件 + 模糊查询（当不需要模糊查询时，nameSearchKey传空或null即可）
      *
      * @param folderPath    路径
      * @param nameSearchKey 模糊查询文件名字符串
-     * @param suffixList    指定文件后缀名集合
+     * @param suffixes      指定文件后缀名集合
      * @return
      */
-    public static ArrayList<String> getFileList(String folderPath, String nameSearchKey, final String... suffixList) {
+    public static ArrayList<String> getFileList(String folderPath, String nameSearchKey, final String... suffixes) {
         ArrayList<String> filePathList = new ArrayList<>();// 文件列表
         File root = new File(folderPath);
         if (root.exists()) {
@@ -967,9 +965,10 @@ public class FileUtils {
                             return false;
                         }
                         boolean accept = false;
-                        if (suffixList != null && suffixList.length > 0) {
-                            for (String suffix : suffixList) {
-                                if (file.getPath().endsWith("." + suffix)) {
+                        if (suffixes != null && suffixes.length > 0) {
+                            for (String suffix : suffixes) {
+                                suffix = '.' == suffix.charAt(0) ? suffix : "." + suffix;
+                                if (file.getPath().endsWith(suffix)) {
                                     accept = true;
                                     break;
                                 }
@@ -987,6 +986,53 @@ public class FileUtils {
                 }
             }
         }
+        return filePathList;
+    }
+
+    /**
+     * 系统接口方式获取所有文件 + 模糊查询（当不需要模糊查询时，nameSearchKey传空或null即可）
+     *
+     * @param context
+     * @param nameSearchKey
+     * @param suffixes
+     */
+    public static ArrayList<String> getFileListByMediaStore(Context context, String nameSearchKey, String... suffixes) {
+        ArrayList<String> filePathList = new ArrayList<>();// 文件列表
+        //从外存中获取
+        Uri uri = MediaStore.Files.getContentUri("external");
+        //筛选列，这里只筛选了：文件路径和不含后缀的文件名
+        String[] projection = new String[]{
+                MediaStore.Files.FileColumns.DATA, MediaStore.Files.FileColumns.TITLE
+        };
+        //构造筛选语句
+        String selection = "";
+        for (int i = 0; i < suffixes.length; i++) {
+            if (i != 0) {
+                selection = selection + " OR ";
+            }
+            String suffix = '.' == suffixes[i].charAt(0) ? suffixes[i] : "." + suffixes[i];
+            selection = selection + MediaStore.Files.FileColumns.DATA + " LIKE '%" + suffix + "'";
+        }
+        if (!TextUtils.isEmpty(nameSearchKey)) {
+            selection = "(" + selection + ") AND " + MediaStore.Files.FileColumns.DATA + " LIKE '%" + nameSearchKey + "%'";
+        }
+        //按时间递增顺序对结果进行排序;待会从后往前移动游标就可实现时间递减
+        String sortOrder = MediaStore.Files.FileColumns.DATE_MODIFIED;
+        //获取内容解析器对象
+        ContentResolver resolver = context.getContentResolver();
+        //获取游标
+        Cursor cursor = resolver.query(uri, projection, selection, null, sortOrder);
+        if (cursor != null) {
+            //游标从最后开始往前递减，以此实现时间递减顺序（最近访问的文件，优先显示）
+            if (cursor.moveToLast()) {
+                do {
+                    //输出文件的完整路径
+                    String data = cursor.getString(0);
+                    filePathList.add(data);
+                } while (cursor.moveToPrevious());
+            }
+        }
+        cursor.close();
         return filePathList;
     }
 }
