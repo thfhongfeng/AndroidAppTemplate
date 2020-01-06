@@ -144,7 +144,9 @@
     <color name="medium_blue">#0000CD</color><!--中兰色 -->
     <color name="dark_blue">#00008B</color><!--暗蓝色 -->
     <color name="navy">#000080</color><!--海军色 -->
-    <color name="black_gray">#666666</color><!--黑灰色 -->
-    <color name="dark_black_gray">#333333</color><!--暗黑灰色 -->
+    <color name="gray_black">#666666</color><!--黑灰色 -->
+    <color name="light_gray_black">#515151</color><!--亮灰黑色 -->
+    <color name="mid_gray_black">#333333</color><!--中灰黑色 -->
+    <color name="dark_gray_black">#2c2c2c</color><!--暗灰黑色 -->
     <color name="black">#000000</color><!--黑色 -->
 </resources>

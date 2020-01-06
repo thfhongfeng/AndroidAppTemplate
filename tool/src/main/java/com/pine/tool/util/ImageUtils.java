@@ -1,5 +1,6 @@
 package com.pine.tool.util;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -31,6 +32,14 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -41,14 +50,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.FloatRange;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
 /**
  * Created by tanghongfeng on 2018/9/7.
@@ -303,11 +304,12 @@ public class ImageUtils {
     /**
      * Return bitmap.
      *
-     * @param resId The resource id.
+     * @param context
+     * @param resId   The resource id.
      * @return bitmap
      */
-    public static Bitmap getBitmap(@DrawableRes final int resId) {
-        Drawable drawable = ContextCompat.getDrawable(AppUtils.getApplication(), resId);
+    public static Bitmap getBitmap(@NonNull Context context, @DrawableRes final int resId) {
+        Drawable drawable = ContextCompat.getDrawable(context, resId);
         Canvas canvas = new Canvas();
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
                 drawable.getIntrinsicHeight(),
@@ -321,16 +323,18 @@ public class ImageUtils {
     /**
      * Return bitmap.
      *
+     * @param context
      * @param resId     The resource id.
      * @param maxWidth  The maximum width.
      * @param maxHeight The maximum height.
      * @return bitmap
      */
-    public static Bitmap getBitmap(@DrawableRes final int resId,
+    public static Bitmap getBitmap(@NonNull Context context,
+                                   @DrawableRes final int resId,
                                    final int maxWidth,
                                    final int maxHeight) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        final Resources resources = AppUtils.getApplication().getResources();
+        final Resources resources = context.getResources();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(resources, resId, options);
         options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
