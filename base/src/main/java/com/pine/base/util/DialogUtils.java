@@ -18,9 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
@@ -38,6 +35,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/7.
@@ -415,6 +415,17 @@ public class DialogUtils {
 
     /**
      * 自定义列表弹出框
+     *
+     * @return
+     */
+    public static <T> CustomListDialog createBottomCustomListDialog(Context context, int titleLayoutId,
+                                                                    int itemLayoutId, boolean fillWidth,
+                                                                    T[] itemArr, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return createCustomListDialog(context, titleLayoutId, itemLayoutId, -1, Gravity.BOTTOM, fillWidth, itemArr, callback);
+    }
+
+    /**
+     * 自定义列表弹出框
      */
     public static <T> CustomListDialog createBottomCustomListDialog(Context context, String title,
                                                                     int itemLayoutId, int actionLayoutId,
@@ -425,10 +436,28 @@ public class DialogUtils {
     /**
      * 自定义列表弹出框
      */
+    public static <T> CustomListDialog createBottomCustomListDialog(Context context, String title,
+                                                                    int itemLayoutId, int actionLayoutId,
+                                                                    T[] itemArr, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return createCustomListDialog(context, title, itemLayoutId, actionLayoutId, Gravity.BOTTOM, false, itemArr, callback);
+    }
+
+    /**
+     * 自定义列表弹出框
+     */
     public static <T> CustomListDialog createFillWidthCustomListDialog(Context context, int titleLayoutId,
                                                                        int itemLayoutId, int layoutGravity,
                                                                        List<T> itemList, CustomListDialog.IOnViewBindCallback<T> callback) {
         return createCustomListDialog(context, titleLayoutId, itemLayoutId, -1, layoutGravity, true, itemList, callback);
+    }
+
+    /**
+     * 自定义列表弹出框
+     */
+    public static <T> CustomListDialog createFillWidthCustomListDialog(Context context, int titleLayoutId,
+                                                                       int itemLayoutId, int layoutGravity,
+                                                                       T[] itemArr, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return createCustomListDialog(context, titleLayoutId, itemLayoutId, -1, layoutGravity, true, itemArr, callback);
     }
 
     /**
@@ -451,6 +480,16 @@ public class DialogUtils {
         return new CustomListDialog.Builder(context).create(titleLayoutId, itemLayoutId, actionLayoutId, layoutGravity, fillWidth, itemList, callback);
     }
 
+    public static <T> CustomListDialog createCustomListDialog(Context context, int titleLayoutId, int itemLayoutId, int actionLayoutId,
+                                                              int layoutGravity, boolean fillWidth,
+                                                              T[] itemArr, CustomListDialog.IOnViewBindCallback<T> callback) {
+        List<T> itemList = new ArrayList<>();
+        for (T t : itemArr) {
+            itemList.add(t);
+        }
+        return new CustomListDialog.Builder(context).create(titleLayoutId, itemLayoutId, actionLayoutId, layoutGravity, fillWidth, itemList, callback);
+    }
+
     /**
      * 自定义列表弹出框
      *
@@ -468,6 +507,16 @@ public class DialogUtils {
     public static <T> CustomListDialog createCustomListDialog(Context context, String title, int itemLayoutId, int actionLayoutId,
                                                               int layoutGravity, boolean fillWidth,
                                                               List<T> itemList, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return new CustomListDialog.Builder(context).create(title, itemLayoutId, actionLayoutId, layoutGravity, fillWidth, itemList, callback);
+    }
+
+    public static <T> CustomListDialog createCustomListDialog(Context context, String title, int itemLayoutId, int actionLayoutId,
+                                                              int layoutGravity, boolean fillWidth,
+                                                              T[] itemArr, CustomListDialog.IOnViewBindCallback<T> callback) {
+        List<T> itemList = new ArrayList<>();
+        for (T t : itemArr) {
+            itemList.add(t);
+        }
         return new CustomListDialog.Builder(context).create(title, itemLayoutId, actionLayoutId, layoutGravity, fillWidth, itemList, callback);
     }
 
