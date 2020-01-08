@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -17,9 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
+import com.pine.base.widget.dialog.CustomDialog;
 import com.pine.base.widget.dialog.CustomListDialog;
 import com.pine.base.widget.dialog.DateSelectDialog;
 import com.pine.base.widget.dialog.InputTextDialog;
@@ -33,10 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/7.
@@ -347,23 +348,6 @@ public class DialogUtils {
     }
 
     /**
-     * 自定义列表弹出框
-     *
-     * @param context
-     * @param titleLayoutId
-     * @param itemLayoutId
-     * @param itemList
-     * @param callback
-     * @param <T>
-     * @return
-     */
-    public static <T> CustomListDialog createCustomListDialog(Context context, int titleLayoutId, @LayoutRes int itemLayoutId,
-                                                              List<T> itemList, @NonNull CustomListDialog.IOnViewBindCallback<T> callback) {
-        return new CustomListDialog.Builder(context).create(titleLayoutId, itemLayoutId, itemList, callback);
-    }
-
-
-    /**
      * 日期(年月日)选择弹出框
      *
      * @param context
@@ -418,6 +402,90 @@ public class DialogUtils {
         return new ProvinceSelectDialog.Builder(context).create(dialogSelect);
     }
 
+    /**
+     * 自定义列表弹出框
+     *
+     * @return
+     */
+    public static <T> CustomListDialog createBottomCustomListDialog(Context context, int titleLayoutId,
+                                                                    int itemLayoutId, boolean fillWidth,
+                                                                    List<T> itemList, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return createCustomListDialog(context, titleLayoutId, itemLayoutId, -1, Gravity.BOTTOM, fillWidth, itemList, callback);
+    }
+
+    /**
+     * 自定义列表弹出框
+     */
+    public static <T> CustomListDialog createBottomCustomListDialog(Context context, String title,
+                                                                    int itemLayoutId, int actionLayoutId,
+                                                                    List<T> itemList, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return createCustomListDialog(context, title, itemLayoutId, actionLayoutId, Gravity.BOTTOM, false, itemList, callback);
+    }
+
+    /**
+     * 自定义列表弹出框
+     */
+    public static <T> CustomListDialog createFillWidthCustomListDialog(Context context, int titleLayoutId,
+                                                                       int itemLayoutId, int layoutGravity,
+                                                                       List<T> itemList, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return createCustomListDialog(context, titleLayoutId, itemLayoutId, -1, layoutGravity, true, itemList, callback);
+    }
+
+    /**
+     * 自定义列表弹出框
+     *
+     * @param context
+     * @param titleLayoutId
+     * @param itemLayoutId
+     * @param actionLayoutId
+     * @param layoutGravity
+     * @param fillWidth
+     * @param itemList
+     * @param callback
+     * @param <T>
+     * @return
+     */
+    public static <T> CustomListDialog createCustomListDialog(Context context, int titleLayoutId, int itemLayoutId, int actionLayoutId,
+                                                              int layoutGravity, boolean fillWidth,
+                                                              List<T> itemList, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return new CustomListDialog.Builder(context).create(titleLayoutId, itemLayoutId, actionLayoutId, layoutGravity, fillWidth, itemList, callback);
+    }
+
+    /**
+     * 自定义列表弹出框
+     *
+     * @param context
+     * @param title
+     * @param itemLayoutId
+     * @param actionLayoutId
+     * @param layoutGravity
+     * @param fillWidth
+     * @param itemList
+     * @param callback
+     * @param <T>
+     * @return
+     */
+    public static <T> CustomListDialog createCustomListDialog(Context context, String title, int itemLayoutId, int actionLayoutId,
+                                                              int layoutGravity, boolean fillWidth,
+                                                              List<T> itemList, CustomListDialog.IOnViewBindCallback<T> callback) {
+        return new CustomListDialog.Builder(context).create(title, itemLayoutId, actionLayoutId, layoutGravity, fillWidth, itemList, callback);
+    }
+
+    /**
+     * 自定义弹出框
+     *
+     * @param context
+     * @param layoutId
+     * @param layoutGravity
+     * @param fillWidth
+     * @param callback
+     * @return
+     */
+    public static CustomDialog createCustomDialog(Context context, int layoutId,
+                                                  int layoutGravity, boolean fillWidth,
+                                                  CustomDialog.IOnViewBindCallback callback) {
+        return new CustomDialog.Builder(context).create(layoutId, layoutGravity, fillWidth, callback);
+    }
 
     public interface IActionListener {
         boolean onLeftBtnClick();

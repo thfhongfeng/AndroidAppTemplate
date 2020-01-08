@@ -15,11 +15,11 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.pine.tool.R;
-import com.pine.tool.widget.IGestureView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+
+import com.pine.tool.R;
+import com.pine.tool.widget.IGestureView;
 
 
 /**
@@ -106,7 +106,7 @@ public class TransformImageView extends AppCompatImageView implements IGestureVi
     }
 
     private void init() {
-        // FIXME 修复图片锯齿,关闭硬件加速ANTI_ALIAS_FLAG才能生效
+//        // 修复图片锯齿,关闭硬件加速ANTI_ALIAS_FLAG才能生效
 //        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         setScaleType(ScaleType.MATRIX);
         mRevertAnimator.setDuration(mRevertDuration);
