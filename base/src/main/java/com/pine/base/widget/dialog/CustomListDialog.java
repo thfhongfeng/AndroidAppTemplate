@@ -195,6 +195,12 @@ public class CustomListDialog extends Dialog {
         }
     }
 
+    @Override
+    public void show() {
+        mDialogListAdapter.notifyDataSetChangedSafely();
+        super.show();
+    }
+
     public interface IOnViewBindCallback<T> {
         void onViewBind(View titleView, View actionView, CustomListDialog dialog);
 
