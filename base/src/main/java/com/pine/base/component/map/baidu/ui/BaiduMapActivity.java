@@ -103,7 +103,7 @@ public class BaiduMapActivity extends BaseActionBarTextMenuActivity implements V
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
         titleTv.setText(R.string.base_baidu_map_title);
         goBackIv.setOnClickListener(new View.OnClickListener() {
             @Override

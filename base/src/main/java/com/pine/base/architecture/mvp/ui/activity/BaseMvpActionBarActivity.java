@@ -6,14 +6,14 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.CallSuper;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
 import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.architecture.mvp.ui.MvpActivity;
-
-import androidx.annotation.CallSuper;
 
 public abstract class BaseMvpActionBarActivity<V extends IContract.Ui, P extends Presenter<V>>
         extends MvpActivity<V, P> implements IContract.Ui {
@@ -74,12 +74,12 @@ public abstract class BaseMvpActionBarActivity<V extends IContract.Ui, P extends
                 }
             });
         }
-        setupActionBar((ImageView) action_bar_ll.findViewById(R.id.go_back_iv),
+        setupActionBar(action_bar_ll, (ImageView) action_bar_ll.findViewById(R.id.go_back_iv),
                 (TextView) action_bar_ll.findViewById(R.id.title));
         super.afterInit();
     }
 
-    protected abstract void setupActionBar(ImageView goBackIv, TextView titleTv);
+    protected abstract void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv);
 
     /**
      * 获取actionbar内容的显示方式，重载该方法改变actionBar内容的显示方式

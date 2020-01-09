@@ -47,7 +47,7 @@ public class LoginActivity extends BaseMvvmActionBarActivity<LoginActivityBindin
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.login_login_title);
     }
 

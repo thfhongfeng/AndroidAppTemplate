@@ -26,6 +26,8 @@
     <string name="base_affirm">确认</string>
     <string name="base_submit">提交</string>
     <string name="base_update">升级</string>
+    <string name="base_agree">同意</string>
+    <string name="base_disagree">不同意</string>
 
     <string name="base_save_success">保存成功</string>
 

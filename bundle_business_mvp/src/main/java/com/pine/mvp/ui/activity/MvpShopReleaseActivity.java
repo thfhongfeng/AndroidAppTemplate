@@ -147,7 +147,7 @@ public class MvpShopReleaseActivity extends
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
         titleTv.setText(R.string.mvp_shop_release_title);
         menuBtnTv.setText(R.string.mvp_shop_release_confirm_menu);
         menuBtnTv.setOnClickListener(new View.OnClickListener() {

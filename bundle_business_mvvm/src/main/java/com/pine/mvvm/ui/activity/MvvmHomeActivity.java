@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmActionBarImageMenuActivity;
 import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
@@ -19,9 +22,6 @@ import com.pine.mvvm.ui.fragment.MvvmWebViewFragment;
 import com.pine.mvvm.vm.MvvmHomeVm;
 import com.pine.tool.adapter.TabFragmentPagerAdapter;
 import com.pine.tool.permission.PermissionsAnnotation;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 /**
  * Created by tanghongfeng on 2019/2/25
@@ -68,7 +68,7 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvvm_home_title);
         if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.FUN_ADD_SHOP_KEY)) {
             menuBtnIv.setImageResource(R.mipmap.base_ic_add);

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data class="UserPrivacyActivityBinding">
+
+        <variable
+            name="presenter"
+            type="com.pine.welcome.ui.activity.UserPrivacyActivity.Presenter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_20">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center"
+            android:text="@string/wel_user_privacy_title"
+            android:textSize="@dimen/sp_18"></TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_weight="1"
+            android:lineSpacingMultiplier="1.2"
+            android:gravity="center_vertical"
+            android:text="@string/wel_user_privacy_content" />
+
+        <TextView
+            android:id="@+id/tip_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:lineSpacingMultiplier="1.2"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/sp_15"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20">
+
+            <TextView
+                android:id="@+id/disagree_tv_btn"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_weight="1"
+                android:background="@drawable/res_shape_bord_orange_red"
+                android:gravity="center"
+                android:onClick="@{presenter::onDisagree}"
+                android:paddingTop="@dimen/dp_12"
+                android:paddingBottom="@dimen/dp_12"
+                android:text="@string/base_disagree"
+                android:textColor="@color/gray_black"
+                android:textSize="@dimen/sp_18" />
+
+            <TextView
+                android:id="@+id/agree_tv_btn"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/res_shape_round_55a996"
+                android:gravity="center"
+                android:onClick="@{presenter::onAgree}"
+                android:paddingTop="@dimen/dp_12"
+                android:paddingBottom="@dimen/dp_12"
+                android:text="@string/base_agree"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

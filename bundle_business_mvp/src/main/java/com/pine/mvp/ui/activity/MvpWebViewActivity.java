@@ -114,7 +114,7 @@ public class MvpWebViewActivity extends BaseMvpActionBarImageMenuActivity<IMvpWe
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvp_web_view_title);
         menuBtnIv.setImageResource(R.mipmap.res_ic_share);
 

@@ -6,15 +6,15 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.CallSuper;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
 import com.pine.tool.architecture.mvvm.ui.MvvmActivity;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-
-import androidx.annotation.CallSuper;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 
 public abstract class BaseMvvmActionBarCustomMenuActivity<T extends ViewDataBinding, VM extends ViewModel>
         extends MvvmActivity<T, VM> {
@@ -68,7 +68,7 @@ public abstract class BaseMvvmActionBarCustomMenuActivity<T extends ViewDataBind
                 finish();
             }
         });
-        setupActionBar((ImageView) action_bar_ll.findViewById(R.id.go_back_iv),
+        setupActionBar(action_bar_ll, (ImageView) action_bar_ll.findViewById(R.id.go_back_iv),
                 (TextView) action_bar_ll.findViewById(R.id.title), base_content_layout.inflate());
         super.afterInit();
     }
@@ -83,7 +83,7 @@ public abstract class BaseMvvmActionBarCustomMenuActivity<T extends ViewDataBind
     }
 
 
-    protected abstract void setupActionBar(ImageView goBackIv, TextView titleTv, View menuContainer);
+    protected abstract void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, View menuContainer);
 
     @Override
     protected void onPause() {

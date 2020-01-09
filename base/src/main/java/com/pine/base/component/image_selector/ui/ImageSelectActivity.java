@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.pine.base.R;
 import com.pine.base.component.image_loader.ImageLoaderManager;
 import com.pine.base.component.image_selector.ImageSelector;
@@ -40,8 +42,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import androidx.fragment.app.Fragment;
 
 @PermissionsAnnotation(Permissions = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE})
 public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
@@ -149,7 +149,7 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
         goBackIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.os.SystemClock;
 
 import androidx.annotation.Nullable;
@@ -35,7 +34,7 @@ public class AlarmService extends Service {
             if (async) {
                 new Thread(worker).start();
             } else {
-                new Handler(Looper.getMainLooper()).post(worker);
+                new Handler().post(worker);
             }
         }
         if (!startImmediately || persistent) {

@@ -1,6 +1,7 @@
 package com.pine.user.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +44,7 @@ public class UserRechargeActivity extends BaseMvvmActionBarActivity<UserRecharge
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.user_recharge_title);
     }
 

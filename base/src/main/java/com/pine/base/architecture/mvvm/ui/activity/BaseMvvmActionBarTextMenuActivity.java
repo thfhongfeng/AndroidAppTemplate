@@ -6,15 +6,15 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.CallSuper;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.base.R;
 import com.pine.tool.architecture.mvvm.ui.MvvmActivity;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-
-import androidx.annotation.CallSuper;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 
 public abstract class BaseMvvmActionBarTextMenuActivity<T extends ViewDataBinding, VM extends ViewModel>
         extends MvvmActivity<T, VM> {
@@ -72,13 +72,13 @@ public abstract class BaseMvvmActionBarTextMenuActivity<T extends ViewDataBindin
                 }
             });
         }
-        setupActionBar((ImageView) action_bar_ll.findViewById(R.id.go_back_iv),
+        setupActionBar(action_bar_ll, (ImageView) action_bar_ll.findViewById(R.id.go_back_iv),
                 (TextView) action_bar_ll.findViewById(R.id.title),
                 (TextView) action_bar_ll.findViewById(R.id.menu_tv));
         super.afterInit();
     }
 
-    protected abstract void setupActionBar(ImageView goBackIv, TextView titleTv, TextView menuBtnTv);
+    protected abstract void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, TextView menuBtnTv);
 
     /**
      * 获取actionbar内容的显示方式，重载该方法改变actionBar内容的显示方式

@@ -18,6 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+
 import com.pine.base.R;
 import com.pine.base.component.share.bean.ShareBean;
 import com.pine.base.component.share.manager.ShareManager;
@@ -35,9 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/7.
@@ -80,6 +80,39 @@ public class DialogUtils {
     }
 
     /**
+     * 提示框
+     *
+     * @param context
+     * @param title
+     * @param content
+     * @return
+     */
+    public static Dialog showTipDialog(Context context, String title, String content) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.base_dialog_tip, null);
+        final Dialog dialog = new AlertDialog.Builder(context).create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialog.getWindow().setContentView(layout);
+        TextView title_tv = layout.findViewById(R.id.title_tv);
+        TextView content_tv = layout.findViewById(R.id.content_tv);
+        if (TextUtils.isEmpty(title)) {
+            title_tv.setVisibility(View.GONE);
+        } else {
+            title_tv.setText(title);
+        }
+        content_tv.setText(content);
+        TextView btn_tv = layout.findViewById(R.id.btn_tv);
+        btn_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        return dialog;
+    }
+
+    /**
      * 确认提示框
      *
      * @param content
@@ -104,8 +137,8 @@ public class DialogUtils {
                                            String leftBtnText, @ColorInt int leftColor,
                                            String rightBtnText, @ColorInt int rightColor,
                                            final IActionListener listener) {
-        LayoutInflater inflaterDl = LayoutInflater.from(context);
-        RelativeLayout layout = (RelativeLayout) inflaterDl.inflate(R.layout.base_dialog_confirm, null);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.base_dialog_confirm, null);
         //对话框
         final Dialog dialog = new AlertDialog.Builder(context).create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

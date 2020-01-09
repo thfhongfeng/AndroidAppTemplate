@@ -1,22 +1,25 @@
 package com.pine.tool.service;
 
 import android.os.Handler;
-import android.os.Looper;
 
-import java.util.HashMap;
+import com.pine.tool.util.LogUtils;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 应用运行期定时任务协助类
  */
 public class TimerWorkHelper {
-    private static TimerWorkHelper mInstance;
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
 
-    private HashMap<String, Timer> mTimerMap = new HashMap<>();
-    private Handler mMainHandler = new Handler(Looper.getMainLooper());
+    private static TimerWorkHelper mInstance;
+    private final Timer mTimer = new Timer(TAG);
+
+    private ConcurrentHashMap<String, TimerTask> mTimerTaskMap = new ConcurrentHashMap<>();
 
     private TimerWorkHelper() {
 
@@ -34,20 +37,25 @@ public class TimerWorkHelper {
      *
      * @param tag      定时器标识
      * @param delay    定时时间，单位毫秒
-     * @param runnable 定时runnable
+     * @param runnable 定时任务
      */
-    public void schemeTimerWork(String tag, long delay, final Runnable runnable) {
-        Timer timer = mTimerMap.get(tag);
-        if (timer == null) {
-            timer = new Timer(tag);
-            mTimerMap.put(tag, timer);
-        }
-        timer.schedule(new TimerTask() {
+    public void schemeTimerWork(final String tag, long delay, final Runnable runnable) {
+        cancel(tag);
+        final Handler handler = new Handler();
+        TimerTask timeWorker = new TimerTask() {
             @Override
             public void run() {
-                mMainHandler.post(runnable);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runnable.run();
+                        mTimerTaskMap.remove(tag);
+                    }
+                });
             }
-        }, delay);
+        };
+        mTimer.schedule(timeWorker, delay);
+        mTimerTaskMap.put(tag, timeWorker);
     }
 
     /**
@@ -55,44 +63,34 @@ public class TimerWorkHelper {
      *
      * @param tag      定时器标识
      * @param delay    定时时间，单位毫秒
-     * @param runnable 定时runnable
+     * @param runnable 定时任务
      */
     public void schemeAsyncTimerWork(String tag, long delay, final Runnable runnable) {
-        Timer timer = mTimerMap.get(tag);
-        if (timer == null) {
-            timer = new Timer(tag);
-            mTimerMap.put(tag, timer);
-        }
-        timer.schedule(new TimerTask() {
+        cancel(tag);
+        TimerTask timeWorker = new TimerTask() {
             @Override
             public void run() {
                 runnable.run();
             }
-        }, delay);
+        };
+        mTimer.schedule(timeWorker, delay);
+        mTimerTaskMap.put(tag, timeWorker);
     }
 
-    public void cancelWorkTimer(String tag) {
-        Timer timer = mTimerMap.get(tag);
-        if (timer != null) {
-            timer.cancel();
+    public void cancel(String tag) {
+        TimerTask timeWorker = mTimerTaskMap.get(tag);
+        if (timeWorker != null) {
+            timeWorker.cancel();
         }
+        mTimerTaskMap.remove(tag);
     }
 
     public void cancelAll() {
-        Iterator<Map.Entry<String, Timer>> iterator = mTimerMap.entrySet().iterator();
+        Iterator<Map.Entry<String, TimerTask>> iterator = mTimerTaskMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, Timer> entry = iterator.next();
+            Map.Entry<String, TimerTask> entry = iterator.next();
             entry.getValue().cancel();
         }
-    }
-
-    public void clear(String tag) {
-        cancelWorkTimer(tag);
-        mTimerMap.remove(tag);
-    }
-
-    public void clear() {
-        cancelAll();
-        mTimerMap.clear();
+        mTimerTaskMap.clear();
     }
 }

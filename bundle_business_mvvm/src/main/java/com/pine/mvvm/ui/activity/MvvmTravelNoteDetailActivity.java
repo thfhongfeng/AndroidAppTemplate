@@ -1,6 +1,7 @@
 package com.pine.mvvm.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -105,7 +106,7 @@ public class MvvmTravelNoteDetailActivity extends
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.mvvm_travel_note_detail_title);
     }
 

@@ -1,6 +1,7 @@
 package com.pine.mvc.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +24,7 @@ public class MvcHomeActivity extends BaseMvcActionBarActivity {
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.mvc_home_title);
     }
 

@@ -33,7 +33,7 @@ public class RegisterActivity extends
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.login_register_title);
     }
 

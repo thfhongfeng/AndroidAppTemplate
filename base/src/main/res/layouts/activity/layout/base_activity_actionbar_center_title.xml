@@ -18,10 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:paddingBottom="@dimen/dp_8"
             android:paddingLeft="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_10"
             android:paddingRight="@dimen/dp_5"
-            android:paddingTop="@dimen/dp_10">
+            android:paddingBottom="@dimen/dp_8">
 
             <ImageView
                 android:id="@+id/go_back_iv"
@@ -56,7 +56,7 @@
 
     <ViewStub
         android:id="@+id/base_loading_layout"
-        android:inflatedId="@+id/base_loading_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/base_loading_layout" />
 </RelativeLayout>

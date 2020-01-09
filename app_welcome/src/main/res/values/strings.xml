@@ -8,4 +8,347 @@
     <string name="wel_version_get_download_path_fail">获取下载目录%s失败</string>
 
     <string name="wel_welcome_content">欢迎</string>
+
+    <string name="wel_user_privacy_title">Pine用户服务协议与隐私政策</string>
+    <string name="wel_user_privacy_content">感谢您下载Pine！当您开始使用本软件时，我们会在您许可的前提下，对您及所在组织机构的部分基础信息进行收集、使用和共享。
+        请您仔细阅读《Pine用户服务协议与隐私政策》并确定了解我们对您所提供信息的处理规则，包括：
+    \n在您许可下，我们所收集的信息范围；
+    \n我们如何收集和使用您所提供的信息；
+    \n我们如何共享、转让、公开您所提供信息；
+    \n我们如何使用Cookie和同类技术；
+    \n我们如何保护和管理您的个人信息；
+    \n如何联系我们。</string>
+    <string name="wel_user_privacy_tip"><Data><![CDATA[请您仔细阅读<a style="ext-decoration:none;" href="privacy_user">《Pine用户服务协议》</a>
+        和<a style="ext-decoration:none;" href="privacy_policy">《Pine隐私政策》</a>并点击“同意”开始使用我们的产品和服务，我们尽全力保护您的个人信息安全。]]></Data></string>
+    <string name="wel_user_privacy_tip_dialog_content">您需同意《Pine用户服务协议与隐私政策》方可使用本软件</string>
+
+    <string name="wel_user_privacy_user_detail_title">Pine用户服务协议</string>
+    <string name="wel_user_privacy_policy_detail_title">Pine隐私政策</string>
+
+    <string name="wel_user_privacy_user_detail_content"><Data><![CDATA[<div>
+<p><strong><span style="font-family: 宋体;"><span style="font-family:宋体">第一部分：Pine服务协议</span></span></strong></p>
+<p style="margin-top: 5px;text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">Pine服务（以下简称</span>“本服务”）是指Pine通过手机终端向您提供的多媒体服务服务。
+    本协议是Pine与您就本服务的使用等相关事项所订立的有效合约。您登录Pine相关产品，即表示您知悉、理解并同意接受本协议的全部内容，确认承担由此产生的一切法律后果。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">在确认接受本协议之前，请您务必仔细阅读、充分理解本协议全部内容，特别是免除或者限制责任的条款，以及开通或使用某项服务的单独协议并选择接受或不接受（如有）。
+    如果您不同意本协议的任何内容，或者无法准确理解相关条款的含义，请不要进行后续操作。</span></span>
+</p>
+<p style="line-height: 20px">
+    <span style="font-family: 宋体;font-weight: bold;">一、</span><strong><span style="font-family: 宋体;"><span style="font-family:宋体">定义</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">Pine产品：本协议内包含的Pine产品是指Pine移动客户端软件、应用程序，以下统称“Pine平台”。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">Pine：Pine平台经营者的单称或合称。</span>
+</p>
+<p style="line-height: 20px">
+    <span style="font-family: 宋体;font-weight: bold;">二、</span><strong><span style="font-family: 宋体;"><span style="font-family:宋体">协议确认与补充、修改</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">本协议包括协议正文及Pine已发布的或将来可能发布的各类规则（含业务规范、通知、公告等）。
+    所有上述各类规则等为本协议不可分割的组成部分，与本协议正文具有同等法律效力。如上述各类规则等与本协议有冲突，则以后发布者为准。
+    Pine有权根据需要不定时地根据法律法规政策、系统升级、业务发展需要等合理原因补充、修改本协议和</span>/或各类规则，并通过在Pine平台发布通知的方式进行公告，而无需单独通知。
+    您可以在Pine平台的最新版本中查阅相关协议条款。除非各类规则或本协议另行规定生效时间，否则平台补充、修改的协议和规则一经公布即自动生效，成为本协议的一部分。
+    如您继续使用Pine平台服务的，则视为您接受并同意遵守补充、修改后的协议和规则。</span>
+</p>
+<p style="line-height: 20px">
+    <span style="font-family: 宋体;font-weight: bold;">三、</span><strong><span style="font-family: 宋体;"><span style="font-family:宋体">账户注册与使用</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.1 用户资格您确认，在您开始注册程序或使用Pine平台服务前，您应当具备中华人民共和国法律规定的与您行为相适应的民事行为能力。
+    若您不具备前述与您行为相适应的民事行为能力，则您及您的监护人应依照法律规定承担因此而导致的一切后果。
+    此外，您还需确保您不是任何国家、国际组织或者地域实施的贸易限制、制裁或其他法律、规则限制的对象，否则您可能无法正常注册及使用Pine平台服务。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.2 账号说明</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.2.1 账号信息设置</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">您在账号中设置的昵称、头像、签名、留言等请务必遵守法律法规、公序良俗、社会公德，且不会侵害其他第三方的合法权益，
+    否则我们可能会取消您的昵称、头像、签名、留言。Pine平台只允许每位用户使用一个Pine平台账号。如有证据证明或Pine平台判断您存在不当注册或不当使用多个Pine平台账号的情形，
+    Pine可采取冻结或关闭账号、取消订单、拒绝提供服务等措施，如给Pine平台及相关方造成损失的，您还应承担赔偿责任。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.2.2 账号信息使用</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">您有权使用您设置或确认的Pine平台账号（以下简称</span>“账号名称”）及您设置的密码（账号名称及密码合称“账号”）登录Pine平台。
+    您有责任妥善保管本人账户、密码、动态口令及证件号码、手机及手机号码等与本服务相关的信息，您使用上述信息进行的交易均为您本人办理的交易。
+    您丧失对上述信息的掌控并导致因此发生任何风险或资金损失的，您将自行承担后果与责任。平台交易指令一经确认，您不得要求变更或撤销。
+    您的交易信息以Pine系统记录的资料为准（有确凿证据证明Pine系统记录错误的除外），您认可Pine系统记录数据的真实性、准确性和合法性。
+    账号信息因您主动泄露或因您遭受他人攻击、诈骗等行为导致的损失及后果，Pine平台不承担责任，您应通过司法、行政等救济途径向侵权行为人追偿。
+    您应对您账号项下的所有行为结果（包括但不限于在线签署各类协议、发布信息、购买商品及服务及披露信息等）负责。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.2.3 实名认证</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">作为Pine平台经营者，为使您更好地使用Pine平台的各项服务，保障您的账号安全，Pine可要求您按本协议要求及我国法律规定完成实名认证。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.3 注册信息管理</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.3.1 信息真实</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">在使用Pine平台服务时，您应当按Pine平台页面的提示准确完整地提供您的信息（包括但不限于您的姓名及电子邮件地址、联系电话、联系地址等），
+    以便Pine或其他用户与您联系。您了解并同意，您有义务保持您提供信息的真实性及有效性。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.3.2 更新维护</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">您应当及时更新您提供的信息，在法律有明确规定要求Pine作为平台服务提供者必须对部分用户的信息进行核实的情况下，Pine将依法不时地对您的信息进行检查核实，
+    您应当配合提供最新、真实、完整、有效的信息。如Pine按您最后一次提供的信息与您联系未果、您未按Pine的要求及时提供信息、您提供的信息存在明显不实或行政司法机关核实您提供的信息无效的，
+    您将承担因此对您自身、他人及Pine造成的全部损失与不利后果。Pine可向您发出询问或要求整改的通知，并要求您进行重新认证，直至中止、终止对您提供部分或全部Pine平台服务，Pine对此不承担责任。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.3.3 账号注销</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">在需要终止使用Pine平台服务时，符合以下条件的，
+    您可以申请注销您的Pine平台账号：您仅能申请注销您本人名下处于正常状态的账号，并依照平台规定的流程进行Pine平台账号的注销。
+    为了维护您和其他用户的合法利益，您申请注销的账号，应当不存在未了结的权利义务或其他因为注销该账号会产生纠纷的情况、也不存在任何未完结的交易等。账号注销后，
+    与该账号关联的未使用权益均将于注销时作废；后续账号记录、账号功能等将无法恢复。如您在注销账号前存在违约、侵权等不当行为、与平台或平台内其他用户存在纠纷或存在未完结交易的，您仍应承担相应责任。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <strong><span style="font-family: 宋体;">3.4 使用</span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.1 您自愿使用Pine平台，您通过Pine平台办理业务时须同时遵守与该业务相关的章程、协议及交易规则。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.2 您已了解Pine提供的平台服务是应用手机通讯方式提供的多媒体服务，可能因网络或通讯线路故障及断电、停电等其他Pine不可预测、不可控制的因素，
+    导致您在使用Pine平台服务的过程中出现登录失败、网页打开速度慢、信息传送延误与错误以及业务暂时无法办理或者被取消、暂停或终止的情况。
+    如出现上述情况，您可在上述意外因素消失后重新在Pine平台上使用相关服务。您因上述不可预测不可控制的情况以及其他
+    </span><strong><span style="font-family: 宋体;"><span style="font-family:宋体">非因Pine原因遭受的损失，Pine不承担责任。</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.3 您可以直接从合法授权的第三方下载Pine平台，不要下载并使用来历不明的客户端软件。
+    </span><strong><span style="font-family: 宋体;"><span style="font-family:宋体">如果您从未经Pine合法授权的第三方获取冠名为</span>“Pine平台”或与Pine平台名称相似的安装程序，
+    Pine平台无法保证该软件能够正常使用，由此产生的后果由您自行承担。</span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.4 Pine平台提供包括移动端（Android应用版本），您应选择合适的且与所安装终端设备相匹配的软件版本。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.5 您理解并同意：为了向您提供有效的服务，Pine平台会使用您终端设备的处理器和带宽等资源。
+    Pine平台使用过程中可能产生数据流量的费用，您需自行向运营商了解相关资费信息，并自行承担相关费用。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.6 您理解并同意平台对因系统等故障导致的账户异常、账务异常及其他异常情况将尽快予以解决，但不对此承担任何责任。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.</span><span style="font-family: 宋体;">7</span><span style="font-family: 宋体;">&nbsp;<span style="font-family:宋体">您保证向Pine平台提供的资料真实、合法、有效、完整，</span>
+    </span><strong><span style="font-family: 宋体;"><span style="font-family:宋体">因您未提供真实、合法、有效、完整的资料或资料发生任何变更而没有及时通知Pine平台导致本服务无法提供或提供时发生任何错误，
+    由此产生的后果由您自行承担。若Pine平台有合理理由怀疑您提供的资料不实、非法、无效或不完整，Pine平台有权拒绝、暂停或终止向您提供本服务，Pine平台对此不承担任何责任，您将承担因此产生的责任和损失。</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.</span><span style="font-family: 宋体;">8</span><span style="font-family: 宋体;">&nbsp;<span style="font-family:宋体">
+    您有责任妥善保管本人账户、密码、动态口令及证件号码、手机及手机号码等与本服务相关的信息，您使用上述信息进行的交易均为您本人办理的交易。
+    您丧失对上述信息的掌控并导致因此发生任何风险或资金损失的，您将自行承担后果与责任。平台交易指令一经确认，您不得要求变更或撤销。
+    您的交易信息以Pine平台系统记录的资料为准（有确凿证据证明Pine平台系统记录错误的除外），您认可Pine平台系统记录数据的真实性、准确性和合法性。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">3.4.</span><span style="font-family: 宋体;">9</span><span style="font-family: 宋体;">&nbsp;<span style="font-family:宋体">
+    您不得利用Pine平台服务从事包括但不限于洗钱、欺诈等违法、违规行为；Pine平台有理由合理怀疑您进行违法违规行为的，有权中止、停止向您提供平台服务或者采取其他合理的风险控制措施。</span></span>
+</p>
+<p style="line-height: 20px">
+    <strong><span style="font-family: 宋体;"><span style="font-family:宋体">四、服务及交易规则</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">在遵照Pine平台服务规则下，您有权在Pine平台上享受平台提供的以下服务。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.1 平台可以使用公告、电子邮件、发送短信、电话或客户端通知等方式向您发送通知，例如通知您交易进展情况，或者提示您进行相关操作，请您及时予以关注。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.2 如您同时是Pine平台合作第三方，对商品及/或服务的销售与推广：</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.2.1 您可通过Pine平台提供的服务，有权使用文字、图片、视频、音频等形式在Pine平台上发布商品及/或服务信息、招揽和物色交易对象、达成交易。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.2.2 您应当确保您对您在Pine平台上发布的商品及/或服务享有相应的经营及其他合法权利，您不得在Pine平台上销售或提供国家禁止或限制、侵犯他人知识产权或其它合法权益等商品或服务。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.2.3 您应当遵守诚实信用原则及《消费者权益保护法》，确保您所发布的商品及/或服务信息真实、与您实际所销售的商品及/或提供的服务相符，并在交易过程中切实履行您的交易承诺及符合相关法律规定。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.3商品或服务购买</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.3.1 当您在Pine平台购买商品及/或服务时，请您务必仔细确认所购商品的品名、价格、数量、型号、规格、尺寸或服务的时间、内容、限制性要求等重要事项，
+    并在下单时核实您的联系地址、电话、收货人等信息。如您填写的收货人非您本人的，则该收货人的行为和意思表示产生的法律后果均由您承担。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.3.2 您有权在Pine平台提供的评价系统中对与您达成交易的其他用户商品及/或服务进行评价。您的评价内容应当客观真实，
+    不应包含任何政治言论、违反公序良俗、造谣诬蔑、污言秽语、色情低俗、广告信息等及法律法规或本协议明确禁止的其他信息。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.4 您在Pine平台交易过程中发生争议的，您有权选择与争议方自主协商、或通过Pine平台客服协助解决交易争议。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">4.5 如您的材料、信息及电子指令存在任何错误、虚假、过时或不完整，或者平台</span>
+    <span style="font-family: 宋体;">/</span><span style="font-family: 宋体;"><span style="font-family:宋体">平台的合作伙伴怀疑您的材料、信息及电子指令存在任何错误、虚假、过时或不完整，平台有权暂停或终止为您继续提供服务。
+    此时，平台不承担任何责任，并且您应赔偿因此给平台造成的任何损失。</span></span>
+</p>
+<p style="line-height: 20px">
+    <strong><span style="font-family: 宋体;"><span style="font-family:宋体">五、用户信息的保护及授权</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">5.1 个人信息的保护</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">Pine平台非常重视用户个人信息的保护，在您使用Pine平台提供的服务时，
+    Pine平台按照《Pine用户隐私政策》收集、存储、使用、对外提供和保护您的个人信息，详情请参阅</span></span>
+    <a href="privacy.html" target="_blank"><span style="text-decoration:underline;"><span style="font-family: 宋体;color: rgb(0, 0, 255);"><span style="font-family:宋体">《Pine用户隐私政策》</span></span></span></a>
+    <span style="font-family: 宋体;"><span style="font-family:宋体">。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">5.2 非个人信息的保证与授权</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">您声明并保证，您对您所发布的信息拥有相应、合法的权利。否则，Pine平台可对您发布的信息依法或依本协议进行删除或屏蔽。您应当确保您所发布的信息不包含以下内容：</span> &nbsp;</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">（</span>1）违反国家法律法规禁止性规定的；</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">（</span>2）政治宣传、封建迷信、淫秽、色情、赌博、暴力、恐怖或者教唆犯罪的；</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">（</span>3）欺诈、虚假、不准确或存在误导性的；</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">（</span>4）侵犯他人知识产权或涉及第三方商业秘密及其他专有权利的；</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">（</span>5）侮辱、诽谤、恐吓、涉及他人隐私等侵害他人合法权益的；</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">（</span>6）存在可能破坏、篡改、删除、影响Pine平台任何系统正常运行或未经授权秘密获取Pine平台及其他用户的数据、个人资料的病毒、木马、爬虫等恶意软件、程序代码的；</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">（</span>7）其他违背社会公共利益或公共道德或依据相关Pine平台协议、规则的规定不适合在Pine平台上发布的。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">5.3 非个人信息的使用</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;"><span style="font-family:宋体">对于您提供及发布的文字、图片、视频、音频、图文等非个人隐私信息的知识产权归您或相关权利人所有，
+    在法律规定的保护期限内您免费授予Pine平台及其关联公司获得全球排他的许可使用权利及再授权给其他第三方使用并可以自身名义对第三方侵权行为取证及单独提起诉讼的权利。
+    您同意Pine平台及其关联公司存储、使用、复制、修订、编辑、发布、展示、翻译、分发您的非个人信息或制作其派生作品，并以已知或日后开发的形式、媒体或技术将上述信息纳入其它作品内。
+    您须确保上述信息不会侵犯其它人合法权益，否则您须承担相应不利后果及责任。</span></span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <strong><span style="font-family: 宋体;"><span style="font-family:宋体">六、声明与承诺</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">6.1 您知悉并同意：为完善服务内容、改善服务体验，Pine平台有权根据业务发展需要对平台系统进行升级、改造，以及对平台服务功能、内容及方式等进行调整。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">6.2 Pine平台有权根据法律法规政策、系统升级、业务发展需要等合理原因修改本协议，您可以在Pine平台的最新版本中查阅相关协议条款。
+    本协议条款变更后，如果您继续使用Pine平台，即视为您已充分阅读、理解、同意并接受修改后的协议。如果您不接受修改后的协议，应当停止使用Pine平台。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">6.3 为方便您的Pine平台交易，Pine平台从第三方获取一些资讯，并通过Pine平台官网和平台系统提供给您，此类信息仅供参考，资讯的甄别、使用由您自行决策。
+    因投资决策产生的后果，由您自行承担。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">6.4 您通过Pine平台办理业务，须按Pine平台官方渠道对外公告的服务价格支付相关费用，具体收费内容和收费标准以Pine平台最新公告为准。
+    如遇费用调整，Pine平台将通过官方渠道以对外公告的形式通知您，您有权选择是否继续使用相关服务。如您不同意接受公告内容，应向Pine平台提出申请变更或终止相关服务，否则视为您同意接受公告内容。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">6.5 您有权选择卸载Pine平台相关软件，您完成卸载Pine平台相关软件时本服务即终止。同时，若您违反本协议或相关章程及业务规则，Pine平台有权单方暂停或终止向您提供平台服务，
+    并保留追究您责任的权利。本服务暂停、终止后，在暂停、终止前您已发送至Pine平台的交易指令仍有效，您应承担其后果。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">6.6 您理解并同意平台不对任何第三方</span><span style="font-family: 宋体;">/</span><span style="font-family: 宋体;"><span style="font-family:宋体">
+    任何交易提供任何明示或默示的担保。平台向您提供的任何信息仅为参考，您应依据独立判断做出决策，产生的收益和风险由您自行承担。在交易中，交易各方发生的纠纷，平台不承担任何责任。</span></span>
+</p>
+<p style="line-height: 20px">
+    <strong><span style="font-family: 宋体;"><span style="font-family:宋体">七、其他</span></span></strong>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">7.1 Pine平台已提请您特别注意有关免除、限制Pine平台责任，和Pine平台单方面拥有某些权利以及增加您义务或免除、限制您权利的条款，并已应您的要求对上述条款予以充分解释说明，
+    各方对本协议条款的理解完全一致，并自愿接受约束。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">7.2 若您与Pine平台之间发生争议，由双方协商解决，协商不成提起诉讼的，由Pine平台总部所在地法院管辖。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">7.3 本协议的成立、生效、履行、解释及纠纷解决，适用中华人民共和国大陆地区法律，法律无明文规定的，可适用国内通行惯例。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">7.4 本协议条款无论因何种原因部分无效或不可执行，都不影响本协议其他条款的效力。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">7.5 本协议中未尽事宜，按照法律法规和Pine平台相关业务规则及国内通行惯例办理。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">7.6 如果本协议中任何一条被视为废止、无效或因任何理由不可执行，该条应视为可分的且并不影响任何其余条款的有效性和可执行性。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px">
+    <span style="font-family: 宋体;">7.7 本协议未明示授权的其他权利仍由普Pine平台保留，您在行使这些权利时须另外取得Pine平台的书面许可。Pine平台如果未行使前述任何权利，并不构成对该权利的放弃。</span>
+</p>
+<p style="text-indent: 24px;line-height: 20px"><span style="font-family: 宋体;">&nbsp;</span></p><p><br/></p></div>]]></Data></string>
+
+    <string name="wel_user_privacy_policy_detail_content"><Data><![CDATA[<div>
+<h5>
+    Pine尊重并保护所有使用服务用户的个人隐私权。为了给您提供更准确、更有个性化的服务，Pine会按照本隐私权政策的规定使用和披露您的个人信息及所在公司或机构的信息。但Pine将以高度的勤勉、审慎义务对待这些信息。
+    除本隐私权政策另有规定外，在未征得您事先许可的情况下，Pine不会将这些信息对外披露或向第三方提供。Pine会不时更新本隐私权政策。您在同意Pine服务使用协议之时，即视为您已经同意本隐私权政策全部内容。
+    本隐私权政策属于Pine服务使用协议不可分割的一部分。
+</h5>
+<h3>1. 适用范围 </h3>
+<p>
+    a) 在您注册Pine帐号时，您根据Pine要求提供的个人注册信息及所在公司或机构的信息；<br>
+    b) 在您使用Pine网络服务，或访问Pine平台网页时，Pine自动接收并记录的您的浏览器和计算机上的信息，包括但不限于您的IP地址、浏览器的类型、使用的语言、访问日期和时间、软硬件特征信息及您需求的网页记录等数据；<br>
+    c) Pine通过合法途径从商业伙伴处取得的用户个人数据和公司、机构的数据。
+</p>
+<h4>您了解并同意，以下信息不适用本隐私权政策：</h4>
+<p>
+    a) 您在使用Pine平台提供的搜索服务时输入的关键字信息；<br>
+    b) Pine收集到的您在Pine发布的有关信息数据，包括但不限于参与活动、成交信息及评价详情；<br>
+    c) 违反法律规定或违反Pine规则行为及Pine已对您采取的措施。
+</p>
+<h3>2. 信息使用 </h3>
+<p>
+    a) Pine不会向任何无关第三方提供、出售、出租、分享或交易您的个人信息，除非事先得到您的许可，或该第三方和Pine（含Pine关联公司）单独或共同为您提供服务，且在该服务结束后，其将被禁止访问包括其以前能够访问的所有这些资料。<br>
+    b) Pine亦不允许任何第三方以任何手段收集、编辑、出售或者无偿传播您的个人信息及所在公司或机构的信息。任何Pine平台用户如从事上述活动，一经发现，Pine有权立即终止与该用户的服务协议。<br>
+    c) 为服务用户的目的，Pine可能通过使用您的个人信息，向您提供您感兴趣的信息，包括但不限于向您发出产品和服务信息，或者与Pine合作伙伴共享信息以便他们向您发送有关其产品和服务的信息（后者需要您的事先同意）。
+</p>
+<h3>3. 信息披露 </h3>
+<h4>在如下情况下，Pine将依据您的个人意愿或法律的规定全部或部分的披露您的个人信息及所在公司或机构的信息： </h4>
+<p>
+    a) 经您事先同意，向第三方披露；<br>
+    b) 为提供您所要求的产品和服务，而必须和第三方分享您的个人信息及所在公司或机构的信息；<br>
+    c) 根据法律的有关规定，或者行政或司法机构的要求，向第三方或者行政、司法机构披露；<br>
+    d) 如您出现违反中国有关法律、法规或者Pine服务协议或相关规则的情况，需要向第三方披露；<br>
+    e) 如您是适格的知识产权投诉人并已提起投诉，应被投诉人要求，向被投诉人披露，以便双方处理可能的权利纠纷；<br>
+    f) 在Pine平台上创建的某一交易中，如交易任何一方履行或部分履行了交易义务并提出信息披露请求的，Pine有权决定向该用户提供其交易对方的联络方式等必要信息，以促成交易的完成或纠纷的解决。<br>
+    g) 其它Pine根据法律、法规或者网站政策认为合适的披露。 </p>
+<h3>4. 信息存储和交换</h3>
+<h4>Pine收集的有关您的信息和资料将保存在Pine及（或）其关联公司的服务器上，这些信息和资料可能传送至您所在国家、地区或Pine收集信息和资料所在地的境外并在境外被访问、存储和展示。</h4>
+<h3>5. Cookie的使用 </h3>
+<p>
+    a) 在您未拒绝接受cookies的情况下，Pine会在您的设备上设定或取用cookies ，以便您能登录或使用依赖于cookies的Pine平台服务或功能。Pine使用cookies可为您提供更加周到的个性化服务，包括推广服务。<br>
+    b) 您有权选择接受或拒绝接受cookies。您可以通过修改浏览器设置的方式拒绝接受cookies。但如果您选择拒绝接受cookies，则您可能无法登录或使用依赖于cookies的Pine网络服务或功能。<br>
+    c) 通过Pine所设cookies所取得的有关信息，将适用本政策。
+</p>
+<h3>6. 信息安全 </h3>
+<p>
+    a) Pine帐号均有安全保护功能，请妥善保管您的用户名及密码信息。Pine将通过对用户密码进行加密等安全措施确保您的信息不丢失，不被滥用和变造。尽管有前述安全措施，但同时也请您注意在信息网络上不存在“完善的安全措施”。<br>
+    b) 在使用Pine网络服务进行网上交易时，您不可避免的要向交易对方或潜在的交易对方披露自己的个人信息及所在公司或机构的信息，如联络方式或者邮政地址。请您妥善保护自己的个人信息及所在公司或机构的信息，仅在必要的情形下向他人提供。
+    如您发现自己的个人信息及所在公司或机构的信息泄密，尤其是Pine用户名及密码发生泄露，请您立即联络Pine客服，以便Pine采取相应措施。
+</p>
+<h3>7. 联系我们</h3>
+<h4>如您对本隐私政策或您个人信息的相关事宜有任何问题、意见或建议，可以发送邮件至thfhongfeng@163.com至我们的客户管理部门，一般情况下，我们将在三十天内回复。</h4>
+</div>]]></Data></string>
 </resources>

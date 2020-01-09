@@ -106,7 +106,7 @@ public class MvvmTravelNoteListActivity extends
     }
 
     @Override
-    protected void setupActionBar(ImageView goBackIv, TextView titleTv, View menuContainer) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, View menuContainer) {
         titleTv.setText(R.string.mvvm_travel_note_list_title);
         menuContainer.findViewById(R.id.menu_iv).setOnClickListener(new View.OnClickListener() {
             @Override
