@@ -1,5 +1,7 @@
 package com.pine.user.vm;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.pine.base.bean.AccountBean;
@@ -9,8 +11,8 @@ import com.pine.user.remote.UserRouterClient;
 public class UserRechargeVm extends ViewModel {
 
     @Override
-    public void afterViewInit() {
-        setAccountBean(UserRouterClient.getLoginAccount(getContext(), null));
+    public void afterViewInit(Context activity) {
+        setAccountBean(UserRouterClient.getLoginAccount(activity, null));
     }
 
     private MutableLiveData<AccountBean> accountBeanData = new MutableLiveData<>();

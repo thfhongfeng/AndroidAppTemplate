@@ -46,7 +46,7 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
     @Override
     protected void init(Bundle savedInstanceState) {
         mBinding.setPresenter(new Presenter());
-        mViewModel.refreshUserData();
+        mViewModel.refreshUserData(this);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GO_RECHARGE) {
             if (resultCode == RESULT_OK) {
-                mViewModel.refreshUserData();
+                mViewModel.refreshUserData(this);
             }
         }
     }

@@ -3,14 +3,14 @@ package com.pine.tool.architecture.mvvm.vm;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.pine.tool.architecture.state.UiState;
-import com.pine.tool.binding.data.ParametricLiveData;
-import com.pine.tool.util.LogUtils;
-
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.MutableLiveData;
+
+import com.pine.tool.architecture.state.UiState;
+import com.pine.tool.binding.data.ParametricLiveData;
+import com.pine.tool.util.LogUtils;
 
 /**
  * Created by tanghongfeng on 2019/3/1
@@ -19,7 +19,6 @@ import androidx.lifecycle.MutableLiveData;
 public abstract class ViewModel extends androidx.lifecycle.ViewModel {
     protected final String TAG = LogUtils.makeLogTag(this.getClass());
     private UiState mUiState = UiState.UI_STATE_UNDEFINE;
-    private Context mContext;
 
     /**
      * UI状态回调
@@ -28,7 +27,7 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
      *              UI_STATE_ON_STOP,UI_STATE_ON_DETACH
      */
     @CallSuper
-    public void onUiState(UiState state) {
+    public void onUiState(Context activity, UiState state) {
         mUiState = state;
     }
 
@@ -36,23 +35,12 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
         return mUiState;
     }
 
-    public void setContext(Context context) {
-        mContext = context;
-    }
-
-    public Context getContext() {
-        if (mContext == null) {
-            throw new IllegalStateException("Context not set yet, you can not use it.");
-        }
-        return mContext;
-    }
-
     /**
      * 用于分析传入参数是否非法，在View init之前调用
      *
      * @return true表示非法， false表示合法
      */
-    public boolean parseIntentData(@NonNull Bundle bundle) {
+    public boolean parseIntentData(Context activity, @NonNull Bundle bundle) {
         return false;
     }
 
@@ -61,12 +49,12 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
      *
      * @return
      */
-    public void afterViewInit() {
+    public void afterViewInit(Context activity) {
 
     }
 
     public void onCleared() {
-        mContext = null;
+
     }
 
     MutableLiveData<Integer> observeSyncLiveData = new MutableLiveData<>();

@@ -1,5 +1,6 @@
 package com.pine.login.vm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -25,11 +26,11 @@ public class RegisterVm extends ViewModel {
     private LoginAccountModel mAccountModel = new LoginAccountModel();
 
     @Override
-    public void afterViewInit() {
+    public void afterViewInit(Context activity) {
         registerBeanData.setValue(new RegisterBean());
     }
 
-    public void register() {
+    public void register(final Context context) {
         if (isUiLoading()) {
             return;
         }
@@ -65,7 +66,7 @@ public class RegisterVm extends ViewModel {
                     public boolean onLoginResponse(boolean isSuccess, String msg) {
                         setToastResId(R.string.login_register_success);
                         if (!isSuccess) {
-                            goLoginActivity();
+                            goLoginActivity(context);
                         }
                         finishUi();
                         return false;
@@ -74,7 +75,7 @@ public class RegisterVm extends ViewModel {
                     @Override
                     public void onCancel() {
                         setToastResId(R.string.login_register_success);
-                        goLoginActivity();
+                        goLoginActivity(context);
                         finishUi();
                     }
                 });
@@ -102,10 +103,10 @@ public class RegisterVm extends ViewModel {
         });
     }
 
-    private void goLoginActivity() {
-        Intent intent = new Intent(getContext(), LoginActivity.class);
+    private void goLoginActivity(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getContext().startActivity(intent);
+        context.startActivity(intent);
     }
 
     private MutableLiveData<RegisterBean> registerBeanData = new MutableLiveData<>();

@@ -1,5 +1,6 @@
 package com.pine.mvvm.vm;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -19,7 +20,7 @@ public class MvvmTravelListVm extends ViewModel {
     MvvmTravelNoteModel mTravelNoteModel = new MvvmTravelNoteModel();
 
     @Override
-    public boolean parseIntentData(Bundle bundle) {
+    public boolean parseIntentData(Context activity, Bundle bundle) {
         mId = bundle.getString("id", "");
         if (TextUtils.isEmpty(mId)) {
             finishUi();

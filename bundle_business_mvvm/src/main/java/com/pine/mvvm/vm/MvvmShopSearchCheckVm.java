@@ -1,5 +1,6 @@
 package com.pine.mvvm.vm;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -29,13 +30,13 @@ public class MvvmShopSearchCheckVm extends ViewModel {
     public boolean mSearchMode;
 
     @Override
-    public boolean parseIntentData(Bundle bundle) {
+    public boolean parseIntentData(Context activity, Bundle bundle) {
         mInitBelongShopList = bundle.getParcelableArrayList(REQUEST_CHECKED_LIST_KEY);
         return false;
     }
 
     @Override
-    public void afterViewInit() {
+    public void afterViewInit(Context activity) {
         setSearchKey(new MvvmShopSearchBean());
     }
 

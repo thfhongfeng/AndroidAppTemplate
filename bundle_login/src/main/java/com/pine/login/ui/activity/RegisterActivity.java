@@ -65,7 +65,7 @@ public class RegisterActivity extends
 
     public class Presenter {
         public void onRegisterClick(View view) {
-            mViewModel.register();
+            mViewModel.register(RegisterActivity.this);
         }
     }
 }

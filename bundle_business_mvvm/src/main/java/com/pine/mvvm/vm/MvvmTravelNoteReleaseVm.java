@@ -1,5 +1,6 @@
 package com.pine.mvvm.vm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -27,7 +28,7 @@ public class MvvmTravelNoteReleaseVm extends ViewModel {
     MvvmTravelNoteModel mTravelNoteModel = new MvvmTravelNoteModel();
 
     @Override
-    public void afterViewInit() {
+    public void afterViewInit(Context activity) {
         setNoteDetail(new MvvmTravelNoteDetailEntity());
     }
 

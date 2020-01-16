@@ -1,5 +1,7 @@
 package com.pine.user.vm;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.pine.base.bean.AccountBean;
@@ -8,8 +10,8 @@ import com.pine.user.remote.UserRouterClient;
 
 public class UserHomeVm extends ViewModel {
 
-    public void refreshUserData() {
-        AccountBean accountBean = UserRouterClient.getLoginAccount(getContext(), null);
+    public void refreshUserData(Context context) {
+        AccountBean accountBean = UserRouterClient.getLoginAccount(context, null);
         accountBeanData.setValue(accountBean);
     }
 

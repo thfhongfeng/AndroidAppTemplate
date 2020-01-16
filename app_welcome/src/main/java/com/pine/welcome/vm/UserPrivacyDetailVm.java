@@ -1,5 +1,6 @@
 package com.pine.welcome.vm;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,7 @@ public class UserPrivacyDetailVm extends ViewModel {
     public String mH5Url;
 
     @Override
-    public boolean parseIntentData(@NonNull Bundle bundle) {
+    public boolean parseIntentData(Context activity, @NonNull Bundle bundle) {
         int privacyType = bundle.getInt("privacyType", -1);
         if (privacyType != 1 && privacyType != 2) {
             finishUi();

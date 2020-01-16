@@ -1,5 +1,6 @@
 package com.pine.mvvm.vm;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -22,7 +23,7 @@ public class MvvmShopDetailVm extends ViewModel {
     private MvvmShopModel mShopModel = new MvvmShopModel();
 
     @Override
-    public boolean parseIntentData(Bundle bundle) {
+    public boolean parseIntentData(Context activity, Bundle bundle) {
         mId = bundle.getString("id", "");
         if (TextUtils.isEmpty(mId)) {
             finishUi();

@@ -5,19 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.tool.architecture.state.UiState;
-import com.pine.tool.ui.Fragment;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.architecture.state.UiState;
+import com.pine.tool.ui.Fragment;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * Created by tanghongfeng on 2019/3/1
@@ -114,14 +114,14 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     @CallSuper
     @Override
     protected final void findViewOnCreateView(View layout, Bundle savedInstanceState) {
-        mViewModel.setContext(getActivity());
+
     }
 
     @CallSuper
     @Override
     protected boolean parseArguments() {
         if (mViewModel != null) {
-            return mViewModel.parseIntentData(getArguments() == null ? new Bundle() : getArguments());
+            return mViewModel.parseIntentData(getActivity(), getArguments() == null ? new Bundle() : getArguments());
         }
         return false;
     }
@@ -130,10 +130,10 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     @Override
     protected void afterInit() {
         if (mViewModel != null) {
-            mViewModel.onUiState(UiState.UI_STATE_ON_INIT);
+            mViewModel.onUiState(getActivity(), UiState.UI_STATE_ON_INIT);
         }
         if (mViewModel != null) {
-            mViewModel.afterViewInit();
+            mViewModel.afterViewInit(getActivity());
         }
     }
 
@@ -142,7 +142,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     public void onResume() {
         super.onResume();
         if (mViewModel != null) {
-            mViewModel.onUiState(UiState.UI_STATE_ON_RESUME);
+            mViewModel.onUiState(getActivity(), UiState.UI_STATE_ON_RESUME);
         }
     }
 
@@ -151,7 +151,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     public void onPause() {
         super.onPause();
         if (mViewModel != null) {
-            mViewModel.onUiState(UiState.UI_STATE_ON_PAUSE);
+            mViewModel.onUiState(getActivity(), UiState.UI_STATE_ON_PAUSE);
         }
     }
 
@@ -159,7 +159,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     @Override
     public void onStop() {
         if (mViewModel != null) {
-            mViewModel.onUiState(UiState.UI_STATE_ON_STOP);
+            mViewModel.onUiState(getActivity(), UiState.UI_STATE_ON_STOP);
         }
         super.onStop();
     }
@@ -168,7 +168,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     @Override
     public void onDestroyView() {
         if (mViewModel != null) {
-            mViewModel.onUiState(UiState.UI_STATE_ON_DETACH);
+            mViewModel.onUiState(getActivity(), UiState.UI_STATE_ON_DETACH);
         }
         super.onDestroyView();
     }

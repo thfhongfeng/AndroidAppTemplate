@@ -1,5 +1,6 @@
 package com.pine.login.vm;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
@@ -15,7 +16,7 @@ import com.pine.tool.util.SharePreferenceUtils;
 
 public class LoginVm extends ViewModel {
     @Override
-    public void afterViewInit() {
+    public void afterViewInit(Context activity) {
         LoginBean loginBean = new LoginBean();
         String account = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, "");
         String password = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, "");

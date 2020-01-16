@@ -1,5 +1,6 @@
 package com.pine.mvvm.vm;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.lifecycle.MutableLiveData;
@@ -19,13 +20,13 @@ public class MvvmWebViewVm extends ViewModel {
     private String mH5Url;
 
     @Override
-    public boolean parseIntentData(Bundle bundle) {
+    public boolean parseIntentData(Context activity, Bundle bundle) {
         mH5Url = bundle.getString("url", MvvmUrlConstants.H5_DefaultUrl);
         return false;
     }
 
     @Override
-    public void afterViewInit() {
+    public void afterViewInit(Context activity) {
         setH5Url(mH5Url);
         setShareBeanList(getShareBeanList());
     }
