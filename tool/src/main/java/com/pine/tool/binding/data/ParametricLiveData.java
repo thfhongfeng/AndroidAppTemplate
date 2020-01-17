@@ -15,11 +15,12 @@ public class ParametricLiveData<T, P> extends MutableLiveData<T> {
 
     @Override
     public final void postValue(T value) {
+        throw new IllegalStateException("this method was abandoned");
     }
 
     @Override
     public final void setValue(T value) {
-
+        throw new IllegalStateException("this method was abandoned");
     }
 
     public void setValue(T value, P customData) {
