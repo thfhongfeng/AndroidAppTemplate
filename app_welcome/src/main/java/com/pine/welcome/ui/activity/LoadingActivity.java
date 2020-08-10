@@ -10,10 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-
 import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
 import com.pine.base.util.DialogUtils;
 import com.pine.base.widget.dialog.ProgressDialog;
@@ -21,18 +17,25 @@ import com.pine.config.ConfigKey;
 import com.pine.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.router.IRouterCallback;
+import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.SharePreferenceUtils;
 import com.pine.welcome.R;
 import com.pine.welcome.WelcomeApplication;
+import com.pine.welcome.WelcomeConstants;
 import com.pine.welcome.WelcomeSPKeyConstants;
 import com.pine.welcome.databinding.LoadingActivityBinding;
 import com.pine.welcome.remote.WelcomeRouterClient;
 import com.pine.welcome.vm.LoadingVm;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+
 @PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE})
 public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivityBinding, LoadingVm> {
-    private final static int REQUEST_CODE_USER_PRIVACY = 9999;
+    private final static int REQUEST_CODE_USER_PRIVACY = 9998;
+    private final static int REQUEST_CODE_GO_ASSIGN_UI = 9999;
     private final static int LOADING_STAY_MIN_TIME = 1000;
     private final static int GO_NEXT_DELAY = 100;
     private long mStartTimeMillis;
@@ -42,7 +45,8 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
     @Override
     protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         super.beforeInitOnCreate(savedInstanceState);
-        return !isTaskRoot();
+        LogUtils.d(TAG, "isTaskRoot:" + isTaskRoot());
+        return !isTaskRoot() && !isGoAssignActivityAction();
     }
 
     @Override
@@ -96,6 +100,8 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE_USER_PRIVACY == requestCode && resultCode == RESULT_OK) {
             doneAppStartTask();
+        } else if (REQUEST_CODE_GO_ASSIGN_UI == requestCode) {
+            goWelcomeActivity();
         } else {
             finish();
         }
@@ -238,14 +244,44 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
             delay = LOADING_STAY_MIN_TIME - (System.currentTimeMillis() - mStartTimeMillis);
             delay = delay > 0 ? delay : 0;
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(LoadingActivity.this, WelcomeActivity.class);
-                startActivity(intent);
-                finish();
-                return;
+        if (isGoAssignActivityAction()) {
+            goAssignActivity();
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    goWelcomeActivity();
+                }
+            }, delay);
+        }
+    }
+
+    private void goWelcomeActivity() {
+        Intent intent = new Intent(LoadingActivity.this, WelcomeActivity.class);
+        startActivity(intent);
+        finish();
+        return;
+    }
+
+    private boolean isGoAssignActivityAction() {
+        Intent startupIntent = getIntent().getParcelableExtra(WelcomeConstants.STARTUP_INTENT);
+        LogUtils.d(TAG, "gotoNext startupIntent: " + startupIntent);
+        return startupIntent != null;
+    }
+
+    private void goAssignActivity() {
+        Intent startupIntent = getIntent().getParcelableExtra(WelcomeConstants.STARTUP_INTENT);
+        if (Intent.ACTION_VIEW.equals(startupIntent.getAction())) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(WelcomeConstants.STARTUP_INTENT, startupIntent);
+            bundle.putInt(WelcomeConstants.REQUEST_CODE, REQUEST_CODE_GO_ASSIGN_UI);
+            if (startupIntent.getType() != null) {
+
+            } else {
+                goWelcomeActivity();
             }
-        }, delay);
+        } else {
+            goWelcomeActivity();
+        }
     }
 }

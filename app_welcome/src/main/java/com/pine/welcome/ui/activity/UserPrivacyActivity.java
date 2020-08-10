@@ -17,12 +17,25 @@ import com.pine.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
 import com.pine.base.util.DialogUtils;
 import com.pine.tool.util.SharePreferenceUtils;
 import com.pine.welcome.R;
+import com.pine.welcome.WelcomeConstants;
 import com.pine.welcome.WelcomeSPKeyConstants;
 import com.pine.welcome.databinding.UserPrivacyActivityBinding;
 import com.pine.welcome.vm.UserPrivacyVm;
 
+import androidx.annotation.Nullable;
+
 public class UserPrivacyActivity extends BaseMvvmNoActionBarActivity<UserPrivacyActivityBinding, UserPrivacyVm> {
     private Dialog mTipDialog;
+
+    @Override
+    protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
+        super.beforeInitOnCreate(savedInstanceState);
+        boolean userPrivacyAgree = SharePreferenceUtils.readBooleanFromConfig(WelcomeSPKeyConstants.USER_PRIVACY_AGREE, false);
+        if (userPrivacyAgree) {
+            goLoadingActivity();
+        }
+        return !isTaskRoot() || userPrivacyAgree;
+    }
 
     @Override
     public void observeInitLiveData(Bundle savedInstanceState) {
@@ -85,10 +98,16 @@ public class UserPrivacyActivity extends BaseMvvmNoActionBarActivity<UserPrivacy
         return super.onKeyDown(keyCode, event);
     }
 
+    private void goLoadingActivity() {
+        Intent intent = new Intent(this, LoadingActivity.class);
+        intent.putExtra(WelcomeConstants.STARTUP_INTENT, getIntent());
+        startActivity(intent);
+    }
+
     public class Presenter {
         public void onAgree(View view) {
             SharePreferenceUtils.saveToConfig(WelcomeSPKeyConstants.USER_PRIVACY_AGREE, true);
-            setResult(RESULT_OK);
+            goLoadingActivity();
             finish();
         }
 
