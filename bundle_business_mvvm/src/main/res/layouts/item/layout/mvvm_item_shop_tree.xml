@@ -9,11 +9,11 @@
 
         <variable
             name="shop"
-            type="com.pine.mvvm.bean.MvvmShopAndProductEntity"></variable>
+            type="com.pine.template.mvvm.bean.MvvmShopAndProductEntity"></variable>
 
         <variable
             name="shopProperty"
-            type="com.pine.base.recycle_view.bean.BaseListAdapterItemProperty"></variable>
+            type="com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty"></variable>
 
         <variable
             name="position"

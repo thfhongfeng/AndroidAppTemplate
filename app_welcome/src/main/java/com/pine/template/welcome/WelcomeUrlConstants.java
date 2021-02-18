@@ -1,0 +1,15 @@
+package com.pine.template.welcome;
+
+import com.pine.template.base.BaseUrlConstants;
+
+/**
+ * Created by tanghongfeng on 2018/9/13
+ */
+
+public interface WelcomeUrlConstants extends BaseUrlConstants {
+    String Query_BundleSwitcher_Data = BASE_URL + "&q=bsd";
+    String Query_Version_Data = BASE_URL + "&q=vd";
+
+    String H5_PRIVACY_USER = "http://www.baidu.com";
+    String H5_PRIVACY_POLICY = "http://www.baidu.com";
+}

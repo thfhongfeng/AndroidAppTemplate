@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pine.mvvm">
+    package="com.pine.template.mvvm">
 
     <application
         android:allowBackup="true"

@@ -5,7 +5,7 @@
 
         <variable
             name="travelNote"
-            type="com.pine.mvvm.bean.MvvmTravelNoteItemEntity"></variable>
+            type="com.pine.template.mvvm.bean.MvvmTravelNoteItemEntity"></variable>
     </data>
 
     <LinearLayout

@@ -5,11 +5,11 @@
 
         <variable
             name="presenter"
-            type="com.pine.mvvm.ui.activity.MvvmTravelNoteReleaseActivity.Presenter"></variable>
+            type="com.pine.template.mvvm.ui.activity.MvvmTravelNoteReleaseActivity.Presenter"></variable>
 
         <variable
             name="noteDetail"
-            type="com.pine.mvvm.bean.MvvmTravelNoteDetailEntity"></variable>
+            type="com.pine.template.mvvm.bean.MvvmTravelNoteDetailEntity"></variable>
     </data>
 
     <RelativeLayout
@@ -160,7 +160,7 @@
                                 android:layout_weight="1"
                                 android:background="#fff3f3f3">
 
-                                <com.pine.base.binding.widget.android.view.BindingTextView
+                                <com.pine.template.base.binding.widget.android.view.BindingTextView
                                     android:id="@+id/day_count_tv"
                                     data="@={noteDetail.dayCount}"
                                     android:layout_width="match_parent"
@@ -214,7 +214,7 @@
                                 android:background="#fff3f3f3"
                                 android:minHeight="@dimen/dp_40">
 
-                                <com.pine.base.binding.widget.android.view.BindingTextView
+                                <com.pine.template.base.binding.widget.android.view.BindingTextView
                                     android:id="@+id/belong_shop_tv"
                                     data="@={noteDetail.belongShops}"
                                     android:layout_width="match_parent"
@@ -283,10 +283,10 @@
                         android:textColor="#929292"
                         android:textSize="@dimen/sp_13" />
 
-                    <com.pine.base.component.editor.ui.ArticleEditorView
+                    <com.pine.template.base.component.editor.ui.ArticleEditorView
                         android:id="@+id/aev_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></com.pine.base.component.editor.ui.ArticleEditorView>
+                        android:layout_height="wrap_content"></com.pine.template.base.component.editor.ui.ArticleEditorView>
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
@@ -305,12 +305,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.pine.base.component.editor.ui.ArticleDisplayView
+                <com.pine.template.base.component.editor.ui.ArticleDisplayView
                     android:id="@+id/note_preview_adv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#f8f8f8"
-                    android:padding="@dimen/dp_10"></com.pine.base.component.editor.ui.ArticleDisplayView>
+                    android:padding="@dimen/dp_10"></com.pine.template.base.component.editor.ui.ArticleDisplayView>
             </androidx.core.widget.NestedScrollView>
         </RelativeLayout>
     </RelativeLayout>

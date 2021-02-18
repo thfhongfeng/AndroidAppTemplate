@@ -5,7 +5,7 @@
 
         <variable
             name="presenter"
-            type="com.pine.user.ui.activity.UserScanActivity.Presenter" />
+            type="com.pine.template.user.ui.activity.UserScanActivity.Presenter" />
     </data>
 
     <RelativeLayout

@@ -6,33 +6,33 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 
-import com.pine.base.BaseApplication;
-import com.pine.base.BaseUrlConstants;
-import com.pine.base.access.UiAccessConfigSwitcherExecutor;
-import com.pine.base.access.UiAccessLoginExecutor;
-import com.pine.base.access.UiAccessType;
-import com.pine.base.access.UiAccessVipLevelExecutor;
-import com.pine.base.component.map.IMapManager;
-import com.pine.base.component.map.IMapManagerFactory;
-import com.pine.base.component.map.MapSdkManager;
-import com.pine.base.component.map.baidu.BaiduMapManager;
-import com.pine.base.component.map.gaode.GaodeMapManager;
-import com.pine.base.component.scan.IScanManager;
-import com.pine.base.component.scan.IScanManagerFactory;
-import com.pine.base.component.scan.ScanManager;
-import com.pine.base.component.scan.zxing.ZXingScanManager;
-import com.pine.base.component.share.manager.ShareManager;
-import com.pine.base.router.command.RouterDbServerCommand;
-import com.pine.base.track.AppTrackManager;
-import com.pine.config.BuildConfig;
-import com.pine.config.ConfigKey;
-import com.pine.config.switcher.ConfigSwitcherServer;
-import com.pine.db_server.DbServerApplication;
-import com.pine.login.LoginApplication;
-import com.pine.main.MainApplication;
-import com.pine.mvc.MvcApplication;
-import com.pine.mvp.MvpApplication;
-import com.pine.mvvm.MvvmApplication;
+import com.pine.template.base.BaseApplication;
+import com.pine.template.base.BaseUrlConstants;
+import com.pine.template.base.access.UiAccessConfigSwitcherExecutor;
+import com.pine.template.base.access.UiAccessLoginExecutor;
+import com.pine.template.base.access.UiAccessType;
+import com.pine.template.base.access.UiAccessVipLevelExecutor;
+import com.pine.template.base.component.map.IMapManager;
+import com.pine.template.base.component.map.IMapManagerFactory;
+import com.pine.template.base.component.map.MapSdkManager;
+import com.pine.template.base.component.map.baidu.BaiduMapManager;
+import com.pine.template.base.component.map.gaode.GaodeMapManager;
+import com.pine.template.base.component.scan.IScanManager;
+import com.pine.template.base.component.scan.IScanManagerFactory;
+import com.pine.template.base.component.scan.ScanManager;
+import com.pine.template.base.component.scan.zxing.ZXingScanManager;
+import com.pine.template.base.component.share.manager.ShareManager;
+import com.pine.template.base.router.command.RouterDbServerCommand;
+import com.pine.template.base.track.AppTrackManager;
+import com.pine.template.config.BuildConfig;
+import com.pine.template.config.ConfigKey;
+import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.db_server.DbServerApplication;
+import com.pine.template.login.LoginApplication;
+import com.pine.template.main.MainApplication;
+import com.pine.template.mvc.MvcApplication;
+import com.pine.template.mvp.MvpApplication;
+import com.pine.template.mvvm.MvvmApplication;
 import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IRequestManagerFactory;
@@ -47,8 +47,8 @@ import com.pine.tool.router.RouterManager;
 import com.pine.tool.router.impl.arouter.manager.ARouterManager;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
-import com.pine.user.UserApplication;
-import com.pine.welcome.WelcomeApplication;
+import com.pine.template.user.UserApplication;
+import com.pine.template.welcome.WelcomeApplication;
 
 /**
  * Created by tanghongfeng on 2018/7/3.
@@ -99,7 +99,7 @@ public class TemplateApplication extends Application {
     }
 
     private void initManager() {
-        RouterManager.init(this, "com.pine.base.router.command",
+        RouterManager.init(this, "com.pine.template.base.router.command",
                 new IRouterManagerFactory() {
                     @Override
                     public IRouterManager makeRouterManager() {

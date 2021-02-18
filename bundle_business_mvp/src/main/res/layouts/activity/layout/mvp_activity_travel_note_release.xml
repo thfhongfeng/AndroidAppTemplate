@@ -259,10 +259,10 @@
                     android:textColor="#929292"
                     android:textSize="@dimen/sp_13" />
 
-                <com.pine.base.component.editor.ui.ArticleEditorView
+                <com.pine.template.base.component.editor.ui.ArticleEditorView
                     android:id="@+id/aev_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></com.pine.base.component.editor.ui.ArticleEditorView>
+                    android:layout_height="wrap_content"></com.pine.template.base.component.editor.ui.ArticleEditorView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -280,12 +280,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pine.base.component.editor.ui.ArticleDisplayView
+            <com.pine.template.base.component.editor.ui.ArticleDisplayView
                 android:id="@+id/note_preview_adv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#f8f8f8"
-                android:padding="@dimen/dp_10"></com.pine.base.component.editor.ui.ArticleDisplayView>
+                android:padding="@dimen/dp_10"></com.pine.template.base.component.editor.ui.ArticleDisplayView>
         </androidx.core.widget.NestedScrollView>
     </RelativeLayout>
 </RelativeLayout>

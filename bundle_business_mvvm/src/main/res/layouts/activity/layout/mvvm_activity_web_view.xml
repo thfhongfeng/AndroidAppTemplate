@@ -5,7 +5,7 @@
 
         <variable
             name="presenter"
-            type="com.pine.mvvm.ui.activity.MvvmWebViewActivity.Presenter"></variable>
+            type="com.pine.template.mvvm.ui.activity.MvvmWebViewActivity.Presenter"></variable>
     </data>
 
     <LinearLayout

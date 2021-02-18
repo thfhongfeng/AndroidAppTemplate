@@ -5,11 +5,11 @@
 
         <variable
             name="presenter"
-            type="com.pine.mvvm.ui.activity.MvvmShopSearchCheckActivity.Presenter"></variable>
+            type="com.pine.template.mvvm.ui.activity.MvvmShopSearchCheckActivity.Presenter"></variable>
 
         <variable
             name="searchBean"
-            type="com.pine.mvvm.bean.MvvmShopSearchBean"></variable>
+            type="com.pine.template.mvvm.bean.MvvmShopSearchBean"></variable>
     </data>
 
     <LinearLayout

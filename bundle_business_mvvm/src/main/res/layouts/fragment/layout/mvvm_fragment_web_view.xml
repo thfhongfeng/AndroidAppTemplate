@@ -5,7 +5,7 @@
 
         <variable
             name="presenter"
-            type="com.pine.mvvm.ui.fragment.MvvmWebViewFragment.Presenter"></variable>
+            type="com.pine.template.mvvm.ui.fragment.MvvmWebViewFragment.Presenter"></variable>
     </data>
 
     <LinearLayout

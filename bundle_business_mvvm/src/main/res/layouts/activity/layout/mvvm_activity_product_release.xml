@@ -7,11 +7,11 @@
 
         <variable
             name="presenter"
-            type="com.pine.mvvm.ui.activity.MvvmProductReleaseActivity.Presenter"></variable>
+            type="com.pine.template.mvvm.ui.activity.MvvmProductReleaseActivity.Presenter"></variable>
 
         <variable
             name="productDetail"
-            type="com.pine.mvvm.bean.MvvmProductDetailEntity"></variable>
+            type="com.pine.template.mvvm.bean.MvvmProductDetailEntity"></variable>
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

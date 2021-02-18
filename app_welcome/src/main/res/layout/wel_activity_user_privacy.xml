@@ -5,7 +5,7 @@
 
         <variable
             name="presenter"
-            type="com.pine.welcome.ui.activity.UserPrivacyActivity.Presenter" />
+            type="com.pine.template.welcome.ui.activity.UserPrivacyActivity.Presenter" />
     </data>
 
     <LinearLayout

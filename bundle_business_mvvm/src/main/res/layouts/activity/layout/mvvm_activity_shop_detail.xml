@@ -8,11 +8,11 @@
 
         <variable
             name="shopDetail"
-            type="com.pine.mvvm.bean.MvvmShopDetailEntity"></variable>
+            type="com.pine.template.mvvm.bean.MvvmShopDetailEntity"></variable>
 
         <variable
             name="presenter"
-            type="com.pine.mvvm.ui.activity.MvvmShopDetailActivity.Presenter"></variable>
+            type="com.pine.template.mvvm.ui.activity.MvvmShopDetailActivity.Presenter"></variable>
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -183,7 +183,7 @@
                                 android:textColor="#989898"
                                 android:textSize="@dimen/sp_15" />
 
-                            <com.pine.base.binding.widget.android.view.BindingTextView
+                            <com.pine.template.base.binding.widget.android.view.BindingTextView
                                 android:id="@+id/address_marker_tv"
                                 data1="@{shopDetail.latitude}"
                                 data2="@{shopDetail.longitude}"
@@ -277,7 +277,7 @@
                         </TableRow>
                     </TableLayout>
 
-                    <com.pine.base.binding.widget.custom.view.BindingImageUploadRecycleView
+                    <com.pine.template.base.binding.widget.custom.view.BindingImageUploadRecycleView
                         android:id="@+id/photo_iuv"
                         imgUrlsJoinStr='@{","}'
                         initImgUrls="@{shopDetail.imgUrls}"
@@ -286,7 +286,7 @@
                         android:layout_margin="@dimen/dp_10"
                         tool:base_enableImageRotate="true"
                         tool:base_enableImageScale="true"
-                        tool:base_enableImageTranslate="true"></com.pine.base.binding.widget.custom.view.BindingImageUploadRecycleView>
+                        tool:base_enableImageTranslate="true"></com.pine.template.base.binding.widget.custom.view.BindingImageUploadRecycleView>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 

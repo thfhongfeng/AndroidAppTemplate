@@ -249,11 +249,11 @@
                     </TableRow>
                 </TableLayout>
 
-                <com.pine.base.component.uploader.ui.BaseImageUploadRecycleView
+                <com.pine.template.base.component.uploader.ui.BaseImageUploadRecycleView
                     android:id="@+id/photo_iuv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_10"></com.pine.base.component.uploader.ui.BaseImageUploadRecycleView>
+                    android:layout_margin="@dimen/dp_10"></com.pine.template.base.component.uploader.ui.BaseImageUploadRecycleView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

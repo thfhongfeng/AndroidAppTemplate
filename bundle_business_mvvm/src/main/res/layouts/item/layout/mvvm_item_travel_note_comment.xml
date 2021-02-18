@@ -4,11 +4,11 @@
 
     <data class="MvvmTravelNoteCommentItemBinding">
 
-        <import type="com.pine.mvvm.R"></import>
+        <import type="com.pine.template.mvvm.R"></import>
 
         <variable
             name="travelNoteComment"
-            type="com.pine.mvvm.bean.MvvmTravelNoteCommentEntity"></variable>
+            type="com.pine.template.mvvm.bean.MvvmTravelNoteCommentEntity"></variable>
     </data>
 
     <LinearLayout

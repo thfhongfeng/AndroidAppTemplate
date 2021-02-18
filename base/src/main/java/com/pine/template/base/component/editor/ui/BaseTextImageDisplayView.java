@@ -1,0 +1,124 @@
+package com.pine.template.base.component.editor.ui;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.pine.template.base.R;
+import com.pine.template.base.component.editor.bean.TextImageEntity;
+import com.pine.template.base.component.editor.bean.TextImageItemEntity;
+import com.pine.template.base.component.image_loader.ImageLoaderManager;
+import com.pine.tool.util.LogUtils;
+
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_IMAGE;
+import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
+
+/**
+ * Created by tanghongfeng on 2018/11/13
+ */
+
+public class BaseTextImageDisplayView extends LinearLayout {
+    private final String TAG = LogUtils.makeLogTag(this.getClass());
+
+    // View标题
+    private String mTitle;
+    private List<TextImageItemEntity> mContent;
+
+    public BaseTextImageDisplayView(Context context) {
+        super(context);
+        setOrientation(VERTICAL);
+    }
+
+    public BaseTextImageDisplayView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        setOrientation(VERTICAL);
+    }
+
+    public BaseTextImageDisplayView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        setOrientation(VERTICAL);
+    }
+
+    public void setupView(@NonNull TextImageEntity textImageEntity) {
+        removeAllViews();
+        mTitle = textImageEntity.getTitle();
+        if (!TextUtils.isEmpty(mTitle)) {
+            View topTitleView = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_display_top, null);
+            ((TextView) topTitleView.findViewById(R.id.title_tv)).setText(mTitle);
+            topTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
+            addView(topTitleView);
+        }
+        mContent = textImageEntity.getItemList();
+        if (mContent != null) {
+            for (TextImageItemEntity entity : mContent) {
+                if (TYPE_TEXT.equals(entity.getType())) {
+                    addText(entity);
+                } else if (TYPE_IMAGE.equals(entity.getType())) {
+                    addImage(entity);
+                }
+            }
+        }
+    }
+
+    public void setupView(@NonNull String title, @NonNull List<TextImageItemEntity> dataList) {
+        removeAllViews();
+        mTitle = title;
+        if (!TextUtils.isEmpty(mTitle)) {
+            View topTitleView = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_display_top, null);
+            ((TextView) topTitleView.findViewById(R.id.title_tv)).setText(mTitle);
+            topTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
+            addView(topTitleView);
+        }
+        mContent = dataList;
+        if (dataList != null) {
+            for (TextImageItemEntity entity : dataList) {
+                if (TYPE_TEXT.equals(entity.getType())) {
+                    addText(entity);
+                } else if (TYPE_IMAGE.equals(entity.getType())) {
+                    addImage(entity);
+                }
+            }
+        }
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public List<TextImageItemEntity> getContent() {
+        return mContent;
+    }
+
+    private void addText(@NonNull TextImageItemEntity data) {
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_display_item_text, null);
+        addView(view);
+        ((TextView) view.findViewById(R.id.text_tv)).setText(data.getText());
+    }
+
+    private void addImage(@NonNull TextImageItemEntity data) {
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.base_text_image_display_item_image, null);
+        addView(view);
+
+        ((TextView) view.findViewById(R.id.text_tv)).setText(data.getText());
+        ImageView image_iv = view.findViewById(R.id.image_iv);
+        String imageUrl = "";
+        if (data != null) {
+            if (!TextUtils.isEmpty(data.getLocalFilePath())) {
+                imageUrl = "file://" + data.getLocalFilePath();
+            } else if (!TextUtils.isEmpty(data.getRemoteFilePath())) {
+                imageUrl = data.getRemoteFilePath();
+            }
+        }
+        ImageLoaderManager.getInstance().loadImage(getContext(), imageUrl, image_iv);
+    }
+}

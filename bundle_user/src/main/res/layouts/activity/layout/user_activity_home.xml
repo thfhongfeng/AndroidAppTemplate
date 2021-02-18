@@ -4,17 +4,17 @@
 
     <data class="UserHomeActivityBinding">
 
-        <import type="com.pine.user.R"></import>
+        <import type="com.pine.template.user.R"></import>
 
         <import type="android.view.View"></import>
 
         <variable
             name="presenter"
-            type="com.pine.user.ui.activity.UserHomeActivity.Presenter"></variable>
+            type="com.pine.template.user.ui.activity.UserHomeActivity.Presenter"></variable>
 
         <variable
             name="accountBean"
-            type="com.pine.base.bean.AccountBean"></variable>
+            type="com.pine.template.base.bean.AccountBean"></variable>
     </data>
 
     <LinearLayout
@@ -103,10 +103,10 @@
             android:padding="@dimen/dp_20"
             android:text="@string/user_logout" />
 
-        <com.pine.base.widget.view.BaseBottomTabNavigationBar
+        <com.pine.template.base.widget.view.BaseBottomTabNavigationBar
             android:id="@+id/bottom_tab_nb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:base_bbtnb_SelectedItem="1"></com.pine.base.widget.view.BaseBottomTabNavigationBar>
+            app:base_bbtnb_SelectedItem="1"></com.pine.template.base.widget.view.BaseBottomTabNavigationBar>
     </LinearLayout>
 </layout>

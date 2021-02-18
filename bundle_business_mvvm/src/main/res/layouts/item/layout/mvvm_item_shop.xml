@@ -10,7 +10,7 @@
 
         <variable
             name="shop"
-            type="com.pine.mvvm.bean.MvvmShopItemEntity"></variable>
+            type="com.pine.template.mvvm.bean.MvvmShopItemEntity"></variable>
     </data>
 
     <LinearLayout

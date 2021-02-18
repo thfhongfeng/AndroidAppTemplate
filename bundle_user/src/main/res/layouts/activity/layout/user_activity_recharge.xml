@@ -5,7 +5,7 @@
 
         <variable
             name="accountBean"
-            type="com.pine.base.bean.AccountBean"></variable>
+            type="com.pine.template.base.bean.AccountBean"></variable>
     </data>
 
     <LinearLayout

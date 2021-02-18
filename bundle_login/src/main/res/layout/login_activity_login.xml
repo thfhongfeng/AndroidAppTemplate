@@ -5,11 +5,11 @@
 
         <variable
             name="presenter"
-            type="com.pine.login.ui.activity.LoginActivity.Presenter"></variable>
+            type="com.pine.template.login.ui.activity.LoginActivity.Presenter"></variable>
 
         <variable
             name="loginBean"
-            type="com.pine.login.bean.LoginBean"></variable>
+            type="com.pine.template.login.bean.LoginBean"></variable>
     </data>
 
     <LinearLayout

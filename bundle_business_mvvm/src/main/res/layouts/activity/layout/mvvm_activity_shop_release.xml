@@ -7,11 +7,11 @@
 
         <variable
             name="presenter"
-            type="com.pine.mvvm.ui.activity.MvvmShopReleaseActivity.Presenter"></variable>
+            type="com.pine.template.mvvm.ui.activity.MvvmShopReleaseActivity.Presenter"></variable>
 
         <variable
             name="shopDetail"
-            type="com.pine.mvvm.bean.MvvmShopDetailEntity"></variable>
+            type="com.pine.template.mvvm.bean.MvvmShopDetailEntity"></variable>
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -87,7 +87,7 @@
                             android:onClick="@{presenter::onTypeSelectorClick}"
                             android:orientation="horizontal">
 
-                            <com.pine.base.binding.widget.android.view.BindingTextView
+                            <com.pine.template.base.binding.widget.android.view.BindingTextView
                                 android:id="@+id/type_tv"
                                 data="@={shopDetail.type}"
                                 android:layout_width="0dp"
@@ -184,7 +184,7 @@
                             android:textColor="#989898"
                             android:textSize="@dimen/sp_15" />
 
-                        <com.pine.base.binding.widget.android.view.BindingTextView
+                        <com.pine.template.base.binding.widget.android.view.BindingTextView
                             android:id="@+id/address_district_tv"
                             data="@={shopDetail.addressZipCode}"
                             android:layout_width="0dp"
@@ -210,7 +210,7 @@
                             android:textColor="#989898"
                             android:textSize="@dimen/sp_15" />
 
-                        <com.pine.base.binding.widget.android.view.BindingTextView
+                        <com.pine.template.base.binding.widget.android.view.BindingTextView
                             android:id="@+id/address_marker_tv"
                             data1="@={shopDetail.latitude}"
                             data2="@={shopDetail.longitude}"
@@ -304,14 +304,14 @@
                     </TableRow>
                 </TableLayout>
 
-                <com.pine.base.binding.widget.custom.view.BindingImageUploadRecycleView
+                <com.pine.template.base.binding.widget.custom.view.BindingImageUploadRecycleView
                     android:id="@+id/photo_iuv"
                     imgUrlsJoinStr='@{","}'
                     initImgUrls="@{shopDetail.imgUrls}"
                     newAddImgUrls="@={shopDetail.imgUrls}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_10"></com.pine.base.binding.widget.custom.view.BindingImageUploadRecycleView>
+                    android:layout_margin="@dimen/dp_10"></com.pine.template.base.binding.widget.custom.view.BindingImageUploadRecycleView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
