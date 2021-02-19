@@ -8,9 +8,6 @@ android {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
 
-        buildConfigField "String", "APPLICATION_PACKAGE", "\"${build_versions.applicationId}\""
-        buildConfigField "String", "APP_NAME", "\"${build_versions.app_name}\""
-
         buildConfigField "String", "BASE_URL", "\"${app_url.base_url}\""
         buildConfigField "String", "WEI_BO_REDIRECT_URL", "\"${app_url.wei_bo_secret_key}\""
 
@@ -46,13 +43,13 @@ android {
 
     productFlavors {
         common {
-
+            buildConfigField "String", "APP_NAME", "\"${build_product_appName.common}\""
         }
         huawei {
-
+            buildConfigField "String", "APP_NAME", "\"${build_product_appName.huawei}\""
         }
         xiaomi {
-
+            buildConfigField "String", "APP_NAME", "\"${build_product_appName.xiaomi}\""
         }
     }
 

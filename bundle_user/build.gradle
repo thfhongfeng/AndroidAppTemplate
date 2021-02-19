@@ -22,8 +22,8 @@ android {
         // ARouter配置 end
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 
     buildTypes {

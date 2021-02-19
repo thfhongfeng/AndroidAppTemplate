@@ -38,7 +38,7 @@
     </declare-styleable>
 
     <declare-styleable name="BaseSingleImageUploadView">
-        <attr name="baseMaxFileSize"></attr>
+        <attr name="base_maxFileSize"></attr>
         <attr name="base_imageWidth"></attr>
         <attr name="base_imageHeight"></attr>
         <attr name="base_enableImageScale"></attr>

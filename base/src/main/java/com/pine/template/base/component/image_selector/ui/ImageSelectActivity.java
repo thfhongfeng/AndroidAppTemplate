@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -471,7 +472,11 @@ public class ImageSelectActivity extends BaseActionBarTextMenuActivity {
                 holder = (FolderViewHolder) convertView.getTag();
             }
             ImageFolderBean item = mDirPaths.get(position);
-            ImageLoaderManager.getInstance().loadImage(ImageSelectActivity.this, "file://" + item.getFirstImagePath(), holder.image_iv);
+            if (position == 0 && TextUtils.isEmpty(item.getFirstImagePath())) {
+                ImageLoaderManager.getInstance().loadImage(ImageSelectActivity.this, R.mipmap.base_ic_all_image, holder.image_iv);
+            } else {
+                ImageLoaderManager.getInstance().loadImage(ImageSelectActivity.this, "file://" + item.getFirstImagePath(), holder.image_iv);
+            }
             holder.count_tv.setText(item.images.size() + "张");
             holder.name_tv.setText(item.getName());
             holder.choose_iv.setVisibility(mCurrentImageFolder == item ? View.VISIBLE : View.GONE);

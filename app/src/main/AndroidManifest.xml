@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pine.template">
-
+    <!--android 10文件存储机制修改成了沙盒模式，Android应用程序即使获取了读写存储卡权限也不能读写非沙盒路径下的数据。除非：
+        1. Android应用程序获得读写存储卡权限的情况下，必须在AndroidManifest.xml的application标签下
+            声明requestLegacyExternalStorage=true，才可以访问沙盒路径下的数据。
+        2. targetSdkVersion<29 的应用程序默认带有requestLegacyExternalStorage=true属性。不需要理会-->
     <application
         android:name=".TemplateApplication"
         android:allowBackup="true"
@@ -11,6 +14,7 @@
         android:roundIcon="@mipmap/res_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:label">
 
     </application>

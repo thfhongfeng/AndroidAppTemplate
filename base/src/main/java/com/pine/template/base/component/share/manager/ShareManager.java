@@ -46,7 +46,7 @@ public class ShareManager {
 
     public void init(Context context, @DrawableRes int iconId) {
         initTencent(BuildConfig.QQ_FOR_APP_ID, BuildConfig.WX_FOR_APP_ID, BuildConfig.WX_SECRET_KEY,
-                iconId, BuildConfig.APPLICATION_ID, BuildConfig.BASE_URL);
+                iconId, BuildConfig.APP_NAME, BuildConfig.BASE_URL);
         initSina(context, BuildConfig.WEI_BO_FOR_APP_KEY, BuildConfig.WEI_BO_REDIRECT_URL);
     }
 

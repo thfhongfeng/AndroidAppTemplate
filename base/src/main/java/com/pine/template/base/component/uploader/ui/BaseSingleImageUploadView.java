@@ -76,7 +76,7 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
 
     private void resolveAttrs(Context context, @Nullable AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseSingleImageUploadView);
-        mMaxFileSize = typedArray.getInt(R.styleable.BaseSingleImageUploadView_baseMaxFileSize, mMaxFileSize);
+        mMaxFileSize = typedArray.getInt(R.styleable.BaseSingleImageUploadView_base_maxFileSize, mMaxFileSize);
         mImageContainerWidth = typedArray.getDimensionPixelOffset(R.styleable.BaseSingleImageUploadView_base_imageWidth, context.getResources().getDimensionPixelOffset(R.dimen.dp_147));
         mImageContainerHeight = typedArray.getDimensionPixelOffset(R.styleable.BaseSingleImageUploadView_base_imageHeight, context.getResources().getDimensionPixelOffset(R.dimen.dp_78));
         boolean enableImageScale = typedArray.getBoolean(

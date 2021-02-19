@@ -2,11 +2,11 @@
  * 编译打包参数
  */
 def build_versions = [:]
-build_versions.compileSdkVersion = 28
-build_versions.buildToolsVersion = "28.0.3"
-build_versions.minSdkVersion = 21
-build_versions.targetSdkVersion = 28
-build_versions.targetSdkVersion = 28
+build_versions.compileSdkVersion = 30
+build_versions.buildToolsVersion = "30.0.2"
+build_versions.minSdkVersion = 23
+build_versions.targetSdkVersion = 30
+build_versions.targetSdkVersion = 30
 
 build_versions.apkHeadName = "pine_app_template"
 
