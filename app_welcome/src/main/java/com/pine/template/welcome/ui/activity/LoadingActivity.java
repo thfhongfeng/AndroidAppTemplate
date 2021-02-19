@@ -239,11 +239,8 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
     }
 
     private void gotoNext(int delayTogo) {
-        long delay = delayTogo;
-        if (delayTogo <= 0) {
-            delay = LOADING_STAY_MIN_TIME - (System.currentTimeMillis() - mStartTimeMillis);
-            delay = delay > 0 ? delay : 0;
-        }
+        long delay = LOADING_STAY_MIN_TIME - (System.currentTimeMillis() - mStartTimeMillis);
+        delay = delay > delayTogo ? delay : delayTogo > 0 ? delayTogo : 0;
         if (isGoAssignActivityAction()) {
             goAssignActivity();
         } else {
@@ -265,8 +262,9 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
 
     private boolean isGoAssignActivityAction() {
         Intent startupIntent = getIntent().getParcelableExtra(WelcomeConstants.STARTUP_INTENT);
-        LogUtils.d(TAG, "gotoNext startupIntent: " + startupIntent);
-        return startupIntent != null;
+        boolean isGoAssignActivityAction = Intent.ACTION_VIEW.equals(startupIntent.getAction());
+        LogUtils.d(TAG, "gotoNext startupIntent: " + startupIntent + ", isGoAssignActivityAction: " + isGoAssignActivityAction);
+        return isGoAssignActivityAction;
     }
 
     private void goAssignActivity() {
