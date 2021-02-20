@@ -74,8 +74,8 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         try {
             db.execSQL("create table if not exists " + SWITCHER_CONFIG_TABLE_NAME +
                     "(_id integer primary key autoincrement,configType integer not null," +
-                    "accountType integer not null,configKey text not null,state integer not null," +
-                    "createTime text,updateTime text)");
+                    "accountType integer not null,configKey text not null,parentConfigKey text," +
+                    "state integer not null,createTime text,updateTime text)");
             List<ContentValues> list = new ArrayList<>();
             HashMap<Integer, Integer> accountTypeMap = new HashMap<>();
             accountTypeMap.put(0, 999999);
