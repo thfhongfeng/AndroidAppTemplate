@@ -17,7 +17,7 @@ public class ConfigSwitcherEntity {
     private String parentConfigKey;
     // 是否开放：0-关闭；1-开放
     private int state;
-    // 配置类型:0-缺省；1-模块开关；2-功能开关
+    // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
     private int configType;
 
     public String getConfigKey() {

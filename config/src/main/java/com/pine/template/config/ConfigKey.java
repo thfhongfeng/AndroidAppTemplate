@@ -23,4 +23,8 @@ public interface ConfigKey {
     String FUN_ADD_PRODUCT_KEY = "fun_add_product";
     String FUN_ADD_TRAVEL_NOTE_KEY = "fun_add_travel_note";
     /*********************** 功能开关Key end ************************/
+
+    /*********************** 配置开关Key begin **********************/
+
+    /*********************** 配置开关Key end ************************/
 }

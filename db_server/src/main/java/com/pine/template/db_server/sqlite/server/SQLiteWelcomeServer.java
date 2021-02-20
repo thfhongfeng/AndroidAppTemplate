@@ -96,7 +96,8 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                 } catch (NumberFormatException nfe) {
                 }
             }
-            Cursor cursor = query(db, APP_VERSION_TABLE_NAME, new HashMap<String, String>());
+            Cursor cursor = query(db, APP_VERSION_TABLE_NAME, null, null, null,
+                    null, null, "versionCode DESC");
             try {
                 JSONObject jsonObject = null;
                 boolean hasNewVersion = false;
