@@ -1,0 +1,18 @@
+无限定符	默认文件，适配所有设备
+-small	适配小屏幕设备
+-normal	适配普通屏幕设备（默认）
+-large	适配大屏幕设备
+-xlarge	适配超大屏幕设备
+-ldpi	适配低密度屏幕（120dpi）
+-mdpi	适配中密度屏幕（160dpi）
+-hdpi	适配高密度屏幕（240dpi）
+-xhdpi	适配超高密度屏幕（320dpi）
+-xxhdpi	适配超超高密度屏幕（480dpi）
+-xxxhdpi	适配超超超高密度屏幕（640dpi）
+-w<N>dp	限定屏幕宽度为N dp
+-h<N>dp	限定屏幕高度为N dp
+-sw<N>dp	限定最小宽度为N dp
+-w<N>px	限定屏幕宽度为N 像素
+-h<N>px	限定屏幕高度为N 像素
+-sw<N>px	限定最小宽度为N 像素
+-lang-<ISO 639-1>	限定语言为<ISO 639-1>指定的语言

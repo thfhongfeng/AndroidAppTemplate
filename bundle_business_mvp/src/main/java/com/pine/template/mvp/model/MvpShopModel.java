@@ -44,7 +44,7 @@ public class MvpShopModel {
 
     public void requestAddShop(final Map<String, String> params,
                                @NonNull final IModelAsyncResponse<MvpShopDetailEntity> callback) {
-        String url = MvpUrlConstants.Add_Shop;
+        String url = MvpUrlConstants.Add_Shop();
         RequestBean requestBean = new RequestBean(url, REQUEST_ADD_SHOP, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
@@ -52,7 +52,7 @@ public class MvpShopModel {
 
     public void requestShopDetailData(final Map<String, String> params,
                                       @NonNull final IModelAsyncResponse<MvpShopDetailEntity> callback) {
-        String url = MvpUrlConstants.Query_ShopDetail;
+        String url = MvpUrlConstants.Query_ShopDetail();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_DETAIL, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
@@ -60,7 +60,7 @@ public class MvpShopModel {
 
     public void requestShopListData(final Map<String, String> params,
                                     @NonNull final IModelAsyncResponse<ArrayList<MvpShopItemEntity>> callback) {
-        String url = MvpUrlConstants.Query_ShopList;
+        String url = MvpUrlConstants.Query_ShopList();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_LIST, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
@@ -68,7 +68,7 @@ public class MvpShopModel {
 
     public void requestShopAndProductListData(Map<String, String> params,
                                               @NonNull final IModelAsyncResponse<ArrayList<MvpShopAndProductEntity>> callback) {
-        String url = MvpUrlConstants.Query_ShopAndProductList;
+        String url = MvpUrlConstants.Query_ShopAndProductList();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_AND_PRODUCT_LIST, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
@@ -76,7 +76,7 @@ public class MvpShopModel {
 
     public void requestAddProduct(final Map<String, String> params,
                                   @NonNull final IModelAsyncResponse<MvpProductDetailEntity> callback) {
-        String url = MvpUrlConstants.Add_Product;
+        String url = MvpUrlConstants.Add_Product();
         RequestBean requestBean = new RequestBean(url, REQUEST_ADD_PRODUCT, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));

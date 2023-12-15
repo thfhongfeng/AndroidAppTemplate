@@ -2,37 +2,53 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pine.template.welcome">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
         <activity
             android:name=".ui.activity.UserPrivacyActivity"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+            android:theme="@style/BaseLoadingTheme"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.UserPrivacyDetailActivity"
-            android:screenOrientation="portrait"
+            android:name=".ui.activity.UserPrivacyDetailActionBarActivity"
+            android:theme="@style/BaseLoadingTheme"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
-            android:name=".ui.activity.UserPrivacyH5DetailActivity"
-            android:screenOrientation="portrait"
+            android:name=".ui.activity.UserPrivacyH5DetailActionBarActivity"
+            android:theme="@style/BaseLoadingTheme"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".ui.activity.LoadingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+            android:theme="@style/BaseLoadingTheme"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".ui.activity.WelcomeActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+            android:theme="@style/BaseLoadingTheme"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+
+        <receiver
+            android:name=".receiver.BootCompleteReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

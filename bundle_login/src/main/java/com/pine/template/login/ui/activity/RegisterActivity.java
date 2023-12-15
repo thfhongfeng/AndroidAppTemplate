@@ -49,7 +49,7 @@ public class RegisterActivity extends
     }
 
     private void initView() {
-        mBinding.verifyCodeIv.init(LoginUrlConstants.Verify_Code_Image);
+        mBinding.verifyCodeIv.init(LoginUrlConstants.VERIFY_CODE());
     }
 
     @Override

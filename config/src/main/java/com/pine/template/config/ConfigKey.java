@@ -4,27 +4,37 @@ package com.pine.template.config;
  * Created by tanghongfeng on 2018/9/13
  */
 
-public interface ConfigKey {
-    /*********************** 模块开关Key begin **********************/
-    String BUNDLE_WELCOME_KEY = "bundle_welcome";
-    String BUNDLE_LOGIN_KEY = "bundle_login";
-    String BUNDLE_MAIN_KEY = "bundle_main";
-    String BUNDLE_USER_KEY = "bundle_user";
-    String BUNDLE_BUSINESS_MVC_KEY = "bundle_business_mvc";
-    String BUNDLE_BUSINESS_MVP_KEY = "bundle_business_mvp";
-    String BUNDLE_BUSINESS_MVVM_KEY = "bundle_business_mvvm";
-
-    String BUNDLE_DB_SEVER_KEY = "bundle_db_server";
+public interface ConfigKey extends BaseConfigKey {
+    /*********************** 模块开关Key begin **********************/;
+    String BUNDLE_DB_SEVER = "BUNDLE_DB_SEVER";
+    String BUNDLE_BUSINESS_MVC = "BUNDLE_BUSINESS_MVC";
+    String BUNDLE_BUSINESS_MVP = "BUNDLE_BUSINESS_MVP";
+    String BUNDLE_BUSINESS_MVVM = "BUNDLE_BUSINESS_MVVM";
     /*********************** 模块开关Key end ************************/
 
 
+    /*********************** 功能Key begin **********************/
+    String FUN_ADD_SHOP = "FUN_ADD_SHOP";
+    String FUN_ADD_PRODUCT = "FUN_ADD_PRODUCT";
+    String FUN_ADD_TRAVEL_NOTE = "FUN_ADD_TRAVEL_NOTE";
+
+    // 是否有禁用休眠功能（默认不禁止，有些机器不支持休眠需要禁止）
+    String FUN_FORBID_SLEEP = "FUN_FORBID_SLEEP";
+    /*********************** 功能Key begin **********************/
+
+
     /*********************** 功能开关Key begin **********************/
-    String FUN_ADD_SHOP_KEY = "fun_add_shop";
-    String FUN_ADD_PRODUCT_KEY = "fun_add_product";
-    String FUN_ADD_TRAVEL_NOTE_KEY = "fun_add_travel_note";
+    // 是否开启离线模式
+    String ENABLE_OFFLINE_MODE = "ENABLE_OFFLINE_MODE";
     /*********************** 功能开关Key end ************************/
 
-    /*********************** 配置开关Key begin **********************/
 
-    /*********************** 配置开关Key end ************************/
+    /*********************** 配置Key begin **********************/
+
+    /*********************** 配置Key end ************************/
+
+
+    /*********************** 缓存Key begin ************************/
+
+    /*********************** 缓存Key end ************************/
 }

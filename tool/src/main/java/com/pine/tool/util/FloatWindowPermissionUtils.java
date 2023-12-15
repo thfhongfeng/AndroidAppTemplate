@@ -9,9 +9,9 @@ import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 
-import java.lang.reflect.Method;
-
 import androidx.annotation.RequiresApi;
+
+import java.lang.reflect.Method;
 
 public class FloatWindowPermissionUtils {
     public static boolean hasPermission(Context context) {
@@ -62,7 +62,7 @@ public class FloatWindowPermissionUtils {
             if (mgr == null) return false;
             View viewToAdd = new View(context);
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(0, 0,
-                    android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ?
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
                             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY : WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSPARENT);

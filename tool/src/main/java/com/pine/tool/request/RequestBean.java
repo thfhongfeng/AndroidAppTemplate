@@ -1,13 +1,13 @@
 package com.pine.tool.request;
 
+import androidx.annotation.NonNull;
+
 import com.pine.tool.request.IRequestManager.ActionType;
 import com.pine.tool.request.IRequestManager.RequestType;
 import com.pine.tool.request.callback.AbstractBaseCallback;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/9/10.
@@ -30,6 +30,12 @@ public class RequestBean {
     private RequestMethod requestMethod;
     // 请求优先级，默认100，数字越大，优先级越小
     private int priority = 100;
+    // 该请求连接服务器超时时间，单位毫秒
+    private int connectTimeout;
+    // 该请求等待服务器响应超时时间，单位毫秒
+    private int readTimeout;
+    // 该请求进度等待服务器响应超时时间（主要用于上传下载），单位毫秒
+    private int progressTimeout = 30 * 1000;
 
     // 请求的服务系统标识，默认main，代表应用本体后台服务请求。
     // 主要用于session的管理（不同的后台服务系统应该维护不同的session，不能混在一起）。
@@ -48,6 +54,15 @@ public class RequestBean {
     private RequestType requestType;
     // 请求响应体
     private Response response;
+    // 请求当前状态
+    private int requestState = REQUEST_STATE_DEFAULT;
+
+    public static int REQUEST_STATE_DEFAULT = 0;
+    public static int REQUEST_STATE_START = 1;
+    public static int REQUEST_STATE_FINISH = 2;
+    public static int REQUEST_STATE_CANCEL = 3;
+    public static int REQUEST_STATE_FAIL = 4;
+    public static int REQUEST_STATE_TIMEOUT = 5;
 
     // 请求的额外的开关标识，记录一些额外数据，用于请求的特殊处理
     // 比如其中一个应用：
@@ -138,6 +153,30 @@ public class RequestBean {
         this.priority = priority;
     }
 
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+    }
+
+    public int getProgressTimeout() {
+        return progressTimeout;
+    }
+
+    public void setProgressTimeout(int progressTimeout) {
+        this.progressTimeout = progressTimeout;
+    }
+
     public String getSysTag() {
         return sysTag;
     }
@@ -194,6 +233,14 @@ public class RequestBean {
         this.response = response;
     }
 
+    public int getRequestState() {
+        return requestState;
+    }
+
+    public void setRequestState(int requestState) {
+        this.requestState = requestState;
+    }
+
     public void openExtraSwitcher(RequestExtraSwitcher key) {
         extraSwitcherMap.put(key, true);
     }
@@ -206,5 +253,31 @@ public class RequestBean {
 
     public boolean isExtraSwitcherOpen(RequestExtraSwitcher key) {
         return extraSwitcherMap.containsKey(key) && extraSwitcherMap.get(key);
+    }
+
+    @Override
+    public String toString() {
+        return "RequestBean{" +
+                "key='" + key + '\'' +
+                ", url='" + url + '\'' +
+                ", what=" + what +
+                ", params=" + params +
+                ", needLogin=" + needLogin +
+                ", sign=" + sign +
+                ", requestMethod=" + requestMethod +
+                ", priority=" + priority +
+                ", connectTimeout=" + connectTimeout +
+                ", readTimeout=" + readTimeout +
+                ", progressTimeout=" + progressTimeout +
+                ", sysTag='" + sysTag + '\'' +
+                ", moduleTag='" + moduleTag + '\'' +
+                ", headerParam=" + headerParam +
+                ", actionType=" + actionType +
+                ", callback=" + callback +
+                ", requestType=" + requestType +
+                ", response=" + response +
+                ", requestState=" + requestState +
+                ", extraSwitcherMap=" + extraSwitcherMap +
+                '}';
     }
 }

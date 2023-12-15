@@ -53,10 +53,6 @@
         <attr name="civ_fillColor" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="RoundImageView">
-        <attr name="riv_radius" format="dimension" />
-    </declare-styleable>
-
     <attr name="enableImageScale" format="boolean" />
     <attr name="enableImageTranslate" format="boolean" />
     <attr name="enableImageRotate" format="boolean" />

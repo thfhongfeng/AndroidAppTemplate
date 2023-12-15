@@ -1,7 +1,6 @@
 package com.pine.template.base.widget.dialog;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.view.Display;
 import android.view.Gravity;
@@ -24,7 +23,7 @@ import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
 
 import java.util.List;
 
-public class CustomListDialog extends Dialog {
+public class CustomListDialog extends BaseDialog {
     protected DialogListAdapter mDialogListAdapter;
 
     protected CustomListDialog(Context context) {
@@ -105,7 +104,7 @@ public class CustomListDialog extends Dialog {
             if (fillWidth) {
                 p.width = d.getWidth(); //宽度设置为屏幕
             }
-            p.height = d.getHeight() * 8 / 10;
+            p.height = d.getHeight() * 4 / 5;
             dialog.getWindow().setAttributes(p); //设置生效
             dialog.setCancelable(true);
             dialog.setCanceledOnTouchOutside(true);
@@ -158,7 +157,7 @@ public class CustomListDialog extends Dialog {
 
         @Override
         public BaseListViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new DialogListAdapter.ViewHolder(this, LayoutInflater.from(parent.getContext())
+            return new ViewHolder(this, LayoutInflater.from(parent.getContext())
                     .inflate(itemLayoutId, parent, false));
         }
 
@@ -192,6 +191,23 @@ public class CustomListDialog extends Dialog {
                     callback.onItemViewUpdate(itemView, position, content, dialog);
                 }
             }
+        }
+    }
+
+    public void show(boolean fullScreenMode) {
+        if (fullScreenMode) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            show();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } else {
+            show();
         }
     }
 

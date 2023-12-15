@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.router.command.RouterMainCommand;
+import com.pine.template.config.router.command.RouterMainCommand;
 import com.pine.template.main.ui.activity.MainHomeActivity;
 import com.pine.tool.router.IServiceCallback;
 import com.pine.tool.router.annotation.RouterCommand;

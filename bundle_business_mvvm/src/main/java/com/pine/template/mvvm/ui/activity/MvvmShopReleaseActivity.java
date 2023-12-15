@@ -47,11 +47,11 @@ import java.util.Map;
  */
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER, UiAccessType.VIP_LEVEL},
-        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP_KEY, VipLevel.VIP1},
+        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP, VipLevel.VIP1},
         AccessActions = {"", UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
 public class MvvmShopReleaseActivity extends
         BaseMvvmActionBarTextMenuActivity<MvvmShopReleaseActivityBinding, MvvmShopReleaseVm> {
-    private final int REQUEST_CODE_BAIDU_MAP = 1;
+    private final int REQUEST_CODE_MAP = 1;
     private InputTextDialog mContactInputDialog;
     private DateSelectDialog mOnLineDateSelectDialog;
     private SelectItemDialog mTypeSelectDialog;
@@ -109,7 +109,7 @@ public class MvvmShopReleaseActivity extends
         mBinding.photoIuv.init(this, true, new FileUploadComponent.OneByOneUploadAdapter() {
             @Override
             public String getUploadUrl() {
-                return MvvmUrlConstants.Upload_Single_File;
+                return MvvmUrlConstants.FILE_UPLOAD();
             }
 
             @Override
@@ -187,7 +187,7 @@ public class MvvmShopReleaseActivity extends
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_BAIDU_MAP) {
+        if (requestCode == REQUEST_CODE_MAP) {
             if (resultCode == RESULT_OK) {
                 double latitude = DecimalUtils.format(data.getDoubleExtra("latitude", 0d), 6);
                 double longitude = DecimalUtils.format(data.getDoubleExtra("longitude", 0d), 6);
@@ -275,9 +275,11 @@ public class MvvmShopReleaseActivity extends
             if (!TextUtils.isEmpty(entity.getLongitude())) {
                 latLng[1] = DecimalUtils.format(entity.getLongitude().trim(), 6);
             }
-            startActivityForResult(MapSdkManager.getMarkMapActivityIntent(
-                    MvvmShopReleaseActivity.this, latLng[0], latLng[1], true),
-                    REQUEST_CODE_BAIDU_MAP);
+            Intent intent = MapSdkManager.getMarkMapActivityIntent(
+                    MvvmShopReleaseActivity.this, latLng[0], latLng[1], true);
+            if (intent != null) {
+                startActivityForResult(intent, REQUEST_CODE_MAP);
+            }
         }
     }
 

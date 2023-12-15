@@ -1,26 +1,16 @@
-apply plugin: 'com.android.application'
-
-def apVersion = getEnvValue("apVersion", "");
+plugins {
+    id 'com.android.application'
+    id 'maven-publish'
+}
 
 android {
-    compileSdkVersion build_versions.compileSdkVersion
-    buildToolsVersion build_versions.buildToolsVersion
-
-    signingConfigs {
-        release {
-            storeFile file(build_versions.storeFile)
-            storePassword build_versions.storePassword
-            keyAlias build_versions.keyAlias
-            keyPassword build_versions.keyPassword
-        }
-    }
+    compileSdk build_versions.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion build_versions.minSdkVersion
-        targetSdkVersion build_versions.targetSdkVersion
+        minSdk build_versions.minSdkVersion
+        targetSdk build_versions.targetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         //必须要保证所有的flavor 都属于同一个维度
         flavorDimensions "default"
     }
@@ -29,14 +19,9 @@ android {
         dataBinding = true
     }
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-            minifyEnabled false
-            debuggable false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     productFlavors {
@@ -44,74 +29,61 @@ android {
             applicationId build_product_applicationId.common
             versionCode build_product_versionCode.common
             versionName build_product_versionName.common
-
-            manifestPlaceholders = [app_name: build_product_appName.common]
         }
-        huawei {
-            applicationId build_product_applicationId.huawei
-            versionCode build_product_versionCode.huawei
-            versionName build_product_versionName.huawei
-
-            manifestPlaceholders = [app_name: build_product_appName.huawei]
+        special {
+            applicationId build_product_applicationId.special
+            versionCode build_product_versionCode.special
+            versionName build_product_versionName.special
         }
-        xiaomi {
-            applicationId build_product_applicationId.xiaomi
-            versionCode build_product_versionCode.xiaomi
-            versionName build_product_versionName.xiaomi
-
-            manifestPlaceholders = [app_name: build_product_appName.xiaomi]
+    }
+    signingConfigs {
+        common {
+            storeFile file(build_product_storeFile.common)
+            storePassword build_product_storePassword.common
+            keyAlias build_product_keyAlias.common
+            keyPassword build_product_keyPassword.common
+        }
+        special {
+            storeFile file(build_product_storeFile.special)
+            storePassword build_product_storePassword.special
+            keyAlias build_product_keyAlias.special
+            keyPassword build_product_keyPassword.special
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            productFlavors.common.signingConfig signingConfigs.common
+            productFlavors.special.signingConfig signingConfigs.special
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            initWith(buildTypes.release)
+            // 使用了initWith，需要在之后覆盖debug特有的属性
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     applicationVariants.all { variant ->
+        def buildTypeName = variant.buildType.name
+        String timeTag = ""
+        if (!"debug".equalsIgnoreCase(buildTypeName)) {
+            timeTag = "-${releaseTime()}"
+        }
         variant.outputs.all {
-            // 显示app名称+当前版本号
-            def fileName = "${build_versions.apkHeadName}-${variant.productFlavors[0].name}-V${variant.versionName}"
-//                // 加入打包时间
-//                fileName = fileName + "-${releaseTime()}"
-            // 如果是debug版本，加入beta版本号
-            if ('debug'.equals(variant.buildType.name)) {
-                fileName = fileName + "-beta.apk"
-            } else {
-                // 如果是release版本，直接显示
-                fileName = fileName + "-release.apk"
-            }
-            outputFileName = fileName
+            outputFileName = "${build_versions.apkHeadName}-${variant.flavorName}-${variant.versionCode}${timeTag}.apk"
         }
     }
 }
 
-//// 显示的时间格式，形如20171110
-//def releaseTime() {
-//    return new Date().format("yyyyMMdd", TimeZone.getDefault());
-//}
-
-// 获取执行gradle命令时的运行参数
-String getEnvValue(key, defValue) {
-    def val = System.getProperty(key);
-    if (null != val) {
-        return val;
-    }
-    val = System.getenv(key);
-    if (null != val) {
-        return val;
-    }
-    return defValue;
-}
-
-repositories {
-    flatDir {
-        dirs 'libs', '../base/libs'
-    }
+static def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+8"))
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    // 主体基础模块 begin
-    api project(':base')
-    api project(':resource')
-    // 主体基础模块 end
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // 入口模块 begin
     implementation project(':app_welcome')
@@ -122,31 +94,34 @@ dependencies {
     implementation project(':bundle_main')
     implementation project(':bundle_user')
 
+    implementation project(':db_server')
     implementation project(':bundle_business_mvc')
     implementation project(':bundle_business_mvp')
     implementation project(':bundle_business_mvvm')
     // bundle模块 end
-
-    implementation project(':db_server')
 }
 
-// 下面的代码会引起：
-// Deprecated Gradle features were used in this build, making it incompatible with Gradle 5.0.
-// 以后解决
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
+afterEvaluate {
+    publishing {
+        publications {
+            commonRelease(MavenPublication) {
+                from components.commonRelease_apk
+                groupId = build_product_groupId.common
+                artifactId = build_product_appName.common
+                version = build_product_versionName.common
+            }
+            specialRelease(MavenPublication) {
+                from components.specialRelease_apk
+                groupId = build_product_groupId.special
+                artifactId = build_product_appName.special
+                version = build_product_versionName.special
+            }
+        }
 
-publishing {
-    repositories {
-        mavenLocal()
-    }
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            artifact "${project.buildDir}/outputs/apk/${project.name}-debug.ap"
-            artifactId "AP-debug"
+        repositories {
+            maven {
+                url "file:///D:/MinicreateProducts"
+            }
         }
     }
 }

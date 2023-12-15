@@ -2,9 +2,9 @@ package com.pine.template.base.recycle_view;
 
 import android.view.View;
 
-import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
-
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
 
 /**
  * Created by tanghongfeng on 2018/9/28

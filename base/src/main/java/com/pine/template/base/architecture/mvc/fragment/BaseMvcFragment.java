@@ -2,9 +2,9 @@ package com.pine.template.base.architecture.mvc.fragment;
 
 import android.content.Context;
 
-import com.pine.tool.ui.Fragment;
-
 import androidx.annotation.CallSuper;
+
+import com.pine.tool.ui.Fragment;
 
 public abstract class BaseMvcFragment extends Fragment {
 

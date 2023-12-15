@@ -1,7 +1,10 @@
 package com.pine.tool.util;
 
+import android.text.TextUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -89,5 +92,46 @@ public class UrlUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * URLEncoder编码
+     */
+    public static String encodedUrl(String paramString) {
+        if (paramString == null || paramString.equals("")) {
+            return "";
+        }
+        try {
+            String str = new String(paramString.getBytes(), "UTF-8");
+            str = URLEncoder.encode(str, "UTF-8");
+            return str;
+        } catch (Exception localException) {
+            return null;
+        }
+    }
+
+    /**
+     * URLDecoder解码
+     */
+    public static String decoderUrl(String paramString) {
+        if (paramString == null || paramString.equals("")) {
+            return "";
+        }
+        try {
+            String url = new String(paramString.getBytes(), "UTF-8");
+            url = URLDecoder.decode(url, "UTF-8");
+            return url;
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }
+
+    public static boolean urlEquals(String url1, String url2) {
+        url1 = url1 == null ? "" : decoderUrl(url1);
+        url2 = url2 == null ? "" : decoderUrl(url2);
+        if (url1 == null || url2 == null) {
+            return false;
+        }
+        return TextUtils.equals(url1, url2);
     }
 }

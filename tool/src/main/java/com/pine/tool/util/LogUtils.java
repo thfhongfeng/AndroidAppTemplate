@@ -1,16 +1,21 @@
 package com.pine.tool.util;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.pine.tool.BuildConfig;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by tanghongfeng on 2018/9/5.
  */
 
 public class LogUtils {
-    private static final String LOG_PREFIX = "Pine_";
+    private static final String LOG_PREFIX = "";
     private static final int MAX_LOG_TAG_LENGTH = 23 - LOG_PREFIX.length();
+
+    private static final String PERSIST_RK_ABC_SWITCH = "persist.abc_switch";
 
     //各个Log级别定义的值，级别越高值越大
     /*
@@ -23,6 +28,8 @@ public class LogUtils {
     */
     private static int LOG_LEVEL = Log.DEBUG;
     private static boolean DEBUG = BuildConfig.DEBUG;
+    private static String buildType = getProperty("ro.build.type", "user");
+    private static String abcSwitch = getProperty(PERSIST_RK_ABC_SWITCH, "0");
 
     private LogUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -116,7 +123,26 @@ public class LogUtils {
         }
     }
 
+    public static boolean isDebugEnable() {
+        return (DEBUG || !"user".equals(buildType)
+                || "1".equals(abcSwitch));
+    }
+
     private static boolean isLogEnable(int level) {
-        return DEBUG && LOG_LEVEL <= level;
+        return isDebugEnable() && LOG_LEVEL <= level;
+    }
+
+    @SuppressLint("PrivateApi")
+    public static String getProperty(String key, String defaultValue) {
+        String value = defaultValue;
+        try {
+            Class<?> c = Class.forName("android.os.SystemProperties");
+            Method get = c.getMethod("get", String.class, String.class);
+            value = (String) (get.invoke(c, key, defaultValue));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return value;
     }
 }

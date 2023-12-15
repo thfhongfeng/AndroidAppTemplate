@@ -3,6 +3,8 @@ package com.pine.template.base.component.image_loader.glide;
 import android.content.Context;
 import android.os.Environment;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Registry;
@@ -16,8 +18,6 @@ import com.pine.tool.util.PathUtils;
 
 import java.io.File;
 import java.io.InputStream;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/11

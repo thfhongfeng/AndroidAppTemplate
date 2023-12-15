@@ -7,6 +7,5 @@ import com.pine.template.base.BaseSPKeyConstants;
  */
 
 public interface WelcomeSPKeyConstants extends BaseSPKeyConstants {
-    String APK_DOWNLOAD_FILE_PATH = "apk_download_file_path";
     String USER_PRIVACY_AGREE = "user_privacy_agree";
 }

@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion build_versions.compileSdkVersion
-    buildToolsVersion build_versions.buildToolsVersion
 
     defaultConfig {
         minSdkVersion build_versions.minSdkVersion
@@ -50,7 +49,6 @@ dependencies {
 
     // 第三方 dependency begin
     api build_dependency["nohttp_nohttp"]
-    api build_dependency["nohttp_okhttp"]
     implementation build_dependency["vdurmont_emoji"]
     // 第三方 dependency end
 }

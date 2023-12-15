@@ -1,7 +1,6 @@
 package com.pine.template.config;
 
-import android.app.Application;
-
+import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.RootApplication;
 import com.pine.tool.util.LogUtils;
 
@@ -12,7 +11,10 @@ import com.pine.tool.util.LogUtils;
 public class ConfigApplication extends RootApplication {
     private final static String TAG = LogUtils.makeLogTag(ConfigApplication.class);
 
-    public static void attach(Application application) {
+    public static void onCreate() {
+    }
 
+    public static void attach() {
+        ConfigSwitcherServer.init();
     }
 }

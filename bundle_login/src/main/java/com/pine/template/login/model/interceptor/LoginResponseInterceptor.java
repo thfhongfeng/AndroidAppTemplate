@@ -34,7 +34,8 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
 
     @Override
     public boolean onIntercept(int what, RequestBean requestBean, Response response) {
-        if (requestBean.getCallback() instanceof LoginCallback) {
+        if (requestBean.getCallback() != null &&
+                requestBean.getCallback() instanceof LoginCallback) {
             mIsReLoginProcessing = false;
             if (!response.isSucceed() && what == LoginCallback.RE_LOGIN_CODE) {
                 LoginApplication.setLogin(false);

@@ -1,7 +1,6 @@
 package com.pine.template.base.widget.dialog;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.view.Display;
@@ -11,6 +10,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.pine.template.base.R;
@@ -29,13 +30,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import androidx.annotation.NonNull;
-
 /**
  * Created by tanghongfeng on 2018/10/30
  */
 
-public class ProvinceSelectDialog extends Dialog {
+public class ProvinceSelectDialog extends BaseDialog {
     /**
      * 所有省
      */
@@ -52,7 +51,7 @@ public class ProvinceSelectDialog extends Dialog {
      * key - 区 values - 邮编
      */
     protected static Map<String, String> mZipCodeMap = new HashMap<>();
-    private ProvinceSelectDialog.Builder mBuilder;
+    private Builder mBuilder;
 
     public ProvinceSelectDialog(@NonNull Context context) {
         super(context);
@@ -127,7 +126,7 @@ public class ProvinceSelectDialog extends Dialog {
         }
     }
 
-    public ProvinceSelectDialog.Builder getBuilder() {
+    public Builder getBuilder() {
         return mBuilder;
     }
 
@@ -227,6 +226,23 @@ public class ProvinceSelectDialog extends Dialog {
             wheel_three.setData(mDistrictListMap.get(mCityListMap.get(mProvinceList.get(curProvinceIndex)).get(curCityIndex)));
             curDistrictIndex = 0;
             wheel_three.setSelectedItemPosition(curDistrictIndex);
+        }
+    }
+
+    public void show(boolean fullScreenMode) {
+        if (fullScreenMode) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            show();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } else {
+            show();
         }
     }
 }

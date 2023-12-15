@@ -5,21 +5,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+
+import com.pine.template.base.BaseUrlConstants;
 import com.pine.template.base.component.share.bean.ShareBean;
 import com.pine.template.base.component.share.bean.UriListShareBean;
 import com.pine.template.base.component.share.bean.UrlTextShareBean;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.config.BuildConfig;
 import com.pine.tool.util.LogUtils;
-import com.sina.weibo.sdk.share.WbShareCallback;
-import com.tencent.tauth.IUiListener;
-import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
 
 import java.util.ArrayList;
-
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/11
@@ -46,7 +43,7 @@ public class ShareManager {
 
     public void init(Context context, @DrawableRes int iconId) {
         initTencent(BuildConfig.QQ_FOR_APP_ID, BuildConfig.WX_FOR_APP_ID, BuildConfig.WX_SECRET_KEY,
-                iconId, BuildConfig.APP_NAME, BuildConfig.BASE_URL);
+                iconId, BuildConfig.APP_NAME_ID, BaseUrlConstants.SERVER());
         initSina(context, BuildConfig.WEI_BO_FOR_APP_KEY, BuildConfig.WEI_BO_REDIRECT_URL);
     }
 
@@ -165,42 +162,10 @@ public class ShareManager {
             case ShareBean.SHARE_TARGET_QQ:
             case ShareBean.SHARE_TARGET_WX:
             case ShareBean.SHARE_TARGET_WX_FRIEND_CIRCLE:
-                Tencent.handleResultData(data, new IUiListener() {
-                    @Override
-                    public void onComplete(Object o) {
-                        callback.onShareSuccess(mCurShareBean);
-                    }
-
-                    @Override
-                    public void onError(UiError uiError) {
-                        callback.onShareFail(mCurShareBean);
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        callback.onShareCancel(mCurShareBean);
-                    }
-                });
+                // TODO: 2022/9/27  
                 break;
             case ShareBean.SHARE_TARGET_WEI_BO:
-                if (SinaShareManager.getInstance().getShareHandler() != null) {
-                    SinaShareManager.getInstance().getShareHandler().doResultIntent(data, new WbShareCallback() {
-                        @Override
-                        public void onWbShareSuccess() {
-                            callback.onShareSuccess(mCurShareBean);
-                        }
-
-                        @Override
-                        public void onWbShareCancel() {
-                            callback.onShareCancel(mCurShareBean);
-                        }
-
-                        @Override
-                        public void onWbShareFail() {
-                            callback.onShareFail(mCurShareBean);
-                        }
-                    });
-                }
+                // TODO: 2022/9/27  
                 break;
         }
     }

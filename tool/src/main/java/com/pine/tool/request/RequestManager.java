@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.pine.tool.R;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.IRequestManager.RequestType;
@@ -25,8 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
+import java.util.Set;
 
 /**
  * Created by tanghongfeng on 2018/9/7.
@@ -70,6 +71,12 @@ public class RequestManager {
         mLoadingRequestMap = new HashMap<>();
     }
 
+    private static HashMap<String, String> mGlobalRequestParams = null;
+
+    public static void addGlobalRequestParams(HashMap<String, String> params) {
+        mGlobalRequestParams = params;
+    }
+
     public static void addGlobalResponseInterceptor(IResponseInterceptor interceptor) {
         if (!mResponseInterceptorList.contains(interceptor)) {
             mResponseInterceptorList.add(interceptor);
@@ -104,14 +111,30 @@ public class RequestManager {
         return setDataRequest(requestBean, callback, RequestType.BITMAP);
     }
 
-    private static boolean setDataRequest(@NonNull RequestBean requestBean, DataResponseCallback callback, RequestType requestType) {
-        //设置模块名
-        if (!TextUtils.isEmpty(requestBean.getModuleTag())) {
-            callback.setModuleTag(requestBean.getModuleTag());
+    private static String getParamsStr(@NonNull RequestBean requestBean) {
+        String retStr = "";
+        if (requestBean.getParams() != null) {
+            retStr = requestBean.getParams().toString();
+            if (retStr.length() > 2000) {
+                retStr = retStr.substring(0, 2000) + " ...";
+            }
         }
-        callback.setUrl(requestBean.getUrl());
-        callback.setWhat(requestBean.getWhat());
+        return retStr;
+    }
 
+    private static String getResponseDataLog(Response response) {
+        String retStr = "";
+        if (response.getData() != null) {
+            retStr = response.getData().toString();
+            if (retStr.length() > 2000) {
+                retStr = retStr.substring(0, 2000) + " ...";
+            }
+        }
+        return retStr;
+    }
+
+    private static boolean setDataRequest(@NonNull RequestBean requestBean, DataResponseCallback callback, RequestType requestType) {
+        addGlobalParams(requestBean.getParams());
         requestBean.setRequestType(requestType);
         requestBean.setCallback(callback);
         if (mRequestInterceptorList != null) {
@@ -128,7 +151,7 @@ public class RequestManager {
 
         LogUtils.d(TAG, "Request in " + requestType.toString() + " queue - " + requestBean.getModuleTag() +
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- url: " +
-                requestBean.getUrl() + "\r\n- params:" + requestBean.getParams() +
+                requestBean.getUrl() + "\r\n- params:" + getParamsStr(requestBean) +
                 "\r\n- Cookies: " + getCookiesLog());
         if (callback instanceof StringCallback || callback instanceof JsonCallback) {
             mRequestManagerImpl.setStringRequest(requestBean, getResponseListener(requestBean, callback));
@@ -142,13 +165,6 @@ public class RequestManager {
 
     // 下载文件
     public static boolean setDownloadRequest(@NonNull DownloadRequestBean requestBean, DownloadCallback callback) {
-        //设置模块名
-        if (!TextUtils.isEmpty(requestBean.getModuleTag())) {
-            callback.setModuleTag(requestBean.getModuleTag());
-        }
-        callback.setUrl(requestBean.getUrl());
-        callback.setWhat(requestBean.getWhat());
-
         requestBean.setRequestType(RequestType.DOWNLOAD);
         requestBean.setCallback(callback);
         if (mRequestInterceptorList != null) {
@@ -165,7 +181,7 @@ public class RequestManager {
 
         LogUtils.d(TAG, "Request in " + requestBean.getRequestType().toString() + " queue - " + requestBean.getModuleTag() +
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- url: " +
-                requestBean.getUrl() + "\r\n -params: " + requestBean.getParams() +
+                requestBean.getUrl() + "\r\n -params: " + getParamsStr(requestBean) +
                 "\r\n- Cookies: " + getCookiesLog());
         mRequestManagerImpl.setDownloadRequest(requestBean, getDownloadListener(requestBean, callback));
         return true;
@@ -181,15 +197,6 @@ public class RequestManager {
      */
     public static boolean setUploadRequest(@NonNull UploadRequestBean requestBean,
                                            UploadCallback processCallback, JsonCallback requestCallback) {
-        if (!TextUtils.isEmpty(requestBean.getModuleTag())) {
-            requestCallback.setModuleTag(requestBean.getModuleTag());
-            processCallback.setModuleTag(requestBean.getModuleTag());
-        }
-        requestCallback.setUrl(requestBean.getUrl());
-        processCallback.setUrl(requestBean.getUrl());
-        requestCallback.setWhat(requestBean.getWhat());
-        processCallback.setWhat(requestBean.getWhat());
-
         requestBean.setRequestType(RequestType.UPLOAD);
         requestBean.setUploadCallback(processCallback);
         requestBean.setCallback(requestCallback);
@@ -207,11 +214,20 @@ public class RequestManager {
 
         LogUtils.d(TAG, "Request in " + requestBean.getRequestType().toString() + " queue - " + requestBean.getModuleTag() +
                 "(what:" + requestBean.getWhat() + ")" + "\r\n- url: " +
-                requestBean.getUrl() + "\r\n- params: " + requestBean.getParams() +
+                requestBean.getUrl() + "\r\n- params: " + getParamsStr(requestBean) +
                 "\r\n- Cookies: " + getCookiesLog());
         mRequestManagerImpl.setUploadRequest(requestBean, getUploadListener(requestBean, processCallback),
                 getResponseListener(requestBean, requestCallback));
         return true;
+    }
+
+    private static void addGlobalParams(Map<String, String> params) {
+        if (params == null) {
+            return;
+        }
+        if (mGlobalRequestParams != null && mGlobalRequestParams.size() > 0) {
+            params.putAll(mGlobalRequestParams);
+        }
     }
 
     /**
@@ -227,15 +243,17 @@ public class RequestManager {
         return new IResponseListener.OnResponseListener() {
             @Override
             public void onStart(int what) {
-                LogUtils.d(TAG, "Response onStart in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
+                LogUtils.d(TAG, "Response onStart in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + requestBean.getUrl() +
                         "\r\n- Cookies: " + getCookiesLog());
             }
 
             @Override
             public void onSucceed(int what, Response response) {
-                LogUtils.d(TAG, "Response onSucceed in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
+                LogUtils.d(TAG, "Response onSucceed in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + requestBean.getUrl() +
                         "\r\n- Cookies: " + getCookiesLog() +
                         "\r\n- response: " + getResponseDataLog(response));
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestBean.getKey())) {
@@ -256,8 +274,9 @@ public class RequestManager {
 
             @Override
             public void onFailed(int what, Response response) {
-                LogUtils.d(TAG, "Response onFailed in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
+                LogUtils.d(TAG, "Response onFailed in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + requestBean.getUrl() +
                         "\r\n- Cookies: " + getCookiesLog() +
                         "\r\n- response: " + getResponseDataLog(response));
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestBean.getKey())) {
@@ -279,8 +298,9 @@ public class RequestManager {
 
             @Override
             public void onFinish(int what) {
-                LogUtils.d(TAG, "Response onFinish in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
+                LogUtils.d(TAG, "Response onFinish in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + requestBean.getUrl() +
                         "\r\n- Cookies: " + getCookiesLog());
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestBean.getKey())) {
                     mLoadingRequestMap.remove(requestBean.getKey());
@@ -296,12 +316,15 @@ public class RequestManager {
      * @param callback
      * @return
      */
-    public static IResponseListener.OnDownloadListener getDownloadListener(final RequestBean requestBean,
-                                                                           final DownloadCallback callback) {
+    public static IResponseListener.OnDownloadListener getDownloadListener(
+            final RequestBean requestBean, final DownloadCallback callback) {
         return new IResponseListener.OnDownloadListener() {
+            private int logProgress = -1;
+
             @Override
             public void onDownloadError(int what, Exception exception) {
-                LogUtils.d(TAG, "Response onDownloadError in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
+                LogUtils.d(TAG, "Response onDownloadError in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- exception: " + exception.toString());
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestBean.getKey())) {
                     mLoadingRequestMap.remove(requestBean.getKey());
@@ -312,9 +335,11 @@ public class RequestManager {
             }
 
             @Override
-            public void onStart(int what, boolean isResume, long rangeSize, Map<String, List<String>> responseHeaders, long allCount) {
-                LogUtils.d(TAG, "Response onStart in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
+            public void onStart(int what, boolean isResume, long rangeSize, Map<String,
+                    List<String>> responseHeaders, long allCount) {
+                LogUtils.d(TAG, "Response onStart in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + requestBean.getUrl() +
                         "\r\n- isResume: " + isResume +
                         "\r\n- rangeSize: " + rangeSize +
                         "\r\n- allCount: " + allCount +
@@ -326,8 +351,13 @@ public class RequestManager {
 
             @Override
             public void onProgress(int what, int progress, long fileCount, long speed) {
-                LogUtils.d(TAG, "Response onProgress in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- progress: " + progress + ",fileCount: " + fileCount + ",speed: " + speed);
+                if (progress != logProgress) {
+                    LogUtils.d(TAG, "Response onProgress in " + requestBean.getRequestType().toString()
+                            + " queue - " + requestBean.getModuleTag() +
+                            "(what:" + what + ")" + "\r\n- progress: " + progress + ",fileCount: "
+                            + fileCount + ",speed: " + speed);
+                    logProgress = progress;
+                }
                 if (callback != null) {
                     callback.onProgress(what, progress, fileCount, speed);
                 }
@@ -335,7 +365,8 @@ public class RequestManager {
 
             @Override
             public void onFinish(int what, String filePath) {
-                LogUtils.d(TAG, "Response onFinish in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
+                LogUtils.d(TAG, "Response onFinish in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- filePath: " + filePath);
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestBean.getKey())) {
                     mLoadingRequestMap.remove(requestBean.getKey());
@@ -347,7 +378,8 @@ public class RequestManager {
 
             @Override
             public void onCancel(int what) {
-                LogUtils.d(TAG, "Response onCancel in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
+                LogUtils.d(TAG, "Response onCancel in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
                         "(what:" + what + ")");
                 if (mLoadingRequestMap != null && mLoadingRequestMap.containsKey(requestBean.getKey())) {
                     mLoadingRequestMap.remove(requestBean.getKey());
@@ -368,10 +400,13 @@ public class RequestManager {
     public static IResponseListener.OnUploadListener getUploadListener(final RequestBean requestBean,
                                                                        final UploadCallback callback) {
         return new IResponseListener.OnUploadListener() {
+            private int logProgress = -1;
+
             @Override
             public void onStart(int what, UploadRequestBean.FileBean fileBean) {
-                LogUtils.d(TAG, "Response onStart in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- url: " + callback.getUrl() +
+                LogUtils.d(TAG, "Response onStart in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
+                        "(what:" + what + ")" + "\r\n- url: " + requestBean.getUrl() +
                         "\r\n- Cookies: " + getCookiesLog());
                 if (callback != null) {
                     callback.onStart(what, fileBean);
@@ -380,7 +415,8 @@ public class RequestManager {
 
             @Override
             public void onCancel(int what, UploadRequestBean.FileBean fileBean) {
-                LogUtils.d(TAG, "Response onCancel in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
+                LogUtils.d(TAG, "Response onCancel in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
                         "(what:" + what + ")");
                 if (callback != null) {
                     callback.onCancel(what, fileBean);
@@ -389,8 +425,12 @@ public class RequestManager {
 
             @Override
             public void onProgress(int what, UploadRequestBean.FileBean fileBean, int progress) {
-                LogUtils.d(TAG, "Response onProgress in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
-                        "(what:" + what + ")" + "\r\n- progress: " + progress);
+                if (progress != logProgress) {
+                    LogUtils.d(TAG, "Response onProgress in " + requestBean.getRequestType().toString()
+                            + " queue - " + requestBean.getModuleTag() +
+                            "(what:" + what + ")" + "\r\n- progress: " + progress);
+                    logProgress = progress;
+                }
                 if (callback != null) {
                     callback.onProgress(what, fileBean, progress);
                 }
@@ -398,7 +438,8 @@ public class RequestManager {
 
             @Override
             public void onFinish(int what, UploadRequestBean.FileBean fileBean) {
-                LogUtils.d(TAG, "Response onFinish in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
+                LogUtils.d(TAG, "Response onFinish in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
                         "(what:" + what + ")");
                 if (callback != null) {
                     callback.onFinish(what, fileBean);
@@ -407,7 +448,8 @@ public class RequestManager {
 
             @Override
             public void onError(int what, UploadRequestBean.FileBean fileBean, Exception exception) {
-                LogUtils.d(TAG, "Response onError in " + requestBean.getRequestType().toString() + " queue - " + callback.getModuleTag() +
+                LogUtils.d(TAG, "Response onError in " + requestBean.getRequestType().toString()
+                        + " queue - " + requestBean.getModuleTag() +
                         "(what:" + what + ")" + "\r\n- exception: " + exception.toString());
                 if (callback != null && !callback.onError(what, fileBean, exception)) {
                     defaultDeduceErrorResponse(exception);
@@ -427,8 +469,7 @@ public class RequestManager {
             Toast.makeText(mApplicationContext, exception.toString(),
                     Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.tool_server_err) +
-                            "(" + exception.getMessage() + ")",
+            Toast.makeText(mApplicationContext, mApplicationContext.getString(R.string.tool_server_err),
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -478,13 +519,6 @@ public class RequestManager {
         mRequestManagerImpl.clearCookie();
     }
 
-    private static String getResponseDataLog(Response response) {
-        if (response.getData() == null) {
-            return "";
-        }
-        return response.getData().toString();
-    }
-
     private static String getCookiesLog() {
         Map<String, String> cookies = getLastSessionCookie();
         String cookiesStr = "";
@@ -497,5 +531,19 @@ public class RequestManager {
             cookiesStr = cookiesStr.substring(0, cookiesStr.length() - 1);
         }
         return cookiesStr;
+    }
+
+    public static String buildGetUrl(String url, HashMap<String, String> params) {
+        if (params == null || params.size() < 1) {
+            return url;
+        }
+        StringBuilder urlSb = new StringBuilder();
+        urlSb.append(url).append("?");
+        Set<String> keySet = params.keySet();
+        for (String key : keySet) {
+            urlSb.append(key).append("=").append(params.get(key)).append("&");
+        }
+        urlSb.deleteCharAt(urlSb.length() - 1);
+        return urlSb.toString();
     }
 }

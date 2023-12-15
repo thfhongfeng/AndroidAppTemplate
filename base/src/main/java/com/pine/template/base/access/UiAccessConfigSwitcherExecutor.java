@@ -3,14 +3,14 @@ package com.pine.template.base.access;
 import android.app.Activity;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.pine.template.base.R;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.access.IUiAccessExecutor;
 import com.pine.tool.access.UiAccessTimeInterval;
 
 import java.util.HashMap;
-
-import androidx.fragment.app.Fragment;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -33,7 +33,7 @@ public class UiAccessConfigSwitcherExecutor implements IUiAccessExecutor {
                              UiAccessTimeInterval accessTimeInterval) {
         try {
             String config_key = arg;
-            boolean canAccess = ConfigSwitcherServer.getInstance().isEnable(config_key);
+            boolean canAccess = ConfigSwitcherServer.isEnable(config_key);
             if (!canAccess) {
                 if (doShowToast(actionsMap, accessTimeInterval)) {
                     Toast.makeText(activity, R.string.base_fun_not_open, Toast.LENGTH_SHORT).show();

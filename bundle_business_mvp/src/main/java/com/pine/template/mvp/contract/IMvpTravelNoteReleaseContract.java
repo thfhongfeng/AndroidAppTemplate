@@ -4,10 +4,10 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.component.uploader.FileUploadComponent;
 import com.pine.template.mvp.bean.MvpShopItemEntity;
 import com.pine.tool.architecture.mvp.contract.IContract;
-import com.pine.tool.bean.InputParam;
 
 import java.util.ArrayList;
 

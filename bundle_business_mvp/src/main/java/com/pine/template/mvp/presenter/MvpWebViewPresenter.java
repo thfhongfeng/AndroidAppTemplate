@@ -21,7 +21,7 @@ public class MvpWebViewPresenter extends Presenter<IMvpWebViewContract.Ui>
 
     @Override
     public boolean parseIntentData(Bundle bundle) {
-        mH5Url = bundle.getString("url", MvpUrlConstants.H5_DefaultUrl);
+        mH5Url = bundle.getString("url", MvpUrlConstants.H5_DefaultUrl());
         return false;
     }
 

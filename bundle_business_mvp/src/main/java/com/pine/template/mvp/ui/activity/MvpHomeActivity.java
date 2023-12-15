@@ -69,7 +69,7 @@ public class MvpHomeActivity extends BaseMvpActionBarImageMenuActivity<IMvpHomeC
     @Override
     protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvp_home_title);
-        if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.FUN_ADD_SHOP_KEY)) {
+        if (ConfigSwitcherServer.isEnable(ConfigKey.FUN_ADD_SHOP)) {
             menuBtnIv.setImageResource(R.mipmap.base_ic_add);
             menuBtnIv.setOnClickListener(new View.OnClickListener() {
                 @Override

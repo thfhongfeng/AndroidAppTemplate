@@ -1,6 +1,5 @@
 package com.pine.tool.util;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -28,17 +27,19 @@ public class SharePreferenceUtils {
     // 应用本次启动SharePreference，生命周期为本次APP启动周期（APP每次重新启动时清理）
     public static final String APP_LIVED_CACHE_SP = "app_lived_cache_share_preference";
 
-    private static Application mApplication = AppUtils.getApplication();
-
     private SharePreferenceUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    private static Context getContext() {
+        return AppUtils.getApplication();
     }
 
     /**
      * 删除cache数据库
      */
     public static void cleanCache() {
-        cleanData(mApplication, CACHE_SP);
+        cleanData(getContext(), CACHE_SP);
     }
 
     /**
@@ -54,7 +55,7 @@ public class SharePreferenceUtils {
      * 删除config数据库
      */
     public static void cleanConfig() {
-        cleanData(mApplication, CONFIG_SP);
+        cleanData(getContext(), CONFIG_SP);
     }
 
     /**
@@ -71,7 +72,7 @@ public class SharePreferenceUtils {
      * 删除app_lived_cache数据库
      */
     public static void cleanAppLivedCache() {
-        cleanData(mApplication, APP_LIVED_CACHE_SP);
+        cleanData(getContext(), APP_LIVED_CACHE_SP);
     }
 
     /**
@@ -89,7 +90,7 @@ public class SharePreferenceUtils {
      * @param key
      */
     public static void cleanCacheKey(String key) {
-        cleanDataKey(mApplication, CACHE_SP, key);
+        cleanDataKey(getContext(), CACHE_SP, key);
     }
 
     /**
@@ -108,7 +109,7 @@ public class SharePreferenceUtils {
      * @param key
      */
     public static void cleanConfigKey(String key) {
-        cleanDataKey(mApplication, CONFIG_SP, key);
+        cleanDataKey(getContext(), CONFIG_SP, key);
     }
 
     /**
@@ -127,7 +128,7 @@ public class SharePreferenceUtils {
      * @param key
      */
     public static void cleanAppLivedCacheKey(String key) {
-        cleanDataKey(mApplication, APP_LIVED_CACHE_SP, key);
+        cleanDataKey(getContext(), APP_LIVED_CACHE_SP, key);
     }
 
     /**
@@ -147,7 +148,7 @@ public class SharePreferenceUtils {
      * @param value
      */
     public static void saveToCache(String key, Object value) {
-        save(mApplication, CACHE_SP, key, value);
+        save(getContext(), CACHE_SP, key, value);
     }
 
     /**
@@ -168,7 +169,7 @@ public class SharePreferenceUtils {
      * @param value
      */
     public static void saveToConfig(String key, Object value) {
-        save(mApplication, CONFIG_SP, key, value);
+        save(getContext(), CONFIG_SP, key, value);
     }
 
     /**
@@ -190,7 +191,7 @@ public class SharePreferenceUtils {
      * @param value
      */
     public static void saveToAppLivedCache(String key, Object value) {
-        save(mApplication, APP_LIVED_CACHE_SP, key, value);
+        save(getContext(), APP_LIVED_CACHE_SP, key, value);
     }
 
     /**
@@ -215,7 +216,7 @@ public class SharePreferenceUtils {
     }
 
     public static String readStringFromCache(String key, String def) {
-        return readString(mApplication, CACHE_SP, key, def);
+        return readString(getContext(), CACHE_SP, key, def);
     }
 
     public static String readStringFromCache(Context context, String key, String def) {
@@ -223,7 +224,7 @@ public class SharePreferenceUtils {
     }
 
     public static boolean readBooleanFromCache(String key, boolean def) {
-        return readBoolean(mApplication, CACHE_SP, key, def);
+        return readBoolean(getContext(), CACHE_SP, key, def);
     }
 
     public static boolean readBooleanFromCache(Context context, String key, boolean def) {
@@ -231,7 +232,7 @@ public class SharePreferenceUtils {
     }
 
     public static int readIntFromCache(String key, int def) {
-        return readInt(mApplication, CACHE_SP, key, def);
+        return readInt(getContext(), CACHE_SP, key, def);
     }
 
     public static int readIntFromCache(Context context, String key, int def) {
@@ -239,7 +240,7 @@ public class SharePreferenceUtils {
     }
 
     public static float readFloatFromCache(String key, float def) {
-        return readFloat(mApplication, CACHE_SP, key, def);
+        return readFloat(getContext(), CACHE_SP, key, def);
     }
 
     public static float readFloatFromCache(Context context, String key, float def) {
@@ -247,7 +248,7 @@ public class SharePreferenceUtils {
     }
 
     public static long readLongFromCache(String key, long def) {
-        return readLong(mApplication, CACHE_SP, key, def);
+        return readLong(getContext(), CACHE_SP, key, def);
     }
 
     public static long readLongFromCache(Context context, String key, long def) {
@@ -255,7 +256,7 @@ public class SharePreferenceUtils {
     }
 
     public static Set<String> readStringSetFromCache(String key, Set<String> def) {
-        return readStringSet(mApplication, CACHE_SP, key, def);
+        return readStringSet(getContext(), CACHE_SP, key, def);
     }
 
     public static Set<String> readStringSetFromCache(Context context, String key, Set<String> def) {
@@ -263,7 +264,7 @@ public class SharePreferenceUtils {
     }
 
     public static <T> Set<T> readSetFromCache(String key, Class<T> clazz) {
-        return readSet(mApplication, CACHE_SP, key, null, clazz);
+        return readSet(getContext(), CACHE_SP, key, null, clazz);
     }
 
     public static <T> Set<T> readSetFromCache(Context context, String key, Class<T> clazz) {
@@ -271,7 +272,7 @@ public class SharePreferenceUtils {
     }
 
     public static <T> List<T> readListFromCache(String key, Class<T> clazz) {
-        return readList(mApplication, CACHE_SP, key, null, clazz);
+        return readList(getContext(), CACHE_SP, key, null, clazz);
     }
 
     public static <T> List<T> readListFromCache(Context context, String key, Class<T> clazz) {
@@ -279,7 +280,7 @@ public class SharePreferenceUtils {
     }
 
     public static <K, V> Map<K, V> readMapFromCache(String key, Class<K> clazzK, Class<V> clazzV) {
-        return readMap(mApplication, CACHE_SP, key, null, clazzK, clazzV);
+        return readMap(getContext(), CACHE_SP, key, null, clazzK, clazzV);
     }
 
     public static <K, V> Map<K, V> readMapFromCache(Context context, String key, Class<K> clazzK, Class<V> clazzV) {
@@ -287,7 +288,7 @@ public class SharePreferenceUtils {
     }
 
     public static String readStringFromConfig(String key, String def) {
-        return readString(mApplication, CONFIG_SP, key, def);
+        return readString(getContext(), CONFIG_SP, key, def);
     }
 
     public static String readStringFromConfig(Context context, String key, String def) {
@@ -295,7 +296,7 @@ public class SharePreferenceUtils {
     }
 
     public static boolean readBooleanFromConfig(String key, boolean def) {
-        return readBoolean(mApplication, CONFIG_SP, key, def);
+        return readBoolean(getContext(), CONFIG_SP, key, def);
     }
 
     public static boolean readBooleanFromConfig(Context context, String key, boolean def) {
@@ -303,7 +304,7 @@ public class SharePreferenceUtils {
     }
 
     public static int readIntFromConfig(String key, int def) {
-        return readInt(mApplication, CONFIG_SP, key, def);
+        return readInt(getContext(), CONFIG_SP, key, def);
     }
 
     public static int readIntFromConfig(Context context, String key, int def) {
@@ -311,7 +312,7 @@ public class SharePreferenceUtils {
     }
 
     public static float readFloatFromConfig(String key, float def) {
-        return readFloat(mApplication, CONFIG_SP, key, def);
+        return readFloat(getContext(), CONFIG_SP, key, def);
     }
 
     public static float readFloatFromConfig(Context context, String key, float def) {
@@ -319,7 +320,7 @@ public class SharePreferenceUtils {
     }
 
     public static long readLongFromConfig(String key, long def) {
-        return readLong(mApplication, CONFIG_SP, key, def);
+        return readLong(getContext(), CONFIG_SP, key, def);
     }
 
     public static long readLongFromConfig(Context context, String key, long def) {
@@ -327,7 +328,7 @@ public class SharePreferenceUtils {
     }
 
     public static Set<String> readSetStringFromConfig(String key, Set<String> def) {
-        return readStringSet(mApplication, CONFIG_SP, key, def);
+        return readStringSet(getContext(), CONFIG_SP, key, def);
     }
 
     public static Set<String> readSetStringFromConfig(Context context, String key, Set<String> def) {
@@ -335,7 +336,7 @@ public class SharePreferenceUtils {
     }
 
     public static <T> Set<T> readSetFromConfig(String key, Class<T> clazz) {
-        return readSet(mApplication, CONFIG_SP, key, null, clazz);
+        return readSet(getContext(), CONFIG_SP, key, null, clazz);
     }
 
     public static <T> Set<T> readSetFromConfig(Context context, String key, Class<T> clazz) {
@@ -343,7 +344,7 @@ public class SharePreferenceUtils {
     }
 
     public static <T> List<T> readListFromConfig(String key, Class<T> clazz) {
-        return readList(mApplication, CONFIG_SP, key, null, clazz);
+        return readList(getContext(), CONFIG_SP, key, null, clazz);
     }
 
     public static <T> List<T> readListFromConfig(Context context, String key, Class<T> clazz) {
@@ -351,7 +352,7 @@ public class SharePreferenceUtils {
     }
 
     public static <K, V> Map<K, V> readMapFromConfig(String key, Class<K> clazzK, Class<V> clazzV) {
-        return readMap(mApplication, CONFIG_SP, key, null, clazzK, clazzV);
+        return readMap(getContext(), CONFIG_SP, key, null, clazzK, clazzV);
     }
 
     public static <K, V> Map<K, V> readMapFromConfig(Context context, String key, Class<K> clazzK, Class<V> clazzV) {
@@ -359,7 +360,7 @@ public class SharePreferenceUtils {
     }
 
     public static String readStringFromAppLivedCache(String key, String def) {
-        return readString(mApplication, APP_LIVED_CACHE_SP, key, def);
+        return readString(getContext(), APP_LIVED_CACHE_SP, key, def);
     }
 
     public static String readStringFromAppLivedCache(Context context, String key, String def) {
@@ -367,7 +368,7 @@ public class SharePreferenceUtils {
     }
 
     public static boolean readBooleanFromAppLivedCache(String key, boolean def) {
-        return readBoolean(mApplication, APP_LIVED_CACHE_SP, key, def);
+        return readBoolean(getContext(), APP_LIVED_CACHE_SP, key, def);
     }
 
     public static boolean readBooleanFromAppLivedCache(Context context, String key, boolean def) {
@@ -375,7 +376,7 @@ public class SharePreferenceUtils {
     }
 
     public static int readIntFromAppLivedCache(String key, int def) {
-        return readInt(mApplication, APP_LIVED_CACHE_SP, key, def);
+        return readInt(getContext(), APP_LIVED_CACHE_SP, key, def);
     }
 
     public static int readIntFromAppLivedCache(Context context, String key, int def) {
@@ -383,7 +384,7 @@ public class SharePreferenceUtils {
     }
 
     public static float readFloatFromAppLivedCache(String key, float def) {
-        return readFloat(mApplication, APP_LIVED_CACHE_SP, key, def);
+        return readFloat(getContext(), APP_LIVED_CACHE_SP, key, def);
     }
 
     public static float readFloatFromAppLivedCache(Context context, String key, float def) {
@@ -391,7 +392,7 @@ public class SharePreferenceUtils {
     }
 
     public static long readLongFromAppLivedCache(String key, long def) {
-        return readLong(mApplication, APP_LIVED_CACHE_SP, key, def);
+        return readLong(getContext(), APP_LIVED_CACHE_SP, key, def);
     }
 
     public static long readLongFromAppLivedCache(Context context, String key, long def) {
@@ -399,7 +400,7 @@ public class SharePreferenceUtils {
     }
 
     public static Set<String> readSetStringFromAppLivedCache(String key, Set<String> def) {
-        return readStringSet(mApplication, APP_LIVED_CACHE_SP, key, def);
+        return readStringSet(getContext(), APP_LIVED_CACHE_SP, key, def);
     }
 
     public static Set<String> readSetStringFromAppLivedCache(Context context, String key, Set<String> def) {
@@ -407,7 +408,7 @@ public class SharePreferenceUtils {
     }
 
     public static <T> Set<T> readSetFromAppLivedCache(String key, Class<T> clazz) {
-        return readSet(mApplication, APP_LIVED_CACHE_SP, key, null, clazz);
+        return readSet(getContext(), APP_LIVED_CACHE_SP, key, null, clazz);
     }
 
     public static <T> Set<T> readSetFromAppLivedCache(Context context, String key, Class<T> clazz) {
@@ -415,7 +416,7 @@ public class SharePreferenceUtils {
     }
 
     public static <T> List<T> readListFromAppLivedCache(String key, Class<T> clazz) {
-        return readList(mApplication, APP_LIVED_CACHE_SP, key, null, clazz);
+        return readList(getContext(), APP_LIVED_CACHE_SP, key, null, clazz);
     }
 
     public static <T> List<T> readListFromAppLivedCache(Context context, String key, Class<T> clazz) {
@@ -423,7 +424,7 @@ public class SharePreferenceUtils {
     }
 
     public static <K, V> Map<K, V> readMapFromCAppLivedCache(String key, Class<K> clazzK, Class<V> clazzV) {
-        return readMap(mApplication, APP_LIVED_CACHE_SP, key, null, clazzK, clazzV);
+        return readMap(getContext(), APP_LIVED_CACHE_SP, key, null, clazzK, clazzV);
     }
 
     public static <K, V> Map<K, V> readMapFromAppLivedCache(Context context, String key, Class<K> clazzK, Class<V> clazzV) {
@@ -491,7 +492,7 @@ public class SharePreferenceUtils {
      */
     public static void cleanData(Context context, String db) {
         if (context == null) {
-            context = mApplication;
+            context = getContext();
         }
         SharedPreferences pref = context.getSharedPreferences(db, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -513,12 +514,15 @@ public class SharePreferenceUtils {
     }
 
     public static void save(String db, String key, Object value) {
-        save(mApplication, db, key, value);
+        save(getContext(), db, key, value);
     }
 
     public static void save(Context context, String db, String key, Object value) {
         if (TextUtils.isEmpty(key)) {
             return;
+        }
+        if (value == null) {
+            cleanDataKey(context, db, key);
         }
         if (value instanceof String) {
             saveString(context, db, key, (String) value);
@@ -548,7 +552,7 @@ public class SharePreferenceUtils {
      * @param value
      */
     public static void saveString(Context context, String db, String key, String value) {
-        if (TextUtils.isEmpty(key) || TextUtils.isEmpty(value)) {
+        if (TextUtils.isEmpty(key)) {
             return;
         }
         SharedPreferences.Editor editor = context.getSharedPreferences(db, Context.MODE_PRIVATE).edit();
@@ -762,7 +766,7 @@ public class SharePreferenceUtils {
 
     public static <K, V> Map<K, V> readMap(Context context, String db, String key, Map<K, V> def, Class<K> clazzK, Class<V> clazzV) {
         if (isContainsKey(db, key)) {
-            Type type = new ParameterizedTypeImpl(List.class, new Class[]{clazzK, clazzV});
+            Type type = new ParameterizedTypeImpl(Map.class, new Class[]{clazzK, clazzV});
             return new Gson().fromJson(readString(context, db, key), type);
         } else {
             return def;
@@ -780,7 +784,7 @@ public class SharePreferenceUtils {
         if (TextUtils.isEmpty(key)) {
             return false;
         }
-        SharedPreferences pref = mApplication.getSharedPreferences(db, Context.MODE_PRIVATE);
+        SharedPreferences pref = getContext().getSharedPreferences(db, Context.MODE_PRIVATE);
         return pref.contains(key);
     }
 

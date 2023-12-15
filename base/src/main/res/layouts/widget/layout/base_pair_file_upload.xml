@@ -9,7 +9,7 @@
         android:layout_width="@dimen/dp_32"
         android:layout_height="@dimen/dp_1"></View>
 
-    <com.purang.pbd_common.component.uploader.ui.BaseSingleImageUploadView
+    <com.pine.template.base.component.uploader.ui.BaseSingleImageUploadView
         android:id="@+id/left_sfuv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -18,9 +18,9 @@
         android:layout_weight="1"
         android:gravity="left"
         tool:base_imageHeight="@dimen/dp_78"
-        tool:base_imageWidth="@dimen/dp_147"></com.purang.pbd_common.component.uploader.ui.BaseSingleImageUploadView>
+        tool:base_imageWidth="@dimen/dp_147"></com.pine.template.base.component.uploader.ui.BaseSingleImageUploadView>
 
-    <com.purang.pbd_common.component.uploader.ui.BaseSingleImageUploadView
+    <com.pine.template.base.component.uploader.ui.BaseSingleImageUploadView
         android:id="@+id/right_sfuv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:layout_weight="1"
         android:gravity="right"
         tool:base_imageHeight="@dimen/dp_78"
-        tool:base_imageWidth="@dimen/dp_147"></com.purang.pbd_common.component.uploader.ui.BaseSingleImageUploadView>
+        tool:base_imageWidth="@dimen/dp_147"></com.pine.template.base.component.uploader.ui.BaseSingleImageUploadView>
 
     <LinearLayout
         android:id="@+id/delete_ll"

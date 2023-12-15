@@ -2,8 +2,8 @@ package com.pine.template.mvp.contract;
 
 import androidx.annotation.NonNull;
 
+import com.pine.template.base.bean.InputParam;
 import com.pine.tool.architecture.mvp.contract.IContract;
-import com.pine.tool.bean.InputParam;
 
 import java.util.HashMap;
 

@@ -1,5 +1,8 @@
 package com.pine.template.base.component.editor.ui;
 
+import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_IMAGE;
+import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -9,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pine.template.base.R;
 import com.pine.template.base.component.editor.bean.TextImageEntity;
 import com.pine.template.base.component.editor.bean.TextImageItemEntity;
@@ -16,12 +22,6 @@ import com.pine.template.base.component.image_loader.ImageLoaderManager;
 import com.pine.tool.util.LogUtils;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_IMAGE;
-import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
 
 /**
  * Created by tanghongfeng on 2018/11/13

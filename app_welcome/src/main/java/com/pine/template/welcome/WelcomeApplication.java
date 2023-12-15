@@ -1,6 +1,7 @@
 package com.pine.template.welcome;
 
 import com.pine.template.base.BaseApplication;
+import com.pine.template.base.bg.AppBgManager;
 import com.pine.tool.util.LogUtils;
 
 /**
@@ -10,7 +11,11 @@ import com.pine.tool.util.LogUtils;
 public class WelcomeApplication extends BaseApplication {
     private final static String TAG = LogUtils.makeLogTag(WelcomeApplication.class);
 
-    public static void attach() {
+    public static void onCreate() {
 
+    }
+
+    public static void attach() {
+        AppBgManager.startBgService(mApplication);
     }
 }

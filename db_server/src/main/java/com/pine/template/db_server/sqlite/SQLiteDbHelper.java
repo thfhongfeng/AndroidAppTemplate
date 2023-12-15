@@ -87,7 +87,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             for (int i = 0; i < 13; i++) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.BUNDLE_DB_SEVER_KEY);
+                contentValues.put("configKey", ConfigKey.BUNDLE_DB_SEVER);
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -126,7 +126,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVC_KEY);
+                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVC);
                 contentValues.put("state", i < 12 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -134,7 +134,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVP_KEY);
+                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVP);
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -142,7 +142,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVVM_KEY);
+                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVVM);
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -151,7 +151,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
                 contentValues = new ContentValues();
                 contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.FUN_ADD_SHOP_KEY);
+                contentValues.put("configKey", ConfigKey.FUN_ADD_SHOP);
                 contentValues.put("state", i < 11 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -159,7 +159,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.FUN_ADD_PRODUCT_KEY);
+                contentValues.put("configKey", ConfigKey.FUN_ADD_PRODUCT);
                 contentValues.put("state", i < 11 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -167,7 +167,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 2); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY);
+                contentValues.put("configKey", ConfigKey.FUN_ADD_TRAVEL_NOTE);
                 contentValues.put("state", i < 12 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -398,7 +398,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             db.execSQL("create table if not exists " + SHOP_TABLE_NAME +
                     "(_id integer primary key autoincrement,id text not null unique,name text not null," +
                     "type text not null,typeName text not null,mobile text not null," +
-                    "accountId text not null,latitude text not null,longitude text not null," +
+                    "accountId text not null,latitude text,longitude text," +
                     "addressDistrict text not null,addressZipCode text not null,addressStreet text," +
                     "mainImgUrl text,imgUrls text,description text," +
                     "onlineDate text not null,remark text," +

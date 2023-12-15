@@ -13,6 +13,25 @@
     <attr name="base_enableImageScale" format="boolean" />
     <attr name="base_enableImageTranslate" format="boolean" />
     <attr name="base_enableImageRotate" format="boolean" />
+    <attr name="base_textSize" format="dimension|reference" />
+    <attr name="base_textColor" format="color|reference" />
+    <attr name="base_secondTextSize" format="dimension|reference" />
+    <attr name="base_secondTextColor" format="color|reference" />
+    <attr name="base_text" format="reference" />
+    <attr name="base_lines" format="integer" />
+    <attr name="base_textStyle" format="enum">
+        <enum name="normal" value="0" />
+        <enum name="bold" value="1" />
+        <enum name="italic" value="2" />
+        <enum name="bold_italic" value="3" />
+    </attr>
+    <attr name="base_ellipsize" format="enum">
+        <enum name="start" value="0" />
+        <enum name="end" value="1" />
+        <enum name="middle" value="2" />
+    </attr>
+    <attr name="base_layout" format="integer|reference" />
+    <attr name="base_desc" format="reference" />
 
     <declare-styleable name="BaseFileUploadRecycleView">
         <attr name="base_maxFileCount" />
@@ -59,5 +78,33 @@
         <attr name="base_bpiuv_addText" format="string|reference"></attr>
         <attr name="base_bpiuv_leftItemText" format="string|reference"></attr>
         <attr name="base_bpiuv_rightItemText" format="string|reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="BaseRatioImageView">
+        <attr name="base_ratio" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="BaseRoundImageView">
+        <attr name="base_riv_radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="BaseBilingualTextView">
+        <attr name="base_text" />
+        <attr name="base_textStyle" />
+        <attr name="base_ellipsize" />
+        <attr name="base_lines" />
+        <attr name="base_textSize" />
+        <attr name="base_textColor" />
+        <attr name="base_secondTextSize" />
+        <attr name="base_secondTextColor" />
+        <attr name="base_enableDual" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="BaseCountDownTimerView">
+        <attr name="base_layout" />
+        <attr name="base_desc" />
+        <attr name="base_textStyle" />
+        <attr name="base_textSize" />
+        <attr name="base_textColor" />
     </declare-styleable>
 </resources>

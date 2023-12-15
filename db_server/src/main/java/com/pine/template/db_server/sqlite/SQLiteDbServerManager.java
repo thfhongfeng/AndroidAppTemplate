@@ -1,5 +1,7 @@
 package com.pine.template.db_server.sqlite;
 
+import static com.pine.tool.request.IRequestManager.SESSION_ID;
+
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -23,8 +25,6 @@ import com.pine.tool.util.LogUtils;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
-
-import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteDbServerManager implements IDbServerManager {
     private static final String TAG = LogUtils.makeLogTag(SQLiteDbServerManager.class);
@@ -73,87 +73,87 @@ public class SQLiteDbServerManager implements IDbServerManager {
     public DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                   HashMap<String, String> header) {
         LogUtils.d(TAG, "callCommand url:" + requestBean.getUrl());
-        if (DbUrlConstants.Query_BundleSwitcher_Data.equals(requestBean.getUrl())) {
+        if (DbUrlConstants.CONFIG().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteWelcomeServer.queryConfigSwitcher(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Query_Version_Data.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.APK_UPDATE().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteWelcomeServer.queryAppVersion(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Login.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.LOGIN().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteLoginServer.login(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Logout.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.LOGOUT().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteLoginServer.logout(context, requestBean, header);
             }
-        } else if (requestBean.getUrl() != null && requestBean.getUrl().startsWith(DbUrlConstants.Verify_Code_Image)) {
+        } else if (requestBean.getUrl() != null && requestBean.getUrl().startsWith(DbUrlConstants.VERIFY_CODE())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteLoginServer.getVerifyCode(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Register_Account.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.REGISTER_ACCOUNT().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteLoginServer.register(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Add_Shop.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Add_Shop().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteShopServer.addShop(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Query_ShopDetail.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Query_ShopDetail().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteShopServer.queryShopDetail(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Query_ShopList.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Query_ShopList().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteShopServer.queryShopList(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Query_ShopAndProductList.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Query_ShopAndProductList().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteShopServer.queryShopProductList(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Add_Product.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Add_Product().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteShopServer.addProduct(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Add_TravelNote.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Add_TravelNote().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteTravelNoteServer.addTravelNote(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Query_TravelNoteDetail.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Query_TravelNoteDetail().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteTravelNoteServer.queryTravelNoteDetail(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Query_TravelNoteList.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Query_TravelNoteList().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteTravelNoteServer.queryTravelNoteList(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Query_TravelNoteCommentList.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.Query_TravelNoteCommentList().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteTravelNoteServer.queryTravelNoteCommentList(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Upload_Single_File.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.FILE_UPLOAD().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteFileServer.uploadSingleFile(context, requestBean, header);
             }
-        } else if (DbUrlConstants.Upload_Multi_File.equals(requestBean.getUrl())) {
+        } else if (DbUrlConstants.FILE_UPLOAD().equals(requestBean.getUrl())) {
             synchronized (this) {
                 setupSession(header);
                 return SQLiteFileServer.uploadMultiFile(context, requestBean, header);

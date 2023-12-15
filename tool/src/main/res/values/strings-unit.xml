@@ -14,8 +14,19 @@
     <string name="unit_nanosecond">毫微秒</string>
     <string name="unit_nanosecond1">纳秒</string>
 
+    <string name="unit_litre">升</string>
+    <string name="unit_litre_per_minute">升/分</string>
+    <string name="unit_millilitre">毫升</string>
+    <string name="unit_millilitre_per_minute">毫升/分</string>
+
+    <string name="unit_mg_per_100ml">毫克/100毫升</string>
+    <string name="unit_mg_per_l">毫克/升</string>
+
     <string name="unit_half_metre">里</string>
     <string name="unit_metre">米</string>
     <string name="unit_kilometre">千米</string>
     <string name="unit_kilometre1">公里</string>
+    <string name="unit_kb">KB</string>
+    <string name="unit_mb">MB</string>
+    <string name="unit_frame">帧</string>
 </resources>

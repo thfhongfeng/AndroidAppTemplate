@@ -112,7 +112,7 @@ public class MvpWebViewFragment extends MvpFragment implements View.OnClickListe
     }
 
     private void loadUrl() {
-        web_view.loadUrl(MvpUrlConstants.H5_DefaultUrl);
+        web_view.loadUrl(MvpUrlConstants.H5_DefaultUrl());
     }
 
     @Override

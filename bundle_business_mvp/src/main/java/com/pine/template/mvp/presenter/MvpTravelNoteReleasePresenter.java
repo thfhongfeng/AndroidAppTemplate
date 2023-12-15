@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.pine.template.base.BaseConstants;
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.component.editor.bean.TextImageEntity;
 import com.pine.template.base.component.editor.bean.TextImageItemEntity;
 import com.pine.template.base.component.uploader.FileUploadComponent;
@@ -21,7 +22,6 @@ import com.pine.template.mvp.model.MvpTravelNoteModel;
 import com.pine.template.mvp.ui.activity.MvpShopSearchCheckActivity;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
-import com.pine.tool.bean.InputParam;
 import com.pine.tool.exception.MessageException;
 
 import org.json.JSONArray;
@@ -53,7 +53,7 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
 
             @Override
             public String getUploadUrl() {
-                return MvpUrlConstants.Upload_Single_File;
+                return MvpUrlConstants.FILE_UPLOAD();
             }
 
             @Override

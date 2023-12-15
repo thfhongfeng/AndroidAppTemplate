@@ -59,8 +59,8 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
         go_add_product_btn_tv = findViewById(R.id.go_add_product_btn_tv);
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
 
-        go_add_product_btn_tv.setVisibility(ConfigSwitcherServer.getInstance()
-                .isEnable(ConfigKey.FUN_ADD_PRODUCT_KEY) ? View.VISIBLE : View.GONE);
+        go_add_product_btn_tv.setVisibility(ConfigSwitcherServer
+                .isEnable(ConfigKey.FUN_ADD_PRODUCT) ? View.VISIBLE : View.GONE);
     }
 
     @Override

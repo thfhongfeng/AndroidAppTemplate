@@ -1,5 +1,7 @@
 package com.pine.tool.request;
 
+import androidx.annotation.NonNull;
+
 import com.pine.tool.request.callback.UploadCallback;
 
 import java.io.File;
@@ -8,14 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-
 /**
  * Created by tanghongfeng on 2018/9/10.
  */
 
 public class UploadRequestBean extends RequestBean {
-    // 上传文件的key
+    // 上传文件的key,空为多文件上传方式
     private String upLoadFileKey;
     // 上传文件集合
     private List<FileBean> uploadFileList;
@@ -29,6 +29,7 @@ public class UploadRequestBean extends RequestBean {
         this.uploadFileList = new ArrayList<>();
         FileBean fileBean = new FileBean(upLoadFileKey, fileName, file, 0);
         uploadFileList.add(fileBean);
+        this.setReadTimeout(30 * 60 * 1000);
     }
 
     public UploadRequestBean(@NonNull String url, int what, Map<String, String> params,
@@ -57,6 +58,7 @@ public class UploadRequestBean extends RequestBean {
         super(url, what, params, needLogin, sign, requestMethod);
         this.upLoadFileKey = upLoadFileKey;
         this.uploadFileList = uploadFileList;
+        this.setReadTimeout(30 * 60 * 1000);
     }
 
     public String getUpLoadFileKey() {

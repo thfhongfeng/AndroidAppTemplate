@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.template.base.router.command.RouterMvcCommand;
-import com.pine.template.base.router.command.RouterMvpCommand;
-import com.pine.template.base.router.command.RouterMvvmCommand;
+import com.pine.template.config.router.command.RouterMvcCommand;
+import com.pine.template.config.router.command.RouterMvpCommand;
+import com.pine.template.config.router.command.RouterMvvmCommand;
 import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.main.bean.MainBusinessItemEntity;
@@ -26,24 +26,24 @@ public class MainHomeVm extends ViewModel {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject;
         try {
-            if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_BUSINESS_MVC_KEY)) {
+            if (ConfigSwitcherServer.isEnable(ConfigKey.BUNDLE_BUSINESS_MVC)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvc");
-                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVC_KEY);
+                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVC);
                 jsonObject.put("command", RouterMvcCommand.goMvcHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_BUSINESS_MVP_KEY)) {
+            if (ConfigSwitcherServer.isEnable(ConfigKey.BUNDLE_BUSINESS_MVP)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvp");
-                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVP_KEY);
+                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVP);
                 jsonObject.put("command", RouterMvpCommand.goMvpHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_BUSINESS_MVVM_KEY)) {
+            if (ConfigSwitcherServer.isEnable(ConfigKey.BUNDLE_BUSINESS_MVVM)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvvm");
-                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVVM_KEY);
+                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVVM);
                 jsonObject.put("command", RouterMvvmCommand.goMvvmHomeActivity);
                 jsonArray.put(jsonObject);
             }

@@ -3,6 +3,8 @@ package com.pine.template.base.component.uploader;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.pine.template.base.R;
 import com.pine.template.base.component.uploader.bean.FileUploadBean;
 import com.pine.template.base.component.uploader.bean.RemoteUploadFileInfo;
@@ -29,8 +31,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/11/1
@@ -71,7 +71,7 @@ public class FileUploadComponent {
     public void startSingle(@NonNull final FileUploadBean uploadBean, final OneByOneUploadCallback callback) {
         File file = checkFile(uploadBean, callback);
         if (file == null) {
-            LogUtils.d(TAG, "upload check fail");
+            LogUtils.d(TAG, "startSingle upload check fail");
             return;
         }
         mRequestMap.put(uploadBean.hashCode(), uploadBean);
@@ -164,7 +164,7 @@ public class FileUploadComponent {
                               final TogetherUploadListCallback callback) {
         List<UploadRequestBean.FileBean> checkFileList = checkFileList(uploadBeanList, callback);
         if (checkFileList == null) {
-            LogUtils.d(TAG, "upload check fail");
+            LogUtils.d(TAG, "startTogether upload check fail");
             return;
         }
         final Map<Integer, Integer> progressMap = new HashMap<>();
@@ -266,15 +266,16 @@ public class FileUploadComponent {
 
     private File checkFile(FileUploadBean fileBean, OneByOneUploadCallback callback) {
         if (TextUtils.isEmpty(fileBean.getLocalFilePath()) || TextUtils.isEmpty(fileBean.getRequestUrl())) {
-            LogUtils.d(TAG, "file bean is null");
+            LogUtils.d(TAG, "checkFile file bean is null");
             return null;
         }
         Context context = mContext.get();
         if (context == null) {
+            LogUtils.d(TAG, "checkFile context is null");
             return null;
         }
         if (mRequestMap.get(fileBean.hashCode()) != null) {
-            LogUtils.d(TAG, "request is in processing");
+            LogUtils.d(TAG, "checkFile request is in processing");
             if (callback != null) {
                 callback.onFailed(fileBean, new MessageException(context.getString(R.string.base_file_upload_file_is_uploading)));
             }
@@ -282,6 +283,7 @@ public class FileUploadComponent {
         }
         File file = new File(fileBean.getLocalFilePath());
         if (!file.exists()) {
+            LogUtils.d(TAG, "checkFile file:" + file.getPath() + " is not exist");
             if (callback != null) {
                 callback.onFailed(fileBean, new MessageException(context.getString(R.string.base_file_upload_file_null)));
             }
@@ -290,7 +292,10 @@ public class FileUploadComponent {
         if (fileBean.getFileType() == TYPE_IMAGE) {
             file = compressImage(fileBean, callback);
             if (file == null) {
-                callback.onFailed(fileBean, new MessageException(context.getString(R.string.base_file_upload_compress_file_null)));
+                LogUtils.d(TAG, "checkFile image file compress fail");
+                if (callback != null) {
+                    callback.onFailed(fileBean, new MessageException(context.getString(R.string.base_file_upload_compress_file_null)));
+                }
                 return null;
             }
             fileBean.setLocalTempFilePath(file.getPath());
@@ -301,7 +306,7 @@ public class FileUploadComponent {
     private List<UploadRequestBean.FileBean> checkFileList(@NonNull List<FileUploadBean> fileBeanList,
                                                            TogetherUploadListCallback callback) {
         if (fileBeanList == null && fileBeanList.size() < 1) {
-            LogUtils.d(TAG, "no file bean in list");
+            LogUtils.d(TAG, "checkFileList file bean is null");
             return null;
         }
         Context context = mContext.get();
@@ -309,7 +314,7 @@ public class FileUploadComponent {
             return null;
         }
         if (mRequestMap.get(fileBeanList.hashCode()) != null) {
-            LogUtils.d(TAG, "request is in processing");
+            LogUtils.d(TAG, "checkFileList request is in processing");
             if (callback != null) {
                 callback.onFailed(fileBeanList, new MessageException(context.getString(R.string.base_file_upload_file_is_uploading)));
             }
@@ -322,6 +327,7 @@ public class FileUploadComponent {
         for (int i = 0; i < fileBeanList.size(); i++) {
             FileUploadBean fileBean = fileBeanList.get(i);
             if (TextUtils.isEmpty(fileBean.getLocalFilePath())) {
+                LogUtils.d(TAG, "checkFileList file is null");
                 if (callback != null) {
                     callback.onFailed(fileBeanList, new MessageException(context.getString(R.string.base_file_upload_file_null)));
                 }
@@ -329,6 +335,7 @@ public class FileUploadComponent {
             }
             File file = new File(fileBean.getLocalFilePath());
             if (!file.exists()) {
+                LogUtils.d(TAG, "checkFileList file:" + file.getPath() + " is not exist");
                 if (callback != null) {
                     callback.onFailed(fileBeanList, new MessageException((context.getString(R.string.base_file_upload_file_null))));
                 }
@@ -337,7 +344,10 @@ public class FileUploadComponent {
             if (fileBean.getFileType() == TYPE_IMAGE) {
                 file = compressImage(fileBean);
                 if (file == null) {
-                    callback.onFailed(fileBeanList, new MessageException(context.getString(R.string.base_file_upload_compress_file_null)));
+                    LogUtils.d(TAG, "checkFile image file compress fail");
+                    if (callback != null) {
+                        callback.onFailed(fileBeanList, new MessageException(context.getString(R.string.base_file_upload_compress_file_null)));
+                    }
                     return null;
                 }
                 fileBean.setLocalTempFilePath(file.getPath());
@@ -353,6 +363,7 @@ public class FileUploadComponent {
         String targetFilePath = mContext.get().getExternalCacheDir() + File.separator + fileBean.getFileName();
         FileUtils.deleteFile(targetFilePath);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        LogUtils.d(TAG, "compressImage file:" + fileBean.getLocalFilePath());
         ImageUtils.compressBySize(fileBean.getLocalFilePath(), mMaxFileSize * 1024, mOutFileWidth, mOutFileHeight, bao,
                 new ImageUtils.ICompressCallback() {
                     @Override

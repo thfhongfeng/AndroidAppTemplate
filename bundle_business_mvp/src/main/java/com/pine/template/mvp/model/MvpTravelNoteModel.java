@@ -42,7 +42,7 @@ public class MvpTravelNoteModel {
 
     public void requestAddTravelNote(final Map<String, String> params,
                                      @NonNull final IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {
-        String url = MvpUrlConstants.Add_TravelNote;
+        String url = MvpUrlConstants.Add_TravelNote();
         RequestBean requestBean = new RequestBean(url, REQUEST_ADD_TRAVEL_NOTE, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
@@ -50,7 +50,7 @@ public class MvpTravelNoteModel {
 
     public void requestTravelNoteDetailData(final Map<String, String> params,
                                             @NonNull final IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {
-        String url = MvpUrlConstants.Query_TravelNoteDetail;
+        String url = MvpUrlConstants.Query_TravelNoteDetail();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_TRAVEL_NOTE_DETAIL, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
@@ -58,7 +58,7 @@ public class MvpTravelNoteModel {
 
     public void requestTravelNoteListData(final Map<String, String> params,
                                           @NonNull final IModelAsyncResponse<ArrayList<MvpTravelNoteItemEntity>> callback) {
-        String url = MvpUrlConstants.Query_TravelNoteList;
+        String url = MvpUrlConstants.Query_TravelNoteList();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_TRAVEL_NOTE_LIST, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
@@ -66,7 +66,7 @@ public class MvpTravelNoteModel {
 
     public void requestTravelNoteCommentData(final Map<String, String> params,
                                              @NonNull final IModelAsyncResponse<ArrayList<MvpTravelNoteCommentEntity>> callback) {
-        String url = MvpUrlConstants.Query_TravelNoteCommentList;
+        String url = MvpUrlConstants.Query_TravelNoteCommentList();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));

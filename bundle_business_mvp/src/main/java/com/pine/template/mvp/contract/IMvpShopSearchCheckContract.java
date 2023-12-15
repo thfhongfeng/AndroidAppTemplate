@@ -1,8 +1,8 @@
 package com.pine.template.mvp.contract;
 
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.mvp.adapter.MvpShopCheckListPaginationAdapter;
 import com.pine.tool.architecture.mvp.contract.IContract;
-import com.pine.tool.bean.InputParam;
 
 /**
  * Created by tanghongfeng on 2018/11/15

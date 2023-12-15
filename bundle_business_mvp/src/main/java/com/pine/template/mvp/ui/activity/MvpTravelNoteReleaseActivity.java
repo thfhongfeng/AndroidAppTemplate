@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.pine.template.base.access.UiAccessAction;
 import com.pine.template.base.access.UiAccessType;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.component.editor.bean.TextImageEntity;
 import com.pine.template.base.component.editor.ui.ArticleDisplayView;
 import com.pine.template.base.component.editor.ui.ArticleEditorView;
@@ -30,7 +31,6 @@ import com.pine.template.mvp.bean.MvpShopItemEntity;
 import com.pine.template.mvp.contract.IMvpTravelNoteReleaseContract;
 import com.pine.template.mvp.presenter.MvpTravelNoteReleasePresenter;
 import com.pine.tool.access.UiAccessAnnotation;
-import com.pine.tool.bean.InputParam;
 import com.pine.tool.util.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -43,7 +43,7 @@ import java.util.List;
  */
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER},
-        AccessArgs = {"", ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY},
+        AccessArgs = {"", ConfigKey.FUN_ADD_TRAVEL_NOTE},
         AccessActions = {UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
                 UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI,
                 UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})

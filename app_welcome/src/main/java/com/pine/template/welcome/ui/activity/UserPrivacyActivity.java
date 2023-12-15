@@ -13,28 +13,34 @@ import android.text.style.URLSpan;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
+import androidx.annotation.Nullable;
+
+import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.base.util.DialogUtils;
-import com.pine.tool.util.SharePreferenceUtils;
 import com.pine.template.welcome.R;
 import com.pine.template.welcome.WelcomeConstants;
 import com.pine.template.welcome.WelcomeSPKeyConstants;
 import com.pine.template.welcome.databinding.UserPrivacyActivityBinding;
 import com.pine.template.welcome.vm.UserPrivacyVm;
+import com.pine.tool.util.SharePreferenceUtils;
 
-import androidx.annotation.Nullable;
-
-public class UserPrivacyActivity extends BaseMvvmNoActionBarActivity<UserPrivacyActivityBinding, UserPrivacyVm> {
+public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyActivityBinding, UserPrivacyVm> {
     private Dialog mTipDialog;
+
+    private int mTipDialogShowCount = 0;
+
+    protected void beforeSuperOnCreate(Bundle savedInstanceState) {
+        setTheme(R.style.BaseFullActivityTheme);
+    }
 
     @Override
     protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         super.beforeInitOnCreate(savedInstanceState);
         boolean userPrivacyAgree = SharePreferenceUtils.readBooleanFromConfig(WelcomeSPKeyConstants.USER_PRIVACY_AGREE, false);
-        if (userPrivacyAgree) {
+        if (userPrivacyAgree || !LoadingActivity.ENABLE_LOADING_GO_ASSIGN) {
             goLoadingActivity();
         }
-        return !isTaskRoot() || userPrivacyAgree;
+        return !isTaskRoot() || userPrivacyAgree || !LoadingActivity.ENABLE_LOADING_GO_ASSIGN;
     }
 
     @Override
@@ -68,11 +74,18 @@ public class UserPrivacyActivity extends BaseMvvmNoActionBarActivity<UserPrivacy
         }
         mBinding.tipTv.setHighlightColor(getResources().getColor(android.R.color.transparent));
         mBinding.tipTv.setText(stylesBuilder);
+
+        mTipDialogShowCount = 0;
     }
 
     private void showTipDialog() {
+        if (mTipDialogShowCount > 0) {
+            finish();
+            return;
+        }
+        mTipDialogShowCount++;
         if (mTipDialog == null) {
-            mTipDialog = DialogUtils.showTipDialog(this, "", getString(R.string.wel_user_privacy_tip_dialog_content));
+            mTipDialog = DialogUtils.showTipDialog(this, "", getString(R.string.wel_user_privacy_tip_dialog_content), true);
         }
         mTipDialog.show();
     }
@@ -131,7 +144,7 @@ public class UserPrivacyActivity extends BaseMvvmNoActionBarActivity<UserPrivacy
 
         @Override
         public void onClick(View widget) {
-            Intent intent = new Intent(UserPrivacyActivity.this, UserPrivacyDetailActivity.class);
+            Intent intent = new Intent(UserPrivacyActivity.this, UserPrivacyDetailActionBarActivity.class);
             if (clickString.equals("privacy_user")) {
                 // 查看用户协议
                 intent.putExtra("privacyType", 1);

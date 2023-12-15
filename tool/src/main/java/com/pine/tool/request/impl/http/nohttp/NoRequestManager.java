@@ -1,7 +1,12 @@
 package com.pine.tool.request.impl.http.nohttp;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.IRequestManager;
@@ -19,8 +24,8 @@ import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.InputStreamBinary;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
 import com.yanzhenjie.nohttp.OnUploadListener;
+import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 import com.yanzhenjie.nohttp.download.DownloadListener;
@@ -48,8 +53,6 @@ import java.util.Map;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
-import androidx.annotation.NonNull;
-
 /**
  * Created by tanghongfeng on 2018/9/16
  */
@@ -63,9 +66,25 @@ public class NoRequestManager implements IRequestManager {
     private DownloadQueue mDownloadQueue;
     private HashMap<String, String> mSessionIdMap = new HashMap<>();
 
+    private Handler mCheckProgressHandler;
+
     private NoRequestManager() {
         Logger.setDebug(true);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
         Logger.setTag("NoHttp");// 打印Log的tag
+        mCheckProgressHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                LogUtils.d(TAG, "request progress timeout: " + msg.obj + ", try cancel it");
+                if (msg.obj != null && msg.obj instanceof RequestBean) {
+                    RequestBean requestBean = (RequestBean) msg.obj;
+                    if (requestBean != null) {
+                        requestBean.setRequestState(RequestBean.REQUEST_STATE_TIMEOUT);
+                        cancelBySign(requestBean.getSign());
+                    }
+                }
+            }
+        };
     }
 
     public static NoRequestManager getInstance() {
@@ -88,6 +107,10 @@ public class NoRequestManager implements IRequestManager {
         return new OnResponseListener() {
             @Override
             public void onStart(int what) {
+                if (requestBean.getRequestType() != RequestType.DOWNLOAD
+                        || requestBean.getRequestType() != RequestType.UPLOAD) {
+                    requestBean.setRequestState(RequestBean.REQUEST_STATE_START);
+                }
                 listener.onStart(what);
             }
 
@@ -115,6 +138,10 @@ public class NoRequestManager implements IRequestManager {
 
             @Override
             public void onFailed(int what, com.yanzhenjie.nohttp.rest.Response response) {
+                if (requestBean.getRequestType() != RequestType.DOWNLOAD
+                        || requestBean.getRequestType() != RequestType.UPLOAD) {
+                    requestBean.setRequestState(RequestBean.REQUEST_STATE_FAIL);
+                }
                 Response httpResponse = new Response();
                 httpResponse.setSucceed(response.isSucceed());
                 httpResponse.setResponseCode(response.responseCode());
@@ -138,66 +165,101 @@ public class NoRequestManager implements IRequestManager {
 
             @Override
             public void onFinish(int what) {
+                if (requestBean.getRequestType() != RequestType.DOWNLOAD
+                        || requestBean.getRequestType() != RequestType.UPLOAD) {
+                    requestBean.setRequestState(RequestBean.REQUEST_STATE_FAIL);
+                }
                 listener.onFinish(what);
             }
         };
     }
 
     // 下载callback
-    private DownloadListener getDownloadListener(final IResponseListener.OnDownloadListener listener) {
+    private DownloadListener getDownloadListener(final IResponseListener.OnDownloadListener listener,
+                                                 final RequestBean requestBean) {
         return new DownloadListener() {
+
             @Override
             public void onDownloadError(int what, Exception exception) {
+                mCheckProgressHandler.removeMessages(requestBean.hashCode());
+                requestBean.setRequestState(RequestBean.REQUEST_STATE_FAIL);
                 listener.onDownloadError(what, exception instanceof NetworkError ? new ConnectException(exception.getMessage()) : exception);
             }
 
             @Override
             public void onStart(int what, boolean isResume, long rangeSize, Headers responseHeaders, long allCount) {
+                requestBean.setRequestState(RequestBean.REQUEST_STATE_START);
                 listener.onStart(what, isResume, rangeSize, responseHeaders.toResponseHeaders(), allCount);
             }
 
             @Override
             public void onProgress(int what, int progress, long fileCount, long speed) {
+                int msgWhat = requestBean.hashCode();
+                mCheckProgressHandler.removeMessages(msgWhat);
+                mCheckProgressHandler.sendMessageDelayed(Message.obtain(
+                        mCheckProgressHandler, msgWhat, requestBean),
+                        requestBean.getProgressTimeout());
                 listener.onProgress(what, progress, fileCount, speed);
             }
 
             @Override
             public void onFinish(int what, String filePath) {
+                mCheckProgressHandler.removeMessages(requestBean.hashCode());
+                requestBean.setRequestState(RequestBean.REQUEST_STATE_FINISH);
                 listener.onFinish(what, filePath);
             }
 
             @Override
             public void onCancel(int what) {
+                mCheckProgressHandler.removeMessages(requestBean.hashCode());
+                if (requestBean.getRequestState() != RequestBean.REQUEST_STATE_TIMEOUT) {
+                    requestBean.setRequestState(RequestBean.REQUEST_STATE_CANCEL);
+                }
                 listener.onCancel(what);
             }
         };
     }
 
     private OnUploadListener getUploadListener(final IResponseListener.OnUploadListener listener,
+                                               final RequestBean requestBean,
                                                final UploadRequestBean.FileBean fileBean) {
         return new OnUploadListener() {
             @Override
             public void onStart(int what) {
+                requestBean.setRequestState(RequestBean.REQUEST_STATE_START);
                 listener.onStart(what, fileBean);
             }
 
             @Override
             public void onCancel(int what) {
+                mCheckProgressHandler.removeMessages(requestBean.hashCode());
+                if (requestBean.getRequestState() != RequestBean.REQUEST_STATE_TIMEOUT) {
+                    requestBean.setRequestState(RequestBean.REQUEST_STATE_CANCEL);
+                }
                 listener.onCancel(what, fileBean);
             }
 
             @Override
             public void onProgress(int what, int progress) {
+                int msgWhat = requestBean.hashCode();
+                mCheckProgressHandler.removeMessages(msgWhat);
+                mCheckProgressHandler.sendMessageDelayed(Message.obtain(
+                        mCheckProgressHandler, msgWhat, requestBean.getSign()),
+                        requestBean.getProgressTimeout());
                 listener.onProgress(what, fileBean, progress);
             }
 
             @Override
             public void onFinish(int what) {
+                mCheckProgressHandler.removeMessages(requestBean.hashCode());
+                requestBean.setRequestState(RequestBean.REQUEST_STATE_FINISH);
                 listener.onFinish(what, fileBean);
             }
 
             @Override
             public void onError(int what, Exception exception) {
+                mCheckProgressHandler.removeMessages(requestBean.hashCode());
+                requestBean.setRequestState(RequestBean.REQUEST_STATE_FAIL);
                 listener.onError(what, fileBean, exception instanceof NetworkError ? new ConnectException(exception.getMessage()) : exception);
             }
         };
@@ -236,12 +298,12 @@ public class NoRequestManager implements IRequestManager {
                 // 配置缓存，默认保存数据库DBCacheStore，保存到SD卡使用DiskCacheStore。
                 .cacheStore(
                         // 如果不使用缓存，setEnable(false)禁用。
-                        new DBCacheStore(context).setEnable(true)
+                        new DBCacheStore(context).setEnable(false)
                 )
                 // 配置Cookie，默认保存数据库DBCookieStore，开发者可以自己实现CookieStore接口。
                 .cookieStore(dbCookieStore)
-                // 配置网络层，默认URLConnectionNetworkExecutor，如果想用OkHttp：OkHttpNetworkExecutor。
-                .networkExecutor(new OkHttpNetworkExecutor())
+                // 配置网络层，默认URLConnectionNetworkExecutor，可以自定义，实现NetworkExecutor即可。
+                .networkExecutor(new URLConnectionNetworkExecutor())
                 // 全局通用Header，add是添加，多次调用add不会覆盖上次add。
                 .addHeader(MOBILE_MODEL_KEY, mMobileModel);
         if (mHeaderParams != null && mHeaderParams.size() > 0) {
@@ -277,8 +339,8 @@ public class NoRequestManager implements IRequestManager {
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
         }
-        insertExtraRequestHeader(request, requestBean.getHeaderParam());
-        mRequestQueue.add(requestBean.getWhat(), (Request) addParams(request,
+        insertExtraRequestParams(request, requestBean);
+        mRequestQueue.add(requestBean.getWhat(), (Request) addParams(requestBean.getUrl(), request,
                 requestBean.getParams()), getResponseListener(listener, requestBean));
     }
 
@@ -289,8 +351,8 @@ public class NoRequestManager implements IRequestManager {
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
         }
-        insertExtraRequestHeader(request, requestBean.getHeaderParam());
-        mRequestQueue.add(requestBean.getWhat(), (Request) addParams(request,
+        insertExtraRequestParams(request, requestBean);
+        mRequestQueue.add(requestBean.getWhat(), (Request) addParams(requestBean.getUrl(), request,
                 requestBean.getParams()), getResponseListener(listener, requestBean));
     }
 
@@ -301,8 +363,8 @@ public class NoRequestManager implements IRequestManager {
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
         }
-        insertExtraRequestHeader(request, requestBean.getHeaderParam());
-        mRequestQueue.add(requestBean.getWhat(), (Request) addParams(request,
+        insertExtraRequestParams(request, requestBean);
+        mRequestQueue.add(requestBean.getWhat(), (Request) addParams(requestBean.getUrl(), request,
                 requestBean.getParams()), getResponseListener(listener, requestBean));
     }
 
@@ -315,9 +377,9 @@ public class NoRequestManager implements IRequestManager {
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
         }
-        insertExtraRequestHeader(request, requestBean.getHeaderParam());
-        mDownloadQueue.add(requestBean.getWhat(), (DownloadRequest) addParams(request,
-                requestBean.getParams()), getDownloadListener(listener));
+        insertExtraRequestParams(request, requestBean);
+        mDownloadQueue.add(requestBean.getWhat(), (DownloadRequest) addParams(requestBean.getUrl(), request,
+                requestBean.getParams()), getDownloadListener(listener, requestBean));
     }
 
     @Override
@@ -334,10 +396,10 @@ public class NoRequestManager implements IRequestManager {
             BasicBinary binary = null;
             try {
                 binary = new InputStreamBinary(new FileInputStream(fileBean.getFile()), fileBean.getFileName());
-                binary.setUploadListener(fileBean.getWhat(), getUploadListener(processListener, fileBean));
+                binary.setUploadListener(fileBean.getWhat(), getUploadListener(processListener, requestBean, fileBean));
                 binaries.add(binary);
                 if (isMulFileKey) {
-                    request.add(TextUtils.isEmpty(fileBean.getFileKey()) ? "file" + i : fileBean.getFileKey(), binaries);
+                    request.add(TextUtils.isEmpty(fileBean.getFileKey()) ? "file" + i : fileBean.getFileKey(), binary);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -357,17 +419,24 @@ public class NoRequestManager implements IRequestManager {
         }
         request.setCancelSign(requestBean.getSign());
 
-        insertExtraRequestHeader(request, requestBean.getHeaderParam());
+        insertExtraRequestParams(request, requestBean);
         mRequestQueue.add(requestBean.getWhat(), request, getResponseListener(responseListener, requestBean));
     }
 
-    private void insertExtraRequestHeader(BasicRequest request, HashMap<String, String> headerParams) {
+    private void insertExtraRequestParams(BasicRequest request, RequestBean requestBean) {
+        HashMap<String, String> headerParams = requestBean.getHeaderParam();
         if (headerParams != null && headerParams.size() > 0) {
             Collection keys = headerParams.keySet();
             for (Iterator iterator = keys.iterator(); iterator.hasNext(); ) {
                 Object key = iterator.next();
                 request.addHeader(key.toString(), headerParams.get(key));
             }
+        }
+        if (requestBean.getConnectTimeout() > 0) {
+            request.setConnectTimeout(requestBean.getConnectTimeout());
+        }
+        if (requestBean.getReadTimeout() > 0) {
+            request.setReadTimeout(requestBean.getReadTimeout());
         }
     }
 
@@ -409,7 +478,7 @@ public class NoRequestManager implements IRequestManager {
     }
 
     // 添加参数
-    private BasicRequest addParams(BasicRequest request, Map<String, String> params) {
+    private BasicRequest addParams(@NonNull String requestUrl, BasicRequest request, Map<String, String> params) {
         if (params == null) {
             return request;
         }
@@ -418,7 +487,10 @@ public class NoRequestManager implements IRequestManager {
             Map.Entry<String, String> entry = iterator.next();
             String entryKey = entry.getKey();
             String entryValue = entry.getValue();
-            request = request.add(entryKey, entryValue);
+            if (!requestUrl.contains("&" + entryKey + "=")
+                    && !requestUrl.contains("?" + entryKey + "=")) {
+                request = request.add(entryKey, entryValue);
+            }
         }
         return request;
     }

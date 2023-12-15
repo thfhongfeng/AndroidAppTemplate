@@ -117,7 +117,7 @@ public class MvvmWebViewFragment extends
     }
 
     private void loadUrl() {
-        mBinding.webView.loadUrl(MvvmUrlConstants.H5_DefaultUrl);
+        mBinding.webView.loadUrl(MvvmUrlConstants.H5_DefaultUrl());
     }
 
     public class Presenter {

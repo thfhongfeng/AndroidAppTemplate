@@ -136,16 +136,24 @@ public class DensityUtils {
      */
     @SuppressWarnings("deprecation")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public static Point getScreenSize(Context context) {
+    public static DisplayMetrics getScreenSize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return new Point(display.getWidth(), display.getHeight());
-        } else {
-            Point point = new Point();
-            display.getSize(point);
-            return point;
-        }
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        return outMetrics;
+    }
+
+    /**
+     * 获取屏幕全尺寸（包含导航栏和状态栏）
+     */
+    @SuppressWarnings("deprecation")
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public static DisplayMetrics getFullScreenSize(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getRealMetrics(outMetrics);
+        return outMetrics;
     }
 
     /**

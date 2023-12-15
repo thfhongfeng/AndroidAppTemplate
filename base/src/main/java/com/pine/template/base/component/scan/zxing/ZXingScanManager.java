@@ -3,6 +3,9 @@ package com.pine.template.base.component.scan.zxing;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
 import com.pine.template.base.R;
 import com.pine.template.base.component.scan.IScanAnalyzeListener;
 import com.pine.template.base.component.scan.IScanManager;
@@ -11,9 +14,6 @@ import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.util.HashMap;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 
 /**
  * Created by tanghongfeng on 2019/11/28.

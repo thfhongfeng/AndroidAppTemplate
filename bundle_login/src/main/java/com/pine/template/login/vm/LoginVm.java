@@ -20,12 +20,6 @@ public class LoginVm extends ViewModel {
         LoginBean loginBean = new LoginBean();
         String account = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, "");
         String password = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, "");
-        // Test code begin
-        if (TextUtils.isEmpty(account)) {
-            account = "15221464292";
-            password = "111aaa";
-        }
-        // Test code end
         loginBean.setMobile(account);
         loginBean.setPassword(password);
         setLoginBean(loginBean);

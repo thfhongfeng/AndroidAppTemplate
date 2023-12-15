@@ -50,14 +50,14 @@ public class PathUtils {
      * @param type 文件夹类型
      *             如果为空则返回 /storage/emulated/0
      *             否则返回对应类型的文件夹:
-     *             {@link android.os.Environment#DIRECTORY_PICTURES}, /storage/emulated/0/Pictures
-     *             {@link android.os.Environment#DIRECTORY_MUSIC}, /storage/emulated/0/Music
-     *             {@link android.os.Environment#DIRECTORY_DCIM}, /storage/emulated/0/DCIM
-     *             {@link android.os.Environment#DIRECTORY_PODCASTS}, /storage/emulated/0/Podcasts
-     *             {@link android.os.Environment#DIRECTORY_RINGTONES}, /storage/emulated/0/Ringtones
-     *             {@link android.os.Environment#DIRECTORY_ALARMS}, /storage/emulated/0/Alarms
-     *             {@link android.os.Environment#DIRECTORY_NOTIFICATIONS}, /storage/emulated/0/Notifications
-     *             {@link android.os.Environment#DIRECTORY_MOVIES}. /storage/emulated/0/Movies
+     *             {@link Environment#DIRECTORY_PICTURES}, /storage/emulated/0/Pictures
+     *             {@link Environment#DIRECTORY_MUSIC}, /storage/emulated/0/Music
+     *             {@link Environment#DIRECTORY_DCIM}, /storage/emulated/0/DCIM
+     *             {@link Environment#DIRECTORY_PODCASTS}, /storage/emulated/0/Podcasts
+     *             {@link Environment#DIRECTORY_RINGTONES}, /storage/emulated/0/Ringtones
+     *             {@link Environment#DIRECTORY_ALARMS}, /storage/emulated/0/Alarms
+     *             {@link Environment#DIRECTORY_NOTIFICATIONS}, /storage/emulated/0/Notifications
+     *             {@link Environment#DIRECTORY_MOVIES}. /storage/emulated/0/Movies
      *             or 自定义文件夹名称"type"  /storage/emulated/0/{type}
      * @return 缓存目录文件夹 或 null（无SD卡或SD卡挂载失败）
      */
@@ -181,35 +181,35 @@ public class PathUtils {
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files
      *             无SD卡: data/data/app_package_name/files
      *             <p>
-     *             {@link android.os.Environment#DIRECTORY_PICTURES},
+     *             {@link Environment#DIRECTORY_PICTURES},
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files/Pictures
      *             无SD卡: data/data/app_package_name/files/Pictures
      *             <p>
-     *             {@link android.os.Environment#DIRECTORY_MUSIC},
+     *             {@link Environment#DIRECTORY_MUSIC},
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files/Music
      *             无SD卡: data/data/app_package_name/files/Music
      *             <p>
-     *             {@link android.os.Environment#DIRECTORY_DCIM},
+     *             {@link Environment#DIRECTORY_DCIM},
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files/Music
      *             无SD卡: data/data/app_package_name/files/Music
      *             <p>
-     *             {@link android.os.Environment#DIRECTORY_PODCASTS},
+     *             {@link Environment#DIRECTORY_PODCASTS},
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files/Podcasts
      *             无SD卡: data/data/app_package_name/files/Podcasts
      *             <p>
-     *             {@link android.os.Environment#DIRECTORY_RINGTONES},
+     *             {@link Environment#DIRECTORY_RINGTONES},
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files/Ringtones
      *             无SD卡: data/data/app_package_name/files/Ringtones
      *             <p>
-     *             {@link android.os.Environment#DIRECTORY_ALARMS},
+     *             {@link Environment#DIRECTORY_ALARMS},
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files/Alarms
      *             无SD卡: data/data/app_package_name/files/Alarms
      *             <p>
-     *             {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
+     *             {@link Environment#DIRECTORY_NOTIFICATIONS},
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files/Notifications
      *             无SD卡: data/data/app_package_name/files/Notifications
      *             <p>
-     *             {@link android.os.Environment#DIRECTORY_MOVIES}.
+     *             {@link Environment#DIRECTORY_MOVIES}.
      *             有SD卡: /storage/emulated/0/Android/data/app_package_name/files/Movies
      *             无SD卡: data/data/app_package_name/files/Movies
      *             <p>
@@ -248,14 +248,14 @@ public class PathUtils {
      * @param type 文件夹类型
      *             如果为空则返回 /storage/emulated/0/Android/data/app_package_name/files
      *             否则返回对应类型的文件夹:
-     *             {@link android.os.Environment#DIRECTORY_PICTURES}, /storage/emulated/0/Android/data/app_package_name/files/Pictures
-     *             {@link android.os.Environment#DIRECTORY_MUSIC}, /storage/emulated/0/Android/data/app_package_name/files/Music
-     *             {@link android.os.Environment#DIRECTORY_DCIM}, /storage/emulated/0/Android/data/app_package_name/files/DCIM
-     *             {@link android.os.Environment#DIRECTORY_PODCASTS}, /storage/emulated/0/Android/data/app_package_name/files/Podcasts
-     *             {@link android.os.Environment#DIRECTORY_RINGTONES}, /storage/emulated/0/Android/data/app_package_name/files/Ringtones
-     *             {@link android.os.Environment#DIRECTORY_ALARMS}, /storage/emulated/0/Android/data/app_package_name/files/Alarms
-     *             {@link android.os.Environment#DIRECTORY_NOTIFICATIONS}, /storage/emulated/0/Android/data/app_package_name/files/Notifications
-     *             {@link android.os.Environment#DIRECTORY_MOVIES}. /storage/emulated/0/Android/data/app_package_name/files/Movies
+     *             {@link Environment#DIRECTORY_PICTURES}, /storage/emulated/0/Android/data/app_package_name/files/Pictures
+     *             {@link Environment#DIRECTORY_MUSIC}, /storage/emulated/0/Android/data/app_package_name/files/Music
+     *             {@link Environment#DIRECTORY_DCIM}, /storage/emulated/0/Android/data/app_package_name/files/DCIM
+     *             {@link Environment#DIRECTORY_PODCASTS}, /storage/emulated/0/Android/data/app_package_name/files/Podcasts
+     *             {@link Environment#DIRECTORY_RINGTONES}, /storage/emulated/0/Android/data/app_package_name/files/Ringtones
+     *             {@link Environment#DIRECTORY_ALARMS}, /storage/emulated/0/Android/data/app_package_name/files/Alarms
+     *             {@link Environment#DIRECTORY_NOTIFICATIONS}, /storage/emulated/0/Android/data/app_package_name/files/Notifications
+     *             {@link Environment#DIRECTORY_MOVIES}. /storage/emulated/0/Android/data/app_package_name/files/Movies
      *             or 自定义文件夹名称"type"  /storage/emulated/0/Android/data/app_package_name/files/{type}
      * @return type对应的文件夹 或 null（无SD卡或SD卡挂载失败）
      */
@@ -300,14 +300,14 @@ public class PathUtils {
      * @param type 文件夹类型
      *             如果为空则返回 /data/data/app_package_name/files
      *             否则返回对应类型的文件夹:
-     *             {@link android.os.Environment#DIRECTORY_PICTURES}, /data/data/app_package_name/files/Pictures
-     *             {@link android.os.Environment#DIRECTORY_MUSIC}, /data/data/app_package_name/files/Music
-     *             {@link android.os.Environment#DIRECTORY_DCIM}, /data/data/app_package_name/files/DCIM
-     *             {@link android.os.Environment#DIRECTORY_PODCASTS}, /data/data/app_package_name/files/Podcasts
-     *             {@link android.os.Environment#DIRECTORY_RINGTONES}, /data/data/app_package_name/files/Ringtones
-     *             {@link android.os.Environment#DIRECTORY_ALARMS}, /data/data/app_package_name/files/Alarms
-     *             {@link android.os.Environment#DIRECTORY_NOTIFICATIONS}, /data/data/app_package_name/files/Notifications
-     *             {@link android.os.Environment#DIRECTORY_MOVIES}. /data/data/app_package_name/files/Movies
+     *             {@link Environment#DIRECTORY_PICTURES}, /data/data/app_package_name/files/Pictures
+     *             {@link Environment#DIRECTORY_MUSIC}, /data/data/app_package_name/files/Music
+     *             {@link Environment#DIRECTORY_DCIM}, /data/data/app_package_name/files/DCIM
+     *             {@link Environment#DIRECTORY_PODCASTS}, /data/data/app_package_name/files/Podcasts
+     *             {@link Environment#DIRECTORY_RINGTONES}, /data/data/app_package_name/files/Ringtones
+     *             {@link Environment#DIRECTORY_ALARMS}, /data/data/app_package_name/files/Alarms
+     *             {@link Environment#DIRECTORY_NOTIFICATIONS}, /data/data/app_package_name/files/Notifications
+     *             {@link Environment#DIRECTORY_MOVIES}. /data/data/app_package_name/files/Movies
      *             or 自定义文件夹名称"type"  /data/data/app_package_name/files/{type}
      * @return type对应的文件夹 或 null（创建目录文件失败）
      * 注：该方法获取的目录是能供当前应用自己使用，外部应用没有读写权限，如 系统相机应用

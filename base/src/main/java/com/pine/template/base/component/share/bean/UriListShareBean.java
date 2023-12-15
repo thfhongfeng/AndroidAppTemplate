@@ -2,9 +2,9 @@ package com.pine.template.base.component.share.bean;
 
 import android.net.Uri;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
 
 /**
  * Created by tanghongfeng on 2018/10/11

@@ -3,6 +3,9 @@ package com.pine.template.base.component.image_loader.glide.loader;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.HttpException;
@@ -21,17 +24,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
-
 /**
  * Created by tanghongfeng on 2018/11/21
  */
 
 public class HttpUrlDataFetcher implements DataFetcher<InputStream> {
     @VisibleForTesting
-    static final HttpUrlDataFetcher.HttpUrlConnectionFactory DEFAULT_CONNECTION_FACTORY =
-            new HttpUrlDataFetcher.DefaultHttpUrlConnectionFactory();
+    static final HttpUrlConnectionFactory DEFAULT_CONNECTION_FACTORY =
+            new DefaultHttpUrlConnectionFactory();
     private static final int MAXIMUM_REDIRECTS = 5;
     /**
      * Returned when a connection error prevented us from receiving an http error.
@@ -40,7 +40,7 @@ public class HttpUrlDataFetcher implements DataFetcher<InputStream> {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private final GlideUrl glideUrl;
     private final int timeout;
-    private final HttpUrlDataFetcher.HttpUrlConnectionFactory connectionFactory;
+    private final HttpUrlConnectionFactory connectionFactory;
 
     private HttpURLConnection urlConnection;
     private InputStream stream;
@@ -54,7 +54,7 @@ public class HttpUrlDataFetcher implements DataFetcher<InputStream> {
 
     @VisibleForTesting
     HttpUrlDataFetcher(GlideUrl glideUrl, int timeout,
-                       HttpUrlDataFetcher.HttpUrlConnectionFactory connectionFactory,
+                       HttpUrlConnectionFactory connectionFactory,
                        IImageDownloadListener listener) {
         this.glideUrl = glideUrl;
         this.timeout = timeout;
@@ -212,7 +212,7 @@ public class HttpUrlDataFetcher implements DataFetcher<InputStream> {
         HttpURLConnection build(URL url) throws IOException;
     }
 
-    private static class DefaultHttpUrlConnectionFactory implements HttpUrlDataFetcher.HttpUrlConnectionFactory {
+    private static class DefaultHttpUrlConnectionFactory implements HttpUrlConnectionFactory {
 
         @Synthetic
         DefaultHttpUrlConnectionFactory() {

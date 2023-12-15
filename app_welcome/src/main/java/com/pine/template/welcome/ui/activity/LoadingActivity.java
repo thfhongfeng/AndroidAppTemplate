@@ -1,82 +1,120 @@
 package com.pine.template.welcome.ui.activity;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.TextView;
 
-import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
-import com.pine.template.base.util.DialogUtils;
-import com.pine.template.base.widget.dialog.ProgressDialog;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+
+import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
+import com.pine.template.base.bean.VersionEntity;
+import com.pine.template.base.manager.ApkVersionManager;
+import com.pine.template.config.router.command.RouterMainCommand;
+import com.pine.template.base.track.AppTrackManager;
 import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
-import com.pine.tool.permission.PermissionsAnnotation;
-import com.pine.tool.router.IRouterCallback;
-import com.pine.tool.util.LogUtils;
-import com.pine.tool.util.SharePreferenceUtils;
 import com.pine.template.welcome.R;
+import com.pine.template.welcome.WelUrlConstants;
 import com.pine.template.welcome.WelcomeApplication;
 import com.pine.template.welcome.WelcomeConstants;
 import com.pine.template.welcome.WelcomeSPKeyConstants;
 import com.pine.template.welcome.databinding.LoadingActivityBinding;
 import com.pine.template.welcome.remote.WelcomeRouterClient;
 import com.pine.template.welcome.vm.LoadingVm;
+import com.pine.tool.permission.PermissionsAnnotation;
+import com.pine.tool.router.IRouterCallback;
+import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.SharePreferenceUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
+import java.io.File;
 
 @PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE})
-public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivityBinding, LoadingVm> {
+public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityBinding, LoadingVm> {
     private final static int REQUEST_CODE_USER_PRIVACY = 9998;
     private final static int REQUEST_CODE_GO_ASSIGN_UI = 9999;
     private final static int LOADING_STAY_MIN_TIME = 1000;
-    private final static int GO_NEXT_DELAY = 100;
+
+    public final static boolean ENABLE_LOADING_GO_ASSIGN = false;
+    public final static boolean ENABLE_LOADING_AUTO_LOGIN = false;
+    public final static boolean ENABLE_LOADING_GO_WELCOME = false;
+
     private long mStartTimeMillis;
-    private Dialog mUpdateConfirmDialog;
-    private ProgressDialog mUpdateProgressDialog;
 
     @Override
     protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         super.beforeInitOnCreate(savedInstanceState);
-        LogUtils.d(TAG, "isTaskRoot:" + isTaskRoot());
-        return !isTaskRoot() && !isGoAssignActivityAction();
+        boolean isTaskRoot = isTaskRoot();
+        boolean isGoAssignActivityAction = isGoAssignActivityAction();
+        boolean interrupt = !isTaskRoot && !isGoAssignActivityAction && ENABLE_LOADING_GO_ASSIGN;
+        LogUtils.d(TAG, "isTaskRoot:" + isTaskRoot
+                + ", isGoAssignActivityAction:" + isGoAssignActivityAction
+                + ", ENABLE_LOADING_GO_ASSIGN:" + ENABLE_LOADING_GO_ASSIGN
+                + ", interrupt:" + interrupt);
+        return interrupt;
     }
 
     @Override
     public void observeInitLiveData(Bundle savedInstanceState) {
-        mViewModel.getNewVersionNameData().observe(this, new Observer<String>() {
+        mViewModel.getCheckVersionData().observe(this, new Observer<Boolean>() {
             @Override
-            public void onChanged(@Nullable String newVersionName) {
-                if (TextUtils.isEmpty(newVersionName)) {
+            public void onChanged(@Nullable Boolean check) {
+                AppTrackManager.getInstance().init(WelcomeApplication.mApplication,
+                        WelUrlConstants.APP_TRACK());
+                if (!ConfigSwitcherServer
+                        .isEnable(ConfigKey.ENABLE_AUTO_CHECK_UPDATE)) {
                     autoLogin(-1);
-                } else {
-                    showVersionUpdateConfirmDialog(newVersionName);
+                    return;
                 }
-            }
-        });
-        mViewModel.getVersionUpdateForceData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean isForce) {
-                showVersionUpdateProgressDialog(isForce);
-            }
-        });
-        mViewModel.getVersionUpdateProgressData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer progress) {
-                updateVersionUpdateProgressDialog(progress);
-            }
-        });
-        mViewModel.getVersionUpdateStateData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer state) {
-                onVersionUpdateStateChange(state);
+                ApkVersionManager.getInstance().checkAndUpdateApk(LoadingActivity.this, true, true,
+                        new ApkVersionManager.IUpdateCallback() {
+                            @Override
+                            public void onNoNewVersion() {
+                                autoLogin(-1);
+                            }
+
+                            @Override
+                            public void onNewVersionFound(VersionEntity versionEntity) {
+
+                            }
+
+                            @Override
+                            public boolean installApk(VersionEntity versionEntity, File apkFile) {
+                                return false;
+                            }
+
+                            @Override
+                            public void onUpdateComplete(VersionEntity versionEntity) {
+                                finish();
+                            }
+
+                            @Override
+                            public void onUpdateErr(int errCode, String errMsg,
+                                                    VersionEntity versionEntity) {
+                                if (errCode == 0) {
+                                    showShortToast(R.string.base_new_version_update_cancel);
+                                } else if (errCode == 1) {
+                                    showShortToast(errMsg);
+                                } else if (errCode == 2) {
+                                    showShortToast(getString(
+                                            R.string.base_new_version_download_extra_fail, errMsg));
+                                } else if (errCode == 3) {
+                                    showShortToast(R.string.base_new_version_download_fail);
+                                } else if (errCode == 4) {
+                                    showShortToast(R.string.base_new_version_install_fail);
+                                } else {
+                                    showShortToast(errMsg);
+                                }
+                                if (versionEntity.isForce()) {
+                                    finish();
+                                } else {
+                                    autoLogin(-1);
+                                }
+                            }
+                        });
             }
         });
     }
@@ -88,7 +126,8 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        if (!SharePreferenceUtils.readBooleanFromConfig(WelcomeSPKeyConstants.USER_PRIVACY_AGREE, false)) {
+        if (!SharePreferenceUtils.readBooleanFromConfig(WelcomeSPKeyConstants.USER_PRIVACY_AGREE, false)
+                && ENABLE_LOADING_GO_ASSIGN) {
             startActivityForResult(new Intent(this, UserPrivacyActivity.class), REQUEST_CODE_USER_PRIVACY);
         } else {
             doneAppStartTask();
@@ -114,14 +153,7 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
 
     @Override
     protected void onDestroy() {
-        if (mUpdateConfirmDialog != null) {
-            mUpdateConfirmDialog.dismiss();
-            mUpdateConfirmDialog = null;
-        }
-        if (mUpdateProgressDialog != null) {
-            mUpdateProgressDialog.dismiss();
-            mUpdateProgressDialog = null;
-        }
+        ApkVersionManager.getInstance().onClear();
         super.onDestroy();
     }
 
@@ -130,97 +162,9 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
 
     }
 
-    private void showVersionUpdateConfirmDialog(@NonNull String newVersionName) {
-        if (mUpdateConfirmDialog == null) {
-            mUpdateConfirmDialog = new Dialog(this);
-            mUpdateConfirmDialog.setContentView(R.layout.wel_dialog_version_update_confirm);
-            mUpdateConfirmDialog.setCanceledOnTouchOutside(false);
-            mUpdateConfirmDialog.setCancelable(false);
-            mUpdateConfirmDialog.setOwnerActivity(this);
-            ((TextView) mUpdateConfirmDialog.findViewById(R.id.reason_tv)).setText(String.format(getString(R.string.wel_new_version_available), newVersionName));
-            mUpdateConfirmDialog.findViewById(R.id.cancel_btn_tv).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mUpdateConfirmDialog.dismiss();
-                    autoLogin(-1);
-                }
-            });
-            mUpdateConfirmDialog.findViewById(R.id.confirm_ll).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mUpdateConfirmDialog.dismiss();
-                    mViewModel.updateVersion(false);
-                }
-            });
-        }
-        mUpdateConfirmDialog.show();
-        CountDownTimer countDownTimer = new CountDownTimer(900000, 1000) {
-
-            @Override
-            public void onFinish() {
-                if (mUpdateConfirmDialog != null && WelcomeApplication.mCurResumedActivity.getClass() == LoadingActivity.class &&
-                        mUpdateConfirmDialog.isShowing()) {
-                    mUpdateConfirmDialog.findViewById(R.id.confirm_ll).performClick();
-                    mUpdateConfirmDialog.findViewById(R.id.count_time_tv).setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                if (mUpdateConfirmDialog != null && WelcomeApplication.mCurResumedActivity.getClass() == LoadingActivity.class &&
-                        mUpdateConfirmDialog.isShowing()) {
-                    ((TextView) mUpdateConfirmDialog.findViewById(R.id.count_time_tv)).setText("(" + millisUntilFinished / 1000 + ")");
-                }
-            }
-        };
-        countDownTimer.start();
-    }
-
-    private void showVersionUpdateProgressDialog(boolean isForce) {
-        if (mUpdateProgressDialog != null) {
-            mUpdateProgressDialog.dismiss();
-        }
-        mUpdateProgressDialog = DialogUtils.createDownloadProgressDialog(this,
-                0, isForce ? null : new ProgressDialog.IDialogActionListener() {
-                    @Override
-                    public void onCancel() {
-                        mViewModel.cancelDownLoad();
-                    }
-                });
-        mUpdateProgressDialog.show();
-    }
-
-    private void updateVersionUpdateProgressDialog(int progress) {
-        if (mUpdateProgressDialog != null) {
-            mUpdateProgressDialog.setProgress(progress);
-        }
-    }
-
-    private void onVersionUpdateStateChange(int state) {
-        if (mUpdateProgressDialog != null) {
-            mUpdateProgressDialog.dismiss();
-        }
-        boolean isForce = mViewModel.getVersionUpdateStateData().getCustomData();
-        if (state > 0) {
-            finish();
-        } else if (state == 0) {
-            if (isForce) {
-                finish();
-            } else {
-                autoLogin(-1);
-            }
-        } else {
-            if (isForce) {
-                finish();
-            } else {
-                autoLogin(GO_NEXT_DELAY);
-            }
-        }
-    }
-
     public void autoLogin(final int delayTogo) {
-        if (!ConfigSwitcherServer.getInstance().isEnable(ConfigKey.BUNDLE_LOGIN_KEY) ||
-                WelcomeApplication.isLogin()) {
+        if (!ConfigSwitcherServer.isEnable(ConfigKey.BUNDLE_LOGIN_KEY) ||
+                WelcomeApplication.isLogin() || !ENABLE_LOADING_AUTO_LOGIN) {
             gotoNext(delayTogo);
             return;
         }
@@ -254,16 +198,36 @@ public class LoadingActivity extends BaseMvvmNoActionBarActivity<LoadingActivity
     }
 
     private void goWelcomeActivity() {
+        if (!ENABLE_LOADING_GO_WELCOME) {
+            goMainHomeActivity();
+            return;
+        }
         Intent intent = new Intent(LoadingActivity.this, WelcomeActivity.class);
         startActivity(intent);
         finish();
-        return;
+    }
+
+    private void goMainHomeActivity() {
+        WelcomeRouterClient.goMainHomeActivity(LoadingActivity.this, null, new IRouterCallback() {
+            @Override
+            public void onSuccess(Bundle responseBundle) {
+                LogUtils.d(TAG, "onSuccess " + RouterMainCommand.goMainHomeActivity);
+                finish();
+                return;
+            }
+
+            @Override
+            public boolean onFail(int failCode, String errorInfo) {
+                return false;
+            }
+        });
     }
 
     private boolean isGoAssignActivityAction() {
         Intent startupIntent = getIntent().getParcelableExtra(WelcomeConstants.STARTUP_INTENT);
         boolean isGoAssignActivityAction = Intent.ACTION_VIEW.equals(startupIntent.getAction());
-        LogUtils.d(TAG, "gotoNext startupIntent: " + startupIntent + ", isGoAssignActivityAction: " + isGoAssignActivityAction);
+        LogUtils.d(TAG, "gotoNext startupIntent: " + startupIntent
+                + ", isGoAssignActivityAction: " + isGoAssignActivityAction);
         return isGoAssignActivityAction;
     }
 

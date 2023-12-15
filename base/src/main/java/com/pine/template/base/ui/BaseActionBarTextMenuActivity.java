@@ -9,12 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 
-import com.gyf.barlibrary.ImmersionBar;
-import com.gyf.barlibrary.OnKeyboardListener;
 import com.pine.template.base.R;
-import com.pine.tool.ui.Activity;
 
-public abstract class BaseActionBarTextMenuActivity extends Activity {
+public abstract class BaseActionBarTextMenuActivity extends BaseActivity {
     // 默认ActionBar布局类型
     public static final int ACTION_BAR_TYPE_DEFAULT = 0x0;
     // ActionBar布局Title居中
@@ -22,7 +19,6 @@ public abstract class BaseActionBarTextMenuActivity extends Activity {
     // ActionBar布局无goBack按键
     public static final int ACTION_BAR_NO_GO_BACK_TAG = 0x0002;
     private int mActionBarTag = ACTION_BAR_TYPE_DEFAULT;
-    private ImmersionBar mImmersionBar;
 
     @Override
     protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
@@ -98,31 +94,10 @@ public abstract class BaseActionBarTextMenuActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if (mImmersionBar != null) {
-            mImmersionBar.destroy();
-        }
         super.onDestroy();
     }
 
     private void initImmersionBar() {
         findViewById(R.id.base_status_bar_view).setBackgroundResource(getStatusBarBgResId());
-        mImmersionBar = ImmersionBar.with(this)
-                .statusBarDarkFont(true, 1f)
-                .statusBarView(R.id.base_status_bar_view)
-                .keyboardEnable(true);
-        mImmersionBar.init();
-    }
-
-    public void setKeyboardListener(OnKeyboardListener listener) {
-        mImmersionBar.setOnKeyboardListener(listener);
-    }
-
-    protected int getLoadingUiResId() {
-        return R.layout.base_loading;
-    }
-
-    public void setLoadingUiVisibility(boolean visibility) {
-        hideSoftInputFromWindow();
-        findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 }

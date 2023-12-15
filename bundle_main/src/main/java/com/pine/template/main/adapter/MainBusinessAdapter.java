@@ -54,9 +54,7 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
                             content.getCommand(), null, new IRouterCallback() {
                                 @Override
                                 public void onSuccess(Bundle responseBundle) {
-                                    AppTrackManager.getInstance().trackButton(mContext, TrackModuleTag.MODULE_DEFAULT,
-                                            "MainHomeActivity", "MainHomeActivity",
-                                            "HomeGoBundle※" + content.getCommand(), content.getBundle());
+
                                 }
 
                                 @Override

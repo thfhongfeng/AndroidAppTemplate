@@ -8,6 +8,7 @@ import com.pine.tool.util.LogUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Created by tanghongfeng on 2019/11/1.
@@ -47,10 +48,13 @@ public class RootApplication {
             @Override
             public void onActivityStarted(Activity activity) {
                 LogUtils.d("ActivityLifecycle", activity + " on started");
-                if (mAppIsForegroundHelperCount == 0) {
+                if (mActivityStack.size() == 0) {
                     setAppIsForeground(true);
                 }
-                mAppIsForegroundHelperCount++;
+                mActivityStack.add(activity);
+                if (mFinishApp) {
+                    activity.finish();
+                }
             }
 
             @Override
@@ -67,9 +71,10 @@ public class RootApplication {
             @Override
             public void onActivityStopped(Activity activity) {
                 LogUtils.d("ActivityLifecycle", activity + " on stopped");
-                mAppIsForegroundHelperCount--;
-                if (mAppIsForegroundHelperCount == 0) {
+                mActivityStack.remove(activity);
+                if (mActivityStack.size() == 0) {
                     setAppIsForeground(false);
+                    mFinishApp = false;
                 }
             }
 
@@ -85,16 +90,18 @@ public class RootApplication {
         });
     }
 
-    private static volatile int mAppIsForegroundHelperCount;
+    private static volatile LinkedList<Activity> mActivityStack = new LinkedList<>();
     private static volatile boolean mAppIsForeground = false;
-    public static HashSet<IOnAppLifecycleListener> mOnAppLifecycleListenerSet = new HashSet<>();
+    public static HashSet<IOnAppForegroundChangeListener> mOnAppForegroundChangeListenerSet = new HashSet<>();
 
     private synchronized static void setAppIsForeground(boolean isForeground) {
+        boolean change = mAppIsForeground != isForeground;
+        LogUtils.d(TAG, "onAppForegroundChange isForeground:" + isForeground + ", change:" + change);
         mAppIsForeground = isForeground;
-        if (mOnAppLifecycleListenerSet.size() > 0) {
-            Iterator<IOnAppLifecycleListener> iterator = mOnAppLifecycleListenerSet.iterator();
+        if (mOnAppForegroundChangeListenerSet.size() > 0 && change) {
+            Iterator<IOnAppForegroundChangeListener> iterator = mOnAppForegroundChangeListenerSet.iterator();
             while (iterator.hasNext()) {
-                IOnAppLifecycleListener listener = iterator.next();
+                IOnAppForegroundChangeListener listener = iterator.next();
                 if (listener != null) {
                     listener.onAppForegroundChange(isForeground);
                 }
@@ -102,15 +109,24 @@ public class RootApplication {
         }
     }
 
-    public synchronized static void addAppLifecycleListener(IOnAppLifecycleListener listener) {
-        mOnAppLifecycleListenerSet.add(listener);
+    public synchronized static void addAppForegroundChangeListener(IOnAppForegroundChangeListener listener) {
+        mOnAppForegroundChangeListenerSet.add(listener);
     }
 
-    public synchronized static void removeAppLifecycleListener(IOnAppLifecycleListener listener) {
-        mOnAppLifecycleListenerSet.remove(listener);
+    public synchronized static void removeAppForegroundChangeListener(IOnAppForegroundChangeListener listener) {
+        mOnAppForegroundChangeListenerSet.remove(listener);
     }
 
-    public interface IOnAppLifecycleListener {
+    public interface IOnAppForegroundChangeListener {
         void onAppForegroundChange(boolean isForeground);
+    }
+
+    private static volatile boolean mFinishApp = false;
+
+    public static void finishApp() {
+        mFinishApp = true;
+        if (mCurResumedActivity != null) {
+            mCurResumedActivity.finish();
+        }
     }
 }

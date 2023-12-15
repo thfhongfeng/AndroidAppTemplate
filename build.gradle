@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    apply from: 'task.gradle'
     apply from: 'config_build.gradle'
     apply from: 'config_product.gradle'
     apply from: 'config_app.gradle'
@@ -18,6 +19,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -35,6 +37,17 @@ allprojects {
 //        mavenCentral()
 //        maven { url 'https://maven.google.com' }
 //        jcenter()
+        flatDir {
+            // 由于Library module中引用的 aar，在多 module 的情况下，
+            // 其他的module编译会报错，所以需要在所有工程的repositories
+            // 下把Library module中的libs目录添加到依赖关系中
+            dirs 'libs'
+            //借助 project()函数的位置查找
+            dirs project(':tool').file('libs')
+            dirs project(':config').file('libs')
+            dirs project(':base').file('libs')
+            dirs project(':bundle_main').file('libs')
+        }
     }
 }
 

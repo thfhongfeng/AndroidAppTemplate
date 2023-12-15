@@ -76,6 +76,31 @@ public class ImageUtils {
         return baos.toByteArray();
     }
 
+    public static byte[] bitmap2CompressBytes(final Bitmap bitmap, final CompressFormat format,
+                                              long maxByteSize, boolean recycle) {
+        if (isEmptyBitmap(bitmap) || maxByteSize <= 0) return null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(format, 100, baos);
+        int quality = 100;
+        bitmap.compress(format, quality, baos);
+        LogUtils.d(TAG, "需要压缩到" + maxByteSize + "byte，" +
+                "图片大小：" + baos.toByteArray().length + "byte");
+        boolean isCompressed = false;
+        while (baos.toByteArray().length > maxByteSize && quality >= 2) {
+            int factor = (int) (baos.toByteArray().length / maxByteSize);
+            quality = (factor > 8 || quality <= 10) ? quality / 2 : (quality - 10);
+            baos.reset();
+            bitmap.compress(format, quality, baos);
+            isCompressed = true;
+        }
+        LogUtils.d(TAG, "图片降低质量压缩后大小：" + baos.toByteArray().length + "byte"
+                + ", isCompressed:" + isCompressed + ", quality:" + quality);
+        if (recycle) {
+            recycleBitmap(bitmap);
+        }
+        return baos.toByteArray();
+    }
+
     /**
      * Bytes to bitmap.
      *
@@ -139,6 +164,35 @@ public class ImageUtils {
     public static Bitmap base64ToBitmap(String base64Data) {
         byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    public static String imgFileToBase64(String imgFile) {
+        //将图片文件转化为字节数组字符串，并对其进行Base64编码处理
+        byte[] buffer = null;
+        InputStream inputStream = null;
+        //读取图片字节数组
+        try {
+            inputStream = new FileInputStream(imgFile);
+            int count = 0;
+            while (count == 0) {
+                count = inputStream.available();
+            }
+            buffer = new byte[count];
+            inputStream.read(buffer);
+            // 对字节数组Base64编码
+            return Base64.encodeToString(buffer, Base64.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return "";
     }
 
     /**
@@ -1732,68 +1786,6 @@ public class ImageUtils {
     }
 
     /**
-     * Return the compressed bitmap using quality.
-     *
-     * @param src         The source of bitmap.
-     * @param maxByteSize The maximum size of byte.
-     * @return the compressed bitmap
-     */
-    public static Bitmap compressByQuality(final Bitmap src, final long maxByteSize) {
-        return compressByQuality(src, maxByteSize, false);
-    }
-
-    /**
-     * Return the compressed bitmap using quality.
-     *
-     * @param src         The source of bitmap.
-     * @param maxByteSize The maximum size of byte.
-     * @param recycle     True to recycle the source of bitmap, false otherwise.
-     * @return the compressed bitmap
-     */
-    public static Bitmap compressByQuality(final Bitmap src,
-                                           final long maxByteSize,
-                                           final boolean recycle) {
-        if (isEmptyBitmap(src) || maxByteSize <= 0) return null;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        src.compress(CompressFormat.JPEG, 100, baos);
-        byte[] bytes;
-        if (baos.size() <= maxByteSize) {
-            bytes = baos.toByteArray();
-        } else {
-            baos.reset();
-            src.compress(CompressFormat.JPEG, 0, baos);
-            if (baos.size() >= maxByteSize) {
-                bytes = baos.toByteArray();
-            } else {
-                // find the best quality using binary search
-                int st = 0;
-                int end = 100;
-                int mid = 0;
-                while (st < end) {
-                    mid = (st + end) / 2;
-                    baos.reset();
-                    src.compress(CompressFormat.JPEG, mid, baos);
-                    int len = baos.size();
-                    if (len == maxByteSize) {
-                        break;
-                    } else if (len > maxByteSize) {
-                        end = mid - 1;
-                    } else {
-                        st = mid + 1;
-                    }
-                }
-                if (end == mid - 1) {
-                    baos.reset();
-                    src.compress(CompressFormat.JPEG, st, baos);
-                }
-                bytes = baos.toByteArray();
-            }
-        }
-        if (recycle && !src.isRecycled()) src.recycle();
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
-
-    /**
      * Return the compressed bitmap using sample size.
      *
      * @param src        The source of bitmap.
@@ -1866,6 +1858,21 @@ public class ImageUtils {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
     }
 
+    public static Bitmap changeBitmapResolution(Bitmap src,
+                                                final int maxWidth, final int maxHeight,
+                                                final boolean recycle) {
+        if (src == null) {
+            return null;
+        }
+        int originalWidth = src.getWidth();
+        int originalHeight = src.getHeight();
+        float scale = Math.min((float) maxWidth / originalWidth, (float) maxHeight / originalHeight);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(src, (int) (originalWidth * scale),
+                (int) (originalHeight * scale), false);
+        if (recycle && !src.isRecycled()) src.recycle();
+        return scaledBitmap;
+    }
+
     /**
      * Return the sample size.
      *
@@ -1934,23 +1941,91 @@ public class ImageUtils {
             quality = (factor > 8 || quality <= 10) ? quality / 2 : (quality - 10);
             baos.reset();
             bitmap.compress(CompressFormat.JPEG, quality, baos);
-            LogUtils.d(TAG, "质量压缩到原来的" + quality + "%时大小为："
-                    + baos.toByteArray().length + "byte");
             isCompressed = true;
             if (callback != null) {
                 callback.onCompress(quality);
             }
         }
-        LogUtils.d(TAG, "图片降低质量压缩后大小：" + baos.toByteArray().length + "byte");
+        byte[] bytes = baos.toByteArray();
+        recycleBitmap(bitmap);
+        LogUtils.d(TAG, "图片降低质量压缩后大小：" + baos.toByteArray().length + "byte"
+                + ", isCompressed:" + isCompressed + ", quality:" + quality);
         if (callback != null) {
             callback.onFinish(quality);
         }
-        if (isCompressed) {
-            Bitmap compressedBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.toByteArray().length);
-            recycleBitmap(bitmap);
-            return compressedBitmap.compress(CompressFormat.JPEG, 100, outputStream);
-        } else {
-            return bitmap.compress(CompressFormat.JPEG, 100, outputStream);
+        Bitmap compressedBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        boolean success = compressedBitmap.compress(CompressFormat.JPEG, 100, outputStream);
+        recycleBitmap(compressedBitmap);
+        return success;
+    }
+
+    /**
+     * @param src         源图片
+     * @param maxByteSize 允许最大值字节数
+     * @param recycle     是否回收
+     * @return 质量压缩压缩过的图片
+     */
+    public static boolean compressBySizeAndSave(final Bitmap src, final long maxByteSize,
+                                                final String savePath, final boolean recycle) {
+        if (isEmptyBitmap(src)) {
+            return false;
+        }
+        File saveFile = new File(savePath);
+        if (!saveFile.getParentFile().exists()) {
+            saveFile.getParentFile().mkdirs();
+        }
+        if (saveFile.exists()) {
+            saveFile.delete();
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        src.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        LogUtils.d(TAG, "需要压缩到" + maxByteSize + "byte，" +
+                "图片压缩前大小：" + baos.toByteArray().length + "byte");
+        byte[] bytes;
+        int compressQuality = 0;
+        if (baos.size() > maxByteSize && maxByteSize > 0) {
+            baos.reset();
+            src.compress(Bitmap.CompressFormat.JPEG, 0, baos);
+            if (baos.size() < maxByteSize) { // 最差质量不小于最大字节，则返回最差质量
+                // 二分法寻找最佳质量
+                int st = 0;
+                int end = 100;
+                int mid = 0;
+                while (st < end) {
+                    mid = (st + end) / 2;
+                    baos.reset();
+                    src.compress(Bitmap.CompressFormat.JPEG, mid, baos);
+                    int len = baos.size();
+                    if (len == maxByteSize) {
+                        break;
+                    } else if (len > maxByteSize) {
+                        end = mid - 1;
+                    } else {
+                        st = mid + 1;
+                    }
+                }
+                if (end == mid - 1) {
+                    baos.reset();
+                    src.compress(Bitmap.CompressFormat.JPEG, st, baos);
+                    compressQuality = st;
+                }
+            }
+        }
+        bytes = baos.toByteArray();
+        LogUtils.d(TAG, "图片降低质量压缩后大小：" + bytes.length + "byte" + ", quality:" + compressQuality);
+        try {
+            FileOutputStream fos = new FileOutputStream(saveFile);
+            fos.write(bytes);
+            fos.flush();
+            fos.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (recycle && !src.isRecycled()) {
+                src.recycle();
+            }
         }
     }
 
@@ -2030,6 +2105,46 @@ public class ImageUtils {
     ///////////////////////////////////////////////////////////////////////////
     // other utils methods
     ///////////////////////////////////////////////////////////////////////////
+
+    public static boolean saveBytesToFile(byte[] bytes, File file) {
+        // 保存 Bitmap 对象为文件
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(bytes);
+            return true;
+        } catch (IOException e) {
+            LogUtils.e(TAG, "doLnkFrameJob saveScreenshot fail");
+            return false;
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    public static Bitmap convertToTargetBitmap(Bitmap original, Bitmap.Config config) {
+        int width, height;
+        height = original.getHeight();
+        width = original.getWidth();
+        Bitmap targetBitmap = Bitmap.createBitmap(width, height, config);
+        Canvas c = new Canvas(targetBitmap);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(original, 0, 0, paint);
+        if (!original.isRecycled()) {
+            original.recycle();
+        }
+        return targetBitmap;
+    }
 
     /**
      * 得到bitmap的大小(字节数)

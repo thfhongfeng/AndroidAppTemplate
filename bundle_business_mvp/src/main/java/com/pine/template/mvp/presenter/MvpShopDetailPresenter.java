@@ -87,16 +87,19 @@ public class MvpShopDetailPresenter extends Presenter<IMvpShopDetailContract.Ui>
                 TextUtils.isEmpty(mShopDetailEntity.getLongitude())) {
             return;
         }
-        getContext().startActivity(MapSdkManager.getMarkMapActivityIntent(
+        Intent intent = MapSdkManager.getMarkMapActivityIntent(
                 getContext(),
                 DecimalUtils.format(mShopDetailEntity.getLatitude().trim(), 6),
-                DecimalUtils.format(mShopDetailEntity.getLongitude().trim(), 6), false));
+                DecimalUtils.format(mShopDetailEntity.getLongitude().trim(), 6), false);
+        if (intent != null) {
+            getContext().startActivity(intent);
+        }
     }
 
     @Override
     public void goToShopH5Activity() {
         Intent intent = new Intent(getContext(), MvpWebViewActivity.class);
-        intent.putExtra("url", MvpUrlConstants.H5_DefaultUrl);
+        intent.putExtra("url", MvpUrlConstants.H5_DefaultUrl());
         getContext().startActivity(intent);
     }
 

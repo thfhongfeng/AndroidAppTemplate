@@ -4,26 +4,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.Window;
-import android.view.WindowManager;
-
-import com.pine.template.base.R;
-import com.pine.tool.architecture.mvvm.ui.MvvmActivity;
-import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+
+import com.pine.template.base.R;
+import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
 /**
  * Created by tanghongfeng on 2019/3/1
  */
 
 public abstract class BaseMvvmFullScreenActivity<T extends ViewDataBinding, VM extends ViewModel>
-        extends MvvmActivity<T, VM> {
+        extends BaseMvvmActivity<T, VM> {
 
     protected void setContentView(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 
         setContentView(R.layout.base_activity_full_screen);
 
@@ -49,16 +51,18 @@ public abstract class BaseMvvmFullScreenActivity<T extends ViewDataBinding, VM e
     }
 
     @Override
+    protected void onStart() {
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        super.onStart();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    protected int getLoadingUiResId() {
-        return R.layout.base_loading;
-    }
-
-    public void setLoadingUiVisibility(boolean visibility) {
-        hideSoftInputFromWindow();
-        findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 }

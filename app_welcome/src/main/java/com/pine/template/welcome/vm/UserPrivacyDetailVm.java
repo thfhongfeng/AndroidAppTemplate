@@ -6,8 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.pine.template.welcome.WelUrlConstants;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
-import com.pine.template.welcome.WelcomeUrlConstants;
 
 /**
  * Created by tanghongfeng on 2019/10/28.
@@ -26,9 +26,9 @@ public class UserPrivacyDetailVm extends ViewModel {
         }
         mPrivacyTypeData.setValue(privacyType);
         if (privacyType == 1) {
-            mH5Url = WelcomeUrlConstants.H5_PRIVACY_USER;
+            mH5Url = WelUrlConstants.H5_PRIVACY_USER();
         } else if (privacyType == 2) {
-            mH5Url = WelcomeUrlConstants.H5_PRIVACY_POLICY;
+            mH5Url = WelUrlConstants.PRIVACY_POLICY();
         }
         return false;
     }

@@ -56,7 +56,12 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     private Observer<Boolean> mUiLoadingDataObserver = new Observer<Boolean>() {
         @Override
         public void onChanged(@Nullable Boolean aBoolean) {
-            setLoadingUiVisibility(aBoolean);
+            int clickGone = mViewModel.getUiLoadingData().getCustomData();
+            if (clickGone == -1) {
+                setLoadingUiVisibility(aBoolean);
+            } else {
+                setLoadingUiVisibility(aBoolean, clickGone != 0);
+            }
         }
     };
 
@@ -83,7 +88,6 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         if (type instanceof ParameterizedType) {
             Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
             mViewModel = (VM) ViewModelProviders.of(getActivity()).get(presenterClazz);
-            mViewModel.getUiLoadingData().setValue(false);
         }
         mViewModel.getObserveSyncLiveDataData().observe(this, mSyncLiveDataObserver);
         mViewModel.getResetUiData().observe(this, mResetUiDataObserver);
@@ -174,6 +178,10 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
     }
 
     public void setLoadingUiVisibility(boolean visibility) {
+
+    }
+
+    public void setLoadingUiVisibility(boolean visibility, boolean enableClickGone) {
 
     }
 

@@ -13,6 +13,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.pine.template.base.R;
 import com.pine.template.base.component.image_selector.ImageSelector;
 import com.pine.template.base.component.image_selector.ImageViewer;
@@ -32,8 +34,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2019/9/19.
@@ -202,7 +202,8 @@ public class FileUploadHelper implements ILifeCircleView {
         String fileName = filePath.substring(filePath.lastIndexOf(File.separator) + 1);
         String targetFilePath = PathUtils.getAppFilePath(Environment.DIRECTORY_PICTURES) +
                 File.separator + "crop_" + System.currentTimeMillis() + "_" + fileName;
-
+//        String targetFilePath = PathUtils.getExternalPublicPath(Environment.DIRECTORY_PICTURES) +
+//                File.separator + "crop_" + System.currentTimeMillis() + "_" + fileName;
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(Uri.fromFile(new File(filePath)), "image/*");
         intent.putExtra("crop", true);
@@ -340,9 +341,11 @@ public class FileUploadHelper implements ILifeCircleView {
         if (requestCode == mRequestCodeCrop) {
             if (resultCode == Activity.RESULT_OK) {
                 List<String> newSelectList = new ArrayList<>();
+                String cropPhotoPath = data.getAction();
+                cropPhotoPath = TextUtils.isEmpty(cropPhotoPath) ? mCurCropPhotoPath : cropPhotoPath;
                 newSelectList.add(mCurCropPhotoPath);
                 LogUtils.d(TAG, "onActivityResult REQUEST_CODE_CROP" +
-                        " mCurCropPhotoPath:" + mCurCropPhotoPath);
+                        " mCurCropPhotoPath:" + mCurCropPhotoPath + ", return cropPhotoPath:" + cropPhotoPath);
                 uploadFileOneByOne(newSelectList);
             }
         } else if (requestCode == mRequestCodeSelectFile) {

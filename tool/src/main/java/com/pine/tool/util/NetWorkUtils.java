@@ -6,7 +6,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.telephony.SignalStrength;
+import android.telephony.TelephonyManager;
 
+import java.lang.reflect.Method;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -108,5 +111,34 @@ public class NetWorkUtils {
                 ((ip >> 8) & 0xFF) + "." +
                 ((ip >> 16) & 0xFF) + "." +
                 (ip >> 24 & 0xFF);
+    }
+
+    /**
+     * 判断是否包含SIM卡
+     *
+     * @return 状态
+     */
+    public static boolean hasSimCard(Context context) {
+        TelephonyManager telMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        int simState = telMgr.getSimState();
+        boolean result = true;
+        switch (simState) {
+            case TelephonyManager.SIM_STATE_ABSENT:
+            case TelephonyManager.SIM_STATE_UNKNOWN:
+                result = false; // 没有SIM卡
+                break;
+        }
+        return result;
+
+    }
+
+    public static int getSignalLevel(final SignalStrength signal) {
+        try {
+            final Method m = SignalStrength.class.getDeclaredMethod("getLevel", (Class[]) null);
+            m.setAccessible(true);
+            return (Integer) m.invoke(signal, (Object[]) null);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 }

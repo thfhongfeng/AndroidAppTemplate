@@ -1,7 +1,6 @@
 package com.pine.template.base.widget.dialog;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.view.Display;
 import android.view.Gravity;
@@ -11,6 +10,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.pine.template.base.R;
 
@@ -19,14 +21,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.StyleRes;
-
 /**
  * Created by tanghongfeng on 2018/2/27.
  */
 
-public class TimeSelectDialog extends Dialog {
+public class TimeSelectDialog extends BaseDialog {
     private Builder mBuilder;
 
     private TimeSelectDialog(@NonNull Context context) {
@@ -47,7 +46,7 @@ public class TimeSelectDialog extends Dialog {
 
     public static class Builder {
         private static final int MAX_YEARS = 10;
-        private TextView cancel_tv, confirm_tv;
+        private TextView cancel_tv, clear_tv, confirm_tv;
         private WheelPicker wheel_one, wheel_two, wheel_three;
         private Context context;
         private Calendar selectedTime;
@@ -74,6 +73,7 @@ public class TimeSelectDialog extends Dialog {
             final TimeSelectDialog dialog = new TimeSelectDialog(context, R.style.BaseDialogStyle);
             View layout = inflater.inflate(R.layout.base_dialog_date_or_time_select, null);
             cancel_tv = layout.findViewById(R.id.cancel_tv);
+            clear_tv = layout.findViewById(R.id.clear_tv);
             confirm_tv = layout.findViewById(R.id.confirm_tv);
             wheel_one = layout.findViewById(R.id.wheel_one);
             wheel_two = layout.findViewById(R.id.wheel_two);
@@ -165,6 +165,15 @@ public class TimeSelectDialog extends Dialog {
                     dialog.dismiss();
                 }
             });
+            clear_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    if (dialogSelect != null) {
+                        dialogSelect.onSelected(null);
+                    }
+                }
+            });
             confirm_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -174,6 +183,23 @@ public class TimeSelectDialog extends Dialog {
                     }
                 }
             });
+        }
+    }
+
+    public void show(boolean fullScreenMode) {
+        if (fullScreenMode) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            show();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } else {
+            show();
         }
     }
 }

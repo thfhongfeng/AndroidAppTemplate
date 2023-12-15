@@ -1,19 +1,22 @@
+def sourceFile = file('ExtraFiles/local.properties')
+def destinationFile = file('local.properties')
+if (!destinationFile.exists()) {
+    ant.copy(todir: destinationFile.parent) {
+        fileset(dir: sourceFile.parent) {
+            include(name: sourceFile.name)
+        }
+    }
+}
+
 /**
  * 编译打包参数
  */
 def build_versions = [:]
-build_versions.compileSdkVersion = 30
-build_versions.buildToolsVersion = "30.0.2"
+build_versions.compileSdkVersion = 32
 build_versions.minSdkVersion = 23
-build_versions.targetSdkVersion = 30
-build_versions.targetSdkVersion = 30
+build_versions.targetSdkVersion = 32
 
-build_versions.apkHeadName = "pine_app_template"
-
-build_versions.storeFile = "../template.jks"
-build_versions.storePassword = "pine123"
-build_versions.keyAlias = "AppTemplate"
-build_versions.keyPassword = "pine123"
+build_versions.apkHeadName = "PineAndroidTemplate"
 
 ext.build_versions = build_versions
 
@@ -42,11 +45,10 @@ def build_dependency = [
         "arouter_compiler"            : 'com.alibaba:arouter-compiler:1.2.2',
 
         // google官方 dependency
-        "google_gson"                 : 'com.google.code.gson:gson:2.6.2',
+        "google_gson"                 : 'com.google.code.gson:gson:2.8.5',
 
         // 第三方 dependency
         "nohttp_nohttp"               : 'com.yanzhenjie.nohttp:nohttp:1.1.11',
-        "nohttp_okhttp"               : 'com.yanzhenjie.nohttp:okhttp:1.1.11',
         "aigestudio_wheelpicker"      : 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2',
         "safewebviewbridge"           : 'cn.pedant.safewebviewbridge:library:1.4',
         "bumptech_glide"              : 'com.github.bumptech.glide:glide:4.8.0',
@@ -56,6 +58,7 @@ def build_dependency = [
         "tencent_wcdb_android"        : "com.tencent.wcdb:wcdb-android:1.0.8",
 
         // 第三方 sdk
-        "sina_weibo_sdk"              : 'core-4.3.1-openDefaultRelease'
+        "paho_mqtt_client"            : 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5',
+        "paho_mqtt_service"           : 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 ]
 ext.build_dependency = build_dependency

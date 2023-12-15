@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.router.command.RouterDbServerCommand;
+import com.pine.template.config.router.command.RouterDbServerCommand;
 import com.pine.template.db_server.IDbServerManager;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;

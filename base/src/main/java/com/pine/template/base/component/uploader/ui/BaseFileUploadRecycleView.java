@@ -15,6 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pine.template.base.R;
 import com.pine.template.base.component.image_loader.ImageLoaderManager;
 import com.pine.template.base.component.uploader.FileUploadComponent;
@@ -31,11 +36,6 @@ import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by tanghongfeng on 2018/11/1
@@ -72,7 +72,7 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
 
     @Override
     public void init(@NonNull Activity activity,
-                     @NonNull FileUploadComponent.OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
+                     @NonNull OneByOneUploadAdapter adapter, int requestCodeSelectFile) {
         mHelper.init(activity, adapter, requestCodeSelectFile);
     }
 

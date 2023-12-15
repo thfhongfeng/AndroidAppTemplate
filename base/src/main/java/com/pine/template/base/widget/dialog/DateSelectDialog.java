@@ -1,7 +1,6 @@
 package com.pine.template.base.widget.dialog;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.view.Display;
 import android.view.Gravity;
@@ -11,6 +10,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.pine.template.base.R;
 
@@ -19,14 +21,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.StyleRes;
-
 /**
  * Created by tanghongfeng on 2018/2/27.
  */
 
-public class DateSelectDialog extends Dialog {
+public class DateSelectDialog extends BaseDialog {
     private Builder builder;
 
     private DateSelectDialog(@NonNull Context context) {
@@ -46,7 +45,7 @@ public class DateSelectDialog extends Dialog {
     }
 
     public static class Builder {
-        TextView cancelBtn, confirmBtn;
+        TextView cancelBtn, clearBtn, confirmBtn;
         WheelPicker wheelYear, wheelMonth, wheelDay;
         private Context context;
         private Calendar selectedDate;
@@ -89,6 +88,7 @@ public class DateSelectDialog extends Dialog {
             final DateSelectDialog dialog = new DateSelectDialog(context, R.style.BaseDialogStyle);
             View layout = inflater.inflate(R.layout.base_dialog_date_or_time_select, null);
             cancelBtn = (TextView) layout.findViewById(R.id.cancel_tv);
+            clearBtn = (TextView) layout.findViewById(R.id.clear_tv);
             confirmBtn = (TextView) layout.findViewById(R.id.confirm_tv);
             wheelYear = (WheelPicker) layout.findViewById(R.id.wheel_one);
             wheelMonth = (WheelPicker) layout.findViewById(R.id.wheel_two);
@@ -116,6 +116,15 @@ public class DateSelectDialog extends Dialog {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
+                }
+            });
+            clearBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    if (dialogSelect != null) {
+                        dialogSelect.onSelected(null);
+                    }
                 }
             });
             confirmBtn.setOnClickListener(new View.OnClickListener() {
@@ -244,6 +253,23 @@ public class DateSelectDialog extends Dialog {
             wheelDay.setData(dayList);
             wheelDay.setSelectedItemPosition(position);
             selectedDate.set(Calendar.DAY_OF_MONTH, start + position + 1);
+        }
+    }
+
+    public void show(boolean fullScreenMode) {
+        if (fullScreenMode) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            show();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } else {
+            show();
         }
     }
 }

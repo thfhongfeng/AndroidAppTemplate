@@ -13,11 +13,13 @@ public class ParametricLiveData<T, P> extends MutableLiveData<T> {
         return customData;
     }
 
+    @Deprecated
     @Override
     public final void postValue(T value) {
         throw new IllegalStateException("this method was abandoned");
     }
 
+    @Deprecated
     @Override
     public final void setValue(T value) {
         throw new IllegalStateException("this method was abandoned");

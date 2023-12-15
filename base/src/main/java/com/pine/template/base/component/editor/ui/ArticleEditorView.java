@@ -4,14 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+
 import com.pine.template.base.component.editor.bean.TextImageEntity;
 import com.pine.template.base.component.uploader.FileUploadComponent.OneByOneUploadAdapter;
 import com.pine.tool.ui.Activity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.Nullable;
 
 public class ArticleEditorView extends LinearLayout {
     public ArticleEditorView(Context context) {

@@ -1,6 +1,7 @@
 package com.pine.template.base.component.uploader.ui;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Html;
@@ -16,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pine.template.base.R;
 import com.pine.template.base.component.uploader.FileUploadComponent;
 import com.pine.template.base.component.uploader.bean.PairFileUploadData;
@@ -23,9 +27,6 @@ import com.pine.template.base.util.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * Created by tanghongfeng on 2019/9/1
@@ -217,7 +218,7 @@ public class BasePairImageUploadView extends LinearLayout {
         right_sfuv.enableImageTranslate(mEnableImageTranslate);
         right_sfuv.enableImageRotate(mEnableImageRotate);
 
-        LinearLayout.LayoutParams deleteLlLayoutParams = (LinearLayout.LayoutParams) delete_ll.getLayoutParams();
+        LayoutParams deleteLlLayoutParams = (LayoutParams) delete_ll.getLayoutParams();
         deleteLlLayoutParams.height = mImageContainerHeight;
         delete_ll.setLayoutParams(deleteLlLayoutParams);
 
@@ -230,12 +231,12 @@ public class BasePairImageUploadView extends LinearLayout {
                             getContext().getString(R.string.base_delete_content_confirm_msg),
                             new DialogUtils.IActionListener() {
                                 @Override
-                                public boolean onLeftBtnClick() {
+                                public boolean onLeftBtnClick(Dialog dialog) {
                                     return false;
                                 }
 
                                 @Override
-                                public boolean onRightBtnClick() {
+                                public boolean onRightBtnClick(Dialog dialog) {
                                     mRoot.removeView(view);
                                     return false;
                                 }

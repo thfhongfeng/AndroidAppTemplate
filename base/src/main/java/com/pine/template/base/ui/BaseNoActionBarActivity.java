@@ -4,15 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
 
-import com.gyf.barlibrary.ImmersionBar;
-import com.gyf.barlibrary.OnKeyboardListener;
-import com.pine.template.base.R;
-import com.pine.tool.ui.Activity;
-
 import androidx.annotation.CallSuper;
 
-public abstract class BaseNoActionBarActivity extends Activity {
-    private ImmersionBar mImmersionBar;
+import com.pine.template.base.R;
+
+public abstract class BaseNoActionBarActivity extends BaseActivity {
 
     @Override
     protected final void setContentView(Bundle savedInstanceState) {
@@ -33,11 +29,6 @@ public abstract class BaseNoActionBarActivity extends Activity {
 
     private void initImmersionBar() {
         findViewById(R.id.base_status_bar_view).setBackgroundResource(getStatusBarBgResId());
-        mImmersionBar = ImmersionBar.with(this)
-                .statusBarDarkFont(true, 1f)
-                .statusBarView(R.id.base_status_bar_view)
-                .keyboardEnable(true);
-        mImmersionBar.init();
     }
 
     protected int getStatusBarBgResId() {
@@ -57,22 +48,6 @@ public abstract class BaseNoActionBarActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if (mImmersionBar != null) {
-            mImmersionBar.destroy();
-        }
         super.onDestroy();
-    }
-
-    public void setKeyboardListener(OnKeyboardListener listener) {
-        mImmersionBar.setOnKeyboardListener(listener);
-    }
-
-    protected int getLoadingUiResId() {
-        return R.layout.base_loading;
-    }
-
-    public void setLoadingUiVisibility(boolean visibility) {
-        hideSoftInputFromWindow();
-        findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 }

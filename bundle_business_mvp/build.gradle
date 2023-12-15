@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion build_versions.compileSdkVersion
-    buildToolsVersion build_versions.buildToolsVersion
 
     defaultConfig {
         minSdkVersion build_versions.minSdkVersion
@@ -33,10 +32,7 @@ android {
         common {
 
         }
-        huawei {
-
-        }
-        xiaomi {
+        special {
 
         }
     }
@@ -55,12 +51,6 @@ android {
     }
 
     resourcePrefix "mvp_"
-}
-
-repositories {
-    flatDir {
-        dirs 'libs', '../base/libs'
-    }
 }
 
 dependencies {

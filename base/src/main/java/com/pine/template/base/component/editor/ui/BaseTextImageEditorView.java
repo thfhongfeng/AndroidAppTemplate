@@ -1,6 +1,10 @@
 package com.pine.template.base.component.editor.ui;
 
+import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_IMAGE;
+import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
+
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
@@ -11,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.pine.template.base.R;
 import com.pine.template.base.component.editor.bean.TextImageEditorItemData;
@@ -30,12 +37,6 @@ import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_IMAGE;
-import static com.pine.template.base.component.editor.bean.TextImageItemEntity.TYPE_TEXT;
 
 /**
  * Created by tanghongfeng on 2018/11/13
@@ -174,12 +175,12 @@ public class BaseTextImageEditorView extends UploadLinearLayout implements IFile
                             getContext().getString(R.string.base_delete_content_confirm_msg),
                             new DialogUtils.IActionListener() {
                                 @Override
-                                public boolean onLeftBtnClick() {
+                                public boolean onLeftBtnClick(Dialog dialog) {
                                     return false;
                                 }
 
                                 @Override
-                                public boolean onRightBtnClick() {
+                                public boolean onRightBtnClick(Dialog dialog) {
                                     removeView(view);
                                     return false;
                                 }

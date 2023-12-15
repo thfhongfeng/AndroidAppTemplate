@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.binding.data.ParametricLiveData;
+import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
 /**
@@ -97,18 +98,22 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
     }
 
     // 加载中ui显示状态
-    MutableLiveData<Boolean> uiLoadingData = new MutableLiveData<>();
+    ParametricLiveData<Boolean, Integer> uiLoadingData = new ParametricLiveData<>();
 
-    public MutableLiveData<Boolean> getUiLoadingData() {
+    public ParametricLiveData<Boolean, Integer> getUiLoadingData() {
         return uiLoadingData;
     }
 
     public boolean isUiLoading() {
-        return uiLoadingData.getValue();
+        return uiLoadingData.getValue() == null ? false : uiLoadingData.getValue();
     }
 
     public void setUiLoading(boolean isLoading) {
-        uiLoadingData.setValue(isLoading);
+        uiLoadingData.setValue(isLoading, -1);
+    }
+
+    public void setUiLoading(boolean isLoading, boolean enableClickGone) {
+        uiLoadingData.setValue(isLoading, enableClickGone ? 1 : 0);
     }
 
     // Toast ui显示
@@ -132,13 +137,51 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
         toastResIdData.setValue(id);
     }
 
-    ParametricLiveData<Integer, Object[]> toastResData = new ParametricLiveData<>();
+    ParametricLiveData<Integer, Integer[]> toastResFormatData = new ParametricLiveData<>();
 
-    public ParametricLiveData<Integer, Object[]> getToastResData() {
-        return toastResData;
+    public ParametricLiveData<Integer, Integer[]> getToastResFormatData() {
+        return toastResFormatData;
     }
 
-    public void setToastRes(@StringRes Integer id, Object... formatArgs) {
-        toastResData.setValue(id, formatArgs);
+    public void setToastResFormat(@StringRes Integer id, Integer... formatArgs) {
+        toastResFormatData.setValue(id, formatArgs);
+    }
+
+    MutableLiveData<String> longToastMsgData = new MutableLiveData<>();
+
+    public MutableLiveData<String> getLongToastMsgData() {
+        return longToastMsgData;
+    }
+
+    public void setLongToastMsg(String msg) {
+        longToastMsgData.setValue(msg);
+    }
+
+    MutableLiveData<Integer> longToastResIdData = new MutableLiveData<>();
+
+    public MutableLiveData<Integer> getLongToastResIdData() {
+        return longToastResIdData;
+    }
+
+    public void setLongToastResId(@StringRes Integer id) {
+        longToastResIdData.setValue(id);
+    }
+
+    ParametricLiveData<Integer, Integer[]> longToastResFormatData = new ParametricLiveData<>();
+
+    public ParametricLiveData<Integer, Integer[]> getLongToastResFormatData() {
+        return longToastResFormatData;
+    }
+
+    public void setLongToastResFormat(@StringRes Integer id, Integer... formatArgs) {
+        longToastResFormatData.setValue(id, formatArgs);
+    }
+
+    public final String getString(@StringRes int resId) {
+        return AppUtils.getApplication().getString(resId);
+    }
+
+    public final String getString(@StringRes int resId, Object... formatArgs) {
+        return AppUtils.getApplication().getString(resId, formatArgs);
     }
 }

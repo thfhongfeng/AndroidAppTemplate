@@ -1,5 +1,6 @@
 package com.pine.template.base.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,13 +11,14 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -33,6 +35,7 @@ import com.pine.template.base.widget.dialog.ProvinceSelectDialog;
 import com.pine.template.base.widget.dialog.SelectItemDialog;
 import com.pine.template.base.widget.dialog.SelectMultiItemsDialog;
 import com.pine.template.base.widget.dialog.TimeSelectDialog;
+import com.pine.template.base.widget.view.BilingualTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +47,40 @@ import java.util.Map;
  */
 
 public class DialogUtils {
+
+    public static void showShortToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressLint("ResourceType")
+    public static void showShortToast(Context context, int msgId) {
+        Toast.makeText(context, msgId, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showLongToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @SuppressLint({"ResourceType"})
+    public static void showLongToast(Context context, int msgId) {
+        Toast.makeText(context, msgId, Toast.LENGTH_LONG).show();
+    }
+
+    public static Dialog createLoadingDialog(Context context, int msgId, boolean bilingual) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.base_dialog_loading, null);
+        LinearLayout layout = v.findViewById(R.id.dialog_loading_view);
+        BilingualTextView tip_tv = v.findViewById(R.id.tip_tv);
+        tip_tv.enableDual(bilingual);
+        tip_tv.setText(msgId);
+        Dialog loadingDialog = new Dialog(context, R.style.BaseCustomDialogStyle);
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+        return loadingDialog;
+    }
+
     /**
      * 加载框
      *
@@ -55,7 +92,7 @@ public class DialogUtils {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.base_dialog_loading, null);
         LinearLayout layout = v.findViewById(R.id.dialog_loading_view);
-        TextView tip_tv = v.findViewById(R.id.tip_tv);
+        BilingualTextView tip_tv = v.findViewById(R.id.tip_tv);
         tip_tv.setText(msg);
         Dialog loadingDialog = new Dialog(context, R.style.BaseCustomDialogStyle);
         loadingDialog.setCanceledOnTouchOutside(false);
@@ -79,6 +116,52 @@ public class DialogUtils {
         return dialog;
     }
 
+    public static Dialog showTipDialog(Context context, String title, String content) {
+        return showTipDialog(context, title, content, false);
+    }
+
+    public static Dialog showTipDialog(Context context, int titleResId, int contentResId,
+                                       boolean fullScreenMode, boolean bilingual) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.base_dialog_tip, null);
+        final Dialog dialog = new AlertDialog.Builder(context).create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (fullScreenMode) {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            dialog.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            dialog.show();
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } else {
+            dialog.show();
+        }
+        dialog.getWindow().setContentView(layout);
+        BilingualTextView title_tv = layout.findViewById(R.id.title_tv);
+        BilingualTextView content_tv = layout.findViewById(R.id.content_tv);
+        BilingualTextView btn_tv = layout.findViewById(R.id.btn_tv);
+        title_tv.enableDual(bilingual);
+        content_tv.enableDual(bilingual);
+        btn_tv.enableDual(bilingual);
+        if (titleResId <= 0) {
+            title_tv.setVisibility(View.GONE);
+        } else {
+            title_tv.setText(titleResId);
+        }
+        content_tv.setText(contentResId);
+        btn_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        return dialog;
+    }
+
     /**
      * 提示框
      *
@@ -87,22 +170,35 @@ public class DialogUtils {
      * @param content
      * @return
      */
-    public static Dialog showTipDialog(Context context, String title, String content) {
+    public static Dialog showTipDialog(Context context, String title, String content, boolean fullScreenMode) {
         LayoutInflater inflater = LayoutInflater.from(context);
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.base_dialog_tip, null);
         final Dialog dialog = new AlertDialog.Builder(context).create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        if (fullScreenMode) {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            dialog.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            dialog.show();
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } else {
+            dialog.show();
+        }
         dialog.getWindow().setContentView(layout);
-        TextView title_tv = layout.findViewById(R.id.title_tv);
-        TextView content_tv = layout.findViewById(R.id.content_tv);
+        BilingualTextView title_tv = layout.findViewById(R.id.title_tv);
+        BilingualTextView content_tv = layout.findViewById(R.id.content_tv);
         if (TextUtils.isEmpty(title)) {
             title_tv.setVisibility(View.GONE);
         } else {
             title_tv.setText(title);
         }
         content_tv.setText(content);
-        TextView btn_tv = layout.findViewById(R.id.btn_tv);
+        BilingualTextView btn_tv = layout.findViewById(R.id.btn_tv);
         btn_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,10 +210,6 @@ public class DialogUtils {
 
     /**
      * 确认提示框
-     *
-     * @param content
-     * @param listener
-     * @return
      */
     public static Dialog showConfirmDialog(Context context, String content, final IActionListener listener) {
         return showConfirmDialog(context, "", content,
@@ -126,40 +218,122 @@ public class DialogUtils {
                 listener);
     }
 
+    public static Dialog showConfirmDialog(Context context, String content, boolean fullScreenMode,
+                                           final IActionListener listener) {
+        return showConfirmDialog(context, "", content,
+                context.getString(R.string.base_cancel), Color.parseColor("#999999"),
+                context.getString(R.string.base_confirm), Color.parseColor("#70B642"),
+                fullScreenMode, listener);
+    }
+
+    /**
+     * 确认提示框
+     */
+    public static Dialog showConfirmDialog(Context context, String title, String content,
+                                           final IActionListener listener) {
+        return showConfirmDialog(context, title, content,
+                context.getString(R.string.base_cancel), Color.parseColor("#999999"),
+                context.getString(R.string.base_confirm), Color.parseColor("#70B642"),
+                listener);
+    }
+
+    public static Dialog showConfirmDialog(Context context, String title, String content,
+                                           boolean fullScreenMode,
+                                           final IActionListener listener) {
+        return showConfirmDialog(context, title, content,
+                context.getString(R.string.base_cancel), Color.parseColor("#999999"),
+                context.getString(R.string.base_confirm), Color.parseColor("#70B642"),
+                fullScreenMode, listener);
+    }
+
+    /**
+     * 提示框
+     */
+    public static Dialog showConfirmDialog(Context context, String title, String content,
+                                           String leftBtnText, String rightBtnText,
+                                           final IActionListener listener) {
+        return showConfirmDialog(context, title, content,
+                leftBtnText, Color.parseColor("#999999"),
+                rightBtnText, Color.parseColor("#70B642"),
+                listener);
+    }
+
+    public static Dialog showConfirmDialog(Context context, String title, String content,
+                                           String leftBtnText, String rightBtnText,
+                                           boolean fullScreenMode,
+                                           final IActionListener listener) {
+        return showConfirmDialog(context, title, content,
+                leftBtnText, Color.parseColor("#999999"),
+                rightBtnText, Color.parseColor("#70B642"),
+                fullScreenMode,
+                listener);
+    }
+
+    public static Dialog showConfirmDialog(Context context, String title, String content,
+                                           String leftBtnText, @ColorInt int leftColor,
+                                           String rightBtnText, @ColorInt int rightColor,
+                                           final IActionListener listener) {
+        return showConfirmDialog(context, title, content, leftBtnText, leftColor,
+                rightBtnText, rightColor, false, listener);
+    }
+
     /**
      * 提示框
      *
+     * @param context
+     * @param title
      * @param content
+     * @param leftBtnText
+     * @param leftColor
+     * @param rightBtnText
+     * @param rightColor
+     * @param fullScreenMode
      * @param listener
      * @return
      */
     public static Dialog showConfirmDialog(Context context, String title, String content,
                                            String leftBtnText, @ColorInt int leftColor,
                                            String rightBtnText, @ColorInt int rightColor,
+                                           boolean fullScreenMode,
                                            final IActionListener listener) {
         LayoutInflater inflater = LayoutInflater.from(context);
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.base_dialog_confirm, null);
         //对话框
         final Dialog dialog = new AlertDialog.Builder(context).create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        if (fullScreenMode) {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            dialog.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            dialog.show();
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } else {
+            dialog.show();
+        }
         dialog.getWindow().setContentView(layout);
-        TextView title_tv = layout.findViewById(R.id.title_tv);
-        TextView content_tv = layout.findViewById(R.id.content_tv);
+        BilingualTextView title_tv = layout.findViewById(R.id.title_tv);
+        BilingualTextView content_tv = layout.findViewById(R.id.content_tv);
         if (TextUtils.isEmpty(title)) {
             title_tv.setVisibility(View.GONE);
         } else {
             title_tv.setText(title);
         }
         content_tv.setText(content);
-        TextView left_btn_tv = layout.findViewById(R.id.left_btn_tv);
-        TextView right_btn_tv = layout.findViewById(R.id.right_btn_tv);
+        BilingualTextView left_btn_tv = layout.findViewById(R.id.left_btn_tv);
+        BilingualTextView right_btn_tv = layout.findViewById(R.id.right_btn_tv);
         left_btn_tv.setTextColor(leftColor);
+        left_btn_tv.setText(leftBtnText);
         right_btn_tv.setTextColor(rightColor);
+        right_btn_tv.setText(rightBtnText);
         left_btn_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener == null || !listener.onLeftBtnClick()) {
+                if (listener == null || !listener.onLeftBtnClick(dialog)) {
                     dialog.dismiss();
                 }
             }
@@ -167,11 +341,84 @@ public class DialogUtils {
         right_btn_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener == null || !listener.onRightBtnClick()) {
+                if (listener == null || !listener.onRightBtnClick(dialog)) {
                     dialog.dismiss();
                 }
             }
         });
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
+    }
+
+    public static Dialog showConfirmDialog(Context context, int titleResId, int contentResId,
+                                           boolean fullScreenMode, boolean bilingual,
+                                           final IActionListener listener) {
+        return showConfirmDialog(context, titleResId, contentResId,
+                R.string.base_cancel, Color.parseColor("#999999"),
+                R.string.base_confirm, Color.parseColor("#70B642"),
+                fullScreenMode, bilingual, listener);
+    }
+
+    public static Dialog showConfirmDialog(Context context, int titleResId, int contentResId,
+                                           int leftBtnTextResId, @ColorInt int leftColorResId,
+                                           int rightBtnTextResId, @ColorInt int rightColorResId,
+                                           boolean fullScreenMode, boolean bilingual,
+                                           final IActionListener listener) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.base_dialog_confirm, null);
+        //对话框
+        final Dialog dialog = new AlertDialog.Builder(context).create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (fullScreenMode) {
+            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            dialog.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            dialog.show();
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } else {
+            dialog.show();
+        }
+        dialog.getWindow().setContentView(layout);
+        BilingualTextView title_tv = layout.findViewById(R.id.title_tv);
+        BilingualTextView content_tv = layout.findViewById(R.id.content_tv);
+        BilingualTextView left_btn_tv = layout.findViewById(R.id.left_btn_tv);
+        BilingualTextView right_btn_tv = layout.findViewById(R.id.right_btn_tv);
+        title_tv.enableDual(bilingual);
+        content_tv.enableDual(bilingual);
+        left_btn_tv.enableDual(bilingual);
+        right_btn_tv.enableDual(bilingual);
+        if (titleResId <= 0) {
+            title_tv.setVisibility(View.GONE);
+        } else {
+            title_tv.setText(titleResId);
+        }
+        content_tv.setText(contentResId);
+        left_btn_tv.setTextColor(leftColorResId);
+        left_btn_tv.setText(leftBtnTextResId);
+        right_btn_tv.setTextColor(rightColorResId);
+        right_btn_tv.setText(rightBtnTextResId);
+        left_btn_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener == null || !listener.onLeftBtnClick(dialog)) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        right_btn_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener == null || !listener.onRightBtnClick(dialog)) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
         return dialog;
     }
 
@@ -245,6 +492,15 @@ public class DialogUtils {
         final InputTextDialog.Builder builder = new InputTextDialog.Builder(context);
         builder.setActionClickListener(actionClickListener);
         final InputTextDialog dialog = builder.create(title, originalText, inputMaxLength, inputType);
+        return dialog;
+    }
+
+    public static InputTextDialog createTextInputDialog(final Context context, int titleResId, String originalText,
+                                                        final int inputMaxLength, int inputType, boolean bilingual,
+                                                        final InputTextDialog.IActionClickListener actionClickListener) {
+        final InputTextDialog.Builder builder = new InputTextDialog.Builder(context);
+        builder.setActionClickListener(actionClickListener);
+        final InputTextDialog dialog = builder.create(titleResId, originalText, inputMaxLength, inputType, bilingual);
         return dialog;
     }
 
@@ -569,9 +825,37 @@ public class DialogUtils {
         return new CustomDialog.Builder(context).create(layoutId, layoutGravity, fillWidth, callback);
     }
 
-    public interface IActionListener {
-        boolean onLeftBtnClick();
+    public static CustomDialog createCustomDialog(Context context, int layoutId,
+                                                  int layoutGravity, float widthPct, float heightPct,
+                                                  CustomDialog.IOnViewBindCallback callback) {
+        return new CustomDialog.Builder(context).create(layoutId, layoutGravity, widthPct, heightPct,
+                callback);
+    }
 
-        boolean onRightBtnClick();
+    public static CustomDialog createCustomDialog(Context context, View layoutView,
+                                                  int layoutGravity, float widthPct, float heightPct,
+                                                  CustomDialog.IOnViewBindCallback callback) {
+        return new CustomDialog.Builder(context).create(layoutView, layoutGravity, widthPct, heightPct,
+                callback);
+    }
+
+    public static CustomDialog createCustomDialog(Context context, int layoutId,
+                                                  int layoutGravity, int width, int height,
+                                                  CustomDialog.IOnViewBindCallback callback) {
+        return new CustomDialog.Builder(context).create(layoutId, layoutGravity, width, height,
+                callback);
+    }
+
+    public static CustomDialog createCustomDialog(Context context, View layoutView,
+                                                  int layoutGravity, int width, int height,
+                                                  CustomDialog.IOnViewBindCallback callback) {
+        return new CustomDialog.Builder(context).create(layoutView, layoutGravity, width, height,
+                callback);
+    }
+
+    public interface IActionListener {
+        boolean onLeftBtnClick(Dialog dialog);
+
+        boolean onRightBtnClick(Dialog dialog);
     }
 }

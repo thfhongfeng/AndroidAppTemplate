@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.template.base.bean.AccountBean;
-import com.pine.template.config.BuildConfig;
 import com.pine.template.login.LoginConstants;
 import com.pine.template.login.LoginUrlConstants;
 import com.pine.template.login.model.callback.LoginCallback;
@@ -17,7 +16,6 @@ import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -27,7 +25,7 @@ public class LoginAccountModel {
     private static final int REQUEST_REGISTER = 1;
 
     public boolean requestLogin(final HashMap<String, String> params, int requestCode, ILoginResponse callback) {
-        String url = LoginUrlConstants.Login;
+        String url = LoginUrlConstants.LOGIN();
         RequestManager.clearCookie();
         RequestBean requestBean = new RequestBean(url, requestCode, params);
         requestBean.setModuleTag(TAG);
@@ -35,7 +33,7 @@ public class LoginAccountModel {
     }
 
     public void requestLogout() {
-        String url = LoginUrlConstants.Logout;
+        String url = LoginUrlConstants.LOGOUT();
         RequestManager.clearCookie();
         RequestBean requestBean = new RequestBean(url, LoginCallback.LOGOUT_CODE, new HashMap<String, String>());
         requestBean.setModuleTag(TAG);
@@ -44,7 +42,7 @@ public class LoginAccountModel {
 
     public void requestRegister(final HashMap<String, String> params,
                                 @NonNull final IModelAsyncResponse<AccountBean> callback) {
-        String url = LoginUrlConstants.Register_Account;
+        String url = LoginUrlConstants.REGISTER_ACCOUNT();
         RequestBean requestBean = new RequestBean(url, REQUEST_REGISTER, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback));
@@ -55,11 +53,6 @@ public class LoginAccountModel {
             @Override
             public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (what == REQUEST_REGISTER) {
-                    // Test code begin
-                    if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
-                        jsonObject = getRegisterAccountData();
-                    }
-                    // Test code end
                     if (jsonObject.optBoolean(LoginConstants.SUCCESS)) {
                         T retData = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), new TypeToken<AccountBean>() {
                         }.getType());
@@ -90,17 +83,4 @@ public class LoginAccountModel {
             }
         };
     }
-
-    // Test code begin
-    private JSONObject getRegisterAccountData() {
-        String res = "{success:true,code:200,message:'',data:" +
-                "{id:'" + 100 + "',account:'测试注册用户', password:'111aaa'}}";
-        try {
-            return new JSONObject(res);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return new JSONObject();
-    }
-    // Test code end
 }

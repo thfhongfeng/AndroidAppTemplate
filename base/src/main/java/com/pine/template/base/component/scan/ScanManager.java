@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
-import com.pine.template.base.R;
-import com.pine.tool.util.AppUtils;
-import com.pine.tool.util.LogUtils;
-
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
+import com.pine.template.base.R;
+import com.pine.tool.util.AppUtils;
+import com.pine.tool.util.LogUtils;
 
 /**
  * Created by tanghongfeng on 2019/11/28.
@@ -24,29 +24,50 @@ public class ScanManager {
 
     }
 
+    private static boolean isInit() {
+        return mManagerImpl != null;
+    }
+
     public static void init(Context context, IScanManagerFactory factory) {
         mManagerImpl = factory.makeScanManager(context);
-        mManagerImpl.init(context);
+        if (mManagerImpl != null) {
+            mManagerImpl.init(context);
+        }
     }
 
     public static void attachScanSurface(final FragmentActivity activity, @IdRes int surfaceContainerId) {
+        if (!isInit()) {
+            return;
+        }
         mManagerImpl.attachScanSurface(activity, null, surfaceContainerId);
     }
 
     public static void setAnalyzeListener(@NonNull final IScanAnalyzeListener listener, int surfaceContainerId) {
+        if (!isInit()) {
+            return;
+        }
         mManagerImpl.setAnalyzeListener(new GateListener(listener), surfaceContainerId);
     }
 
     public static void attachScanSurface(final FragmentActivity activity,
                                          final IScanAnalyzeListener listener, @IdRes int surfaceContainerId) {
+        if (!isInit()) {
+            return;
+        }
         mManagerImpl.attachScanSurface(activity, new GateListener(listener), surfaceContainerId);
     }
 
     public static void detachScanSurface(@IdRes int surfaceContainerId) {
+        if (!isInit()) {
+            return;
+        }
         mManagerImpl.detachScanSurface(surfaceContainerId);
     }
 
     private static boolean checkScanResult(String result) {
+        if (!isInit()) {
+            return false;
+        }
         return true;
     }
 

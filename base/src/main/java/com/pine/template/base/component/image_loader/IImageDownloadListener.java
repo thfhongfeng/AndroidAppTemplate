@@ -13,5 +13,5 @@ public interface IImageDownloadListener {
 
     void onResponse(int statusCode, Map<String, List<String>> responseHeaders);
 
-    void onFail(int statusCode, String s);
+    boolean onFail(int statusCode, String s);
 }

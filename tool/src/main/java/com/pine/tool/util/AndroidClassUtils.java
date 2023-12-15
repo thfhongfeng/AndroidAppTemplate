@@ -37,7 +37,7 @@ public class AndroidClassUtils {
 
     private static ThreadPoolExecutor mThreadPoolExecutor;
 
-    public static ThreadPoolExecutor getThreadPoolExecutoInstance() {
+    public static ThreadPoolExecutor getThreadPoolExecutorInstance() {
         if (null == mThreadPoolExecutor) {
             synchronized (ThreadPoolExecutor.class) {
                 if (null == mThreadPoolExecutor) {
@@ -84,7 +84,7 @@ public class AndroidClassUtils {
         final CountDownLatch parserCtl = new CountDownLatch(paths.size());
 
         for (final String path : paths) {
-            getThreadPoolExecutoInstance().execute(new Runnable() {
+            getThreadPoolExecutorInstance().execute(new Runnable() {
                 @Override
                 public void run() {
                     DexFile dexfile = null;

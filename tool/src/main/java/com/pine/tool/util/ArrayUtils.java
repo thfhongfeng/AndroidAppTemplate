@@ -30,6 +30,28 @@ public class ArrayUtils {
         return index;
     }
 
+    public static int searchFirst(int[] objects, int element) {
+        int index = -1;
+        for (int i = 0; i < objects.length; i++) {
+            if (element == objects[i]) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    public static int searchFirst(String[] objects, String element) {
+        int index = -1;
+        for (int i = 0; i < objects.length; i++) {
+            if (TextUtils.equals(element, objects[i])) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
     /**
      * 在数组中查询最后一个element元素
      *
@@ -41,6 +63,28 @@ public class ArrayUtils {
         int index = -1;
         for (int i = objects.length - 1; i >= 0; i++) {
             if (element.equals(objects[i])) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    public static int searchLast(int[] objects, int element) {
+        int index = -1;
+        for (int i = objects.length - 1; i >= 0; i++) {
+            if (element == objects[i]) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    public static int searchLast(String[] objects, String element) {
+        int index = -1;
+        for (int i = objects.length - 1; i >= 0; i++) {
+            if (TextUtils.equals(element, objects[i])) {
                 index = i;
                 break;
             }

@@ -17,6 +17,7 @@ import com.pine.template.base.access.UiAccessAction;
 import com.pine.template.base.access.UiAccessType;
 import com.pine.template.base.access.VipLevel;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.DateSelectDialog;
 import com.pine.template.base.widget.dialog.InputTextDialog;
@@ -25,7 +26,6 @@ import com.pine.template.mvp.R;
 import com.pine.template.mvp.contract.IMvpProductReleaseContract;
 import com.pine.template.mvp.presenter.MvpProductReleasePresenter;
 import com.pine.tool.access.UiAccessAnnotation;
-import com.pine.tool.bean.InputParam;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,7 +36,7 @@ import java.util.List;
  */
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER, UiAccessType.VIP_LEVEL},
-        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP_KEY, VipLevel.VIP1},
+        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP, VipLevel.VIP1},
         AccessActions = {"", UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
 public class MvpProductReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpProductReleaseContract.Ui, MvpProductReleasePresenter>

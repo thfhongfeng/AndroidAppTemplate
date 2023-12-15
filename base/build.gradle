@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion build_versions.compileSdkVersion
-    buildToolsVersion build_versions.buildToolsVersion
 
     defaultConfig {
         minSdkVersion build_versions.minSdkVersion
@@ -32,10 +31,7 @@ android {
         common {
 
         }
-        huawei {
-
-        }
-        xiaomi {
+        special {
 
         }
     }
@@ -58,12 +54,6 @@ android {
     resourcePrefix "base_"
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -72,7 +62,6 @@ dependencies {
     api build_dependency['safewebviewbridge']
     api build_dependency['bumptech_glide']
     annotationProcessor build_dependency['bumptech_glide_compiler']
-    api(name: build_dependency["sina_weibo_sdk"], ext: 'aar')
     annotationProcessor build_dependency["android_room_compiler"]
     api build_dependency["android_room_runtime"]
     // CWAC-SafeRoom: A Room<->SQLCipher for Android Bridge
@@ -82,11 +71,12 @@ dependencies {
     // 第三方 dependency end
 
     // library project begin
-    api project(':base_lib_immersionbar')
     api project(':base_lib_zxing')
+    api project(':base_lib_immersionbar')
     // library project end
 
     // 配置模块 begin
     api project(':config')
+    api project(':resource')
     // 配置模块 end
 }

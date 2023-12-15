@@ -21,7 +21,7 @@ public class MvvmWebViewVm extends ViewModel {
 
     @Override
     public boolean parseIntentData(Context activity, Bundle bundle) {
-        mH5Url = bundle.getString("url", MvvmUrlConstants.H5_DefaultUrl);
+        mH5Url = bundle.getString("url", MvvmUrlConstants.H5_DefaultUrl());
         return false;
     }
 

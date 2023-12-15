@@ -14,11 +14,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:inner_corner_color="#075CBB"
-        app:inner_corner_length="15dp"
-        app:inner_corner_width="2dp"
-        app:inner_height="250dp"
+        app:inner_corner_length="@dimen/dp_15"
+        app:inner_corner_width="@dimen/dp_2"
+        app:inner_height="@dimen/dp_250"
         app:inner_scan_iscircle="false"
         app:inner_scan_speed="10"
-        app:inner_width="250dp" />
+        app:inner_width="@dimen/dp_250" />
 
 </FrameLayout>

@@ -1,5 +1,9 @@
 package com.pine.tool.router.impl.arouter.manager;
 
+import static com.pine.tool.router.RouterCommandType.TYPE_DATA_COMMAND;
+import static com.pine.tool.router.RouterCommandType.TYPE_OP_COMMAND;
+import static com.pine.tool.router.RouterCommandType.TYPE_UI_COMMAND;
+
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
@@ -20,10 +24,6 @@ import com.pine.tool.util.LogUtils;
 
 import java.util.HashMap;
 import java.util.List;
-
-import static com.pine.tool.router.RouterCommandType.TYPE_DATA_COMMAND;
-import static com.pine.tool.router.RouterCommandType.TYPE_OP_COMMAND;
-import static com.pine.tool.router.RouterCommandType.TYPE_UI_COMMAND;
 
 /**
  * Created by tanghongfeng on 2019/2/21
@@ -65,6 +65,7 @@ public class ARouterManager implements IRouterManager {
                 e.printStackTrace();
             }
         }
+        LogUtils.d(TAG, "init bundle action map:" + mBundleActionMap);
     }
 
     @Override

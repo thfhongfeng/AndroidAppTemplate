@@ -37,8 +37,8 @@ db----------------------应用通用数据库（基于room），用于app的整�
 
 
 模块多渠道客制化步骤：
-分两种渠道：common渠道为通用渠道（开发功能时的默认渠道）；其它渠道（huawei、小米等）
-1. 在src下建立不同渠道对应的文件夹（如：common、huawei、xiaomi）。
+分两种渠道：common渠道为通用渠道（开发功能时的默认渠道）；其它渠道（special等）
+1. 在src下建立不同渠道对应的文件夹（如：common、special）。
 2. 修改模块下的gradle：
    a. defaultConfig闭包中添加：
         flavorDimensions "default"
@@ -47,10 +47,7 @@ db----------------------应用通用数据库（基于room），用于app的整�
                 common {
 
                 }
-                huawei {
-
-                }
-                xiaomi {
+                special {
 
                 }
             }

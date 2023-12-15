@@ -6,11 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableRow;
 
-import com.pine.template.base.R;
-import com.pine.template.base.recycle_view.BaseListViewHolder;
-import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
-import com.pine.tool.util.LogUtils;
-
 import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -19,6 +14,11 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.pine.template.base.R;
+import com.pine.template.base.recycle_view.BaseListViewHolder;
+import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
+import com.pine.tool.util.LogUtils;
 
 /**
  * Created by tanghongfeng on 2018/9/28
@@ -39,9 +39,9 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     protected final static int MORE_VIEW_HOLDER = -10003;
     // 全部数据加载完全ViewHolder
     protected final static int COMPLETE_VIEW_HOLDER = -10004;
-    // 数据加载发生错误ViewHolder（返回数据有问题时通过主动设置mEnableError来决定是否加载该ViewHolder）
+    // 数据加载发生错误ViewHolder（返回数据有问题时通过主动设置setErrorState来决定是否加载该ViewHolder）
     protected final static int ERROR_ALL_VIEW_HOLDER = -10005;
-    // 加载更多时发生错误ViewHolder（返回数据有问题时通过主动设置mEnableError来决定是否加载该ViewHolder）
+    // 加载更多时发生错误ViewHolder（返回数据有问题时通过主动设置setErrorState来决定是否加载该ViewHolder）
     protected final static int ERROR_MORE_VIEW_HOLDER = -10006;
     // 复杂布局的Adapter中，第二部分初始状态ViewHolder
     protected final static int SECOND_PART_INIT_LOADING_HOLDER = -10007;
@@ -65,7 +65,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
     private boolean mEnableSecondPartInitLoading = false;
     // 是否开启第二部分为空ViewHolder
     private boolean mEnableSecondPartEmpty = true;
-    // 是否开启数据为空ViewHolder
+    // 是否开启数据加载错误ViewHolder
     private boolean mEnableError = false;
     // 初始状态ViewHolder默认布局
     private int mInitLoadingLayoutId = R.layout.base_item_init_loading;

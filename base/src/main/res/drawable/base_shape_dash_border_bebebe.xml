@@ -3,12 +3,12 @@
 
     <solid android:color="@android:color/white" />
 
-    <corners android:radius="5dp" />
+    <corners android:radius="@dimen/dp_5" />
 
     <stroke
         android:width="0.5dp"
         android:color="#bebebe"
-        android:dashWidth="4dp"
-        android:dashGap="2dp" />
+        android:dashWidth="@dimen/dp_4"
+        android:dashGap="@dimen/dp_2" />
 
 </shape>

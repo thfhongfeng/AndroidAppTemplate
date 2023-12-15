@@ -20,6 +20,7 @@ import com.pine.template.base.access.UiAccessAction;
 import com.pine.template.base.access.UiAccessType;
 import com.pine.template.base.access.VipLevel;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.component.map.MapSdkManager;
 import com.pine.template.base.component.uploader.FileUploadComponent;
 import com.pine.template.base.component.uploader.bean.FileUploadBean;
@@ -36,7 +37,6 @@ import com.pine.template.mvp.R;
 import com.pine.template.mvp.contract.IMvpShopReleaseContract;
 import com.pine.template.mvp.presenter.MvpShopReleasePresenter;
 import com.pine.tool.access.UiAccessAnnotation;
-import com.pine.tool.bean.InputParam;
 import com.pine.tool.util.DecimalUtils;
 
 import org.json.JSONObject;
@@ -51,12 +51,12 @@ import java.util.Map;
  */
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER, UiAccessType.VIP_LEVEL},
-        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP_KEY, VipLevel.VIP1},
+        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP, VipLevel.VIP1},
         AccessActions = {"", UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
 public class MvpShopReleaseActivity extends
         BaseMvpActionBarTextMenuActivity<IMvpShopReleaseContract.Ui, MvpShopReleasePresenter>
         implements IMvpShopReleaseContract.Ui, View.OnClickListener {
-    private final int REQUEST_CODE_BAIDU_MAP = 1;
+    private final int REQUEST_CODE_MAP = 1;
     private SwipeRefreshLayout swipe_refresh_layout;
     private NestedScrollView nested_scroll_view;
     private LinearLayout type_ll, online_date_ll;
@@ -109,7 +109,7 @@ public class MvpShopReleaseActivity extends
         photo_iuv.init(this, true, new FileUploadComponent.OneByOneUploadAdapter() {
             @Override
             public String getUploadUrl() {
-                return MvpUrlConstants.Upload_Single_File;
+                return MvpUrlConstants.FILE_UPLOAD();
             }
 
             @Override
@@ -178,7 +178,7 @@ public class MvpShopReleaseActivity extends
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_BAIDU_MAP) {
+        if (requestCode == REQUEST_CODE_MAP) {
             if (resultCode == RESULT_OK) {
                 double latitude = DecimalUtils.format(data.getDoubleExtra("latitude", 0d), 6);
                 double longitude = DecimalUtils.format(data.getDoubleExtra("longitude", 0d), 6);
@@ -260,9 +260,11 @@ public class MvpShopReleaseActivity extends
                     latLng[1] = DecimalUtils.format(latLngStr[1].trim(), 6);
                 }
             }
-            startActivityForResult(MapSdkManager.getMarkMapActivityIntent(this,
-                    MapSdkManager.MapType.MAP_TYPE_NORMAL, latLng[0], latLng[1], true),
-                    REQUEST_CODE_BAIDU_MAP);
+            Intent intent = MapSdkManager.getMarkMapActivityIntent(this,
+                    MapSdkManager.MapType.MAP_TYPE_NORMAL, latLng[0], latLng[1], true);
+            if (intent != null) {
+                startActivityForResult(intent, REQUEST_CODE_MAP);
+            }
         }
     }
 

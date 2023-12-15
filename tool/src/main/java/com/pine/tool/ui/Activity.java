@@ -4,15 +4,30 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.access.UiAccessTimeInterval;
+import com.pine.tool.helper.LanguageHelper;
+import com.pine.tool.helper.RecreateHelper;
 import com.pine.tool.permission.IPermissionCallback;
 import com.pine.tool.permission.PermissionBean;
 import com.pine.tool.permission.PermissionManager;
@@ -28,16 +43,10 @@ import com.pine.tool.widget.ILifeCircleViewContainer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.Size;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import java.util.Set;
 
 /**
  * Created by tanghongfeng on 2018/9/28
@@ -83,14 +92,29 @@ public abstract class Activity extends AppCompatActivity
     @CallSuper
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        beforeSuperOnCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         mOnCreateSavedInstanceState = savedInstanceState;
         mOnAllAccessRestrictionReleasedMethodCalled = false;
+
+        if (!isTaskRoot()) {
+            final Intent intent = getIntent();
+            final String intentAction = intent.getAction();
+            boolean isLauncher = intent.hasCategory(Intent.CATEGORY_LAUNCHER)
+                    && intentAction != null && intentAction.equals(Intent.ACTION_MAIN);
+            boolean broughtToFront = (getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0;
+            LogUtils.d(TAG, "Activity: " + this + ",isLauncherActivity:" + isLauncher
+                    + ",broughtToFront:" + broughtToFront);
+            if (isLauncher || broughtToFront) {
+                finish();
+                return;
+            }
+        }
+
         if (beforeInitOnCreate(savedInstanceState)) {
             finish();
             return;
         }
-
         setContentView(savedInstanceState);
 
         // 进入界面准入流程
@@ -140,6 +164,14 @@ public abstract class Activity extends AppCompatActivity
         findViewOnCreate(savedInstanceState);
 
         tryInitOnAllRestrictionReleased();
+    }
+
+    /**
+     * 父类onCreate前的初始化
+     *
+     * @param savedInstanceState
+     */
+    protected void beforeSuperOnCreate(@Nullable Bundle savedInstanceState) {
     }
 
     /**
@@ -229,7 +261,10 @@ public abstract class Activity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
+        if (isFinishing()) {
+            LogUtils.w(TAG, "Activity is finishing...");
+            return;
+        }
         mUiAccessReady = true;
         if (!UiAccessManager.getInstance().checkCanAccess(
                 this, UiAccessTimeInterval.UI_ACCESS_ON_NEW_INTENT,
@@ -251,6 +286,12 @@ public abstract class Activity extends AppCompatActivity
         }
 
         tryInitOnAllRestrictionReleased();
+    }
+
+    @Override
+    protected void onStart() {
+        doRecreateWork();
+        super.onStart();
     }
 
     @CallSuper
@@ -295,6 +336,12 @@ public abstract class Activity extends AppCompatActivity
         if (mPermissionRequestMap != null && mPermissionRequestMap.size() > 0) {
             mPermissionRequestMap.clear();
         }
+        if (mUserNoOperateHandler != null) {
+            mUserNoOperateHandler.removeCallbacksAndMessages(null);
+            mUserNoOperateHandler = null;
+        }
+        mUserNoOperateListenerMap.clear();
+        mToastList.clear();
         super.onDestroy();
     }
 
@@ -475,27 +522,181 @@ public abstract class Activity extends AppCompatActivity
         }
     }
 
-    public void showShortToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    private LinkedList<ToastEntity> mToastList = new LinkedList<>();
+    private int mMaxWaitToast = 1;
+    private int mMaxToastDuration = 10 * 1000;
+
+    public void setupWaitToastConfig(int maxWaitToast, int maxToastDuration) {
+        mMaxWaitToast = maxWaitToast;
+        if (maxToastDuration > 5 * 1000 && maxToastDuration < 60 * 1000) {
+            mMaxToastDuration = maxToastDuration;
+        }
     }
 
-    public void showShortToast(@StringRes int resId) {
-        Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
+    private void showToast(@NonNull Toast toast) {
+        toast.show();
+        long now = System.currentTimeMillis();
+        // 清理掉残留
+        while (mToastList.size() > 0 &&
+                (now - mToastList.getFirst().getTimeStamp()) > mToastList.size() * mMaxToastDuration) {
+            mToastList.removeFirst();
+        }
+
+        if (mToastList.size() > 0 && mToastList.size() > mMaxWaitToast) {
+            ToastEntity toastOld = mToastList.removeFirst();
+            if (toastOld.getToast() != null) {
+                toastOld.getToast().cancel();
+            }
+        }
+        ToastEntity toastEntity = new ToastEntity(toast, now);
+        mToastList.add(toastEntity);
     }
 
-    public void showShortToast(@StringRes int resId, Object... formatArgs) {
-        Toast.makeText(this, getString(resId, formatArgs), Toast.LENGTH_SHORT).show();
+    public synchronized void showShortToast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        showToast(toast);
     }
 
-    public void showLongToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public synchronized void showShortToast(@StringRes int resId) {
+        Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
+        showToast(toast);
     }
 
-    public void showLongToast(@StringRes int resId) {
-        Toast.makeText(this, resId, Toast.LENGTH_LONG).show();
+    public synchronized void showShortToast(@StringRes int resId, Integer... formatArgs) {
+        Object[] args = new Object[formatArgs.length];
+        for (int i = 0; i < formatArgs.length; i++) {
+            Object idObj = formatArgs[i];
+            args[i] = getString((int) idObj);
+        }
+        Toast toast = Toast.makeText(this, getString(resId, args), Toast.LENGTH_SHORT);
+        showToast(toast);
     }
 
-    public void showLongToast(@StringRes int resId, Object... formatArgs) {
-        Toast.makeText(this, getString(resId, formatArgs), Toast.LENGTH_LONG).show();
+    public synchronized void showLongToast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        showToast(toast);
+    }
+
+    public synchronized void showLongToast(@StringRes int resId) {
+        Toast toast = Toast.makeText(this, resId, Toast.LENGTH_LONG);
+        showToast(toast);
+    }
+
+    public synchronized void showLongToast(@StringRes int resId, Integer... formatArgs) {
+        Object[] args = new Object[formatArgs.length];
+        for (int i = 0; i < formatArgs.length; i++) {
+            Object idObj = formatArgs[i];
+            args[i] = getString((int) idObj);
+        }
+        Toast toast = Toast.makeText(this, getString(resId, args), Toast.LENGTH_LONG);
+        showToast(toast);
+    }
+
+    private volatile String _last_language_value;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        _last_language_value = LanguageHelper.getInstance().getAppLanguageLocal(newBase);
+        RecreateHelper.getInstance().addActivityTag(this);
+        super.attachBaseContext(LanguageHelper.getInstance().attachBaseContext(newBase));
+        LogUtils.d("ActivityLifecycle", this + " on attachBaseContext");
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        LanguageHelper.getInstance().setupAppLanguageLocal(this);
+        LogUtils.d("ActivityLifecycle", this + " on onConfigurationChanged");
+    }
+
+    private void doRecreateWork() {
+        if (LanguageHelper.getInstance().shouldRecreateActivity(this, _last_language_value)) {
+            _last_language_value = LanguageHelper.getInstance().getAppLanguageLocal(this);
+            recreate();
+            return;
+        }
+        if (RecreateHelper.getInstance().calRecreateActivity(this, hashCode())) {
+            return;
+        }
+    }
+
+    @Override
+    public void recreate() {
+        getViewModelStore().clear();
+        super.recreate();
+        LogUtils.d("ActivityLifecycle", this + " recreate");
+    }
+
+    private Handler mUserNoOperateHandler;
+    private volatile long mLastUserOperateTime;
+    private HashMap<String, OnUserNoOperateInfo> mUserNoOperateListenerMap = new HashMap<>();
+
+    public synchronized void listenUserNoOperate(@NonNull String tag,
+                                                 @NonNull IOnUserNoOperateListener listener,
+                                                 long idleSecondTime) {
+        if (TextUtils.isEmpty(tag) || listener == null || idleSecondTime <= 0) {
+            return;
+        }
+        OnUserNoOperateInfo info = new OnUserNoOperateInfo();
+        info.tag = tag;
+        info.listener = listener;
+        info.idleSecondTime = idleSecondTime;
+        synchronized (Activity.this) {
+            mUserNoOperateListenerMap.put(tag, info);
+        }
+
+        if (mUserNoOperateHandler == null) {
+            mUserNoOperateHandler = new Handler(Looper.getMainLooper()) {
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if (mUserNoOperateListenerMap.size() > 0) {
+                        mUserNoOperateHandler.sendEmptyMessageDelayed(0, 1000);
+                    }
+                    long now = System.currentTimeMillis();
+                    long offset = (now - mLastUserOperateTime) / 1000;
+                    synchronized (Activity.this) {
+                        Set<String> keys = mUserNoOperateListenerMap.keySet();
+                        for (String key : keys) {
+                            OnUserNoOperateInfo item = mUserNoOperateListenerMap.get(key);
+                            if (item.idleSecondTime <= offset) {
+                                item.listener.OnUserNoOperate(offset);
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        mLastUserOperateTime = System.currentTimeMillis();
+        mUserNoOperateHandler.removeMessages(0);
+        mUserNoOperateHandler.sendEmptyMessageDelayed(0, 1000);
+    }
+
+    public void unListenUserNoOperate(@NonNull String tag) {
+        synchronized (Activity.this) {
+            OnUserNoOperateInfo listenerInfo = mUserNoOperateListenerMap.get(tag);
+            if (listenerInfo != null) {
+                mUserNoOperateListenerMap.remove(tag);
+            }
+            if (mUserNoOperateListenerMap.size() < 1 && mUserNoOperateHandler != null) {
+                mUserNoOperateHandler.removeCallbacksAndMessages(null);
+            }
+        }
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        mLastUserOperateTime = System.currentTimeMillis();
+    }
+
+    public interface IOnUserNoOperateListener {
+        void OnUserNoOperate(long idleTime);
+    }
+
+    public static class OnUserNoOperateInfo {
+        public String tag;
+        public long idleSecondTime;
+        public IOnUserNoOperateListener listener;
     }
 }

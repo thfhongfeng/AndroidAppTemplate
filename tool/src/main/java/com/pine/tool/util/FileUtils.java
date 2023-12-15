@@ -14,6 +14,8 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+import androidx.annotation.RawRes;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -174,7 +176,9 @@ public class FileUtils {
             e.printStackTrace();
         } finally {
             try {
-                fileWriter.close();
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -214,7 +218,9 @@ public class FileUtils {
             e.printStackTrace();
         } finally {
             try {
-                fileWriter.close();
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -308,8 +314,12 @@ public class FileUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             try {
-                o.close();
-                stream.close();
+                if (o != null) {
+                    o.close();
+                }
+                if (stream != null) {
+                    stream.close();
+                }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
@@ -317,16 +327,24 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
             try {
-                o.close();
-                stream.close();
+                if (o != null) {
+                    o.close();
+                }
+                if (stream != null) {
+                    stream.close();
+                }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
             return false;
         }
         try {
-            o.close();
-            stream.close();
+            if (o != null) {
+                o.close();
+            }
+            if (stream != null) {
+                stream.close();
+            }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -339,13 +357,12 @@ public class FileUtils {
      * @param sourceFilePath 资源路径
      * @param destFilePath   删除的路径
      */
-    public static void moveFile(String sourceFilePath, String destFilePath) {
+    public static boolean moveFile(String sourceFilePath, String destFilePath) {
         if (TextUtils.isEmpty(sourceFilePath) ||
                 TextUtils.isEmpty(destFilePath)) {
-            throw new RuntimeException(
-                    "Both sourceFilePath and destFilePath cannot be null.");
+            return false;
         }
-        moveFile(new File(sourceFilePath), new File(destFilePath));
+        return moveFile(new File(sourceFilePath), new File(destFilePath));
     }
 
     /**
@@ -354,12 +371,15 @@ public class FileUtils {
      * @param srcFile  文件对象
      * @param destFile 对象
      */
-    public static void moveFile(File srcFile, File destFile) {
+    public static boolean moveFile(File srcFile, File destFile) {
         boolean rename = srcFile.renameTo(destFile);
-        if (!rename) {
-            copyFile(srcFile.getAbsolutePath(), destFile.getAbsolutePath());
-            deleteFile(srcFile.getAbsolutePath());
+        if (rename) {
+            return true;
         }
+        if (copyFile(srcFile.getAbsolutePath(), destFile.getAbsolutePath())) {
+            return deleteFile(srcFile.getAbsolutePath());
+        }
+        return false;
     }
 
     /**
@@ -376,9 +396,37 @@ public class FileUtils {
         try {
             inputStream = new FileInputStream(sourceFilePath);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("FileNotFoundException occurred. ", e);
+            return false;
         }
         return writeFile(destFilePath, inputStream);
+    }
+
+    /**
+     * 删除文件
+     *
+     * @return 文件删除成功返回true，否则返回false
+     */
+    public static boolean deleteFile(File file, boolean deleteSelfIfDir) {
+        if (!file.exists()) {
+            return true;
+        }
+        if (file.isFile()) {
+            return file.delete();
+        }
+        if (!file.isDirectory()) {
+            return false;
+        }
+        for (File f : file.listFiles()) {
+            if (f.isFile()) {
+                f.delete();
+            } else if (f.isDirectory()) {
+                deleteFile(f.getAbsolutePath());
+            }
+        }
+        if (deleteSelfIfDir) {
+            return file.delete();
+        }
+        return true;
     }
 
     /**
@@ -396,14 +444,15 @@ public class FileUtils {
         if (!file.isDirectory()) {
             return false;
         }
+        boolean success = true;
         for (File f : file.listFiles()) {
             if (f.isFile()) {
-                f.delete();
+                success = success && f.delete();
             } else if (f.isDirectory()) {
-                deleteFile(f.getAbsolutePath());
+                success = success && deleteFile(f.getAbsolutePath());
             }
         }
-        return file.delete();
+        return success && file.delete();
     }
 
     /**
@@ -723,20 +772,9 @@ public class FileUtils {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    /**
-     * 解压assets的zip压缩文件到指定目录
-     *
-     * @param context         上下文对象
-     * @param assetName       压缩文件名
-     * @param outputDirectory 输出目录
-     * @param isReWrite       是否覆盖
-     * @param charset         编码
-     * @return
-     */
-    public static boolean unZipAssets(Context context, String assetName, String outputDirectory,
-                                      boolean isReWrite, String charset) {
-        if (!assetName.toLowerCase().endsWith(".zip")) {
-            System.out.println("非zip文件！");
+    public static boolean unZip(Context context, InputStream inputStream, String outputDirectory,
+                                boolean isReWrite, String charset) {
+        if (inputStream == null) {
             return false;
         }
         // 创建解压目标目录
@@ -744,14 +782,6 @@ public class FileUtils {
         // 如果目标目录不存在，则创建
         if (!file.exists()) {
             file.mkdirs();
-        }
-        // 打开压缩文件
-        InputStream inputStream = null;
-        try {
-            inputStream = context.getAssets().open(assetName);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
         }
         ZipInputStream zipInputStream = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -808,11 +838,71 @@ public class FileUtils {
             }
         }
         try {
+            inputStream.close();
             zipInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public static boolean unZipFile(Context context, String zipFilePath, String outputDirectory,
+                                    boolean isReWrite) {
+        return unZipFile(context, zipFilePath, outputDirectory, isReWrite, Charset.defaultCharset().displayName());
+    }
+
+    /**
+     * 解压zip压缩文件到指定目录
+     *
+     * @param context         上下文对象
+     * @param zipFilePath     压缩文件名
+     * @param outputDirectory 输出目录
+     * @param isReWrite       是否覆盖
+     * @param charset         编码
+     * @return
+     */
+    public static boolean unZipFile(Context context, String zipFilePath, String outputDirectory,
+                                    boolean isReWrite, String charset) {
+        if (!zipFilePath.toLowerCase().endsWith(".zip")) {
+            System.out.println("非zip文件！");
+            return false;
+        }
+        // 打开压缩文件
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(zipFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return unZip(context, inputStream, outputDirectory, isReWrite, charset);
+    }
+
+    /**
+     * 解压assets的zip压缩文件到指定目录
+     *
+     * @param context         上下文对象
+     * @param assetName       压缩文件名
+     * @param outputDirectory 输出目录
+     * @param isReWrite       是否覆盖
+     * @param charset         编码
+     * @return
+     */
+    public static boolean unZipAssets(Context context, String assetName, String outputDirectory,
+                                      boolean isReWrite, String charset) {
+        if (!assetName.toLowerCase().endsWith(".zip")) {
+            System.out.println("非zip文件！");
+            return false;
+        }
+        // 打开压缩文件
+        InputStream inputStream = null;
+        try {
+            inputStream = context.getAssets().open(assetName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return unZip(context, inputStream, outputDirectory, isReWrite, charset);
     }
 
     /**
@@ -821,40 +911,53 @@ public class FileUtils {
      * @param context         上下文对象
      * @param assetsPath      文件路径
      * @param outputDirectory 输出目录
+     * @param isCopyAssetsDir 是否拷贝目录
      * @param isReWrite       是否覆盖
      * @throws IOException
      */
-    public static void copyAssets(Context context, String assetsPath,
-                                  String outputDirectory, boolean isReWrite) throws IOException {
+    public static void copyAssets(Context context, String assetsPath, String outputDirectory,
+                                  boolean isCopyAssetsDir, boolean isReWrite) throws IOException {
         String fileNames[] = context.getAssets().list(assetsPath);// 获取assets目录下的所有文件及目录名
         if (fileNames.length > 0) {// 如果是目录
-            File assetDir = new File(outputDirectory + File.separator + assetsPath);
+            File assetDir = null;
+            if (isCopyAssetsDir) {
+                assetDir = new File(outputDirectory + File.separator + assetsPath);
+            } else {
+                assetDir = new File(outputDirectory);
+            }
             // 如果目标目录不存在，则创建
             if (!assetDir.exists()) {
                 assetDir.mkdirs();
             }
             for (String fileName : fileNames) {
                 copyAssets(context, assetsPath + File.separator + fileName,
-                        outputDirectory, isReWrite);
+                        outputDirectory, isCopyAssetsDir, isReWrite);
             }
         } else {// 如果是文件
-            InputStream is = context.getAssets().open(assetsPath);
-            String outPath = outputDirectory + File.separator + assetsPath;
-            File file = new File(outPath);
-            if (isReWrite || !file.exists()) {
-                file.createNewFile();
-                FileOutputStream fos = new FileOutputStream(file);
-                byte[] buffer = new byte[1024];
-                int byteCount = 0;
-                while ((byteCount = is.read(buffer)) != -1) {// 循环从输入流读取
-                    // buffer字节
-                    fos.write(buffer, 0, byteCount);// 将读取的输入流写入到输出流
-                }
-                fos.flush();// 刷新缓冲区
-                fos.close();
-            }
-            is.close();
+
+            copyAssetsFile(context, assetsPath, outputDirectory, isReWrite);
         }
+    }
+
+    public static void copyAssetsFile(Context context, String assetsFilePath,
+                                      String outputDirectory, boolean isReWrite) throws IOException {
+        String assetsFileName = new File(assetsFilePath).getName();
+        InputStream is = context.getAssets().open(assetsFilePath);
+        String outPath = outputDirectory + File.separator + assetsFileName;
+        File file = new File(outPath);
+        if (isReWrite || !file.exists()) {
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            byte[] buffer = new byte[1024];
+            int byteCount = 0;
+            while ((byteCount = is.read(buffer)) != -1) {// 循环从输入流读取
+                // buffer字节
+                fos.write(buffer, 0, byteCount);// 将读取的输入流写入到输出流
+            }
+            fos.flush();// 刷新缓冲区
+            fos.close();
+        }
+        is.close();
     }
 
     /**
@@ -1034,5 +1137,27 @@ public class FileUtils {
         }
         cursor.close();
         return filePathList;
+    }
+
+    public static boolean copyRawFile(Context context, String fileName, String resType, File targetFile) {
+        return copyRawFile(context, context.getResources().getIdentifier(
+                fileName.substring(0, fileName.lastIndexOf(".")),
+                resType, context.getPackageName()), targetFile);
+    }
+
+    public static boolean copyRawFile(Context context, @RawRes int rawId, File targetFile) {
+        // 从应用程序资源加载mode文件
+        try (InputStream is = context.getResources().openRawResource(rawId);
+             FileOutputStream os = new FileOutputStream(targetFile)) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

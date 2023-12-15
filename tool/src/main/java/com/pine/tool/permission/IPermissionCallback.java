@@ -1,8 +1,8 @@
 package com.pine.tool.permission;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
+
+import java.util.List;
 
 /**
  * Created by tanghongfeng on 2019/2/27

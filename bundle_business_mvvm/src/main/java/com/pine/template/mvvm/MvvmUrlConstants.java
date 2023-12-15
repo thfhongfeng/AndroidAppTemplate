@@ -1,30 +1,53 @@
 package com.pine.template.mvvm;
 
 import com.pine.template.base.BaseUrlConstants;
+import com.pine.template.config.ConfigKey;
+import com.pine.template.config.switcher.ConfigSwitcherServer;
 
 /**
  * Created by tanghongfeng on 2018/9/13
  */
 
-public interface MvvmUrlConstants extends BaseUrlConstants {
+public class MvvmUrlConstants extends BaseUrlConstants {
+    public static String Add_Shop() {
+        return SERVER() + "&q=as";
+    }
 
-    String Add_Shop = BASE_URL + "&q=as";
-    String Query_ShopDetail = BASE_URL + "&q=qsd";
-    String Query_ShopList = BASE_URL + "&q=qsl";
-    String Query_ShopAndProductList = BASE_URL + "&q=qsapl";
-    String Add_Product = BASE_URL + "&q=ap";
+    public static String Query_ShopDetail() {
+        return SERVER() + "&q=qsd";
+    }
 
-    String Add_TravelNote = BASE_URL + "&q=atn";
-    String Query_TravelNoteList = BASE_URL + "&q=qtnl";
-    String Query_TravelNoteDetail = BASE_URL + "&q=qtnd";
-    String Query_TravelNoteCommentList = BASE_URL + "&q=qtncl";
+    public static String Query_ShopList() {
+        return SERVER() + "&q=qsl";
+    }
 
-//    String Upload_Single_File = BASE_URL + "";
-//    String Upload_Multi_File = BASE_URL + "";
+    public static String Query_ShopAndProductList() {
+        return SERVER() + "&q=qsapl";
+    }
+
+    public static String Add_Product() {
+        return SERVER() + "&q=ap";
+    }
+
+    public static String Add_TravelNote() {
+        return SERVER() + "&q=atn";
+    }
+
+    public static String Query_TravelNoteList() {
+        return SERVER() + "&q=qtnl";
+    }
+
+    public static String Query_TravelNoteDetail() {
+        return SERVER() + "&q=qtnd";
+    }
+
+    public static String Query_TravelNoteCommentList() {
+        return SERVER() + "&q=qtncl";
+    }
 
     // Test code begin
-    String Upload_Single_File = "https://yanyangtian.purang.com/" + "/mobile/bizFile/addBizFile.htm";
-    String Upload_Multi_File = "https://yanyangtian.purang.com/" + "/mobile/bizFile/addBizFileList.htm";
-    String H5_DefaultUrl = "https://www.baidu.com";
+    public static String H5_DefaultUrl() {
+        return "https://www.baidu.com";
+    }
     // Test code end
 }

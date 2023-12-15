@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
@@ -53,7 +54,12 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
     private Observer<Boolean> mUiLoadingDataObserver = new Observer<Boolean>() {
         @Override
         public void onChanged(@Nullable Boolean aBoolean) {
-            setLoadingUiVisibility(aBoolean);
+            int clickGone = mViewModel.getUiLoadingData().getCustomData();
+            if (clickGone == -1) {
+                setLoadingUiVisibility(aBoolean);
+            } else {
+                setLoadingUiVisibility(aBoolean, clickGone != 0);
+            }
         }
     };
 
@@ -71,10 +77,31 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     };
 
-    private Observer<Integer> mToastResDataObserver = new Observer<Integer>() {
+    private Observer<Integer> mToastResFormatDataObserver = new Observer<Integer>() {
         @Override
         public void onChanged(@Nullable Integer resId) {
-            showShortToast(resId, mViewModel.getToastResData().getCustomData());
+            showShortToast(resId, mViewModel.getToastResFormatData().getCustomData());
+        }
+    };
+
+    private Observer<String> mLongToastMsgDataObserver = new Observer<String>() {
+        @Override
+        public void onChanged(@Nullable String msg) {
+            showLongToast(msg);
+        }
+    };
+
+    private Observer<Integer> mLongToastResIdDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer resId) {
+            showLongToast(resId);
+        }
+    };
+
+    private Observer<Integer> mLongToastResFormatDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer resId) {
+            showLongToast(resId, mViewModel.getToastResFormatData().getCustomData());
         }
     };
 
@@ -84,9 +111,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         // 创建ViewModel{
         Type type = getClass().getGenericSuperclass();
         if (type instanceof ParameterizedType) {
-            Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
-            mViewModel = (VM) ViewModelProviders.of(this).get(presenterClazz);
-            mViewModel.getUiLoadingData().setValue(false);
+            mViewModel = createViewModel((ParameterizedType) type);
         }
         mViewModel.getObserveSyncLiveDataData().observe(this, mSyncLiveDataObserver);
         mViewModel.getResetUiData().observe(this, mResetUiDataObserver);
@@ -94,9 +119,30 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         mViewModel.getUiLoadingData().observe(this, mUiLoadingDataObserver);
         mViewModel.getToastMsgData().observe(this, mToastMsgDataObserver);
         mViewModel.getToastResIdData().observe(this, mToastResIdDataObserver);
-        mViewModel.getToastResData().observe(this, mToastResDataObserver);
+        mViewModel.getToastResFormatData().observe(this, mToastResFormatDataObserver);
+        mViewModel.getLongToastMsgData().observe(this, mLongToastMsgDataObserver);
+        mViewModel.getLongToastResIdData().observe(this, mLongToastResIdDataObserver);
+        mViewModel.getLongToastResFormatData().observe(this, mLongToastResFormatDataObserver);
         observeInitLiveData(savedInstanceState);
         return false;
+    }
+
+    private volatile boolean mEnableStoreViewModel = true;
+
+    public void enableStoreViewModel(boolean enable) {
+        mEnableStoreViewModel = enable;
+    }
+
+    public VM createViewModel(ParameterizedType type) {
+        Class presenterClazz = (Class) type.getActualTypeArguments()[1];
+        if (mEnableStoreViewModel) {
+            VM vm = (VM) ViewModelProviders.of(this).get(presenterClazz);
+            return vm;
+        } else {
+            ViewModelProvider.Factory factory = new ViewModelProvider.NewInstanceFactory();
+            VM vm = (VM) new ViewModelProvider(this, factory).get(presenterClazz);
+            return vm;
+        }
     }
 
     /**
@@ -177,6 +223,10 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
     }
 
     public void setLoadingUiVisibility(boolean visibility) {
+
+    }
+
+    public void setLoadingUiVisibility(boolean visibility, boolean enableClickGone) {
 
     }
 

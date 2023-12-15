@@ -25,6 +25,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
 import com.pine.template.base.R;
 import com.pine.template.base.component.share.bean.ShareBean;
 import com.pine.template.base.component.share.manager.ShareManager;
@@ -47,7 +49,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import androidx.core.content.FileProvider;
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
 
 public class CommonWebView extends WebView {
@@ -330,8 +331,10 @@ public class CommonWebView extends WebView {
         Canvas canvas = new Canvas(bitmap);
         draw(canvas);
         Bitmap bitmapEnd = Bitmap.createBitmap(bitmap, x, y, widthValue, heightValue);
-        bitmap.recycle();
         saveSnapshot(result, name, bitmapEnd);
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+        }
     }
 
     @SuppressLint("WrongThread")
@@ -350,7 +353,9 @@ public class CommonWebView extends WebView {
             if (result) {
                 Toast.makeText(mActivity, R.string.base_save_success, Toast.LENGTH_SHORT).show();
             }
-            bitmap.recycle();
+            if (bitmap != null && !bitmap.isRecycled()) {
+                bitmap.recycle();
+            }
             String fileRealName = name + ".jpg";
             File file = new File(appDir, fileRealName);
             //7.0新URI

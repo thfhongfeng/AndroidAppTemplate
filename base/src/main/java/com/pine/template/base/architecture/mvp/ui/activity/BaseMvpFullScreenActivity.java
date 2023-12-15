@@ -4,21 +4,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.Window;
-import android.view.WindowManager;
 
 import com.pine.template.base.R;
 import com.pine.tool.architecture.mvp.contract.IContract;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
-import com.pine.tool.architecture.mvp.ui.MvpActivity;
 
 public abstract class BaseMvpFullScreenActivity<V extends IContract.Ui, P extends Presenter<V>>
-        extends MvpActivity<V, P> implements IContract.Ui {
+        extends BaseMvpActivity<V, P> implements IContract.Ui {
 
     @Override
     protected final void setContentView(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 
         setContentView(R.layout.base_activity_full_screen);
 
@@ -38,16 +40,18 @@ public abstract class BaseMvpFullScreenActivity<V extends IContract.Ui, P extend
     }
 
     @Override
+    protected void onStart() {
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        super.onStart();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    protected int getLoadingUiResId() {
-        return R.layout.base_loading;
-    }
-
-    public void setLoadingUiVisibility(boolean visibility) {
-        hideSoftInputFromWindow();
-        findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 }

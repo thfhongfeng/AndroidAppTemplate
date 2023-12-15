@@ -3,6 +3,8 @@ package com.pine.template.base.access;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
+
 import com.pine.template.base.BaseApplication;
 import com.pine.template.base.remote.BaseRouterClient;
 import com.pine.tool.access.IUiAccessExecutor;
@@ -10,8 +12,6 @@ import com.pine.tool.access.UiAccessTimeInterval;
 import com.pine.tool.router.IRouterCallback;
 
 import java.util.HashMap;
-
-import androidx.fragment.app.Fragment;
 
 /**
  * Created by tanghongfeng on 2018/9/16

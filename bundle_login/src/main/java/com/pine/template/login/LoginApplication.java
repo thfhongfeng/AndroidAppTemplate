@@ -13,6 +13,10 @@ import com.pine.tool.util.LogUtils;
 public class LoginApplication extends BaseApplication {
     private final static String TAG = LogUtils.makeLogTag(LoginApplication.class);
 
+    public static void onCreate() {
+
+    }
+
     public static void attach() {
         switch (BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER) {
             case "local":

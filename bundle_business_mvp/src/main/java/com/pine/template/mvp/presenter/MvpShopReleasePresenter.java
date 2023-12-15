@@ -4,13 +4,13 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.bean.MvpShopDetailEntity;
 import com.pine.template.mvp.contract.IMvpShopReleaseContract;
 import com.pine.template.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
-import com.pine.tool.bean.InputParam;
 import com.pine.tool.exception.MessageException;
 
 import java.util.HashMap;
@@ -110,16 +110,12 @@ public class MvpShopReleasePresenter extends Presenter<IMvpShopReleaseContract.U
         }
 
         InputParam<String> latitude = getUi().getShopLocationLatParam("latitude");
-        if (latitude.checkIsEmpty(R.string.mvp_shop_release_address_location_need)) {
-            return;
-        } else {
+        if (!TextUtils.isEmpty(latitude.getValue())) {
             params.put(latitude.getKey(), latitude.getValue());
         }
 
         InputParam<String> longitude = getUi().getShopLocationLonParam("longitude");
-        if (longitude.checkIsEmpty(R.string.mvp_shop_release_address_location_need)) {
-            return;
-        } else {
+        if (!TextUtils.isEmpty(longitude.getValue())) {
             params.put(longitude.getKey(), longitude.getValue());
         }
 
@@ -128,9 +124,7 @@ public class MvpShopReleasePresenter extends Presenter<IMvpShopReleaseContract.U
         params.put("remark", getUi().getShopRemarkParam("remark").getValue().toString());
 
         InputParam<String> images = getUi().getShopImagesParam("imgUrls");
-        if (images.checkIsEmpty(R.string.mvp_shop_release_photo_image_need)) {
-            return;
-        } else {
+        if (!TextUtils.isEmpty(images.getValue())) {
             int pos = images.getValue().indexOf(",");
             if (pos == -1) {
                 params.put("mainImgUrl", images.getValue());

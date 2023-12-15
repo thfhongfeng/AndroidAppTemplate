@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.mvp.MvpConstants;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.adapter.MvpShopCheckListPaginationAdapter;
@@ -13,7 +14,6 @@ import com.pine.template.mvp.contract.IMvpShopSearchCheckContract;
 import com.pine.template.mvp.model.MvpShopModel;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
-import com.pine.tool.bean.InputParam;
 import com.pine.tool.exception.MessageException;
 
 import java.util.ArrayList;

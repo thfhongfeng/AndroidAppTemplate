@@ -13,4 +13,12 @@ public class BaseApplication extends RootApplication {
     protected BaseApplication() {
         throw new IllegalArgumentException(getClass() + " prohibited from being constructed");
     }
+
+    public static void onCreate() {
+
+    }
+
+    public static void attach() {
+
+    }
 }

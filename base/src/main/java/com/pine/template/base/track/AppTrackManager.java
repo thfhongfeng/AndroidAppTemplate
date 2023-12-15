@@ -3,32 +3,34 @@ package com.pine.template.base.track;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.pine.template.base.bean.AccountBean;
-import com.pine.template.base.db.entity.AppTrack;
-import com.pine.template.base.remote.BaseRouterClient;
-import com.pine.tool.util.LogUtils;
-import com.pine.tool.util.NetWorkUtils;
+import androidx.annotation.NonNull;
 
-import java.util.Calendar;
+import com.pine.template.base.track.entity.AppTrack;
+import com.pine.template.config.ConfigKey;
+import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.tool.util.LogUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
 
 public class AppTrackManager {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
 
     private static volatile AppTrackManager mInstance;
+    private Context mContext;
     private TrackHelper mHelper;
     private boolean mIsInit;
     // 总开关
     private boolean mEnable = false;
-    // 模块开关
+    // 模块开关(value表示是否上传该模块的本地记录)
     private Map<String, Boolean> mOpenModuleMap = new HashMap<>();
 
     private AppTrackManager() {
         mOpenModuleMap.put(TrackModuleTag.MODULE_DEFAULT, true);
+        mOpenModuleMap.put(TrackModuleTag.MODULE_BASE, true);
+
+        mOpenModuleMap.put(TrackModuleTag.MODULE_OPERATION_RECORD, false);
     }
 
     public synchronized static AppTrackManager getInstance() {
@@ -39,10 +41,34 @@ public class AppTrackManager {
     }
 
     public void init(@NonNull Context application, @NonNull String uploadUrl) {
-        LogUtils.d(TAG, "init uploadUrl :" + uploadUrl);
-        mEnable = true;
+        mContext = application;
+        mEnable = ConfigSwitcherServer.isEnable(ConfigKey.FUN_APP_TRACK)
+                && ConfigSwitcherServer.isEnable(ConfigKey.ENABLE_APP_TRACK);
         mHelper = new TrackHelper(application, uploadUrl, mOpenModuleMap);
         mIsInit = true;
+
+        LogUtils.d(TAG, "init uploadUrl :" + uploadUrl + ", enable app track:" + mEnable);
+
+        uploadAllExistTrack();
+        doSetupJob();
+    }
+
+    private void doSetupJob() {
+        if (!enableTrack()) {
+            return;
+        }
+        int interval = ConfigSwitcherServer.getConfigInt(ConfigKey.CONFIG_APP_TRACK_LOOP_INTERVAL);
+        if (interval > 0) {
+            startLoopUploadTrack(interval * 1000);
+        }
+    }
+
+    public void enableAppTrack(boolean enable) {
+        boolean change = mEnable != enable;
+        mEnable = enable;
+        if (change) {
+            doSetupJob();
+        }
     }
 
     /**
@@ -63,112 +89,135 @@ public class AppTrackManager {
         }
     }
 
+    public void track(@NonNull Context context, @NonNull String trackModuleTag,
+                      @NonNull AppTrack appTrack) {
+        track(context, trackModuleTag, appTrack, false);
+    }
+
     /**
      * @param context
-     * @param trackModuleTag see {@link TrackModuleTag}
+     * @param trackModuleTag  see {@link TrackModuleTag}
      * @param appTrack
+     * @param containBaseInfo
      */
-    public void track(@NonNull Context context, @NonNull String trackModuleTag, @NonNull AppTrack appTrack) {
+    public void track(@NonNull Context context, @NonNull String trackModuleTag,
+                      @NonNull AppTrack appTrack, boolean containBaseInfo) {
+        track(context, trackModuleTag, appTrack, containBaseInfo, false);
+    }
+
+    public void track(@NonNull Context context, @NonNull String trackModuleTag,
+                      @NonNull AppTrack appTrack, boolean containBaseInfo, boolean immediately) {
         if (!canTrack(trackModuleTag)) {
             return;
         }
         appTrack.setModuleTag(trackModuleTag);
-        mHelper.track(appTrack);
+        if (TextUtils.isEmpty(appTrack.getCurClass())) {
+            appTrack.setCurClass("DefaultTrackClass");
+        }
+        if (!containBaseInfo) {
+            AppTrackUtils.setBaseInfoAndIp(context, appTrack);
+        }
+        mHelper.track(appTrack, immediately);
     }
 
-    /**
-     * @param context
-     * @param trackModuleTag
-     * @param curClass
-     * @param preClass
-     * @param title
-     * @param buttonName
-     */
-    public void trackButton(@NonNull Context context, @NonNull String trackModuleTag, @NonNull String curClass,
-                            @NonNull String preClass, @NonNull String title, @NonNull String buttonName) {
-        if (!canTrack(trackModuleTag)) {
+    public void recordOperation(@NonNull String curClass,
+                                @NonNull String actionName, @NonNull String actionData,
+                                long recordTime) {
+        recordOperation(curClass, actionName, actionData, recordTime, false, false);
+    }
+
+    public void recordOperation(@NonNull String curClass,
+                                @NonNull String actionName, @NonNull String actionData,
+                                long recordTime,
+                                boolean containBaseInfo) {
+        recordOperation(curClass, actionName, actionData, recordTime, containBaseInfo, false);
+    }
+
+    public void recordOperation(@NonNull String curClass,
+                                @NonNull String actionName, @NonNull String actionData,
+                                long recordTime,
+                                boolean containBaseInfo, boolean immediately) {
+        if (!canTrack(TrackModuleTag.MODULE_OPERATION_RECORD)) {
             return;
         }
         AppTrack appTrack = new AppTrack();
-        setUserInfoAndIp(context, appTrack);
-        appTrack.setModuleTag(trackModuleTag);
-        appTrack.setTrackType(0);
         appTrack.setCurClass(curClass);
-        appTrack.setPreClass(preClass);
-        appTrack.setTitle(title);
-        appTrack.setButtonName(buttonName);
-        long timeStamp = Calendar.getInstance().getTimeInMillis();
-        appTrack.setTimeInStamp(timeStamp);
-        appTrack.setTimeOutStamp(timeStamp);
-        mHelper.track(appTrack);
+        appTrack.setTrackType(9899);
+        appTrack.setActionName(actionName);
+        appTrack.setModuleTag(TrackModuleTag.MODULE_OPERATION_RECORD);
+        appTrack.setActionData(actionData);
+        appTrack.setActionInStamp(recordTime);
+        if (!containBaseInfo) {
+            AppTrackUtils.setBaseInfoAndIp(mContext, appTrack);
+        }
+        mHelper.track(appTrack, immediately);
+    }
+
+    public List<AppTrack> getOperationRecord(String actionName, int pageNo, int pageSize) {
+        if (!canTrack(TrackModuleTag.MODULE_OPERATION_RECORD)) {
+            return null;
+        }
+        return mHelper.getTrackList(TrackModuleTag.MODULE_OPERATION_RECORD, actionName, pageNo, pageSize);
+    }
+
+    public List<AppTrack> getOperationRecord(List<String> actionNames, int pageNo, int pageSize) {
+        if (!canTrack(TrackModuleTag.MODULE_OPERATION_RECORD)) {
+            return null;
+        }
+        return mHelper.getTrackList(TrackModuleTag.MODULE_OPERATION_RECORD, actionNames, pageNo, pageSize);
     }
 
     /**
-     * @param context
-     * @param trackModuleTag
-     * @param curClass
-     * @param preClass
-     * @param title
-     * @param startTimeStamp
-     * @param endTimeStamp
+     * @param startTimeStamp include
+     * @param endTimeStamp   exclude
      */
-    public void trackPageUi(@NonNull Context context, @NonNull String trackModuleTag,
-                            @NonNull String curClass, @NonNull String preClass,
-                            @NonNull String title, long startTimeStamp, long endTimeStamp) {
-        if (!canTrack(trackModuleTag) || startTimeStamp < 0 || endTimeStamp < 0 || startTimeStamp > endTimeStamp) {
+    public void uploadTrack(long startTimeStamp, long endTimeStamp) {
+        if (!enableUploadTrack()) {
             return;
         }
-        AppTrack appTrack = new AppTrack();
-        setUserInfoAndIp(context, appTrack);
-        appTrack.setModuleTag(trackModuleTag);
-        appTrack.setTrackType(1);
-        appTrack.setCurClass(curClass);
-        appTrack.setPreClass(preClass);
-        appTrack.setTitle(title);
-        appTrack.setButtonName("");
-        appTrack.setTimeInStamp(startTimeStamp);
-        appTrack.setTimeOutStamp(endTimeStamp);
-        mHelper.track(appTrack);
+        mHelper.uploadTrack(startTimeStamp, endTimeStamp);
     }
 
-    private void setUserInfoAndIp(@NonNull Context context, AppTrack appTrack) {
-        AccountBean accountBean = BaseRouterClient.getLoginAccount(context, null);
-        String accountId = "";
-        String name = "";
-        int accountType = 0;
-        if (accountBean != null) {
-            accountId = accountBean.getId();
-            name = accountBean.getName();
-            accountType = accountBean.getAccountType();
+    public void uploadAllExistTrack() {
+        if (!enableUploadTrack()) {
+            return;
         }
-        appTrack.setAccountId(accountId);
-        appTrack.setUserName(name);
-        appTrack.setAccountType(accountType);
-
-        String ip = NetWorkUtils.getIpAddress();
-        appTrack.setIp(TextUtils.isEmpty(ip) ? "" : ip);
+        mHelper.uploadTrack(-1, -1);
     }
 
-    /**
-     * @param trackModuleTagList list for TrackModuleTag, see {@link TrackModuleTag}, null for all
-     * @param startTimeStamp     include
-     * @param endTimeStamp       exclude
-     */
-    public void uploadTrack(List<String> trackModuleTagList, long startTimeStamp, long endTimeStamp) {
+    public void startLoopUploadTrack(long delay) {
+        if (!enableUploadTrack()) {
+            return;
+        }
+        mHelper.startLoopUploadTrack(delay);
+    }
+
+    public void stopLoopUploadTrack() {
         if (!isInit()) {
             return;
         }
-        mHelper.uploadTrack(trackModuleTagList, startTimeStamp, endTimeStamp);
+        mHelper.stopLoopUploadTrack();
     }
 
-    /**
-     * @param trackModuleTagList list for TrackModuleTag, see {@link TrackModuleTag}, null for all
-     */
-    public void uploadAllExistTrack(List<String> trackModuleTagList) {
+    public void clearAllWaitTrackTask() {
         if (!isInit()) {
             return;
         }
-        mHelper.uploadTrack(trackModuleTagList, -1, -1);
+        mHelper.clearAllWaitTrackTask();
+    }
+
+    private boolean enableTrack() {
+        if (!isInit()) {
+            return false;
+        }
+        return mEnable;
+    }
+
+    private boolean enableUploadTrack() {
+        if (!isInit()) {
+            return false;
+        }
+        return mEnable && ConfigSwitcherServer.isEnable(ConfigKey.ENABLE_UPLOAD_APP_TRACK);
     }
 
     private boolean canTrack(@NonNull String trackModule) {
@@ -176,7 +225,7 @@ public class AppTrackManager {
             return false;
         }
         synchronized (mOpenModuleMap) {
-            return mEnable && mOpenModuleMap.containsKey(trackModule) && mOpenModuleMap.get(trackModule);
+            return mEnable && mOpenModuleMap.containsKey(trackModule);
         }
     }
 

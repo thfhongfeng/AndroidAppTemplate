@@ -69,8 +69,8 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
 
         mBinding.photoIuv.init(this);
 
-        mBinding.goAddProductBtnTv.setVisibility(ConfigSwitcherServer.getInstance()
-                .isEnable(ConfigKey.FUN_ADD_PRODUCT_KEY) ? View.VISIBLE : View.GONE);
+        mBinding.goAddProductBtnTv.setVisibility(ConfigSwitcherServer
+                .isEnable(ConfigKey.FUN_ADD_PRODUCT) ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -105,15 +105,18 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
                 if (latLngStr.length == 2) {
                     latLng[0] = DecimalUtils.format(latLngStr[0].trim(), 6);
                     latLng[1] = DecimalUtils.format(latLngStr[1].trim(), 6);
-                    startActivity(MapSdkManager.getMarkMapActivityIntent(
-                            MvvmShopDetailActivity.this, latLng[0], latLng[1], false));
+                    Intent intent = MapSdkManager.getMarkMapActivityIntent(
+                            MvvmShopDetailActivity.this, latLng[0], latLng[1], false);
+                    if (intent != null) {
+                        startActivity(intent);
+                    }
                 }
             }
         }
 
         public void goShopH5Ui(View v) {
             Intent intent = new Intent(MvvmShopDetailActivity.this, MvvmWebViewActivity.class);
-            intent.putExtra("url", MvvmUrlConstants.H5_DefaultUrl);
+            intent.putExtra("url", MvvmUrlConstants.H5_DefaultUrl());
             startActivity(intent);
         }
 

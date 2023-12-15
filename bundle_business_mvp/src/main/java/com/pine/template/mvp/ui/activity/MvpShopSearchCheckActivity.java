@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
+import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.recycle_view.adapter.BaseListAdapter;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.adapter.MvpShopCheckListPaginationAdapter;
 import com.pine.template.mvp.contract.IMvpShopSearchCheckContract;
 import com.pine.template.mvp.presenter.MvpShopSearchCheckPresenter;
-import com.pine.tool.bean.InputParam;
 import com.pine.tool.util.KeyboardUtils;
 
 /**

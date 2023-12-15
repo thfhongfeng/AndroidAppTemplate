@@ -3,6 +3,9 @@ package com.pine.template.base.component.image_loader.glide.loader;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -24,9 +27,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 
 /**
  * Created by tanghongfeng on 2018/11/21
@@ -89,11 +89,12 @@ public class HttpDataFetcher implements DataFetcher<InputStream> {
 
                 @Override
                 public boolean onFail(int what, Exception e, Response response) {
+                    boolean ret = true;
                     if (listener != null) {
-                        listener.onFail(response.getResponseCode(), "");
+                        ret = listener.onFail(response.getResponseCode(), "");
                     }
                     callback.onLoadFailed(e);
-                    return false;
+                    return ret;
                 }
 
                 @Override
@@ -152,7 +153,7 @@ public class HttpDataFetcher implements DataFetcher<InputStream> {
         HttpURLConnection build(URL url) throws IOException;
     }
 
-    private static class DefaultHttpUrlConnectionFactory implements HttpDataFetcher.HttpUrlConnectionFactory {
+    private static class DefaultHttpUrlConnectionFactory implements HttpUrlConnectionFactory {
 
         @Synthetic
         DefaultHttpUrlConnectionFactory() {

@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -16,8 +18,6 @@ import com.pine.template.base.component.image_loader.glide.loader.HttpRequestLoa
 import com.pine.tool.util.LogUtils;
 
 import java.io.File;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/11
@@ -123,7 +123,7 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
                     options.diskCacheStrategy(DiskCacheStrategy.DATA);
                     break;
                 case RESOURCE:
-                    options.diskCacheStrategy(DiskCacheStrategy.DATA);
+                    options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
                     break;
                 case ALL:
                     options.diskCacheStrategy(DiskCacheStrategy.ALL);
@@ -162,7 +162,7 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
                     options.diskCacheStrategy(DiskCacheStrategy.DATA);
                     break;
                 case RESOURCE:
-                    options.diskCacheStrategy(DiskCacheStrategy.DATA);
+                    options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
                     break;
                 case ALL:
                     options.diskCacheStrategy(DiskCacheStrategy.ALL);

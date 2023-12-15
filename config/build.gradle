@@ -2,13 +2,11 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion build_versions.compileSdkVersion
-    buildToolsVersion build_versions.buildToolsVersion
 
     defaultConfig {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
 
-        buildConfigField "String", "BASE_URL", "\"${app_url.base_url}\""
         buildConfigField "String", "WEI_BO_REDIRECT_URL", "\"${app_url.wei_bo_secret_key}\""
 
         buildConfigField "String", "QQ_FOR_APP_ID", "\"${app_key.qq_for_app_id}\""
@@ -43,13 +41,16 @@ android {
 
     productFlavors {
         common {
-            buildConfigField "String", "APP_NAME", "\"${build_product_appName.common}\""
+            buildConfigField "String", "APP_NAME_ID", "\"${build_product_appName.common}\""
+            buildConfigField "String", "APPILICATION_ID", "\"${build_product_applicationId.common}\""
+            buildConfigField "String", "VERSION_CODE", "\"${build_product_versionCode.common}\""
+            buildConfigField "String", "VERSION_NAME", "\"${build_product_versionName.common}\""
         }
-        huawei {
-            buildConfigField "String", "APP_NAME", "\"${build_product_appName.huawei}\""
-        }
-        xiaomi {
-            buildConfigField "String", "APP_NAME", "\"${build_product_appName.xiaomi}\""
+        special {
+            buildConfigField "String", "APP_NAME_ID", "\"${build_product_appName.special}\""
+            buildConfigField "String", "APPILICATION_ID", "\"${build_product_applicationId.special}\""
+            buildConfigField "String", "VERSION_CODE", "\"${build_product_versionCode.special}\""
+            buildConfigField "String", "VERSION_NAME", "\"${build_product_versionName.special}\""
         }
     }
 

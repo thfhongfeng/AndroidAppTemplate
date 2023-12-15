@@ -1,8 +1,8 @@
 package com.pine.tool.request;
 
-import java.util.Map;
-
 import androidx.annotation.NonNull;
+
+import java.util.Map;
 
 /**
  * Created by tanghongfeng on 2018/9/10.
@@ -56,6 +56,7 @@ public class DownloadRequestBean extends RequestBean {
         this.saveFileName = saveFileName;
         this.isContinue = isContinue;
         this.isDeleteOld = isDeleteOld;
+        this.setReadTimeout(60 * 60 * 1000);
     }
 
     public String getSaveFolder() {

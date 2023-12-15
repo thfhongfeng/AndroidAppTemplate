@@ -1,0 +1,27 @@
+task specialDimens {
+    doLast {
+        calAndCopyDimensFile("${rootProject.rootDir}/resource/src/main/res/values/dimens-constant.xml",
+                "${rootProject.rootDir}/resource/src/special/res/values/dimens-constant.xml", 1.5)
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+def calAndCopyDimensFile(srcFilePath, destFilePath, scale) {
+    if (srcFilePath == destFilePath) {
+        return
+    }
+    File dimensFile = file(srcFilePath)
+    if (dimensFile.exists()) {
+        def originalDimensContent = dimensFile.getText()
+        def newDimensContent = originalDimensContent.replaceAll(/(\d+\.?\d*)(dp|sp)/) { match ->
+            def value = (Float.parseFloat(match[1]) * scale).round(2)
+            value.toString() + match[2]
+        }
+        File newDimensFile = file(destFilePath)
+        if (!newDimensFile.parentFile.exists()) {
+            newDimensFile.parentFile.mkdirs()
+        }
+        newDimensFile.write(newDimensContent)
+    }
+}

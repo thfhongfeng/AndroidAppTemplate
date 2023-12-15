@@ -16,6 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pine.template.base.R;
 import com.pine.template.base.component.image_loader.ImageLoaderManager;
 import com.pine.template.base.component.uploader.FileUploadComponent;
@@ -27,9 +30,6 @@ import com.pine.template.base.util.ExceptionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * Created by tanghongfeng on 2019/9/1
@@ -186,12 +186,12 @@ public class BaseSingleImageUploadView extends UploadLinearLayout implements IFi
     }
 
     private void setupImageWidthHeight() {
-        LinearLayout.LayoutParams topLayoutParams = (LinearLayout.LayoutParams) top_rl.getLayoutParams();
+        LayoutParams topLayoutParams = (LayoutParams) top_rl.getLayoutParams();
         topLayoutParams.width = mImageContainerWidth;
         topLayoutParams.height = mImageContainerHeight;
         top_rl.setLayoutParams(topLayoutParams);
 
-        LinearLayout.LayoutParams bottomLayoutParams = (LinearLayout.LayoutParams) bottom_ll.getLayoutParams();
+        LayoutParams bottomLayoutParams = (LayoutParams) bottom_ll.getLayoutParams();
         bottomLayoutParams.width = mImageContainerWidth;
         bottom_ll.setLayoutParams(bottomLayoutParams);
     }

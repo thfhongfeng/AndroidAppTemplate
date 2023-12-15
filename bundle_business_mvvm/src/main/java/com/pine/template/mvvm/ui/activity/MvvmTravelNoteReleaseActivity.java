@@ -47,7 +47,7 @@ import java.util.Map;
  */
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER},
-        AccessArgs = {"", ConfigKey.FUN_ADD_TRAVEL_NOTE_KEY},
+        AccessArgs = {"", ConfigKey.FUN_ADD_TRAVEL_NOTE},
         AccessActions = {UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
                 UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI,
                 UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
@@ -60,7 +60,7 @@ public class MvvmTravelNoteReleaseActivity extends
 
         @Override
         public String getUploadUrl() {
-            return MvvmUrlConstants.Upload_Single_File;
+            return MvvmUrlConstants.FILE_UPLOAD();
         }
 
         @Override

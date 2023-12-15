@@ -1,11 +1,14 @@
 package com.pine.template.login.model.callback;
 
+import static com.pine.tool.request.IRequestManager.SESSION_ID;
+
 import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.pine.template.base.bean.AccountBean;
-import com.pine.template.config.BuildConfig;
+import com.pine.template.base.util.AccountUtils;
+import com.pine.template.config.ConfigApplication;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.login.LoginApplication;
 import com.pine.template.login.LoginConstants;
@@ -22,8 +25,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 /**
  * Created by tanghongfeng on 2018/9/10.
@@ -74,35 +75,25 @@ public class LoginCallback extends JsonCallback {
                 return;
             }
             AccountBean responseAccount = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), AccountBean.class);
-            // Test code begin
-            if (!"local".equalsIgnoreCase(BuildConfig.APP_THIRD_DATA_SOURCE_PROVIDER)) {
-                responseAccount = new AccountBean();
-                responseAccount.setId(jsonObject.optString("userId"));
-                responseAccount.setAccount(jsonObject.optString("mobile"));
-                responseAccount.setName(jsonObject.optString("userRealName"));
-                responseAccount.setMobile(jsonObject.optString("mobile"));
-                responseAccount.setHeadImgUrl(jsonObject.optString("headImgUrl"));
-                responseAccount.setState(1);
-                responseAccount.setAccountType(9100);
-            }
-            // Test code end
             final AccountBean accountBean = responseAccount;
             LoginManager.saveLoginInfo(accountBean);
             LoginApplication.setLogin(true);
-            ConfigSwitcherServer.getInstance().setupConfigSwitcher(true, new ConfigSwitcherServer.IConfigSwitcherCallback() {
-                @Override
-                public void onSetupComplete() {
-                    loginSuccess(what, accountBean, "登陆成功！");
-                }
+            ConfigSwitcherServer.setupConfigSwitcher(true,
+                    AccountUtils.getAccountInfoAndIpParams(ConfigApplication.mApplication),
+                    new ConfigSwitcherServer.IConfigSwitcherCallback() {
+                        @Override
+                        public void onSetupComplete() {
+                            loginSuccess(what, accountBean, "登陆成功！");
+                        }
 
-                @Override
-                public boolean onSetupFail() {
-                    LoginManager.logout();
-                    loginFail(what, jsonObject == null ?
-                            "" : jsonObject.optString(LoginConstants.MESSAGE), "登陆失败，服务器异常，请重试！");
-                    return true;
-                }
-            });
+                        @Override
+                        public boolean onSetupFail() {
+                            LoginManager.logout();
+                            loginFail(what, jsonObject == null ?
+                                    "" : jsonObject.optString(LoginConstants.MESSAGE), "登陆失败，服务器异常，请重试！");
+                            return true;
+                        }
+                    });
         }
     }
 

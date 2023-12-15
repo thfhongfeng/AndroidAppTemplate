@@ -2,6 +2,8 @@ package com.pine.template.base.recycle_view.adapter;
 
 import android.view.ViewGroup;
 
+import androidx.annotation.LayoutRes;
+
 import com.pine.template.base.recycle_view.BaseListViewHolder;
 import com.pine.template.base.recycle_view.bean.BaseListAdapterItemEntity;
 import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
@@ -9,8 +11,6 @@ import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import androidx.annotation.LayoutRes;
 
 /**
  * Created by tanghongfeng on 2018/9/28
@@ -30,6 +30,10 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
 
     public final void setPage(int startPageNo, int pageSize) {
         mPageNo = new AtomicInteger(startPageNo);
+        mPageSize = new AtomicInteger(pageSize);
+    }
+
+    public final void setPageSize(int pageSize) {
         mPageSize = new AtomicInteger(pageSize);
     }
 
