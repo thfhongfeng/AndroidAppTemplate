@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
+import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.TypeConvertUtils;
 import com.pine.tool.util.builder.ImageCodeBuilder;
 
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DbResponseGenerator {
+    private final static String TAG = DbResponseGenerator.class.getSimpleName();
 
     public static DbResponse getSuccessUrlBitmapBytesRep(DbRequestBean requestBean,
                                                          HashMap<String, String> cookies,
@@ -32,7 +34,9 @@ public class DbResponseGenerator {
         DbResponse response = new DbResponse();
         response.setSucceed(true);
         response.setCookies(cookies);
-        response.setData(TypeConvertUtils.toByteArray(bitmap));
+        if (bitmap != null) {
+            response.setData(TypeConvertUtils.toByteArray(bitmap));
+        }
         response.setTag(requestBean.getModuleTag());
         insertHeaders(response, cookies, "200");
         return response;
@@ -205,7 +209,7 @@ public class DbResponseGenerator {
             bitmap = BitmapFactory.decodeStream(is);
             is.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtils.e(TAG, "urlToBitmap url:" + url + ", e:" + e);
         }
         return bitmap;
     }

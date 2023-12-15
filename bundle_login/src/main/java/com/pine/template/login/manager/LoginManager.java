@@ -31,7 +31,7 @@ public class LoginManager {
         params.put(LoginConstants.LOGIN_PASSWORD, securityPwd);
 
         mAccount = account;
-        mPassword = securityPwd;
+        mPassword = password;
 
         mAccountModel.requestLogin(params, LoginCallback.LOGIN_CODE, callback);
     }
@@ -45,9 +45,10 @@ public class LoginManager {
 
     // 自动登录
     public static void autoLogin(String account, String password, ILoginResponse callback) {
+        String securityPwd = SecurityUtils.generateMD5(password);
         HashMap<String, String> params = new HashMap<>();
         params.put(LoginConstants.LOGIN_ACCOUNT, account);
-        params.put(LoginConstants.LOGIN_PASSWORD, password);
+        params.put(LoginConstants.LOGIN_PASSWORD, securityPwd);
 
         mAccount = account;
         mPassword = password;
@@ -66,8 +67,9 @@ public class LoginManager {
         if (account.length() == 0 || password.length() == 0) {
             return false;
         }
+        String securityPwd = SecurityUtils.generateMD5(password);
         params.put(LoginConstants.LOGIN_ACCOUNT, account);
-        params.put(LoginConstants.LOGIN_PASSWORD, password);
+        params.put(LoginConstants.LOGIN_PASSWORD, securityPwd);
 
         mAccount = account;
         mPassword = password;
