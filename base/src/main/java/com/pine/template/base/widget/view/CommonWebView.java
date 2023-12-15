@@ -32,6 +32,7 @@ import com.pine.template.base.component.share.bean.ShareBean;
 import com.pine.template.base.component.share.manager.ShareManager;
 import com.pine.template.base.remote.BaseRouterClient;
 import com.pine.template.base.util.DialogUtils;
+import com.pine.tool.BuildConfig;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.router.IRouterCallback;
@@ -362,7 +363,7 @@ public class CommonWebView extends WebView {
             Uri uri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {// sdk >= 24  android7.0以上
                 Uri contentUri = FileProvider.getUriForFile(mActivity,
-                        mActivity.getApplicationContext().getPackageName() + ".fileProvider",//与清单文件中android:authorities的值保持一致
+                        BuildConfig.FILE_PROVIDER_AUTHORITY,//与清单文件中android:authorities的值保持一致
                         file);//FileProvider方式或者ContentProvider也可使用VmPolicy方式
                 uri = contentUri;
 

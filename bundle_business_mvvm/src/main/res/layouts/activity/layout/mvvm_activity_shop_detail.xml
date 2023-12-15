@@ -280,7 +280,7 @@
                     <com.pine.template.base.binding.widget.custom.view.BindingImageUploadRecycleView
                         android:id="@+id/photo_iuv"
                         imgUrlsJoinStr='@{","}'
-                        initImgUrls="@{shopDetail.imgUrls}"
+                        imgUrls="@{shopDetail.imgUrls}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/dp_10"

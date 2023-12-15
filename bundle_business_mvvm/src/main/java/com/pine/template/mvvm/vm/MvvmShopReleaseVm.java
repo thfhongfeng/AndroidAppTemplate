@@ -12,6 +12,7 @@ import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.util.AppUtils;
+import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.RegexUtils;
 
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class MvvmShopReleaseVm extends ViewModel {
             return;
         }
         MvvmShopDetailEntity entity = shopDetailData.getValue();
+        LogUtils.d(TAG, "addShop " + entity);
         if (TextUtils.isEmpty(entity.getName())) {
             setToastResId(R.string.mvvm_shop_release_name_need);
             return;

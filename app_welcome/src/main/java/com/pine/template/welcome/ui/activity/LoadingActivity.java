@@ -11,9 +11,9 @@ import androidx.lifecycle.Observer;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.base.bean.VersionEntity;
 import com.pine.template.base.manager.ApkVersionManager;
-import com.pine.template.config.router.command.RouterMainCommand;
 import com.pine.template.base.track.AppTrackManager;
 import com.pine.template.config.ConfigKey;
+import com.pine.template.config.router.command.RouterMainCommand;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.welcome.R;
 import com.pine.template.welcome.WelUrlConstants;
@@ -38,8 +38,8 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     private final static int REQUEST_CODE_GO_ASSIGN_UI = 9999;
     private final static int LOADING_STAY_MIN_TIME = 1000;
 
-    public final static boolean ENABLE_LOADING_GO_ASSIGN = false;
-    public final static boolean ENABLE_LOADING_AUTO_LOGIN = false;
+    public final static boolean ENABLE_LOADING_GO_ASSIGN = true;
+    public final static boolean ENABLE_LOADING_AUTO_LOGIN = true;
     public final static boolean ENABLE_LOADING_GO_WELCOME = false;
 
     private long mStartTimeMillis;

@@ -1,5 +1,19 @@
 package com.pine.template.db_server.sqlite;
 
+import static com.pine.template.db_server.DbConstants.ACCOUNT_ACCESS_LOG_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.APP_VERSION_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.DATABASE_NAME;
+import static com.pine.template.db_server.DbConstants.DATABASE_VERSION;
+import static com.pine.template.db_server.DbConstants.FILE_INFO_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.PRODUCT_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.SHOP_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.SHOP_TYPE_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.SWITCHER_CONFIG_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.TRAVEL_NOTE_COMMENT_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.TRAVEL_NOTE_SHOP_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.TRAVEL_NOTE_TABLE_NAME;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
@@ -19,20 +33,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
-import static com.pine.template.db_server.DbConstants.ACCOUNT_ACCESS_LOG_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.APP_VERSION_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.DATABASE_NAME;
-import static com.pine.template.db_server.DbConstants.DATABASE_VERSION;
-import static com.pine.template.db_server.DbConstants.FILE_INFO_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.PRODUCT_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.SHOP_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.SHOP_TYPE_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.SWITCHER_CONFIG_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.TRAVEL_NOTE_COMMENT_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.TRAVEL_NOTE_SHOP_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.TRAVEL_NOTE_TABLE_NAME;
 
 public class SQLiteDbHelper extends SQLiteOpenHelper {
     private final String TAG = LogUtils.makeLogTag(this.getClass());

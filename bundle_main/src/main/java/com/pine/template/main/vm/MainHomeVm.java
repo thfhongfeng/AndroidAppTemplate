@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pine.template.config.ConfigKey;
 import com.pine.template.config.router.command.RouterMvcCommand;
 import com.pine.template.config.router.command.RouterMvpCommand;
 import com.pine.template.config.router.command.RouterMvvmCommand;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.main.bean.MainBusinessItemEntity;
 import com.pine.template.main.model.MainHomeModel;

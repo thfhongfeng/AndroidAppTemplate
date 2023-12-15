@@ -163,4 +163,27 @@ public class FileUploadBean {
     public void setReUpload(boolean reUpload) {
         this.reUpload = reUpload;
     }
+
+    @Override
+    public String toString() {
+        return "FileUploadBean{" +
+                "id=" + id +
+                ", bizId=" + bizId +
+                ", requestCode=" + requestCode +
+                ", requestUrl='" + requestUrl + '\'' +
+                ", fileKey='" + fileKey + '\'' +
+                ", fileType=" + fileType +
+                ", fileName='" + fileName + '\'' +
+                ", localFilePath='" + localFilePath + '\'' +
+                ", localTempFilePath='" + localTempFilePath + '\'' +
+                ", remoteFilePath='" + remoteFilePath + '\'' +
+                ", params=" + params +
+                ", responseData='" + responseData + '\'' +
+                ", attachView=" + attachView +
+                ", orderIndex=" + orderIndex +
+                ", uploadProgress=" + uploadProgress +
+                ", uploadState=" + uploadState +
+                ", reUpload=" + reUpload +
+                '}';
+    }
 }

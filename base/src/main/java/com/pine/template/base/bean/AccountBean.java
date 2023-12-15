@@ -115,4 +115,22 @@ public class AccountBean {
     public int getVipLevel() {
         return vipLevel;
     }
+
+    @Override
+    public String toString() {
+        return "AccountBean{" +
+                "id='" + id + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", accountType=" + accountType +
+                ", name='" + name + '\'' +
+                ", headImgUrl='" + headImgUrl + '\'' +
+                ", state=" + state +
+                ", mobile='" + mobile + '\'' +
+                ", curLoginTimeStamp=" + curLoginTimeStamp +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", vipLevel=" + vipLevel +
+                '}';
+    }
 }

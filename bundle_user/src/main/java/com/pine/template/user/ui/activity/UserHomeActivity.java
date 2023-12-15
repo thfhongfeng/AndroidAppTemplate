@@ -10,12 +10,12 @@ import androidx.lifecycle.Observer;
 import com.pine.template.base.access.UiAccessType;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
 import com.pine.template.base.bean.AccountBean;
-import com.pine.tool.access.UiAccessAnnotation;
-import com.pine.tool.router.IRouterCallback;
 import com.pine.template.user.R;
 import com.pine.template.user.databinding.UserHomeActivityBinding;
 import com.pine.template.user.remote.UserRouterClient;
 import com.pine.template.user.vm.UserHomeVm;
+import com.pine.tool.access.UiAccessAnnotation;
+import com.pine.tool.router.IRouterCallback;
 
 /**
  * Created by tanghongfeng on 2018/9/13

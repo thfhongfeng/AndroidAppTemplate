@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import androidx.lifecycle.MutableLiveData;
 
 import com.pine.template.base.bean.AccountBean;
-import com.pine.template.login.LoginConstants;
 import com.pine.template.login.R;
 import com.pine.template.login.bean.RegisterBean;
 import com.pine.template.login.manager.LoginManager;
@@ -18,9 +17,6 @@ import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.util.RegexUtils;
-import com.pine.tool.util.SecurityUtils;
-
-import java.util.HashMap;
 
 public class RegisterVm extends ViewModel {
     private LoginAccountModel mAccountModel = new LoginAccountModel();
@@ -34,7 +30,7 @@ public class RegisterVm extends ViewModel {
         if (isUiLoading()) {
             return;
         }
-        RegisterBean registerBean = registerBeanData.getValue();
+        final RegisterBean registerBean = registerBeanData.getValue();
         if (TextUtils.isEmpty(registerBean.getMobile()) || TextUtils.isEmpty(registerBean.getPassword())) {
             setToastResId(R.string.login_input_empty_msg);
             return;
@@ -51,17 +47,12 @@ public class RegisterVm extends ViewModel {
             setToastResId(R.string.login_mobile_incorrect_format);
             return;
         }
-        HashMap<String, String> params = new HashMap<>();
-        params.put(LoginConstants.LOGIN_ACCOUNT, registerBean.getMobile());
-        String securityPwd = SecurityUtils.generateMD5(registerBean.getPassword());
-        params.put(LoginConstants.LOGIN_PASSWORD, securityPwd);
-        params.put(LoginConstants.LOGIN_VERIFY_CODE, registerBean.getVerifyCode());
         setUiLoading(true);
-        mAccountModel.requestRegister(params, new IModelAsyncResponse<AccountBean>() {
+        LoginManager.register(registerBean, new IModelAsyncResponse<AccountBean>() {
             @Override
             public void onResponse(AccountBean accountBean) {
                 setUiLoading(false);
-                LoginManager.autoLogin(accountBean.getAccount(), accountBean.getPassword(), new ILoginResponse() {
+                LoginManager.autoLogin(registerBean.getMobile(), registerBean.getPassword(), new ILoginResponse() {
                     @Override
                     public boolean onLoginResponse(boolean isSuccess, String msg) {
                         setToastResId(R.string.login_register_success);

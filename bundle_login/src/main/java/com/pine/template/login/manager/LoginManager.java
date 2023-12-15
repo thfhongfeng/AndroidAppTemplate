@@ -4,9 +4,11 @@ import com.pine.template.base.bean.AccountBean;
 import com.pine.template.login.LoginApplication;
 import com.pine.template.login.LoginConstants;
 import com.pine.template.login.LoginSPKeyConstants;
+import com.pine.template.login.bean.RegisterBean;
 import com.pine.template.login.model.ILoginResponse;
 import com.pine.template.login.model.LoginAccountModel;
 import com.pine.template.login.model.callback.LoginCallback;
+import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.SecurityUtils;
 import com.pine.tool.util.SharePreferenceUtils;
@@ -22,6 +24,17 @@ public class LoginManager {
     private static LoginAccountModel mAccountModel = new LoginAccountModel();
     private static volatile String mAccount;
     private static volatile String mPassword;
+
+    // 自动登录
+    public static void register(RegisterBean registerBean, IModelAsyncResponse<AccountBean> callback) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put(LoginConstants.LOGIN_ACCOUNT, registerBean.getMobile());
+        String securityPwd = SecurityUtils.generateMD5(registerBean.getPassword());
+        params.put(LoginConstants.LOGIN_PASSWORD, securityPwd);
+        params.put(LoginConstants.LOGIN_VERIFY_CODE, registerBean.getVerifyCode());
+
+        mAccountModel.requestRegister(params, callback);
+    }
 
     // 登录
     public static void login(String account, String password, ILoginResponse callback) {
@@ -80,6 +93,7 @@ public class LoginManager {
     public static void saveLoginInfo(AccountBean accountBean) {
         SharePreferenceUtils.saveToCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, mAccount);
         SharePreferenceUtils.saveToCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, mPassword);
+        SharePreferenceUtils.saveToCache(LoginSPKeyConstants.ACCOUNT_MD5_PASSWORD, SecurityUtils.generateMD5(mPassword));
 
         if (accountBean == null) {
             return;

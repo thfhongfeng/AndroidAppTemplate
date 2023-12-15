@@ -20,7 +20,6 @@ import com.pine.template.db_server.sqlite.SQLiteDbHelper;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
-import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.RandomUtils;
 
 import org.json.JSONException;

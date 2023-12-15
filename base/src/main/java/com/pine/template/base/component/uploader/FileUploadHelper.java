@@ -1,7 +1,9 @@
 package com.pine.template.base.component.uploader;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -32,6 +34,9 @@ import com.pine.tool.widget.ILifeCircleViewContainer;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -199,11 +204,17 @@ public class FileUploadHelper implements ILifeCircleView {
      * 打开系统裁剪功能
      */
     protected void startCropImage(String filePath) {
+        if (mActivity == null) {
+            return;
+        }
         String fileName = filePath.substring(filePath.lastIndexOf(File.separator) + 1);
-        String targetFilePath = PathUtils.getAppFilePath(Environment.DIRECTORY_PICTURES) +
-                File.separator + "crop_" + System.currentTimeMillis() + "_" + fileName;
-//        String targetFilePath = PathUtils.getExternalPublicPath(Environment.DIRECTORY_PICTURES) +
-//                File.separator + "crop_" + System.currentTimeMillis() + "_" + fileName;
+        // 系统裁剪工具只能读取公共目录，使用公共目录
+        String targetFilePath = PathUtils.getExternalPublicPath(Environment.DIRECTORY_PICTURES) +
+                File.separator + "crop_" + fileName;
+        File targetFile = new File(targetFilePath);
+        if (targetFile.exists()) {
+            targetFile.delete();
+        }
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(Uri.fromFile(new File(filePath)), "image/*");
         intent.putExtra("crop", true);
@@ -224,13 +235,13 @@ public class FileUploadHelper implements ILifeCircleView {
         // true的话直接返回bitmap，可能会很占内存 不建议
         intent.putExtra("return-data", false);
         // 上面设为false的时候将MediaStore.EXTRA_OUTPUT即"output"关联一个Uri
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(targetFilePath)));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(targetFile));
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         mCurCropPhotoPath = targetFilePath;
         mCropPathList.add(targetFilePath);
-        LogUtils.d(TAG, "startCropPhoto filePath:" + filePath);
+        LogUtils.d(TAG, "startCropPhoto :" + intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT));
         mActivity.startActivityForResult(intent, mRequestCodeCrop);
     }
 
@@ -334,19 +345,52 @@ public class FileUploadHelper implements ILifeCircleView {
                 FileUtils.deleteFile(path);
             }
         }
+        mActivity = null;
+    }
+
+    // 另一种方式将图片变成媒体文件，否则它是文件，需要文件权限（MANAGE_EXTERNAL_STORAGE，该权限只能用户手动授权，比较麻烦）
+    public void saveImageToGallery(Context context, Bitmap bmp) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 最后通知图库更新
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getPath())));
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == mRequestCodeCrop) {
             if (resultCode == Activity.RESULT_OK) {
-                List<String> newSelectList = new ArrayList<>();
-                String cropPhotoPath = data.getAction();
-                cropPhotoPath = TextUtils.isEmpty(cropPhotoPath) ? mCurCropPhotoPath : cropPhotoPath;
-                newSelectList.add(mCurCropPhotoPath);
-                LogUtils.d(TAG, "onActivityResult REQUEST_CODE_CROP" +
-                        " mCurCropPhotoPath:" + mCurCropPhotoPath + ", return cropPhotoPath:" + cropPhotoPath);
-                uploadFileOneByOne(newSelectList);
+                if (mActivity == null) {
+                    return;
+                }
+                final Uri uri = Uri.fromFile(new File(mCurCropPhotoPath));
+                // 发送广播是将图片变成媒体文件，否则它是文件，需要文件权限（MANAGE_EXTERNAL_STORAGE，该权限只能用户手动授权，比较麻烦）
+                mActivity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<String> newSelectList = new ArrayList<>();
+                        newSelectList.add(mCurCropPhotoPath);
+                        LogUtils.d(TAG, "onActivityResult REQUEST_CODE_CROP" +
+                                " mCurCropPhotoPath:" + mCurCropPhotoPath + ", return uri:" + uri);
+                        uploadFileOneByOne(newSelectList);
+                    }
+                }, 500);
             }
         } else if (requestCode == mRequestCodeSelectFile) {
             if (resultCode == Activity.RESULT_OK) {

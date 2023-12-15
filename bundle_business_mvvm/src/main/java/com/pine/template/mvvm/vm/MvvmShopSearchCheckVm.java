@@ -1,5 +1,7 @@
 package com.pine.template.mvvm.vm;
 
+import static com.pine.template.mvvm.ui.activity.MvvmShopSearchCheckActivity.REQUEST_CHECKED_LIST_KEY;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,8 +19,6 @@ import com.pine.tool.exception.MessageException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static com.pine.template.mvvm.ui.activity.MvvmShopSearchCheckActivity.REQUEST_CHECKED_LIST_KEY;
 
 /**
  * Created by tanghongfeng on 2019/3/1

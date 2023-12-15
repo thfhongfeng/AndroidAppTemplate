@@ -76,6 +76,9 @@ public class TypeConvertUtils {
      * byte[]数组 转 bitmap
      */
     public static Bitmap toBitmap(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         return bitmap;
     }

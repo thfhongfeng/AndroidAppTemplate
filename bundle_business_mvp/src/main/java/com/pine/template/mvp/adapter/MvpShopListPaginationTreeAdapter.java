@@ -32,7 +32,7 @@ public class MvpShopListPaginationTreeAdapter extends BasePaginationTreeListAdap
     public MvpShopListPaginationTreeAdapter() {
 
     }
-    
+
     @Override
     public List<BaseListAdapterItemEntity<MvpShopAndProductEntity>> parseTreeData(List<MvpShopAndProductEntity> data,
                                                                                   boolean reset) {

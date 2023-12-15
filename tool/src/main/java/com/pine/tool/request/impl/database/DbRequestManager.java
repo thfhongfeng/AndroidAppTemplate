@@ -1,6 +1,7 @@
 package com.pine.tool.request.impl.database;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -297,7 +298,10 @@ public class DbRequestManager implements IRequestManager {
             dispatchResponse(requestBean, response, listener, requestFromMainThread);
             return;
         }
-        dbResponse.setData(TypeConvertUtils.toBitmap((byte[]) dbResponse.getData()));
+        Bitmap bitmap = TypeConvertUtils.toBitmap((byte[]) dbResponse.getData());
+        if (bitmap != null) {
+            dbResponse.setData(bitmap);
+        }
         Response response = toResponse(dbResponse, requestBean);
 
         mCookies = dbResponse.getCookies();

@@ -191,4 +191,28 @@ public class MvvmShopDetailEntity extends Bean {
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "MvvmShopDetailEntity{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", onlineDate='" + onlineDate + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", addressDistrict='" + addressDistrict + '\'' +
+                ", addressZipCode='" + addressZipCode + '\'' +
+                ", addressStreet='" + addressStreet + '\'' +
+                ", distance='" + distance + '\'' +
+                ", mainImgUrl='" + mainImgUrl + '\'' +
+                ", imgUrls='" + imgUrls + '\'' +
+                ", description='" + description + '\'' +
+                ", remark='" + remark + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                '}';
+    }
 }

@@ -363,7 +363,6 @@ public class FileUploadComponent {
         String targetFilePath = mContext.get().getExternalCacheDir() + File.separator + fileBean.getFileName();
         FileUtils.deleteFile(targetFilePath);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        LogUtils.d(TAG, "compressImage file:" + fileBean.getLocalFilePath());
         ImageUtils.compressBySize(fileBean.getLocalFilePath(), mMaxFileSize * 1024, mOutFileWidth, mOutFileHeight, bao,
                 new ImageUtils.ICompressCallback() {
                     @Override
@@ -377,6 +376,7 @@ public class FileUploadComponent {
                     }
                 });
         File targetFile = new File(targetFilePath);
+        LogUtils.d(TAG, "compressImage file:" + fileBean.getLocalFilePath() + ", targetFilePath:" + targetFilePath);
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(targetFile));
             bao.writeTo(bos);

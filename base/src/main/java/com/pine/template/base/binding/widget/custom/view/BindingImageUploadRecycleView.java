@@ -52,23 +52,18 @@ public class BindingImageUploadRecycleView extends BaseImageUploadRecycleView {
         view.imgUrlsJoinStr = imgUrlsJoinStr;
     }
 
-    @BindingAdapter(value = {"newAddImgUrls"})
-    public static void setNewAddImgUrls(BindingImageUploadRecycleView view, String newAddImgUrls) {
-
+    @BindingAdapter(value = {"imgUrls"})
+    public static void setImgUrls(BindingImageUploadRecycleView view, String imgUrls) {
+        view.setRemoteImages(imgUrls, view.imgUrlsJoinStr);
     }
 
-    @InverseBindingAdapter(attribute = "newAddImgUrls", event = "newAddImgUrlsAttrChanged")
-    public static Object getNewAddImgUrls(BindingImageUploadRecycleView view) {
-        return view.getNewUploadImageRemoteString(view.imgUrlsJoinStr);
+    @InverseBindingAdapter(attribute = "imgUrls", event = "imgUrlsAttrChanged")
+    public static Object getImgUrls(BindingImageUploadRecycleView view) {
+        return view.getRemoteImages(view.imgUrlsJoinStr);
     }
 
-    @BindingAdapter(value = {"newAddImgUrlsAttrChanged"}, requireAll = false)
-    public static void setNewAddImgUrlsAttrChanged(BindingImageUploadRecycleView view, InverseBindingListener listener) {
+    @BindingAdapter(value = {"imgUrlsAttrChanged"}, requireAll = false)
+    public static void setImgUrlsAttrChanged(BindingImageUploadRecycleView view, InverseBindingListener listener) {
         view.bindingDataListener = listener;
-    }
-
-    @BindingAdapter(value = {"initImgUrls"})
-    public static void setInitImgUrls(BindingImageUploadRecycleView view, String initImgUrls) {
-        view.setRemoteImages(initImgUrls, view.imgUrlsJoinStr);
     }
 }

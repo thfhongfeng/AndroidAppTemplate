@@ -7,6 +7,9 @@ android {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
 
+        buildConfigField "String", "FILE_PROVIDER_AUTHORITY", "\"${app_config.file_provider_authority}\""
+        resValue "string", "file_provider_authority", "\"${app_config.file_provider_authority}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

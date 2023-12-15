@@ -371,7 +371,7 @@ public class MvpShopReleaseActivity extends
     @Override
     public InputParam getShopImagesParam(String key) {
         return new InputParam(this,
-                key, photo_iuv.getNewUploadImageRemoteString(","),
+                key, photo_iuv.getRemoteImages(","),
                 nested_scroll_view, photo_iuv);
     }
 

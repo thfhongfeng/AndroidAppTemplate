@@ -1,5 +1,7 @@
 package com.pine.template.db_server.sqlite.server;
 
+import static com.pine.template.db_server.DbConstants.FILE_INFO_TABLE_NAME;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
@@ -17,8 +19,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.pine.template.db_server.DbConstants.FILE_INFO_TABLE_NAME;
 
 public class SQLiteFileServer extends SQLiteBaseServer {
 

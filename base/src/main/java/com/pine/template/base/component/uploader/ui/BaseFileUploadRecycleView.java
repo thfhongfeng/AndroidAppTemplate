@@ -35,6 +35,7 @@ import com.pine.template.base.util.ExceptionUtils;
 import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -186,11 +187,22 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
         }
         List<FileUploadBean> uploadFileList = new ArrayList<>();
         FileUploadBean fileUploadBean = null;
+        List<FileUploadBean> dataList = mUploadFileAdapter.getOriginData();
+        HashMap<String, FileUploadBean> map = new HashMap<>();
+        if (dataList != null) {
+            for (FileUploadBean bean : dataList) {
+                map.put(bean.getRemoteFilePath(), bean);
+            }
+        }
         for (int i = 0; i < remoteFileArr.length; i++) {
-            fileUploadBean = new FileUploadBean();
-            fileUploadBean.setRemoteFilePath(remoteFileArr[i]);
-            fileUploadBean.setOrderIndex(i);
-            fileUploadBean.setUploadState(FileUploadState.UPLOAD_STATE_SUCCESS);
+            if (map.containsKey(remoteFileArr[i])) {
+                fileUploadBean = map.get(remoteFileArr[i]);
+            } else {
+                fileUploadBean = new FileUploadBean();
+                fileUploadBean.setRemoteFilePath(remoteFileArr[i]);
+                fileUploadBean.setOrderIndex(i);
+                fileUploadBean.setUploadState(FileUploadState.UPLOAD_STATE_SUCCESS);
+            }
             uploadFileList.add(fileUploadBean);
         }
         if (uploadFileList.size() < 1) {
@@ -198,6 +210,18 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
         }
         mUploadFileAdapter.setData(uploadFileList);
         notifyAdapterDataChanged();
+    }
+
+    public List<String> getRemoteImageList() {
+        List<FileUploadState> states = new ArrayList<>();
+        states.add(FileUploadState.UPLOAD_STATE_SUCCESS);
+        return mUploadFileAdapter.getFileRemoteList(states);
+    }
+
+    public String getRemoteImages(String joinStr) {
+        List<FileUploadState> states = new ArrayList<>();
+        states.add(FileUploadState.UPLOAD_STATE_SUCCESS);
+        return mUploadFileAdapter.getFileRemoteString(states, joinStr);
     }
 
     private ArrayList<String> getFileShowList() {

@@ -10,11 +10,11 @@ import android.view.View;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.base.component.scan.IScanAnalyzeListener;
 import com.pine.template.base.component.scan.ScanManager;
-import com.pine.tool.permission.PermissionsAnnotation;
-import com.pine.tool.util.LogUtils;
 import com.pine.template.user.R;
 import com.pine.template.user.databinding.UserScanActivityBinding;
 import com.pine.template.user.vm.UserScanVm;
+import com.pine.tool.permission.PermissionsAnnotation;
+import com.pine.tool.util.LogUtils;
 
 /**
  * Created by tanghongfeng on 2018/9/13

@@ -69,6 +69,14 @@ public class BaseImageUploadRecycleView extends BaseFileUploadRecycleView {
         super.setRemoteFiles(remoteImageArr);
     }
 
+    public List<String> getRemoteImageList() {
+        return super.getRemoteImageList();
+    }
+
+    public String getRemoteImages(String joinStr) {
+        return super.getRemoteImages(joinStr);
+    }
+
     public List<String> getNewUploadImageRemoteList() {
         return super.getNewUploadFileRemoteList();
     }

@@ -1,8 +1,6 @@
 package com.pine.template.mvvm;
 
 import com.pine.template.base.BaseUrlConstants;
-import com.pine.template.config.ConfigKey;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
 
 /**
  * Created by tanghongfeng on 2018/9/13

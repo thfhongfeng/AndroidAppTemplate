@@ -10,6 +10,7 @@ public interface LoginSPKeyConstants extends BaseSPKeyConstants {
     String ACCOUNT_ID = "account_id";
     String ACCOUNT_ACCOUNT = "account_account";
     String ACCOUNT_PASSWORD = "account_password";
+    String ACCOUNT_MD5_PASSWORD = "ACCOUNT_MD5_PASSWORD";
     String ACCOUNT_TYPE = "account_type";
     String ACCOUNT_NAME = "account_name";
     String ACCOUNT_HEAD_IMG_URL = "account_head_img_url";

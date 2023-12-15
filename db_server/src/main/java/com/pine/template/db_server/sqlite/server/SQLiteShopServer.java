@@ -1,5 +1,12 @@
 package com.pine.template.db_server.sqlite.server;
 
+import static com.pine.template.base.BaseConstants.PAGE_NO;
+import static com.pine.template.base.BaseConstants.PAGE_SIZE;
+import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.PRODUCT_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.SHOP_TABLE_NAME;
+import static com.pine.tool.request.IRequestManager.SESSION_ID;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -17,7 +24,6 @@ import com.pine.template.db_server.sqlite.SQLiteDbHelper;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
-import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.RegexUtils;
 
 import org.json.JSONArray;
@@ -29,13 +35,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.pine.template.base.BaseConstants.PAGE_NO;
-import static com.pine.template.base.BaseConstants.PAGE_SIZE;
-import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.PRODUCT_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.SHOP_TABLE_NAME;
-import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteShopServer extends SQLiteBaseServer {
 

@@ -11,8 +11,6 @@ import androidx.databinding.DataBindingUtil;
 import com.pine.template.base.recycle_view.BaseListViewHolder;
 import com.pine.template.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
-import com.pine.template.base.track.AppTrackManager;
-import com.pine.template.base.track.TrackModuleTag;
 import com.pine.template.main.R;
 import com.pine.template.main.bean.MainBusinessItemEntity;
 import com.pine.template.main.databinding.MainItemBinding;

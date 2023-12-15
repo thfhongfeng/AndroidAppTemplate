@@ -8,6 +8,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
+import com.pine.tool.BuildConfig;
+
 import java.io.File;
 
 public class InstallUtil {
@@ -16,7 +18,7 @@ public class InstallUtil {
     private static final String EXTRA_SILENT_INSTALL = "silent_install";
 
     public static String getFileProviderAuthority(Context context) {
-        return context.getApplicationContext().getPackageName() + ".fileProvider";
+        return BuildConfig.FILE_PROVIDER_AUTHORITY;
     }
 
     public static boolean install(Context context, String path, boolean silent) {

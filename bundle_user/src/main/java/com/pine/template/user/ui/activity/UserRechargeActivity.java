@@ -11,10 +11,10 @@ import androidx.lifecycle.Observer;
 import com.pine.template.base.access.UiAccessType;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.template.base.bean.AccountBean;
-import com.pine.tool.access.UiAccessAnnotation;
 import com.pine.template.user.R;
 import com.pine.template.user.databinding.UserRechargeActivityBinding;
 import com.pine.template.user.vm.UserRechargeVm;
+import com.pine.tool.access.UiAccessAnnotation;
 
 /**
  * Created by tanghongfeng on 2018/9/13

@@ -1,5 +1,10 @@
 package com.pine.template.db_server.sqlite.server;
 
+import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.APP_VERSION_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.SWITCHER_CONFIG_TABLE_NAME;
+import static com.pine.tool.request.IRequestManager.SESSION_ID;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,11 +27,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.APP_VERSION_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.SWITCHER_CONFIG_TABLE_NAME;
-import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteWelcomeServer extends SQLiteBaseServer {
 
