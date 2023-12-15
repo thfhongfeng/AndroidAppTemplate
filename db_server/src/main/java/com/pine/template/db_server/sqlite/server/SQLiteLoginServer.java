@@ -1,5 +1,10 @@
 package com.pine.template.db_server.sqlite.server;
 
+import static com.pine.template.db_server.DbConstants.ACCOUNT_ACCESS_LOG_TABLE_NAME;
+import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
+import static com.pine.tool.request.IRequestManager.SESSION_ID;
+
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,6 +20,7 @@ import com.pine.template.db_server.sqlite.SQLiteDbHelper;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
+import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.RandomUtils;
 
 import org.json.JSONException;
@@ -25,10 +31,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.pine.template.db_server.DbConstants.ACCOUNT_ACCESS_LOG_TABLE_NAME;
-import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
-import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteLoginServer extends SQLiteBaseServer {
     public static DbResponse getVerifyCode(@NonNull Context context, @NonNull DbRequestBean requestBean,
@@ -107,6 +109,7 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse login(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                    @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
@@ -159,6 +162,7 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse logout(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                     @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();

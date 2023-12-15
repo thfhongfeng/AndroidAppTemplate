@@ -46,4 +46,15 @@ public class DbSession {
     public void setCreateTimeStamp(long createTimeStamp) {
         this.createTimeStamp = createTimeStamp;
     }
+
+    @Override
+    public String toString() {
+        return "DbSession{" +
+                "sessionId='" + sessionId + '\'' +
+                ", accountId='" + accountId + '\'' +
+                ", verifyCode='" + verifyCode + '\'' +
+                ", loginTimeStamp=" + loginTimeStamp +
+                ", createTimeStamp=" + createTimeStamp +
+                '}';
+    }
 }

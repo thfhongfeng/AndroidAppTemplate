@@ -1,5 +1,6 @@
 package com.pine.template.db_server.sqlite.server;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -28,6 +29,8 @@ import static com.pine.template.db_server.DbConstants.SWITCHER_CONFIG_TABLE_NAME
 import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteWelcomeServer extends SQLiteBaseServer {
+
+    @SuppressLint("Range")
     public static DbResponse queryConfigSwitcher(@NonNull Context context,
                                                  @NonNull DbRequestBean requestBean,
                                                  @NonNull HashMap<String, String> cookies) {
@@ -81,6 +84,7 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse queryAppVersion(@NonNull Context context,
                                              @NonNull DbRequestBean requestBean,
                                              @NonNull HashMap<String, String> cookies) {

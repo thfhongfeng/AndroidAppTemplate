@@ -1,5 +1,6 @@
 package com.pine.template.db_server.sqlite.server;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import com.pine.template.db_server.sqlite.SQLiteDbHelper;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
+import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.RegexUtils;
 
 import org.json.JSONArray;
@@ -37,6 +39,7 @@ import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteShopServer extends SQLiteBaseServer {
 
+    @SuppressLint("Range")
     public static DbResponse addShop(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                      @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
@@ -87,6 +90,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse queryShopDetail(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                              @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
@@ -131,6 +135,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse queryShopList(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                            @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
@@ -188,6 +193,7 @@ public class SQLiteShopServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse queryShopProductList(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                                   @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();

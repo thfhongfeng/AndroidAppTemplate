@@ -1,5 +1,6 @@
 package com.pine.template.db_server.sqlite.server;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -37,6 +38,7 @@ import static com.pine.tool.request.IRequestManager.SESSION_ID;
 
 public class SQLiteTravelNoteServer extends SQLiteBaseServer {
 
+    @SuppressLint("Range")
     public static DbResponse addTravelNote(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                            @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
@@ -112,6 +114,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse queryTravelNoteDetail(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                                    @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
@@ -169,6 +172,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse queryTravelNoteList(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                                  @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
@@ -224,6 +228,7 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
         }
     }
 
+    @SuppressLint("Range")
     public static DbResponse queryTravelNoteCommentList(@NonNull Context context, @NonNull DbRequestBean requestBean,
                                                         @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
