@@ -14,7 +14,7 @@
 
         <variable
             name="accountBean"
-            type="com.pine.template.base.bean.AccountBean"></variable>
+            type="com.pine.template.base.business.bean.AccountBean"></variable>
     </data>
 
     <LinearLayout

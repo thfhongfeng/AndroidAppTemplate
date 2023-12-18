@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 import com.pine.template.base.BaseApplication;
-import com.pine.template.base.access.UiAccessConfigSwitcherExecutor;
-import com.pine.template.base.access.UiAccessLoginExecutor;
-import com.pine.template.base.access.UiAccessType;
+import com.pine.template.base.business.access.UiAccessConfigSwitcherExecutor;
+import com.pine.template.base.business.access.UiAccessLoginExecutor;
+import com.pine.template.base.business.access.UiAccessType;
 import com.pine.template.base.component.scan.IScanManager;
 import com.pine.template.base.component.scan.IScanManagerFactory;
 import com.pine.template.base.component.scan.ScanManager;

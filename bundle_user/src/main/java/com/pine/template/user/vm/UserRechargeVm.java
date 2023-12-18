@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.pine.template.base.bean.AccountBean;
+import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.user.remote.UserRouterClient;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 

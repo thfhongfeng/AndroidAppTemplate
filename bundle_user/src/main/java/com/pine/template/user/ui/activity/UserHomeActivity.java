@@ -7,9 +7,9 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
-import com.pine.template.base.access.UiAccessType;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
-import com.pine.template.base.bean.AccountBean;
+import com.pine.template.base.business.access.UiAccessType;
+import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.user.R;
 import com.pine.template.user.databinding.UserHomeActivityBinding;
 import com.pine.template.user.remote.UserRouterClient;

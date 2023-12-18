@@ -15,10 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.pine.template.base.access.UiAccessAction;
-import com.pine.template.base.access.UiAccessType;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.template.base.bean.InputParam;
+import com.pine.template.base.business.access.UiAccessAction;
+import com.pine.template.base.business.access.UiAccessType;
 import com.pine.template.base.component.editor.bean.TextImageEntity;
 import com.pine.template.base.component.editor.ui.ArticleDisplayView;
 import com.pine.template.base.component.editor.ui.ArticleEditorView;

@@ -13,10 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import com.pine.template.base.BaseConstants;
-import com.pine.template.base.access.UiAccessAction;
-import com.pine.template.base.access.UiAccessType;
-import com.pine.template.base.access.VipLevel;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
+import com.pine.template.base.business.access.UiAccessAction;
+import com.pine.template.base.business.access.UiAccessType;
+import com.pine.template.base.business.access.VipLevel;
 import com.pine.template.base.component.map.MapSdkManager;
 import com.pine.template.base.component.uploader.FileUploadComponent;
 import com.pine.template.base.component.uploader.bean.FileUploadBean;

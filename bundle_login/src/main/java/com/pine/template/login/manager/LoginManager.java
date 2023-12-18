@@ -1,6 +1,6 @@
 package com.pine.template.login.manager;
 
-import com.pine.template.base.bean.AccountBean;
+import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.login.LoginApplication;
 import com.pine.template.login.LoginConstants;
 import com.pine.template.login.LoginSPKeyConstants;

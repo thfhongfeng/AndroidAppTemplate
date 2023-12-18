@@ -16,11 +16,11 @@ import androidx.core.widget.NestedScrollView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.template.base.BaseConstants;
-import com.pine.template.base.access.UiAccessAction;
-import com.pine.template.base.access.UiAccessType;
-import com.pine.template.base.access.VipLevel;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.template.base.bean.InputParam;
+import com.pine.template.base.business.access.UiAccessAction;
+import com.pine.template.base.business.access.UiAccessType;
+import com.pine.template.base.business.access.VipLevel;
 import com.pine.template.base.component.map.MapSdkManager;
 import com.pine.template.base.component.uploader.FileUploadComponent;
 import com.pine.template.base.component.uploader.bean.FileUploadBean;

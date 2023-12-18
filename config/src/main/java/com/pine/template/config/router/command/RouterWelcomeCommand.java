@@ -9,5 +9,5 @@ import com.pine.tool.router.annotation.ARouterRemoteAction;
 
 @ARouterRemoteAction(Key = ConfigKey.BUNDLE_WELCOME_KEY, RemoteAction = "/wel/service")
 public interface RouterWelcomeCommand {
-
+    String checkApkUpdate = "checkApkUpdate";
 }

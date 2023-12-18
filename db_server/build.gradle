@@ -52,8 +52,8 @@ dependencies {
     annotationProcessor build_dependency["arouter_compiler"]
     // ARouter配置 end
 
-    // 主体基础模块 begin
-    api project(':base')
+    // 业务基础模块 begin
+    api project(':bundle_base')
     api project(':resource')
-    // 主体基础模块 end
+    // 业务基础模块 end
 }

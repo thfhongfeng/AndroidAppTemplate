@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
-import com.pine.template.base.access.UiAccessType;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
-import com.pine.template.base.bean.AccountBean;
+import com.pine.template.base.business.access.UiAccessType;
+import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.user.R;
 import com.pine.template.user.databinding.UserRechargeActivityBinding;
 import com.pine.template.user.vm.UserRechargeVm;

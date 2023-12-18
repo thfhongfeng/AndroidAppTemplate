@@ -30,6 +30,7 @@ ext.build_versions = build_versions
 def build_dependency = [
         // android官方 dependency
         "android_appcompat"           : 'androidx.appcompat:appcompat:1.0.0',
+        "android_annotation"          : 'androidx.annotation:annotation:1.0.0',
         "android_support_design"      : 'com.google.android.material:material:1.0.0',
         "android_constraint_layout"   : 'androidx.constraintlayout:constraintlayout:1.1.3',
         "android_lifecycle_extensions": 'androidx.lifecycle:lifecycle-extensions:2.0.0',
@@ -51,8 +52,8 @@ def build_dependency = [
         "nohttp_nohttp"               : 'com.yanzhenjie.nohttp:nohttp:1.1.11',
         "aigestudio_wheelpicker"      : 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2',
         "safewebviewbridge"           : 'cn.pedant.safewebviewbridge:library:1.4',
-        "bumptech_glide"              : 'com.github.bumptech.glide:glide:4.8.0',
-        "bumptech_glide_compiler"     : 'com.github.bumptech.glide:compiler:4.8.0',
+        "bumptech_glide"              : 'com.github.bumptech.glide:glide:4.9.0',
+        "bumptech_glide_compiler"     : 'com.github.bumptech.glide:compiler:4.9.0',
         "vdurmont_emoji"              : 'com.vdurmont:emoji-java:4.0.0',
         "tencent_wcdb_room"           : "com.tencent.wcdb:room:1.0.8",
         "tencent_wcdb_android"        : "com.tencent.wcdb:wcdb-android:1.0.8",

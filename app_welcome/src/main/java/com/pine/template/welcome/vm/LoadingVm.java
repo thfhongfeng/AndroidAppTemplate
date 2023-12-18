@@ -3,7 +3,7 @@ package com.pine.template.welcome.vm;
 import androidx.lifecycle.MutableLiveData;
 
 import com.pine.template.base.BaseApplication;
-import com.pine.template.base.util.AccountUtils;
+import com.pine.template.base.business.utils.AccountUtils;
 import com.pine.template.config.ConfigApplication;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;

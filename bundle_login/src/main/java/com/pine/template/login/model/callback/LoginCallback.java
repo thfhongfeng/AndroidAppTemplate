@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.pine.template.base.bean.AccountBean;
-import com.pine.template.base.util.AccountUtils;
+import com.pine.template.base.business.bean.AccountBean;
+import com.pine.template.base.business.utils.AccountUtils;
 import com.pine.template.config.ConfigApplication;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.login.LoginApplication;

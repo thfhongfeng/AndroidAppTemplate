@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.pine.template.base.bean.AccountBean;
+import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.login.R;
 import com.pine.template.login.bean.RegisterBean;
 import com.pine.template.login.manager.LoginManager;

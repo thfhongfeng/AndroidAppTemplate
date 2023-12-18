@@ -62,17 +62,11 @@ dependencies {
     api build_dependency['safewebviewbridge']
     api build_dependency['bumptech_glide']
     annotationProcessor build_dependency['bumptech_glide_compiler']
-    annotationProcessor build_dependency["android_room_compiler"]
-    api build_dependency["android_room_runtime"]
-    // CWAC-SafeRoom: A Room<->SQLCipher for Android Bridge
-    // 腾讯WCDB: A Room<->SQLCipher for Android Bridge
-    api build_dependency["tencent_wcdb_room"]
-    api build_dependency["tencent_wcdb_android"]
+    annotationProcessor build_dependency['android_annotation']
     // 第三方 dependency end
 
     // library project begin
     api project(':base_lib_zxing')
-    api project(':base_lib_immersionbar')
     // library project end
 
     // 配置模块 begin

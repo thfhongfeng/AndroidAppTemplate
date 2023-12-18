@@ -31,7 +31,7 @@ public class HttpRequestLoader implements ModelLoader<GlideUrl, InputStream> {
      * <p>Defaults to 2500ms.
      */
     public static final Option<Integer> TIMEOUT = Option.memory(
-            "com.pine.template.base.component.image_loader.glide.model_loader.HttpRequestLoader.Timeout", 2500);
+            "com.pine.app.base.component.image_loader.glide.model_loader.HttpRequestLoader.Timeout", 2500);
 
     @Nullable
     private final ModelCache<GlideUrl, GlideUrl> modelCache;

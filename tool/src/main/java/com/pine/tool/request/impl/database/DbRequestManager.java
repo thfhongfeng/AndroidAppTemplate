@@ -343,12 +343,6 @@ public class DbRequestManager implements IRequestManager {
     private void setDownloadRequestWorker(final @NonNull DownloadRequestBean requestBean,
                                           final @NonNull IResponseListener.OnDownloadListener listener,
                                           final boolean requestFromMainThread) {
-//        if (!NetWorkUtils.checkNetWork()) {
-//            ConnectException error = new ConnectException(mApplicationContext.getString(R.string.tool_network_err));
-//            dispatchDownloadErrorResponse(requestBean, error, listener, requestFromMainThread);
-//            return;
-//        }
-
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
         Bundle bundle = new Bundle();
         bundle.putSerializable(IDbRequestServer.requestBeanKey, dbRequestBean);
@@ -477,18 +471,6 @@ public class DbRequestManager implements IRequestManager {
             dispatchResponse(requestBean, response, responseListener, requestFromMainThread);
             return;
         }
-//        if (!NetWorkUtils.checkNetWork()) {
-//            Response response = new Response();
-//            ConnectException error = new ConnectException(mApplicationContext.getString(R.string.tool_network_err));
-//            response.setSucceed(false);
-//            response.setData(new JSONObject());
-//            response.setException(error);
-//            for (final UploadRequestBean.FileBean fileBean : fileBeanList) {
-//                dispatchUploadFailResponse(requestBean, fileBean, error, processListener, requestFromMainThread);
-//            }
-//            dispatchResponse(requestBean, response, responseListener, requestFromMainThread);
-//            return;
-//        }
         boolean isAllSuccess = true;
         boolean isMultiUpload = true;
         mUploadCountMap.put(requestBean.hashCode(), fileBeanList.size());

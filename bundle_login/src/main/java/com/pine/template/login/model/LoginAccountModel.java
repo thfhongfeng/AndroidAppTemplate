@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.template.base.bean.AccountBean;
+import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.login.LoginConstants;
 import com.pine.template.login.LoginUrlConstants;
 import com.pine.template.login.model.callback.LoginCallback;

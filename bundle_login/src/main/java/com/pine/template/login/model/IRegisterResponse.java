@@ -1,6 +1,6 @@
 package com.pine.template.login.model;
 
-import com.pine.template.base.bean.AccountBean;
+import com.pine.template.base.business.bean.AccountBean;
 
 public interface IRegisterResponse {
     boolean onRegisterResponse(boolean isSuccess, AccountBean accountBean);

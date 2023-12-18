@@ -68,8 +68,8 @@ dependencies {
     // 第三方 dependency begin
     // 第三方 dependency end
 
-    // 主体基础模块 begin
-    api project(':base')
+    // 业务基础模块 begin
+    api project(':bundle_base')
     api project(':resource')
-    // 主体基础模块 begin
+    // 业务基础模块 begin
 }
