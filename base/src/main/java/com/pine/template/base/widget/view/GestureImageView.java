@@ -91,7 +91,6 @@ public class GestureImageView extends View {
         }
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_POINTER_DOWN:
-                LogUtils.d("tanghongfeng", "ACTION_POINTER_DOWN");
             case MotionEvent.ACTION_POINTER_UP:
                 // 重置上次触摸点坐标
                 // 两指触摸时，记录上次触摸点坐标
