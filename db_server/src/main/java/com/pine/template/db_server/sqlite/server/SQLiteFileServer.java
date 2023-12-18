@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +14,8 @@ import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.sqlite.SQLiteDbHelper;
 import com.pine.tool.request.impl.database.DbRequestBean;
 import com.pine.tool.request.impl.database.DbResponse;
+import com.pine.tool.util.FileUtils;
+import com.pine.tool.util.PathUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,22 +33,44 @@ public class SQLiteFileServer extends SQLiteBaseServer {
             Map<String, String> requestParams = requestBean.getParams();
             if (fileBeanList != null && fileBeanList.size() == 1) {
                 ContentValues contentValues = new ContentValues();
-                String fileName = fileBeanList.get(0).getFileName();
-                String filePath = fileBeanList.get(0).getFile().getAbsolutePath();
-                contentValues.put("fileName", fileName);
-                contentValues.put("filePath", filePath);
-                contentValues.put("bizType", requestParams.get("bizType"));
-                contentValues.put("orderNum", requestParams.get("orderNum"));
-                contentValues.put("descr", requestParams.get("descr"));
-                contentValues.put("fileType", requestParams.get("fileType"));
+                DbRequestBean.FileBean fileBean = fileBeanList.get(0);
+                String fileName = fileBean.getFileName();
+                String filePath = fileBean.getFile().getAbsolutePath();
+                if (TextUtils.isEmpty(fileName) || TextUtils.isEmpty(filePath)) {
+                    return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+                }
+                String targetFileName = System.currentTimeMillis() + "_" + fileName;
+                String targetFilePath = PathUtils.getExternalAppCachePath() + "/faceStorage/" + targetFileName;
+
+                contentValues.put("fileName", targetFileName);
+                contentValues.put("filePath", targetFilePath);
+                if (!TextUtils.isEmpty(requestParams.get("bizType"))) {
+                    contentValues.put("bizType", requestParams.get("bizType"));
+                } else {
+                    contentValues.put("bizType", "1");
+                }
+                if (!TextUtils.isEmpty(requestParams.get("orderNum"))) {
+                    contentValues.put("orderNum", requestParams.get("orderNum"));
+                } else {
+                    contentValues.put("orderNum", "1");
+                }
+                if (!TextUtils.isEmpty(requestParams.get("descr"))) {
+                    contentValues.put("descr", requestParams.get("descr"));
+                }
+                if (!TextUtils.isEmpty(requestParams.get("fileType"))) {
+                    contentValues.put("fileType", requestParams.get("fileType"));
+                } else {
+                    contentValues.put("fileType", fileName.substring(fileName.lastIndexOf("\\.") + 1));
+                }
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 long id = insert(db, FILE_INFO_TABLE_NAME, "filePath", contentValues);
                 if (id == -1) {
                     return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
                 } else {
+                    FileUtils.copyFile(filePath, targetFilePath);
                     return DbResponseGenerator.getSuccessJsonRep(requestBean, cookies,
-                            "{'fileUrl':'" + filePath + "','fileName':'" + fileName + "'}");
+                            "{'fileUrl':'" + targetFilePath + "','fileName':'" + targetFileName + "'}");
                 }
             } else {
                 return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
@@ -71,14 +96,34 @@ public class SQLiteFileServer extends SQLiteBaseServer {
                 db.beginTransaction();
                 for (int i = 0; i < fileBeanList.size(); i++) {
                     ContentValues contentValues = new ContentValues();
-                    String fileName = fileBeanList.get(i).getFileName();
-                    String filePath = fileBeanList.get(i).getFile().getAbsolutePath();
-                    contentValues.put("fileName", fileName);
-                    contentValues.put("filePath", filePath);
-                    contentValues.put("bizType", requestParams.get("bizType"));
-                    contentValues.put("orderNum", requestParams.get("orderNum"));
-                    contentValues.put("descr", requestParams.get("descr"));
-                    contentValues.put("fileType", requestParams.get("fileType"));
+                    DbRequestBean.FileBean fileBean = fileBeanList.get(0);
+                    String fileName = fileBean.getFileName();
+                    String filePath = fileBean.getFile().getAbsolutePath();
+                    if (TextUtils.isEmpty(fileName) || TextUtils.isEmpty(filePath)) {
+                        return DbResponseGenerator.getBadArgsJsonRep(requestBean, cookies);
+                    }
+                    String targetFileName = System.currentTimeMillis() + "_" + fileName;
+                    String targetFilePath = PathUtils.getExternalAppCachePath() + "/faceStorage/" + targetFileName;
+                    contentValues.put("fileName", targetFileName);
+                    contentValues.put("filePath", targetFilePath);
+                    if (!TextUtils.isEmpty(requestParams.get("bizType"))) {
+                        contentValues.put("bizType", requestParams.get("bizType"));
+                    } else {
+                        contentValues.put("bizType", "1");
+                    }
+                    if (!TextUtils.isEmpty(requestParams.get("orderNum"))) {
+                        contentValues.put("orderNum", requestParams.get("orderNum"));
+                    } else {
+                        contentValues.put("orderNum", "1");
+                    }
+                    if (!TextUtils.isEmpty(requestParams.get("descr"))) {
+                        contentValues.put("descr", requestParams.get("descr"));
+                    }
+                    if (!TextUtils.isEmpty(requestParams.get("fileType"))) {
+                        contentValues.put("fileType", requestParams.get("fileType"));
+                    } else {
+                        contentValues.put("fileType", fileName.substring(fileName.lastIndexOf("\\.") + 1));
+                    }
                     contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                     contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                     long id = insert(db, FILE_INFO_TABLE_NAME, "filePath", contentValues);
@@ -86,8 +131,8 @@ public class SQLiteFileServer extends SQLiteBaseServer {
                         isSuccess = false;
                         break;
                     }
-                    filePaths += filePath + ",";
-                    fileNames += fileNames + ",";
+                    filePaths += targetFilePath + ",";
+                    fileNames += targetFileName + ",";
                 }
                 if (isSuccess) {
                     db.setTransactionSuccessful();

@@ -13,6 +13,7 @@ import com.pine.tool.util.LogUtils;
 
 import org.json.JSONObject;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +21,26 @@ import java.util.Map;
 
 public class SQLiteBaseServer {
     protected static final String TAG = LogUtils.makeLogTag(SQLiteBaseServer.class);
+
+    //定义生成随机字符串的函数
+    public static String randomString(int length) {
+        // 首先定义一个随机数生成器
+        SecureRandom secureRandom = new SecureRandom();
+        // 使用可打印的 ASCII 字符作为生成字符串的字符集合
+        String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        // 用 StringBuilder 保存生成的字符串
+        StringBuilder sb = new StringBuilder();
+        // 循环生成指定长度的随机字符串
+        for (int i = 0; i < length; i++) {
+            // 从字符集合中随机选择一个字符
+            int randomIndex = secureRandom.nextInt(characters.length());
+            char randomChar = characters.charAt(randomIndex);
+            // 将选择的字符添加到字符串中
+            sb.append(randomChar);
+        }
+        // 返回生成的随机字符串
+        return sb.toString();
+    }
 
     public static long insert(@NonNull SQLiteDatabase db, @NonNull String tableName,
                               @NonNull String nullColumnHack,
