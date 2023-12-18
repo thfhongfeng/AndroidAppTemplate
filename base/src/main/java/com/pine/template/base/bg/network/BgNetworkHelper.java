@@ -48,15 +48,15 @@ public class BgNetworkHelper {
         // 将WiFi信号强度映射到五格信号强度
         int level = -1;
         if (signalStrength >= -50) {
-            level = 4; // 五格信号强度
+            level = 5; // 五格信号强度
         } else if (signalStrength >= -60) {
-            level = 3;
+            level = 4;
         } else if (signalStrength >= -70) {
-            level = 2;
+            level = 3;
         } else if (signalStrength >= -80) {
-            level = 1;
+            level = 2;
         } else if (signalStrength >= -100) {
-            level = 0;
+            level = 1;
         }
         return level;
     }
