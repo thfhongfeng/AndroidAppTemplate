@@ -199,28 +199,33 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             db.execSQL("create table if not exists " + APP_VERSION_TABLE_NAME +
                     "(_id integer primary key autoincrement,packageName text not null," +
                     "versionName text not null,versionCode integer not null," +
-                    "minSupportedVersion text,force integer,fileName text,path text," +
+                    "minSupportedVersion integer,force integer,fileName text," +
+                    "fileSize integer,downloadUrl text,remark text," +
                     "createTime text,updateTime text)");
             List<ContentValues> list = new ArrayList<>();
             ContentValues contentValues = new ContentValues();
-            contentValues.put("packageName", "com.pine.media");
-            contentValues.put("versionName", "1.0.1");
-            contentValues.put("versionCode", 1);
-            contentValues.put("minSupportedVersion", 1);
+            contentValues.put("packageName", "com.pine.app.template");
+            contentValues.put("versionName", "1.0.001");
+            contentValues.put("versionCode", 10001);
+            contentValues.put("minSupportedVersion", 10001);
             contentValues.put("force", 0);  // 是否强制更新：0-不强制；1-强制
             contentValues.put("fileName", "pine_app_template-V1.0.1-release.apk");
-            contentValues.put("path", "http://yanyangtian.purang.com/download/bsd_purang.apk");
+            contentValues.put("fileSize", 120120120);
+            contentValues.put("downloadUrl", "http://test.com/download/pine_app_template-V1.0.1-release.apk");
+            contentValues.put("remark", "update 10001");
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
             list.add(contentValues);
             contentValues = new ContentValues();
-            contentValues.put("packageName", "com.pine.media");
-            contentValues.put("versionName", "1.0.2");
-            contentValues.put("versionCode", 2);
-            contentValues.put("minSupportedVersion", 1);
+            contentValues.put("packageName", "com.pine.app.template");
+            contentValues.put("versionName", "1.0.002");
+            contentValues.put("versionCode", 10002);
+            contentValues.put("minSupportedVersion", 10001);
             contentValues.put("force", 0);  // 是否强制更新：0-不强制；1-强制
             contentValues.put("fileName", "pine_app_template-V1.0.2-release.apk");
-            contentValues.put("path", "http://yanyangtian.purang.com/download/bsd_purang.apk");
+            contentValues.put("fileSize", 150120150);
+            contentValues.put("downloadUrl", "http://test.com/download/pine_app_template-V1.0.2-release.apk");
+            contentValues.put("remark", "update 10002");
             contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
             contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
             list.add(contentValues);
@@ -228,7 +233,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             boolean insertSuccess = true;
             db.beginTransaction();
             for (ContentValues cv : list) {
-                long id = db.insert(APP_VERSION_TABLE_NAME, "package", cv);
+                long id = db.insert(APP_VERSION_TABLE_NAME, "packageName", cv);
                 if (id == -1) {
                     insertSuccess = false;
                 }

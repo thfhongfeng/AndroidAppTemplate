@@ -175,15 +175,6 @@ public class DbRequestManager implements IRequestManager {
                                        @NonNull IResponseListener.OnResponseListener listener,
                                        boolean requestFromMainThread) {
         dispatchStartResponse(requestBean, listener, requestFromMainThread);
-//        if (!NetWorkUtils.checkNetWork()) {
-//            Response response = new Response();
-//            ConnectException error = new ConnectException(mApplicationContext.getString(R.string.tool_network_err));
-//            response.setSucceed(false);
-//            response.setData(null);
-//            response.setException(error);
-//            dispatchResponse(requestBean, response, listener, requestFromMainThread);
-//            return;
-//        }
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
         Bundle bundle = new Bundle();
         bundle.putSerializable(IDbRequestServer.requestBeanKey, dbRequestBean);
@@ -224,15 +215,6 @@ public class DbRequestManager implements IRequestManager {
                                         @NonNull IResponseListener.OnResponseListener listener,
                                         boolean requestFromMainThread) {
         dispatchStartResponse(requestBean, listener, requestFromMainThread);
-//        if (!NetWorkUtils.checkNetWork()) {
-//            Response response = new Response();
-//            ConnectException error = new ConnectException(mApplicationContext.getString(R.string.tool_network_err));
-//            response.setSucceed(false);
-//            response.setData(new JSONObject().toString());
-//            response.setException(error);
-//            dispatchResponse(requestBean, response, listener, requestFromMainThread);
-//            return;
-//        }
 
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
 
@@ -274,15 +256,6 @@ public class DbRequestManager implements IRequestManager {
                                         @NonNull IResponseListener.OnResponseListener listener,
                                         boolean requestFromMainThread) {
         dispatchStartResponse(requestBean, listener, requestFromMainThread);
-//        if (!NetWorkUtils.checkNetWork()) {
-//            Response response = new Response();
-//            ConnectException error = new ConnectException(mApplicationContext.getString(R.string.tool_network_err));
-//            response.setSucceed(false);
-//            response.setData(null);
-//            response.setException(error);
-//            dispatchResponse(requestBean, response, listener, requestFromMainThread);
-//            return;
-//        }
 
         DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
 

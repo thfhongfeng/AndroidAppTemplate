@@ -92,8 +92,7 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
         try {
             Map<String, String> requestParams = requestBean.getParams();
             String versionCodeStr = requestParams.get("versionCode");
-            String versionName = requestParams.get("versionName");
-            int userVersionCode = 1;
+            int userVersionCode = 10001;
             if (TextUtils.isEmpty(versionCodeStr)) {
                 try {
                     userVersionCode = Integer.parseInt(versionCodeStr);
@@ -117,7 +116,9 @@ public class SQLiteWelcomeServer extends SQLiteBaseServer {
                     jsonObject.put("minSupportedVersion", cursor.getInt(cursor.getColumnIndex("minSupportedVersion")));
                     jsonObject.put("force", cursor.getString(cursor.getColumnIndex("force")));
                     jsonObject.put("fileName", cursor.getString(cursor.getColumnIndex("fileName")));
-                    jsonObject.put("path", cursor.getString(cursor.getColumnIndex("path")));
+                    jsonObject.put("fileSize", cursor.getLong(cursor.getColumnIndex("fileSize")));
+                    jsonObject.put("downloadUrl", cursor.getString(cursor.getColumnIndex("downloadUrl")));
+                    jsonObject.put("remark", cursor.getString(cursor.getColumnIndex("remark")));
                     jsonObject.put("createTime", cursor.getString(cursor.getColumnIndex("createTime")));
                     jsonObject.put("updateTime", cursor.getString(cursor.getColumnIndex("updateTime")));
                 }

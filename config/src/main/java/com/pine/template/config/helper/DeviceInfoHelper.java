@@ -15,6 +15,7 @@ public class DeviceInfoHelper {
         HashMap<String, String> params = new HashMap<>();
         Context context = AppUtils.getApplicationContext();
         params.put("appKey", context.getPackageName());
+        params.put("packageName", context.getPackageName());
         params.put("sdkType", BuildConfig.FLAVOR);
         params.put("versionName", versionName);
         params.put("versionCode", versionCode + "");
