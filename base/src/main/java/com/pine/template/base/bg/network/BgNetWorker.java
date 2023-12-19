@@ -95,6 +95,8 @@ public class BgNetWorker {
         public void onSignalStrengthsChanged(SignalStrength signalStrength) {
             super.onSignalStrengthsChanged(signalStrength);
             mMobileLevel = NetWorkUtils.getSignalLevel(signalStrength);
+            LogUtils.d(TAG, "onSignalStrengthsChanged signalStrength:" + signalStrength
+                    + ", level:" + mMobileLevel);
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
