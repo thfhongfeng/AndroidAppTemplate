@@ -10,12 +10,12 @@
     <application
         android:name=".TemplateApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/res_ic_launcher"
-        android:label="@string/res_app_name"
+        android:icon="@mipmap/base_ic_launcher"
+        android:label="@string/base_app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/res_ic_launcher"
+        android:roundIcon="@mipmap/base_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme"
         tools:replace="android:label">

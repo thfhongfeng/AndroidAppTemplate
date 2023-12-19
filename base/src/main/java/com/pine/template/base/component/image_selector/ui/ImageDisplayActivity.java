@@ -25,8 +25,8 @@ import com.pine.template.base.component.image_loader.ImageLoaderManager;
 import com.pine.template.base.component.image_selector.ImageViewer;
 import com.pine.template.base.component.image_selector.bean.ImageItemBean;
 import com.pine.template.base.ui.BaseActionBarTextMenuActivity;
+import com.pine.template.base.widget.view.TransformImageView;
 import com.pine.tool.permission.PermissionsAnnotation;
-import com.pine.tool.widget.view.TransformImageView;
 
 import java.util.ArrayList;
 

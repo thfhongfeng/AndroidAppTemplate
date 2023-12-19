@@ -74,7 +74,7 @@ public class AppBgService extends Service {
             Notification notification = new Notification.Builder(mContext, TAG)
                     .setContentTitle(getString(R.string.base_bg_service_content_title, AppUtils.getAppName()))
                     .setWhen(System.currentTimeMillis())
-                    .setSmallIcon(R.mipmap.res_ic_launcher).build();
+                    .setSmallIcon(R.mipmap.base_ic_launcher).build();
             startForeground(2, notification);
         }
     }

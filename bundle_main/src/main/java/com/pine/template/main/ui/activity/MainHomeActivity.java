@@ -7,12 +7,12 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmNoActionBarActivity;
+import com.pine.template.base.widget.decor.GridSpacingItemDecoration;
 import com.pine.template.main.R;
 import com.pine.template.main.adapter.MainBusinessAdapter;
 import com.pine.template.main.bean.MainBusinessItemEntity;
 import com.pine.template.main.databinding.MainHomeActivityBinding;
 import com.pine.template.main.vm.MainHomeVm;
-import com.pine.tool.widget.decor.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
 

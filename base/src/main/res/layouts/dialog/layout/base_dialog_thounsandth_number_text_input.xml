@@ -19,7 +19,7 @@
         app:base_textColor="#00000b"
         app:base_textSize="@dimen/sp_16" />
 
-    <com.pine.tool.widget.view.ThousandthNumberEditText
+    <com.pine.template.base.widget.view.ThousandthNumberEditText
         android:id="@+id/dialog_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

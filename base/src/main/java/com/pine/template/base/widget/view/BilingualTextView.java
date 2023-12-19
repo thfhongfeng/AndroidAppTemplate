@@ -71,10 +71,10 @@ public class BilingualTextView extends LinearLayout {
 
         firstTv = new TextView(getContext());
         secondTv = new TextView(getContext());
-        addView(firstTv, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        addView(secondTv, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        addView(firstTv, new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT));
+        addView(secondTv, new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT));
         if (textResId != -1) {
             setText(textResId);
         }

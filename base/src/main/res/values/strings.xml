@@ -71,6 +71,12 @@
     <string name="base_input_hint">点击输入</string>
     <string name="base_text_max_length">最多允许输入%1d个字符</string>
     <string name="base_number_max_length">最多允许输入%1d个非小数</string>
+    <string name="base_empty_or_format_err_msg">%s为空或者格式不正确</string>
+    <string name="base_url_format_err_msg">%s必须仪\'/\'结尾</string>
+    <string name="base_number_range_err_msg">%s必须大于等于%d小于等于%d</string>
+    <string name="base_number_range_err_msg_1">%s必须大于%s</string>
+    <string name="base_number_range_err_msg_2">%s必须小于%s</string>
+    <string name="base_str_range_err_msg">%s的长度必须大于等于%d小于等于%d</string>
 
     <string name="base_date_year">%1$s年</string>
     <string name="base_date_month">%1$s月</string>

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarImageMenuActivity;
+import com.pine.template.base.widget.view.ViewPagerTabLayout;
 import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvp.R;
@@ -22,7 +23,6 @@ import com.pine.template.mvp.ui.fragment.MvpShopTreeListFragment;
 import com.pine.template.mvp.ui.fragment.MvpWebViewFragment;
 import com.pine.tool.adapter.TabFragmentPagerAdapter;
 import com.pine.tool.permission.PermissionsAnnotation;
-import com.pine.tool.widget.view.ViewPagerTabLayout;
 
 /**
  * Created by tanghongfeng on 2018/9/13

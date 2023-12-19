@@ -28,26 +28,8 @@ android {
 
         }
     }
-
-    resourcePrefix "res_"
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // 测试 dependency begin
-    androidTestImplementation(build_dependency["test_espresso_core"], {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testImplementation build_dependency["test_junit"]
-    // 测试 dependency end
-
-    // android官方 dependency begin
-    api build_dependency["android_appcompat"]
-    api build_dependency["android_constraint_layout"]
-    // android官方 dependency end
-
-    // 公共工具模块 begin
-    api project(':tool')
-    // 公共工具模块 end
 }

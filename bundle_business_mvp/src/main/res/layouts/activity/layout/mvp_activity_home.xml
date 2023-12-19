@@ -20,7 +20,7 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/dp_10">
 
-        <com.pine.tool.widget.view.ViewPagerTabLayout
+        <com.pine.template.base.widget.view.ViewPagerTabLayout
             android:id="@+id/view_pager_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,11 +29,11 @@
             app:tabIndicatorHeight="@dimen/dp_2"
             app:tabSelectedTextColor="@color/dark_red"
             app:tabTextColor="@color/dim_gray"
-            app:vptl_bottomDivider="@drawable/res_shape_dv_light_gray"
-            app:vptl_divider="@drawable/res_inset_dv_light_gray"
-            app:vptl_marginEnd="@dimen/dp_10"
-            app:vptl_marginStart="@dimen/dp_10"
-            app:vptl_showDividers="middle"></com.pine.tool.widget.view.ViewPagerTabLayout>
+            app:base_bottomDivider="@drawable/base_shape_dv_light_gray"
+            app:base_divider="@drawable/base_inset_dv_light_gray"
+            app:base_marginEnd="@dimen/dp_10"
+            app:base_marginStart="@dimen/dp_10"
+            app:base_showDividers="middle"></com.pine.template.base.widget.view.ViewPagerTabLayout>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"

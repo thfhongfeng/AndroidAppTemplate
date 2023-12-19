@@ -26,8 +26,8 @@ public abstract class BaseMvpActivity<V extends IContract.Ui, P extends Presente
     private Handler mLoadingUiTimeoutHandler = new Handler(Looper.getMainLooper());
     private int mLoadingUiTimeoutGone;
 
-    private int mEnterAnim = R.anim.res_anim_fade_in;
-    private int mExitAnim = R.anim.res_anim_fade_out;
+    private int mEnterAnim = R.anim.base_anim_fade_in;
+    private int mExitAnim = R.anim.base_anim_fade_out;
 
     @Override
     public void startActivity(Intent intent, @Nullable Bundle options) {

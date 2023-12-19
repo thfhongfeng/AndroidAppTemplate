@@ -26,7 +26,7 @@
     <style name="BaseLoadingTheme" parent="BaseTheme">
         <!--  这三行是重点  -->
         <!--    设置背景，解决白屏的关键    -->
-        <item name="android:windowBackground">@drawable/res_iv_app_loading</item>
+        <item name="android:windowBackground">@drawable/base_iv_app_loading</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

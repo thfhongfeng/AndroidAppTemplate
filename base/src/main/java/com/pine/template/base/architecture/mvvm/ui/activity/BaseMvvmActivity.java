@@ -26,8 +26,8 @@ public abstract class BaseMvvmActivity<T extends ViewDataBinding, VM extends Vie
     private Handler mLoadingUiTimeoutHandler = new Handler(Looper.getMainLooper());
     private int mLoadingUiTimeoutGone;
 
-    private int mEnterAnim = R.anim.res_anim_fade_in;
-    private int mExitAnim = R.anim.res_anim_fade_out;
+    private int mEnterAnim = R.anim.base_anim_fade_in;
+    private int mExitAnim = R.anim.base_anim_fade_out;
 
     @Override
     public void startActivity(Intent intent, @Nullable Bundle options) {

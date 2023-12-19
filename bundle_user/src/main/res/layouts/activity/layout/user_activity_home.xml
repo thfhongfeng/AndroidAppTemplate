@@ -42,9 +42,9 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.pine.tool.widget.view.CircleImageView
-                        emptySrc="@{R.mipmap.res_iv_portrait_default}"
-                        errorSrc="@{R.mipmap.res_iv_portrait_default}"
+                    <com.pine.template.base.widget.view.CircleImageView
+                        emptySrc="@{R.mipmap.base_iv_portrait_default}"
+                        errorSrc="@{R.mipmap.base_iv_portrait_default}"
                         imageUrl="@{accountBean.headImgUrl}"
                         android:layout_width="@dimen/dp_80"
                         android:layout_height="@dimen/dp_80" />
@@ -63,7 +63,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:onClick="@{presenter::onScanClick}"
-                    android:src="@mipmap/res_ic_scan" />
+                    android:src="@mipmap/base_ic_scan" />
             </RelativeLayout>
 
             <LinearLayout
@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_30"
-            android:background="@drawable/res_shape_round_70b642_8bb96c"
+            android:background="@drawable/base_shape_round_70b642_8bb96c"
             android:gravity="center"
             android:onClick="@{presenter::onLogoutClick}"
             android:padding="@dimen/dp_20"

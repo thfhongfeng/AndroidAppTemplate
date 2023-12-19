@@ -25,16 +25,16 @@
             android:layout_marginBottom="@dimen/dp_10"
             android:orientation="horizontal">
 
-            <com.pine.tool.widget.view.CircleImageView
+            <com.pine.template.base.widget.view.CircleImageView
                 android:id="@+id/person_civ"
-                errorSrc="@{R.mipmap.res_iv_portrait_default}"
+                errorSrc="@{R.mipmap.base_iv_portrait_default}"
                 imageUrl="@{travelNoteComment.headImgUrl}"
-                emptySrc="@{R.mipmap.res_iv_portrait_default}"
+                emptySrc="@{R.mipmap.base_iv_portrait_default}"
                 android:layout_width="@dimen/dp_38"
                 android:layout_height="@dimen/dp_38"
                 android:layout_marginLeft="@dimen/dp_20"
-                app:civ_borderColor="@color/white"
-                app:civ_borderWidth="@dimen/dp_2" />
+                app:base_borderColor="@color/white"
+                app:base_borderWidth="@dimen/dp_2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
