@@ -94,21 +94,23 @@ public class BgNetWorker {
         @Override
         public void onSignalStrengthsChanged(SignalStrength signalStrength) {
             super.onSignalStrengthsChanged(signalStrength);
-            mMobileLevel = NetWorkUtils.getSignalLevel(signalStrength);
-            LogUtils.d(TAG, "onSignalStrengthsChanged level:" + mMobileLevel);
-            mMainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    onMobileLevel(null);
-                }
-            });
+            int mobileLevel = NetWorkUtils.getSignalLevel(signalStrength);
+            if (mobileLevel != mMobileLevel) {
+                mMobileLevel = mobileLevel;
+                mMainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onMobileLevel(null);
+                    }
+                });
+            }
         }
     };
 
     public void onMobileLevel(OnNetworkChangedListener newListener) {
         List<OnNetworkChangedListener> listeners = getListeners(newListener);
         for (OnNetworkChangedListener listener : listeners) {
-            listener.onWifiSignalChange(mMobileLevel);
+            listener.onMobileSignalChange(mMobileLevel);
         }
     }
 
