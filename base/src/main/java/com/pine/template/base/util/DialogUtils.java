@@ -360,10 +360,19 @@ public class DialogUtils {
     }
 
     public static Dialog showConfirmDialog(Context context, int titleResId, int contentResId,
+                                           boolean fullScreenMode, boolean bilingual,
+                                           final IActionListener listener, Object... contentFormatArgs) {
+        return showConfirmDialog(context, titleResId, contentResId,
+                R.string.base_cancel, Color.parseColor("#999999"),
+                R.string.base_confirm, Color.parseColor("#70B642"),
+                fullScreenMode, bilingual, listener, contentFormatArgs);
+    }
+
+    public static Dialog showConfirmDialog(Context context, int titleResId, int contentResId,
                                            int leftBtnTextResId, @ColorInt int leftColorResId,
                                            int rightBtnTextResId, @ColorInt int rightColorResId,
                                            boolean fullScreenMode, boolean bilingual,
-                                           final IActionListener listener) {
+                                           final IActionListener listener, Object... contentFormatArgs) {
         LayoutInflater inflater = LayoutInflater.from(context);
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.base_dialog_confirm, null);
         //对话框
@@ -397,7 +406,11 @@ public class DialogUtils {
         } else {
             title_tv.setText(titleResId);
         }
-        content_tv.setText(contentResId);
+        if (contentFormatArgs != null) {
+            content_tv.setText(contentResId, contentFormatArgs);
+        } else {
+            content_tv.setText(contentResId);
+        }
         left_btn_tv.setTextColor(leftColorResId);
         left_btn_tv.setText(leftBtnTextResId);
         right_btn_tv.setTextColor(rightColorResId);
