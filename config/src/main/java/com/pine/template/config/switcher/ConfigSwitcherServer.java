@@ -402,11 +402,11 @@ public class ConfigSwitcherServer {
     }
 
     // for test env
-    public static boolean switchToTestEnv() {
+    public static boolean switchToTestEnv(boolean local) {
         AssetManager assetManager = AppUtils.getApplication().getResources().getAssets();
         try {
             Properties properties = new Properties();
-            properties.load(assetManager.open("test_config.ini"));
+            properties.load(assetManager.open(local ? "test_local_config.ini" : "test_remote_config.ini"));
             Set keySet = properties.keySet();
             for (Object object : keySet) {
                 String propKey = object.toString();
