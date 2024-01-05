@@ -151,6 +151,7 @@ public class TimerHelper {
 
         mTimer.schedule(timeWorker, delay);
         addTimerTask(tag, timerTaskEntity);
+        LogUtils.d(TAG, "schemeTimerWorkImpl task:" + timerTaskEntity);
     }
 
     /**
@@ -160,7 +161,7 @@ public class TimerHelper {
      * @param delay    定时时间，单位毫秒
      * @param runnable 定时任务
      */
-    public void schemeAsyncTimerWorkImpl(String tag, long delay, final Runnable runnable) {
+    public void schemeAsyncTimerWorkImpl(final String tag, long delay, final Runnable runnable) {
         cancel(tag);
         final TimerTaskEntity timerTaskEntity = new TimerTaskEntity();
         TimerTask timeWorker = new TimerTask() {
@@ -168,15 +169,17 @@ public class TimerHelper {
             public void run() {
                 timerTaskEntity.isStart = true;
                 runnable.run();
+                removeTimerTask(tag);
             }
         };
         timerTaskEntity.tag = tag;
         timerTaskEntity.type = TimerTaskEntity.TYPE_ONCE;
         timerTaskEntity.timerTask = timeWorker;
         timerTaskEntity.delay = delay;
-        mTimer.schedule(timeWorker, delay);
 
+        mTimer.schedule(timeWorker, delay);
         addTimerTask(tag, timerTaskEntity);
+        LogUtils.d(TAG, "schemeAsyncTimerWorkImpl task:" + timerTaskEntity);
     }
 
     public void schemeTimerWorkImpl(final String tag, long delay, long period, final Runnable runnable) {
@@ -191,7 +194,6 @@ public class TimerHelper {
                     public void run() {
                         timerTaskEntity.isStart = true;
                         runnable.run();
-                        removeTimerTask(tag);
                     }
                 });
             }
@@ -204,6 +206,7 @@ public class TimerHelper {
 
         mTimer.schedule(timeWorker, delay, period);
         addTimerTask(tag, timerTaskEntity);
+        LogUtils.d(TAG, "schemeTimerWorkImpl task:" + timerTaskEntity);
     }
 
     public void schemeAsyncTimerWorkImpl(String tag, long delay, long period, final Runnable runnable) {
@@ -224,10 +227,12 @@ public class TimerHelper {
 
         mTimer.schedule(timeWorker, delay, period);
         addTimerTask(tag, timerTaskEntity);
+        LogUtils.d(TAG, "schemeAsyncTimerWorkImpl task:" + timerTaskEntity);
     }
 
     public void cancelImpl(TimerTaskEntity timerTaskEntity) {
         if (timerTaskEntity != null && timerTaskEntity.timerTask != null) {
+            LogUtils.d(TAG, "cancelImpl task:" + timerTaskEntity);
             timerTaskEntity.timerTask.cancel();
         }
     }
@@ -253,6 +258,18 @@ public class TimerHelper {
         public long delay;
         public long period;
         public boolean isStart;
+
+        @Override
+        public String toString() {
+            return "TimerTaskEntity{" +
+                    "tag='" + tag + '\'' +
+                    ", type=" + type +
+                    ", timerTask=" + timerTask +
+                    ", delay=" + delay +
+                    ", period=" + period +
+                    ", isStart=" + isStart +
+                    '}';
+        }
     }
 
     public static void schemeTimerWork(int tag, long delay, final Runnable runnable) {
