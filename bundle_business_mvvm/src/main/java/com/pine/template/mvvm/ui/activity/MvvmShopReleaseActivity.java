@@ -73,7 +73,7 @@ public class MvvmShopReleaseActivity extends
                         mTypeSelectDialog.dismiss();
                     }
                     mTypeSelectDialog = DialogUtils.createItemSelectDialog(MvvmShopReleaseActivity.this, "",
-                            strings, 0, new SelectItemDialog.IDialogSelectListener() {
+                            strings, 0, new SelectItemDialog.DialogSelectListener() {
                                 @Override
                                 public void onSelect(String selectText, int position) {
                                     MvvmShopDetailEntity entity = mBinding.getShopDetail();

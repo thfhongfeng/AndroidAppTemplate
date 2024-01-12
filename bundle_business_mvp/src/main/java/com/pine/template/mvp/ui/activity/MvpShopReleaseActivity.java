@@ -193,7 +193,7 @@ public class MvpShopReleaseActivity extends
         if (v.getId() == R.id.type_ll) {
             if (mTypeSelectDialog == null) {
                 mTypeSelectDialog = DialogUtils.createItemSelectDialog(this, "",
-                        mPresenter.getShopTypeNameArr(), 0, new SelectItemDialog.IDialogSelectListener() {
+                        mPresenter.getShopTypeNameArr(), 0, new SelectItemDialog.DialogSelectListener() {
                             @Override
                             public void onSelect(String selectText, int position) {
                                 type_tv.setText(selectText);

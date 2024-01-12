@@ -33,6 +33,7 @@ import java.util.Map;
  */
 
 public class SelectMultiItemsDialog extends BaseDialog {
+    private Builder mBuilder;
 
     protected SelectMultiItemsDialog(Context context) {
         super(context);
@@ -42,8 +43,22 @@ public class SelectMultiItemsDialog extends BaseDialog {
         super(context, theme);
     }
 
+    public void disableCancel() {
+        mBuilder.disableCancel();
+    }
+
+    public static abstract class DialogSelectListener implements SelectItemDialog.IDialogSelectListener {
+        public abstract void onSelect(String selectText, int position);
+
+        public void onCancel() {
+
+        }
+    }
+
     public interface IDialogSelectListener {
         void onSelect(String[] selectTextArr, int[] positionArr);
+
+        void onCancel();
     }
 
     public static class Builder {
@@ -119,6 +134,9 @@ public class SelectMultiItemsDialog extends BaseDialog {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
+                    if (listener != null) {
+                        listener.onCancel();
+                    }
                 }
             });
             confirm_btn_tv.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +159,12 @@ public class SelectMultiItemsDialog extends BaseDialog {
                     dialog.dismiss();
                 }
             });
+            dialog.mBuilder = this;
             return dialog;
+        }
+
+        public void disableCancel() {
+            cancel_btn_tv.setVisibility(View.GONE);
         }
     }
 

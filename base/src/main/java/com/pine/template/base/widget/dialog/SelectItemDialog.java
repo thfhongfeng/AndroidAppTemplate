@@ -29,6 +29,7 @@ import java.util.List;
  */
 
 public class SelectItemDialog extends BaseDialog {
+    private Builder mBuilder;
 
     protected SelectItemDialog(Context context) {
         super(context);
@@ -38,8 +39,22 @@ public class SelectItemDialog extends BaseDialog {
         super(context, theme);
     }
 
+    public void disableCancel() {
+        mBuilder.disableCancel();
+    }
+
+    public static abstract class DialogSelectListener implements IDialogSelectListener {
+        public abstract void onSelect(String selectText, int position);
+
+        public void onCancel() {
+
+        }
+    }
+
     public interface IDialogSelectListener {
         void onSelect(String selectText, int position);
+
+        void onCancel();
     }
 
     public static class Builder {
@@ -125,6 +140,9 @@ public class SelectItemDialog extends BaseDialog {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
+                    if (listener != null) {
+                        listener.onCancel();
+                    }
                 }
             });
             if (TextUtils.isEmpty(title)) {
@@ -133,22 +151,33 @@ public class SelectItemDialog extends BaseDialog {
                 title_tv.setText(title);
                 title_tv.setVisibility(View.VISIBLE);
             }
-            DialogListAdapter dialogListAdapter = new DialogListAdapter(curPosition, showSelectState, new IDialogSelectListener() {
-                @Override
-                public void onSelect(String selectText, int position) {
-                    dialog.dismiss();
-                    if (listener != null) {
-                        listener.onSelect(selectText, position);
-                    }
-                }
-            });
+            DialogListAdapter dialogListAdapter = new DialogListAdapter(curPosition, showSelectState,
+                    new IDialogSelectListener() {
+                        @Override
+                        public void onSelect(String selectText, int position) {
+                            dialog.dismiss();
+                            if (listener != null) {
+                                listener.onSelect(selectText, position);
+                            }
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
             dialogListAdapter.enableEmptyComplete(false, false);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             layoutManager.setOrientation(RecyclerView.VERTICAL);
             recycle_view.setLayoutManager(layoutManager);
             recycle_view.setAdapter(dialogListAdapter);
             dialogListAdapter.setData(itemList);
+            dialog.mBuilder = this;
             return dialog;
+        }
+
+        public void disableCancel() {
+            cancel_btn_tv.setVisibility(View.GONE);
         }
     }
 

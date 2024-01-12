@@ -30,6 +30,8 @@
 
     <string name="base_share_to">མཉམ་སྤྱོད་བྱ་ཡུལ།</string>
 
+    <string name="base_true">正确</string>
+    <string name="base_false">错误</string>
     <string name="base_cancel">ཕྱིར་འཐེན།</string>
     <string name="base_clear">གཙང་བཟོ།</string>
     <string name="base_done">ལེགས་གྲུབ།</string>
@@ -100,4 +102,14 @@
     <string name="base_main_tab_mine">ངའི།</string>
 
     <string name="base_bg_service_content_title">%s后台服务</string>
+
+    <string name="base_q_complete_d_title">完成答题</string>
+    <string name="base_q_complete_d_not_all_msg">您还有题目未答完，是否仍然完成答题？</string>
+    <string name="base_q_cancel_d_title">取消答题</string>
+    <string name="base_q_cancel_d_msg">未完成答题可能会影响后续操作，确定取消答题吗？</string>
+
+    <string name="base_q_cancel">退出</string>
+    <string name="base_q_pre">上一页</string>
+    <string name="base_q_next">下一页</string>
+    <string name="base_q_complete">完成</string>
 </resources>
