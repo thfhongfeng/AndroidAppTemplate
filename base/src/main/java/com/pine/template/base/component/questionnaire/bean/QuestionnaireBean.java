@@ -2,12 +2,13 @@ package com.pine.template.base.component.questionnaire.bean;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionnaireBean {
     private String dataVersion;
-    private boolean isNewVersion;
 
+    private String questionnaireId;
     private String title;
     private String subRemark;
 
@@ -35,12 +36,12 @@ public class QuestionnaireBean {
         this.dataVersion = dataVersion;
     }
 
-    public boolean isNewVersion() {
-        return isNewVersion;
+    public String getQuestionnaireId() {
+        return questionnaireId;
     }
 
-    public void setNewVersion(boolean newVersion) {
-        isNewVersion = newVersion;
+    public void setQuestionnaireId(String questionnaireId) {
+        this.questionnaireId = questionnaireId;
     }
 
     public String getTitle() {
@@ -162,6 +163,19 @@ public class QuestionnaireBean {
         return 0;
     }
 
+    public List<QSubjectBean> getCompleteSubjectList() {
+        List<QSubjectBean> list = new ArrayList<>();
+        if (complete && entities != null) {
+            for (QSubjectBean bean : entities) {
+                if (bean.getAnswerIndexes() != null
+                        || !TextUtils.isEmpty(bean.getAnswer())) {
+                    list.add(bean);
+                }
+            }
+        }
+        return list;
+    }
+
     public boolean canSlideScroll() {
         return canGoPre && canGoNext;
     }
@@ -170,7 +184,7 @@ public class QuestionnaireBean {
     public String toString() {
         return "QuestionnaireBean{" +
                 "dataVersion='" + dataVersion + '\'' +
-                ", isNewVersion=" + isNewVersion +
+                ", questionnaireId='" + questionnaireId + '\'' +
                 ", title='" + title + '\'' +
                 ", subRemark='" + subRemark + '\'' +
                 ", answerTime=" + answerTime +

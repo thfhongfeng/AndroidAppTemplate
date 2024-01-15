@@ -14,6 +14,7 @@ public class QSubjectBean {
     public final static int TYPE_TRUE_OR_FALSE = 2;
     public final static int TYPE_SHOR_ANSWER = 3;
 
+    private String subjectId;
     private int type;
     private String subject;
     private List<String> subjectImages;
@@ -32,6 +33,14 @@ public class QSubjectBean {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getSubject() {
@@ -142,6 +151,7 @@ public class QSubjectBean {
     public String toString() {
         return "QBean{" +
                 "type=" + type +
+                ", subjectId='" + subjectId + '\'' +
                 ", subject='" + subject + '\'' +
                 ", subjectImages=" + subjectImages +
                 ", tip='" + tip + '\'' +
