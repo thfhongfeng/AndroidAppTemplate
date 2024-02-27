@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -66,14 +68,17 @@ public class TimerHelper {
         }
         List<TimerTaskEntity> list = getAllTimeTask(false);
         for (TimerTaskEntity timerTaskEntity : list) {
-            if (timerTaskEntity != null && timerTaskEntity.timerTask != null) {
-                cancelImpl(timerTaskEntity);
+            if (timerTaskEntity != null && timerTaskEntity.isValid()) {
                 if (timerTaskEntity.type == TimerTaskEntity.TYPE_ONCE) {
                     if (!timerTaskEntity.isStart) {
-                        mTimer.schedule(timerTaskEntity.timerTask, timerTaskEntity.delay);
+                        cancelImpl(timerTaskEntity.tag);
+                        timerTaskEntity.resetEntity();
+                        realSchemeTimerWork(timerTaskEntity);
                     }
                 } else if (timerTaskEntity.type == TimerTaskEntity.TYPE_PERIOD) {
-                    mTimer.schedule(timerTaskEntity.timerTask, timerTaskEntity.delay, timerTaskEntity.period);
+                    cancelImpl(timerTaskEntity.tag);
+                    timerTaskEntity.resetEntity();
+                    realSchemeTimerWork(timerTaskEntity);
                 }
             }
         }
@@ -128,30 +133,16 @@ public class TimerHelper {
      * @param runnable 定时任务
      */
     public void schemeTimerWorkImpl(final String tag, long delay, final Runnable runnable) {
-        cancel(tag);
-        final Handler handler = new Handler();
         final TimerTaskEntity timerTaskEntity = new TimerTaskEntity();
-        TimerTask timeWorker = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        timerTaskEntity.isStart = true;
-                        runnable.run();
-                        removeTimerTask(tag);
-                    }
-                });
-            }
-        };
         timerTaskEntity.tag = tag;
         timerTaskEntity.type = TimerTaskEntity.TYPE_ONCE;
-        timerTaskEntity.timerTask = timeWorker;
         timerTaskEntity.delay = delay;
+        timerTaskEntity.sync = false;
 
-        mTimer.schedule(timeWorker, delay);
-        addTimerTask(tag, timerTaskEntity);
-        LogUtils.d(TAG, "schemeTimerWorkImpl task:" + timerTaskEntity);
+        timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
+
+        cancel(timerTaskEntity.tag);
+        realSchemeTimerWork(timerTaskEntity);
     }
 
     /**
@@ -162,72 +153,57 @@ public class TimerHelper {
      * @param runnable 定时任务
      */
     public void schemeAsyncTimerWorkImpl(final String tag, long delay, final Runnable runnable) {
-        cancel(tag);
         final TimerTaskEntity timerTaskEntity = new TimerTaskEntity();
-        TimerTask timeWorker = new TimerTask() {
-            @Override
-            public void run() {
-                timerTaskEntity.isStart = true;
-                runnable.run();
-                removeTimerTask(tag);
-            }
-        };
         timerTaskEntity.tag = tag;
         timerTaskEntity.type = TimerTaskEntity.TYPE_ONCE;
-        timerTaskEntity.timerTask = timeWorker;
         timerTaskEntity.delay = delay;
+        timerTaskEntity.sync = true;
 
-        mTimer.schedule(timeWorker, delay);
-        addTimerTask(tag, timerTaskEntity);
-        LogUtils.d(TAG, "schemeAsyncTimerWorkImpl task:" + timerTaskEntity);
+        timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
+
+        cancel(timerTaskEntity.tag);
+        realSchemeTimerWork(timerTaskEntity);
     }
 
     public void schemeTimerWorkImpl(final String tag, long delay, long period, final Runnable runnable) {
-        cancel(tag);
-        final Handler handler = new Handler();
         final TimerTaskEntity timerTaskEntity = new TimerTaskEntity();
-        TimerTask timeWorker = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        timerTaskEntity.isStart = true;
-                        runnable.run();
-                    }
-                });
-            }
-        };
         timerTaskEntity.tag = tag;
         timerTaskEntity.type = TimerTaskEntity.TYPE_PERIOD;
-        timerTaskEntity.timerTask = timeWorker;
         timerTaskEntity.delay = delay;
         timerTaskEntity.period = period;
+        timerTaskEntity.sync = false;
 
-        mTimer.schedule(timeWorker, delay, period);
-        addTimerTask(tag, timerTaskEntity);
-        LogUtils.d(TAG, "schemeTimerWorkImpl task:" + timerTaskEntity);
+        timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
+
+        cancel(timerTaskEntity.tag);
+        realSchemeTimerWork(timerTaskEntity);
     }
 
     public void schemeAsyncTimerWorkImpl(String tag, long delay, long period, final Runnable runnable) {
-        cancel(tag);
         final TimerTaskEntity timerTaskEntity = new TimerTaskEntity();
-        TimerTask timeWorker = new TimerTask() {
-            @Override
-            public void run() {
-                timerTaskEntity.isStart = true;
-                runnable.run();
-            }
-        };
         timerTaskEntity.tag = tag;
         timerTaskEntity.type = TimerTaskEntity.TYPE_PERIOD;
-        timerTaskEntity.timerTask = timeWorker;
         timerTaskEntity.delay = delay;
         timerTaskEntity.period = period;
+        timerTaskEntity.sync = true;
 
-        mTimer.schedule(timeWorker, delay, period);
-        addTimerTask(tag, timerTaskEntity);
-        LogUtils.d(TAG, "schemeAsyncTimerWorkImpl task:" + timerTaskEntity);
+        timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
+
+        cancel(timerTaskEntity.tag);
+        realSchemeTimerWork(timerTaskEntity);
+    }
+
+    public void realSchemeTimerWork(final TimerTaskEntity timerTaskEntity) {
+        if (timerTaskEntity == null || !timerTaskEntity.isValid()) {
+            return;
+        }
+        if (timerTaskEntity.period > 0) {
+            mTimer.schedule(timerTaskEntity.timerTask, timerTaskEntity.delay, timerTaskEntity.period);
+        } else {
+            mTimer.schedule(timerTaskEntity.timerTask, timerTaskEntity.delay);
+        }
+        addTimerTask(timerTaskEntity.tag, timerTaskEntity);
+        LogUtils.d(TAG, "realSchemeTimerWork task:" + timerTaskEntity);
     }
 
     public void cancelImpl(TimerTaskEntity timerTaskEntity) {
@@ -249,15 +225,63 @@ public class TimerHelper {
         }
     }
 
+    private TimerTask buildTimerTask(@NonNull final TimerTaskEntity timerTaskEntity,
+                                     @NonNull final Runnable runnable) {
+        TimerTask timeWorker = null;
+        if (timerTaskEntity.sync) {
+            final Handler handler = new Handler();
+            timeWorker = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            timerTaskEntity.isStart = true;
+                            runnable.run();
+                            if (timerTaskEntity.period <= 0) {
+                                removeTimerTask(timerTaskEntity.tag);
+                            }
+                        }
+                    });
+                }
+            };
+        } else {
+            timeWorker = new TimerTask() {
+                @Override
+                public void run() {
+                    timerTaskEntity.isStart = true;
+                    runnable.run();
+                    if (timerTaskEntity.period <= 0) {
+                        removeTimerTask(timerTaskEntity.tag);
+                    }
+                }
+            };
+        }
+        return timeWorker;
+    }
+
     class TimerTaskEntity {
         public static final int TYPE_ONCE = 0;
         public static final int TYPE_PERIOD = 1;
         public String tag;
         public int type;
         public TimerTask timerTask;
+        public Runnable runnable;
         public long delay;
         public long period;
         public boolean isStart;
+        public boolean sync;
+
+        public TimerTaskEntity resetEntity() {
+            timerTask = buildTimerTask(this, runnable);
+            isStart = false;
+            return this;
+        }
+
+        public boolean isValid() {
+            return !TextUtils.isEmpty(tag) && timerTask != null
+                    && (type == TYPE_ONCE || type == TYPE_PERIOD);
+        }
 
         @Override
         public String toString() {
@@ -268,6 +292,7 @@ public class TimerHelper {
                     ", delay=" + delay +
                     ", period=" + period +
                     ", isStart=" + isStart +
+                    ", sync=" + sync +
                     '}';
         }
     }
