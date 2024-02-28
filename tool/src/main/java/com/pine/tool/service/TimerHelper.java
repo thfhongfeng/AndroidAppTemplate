@@ -137,7 +137,7 @@ public class TimerHelper {
         timerTaskEntity.tag = tag;
         timerTaskEntity.type = TimerTaskEntity.TYPE_ONCE;
         timerTaskEntity.delay = delay;
-        timerTaskEntity.sync = false;
+        timerTaskEntity.async = false;
 
         timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
 
@@ -157,7 +157,7 @@ public class TimerHelper {
         timerTaskEntity.tag = tag;
         timerTaskEntity.type = TimerTaskEntity.TYPE_ONCE;
         timerTaskEntity.delay = delay;
-        timerTaskEntity.sync = true;
+        timerTaskEntity.async = true;
 
         timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
 
@@ -171,7 +171,7 @@ public class TimerHelper {
         timerTaskEntity.type = TimerTaskEntity.TYPE_PERIOD;
         timerTaskEntity.delay = delay;
         timerTaskEntity.period = period;
-        timerTaskEntity.sync = false;
+        timerTaskEntity.async = false;
 
         timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
 
@@ -185,7 +185,7 @@ public class TimerHelper {
         timerTaskEntity.type = TimerTaskEntity.TYPE_PERIOD;
         timerTaskEntity.delay = delay;
         timerTaskEntity.period = period;
-        timerTaskEntity.sync = true;
+        timerTaskEntity.async = true;
 
         timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
 
@@ -228,7 +228,7 @@ public class TimerHelper {
     private TimerTask buildTimerTask(@NonNull final TimerTaskEntity timerTaskEntity,
                                      @NonNull final Runnable runnable) {
         TimerTask timeWorker = null;
-        if (timerTaskEntity.sync) {
+        if (timerTaskEntity.async) {
             final Handler handler = new Handler();
             timeWorker = new TimerTask() {
                 @Override
@@ -270,7 +270,7 @@ public class TimerHelper {
         public long delay;
         public long period;
         public boolean isStart;
-        public boolean sync;
+        public boolean async;
 
         public TimerTaskEntity resetEntity() {
             timerTask = buildTimerTask(this, runnable);
@@ -292,7 +292,7 @@ public class TimerHelper {
                     ", delay=" + delay +
                     ", period=" + period +
                     ", isStart=" + isStart +
-                    ", sync=" + sync +
+                    ", async=" + async +
                     '}';
         }
     }
