@@ -12,9 +12,10 @@ public class ConfigApplication extends RootApplication {
     private final static String TAG = LogUtils.makeLogTag(ConfigApplication.class);
 
     public static void onCreate() {
+        ConfigSwitcherServer.init();
     }
 
     public static void attach() {
-        ConfigSwitcherServer.init();
+
     }
 }
