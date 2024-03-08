@@ -19,7 +19,7 @@
         app:base_textColor="#00000b"
         app:base_textSize="@dimen/sp_16" />
 
-    <com.pine.template.base.widget.view.ThousandthNumberEditText
+    <com.pine.tool.widget.view.ThousandthNumberEditText
         android:id="@+id/dialog_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,6 +62,23 @@
             android:layout_width="@dimen/dp_1"
             android:layout_height="match_parent"
             android:background="#dbdbdb" />
+
+        <com.pine.template.base.widget.view.BilingualTextView
+            android:id="@+id/clear_btn_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            app:base_text="@string/base_clear"
+            app:base_textColor="#007aff"
+            app:base_textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="match_parent"
+            android:background="#dbdbdb" />
+
 
         <com.pine.template.base.widget.view.BilingualTextView
             android:id="@+id/dialog_submit"

@@ -80,6 +80,8 @@
     <string name="base_number_range_err_msg_2">%s必须小于%s</string>
     <string name="base_str_range_err_msg">%s的长度必须大于等于%d小于等于%d</string>
 
+    <string name="base_date_hint">选择时间</string>
+
     <string name="base_date_year">%1$s年</string>
     <string name="base_date_month">%1$s月</string>
     <string name="base_date_day">%1$s日</string>

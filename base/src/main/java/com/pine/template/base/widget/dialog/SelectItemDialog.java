@@ -43,6 +43,10 @@ public class SelectItemDialog extends BaseDialog {
         mBuilder.disableCancel();
     }
 
+    public void setSelectPos(int pos) {
+        mBuilder.setSelectPos(pos);
+    }
+
     public static abstract class DialogSelectListener implements IDialogSelectListener {
         public abstract void onSelect(String selectText, int position);
 
@@ -61,6 +65,7 @@ public class SelectItemDialog extends BaseDialog {
         private Context context;
         private TextView title_tv;
         private RecyclerView recycle_view;
+        private DialogListAdapter dialogListAdapter;
         private View cancel_btn_tv;
 
         public Builder(Context context) {
@@ -151,7 +156,7 @@ public class SelectItemDialog extends BaseDialog {
                 title_tv.setText(title);
                 title_tv.setVisibility(View.VISIBLE);
             }
-            DialogListAdapter dialogListAdapter = new DialogListAdapter(curPosition, showSelectState,
+            dialogListAdapter = new DialogListAdapter(curPosition, showSelectState,
                     new IDialogSelectListener() {
                         @Override
                         public void onSelect(String selectText, int position) {
@@ -176,6 +181,10 @@ public class SelectItemDialog extends BaseDialog {
             return dialog;
         }
 
+        public void setSelectPos(int pos) {
+            dialogListAdapter.setCurSelectPos(pos);
+        }
+
         public void disableCancel() {
             cancel_btn_tv.setVisibility(View.GONE);
         }
@@ -185,6 +194,10 @@ public class SelectItemDialog extends BaseDialog {
         private IDialogSelectListener listener;
         private int curPosition = -1;
         private boolean showSelectState;
+
+        public void setCurSelectPos(int pos) {
+            curPosition = pos;
+        }
 
         public DialogListAdapter(int curPosition, boolean showSelectState, IDialogSelectListener listener) {
             this.curPosition = curPosition;

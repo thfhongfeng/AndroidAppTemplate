@@ -207,9 +207,11 @@ public class InputTextDialog extends BaseDialog {
             input_end_iv = layout.findViewById(R.id.input_end_iv);
             input_end_iv.setVisibility(View.GONE);
             BilingualTextView cancel_btn_tv = layout.findViewById(R.id.cancel_btn_tv);
+            BilingualTextView clear_btn_tv = layout.findViewById(R.id.clear_btn_tv);
             BilingualTextView submit_btn_tv = layout.findViewById(R.id.submit_btn_tv);
             title_tv.enableDual(bilingual);
             cancel_btn_tv.enableDual(bilingual);
+            clear_btn_tv.enableDual(bilingual);
             submit_btn_tv.enableDual(bilingual);
             dialog.addContentView(layout, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -221,6 +223,12 @@ public class InputTextDialog extends BaseDialog {
                     if (actionClickListener == null || !actionClickListener.onCancelClick(dialog)) {
                         dialog.dismiss();
                     }
+                }
+            });
+            clear_btn_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    input_et.setText("");
                 }
             });
             submit_btn_tv.setOnClickListener(new View.OnClickListener() {
@@ -310,6 +318,7 @@ public class InputTextDialog extends BaseDialog {
             input_end_iv = layout.findViewById(R.id.input_end_iv);
             input_end_iv.setVisibility(View.GONE);
             BilingualTextView cancel_btn_tv = layout.findViewById(R.id.cancel_btn_tv);
+            BilingualTextView clear_btn_tv = layout.findViewById(R.id.clear_btn_tv);
             BilingualTextView submit_btn_tv = layout.findViewById(R.id.submit_btn_tv);
             dialog.addContentView(layout, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -321,6 +330,12 @@ public class InputTextDialog extends BaseDialog {
                     if (actionClickListener == null || !actionClickListener.onCancelClick(dialog)) {
                         dialog.dismiss();
                     }
+                }
+            });
+            clear_btn_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    input_et.setText("");
                 }
             });
             submit_btn_tv.setOnClickListener(new View.OnClickListener() {
@@ -404,6 +419,7 @@ public class InputTextDialog extends BaseDialog {
             BilingualTextView title_tv = layout.findViewById(R.id.title_tv);
             input_et = layout.findViewById(R.id.input_et);
             BilingualTextView cancel_btn_tv = layout.findViewById(R.id.cancel_btn_tv);
+            BilingualTextView clear_btn_tv = layout.findViewById(R.id.clear_btn_tv);
             BilingualTextView submit_btn_tv = layout.findViewById(R.id.submit_btn_tv);
             dialog.addContentView(layout, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -415,6 +431,12 @@ public class InputTextDialog extends BaseDialog {
                     if (actionClickListener == null || !actionClickListener.onCancelClick(dialog)) {
                         dialog.dismiss();
                     }
+                }
+            });
+            clear_btn_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    input_et.setText("");
                 }
             });
             submit_btn_tv.setOnClickListener(new View.OnClickListener() {

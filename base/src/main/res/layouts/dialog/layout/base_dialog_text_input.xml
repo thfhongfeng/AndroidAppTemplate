@@ -37,9 +37,9 @@
             android:background="#eeeeee"
             android:gravity="start"
             android:hint="@string/base_input_hint"
+            android:maxLines="20"
             android:minHeight="@dimen/dp_88"
             android:padding="@dimen/dp_10"
-            android:maxLines="20"
             android:singleLine="false"
             android:textColor="#333333"
             android:textColorHint="#969ca6"
@@ -72,6 +72,22 @@
             android:gravity="center"
             android:padding="@dimen/dp_10"
             app:base_text="@string/base_cancel"
+            app:base_textColor="#007aff"
+            app:base_textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="match_parent"
+            android:background="#dbdbdb" />
+
+        <com.pine.template.base.widget.view.BilingualTextView
+            android:id="@+id/clear_btn_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            app:base_text="@string/base_clear"
             app:base_textColor="#007aff"
             app:base_textSize="@dimen/sp_15" />
 
