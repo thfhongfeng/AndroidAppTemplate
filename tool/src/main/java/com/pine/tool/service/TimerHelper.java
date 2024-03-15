@@ -39,9 +39,6 @@ public class TimerHelper {
                 LogUtils.d(TAG, "onReceive ACTION_DATE_CHANGED");
                 restartTimerTask();
             } else if (TextUtils.equals(Intent.ACTION_TIME_CHANGED, action)) {
-
-            }
-            if (Intent.ACTION_TIME_CHANGED == action) {
                 LogUtils.d(TAG, "onReceive ACTION_TIME_CHANGED");
                 restartTimerTask();
             }
@@ -72,13 +69,17 @@ public class TimerHelper {
                 if (timerTaskEntity.type == TimerTaskEntity.TYPE_ONCE) {
                     if (!timerTaskEntity.isStart) {
                         cancelImpl(timerTaskEntity.tag);
-                        timerTaskEntity.resetEntity();
-                        realSchemeTimerWork(timerTaskEntity);
+                        TimerTaskEntity resetEntity = timerTaskEntity.resetEntity();
+                        if (resetEntity != null) {
+                            realSchemeTimerWork(resetEntity);
+                        }
                     }
                 } else if (timerTaskEntity.type == TimerTaskEntity.TYPE_PERIOD) {
                     cancelImpl(timerTaskEntity.tag);
-                    timerTaskEntity.resetEntity();
-                    realSchemeTimerWork(timerTaskEntity);
+                    TimerTaskEntity resetEntity = timerTaskEntity.resetEntity();
+                    if (resetEntity != null) {
+                        realSchemeTimerWork(resetEntity);
+                    }
                 }
             }
         }
@@ -237,7 +238,9 @@ public class TimerHelper {
                         @Override
                         public void run() {
                             timerTaskEntity.isStart = true;
-                            runnable.run();
+                            if (runnable != null) {
+                                runnable.run();
+                            }
                             if (timerTaskEntity.period <= 0) {
                                 removeTimerTask(timerTaskEntity.tag);
                             }
@@ -250,7 +253,9 @@ public class TimerHelper {
                 @Override
                 public void run() {
                     timerTaskEntity.isStart = true;
-                    runnable.run();
+                    if (runnable != null) {
+                        runnable.run();
+                    }
                     if (timerTaskEntity.period <= 0) {
                         removeTimerTask(timerTaskEntity.tag);
                     }
@@ -273,6 +278,9 @@ public class TimerHelper {
         public boolean async;
 
         public TimerTaskEntity resetEntity() {
+            if (runnable == null) {
+                return null;
+            }
             timerTask = buildTimerTask(this, runnable);
             isStart = false;
             return this;
