@@ -13,7 +13,7 @@ build_flavor_product = [
                 build_product_storePassword: "pine123",
                 build_product_keyAlias     : "AppTemplate",
                 build_product_keyPassword  : "pine123",
-                build_product_module       : [:]
+                build_product_biz_bundle_module       : [:]
         ],
         special: [
                 build_product_applicationId: "com.pine.app.template",
@@ -25,16 +25,16 @@ build_flavor_product = [
                 build_product_storePassword: "pine123",
                 build_product_keyAlias     : "AppTemplate",
                 build_product_keyPassword  : "pine123",
-                build_product_module       : [:]
+                build_product_biz_bundle_module       : [:]
         ]
 ]
 ext.build_flavor_product = build_flavor_product
 
 ext.build_biz_bundle = { flavorName ->
     def biz_bundle = []
-    def build_product_module = build_flavor_product[flavorName]["build_product_module"]
-    if (build_product_module) {
-        build_product_module.each { key, value ->
+    def build_product_biz_bundle_module = build_flavor_product[flavorName]["build_product_biz_bundle_module"]
+    if (build_product_biz_bundle_module) {
+        build_product_biz_bundle_module.each { key, value ->
             biz_bundle.add("\"${key}\"")
         }
     }
