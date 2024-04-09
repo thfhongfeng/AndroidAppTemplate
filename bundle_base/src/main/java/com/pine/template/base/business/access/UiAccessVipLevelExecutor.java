@@ -34,7 +34,7 @@ public class UiAccessVipLevelExecutor implements IUiAccessExecutor {
                              UiAccessTimeInterval accessTimeInterval) {
         try {
             AccountBean accountBean = BaseRouterClient.getLoginAccount(activity, null);
-            int accountType = accountBean.getAccountType();
+            int accountType = accountBean == null ? 0 : accountBean.getAccountType();
             int vipLevelNeed = Integer.parseInt(arg);
             boolean canAccess = accountType - 9000 >= vipLevelNeed * 10;
             if (!canAccess) {

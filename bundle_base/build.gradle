@@ -24,11 +24,9 @@ android {
     }
 
     productFlavors {
-        common {
-
-        }
-        special {
-
+        build_flavor_product.each { flavorName, _ ->
+            "$flavorName" {
+            }
         }
     }
 

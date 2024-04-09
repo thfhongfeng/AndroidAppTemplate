@@ -36,6 +36,7 @@ import com.pine.tool.request.impl.database.IDbRequestServer;
 import com.pine.tool.request.impl.http.nohttp.NoRequestManager;
 import com.pine.tool.router.IRouterManager;
 import com.pine.tool.router.IRouterManagerFactory;
+import com.pine.tool.router.RouterException;
 import com.pine.tool.router.RouterManager;
 import com.pine.tool.router.impl.arouter.manager.ARouterManager;
 import com.pine.tool.util.AppUtils;
@@ -112,6 +113,13 @@ public class TemplateApplication extends Application {
 
                     @Override
                     public boolean isBundleEnable(String bundleKey) {
+                        if (BuildConfig.BUILD_BIZ_BUNDLE != null) {
+                            for (String bizBundle : BuildConfig.BUILD_BIZ_BUNDLE) {
+                                if (bundleKey.equals(bizBundle)) {
+                                    return true;
+                                }
+                            }
+                        }
                         return ConfigSwitcherServer.isEnable(bundleKey);
                     }
                 });
@@ -124,9 +132,13 @@ public class TemplateApplication extends Application {
                         return DbRequestManager.getInstance(new IDbRequestServer() {
                             @Override
                             public DbResponse request(Bundle bundle) {
-                                return RouterManager.callDataCommandDirect(mApplication,
-                                        ConfigKey.BUNDLE_DB_SEVER,
-                                        RouterDbServerCommand.callDbServerCommand, bundle);
+                                try {
+                                    return RouterManager.callDataCommandDirect(mApplication,
+                                            ConfigKey.BUNDLE_DB_SEVER,
+                                            RouterDbServerCommand.callDbServerCommand, bundle);
+                                } catch (RouterException e) {
+                                    return new DbResponse();
+                                }
                             }
                         });
                     default:

@@ -25,36 +25,33 @@ android {
     }
 
     productFlavors {
-        common {
-            applicationId build_product_applicationId.common
-            versionCode build_product_versionCode.common
-            versionName build_product_versionName.common
-        }
-        special {
-            applicationId build_product_applicationId.special
-            versionCode build_product_versionCode.special
-            versionName build_product_versionName.special
+        build_flavor_product.each { flavorName, _ ->
+            "$flavorName" {
+                applicationId build_flavor_product[flavorName].build_product_applicationId
+                versionCode build_flavor_product[flavorName].build_product_versionCode
+                versionName build_flavor_product[flavorName].build_product_versionName
+            }
         }
     }
     signingConfigs {
-        common {
-            storeFile file(build_product_storeFile.common)
-            storePassword build_product_storePassword.common
-            keyAlias build_product_keyAlias.common
-            keyPassword build_product_keyPassword.common
-        }
-        special {
-            storeFile file(build_product_storeFile.special)
-            storePassword build_product_storePassword.special
-            keyAlias build_product_keyAlias.special
-            keyPassword build_product_keyPassword.special
+        build_flavor_product.each { flavorName, _ ->
+            "$flavorName" {
+                storeFile file(build_flavor_product[flavorName].build_product_storeFile)
+                storePassword build_flavor_product[flavorName].build_product_storePassword
+                keyAlias build_flavor_product[flavorName].build_product_keyAlias
+                keyPassword build_flavor_product[flavorName].build_product_keyPassword
+            }
         }
     }
+
+    // 将签名配置应用到各个 productFlavors
+    productFlavors.all { flavor ->
+        signingConfig signingConfigs[flavor.name]
+    }
+    
     buildTypes {
         release {
             minifyEnabled false
-            productFlavors.common.signingConfig signingConfigs.common
-            productFlavors.special.signingConfig signingConfigs.special
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -99,28 +96,39 @@ dependencies {
     implementation project(':bundle_business_mvp')
     implementation project(':bundle_business_mvvm')
     // bundle模块 end
+
+    // biz_bundle模块 begin
+    android.applicationVariants.all { variant ->
+        // 获取当前 variant 的 flavor 名称
+        def flavorName = variant.flavorName
+        build_flavor_product[flavorName].build_product_module.each { moduleKey, moduleValue ->
+            "${flavorName}Implementation" project(":$moduleValue")
+        }
+    }
+    // biz_bundle模块 end
 }
 
 afterEvaluate {
     publishing {
-        publications {
-            commonRelease(MavenPublication) {
-                from components.commonRelease_apk
-                groupId = build_product_groupId.common
-                artifactId = build_product_appName.common
-                version = build_product_versionName.common
-            }
-            specialRelease(MavenPublication) {
-                from components.specialRelease_apk
-                groupId = build_product_groupId.special
-                artifactId = build_product_appName.special
-                version = build_product_versionName.special
+        android.applicationVariants.all { variant ->
+            if (variant.buildType.name == 'release') {
+                def productType = variant.flavorName
+                def publicationName = "${productType}"
+                def component = components.findByName("${variant.name}_apk")
+                if (component != null) {
+                    publishing.publications.create(publicationName, MavenPublication) {
+                        from component
+                        groupId = build_flavor_product[productType].build_product_groupId
+                        artifactId = build_flavor_product[productType].build_product_appName
+                        version = build_flavor_product[productType].build_product_versionName
+                    }
+                }
             }
         }
 
         repositories {
             maven {
-                url "file:///D:/MinicreateProducts"
+                url "file:///D:/PineProducts"
             }
         }
     }

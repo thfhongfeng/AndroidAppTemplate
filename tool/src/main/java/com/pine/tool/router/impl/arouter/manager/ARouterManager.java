@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.pine.tool.R;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.router.IRouterManager;
+import com.pine.tool.router.RouterException;
 import com.pine.tool.router.RouterManager;
 import com.pine.tool.router.annotation.ARouterRemoteAction;
 import com.pine.tool.router.impl.arouter.ARouterBundleRemote;
@@ -109,16 +110,16 @@ public class ARouterManager implements IRouterManager {
 
     @Override
     public <R> R callCommandDirect(final Context context, final String bundleKey, final String commandType,
-                                   String commandName, Bundle args) {
+                                   String commandName, Bundle args) throws RouterException {
         if (!checkBundleValidity(bundleKey, commandType, context, null)) {
-            return null;
+            throw new RouterException("bundle no valid");
         }
         ARouterBundleRemote routerService = ((ARouterBundleRemote) ARouter.getInstance().build(mBundleActionMap.get(bundleKey))
                 .navigation(context, null));
         if (routerService != null) {
             return (R) routerService.callDirect(context, commandName, args);
         }
-        return null;
+        throw new RouterException("bundle no valid");
     }
 
     private boolean checkBundleValidity(final String bundleKey, final String commandType, final Context context,

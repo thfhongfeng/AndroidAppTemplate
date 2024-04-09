@@ -28,5 +28,5 @@ public interface IRouterManager {
                      final String commandName, final Bundle args, final IRouterCallback callback);
 
     <R> R callCommandDirect(Context context, final String bundleKey, final String commandType,
-                            final String commandName, final Bundle args);
+                            final String commandName, final Bundle args) throws RouterException;
 }

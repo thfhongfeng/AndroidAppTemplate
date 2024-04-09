@@ -7,6 +7,7 @@ import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.config.ConfigKey;
 import com.pine.template.config.router.command.RouterLoginCommand;
 import com.pine.tool.router.IRouterCallback;
+import com.pine.tool.router.RouterException;
 import com.pine.tool.router.RouterManager;
 
 public class UserRouterClient {
@@ -16,6 +17,11 @@ public class UserRouterClient {
     }
 
     public static AccountBean getLoginAccount(Context context, Bundle args) {
-        return RouterManager.callDataCommandDirect(context, ConfigKey.BUNDLE_LOGIN_KEY, RouterLoginCommand.getLoginAccount, args);
+        try {
+            return RouterManager.callDataCommandDirect(context, ConfigKey.BUNDLE_LOGIN_KEY,
+                    RouterLoginCommand.getLoginAccount, args);
+        } catch (RouterException e) {
+            return null;
+        }
     }
 }

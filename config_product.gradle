@@ -1,47 +1,42 @@
 /**
  * 渠道打包参数
  */
-def build_product_applicationId = [:]
-build_product_applicationId.common = "com.pine.app.template"
-build_product_applicationId.special = "com.pine.app.template"
-ext.build_product_applicationId = build_product_applicationId
+def build_flavor_product = [:]
+build_flavor_product = [
+        common : [
+                build_product_applicationId: "com.pine.app.template",
+                build_product_groupId      : "com.pine.app.template.common",
+                build_product_versionCode  : 10001,
+                build_product_versionName  : "1.0.001",
+                build_product_appName      : "PineAppTemplate",
+                build_product_storeFile    : "../signapk/common/template.jks",
+                build_product_storePassword: "pine123",
+                build_product_keyAlias     : "AppTemplate",
+                build_product_keyPassword  : "pine123",
+                build_product_module       : [:]
+        ],
+        special: [
+                build_product_applicationId: "com.pine.app.template",
+                build_product_groupId      : "com.pine.app.template.special",
+                build_product_versionCode  : 10001,
+                build_product_versionName  : "1.0.001",
+                build_product_appName      : "PineAppTemplate",
+                build_product_storeFile    : "../signapk/special/template.jks",
+                build_product_storePassword: "pine123",
+                build_product_keyAlias     : "AppTemplate",
+                build_product_keyPassword  : "pine123",
+                build_product_module       : [:]
+        ]
+]
+ext.build_flavor_product = build_flavor_product
 
-def build_product_groupId = [:]
-build_product_groupId.common = "com.pine.app.template.common"
-build_product_groupId.special = "com.pine.app.template.special"
-ext.build_product_groupId = build_product_groupId
-
-def build_product_versionCode = [:]
-build_product_versionCode.common = 10001
-build_product_versionCode.special = 10001
-ext.build_product_versionCode = build_product_versionCode
-
-def build_product_versionName = [:]
-build_product_versionName.common = "1.0.001"
-build_product_versionName.special = "1.0.001"
-ext.build_product_versionName = build_product_versionName
-
-def build_product_appName = [:]
-build_product_appName.common = "PineAndroidTemplate"
-build_product_appName.special = "PineAndroidTemplate"
-ext.build_product_appName = build_product_appName
-
-def build_product_storeFile = [:]
-build_product_storeFile.common = "../signapk/common/template.jks"
-build_product_storeFile.special = "../signapk/special/template.jks"
-ext.build_product_storeFile = build_product_storeFile
-
-def build_product_storePassword = [:]
-build_product_storePassword.common = "pine123"
-build_product_storePassword.special = "pine123"
-ext.build_product_storePassword = build_product_storePassword
-
-def build_product_keyAlias = [:]
-build_product_keyAlias.common = "AppTemplate"
-build_product_keyAlias.special = "AppTemplate"
-ext.build_product_keyAlias = build_product_keyAlias
-
-def build_product_keyPassword = [:]
-build_product_keyPassword.common = "pine123"
-build_product_keyPassword.special = "pine123"
-ext.build_product_keyPassword = build_product_keyPassword
+ext.build_biz_bundle = { flavorName ->
+    def biz_bundle = []
+    def build_product_module = build_flavor_product[flavorName]["build_product_module"]
+    if (build_product_module) {
+        build_product_module.each { key, value ->
+            biz_bundle.add("\"${key}\"")
+        }
+    }
+    return biz_bundle
+}

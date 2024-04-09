@@ -71,14 +71,16 @@ public class RouterManager {
         mRouterManagerImpl.callCommand(context, bundleKey, commandType, commandName, args, callback);
     }
 
-    public <R> R callUiCommandDirect(final Context context, final String bundleKey, String commandName, Bundle args) {
+    public <R> R callUiCommandDirect(final Context context, final String bundleKey, String commandName, Bundle args)
+            throws RouterException {
         if (!mIsInit) {
             throw new IllegalArgumentException("RouterManager should be init first");
         }
         return mRouterManagerImpl.callCommandDirect(context, bundleKey, RouterCommandType.TYPE_UI_COMMAND, commandName, args);
     }
 
-    public static <R> R callDataCommandDirect(final Context context, final String bundleKey, String commandName, Bundle args) {
+    public static <R> R callDataCommandDirect(final Context context, final String bundleKey, String commandName, Bundle args)
+            throws RouterException {
         if (!mIsInit) {
             throw new IllegalArgumentException("RouterManager should be init first");
         }
@@ -86,7 +88,8 @@ public class RouterManager {
     }
 
     public static <R> R callOpCommandDirect(final Context context, final String bundleKey,
-                                            String commandName, Bundle args) {
+                                            String commandName, Bundle args)
+            throws RouterException {
         if (!mIsInit) {
             throw new IllegalArgumentException("RouterManager should be init first");
         }
@@ -94,7 +97,8 @@ public class RouterManager {
     }
 
     public static <R> R callCommandDirect(final Context context, final String bundleKey, final String commandType,
-                                          String commandName, Bundle args) {
+                                          String commandName, Bundle args)
+            throws RouterException {
         if (!mIsInit) {
             throw new IllegalArgumentException("RouterManager should be init first");
         }

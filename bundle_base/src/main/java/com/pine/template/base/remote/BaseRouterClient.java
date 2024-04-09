@@ -9,6 +9,7 @@ import com.pine.template.config.router.command.RouterLoginCommand;
 import com.pine.template.config.router.command.RouterMainCommand;
 import com.pine.template.config.router.command.RouterUserCommand;
 import com.pine.tool.router.IRouterCallback;
+import com.pine.tool.router.RouterException;
 import com.pine.tool.router.RouterManager;
 
 public class BaseRouterClient {
@@ -24,7 +25,12 @@ public class BaseRouterClient {
     }
 
     public static AccountBean getLoginAccount(Context context, Bundle args) {
-        return RouterManager.callDataCommandDirect(context, ConfigKey.BUNDLE_LOGIN_KEY, RouterLoginCommand.getLoginAccount, args);
+        try {
+            return RouterManager.callDataCommandDirect(context, ConfigKey.BUNDLE_LOGIN_KEY,
+                    RouterLoginCommand.getLoginAccount, args);
+        } catch (RouterException e) {
+            return null;
+        }
     }
 
     public static void goMainHomeActivity(Context context, Bundle args, IRouterCallback callback) {

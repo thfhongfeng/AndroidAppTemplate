@@ -40,17 +40,11 @@ android {
     }
 
     productFlavors {
-        common {
-            buildConfigField "String", "APP_NAME_ID", "\"${build_product_appName.common}\""
-            buildConfigField "String", "APPILICATION_ID", "\"${build_product_applicationId.common}\""
-            buildConfigField "String", "VERSION_CODE", "\"${build_product_versionCode.common}\""
-            buildConfigField "String", "VERSION_NAME", "\"${build_product_versionName.common}\""
-        }
-        special {
-            buildConfigField "String", "APP_NAME_ID", "\"${build_product_appName.special}\""
-            buildConfigField "String", "APPILICATION_ID", "\"${build_product_applicationId.special}\""
-            buildConfigField "String", "VERSION_CODE", "\"${build_product_versionCode.special}\""
-            buildConfigField "String", "VERSION_NAME", "\"${build_product_versionName.special}\""
+        build_flavor_product.each { flavorName, _ ->
+            "$flavorName" {
+                buildConfigField "String", "APP_NAME_ID", "\"${build_flavor_product[flavorName].build_product_appName}\""
+                buildConfigField "String[]", "BUILD_BIZ_BUNDLE", "{${build_biz_bundle(flavorName).join(',')}}"
+            }
         }
     }
 
