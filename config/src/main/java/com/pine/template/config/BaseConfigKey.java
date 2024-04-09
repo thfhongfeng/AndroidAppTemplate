@@ -10,6 +10,7 @@ public interface BaseConfigKey {
     String BUNDLE_MAIN_KEY = "BUNDLE_MAIN_KEY";
     // 用户模块
     String BUNDLE_USER_KEY = "BUNDLE_USER_KEY";
+    String BUNDLE_DB_SEVER = "BUNDLE_DB_SEVER";
     /*********************** 模块开关Key end ************************/
 
     /*********************** 功能Key begin **********************/

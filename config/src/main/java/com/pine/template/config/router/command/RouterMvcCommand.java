@@ -7,7 +7,7 @@ import com.pine.tool.router.annotation.ARouterRemoteAction;
  * Created by tanghongfeng on 2019/1/25
  */
 
-@ARouterRemoteAction(Key = ConfigKey.BUNDLE_BUSINESS_MVC, RemoteAction = "/mvc/service")
+@ARouterRemoteAction(Key = ConfigKey.BIZ_BUNDLE_MVC, RemoteAction = "/mvc/service")
 public interface RouterMvcCommand {
     String goMvcHomeActivity = "goMvcHomeActivity";
 }

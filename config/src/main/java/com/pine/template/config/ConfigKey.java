@@ -6,10 +6,9 @@ package com.pine.template.config;
 
 public interface ConfigKey extends BaseConfigKey {
     /*********************** 模块开关Key begin **********************/
-    String BUNDLE_DB_SEVER = "BUNDLE_DB_SEVER";
-    String BUNDLE_BUSINESS_MVC = "BUNDLE_BUSINESS_MVC";
-    String BUNDLE_BUSINESS_MVP = "BUNDLE_BUSINESS_MVP";
-    String BUNDLE_BUSINESS_MVVM = "BUNDLE_BUSINESS_MVVM";
+    String BIZ_BUNDLE_MVC = "BIZ_BUNDLE_MVC";
+    String BIZ_BUNDLE_MVP = "BIZ_BUNDLE_MVP";
+    String BIZ_BUNDLE_MVVM = "BIZ_BUNDLE_MVVM";
     /*********************** 模块开关Key end ************************/
 
 

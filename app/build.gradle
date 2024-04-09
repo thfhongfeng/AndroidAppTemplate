@@ -92,9 +92,6 @@ dependencies {
     implementation project(':bundle_user')
 
     implementation project(':db_server')
-    implementation project(':bundle_business_mvc')
-    implementation project(':bundle_business_mvp')
-    implementation project(':bundle_business_mvvm')
     // bundle模块 end
 
     // biz_bundle模块 begin

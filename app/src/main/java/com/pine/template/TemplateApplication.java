@@ -22,9 +22,6 @@ import com.pine.template.config.router.command.RouterDbServerCommand;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.login.LoginApplication;
 import com.pine.template.main.MainApplication;
-import com.pine.template.mvc.MvcApplication;
-import com.pine.template.mvp.MvpApplication;
-import com.pine.template.mvvm.MvvmApplication;
 import com.pine.template.welcome.WelcomeApplication;
 import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.request.IRequestManager;
@@ -75,9 +72,6 @@ public class TemplateApplication extends Application {
             WelcomeApplication.onCreate();
             LoginApplication.onCreate();
             MainApplication.onCreate();
-            MvcApplication.onCreate();
-            MvpApplication.onCreate();
-            MvvmApplication.onCreate();
 
             initManager();
 
@@ -85,9 +79,25 @@ public class TemplateApplication extends Application {
             WelcomeApplication.attach();
             LoginApplication.attach();
             MainApplication.attach();
-            MvcApplication.attach();
-            MvpApplication.attach();
-            MvvmApplication.attach();
+
+            if (BuildConfig.BUILD_BIZ_BUNDLE != null) {
+                for (String bizBundle : BuildConfig.BUILD_BIZ_BUNDLE) {
+                    try {
+                        RouterManager.callOpCommandDirect(mApplication, bizBundle,
+                                "onAppCreate", null);
+                    } catch (RouterException e) {
+                        e.printStackTrace();
+                    }
+                }
+                for (String bizBundle : BuildConfig.BUILD_BIZ_BUNDLE) {
+                    try {
+                        RouterManager.callOpCommandDirect(mApplication, bizBundle,
+                                "onAppAttach", null);
+                    } catch (RouterException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
             doStartupBusiness();
         }

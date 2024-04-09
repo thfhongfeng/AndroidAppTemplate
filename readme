@@ -14,7 +14,7 @@
 7. app为构建模块，主要用于项目初始化，构建和打包，与具体业务无关。
 以上为项目必不可少的模块，为项目的主体模块。
 8. bundle_xxx为常用基础业务模块，包括：bundle_main, bundle_login, bundle_user
-9. bundle_business_xxx为"xxx"具体业务模块。
+9. biz_bundle_xxx为"xxx"具体业务模块。
 10. xxx_lib_yyy为 "xxx"模块对应的lib库"yyy"。
 
 11. db_server为本地数据库模拟后台数据服务器模块（不需要搭架后台数据服务就可以对模板功能进行调试验证）,该模块仅为调试所用。

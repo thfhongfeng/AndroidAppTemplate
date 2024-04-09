@@ -1,7 +1,7 @@
 task specialDimens {
     doLast {
         calAndCopyDimensFile("${rootProject.rootDir}/resource/src/main/res/values/dimens-constant.xml",
-                "${rootProject.rootDir}/resource/src/special/res/values/dimens-constant.xml", 1.5)
+                "${rootProject.rootDir}/resource/src/special/res/values/dimens-constant.xml", 1.2)
     }
 }
 

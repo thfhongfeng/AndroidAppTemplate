@@ -8,10 +8,10 @@ import com.pine.template.config.ConfigKey;
 import com.pine.template.config.router.command.RouterMvcCommand;
 import com.pine.template.config.router.command.RouterMvpCommand;
 import com.pine.template.config.router.command.RouterMvvmCommand;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.main.bean.MainBusinessItemEntity;
 import com.pine.template.main.model.MainHomeModel;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
+import com.pine.tool.router.RouterManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,24 +26,24 @@ public class MainHomeVm extends ViewModel {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject;
         try {
-            if (ConfigSwitcherServer.isEnable(ConfigKey.BUNDLE_BUSINESS_MVC)) {
+            if (RouterManager.isBundleEnable(ConfigKey.BIZ_BUNDLE_MVC)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvc");
-                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVC);
+                jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_MVC);
                 jsonObject.put("command", RouterMvcCommand.goMvcHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (ConfigSwitcherServer.isEnable(ConfigKey.BUNDLE_BUSINESS_MVP)) {
+            if (RouterManager.isBundleEnable(ConfigKey.BIZ_BUNDLE_MVP)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvp");
-                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVP);
+                jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_MVP);
                 jsonObject.put("command", RouterMvpCommand.goMvpHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (ConfigSwitcherServer.isEnable(ConfigKey.BUNDLE_BUSINESS_MVVM)) {
+            if (RouterManager.isBundleEnable(ConfigKey.BIZ_BUNDLE_MVVM)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvvm");
-                jsonObject.put("bundle", ConfigKey.BUNDLE_BUSINESS_MVVM);
+                jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_MVVM);
                 jsonObject.put("command", RouterMvvmCommand.goMvvmHomeActivity);
                 jsonArray.put(jsonObject);
             }

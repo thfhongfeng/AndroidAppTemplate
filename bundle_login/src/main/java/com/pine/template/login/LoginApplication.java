@@ -1,8 +1,8 @@
 package com.pine.template.login;
 
-import com.pine.template.base.BaseApplication;
 import com.pine.template.config.BuildConfig;
 import com.pine.template.login.model.interceptor.LoginResponseInterceptor;
+import com.pine.tool.RootApplication;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.util.LogUtils;
 
@@ -10,7 +10,7 @@ import com.pine.tool.util.LogUtils;
  * Created by tanghongfeng on 2018/9/14
  */
 
-public class LoginApplication extends BaseApplication {
+public class LoginApplication extends RootApplication {
     private final static String TAG = LogUtils.makeLogTag(LoginApplication.class);
 
     public static void onCreate() {

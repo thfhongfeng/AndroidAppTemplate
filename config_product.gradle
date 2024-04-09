@@ -4,28 +4,30 @@
 def build_flavor_product = [:]
 build_flavor_product = [
         common : [
-                build_product_applicationId: "com.pine.app.template",
-                build_product_groupId      : "com.pine.app.template.common",
-                build_product_versionCode  : 10001,
-                build_product_versionName  : "1.0.001",
-                build_product_appName      : "PineAppTemplate",
-                build_product_storeFile    : "../signapk/common/template.jks",
-                build_product_storePassword: "pine123",
-                build_product_keyAlias     : "AppTemplate",
-                build_product_keyPassword  : "pine123",
-                build_product_biz_bundle_module       : [:]
+                build_product_applicationId    : "com.pine.app.template",
+                build_product_groupId          : "com.pine.app.template.common",
+                build_product_versionCode      : 10001,
+                build_product_versionName      : "1.0.001",
+                build_product_appName          : "PineAppTemplate",
+                build_product_storeFile        : "../signapk/common/template.jks",
+                build_product_storePassword    : "pine123",
+                build_product_keyAlias         : "AppTemplate",
+                build_product_keyPassword      : "pine123",
+                build_product_biz_bundle_module: [BIZ_BUNDLE_MVC : "biz_bundle_mvc",
+                                                  BIZ_BUNDLE_MVP : "biz_bundle_mvp",
+                                                  BIZ_BUNDLE_MVVM: "biz_bundle_mvvm"]
         ],
         special: [
-                build_product_applicationId: "com.pine.app.template",
-                build_product_groupId      : "com.pine.app.template.special",
-                build_product_versionCode  : 10001,
-                build_product_versionName  : "1.0.001",
-                build_product_appName      : "PineAppTemplate",
-                build_product_storeFile    : "../signapk/special/template.jks",
-                build_product_storePassword: "pine123",
-                build_product_keyAlias     : "AppTemplate",
-                build_product_keyPassword  : "pine123",
-                build_product_biz_bundle_module       : [:]
+                build_product_applicationId    : "com.pine.app.template",
+                build_product_groupId          : "com.pine.app.template.special",
+                build_product_versionCode      : 10001,
+                build_product_versionName      : "1.0.001",
+                build_product_appName          : "PineAppTemplate",
+                build_product_storeFile        : "../signapk/special/template.jks",
+                build_product_storePassword    : "pine123",
+                build_product_keyAlias         : "AppTemplate",
+                build_product_keyPassword      : "pine123",
+                build_product_biz_bundle_module: [BIZ_BUNDLE_MVVM: "biz_bundle_mvvm"]
         ]
 ]
 ext.build_flavor_product = build_flavor_product

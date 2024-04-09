@@ -126,7 +126,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVC);
+                contentValues.put("configKey", ConfigKey.BIZ_BUNDLE_MVC);
                 contentValues.put("state", i < 12 ? 1 : 0); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -134,7 +134,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVP);
+                contentValues.put("configKey", ConfigKey.BIZ_BUNDLE_MVP);
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
@@ -142,7 +142,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 list.add(contentValues);
                 contentValues = new ContentValues();
                 contentValues.put("configType", 1); // 配置类型:0-缺省；1-模块开关；2-功能开关；3-配置开关
-                contentValues.put("configKey", ConfigKey.BUNDLE_BUSINESS_MVVM);
+                contentValues.put("configKey", ConfigKey.BIZ_BUNDLE_MVVM);
                 contentValues.put("state", 1); // 是否开放：0-关闭；1-开放
                 contentValues.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
                 contentValues.put("updateTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
