@@ -47,6 +47,7 @@ allprojects {
             dirs project(':config').file('libs')
             dirs project(':base').file('libs')
             dirs project(':bundle_main').file('libs')
+            dirs project(':face_lib_fdr').file('libs')
         }
     }
 }

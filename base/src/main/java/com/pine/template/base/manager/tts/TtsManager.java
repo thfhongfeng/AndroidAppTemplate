@@ -1,11 +1,10 @@
 package com.pine.template.base.manager.tts;
 
-import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+
+import com.pine.template.base.manager.ResourceManager;
+import com.pine.tool.util.AppUtils;
 
 import java.util.Locale;
 
@@ -30,167 +29,213 @@ public class TtsManager {
         return mInstance;
     }
 
-    private Context mContext;
-    private Locale mLocale;
-    private Resources mResources;
+    private Locale mLocale = Locale.SIMPLIFIED_CHINESE;
+    private volatile boolean mInit;
 
-    public void init(Context context) {
-        init(context, null, Locale.SIMPLIFIED_CHINESE);
+    public void init(ITtsManager poxy) {
+        init(poxy, Locale.SIMPLIFIED_CHINESE);
     }
 
-    public void init(Context context, ITtsManager poxy) {
-        init(context, poxy, Locale.SIMPLIFIED_CHINESE);
+    public void init(@NonNull final Locale locale) {
+        init(null, locale);
     }
 
-    public void init(Context context, @NonNull final Locale locale) {
-        init(context, null, locale);
-    }
-
-    public void init(Context context, ITtsManager poxy, @NonNull final Locale locale) {
-        mContext = context;
+    public void init(ITtsManager poxy, @NonNull final Locale locale) {
         mLocale = locale;
-        mResources = null;
         if (poxy != null) {
             mProxy = poxy;
         } else {
             mProxy = new DefaultTtsManager();
         }
-        mProxy.init(context, locale);
+        mProxy.init(AppUtils.getApplicationContext(), locale);
+        mInit = true;
+    }
+
+    private boolean isInit() {
+        return mInit;
     }
 
     public void stop() {
+        if (!isInit()) {
+            return;
+        }
         mProxy.stop();
     }
 
     public void shutDown() {
+        if (!isInit()) {
+            return;
+        }
         mProxy.shutDown();
     }
 
     public boolean play(String msg) {
+        if (!isInit()) {
+            return false;
+        }
         return play(msg, false, null);
     }
 
     public boolean play(String msg, boolean immediately) {
+        if (!isInit()) {
+            return false;
+        }
         return play(msg, immediately, null);
     }
 
     public boolean play(String msg, final ITtsManager.TtsPlayProgress listener) {
+        if (!isInit()) {
+            return false;
+        }
         return play(msg, false, listener);
     }
 
     public boolean play(String msg, boolean immediately, final ITtsManager.TtsPlayProgress listener) {
+        if (!isInit()) {
+            return false;
+        }
         return mProxy.play("", msg, immediately, listener);
     }
 
     public boolean play(String tag, String msg) {
+        if (!isInit()) {
+            return false;
+        }
         return play(tag, msg, false, null);
     }
 
     public boolean play(String tag, String msg, boolean immediately) {
+        if (!isInit()) {
+            return false;
+        }
         return play(tag, msg, immediately, null);
     }
 
     public boolean play(String tag, String msg, final ITtsManager.TtsPlayProgress listener) {
+        if (!isInit()) {
+            return false;
+        }
         return play(tag, msg, false, listener);
     }
 
     public boolean play(String tag, String msg, boolean immediately, final ITtsManager.TtsPlayProgress listener) {
+        if (!isInit()) {
+            return false;
+        }
         return mProxy.play(tag, msg, immediately, listener);
     }
 
     public boolean play(@StringRes int resId) {
-        return play(getString(resId), false, null);
+        if (!isInit()) {
+            return false;
+        }
+        return play(ResourceManager.getInstance().getString(mLocale, resId), false, null);
     }
 
     public boolean play(@StringRes int resId, boolean immediately) {
-        return play(getString(resId), immediately, null);
+        if (!isInit()) {
+            return false;
+        }
+        return play(ResourceManager.getInstance().getString(mLocale, resId), immediately, null);
     }
 
     public boolean play(@StringRes int resId, final ITtsManager.TtsPlayProgress listener) {
-        return play(getString(resId), false, listener);
+        if (!isInit()) {
+            return false;
+        }
+        return play(ResourceManager.getInstance().getString(mLocale, resId), false, listener);
     }
 
     public boolean play(@StringRes int resId, boolean immediately, final ITtsManager.TtsPlayProgress listener) {
-        return mProxy.play("", getString(resId), immediately, listener);
+        if (!isInit()) {
+            return false;
+        }
+        return mProxy.play("", ResourceManager.getInstance().getString(mLocale, resId), immediately, listener);
     }
 
     public boolean play(String tag, @StringRes int resId) {
-        return play(tag, getString(resId), false, null);
+        if (!isInit()) {
+            return false;
+        }
+        return play(tag, ResourceManager.getInstance().getString(mLocale, resId), false, null);
     }
 
     public boolean play(String tag, @StringRes int resId, boolean immediately) {
-        return play(tag, getString(resId), immediately, null);
+        if (!isInit()) {
+            return false;
+        }
+        return play(tag, ResourceManager.getInstance().getString(mLocale, resId), immediately, null);
     }
 
     public boolean play(String tag, @StringRes int resId, final ITtsManager.TtsPlayProgress listener) {
-        return play(tag, getString(resId), false, listener);
+        if (!isInit()) {
+            return false;
+        }
+        return play(tag, ResourceManager.getInstance().getString(mLocale, resId), false, listener);
     }
 
     public boolean play(String tag, @StringRes int resId, boolean immediately, final ITtsManager.TtsPlayProgress listener) {
-        return mProxy.play(tag, getString(resId), immediately, listener);
+        if (!isInit()) {
+            return false;
+        }
+        return mProxy.play(tag, ResourceManager.getInstance().getString(mLocale, resId), immediately, listener);
     }
 
     public boolean play(@StringRes int resId, Object... formatArgs) {
-        return play(getString(resId, formatArgs), false, null);
+        if (!isInit()) {
+            return false;
+        }
+        return play(ResourceManager.getInstance().getString(mLocale, resId, formatArgs), false, null);
     }
 
     public boolean play(boolean immediately, @StringRes int resId, Object... formatArgs) {
-        return play(getString(resId, formatArgs), immediately, null);
+        return play(ResourceManager.getInstance().getString(mLocale, resId, formatArgs), immediately, null);
     }
 
     public boolean play(final ITtsManager.TtsPlayProgress listener,
                         @StringRes int resId, Object... formatArgs) {
-        return play(getString(resId, formatArgs), false, listener);
+        if (!isInit()) {
+            return false;
+        }
+        return play(ResourceManager.getInstance().getString(mLocale, resId, formatArgs), false, listener);
     }
 
     public boolean play(boolean immediately, final ITtsManager.TtsPlayProgress listener,
                         @StringRes int resId, Object... formatArgs) {
-        return mProxy.play("", getString(resId, formatArgs), immediately, listener);
+        if (!isInit()) {
+            return false;
+        }
+        return mProxy.play("", ResourceManager.getInstance().getString(mLocale, resId, formatArgs), immediately, listener);
     }
 
     public boolean play(String tag, @StringRes int resId, Object... formatArgs) {
-        return play(tag, getString(resId, formatArgs), false, null);
+        if (!isInit()) {
+            return false;
+        }
+        return play(tag, ResourceManager.getInstance().getString(mLocale, resId, formatArgs), false, null);
     }
 
     public boolean play(String tag, boolean immediately,
                         @StringRes int resId, Object... formatArgs) {
-        return play(tag, getString(resId, formatArgs), immediately, null);
+        if (!isInit()) {
+            return false;
+        }
+        return play(tag, ResourceManager.getInstance().getString(mLocale, resId, formatArgs), immediately, null);
     }
 
     public boolean play(String tag, final ITtsManager.TtsPlayProgress listener,
                         @StringRes int resId, Object... formatArgs) {
-        return play(tag, getString(resId, formatArgs), false, listener);
+        if (!isInit()) {
+            return false;
+        }
+        return play(tag, ResourceManager.getInstance().getString(mLocale, resId, formatArgs), false, listener);
     }
 
     public boolean play(String tag, boolean immediately, final ITtsManager.TtsPlayProgress listener,
                         @StringRes int resId, Object... formatArgs) {
-        return mProxy.play(tag, getString(resId, formatArgs), immediately, listener);
-    }
-
-    public Resources getResource() {
-        return getLocalizedResources(mContext, mLocale);
-    }
-
-    public String getString(@StringRes int resId) {
-        return getResource().getString(resId);
-    }
-
-    public String getString(@StringRes int resId, Object... formatArgs) {
-        return getResource().getString(resId, formatArgs);
-    }
-
-    @NonNull
-    private synchronized Resources getLocalizedResources(Context context, Locale locale) {
-        if (locale != null) {
-            if (mResources == null) {
-                Configuration conf = context.getResources().getConfiguration();
-                conf = new Configuration(conf);
-                conf.setLocale(locale);
-                Context localizedContext = context.createConfigurationContext(conf);
-                mResources = localizedContext.getResources();
-            }
-            return mResources;
+        if (!isInit()) {
+            return false;
         }
-        return mResources;
+        return mProxy.play(tag, ResourceManager.getInstance().getString(mLocale, resId, formatArgs), immediately, listener);
     }
 }

@@ -9,5 +9,5 @@ import com.pine.tool.router.annotation.ARouterRemoteAction;
 
 @ARouterRemoteAction(Key = ConfigKey.BIZ_BUNDLE_MVVM, RemoteAction = "/mvvm/service")
 public interface RouterMvvmCommand {
-    String goMvvmHomeActivity = "goMvpHomeActivity";
+    String goMvvmHomeActivity = "goMvvmHomeActivity";
 }

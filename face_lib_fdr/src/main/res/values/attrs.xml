@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="hole_radius" format="integer" />
+    <attr name="hole_container_bg" format="color"></attr>
+    <attr name="hole_radius_x" format="integer"></attr>
+    <attr name="hole_radius_y" format="integer" />
+
+    <declare-styleable name="FrameLayoutWithHole">
+        <attr name="hole_radius" />
+        <attr name="hole_container_bg" />
+        <attr name="hole_radius_x" />
+        <attr name="hole_radius_y" />
+    </declare-styleable>
+
+    <declare-styleable name="FaceDetectView">
+        <attr name="hole_radius" />
+        <attr name="hole_container_bg" />
+        <attr name="hole_radius_x" />
+        <attr name="hole_radius_y" />
+    </declare-styleable>
+
+    <declare-styleable name="FaceRectView">
+        <attr name="confidence" format="float" />
+        <attr name="real_color" format="color" />
+        <attr name="fake_color" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textPadding" format="dimension" />
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+</resources>

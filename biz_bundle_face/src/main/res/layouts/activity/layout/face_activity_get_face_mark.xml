@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="ActivityGetFaceMarkBinding">
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.settings.GetFaceMarkActivity">
+
+        <RelativeLayout
+            android:id="@+id/camera_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.pine.app.lib.face.detect.FaceDetectView
+                android:id="@+id/face_detect_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="#000000"
+                app:hole_container_bg="#88000000">
+
+            </com.pine.app.lib.face.detect.FaceDetectView>
+
+            <TextView
+                android:id="@+id/tv_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:gravity="center"
+                android:text="@string/face_get_face_tip_device_init"
+                android:textColor="@color/red" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

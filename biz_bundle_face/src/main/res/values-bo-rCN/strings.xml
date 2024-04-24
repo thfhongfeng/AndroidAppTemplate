@@ -1,0 +1,22 @@
+<resources>
+    <string name="face_home_title">Business Face</string>
+
+    <string name="face_person_name_label">姓名标识</string>
+    <string name="face_person_pic_label">人脸照片</string>
+    <string name="face_save_person_data">录入保存</string>
+
+    <string name="face_clear_data">清理数据</string>
+
+    <string name="face_get_face_img_title">人脸采集</string>
+    <string name="face_get_face_save">保存</string>
+    <string name="face_get_face_tip_device_init">人脸采集设备初始化中</string>
+    <string name="face_get_face_tip_device_prepared">请正对摄像头进行人脸采集</string>
+    <string name="face_get_face_tip_fail">人脸信息采集失败，请重试</string>
+    <string name="face_get_face_mark_msg">人脸信息获取成功</string>
+    <string name="face_get_face_upload_fail">人脸保存失败</string>
+
+    <string name="face_person_d_delete_title">删除人员</string>
+    <string name="face_person_d_delete_msg">确认删除人员：%s 吗？</string>
+    <string name="face_person_d_save_title">保存人员</string>
+    <string name="face_person_d_save_msg">确认保存人员吗？</string>
+</resources>

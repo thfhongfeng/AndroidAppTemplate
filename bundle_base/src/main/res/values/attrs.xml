@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="base_title" format="string|reference" />
+    <attr name="base_label" format="string|reference" />
+    <attr name="base_desc" format="string|reference" />
+    <attr name="base_hint" format="string|reference" />
+    <attr name="base_content" format="string|reference" />
+    <attr name="base_content_bg" format="reference" />
+    <attr name="base_max_length" format="integer" />
+    <attr name="base_rang_datetime" format="boolean" />
+    <attr name="base_dialog_title" format="string|reference" />
+    <attr name="base_label_width" format="dimension|reference" />
+    <attr name="base_content_width" format="dimension|reference" />
+    <attr name="base_dialog_fullscreen" format="boolean" />
+    <attr name="base_pwd_mode" format="boolean" />
+    <attr name="base_label_show">
+        <enum name="visible" value="0" />
+        <enum name="invisible" value="4" />
+        <enum name="gone" value="8" />
+    </attr>
+    <attr name="base_div_show">
+        <enum name="visible" value="0" />
+        <enum name="invisible" value="4" />
+        <enum name="gone" value="8" />
+    </attr>
+    <attr name="base_summary" format="string|reference" />
+    <attr name="base_enable" format="boolean" />
+    <attr name="base_type" format="string" />
+
+    <declare-styleable name="InputSettingsView">
+        <attr name="base_label" />
+        <attr name="base_hint" />
+        <attr name="base_content" />
+        <attr name="base_input_can_empty" format="boolean" />
+        <attr name="base_label_width" />
+        <attr name="base_dialog_fullscreen"></attr>
+        <attr name="android:inputType"></attr>
+        <attr name="base_max_length"></attr>
+        <attr name="base_div_show"></attr>
+        <attr name="base_pwd_mode"></attr>
+        <attr name="base_dialog_title" />
+        <attr name="base_has_switch" format="boolean" />
+        <attr name="base_label_show" />
+        <attr name="base_content_bg" />
+    </declare-styleable>
+
+    <declare-styleable name="TextSettingsView">
+        <attr name="base_label" />
+        <attr name="base_content" />
+        <attr name="base_label_width" />
+        <attr name="base_div_show"></attr>
+        <attr name="base_label_show" />
+        <attr name="base_content_bg" />
+    </declare-styleable>
+
+    <declare-styleable name="SwitchSettingsView">
+        <attr name="base_label" />
+        <attr name="base_label_width" />
+        <attr name="base_desc" />
+        <attr name="base_div_show"></attr>
+        <attr name="base_label_show" />
+        <attr name="base_content_bg" />
+    </declare-styleable>
+
+    <declare-styleable name="SelectSettingsView">
+        <attr name="base_label" />
+        <attr name="base_content" />
+        <attr name="base_desc" />
+        <attr name="base_label_width" />
+        <attr name="base_content_width" />
+        <attr name="base_dialog_fullscreen"></attr>
+        <attr name="base_div_show"></attr>
+        <attr name="base_dialog_title" />
+        <attr name="base_label_show" />
+        <attr name="base_content_bg" />
+    </declare-styleable>
+
+    <declare-styleable name="SeekBarSettingsView">
+        <attr name="base_label" />
+        <attr name="base_label_width" />
+        <attr name="base_div_show"></attr>
+        <attr name="base_label_show" />
+        <attr name="base_content_bg" />
+    </declare-styleable>
+
+    <declare-styleable name="DateSettingsView">
+        <attr name="base_label" />
+        <attr name="base_label_width" />
+        <attr name="base_div_show"></attr>
+        <attr name="base_dialog_fullscreen"></attr>
+        <attr name="base_rang_datetime"></attr>
+        <attr name="base_dialog_title" />
+        <attr name="base_label_show" />
+        <attr name="base_content_bg" />
+    </declare-styleable>
+
+    <declare-styleable name="TimeSettingsView">
+        <attr name="base_label" />
+        <attr name="base_label_width" />
+        <attr name="base_div_show"></attr>
+        <attr name="base_dialog_fullscreen"></attr>
+        <attr name="base_rang_datetime"></attr>
+        <attr name="base_has_second" format="boolean"></attr>
+        <attr name="base_dialog_title" />
+        <attr name="base_label_show" />
+        <attr name="base_content_bg" />
+    </declare-styleable>
+</resources>

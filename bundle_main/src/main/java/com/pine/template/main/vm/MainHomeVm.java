@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.template.config.ConfigKey;
+import com.pine.template.config.router.command.RouterFaceCommand;
 import com.pine.template.config.router.command.RouterMvcCommand;
 import com.pine.template.config.router.command.RouterMvpCommand;
 import com.pine.template.config.router.command.RouterMvvmCommand;
@@ -45,6 +46,13 @@ public class MainHomeVm extends ViewModel {
                 jsonObject.put("name", "Business Mvvm");
                 jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_MVVM);
                 jsonObject.put("command", RouterMvvmCommand.goMvvmHomeActivity);
+                jsonArray.put(jsonObject);
+            }
+            if (RouterManager.isBundleEnable(ConfigKey.BIZ_BUNDLE_FACE)) {
+                jsonObject = new JSONObject();
+                jsonObject.put("name", "Business Face");
+                jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_FACE);
+                jsonObject.put("command", RouterFaceCommand.goFaceHomeActivity);
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {

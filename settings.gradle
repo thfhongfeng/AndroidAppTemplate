@@ -17,3 +17,7 @@ include ':biz_bundle_mvc'
 include ':biz_bundle_mvp'
 include ':biz_bundle_mvvm'
 
+include ':face_lib_opencv'
+include ':face_lib_fdr'
+include ':biz_bundle_face'
+include ':biz_bundle_face'

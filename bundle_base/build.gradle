@@ -29,8 +29,6 @@ android {
             }
         }
     }
-
-    resourcePrefix "base_"
 }
 
 dependencies {

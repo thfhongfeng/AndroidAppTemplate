@@ -15,7 +15,8 @@ build_flavor_product = [
                 build_product_keyPassword      : "pine123",
                 build_product_biz_bundle_module: [BIZ_BUNDLE_MVC : "biz_bundle_mvc",
                                                   BIZ_BUNDLE_MVP : "biz_bundle_mvp",
-                                                  BIZ_BUNDLE_MVVM: "biz_bundle_mvvm"]
+                                                  BIZ_BUNDLE_MVVM: "biz_bundle_mvvm",
+                                                  BIZ_BUNDLE_FACE: "biz_bundle_face"]
         ],
         special: [
                 build_product_applicationId    : "com.pine.app.template",

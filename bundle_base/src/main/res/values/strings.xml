@@ -1,0 +1,8 @@
+<resources>
+    <string name="input_empty_or_format_err_msg">%s为空或者格式不正确</string>
+    <string name="input_url_format_err_msg">%s必须仪\'/\'结尾</string>
+    <string name="input_number_range_err_msg">%s必须大于等于%d小于等于%d</string>
+    <string name="input_number_range_err_msg_1">%s必须大于%s</string>
+    <string name="input_number_range_err_msg_2">%s必须小于%s</string>
+    <string name="input_str_range_err_msg">%s的长度必须大于等于%d小于等于%d</string>
+</resources>

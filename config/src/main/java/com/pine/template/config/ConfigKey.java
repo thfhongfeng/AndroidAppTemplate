@@ -9,6 +9,8 @@ public interface ConfigKey extends BaseConfigKey {
     String BIZ_BUNDLE_MVC = "BIZ_BUNDLE_MVC";
     String BIZ_BUNDLE_MVP = "BIZ_BUNDLE_MVP";
     String BIZ_BUNDLE_MVVM = "BIZ_BUNDLE_MVVM";
+
+    String BIZ_BUNDLE_FACE = "BIZ_BUNDLE_FACE";
     /*********************** 模块开关Key end ************************/
 
 
