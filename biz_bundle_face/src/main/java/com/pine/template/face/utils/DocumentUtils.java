@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.pine.tool.util.FileUtils;
@@ -22,12 +23,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class DocumentUtils {
-    public static boolean copyFile(Context context, File sourceFile, Uri destDir) {
+    public static boolean copyFile(@NonNull Context context, @NonNull File sourceFile, @NonNull Uri destDir) {
         return copyFile(context, sourceFile, destDir, sourceFile.getName());
     }
 
-    public static boolean copyFile(Context context, File sourceFile, Uri destDir, String destFileName) {
+    public static boolean copyFile(@NonNull Context context, @NonNull File sourceFile,
+                                   @NonNull Uri destDir, @NonNull String destFileName) {
         FileInputStream inputStream = null;
+        FileOutputStream outputStream = null;
+        FileChannel sourceChannel = null;
+        FileChannel destChannel = null;
         try {
             DocumentFile destDFDir = DocumentFile.fromTreeUri(context, destDir);
 
@@ -39,39 +44,109 @@ public class DocumentUtils {
             DocumentFile destFile = destDFDir.createFile("*/*", destFileName);
             if (destFile != null) {
                 inputStream = new FileInputStream(sourceFile);
-                FileOutputStream outputStream = (FileOutputStream) context.getContentResolver().openOutputStream(destFile.getUri());
-                FileChannel sourceChannel = inputStream.getChannel();
-                FileChannel destChannel = outputStream.getChannel();
+                outputStream = (FileOutputStream) context.getContentResolver().openOutputStream(destFile.getUri());
+                sourceChannel = inputStream.getChannel();
+                destChannel = outputStream.getChannel();
                 sourceChannel.transferTo(0, sourceChannel.size(), destChannel);
-                sourceChannel.close();
-                destChannel.close();
-                inputStream.close();
-                outputStream.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (sourceChannel != null) {
+                    sourceChannel.close();
+                }
+                if (destChannel != null) {
+                    destChannel.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }
 
-    public static boolean copyFile(Context context, Uri sourceFile, File destFile) {
+    public static boolean copyFile(@NonNull Context context, @NonNull Uri sourceFile, @NonNull File destFile) {
+        if (!destFile.getParentFile().exists()) {
+            destFile.getParentFile().mkdirs();
+        }
         FileInputStream inputStream = null;
+        FileOutputStream outputStream = null;
+        FileChannel sourceChannel = null;
+        FileChannel destChannel = null;
+        try {
+            inputStream = (FileInputStream) context.getContentResolver().openInputStream(sourceFile);
+            outputStream = new FileOutputStream(destFile);
+            sourceChannel = inputStream.getChannel();
+            destChannel = outputStream.getChannel();
+            sourceChannel.transferTo(0, sourceChannel.size(), destChannel);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (sourceChannel != null) {
+                    sourceChannel.close();
+                }
+                if (destChannel != null) {
+                    destChannel.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
+    public static boolean copyFile(@NonNull File sourceFile, @NonNull File destFile) {
+        if (!destFile.getParentFile().exists()) {
+            destFile.getParentFile().mkdirs();
+        }
+        FileInputStream inputStream = null;
+        FileOutputStream outputStream = null;
+        FileChannel sourceChannel = null;
+        FileChannel destChannel = null;
         try {
             if (destFile != null) {
-                inputStream = (FileInputStream) context.getContentResolver().openInputStream(sourceFile);
-                FileOutputStream outputStream = new FileOutputStream(destFile);
-                FileChannel sourceChannel = inputStream.getChannel();
-                FileChannel destChannel = outputStream.getChannel();
+                inputStream = new FileInputStream(sourceFile);
+                outputStream = new FileOutputStream(destFile);
+                sourceChannel = inputStream.getChannel();
+                destChannel = outputStream.getChannel();
                 sourceChannel.transferTo(0, sourceChannel.size(), destChannel);
-                sourceChannel.close();
-                destChannel.close();
-                inputStream.close();
-                outputStream.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (sourceChannel != null) {
+                    sourceChannel.close();
+                }
+                if (destChannel != null) {
+                    destChannel.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }

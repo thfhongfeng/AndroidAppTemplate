@@ -1,15 +1,23 @@
 package com.pine.template.face.db;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import androidx.documentfile.provider.DocumentFile;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.pine.app.lib.face.matcher.FaceMatcher;
+import com.pine.template.face.FaceUrlConstants;
 import com.pine.template.face.db.entity.PersonEntity;
 import com.pine.template.face.db.repository.PersonRepository;
+import com.pine.template.face.utils.DocumentUtils;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 
+import java.io.File;
 import java.util.List;
 
 public class LocalWorker {
@@ -39,6 +47,27 @@ public class LocalWorker {
         List<PersonEntity> list = PersonRepository.getInstance().queryAllList();
         if (callback != null) {
             callback.onResponse(list);
+        }
+    }
+
+    public void requestPersonListData(int pageNo, int pageSize, IModelAsyncResponse<List<PersonEntity>> callback) {
+        List<PersonEntity> list = PersonRepository.getInstance().queryByPage(pageNo, pageSize);
+        if (callback != null) {
+            callback.onResponse(list);
+        }
+    }
+
+    public PersonEntity checkNameExist(String name) {
+        PersonEntity exist = PersonRepository.getInstance().queryNameExist(name);
+        return exist;
+    }
+
+    public void requestSavePerson(boolean newAdd, PersonEntity entity,
+                                  IModelAsyncResponse<PersonEntity> callback) {
+        if (newAdd) {
+            requestAddPerson(entity, callback);
+        } else {
+            requestUpdatePerson(entity, callback);
         }
     }
 
@@ -92,5 +121,64 @@ public class LocalWorker {
                 callback.onFail(new MessageException(""));
             }
         }
+    }
+
+    public void requestClearPersonList(IModelAsyncResponse<Boolean> callback) {
+        if (PersonRepository.getInstance().deleteAll()) {
+            File dir = new File(FaceUrlConstants.PERSON_DB_FACE_DIR());
+            if (dir.exists()) {
+                dir.delete();
+            }
+            if (callback != null) {
+                callback.onResponse(true);
+            }
+        } else {
+            if (callback != null) {
+                callback.onFail(new MessageException(""));
+            }
+        }
+    }
+
+    public void requestImportPersonList(Context context, Uri uri, IModelAsyncResponse<Boolean> callback) {
+        Handler handler = new Handler();
+        mWorkHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                DocumentFile dir = DocumentFile.fromTreeUri(context, uri);
+                DocumentFile[] fileList = dir.listFiles();
+                if (fileList != null) {
+                    for (DocumentFile file : fileList) {
+                        if (file.isFile() && file.getType() != null && file.getType().startsWith("image/")) {
+                            String fileName = file.getName().substring(0, file.getName().lastIndexOf("."));
+                            if (PersonRepository.getInstance().queryNameExist(fileName) != null) {
+                                continue;
+                            }
+                            String dbFilePath = FaceUrlConstants.PERSON_DB_FACE_PATH(file.getName());
+                            File dbFile = new File(dbFilePath);
+                            if (DocumentUtils.copyFile(context, file.getUri(), dbFile)) {
+                                byte[] bytes = FaceMatcher.getInstance().toFaceFeatureBytes(dbFilePath);
+                                if (bytes != null && bytes.length > 0) {
+                                    PersonEntity personEntity = new PersonEntity();
+                                    personEntity.setName(fileName);
+                                    personEntity.setFacePath(dbFilePath);
+                                    personEntity.setFaceFeatureBytes(bytes);
+                                    PersonRepository.getInstance().insert(personEntity);
+                                } else if (dbFile.exists()) {
+                                    dbFile.delete();
+                                }
+                            }
+                        }
+                    }
+                }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (callback != null) {
+                            callback.onResponse(true);
+                        }
+                    }
+                });
+            }
+        });
     }
 }

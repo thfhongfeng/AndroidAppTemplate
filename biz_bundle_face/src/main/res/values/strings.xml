@@ -1,10 +1,31 @@
 <resources>
     <string name="face_home_title">Business Face</string>
 
+    <string name="face_recognition_label">人脸识别</string>
+    <string name="face_gather_label">人脸录入</string>
+    <string name="face_select_label">选择人脸</string>
+    <string name="face_result_label">识别结果</string>
     <string name="face_person_name_label">姓名标识</string>
     <string name="face_person_pic_label">人脸照片</string>
-    <string name="face_save_person_data">录入保存</string>
+    <string name="face_import_person_data">导入</string>
+    <string name="face_go_add_person_data">新增</string>
+    <string name="face_add_person_data">添加</string>
+    <string name="face_update_person_data">更新</string>
 
+    <string name="face_import_person_success">导入成功</string>
+    <string name="face_import_person_fail">导入失败</string>
+
+    <string name="face_d_obtain_title">人脸获取</string>
+    <string name="face_d_obtain_msg">选择获取人脸方式</string>
+    <string name="face_d_obtain_method_pic">照片</string>
+    <string name="face_d_obtain_method_camera">拍照</string>
+
+    <string name="face_person_list_head_name">姓名标识</string>
+    <string name="face_person_list_head_pic">照片</string>
+    <string name="face_person_list_head_op">操作</string>
+    <string name="face_del">删除</string>
+    <string name="face_exist">有</string>
+    <string name="face_not_exist">无</string>
     <string name="face_clear_data">清理数据</string>
 
     <string name="face_get_face_img_title">人脸采集</string>
@@ -14,9 +35,14 @@
     <string name="face_get_face_tip_fail">人脸信息采集失败，请重试</string>
     <string name="face_get_face_mark_msg">人脸信息获取成功</string>
     <string name="face_get_face_upload_fail">人脸保存失败</string>
+    <string name="face_name_exist">该姓名标识已存在</string>
+
+    <string name="face_no_person_match">没有匹配人脸</string>
 
     <string name="face_person_d_delete_title">删除人员</string>
     <string name="face_person_d_delete_msg">确认删除人员：%s 吗？</string>
     <string name="face_person_d_save_title">保存人员</string>
     <string name="face_person_d_save_msg">确认保存人员吗？</string>
+    <string name="face_person_d_clear_title">清理全部人员</string>
+    <string name="face_person_d_clear_msg">确认清理全部人员吗？</string>
 </resources>

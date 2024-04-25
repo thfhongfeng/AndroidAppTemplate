@@ -6,6 +6,8 @@ package com.pine.template.base.component.image_loader;
 
 public enum ImageCacheStrategy {
     NONE,  // 不缓存文件
+    NONE_DISK,  // 不内存缓存文件
+    NONE_MEMORY,  // 不磁盘缓存文件
     DATA, // 只缓存原图（默认的缓存策略）
     RESOURCE, // 只缓存结果图
     ALL, // 远程图片同时缓存原图和结果图, 本地度图片缓存结果图

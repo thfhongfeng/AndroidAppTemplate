@@ -3,6 +3,7 @@ package com.pine.template.face.utils;
 import com.pine.app.lib.face.detect.CameraConfig;
 import com.pine.app.lib.face.detect.DetectConfig;
 import com.pine.template.config.DeviceConfig;
+import com.pine.tool.util.AppUtils;
 
 public class DetectConfigUtils {
     public static void mergeDeviceCameraConfig(DetectConfig config) {
@@ -28,7 +29,7 @@ public class DetectConfigUtils {
         config.EnableIdleSleepOption = true;//启用智能休眠检测机制
         config.IdleSleepOptionJudgeTime = 1000 * 60 * 3;//多少毫秒内没有检测到人脸，进入智能休眠检测
         config.delayForSaveFlow = 3000;
-        config.faceRangeRatio = 0.6f;
+        config.faceRangeRatio = AppUtils.isPortScreen() ? 0.8f : 0.6f;
         config.matchCenterDiffFactor = 0.2f;
         config.liveConfidenceEnable = false;
         if (config.liveConfidenceEnable) {

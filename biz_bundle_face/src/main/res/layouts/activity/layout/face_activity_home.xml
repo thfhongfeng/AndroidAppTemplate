@@ -14,13 +14,13 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/result_tip_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_5"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:padding="@dimen/dp_10"
-            android:textSize="@dimen/sp_14"></TextView>
+            android:text="@string/face_recognition_label"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"></TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,13 +34,29 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    android:text="@string/face_select_label"
+                    android:textSize="@dimen/sp_13"></TextView>
+
                 <ImageView
                     android:id="@+id/select_iv"
                     android:layout_width="@dimen/dp_120"
-                    android:layout_height="@dimen/dp_160"
-                    android:layout_margin="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_150"
                     android:background="@drawable/base_shape_bord_orange_red"
                     android:padding="@dimen/dp_1"></ImageView>
+
+                <TextView
+                    android:id="@+id/select_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    android:textColor="@color/turquoise"
+                    android:textSize="@dimen/sp_14"></TextView>
 
             </LinearLayout>
 
@@ -51,11 +67,18 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    android:text="@string/face_result_label"
+                    android:textSize="@dimen/sp_13"></TextView>
+
                 <ImageView
                     android:id="@+id/result_iv"
                     android:layout_width="@dimen/dp_120"
-                    android:layout_height="@dimen/dp_160"
-                    android:layout_margin="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_150"
                     android:background="@drawable/base_shape_bord_orange_red"
                     android:padding="@dimen/dp_1"></ImageView>
 
@@ -63,25 +86,42 @@
                     android:id="@+id/result_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_5"
                     android:gravity="center"
                     android:padding="@dimen/dp_10"
+                    android:textColor="@color/turquoise"
                     android:textSize="@dimen/sp_14"></TextView>
 
             </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:background="@color/cadet_blue"></View>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:text="@string/face_gather_label"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"></TextView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_20"
+            android:layout_margin="@dimen/dp_10"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/input_iv"
                 android:layout_width="@dimen/dp_120"
-                android:layout_height="@dimen/dp_160"
-                android:layout_margin="@dimen/dp_10"
+                android:layout_height="@dimen/dp_150"
+                android:layout_marginStart="@dimen/dp_10"
                 android:background="@drawable/base_shape_border_1d97d1"
                 android:padding="@dimen/dp_1"></ImageView>
 
@@ -91,15 +131,48 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/name_label_tv"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_8"
-                    android:padding="@dimen/dp_10"
-                    android:text="@string/face_person_name_label"
-                    android:textColor="@color/light_gray"
-                    android:textSize="@dimen/sp_14"></TextView>
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/name_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/face_person_name_label"
+                        android:textColor="@color/light_gray"
+                        android:textSize="@dimen/sp_14"></TextView>
+
+                    <TextView
+                        android:id="@+id/import_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:background="@drawable/base_shape_border_1d97d1"
+                        android:paddingStart="@dimen/dp_10"
+                        android:paddingTop="@dimen/dp_5"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_5"
+                        android:text="@string/face_import_person_data"
+                        android:textSize="@dimen/sp_14"></TextView>
+
+                    <TextView
+                        android:id="@+id/go_add_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/base_shape_border_1d97d1"
+                        android:paddingStart="@dimen/dp_10"
+                        android:paddingTop="@dimen/dp_5"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_5"
+                        android:text="@string/face_go_add_person_data"
+                        android:textSize="@dimen/sp_14"></TextView>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/name_tv"
@@ -111,38 +184,56 @@
                     android:text="@={personData.name}"
                     android:textSize="@dimen/sp_14"></TextView>
 
-                <TextView
-                    android:id="@+id/btn_save_tv"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_10"
-                    android:background="@drawable/base_shape_round_55a996"
-                    android:gravity="center"
-                    android:padding="@dimen/dp_10"
-                    android:text="@string/face_save_person_data"
-                    android:textSize="@dimen/sp_15"></TextView>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btn_save_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_10"
+                        android:layout_weight="1"
+                        android:background="@drawable/base_shape_round_55a996"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_10"
+                        android:text="@string/face_add_person_data"
+                        android:textSize="@dimen/sp_15"></TextView>
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:background="@color/cadet_blue"></View>
+
+        <com.pine.template.face.widgets.RefreshOverWidthRv
+            android:id="@+id/person_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/dp_20"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:orientation="vertical">
+            android:layout_margin="@dimen/dp_10"
+            android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/btn_clear_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_20"
-                android:background="@drawable/base_shape_round_55a996"
-                android:gravity="center"
-                android:padding="@dimen/dp_10"
-                android:text="@string/face_clear_data"
-                android:textSize="@dimen/sp_15"></TextView>
-        </LinearLayout>
+        </com.pine.template.face.widgets.RefreshOverWidthRv>
+
+        <TextView
+            android:id="@+id/btn_clear_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/base_shape_round_55a996"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/face_clear_data"
+            android:textSize="@dimen/sp_15"></TextView>
     </LinearLayout>
 </layout>

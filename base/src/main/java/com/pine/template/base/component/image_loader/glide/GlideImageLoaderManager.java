@@ -117,7 +117,13 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
         if (cacheStrategy != null) {
             switch (cacheStrategy) {
                 case NONE:
+                    options.skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
+                    break;
+                case NONE_DISK:
                     options.diskCacheStrategy(DiskCacheStrategy.NONE);
+                    break;
+                case NONE_MEMORY:
+                    options.skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
                     break;
                 case DATA:
                     options.diskCacheStrategy(DiskCacheStrategy.DATA);

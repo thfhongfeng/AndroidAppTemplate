@@ -6,6 +6,7 @@ import android.util.Base64;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.Gson;
@@ -107,13 +108,16 @@ public class PersonEntity implements Serializable, Cloneable {
         this.createTime = createTime;
     }
 
+    @Ignore
+    public String tempPicPath;
+
     @Override
     public String toString() {
         return "PersonEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", facePath='" + facePath + '\'' +
-                ", faceFeatureData='" + faceFeatureData + '\'' +
+                ", faceFeatureData size='" + faceFeatureData.length() + '\'' +
                 ", isDelete=" + isDelete +
                 ", updateTime=" + updateTime +
                 ", createTime=" + createTime +
@@ -149,6 +153,10 @@ public class PersonEntity implements Serializable, Cloneable {
         } catch (CloneNotSupportedException e) {
             return new PersonEntity();
         }
+    }
+
+    public boolean isNew() {
+        return id == 0;
     }
 
     public boolean isUnknownPerson() {

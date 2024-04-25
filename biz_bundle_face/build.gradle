@@ -58,6 +58,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    annotationProcessor build_dependency["android_room_compiler"]
+
     // ARouter配置 begin
     implementation build_dependency["arouter_api"]
     annotationProcessor build_dependency["arouter_compiler"]

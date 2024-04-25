@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data class="FaceHomeActivityBinding">
+
+        <variable
+            name="personData"
+            type="com.pine.template.face.db.entity.PersonEntity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_10"
+                android:text="@string/face_recognition_label"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold"></TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/face_select_label"
+                        android:textSize="@dimen/sp_13"></TextView>
+
+                    <ImageView
+                        android:id="@+id/select_iv"
+                        android:layout_width="@dimen/dp_100"
+                        android:layout_height="@dimen/dp_120"
+                        android:background="@drawable/base_shape_bord_orange_red"
+                        android:padding="@dimen/dp_1"></ImageView>
+
+                    <TextView
+                        android:id="@+id/select_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_10"
+                        android:textColor="@color/turquoise"
+                        android:textSize="@dimen/sp_14"></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/face_result_label"
+                        android:textSize="@dimen/sp_13"></TextView>
+
+                    <ImageView
+                        android:id="@+id/result_iv"
+                        android:layout_width="@dimen/dp_100"
+                        android:layout_height="@dimen/dp_120"
+                        android:background="@drawable/base_shape_bord_orange_red"
+                        android:padding="@dimen/dp_1"></ImageView>
+
+                    <TextView
+                        android:id="@+id/result_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_10"
+                        android:textColor="@color/turquoise"
+                        android:textSize="@dimen/sp_14"></TextView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:background="@color/cadet_blue"></View>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10"
+                android:text="@string/face_gather_label"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold"></TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/input_iv"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_120"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:background="@drawable/base_shape_border_1d97d1"
+                    android:padding="@dimen/dp_1"></ImageView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/name_label_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="@dimen/dp_5"
+                            android:text="@string/face_person_name_label"
+                            android:textColor="@color/light_gray"
+                            android:textSize="@dimen/sp_14"></TextView>
+
+                        <TextView
+                            android:id="@+id/import_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_10"
+                            android:background="@drawable/base_shape_border_1d97d1"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingTop="@dimen/dp_5"
+                            android:paddingEnd="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_5"
+                            android:text="@string/face_import_person_data"
+                            android:textSize="@dimen/sp_14"></TextView>
+
+                        <TextView
+                            android:id="@+id/go_add_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/base_shape_border_1d97d1"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingTop="@dimen/dp_5"
+                            android:paddingEnd="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_5"
+                            android:text="@string/face_go_add_person_data"
+                            android:textSize="@dimen/sp_14"></TextView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/name_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_10"
+                        android:background="@drawable/base_shape_border_999999"
+                        android:padding="@dimen/dp_8"
+                        android:text="@={personData.name}"
+                        android:textSize="@dimen/sp_14"></TextView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/btn_save_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dp_10"
+                            android:layout_weight="1"
+                            android:background="@drawable/base_shape_round_55a996"
+                            android:gravity="center"
+                            android:padding="@dimen/dp_10"
+                            android:text="@string/face_add_person_data"
+                            android:textSize="@dimen/sp_15"></TextView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.pine.template.face.widgets.RefreshOverWidthRv
+                android:id="@+id/person_rv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/dp_10"
+                android:layout_weight="1">
+
+            </com.pine.template.face.widgets.RefreshOverWidthRv>
+
+            <TextView
+                android:id="@+id/btn_clear_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:background="@drawable/base_shape_round_55a996"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/face_clear_data"
+                android:textSize="@dimen/sp_15"></TextView>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

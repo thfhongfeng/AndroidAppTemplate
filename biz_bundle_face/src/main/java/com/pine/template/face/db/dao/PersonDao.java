@@ -34,6 +34,9 @@ public interface PersonDao {
     @Query("SELECT * FROM db_person ORDER BY update_time DESC LIMIT :startIndex,:pageSize")
     List<PersonEntity> queryByPage(int startIndex, int pageSize);
 
+    @Query("SELECT * FROM db_person WHERE name=:name")
+    List<PersonEntity> queryNameExist(String name);
+
     @Delete
     int delete(PersonEntity entity);
 

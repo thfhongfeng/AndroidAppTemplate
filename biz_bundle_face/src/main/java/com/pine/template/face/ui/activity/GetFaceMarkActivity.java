@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer;
 
 import com.pine.app.lib.face.detect.DetectConfig;
 import com.pine.app.lib.face.detect.IOnFacePicListener;
-import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
+import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.template.base.manager.tts.TtsManager;
 import com.pine.template.face.FaceConstants;
 import com.pine.template.face.FaceUrlConstants;
@@ -23,12 +23,11 @@ import com.pine.template.face.databinding.ActivityGetFaceMarkBinding;
 import com.pine.template.face.utils.DetectConfigUtils;
 import com.pine.template.face.vm.GetFaceMarkVm;
 import com.pine.tool.permission.PermissionsAnnotation;
-import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
 @PermissionsAnnotation(Permissions = {Manifest.permission.CAMERA})
 public class GetFaceMarkActivity extends
-        BaseMvvmActionBarTextMenuActivity<ActivityGetFaceMarkBinding, GetFaceMarkVm> {
+        BaseMvvmActionBarActivity<ActivityGetFaceMarkBinding, GetFaceMarkVm> {
 
     private Handler mDetectInitHandler = new Handler(Looper.getMainLooper());
 
@@ -67,7 +66,7 @@ public class GetFaceMarkActivity extends
     private void initDetect() {
         DetectConfig config = getDetectConfig();
         LogUtils.d(TAG, "initDetect " + config);
-        mBinding.faceDetectView.setFaceMantleCenter(0.5f, AppUtils.isPortScreen() ? 0.4f : 0.5f);
+        mBinding.faceDetectView.setFaceMantleCenter(0.5f, 0.5f);
         mBinding.faceDetectView.init(FaceConstants.DETECT_PROVIDER, config, new IOnFacePicListener() {
             @Override
             public boolean onFacePicSaved(String picPath, String compressPicPath, String faceCropFilePath) {
@@ -137,19 +136,12 @@ public class GetFaceMarkActivity extends
     }
 
     @Override
-    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, TextView menuBtnTv) {
+    protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv) {
         titleTv.setText(R.string.face_get_face_img_title);
         goBackIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-        menuBtnTv.setText(R.string.face_get_face_save);
-        menuBtnTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
     }

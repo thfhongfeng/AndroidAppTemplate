@@ -57,6 +57,16 @@ public class PersonRepository {
         }
     }
 
+    public PersonEntity queryNameExist(String name) {
+        synchronized (FaceDatabase.DB_SYNC_LOCK) {
+            LogUtils.d(TAG, "queryNameExist name:" + name);
+            List<PersonEntity> retList = personDao.queryNameExist(name);
+            PersonEntity exist = retList != null && retList.size() > 0 ? retList.get(0) : null;
+            LogUtils.d(TAG, "queryNameExist name:" + name + ", exist:" + (exist != null));
+            return exist;
+        }
+    }
+
     public boolean insert(@NonNull PersonEntity entity) {
         synchronized (FaceDatabase.DB_SYNC_LOCK) {
             LogUtils.d(TAG, "insert entity: " + entity);
