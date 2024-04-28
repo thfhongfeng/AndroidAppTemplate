@@ -139,7 +139,6 @@ public class TimerHelper {
         timerTaskEntity.type = TimerTaskEntity.TYPE_ONCE;
         timerTaskEntity.delay = delay;
         timerTaskEntity.async = false;
-        timerTaskEntity.runnable = runnable;
 
         timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
 
@@ -160,7 +159,6 @@ public class TimerHelper {
         timerTaskEntity.type = TimerTaskEntity.TYPE_ONCE;
         timerTaskEntity.delay = delay;
         timerTaskEntity.async = true;
-        timerTaskEntity.runnable = runnable;
 
         timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
 
@@ -175,7 +173,6 @@ public class TimerHelper {
         timerTaskEntity.delay = delay;
         timerTaskEntity.period = period;
         timerTaskEntity.async = false;
-        timerTaskEntity.runnable = runnable;
 
         timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
 
@@ -190,7 +187,6 @@ public class TimerHelper {
         timerTaskEntity.delay = delay;
         timerTaskEntity.period = period;
         timerTaskEntity.async = true;
-        timerTaskEntity.runnable = runnable;
 
         timerTaskEntity.timerTask = buildTimerTask(timerTaskEntity, runnable);
 
@@ -200,7 +196,6 @@ public class TimerHelper {
 
     public void realSchemeTimerWork(final TimerTaskEntity timerTaskEntity) {
         if (timerTaskEntity == null || !timerTaskEntity.isValid()) {
-            LogUtils.d(TAG, "realSchemeTimerWork task:" + timerTaskEntity + " is invalid");
             return;
         }
         if (timerTaskEntity.period > 0) {
@@ -284,7 +279,6 @@ public class TimerHelper {
 
         public TimerTaskEntity resetEntity() {
             if (runnable == null) {
-                LogUtils.d(TAG, "resetEntity runnable is null, return null");
                 return null;
             }
             timerTask = buildTimerTask(this, runnable);
