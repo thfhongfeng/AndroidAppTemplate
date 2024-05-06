@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.pine.app.template.biz_bundle_mvvm.BuildConfigKey;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarImageMenuActivity;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvvm.R;
 import com.pine.template.mvvm.databinding.MvvmHomeActivityBinding;
@@ -70,7 +70,7 @@ public class MvvmHomeActivity extends BaseMvvmActionBarImageMenuActivity<MvvmHom
     @Override
     protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvvm_home_title);
-        if (ConfigSwitcherServer.isEnable(ConfigKey.FUN_ADD_SHOP)) {
+        if (ConfigSwitcherServer.isEnable(BuildConfigKey.FUN_ADD_SHOP)) {
             menuBtnIv.setImageResource(R.mipmap.base_ic_add);
             menuBtnIv.setOnClickListener(new View.OnClickListener() {
                 @Override

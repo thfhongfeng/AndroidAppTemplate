@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.pine.app.template.base.BuildConfigKey;
 import com.pine.template.base.R;
 import com.pine.template.base.helper.ResourceHelper;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 
 public class BilingualTextView extends LinearLayout {
@@ -61,7 +61,7 @@ public class BilingualTextView extends LinearLayout {
         secondTextSize = typedArray.getDimension(R.styleable.BaseBilingualTextView_base_secondTextSize, 0);
         secondTextColor = typedArray.getColor(R.styleable.BaseBilingualTextView_base_secondTextColor, textColor);
         enableDual = typedArray.getBoolean(R.styleable.BaseBilingualTextView_base_enableDual,
-                ConfigSwitcherServer.isEnable(ConfigKey.ENABLE_BILINGUAL_TEXT, false));
+                ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_BILINGUAL_TEXT, false));
         textResId = typedArray.getResourceId(R.styleable.BaseBilingualTextView_base_text, -1);
         typedArray.recycle();
     }

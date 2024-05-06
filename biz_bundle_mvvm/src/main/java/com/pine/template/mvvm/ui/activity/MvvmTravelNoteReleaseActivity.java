@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
+import com.pine.app.template.biz_bundle_mvvm.BuildConfigKey;
 import com.pine.template.base.BaseConstants;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.template.base.business.access.UiAccessAction;
@@ -23,7 +24,6 @@ import com.pine.template.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.DateSelectDialog;
 import com.pine.template.base.widget.dialog.InputTextDialog;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.mvvm.MvvmUrlConstants;
 import com.pine.template.mvvm.R;
 import com.pine.template.mvvm.bean.MvvmShopItemEntity;
@@ -47,7 +47,7 @@ import java.util.Map;
  */
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER},
-        AccessArgs = {"", ConfigKey.FUN_ADD_TRAVEL_NOTE},
+        AccessArgs = {"", BuildConfigKey.FUN_ADD_TRAVEL_NOTE},
         AccessActions = {UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
                 UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI,
                 UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})

@@ -11,9 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.pine.app.template.biz_bundle_mvvm.BuildConfigKey;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.template.base.component.map.MapSdkManager;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvvm.MvvmUrlConstants;
 import com.pine.template.mvvm.R;
@@ -70,7 +70,7 @@ public class MvvmShopDetailActivity extends BaseMvvmActionBarActivity<MvvmShopDe
         mBinding.photoIuv.init(this);
 
         mBinding.goAddProductBtnTv.setVisibility(ConfigSwitcherServer
-                .isEnable(ConfigKey.FUN_ADD_PRODUCT) ? View.VISIBLE : View.GONE);
+                .isEnable(BuildConfigKey.FUN_ADD_PRODUCT) ? View.VISIBLE : View.GONE);
     }
 
     @Override

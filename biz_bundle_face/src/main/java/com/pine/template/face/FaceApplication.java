@@ -17,7 +17,6 @@ public class FaceApplication extends RootApplication {
 
     public static void attach() {
         LogUtils.d(TAG, "attach");
-
         FaceMatcher.getInstance().initFaceMatcher(mApplication);
     }
 }

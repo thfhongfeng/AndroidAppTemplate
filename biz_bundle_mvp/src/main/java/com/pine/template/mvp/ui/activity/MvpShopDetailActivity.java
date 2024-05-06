@@ -7,9 +7,9 @@ import android.widget.TextView;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.pine.app.template.biz_bundle_mvp.BuildConfigKey;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
 import com.pine.template.base.component.uploader.ui.BaseImageUploadRecycleView;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.bean.MvpShopDetailEntity;
@@ -60,7 +60,7 @@ public class MvpShopDetailActivity extends BaseMvpActionBarActivity<IMvpShopDeta
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
 
         go_add_product_btn_tv.setVisibility(ConfigSwitcherServer
-                .isEnable(ConfigKey.FUN_ADD_PRODUCT) ? View.VISIBLE : View.GONE);
+                .isEnable(BuildConfigKey.FUN_ADD_PRODUCT) ? View.VISIBLE : View.GONE);
     }
 
     @Override

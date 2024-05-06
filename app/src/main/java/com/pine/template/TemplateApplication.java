@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 
+import com.pine.app.template.app_welcome.BuildConfigKey;
 import com.pine.template.base.BaseApplication;
 import com.pine.template.base.business.access.UiAccessConfigSwitcherExecutor;
 import com.pine.template.base.business.access.UiAccessLoginExecutor;
@@ -16,7 +17,6 @@ import com.pine.template.base.component.scan.ScanManager;
 import com.pine.template.base.component.scan.zxing.ZXingScanManager;
 import com.pine.template.config.BuildConfig;
 import com.pine.template.config.ConfigApplication;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.helper.DeviceInfoHelper;
 import com.pine.template.config.router.command.RouterDbServerCommand;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
@@ -144,7 +144,7 @@ public class TemplateApplication extends Application {
                             public DbResponse request(Bundle bundle) {
                                 try {
                                     return RouterManager.callDataCommandDirect(mApplication,
-                                            ConfigKey.BUNDLE_DB_SEVER,
+                                            BuildConfigKey.BUNDLE_DB_SEVER,
                                             RouterDbServerCommand.callDbServerCommand, bundle);
                                 } catch (RouterException e) {
                                     return new DbResponse();

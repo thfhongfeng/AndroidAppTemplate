@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.pine.app.template.biz_bundle_mvp.BuildConfigKey;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.business.access.UiAccessAction;
@@ -25,7 +26,6 @@ import com.pine.template.base.component.editor.ui.ArticleEditorView;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.DateSelectDialog;
 import com.pine.template.base.widget.dialog.InputTextDialog;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.bean.MvpShopItemEntity;
 import com.pine.template.mvp.contract.IMvpTravelNoteReleaseContract;
@@ -43,7 +43,7 @@ import java.util.List;
  */
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER},
-        AccessArgs = {"", ConfigKey.FUN_ADD_TRAVEL_NOTE},
+        AccessArgs = {"", BuildConfigKey.FUN_ADD_TRAVEL_NOTE},
         AccessActions = {UiAccessAction.LOGIN_ACCESS_FALSE_ON_RESUME_NOT_GO_LOGIN,
                 UiAccessAction.LOGIN_ACCESS_FALSE_ON_CREATE_NOT_FINISH_UI,
                 UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})

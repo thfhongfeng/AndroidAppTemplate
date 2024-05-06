@@ -5,7 +5,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.text.TextUtils;
 
-import com.pine.template.config.ConfigKey;
+import com.pine.app.template.base.BuildConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
@@ -53,7 +53,7 @@ public class ResourceHelper {
     private synchronized static Resources getFirstResources() {
         if (mFirstResources == null) {
             Context context = AppUtils.getApplicationContext();
-            Locale locale = getLocal(ConfigSwitcherServer.getConfig(ConfigKey.CONFIG_FIRST_LOCAL, "zh_CN"));
+            Locale locale = getLocal(ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_FIRST_LOCAL, "zh_CN"));
             Configuration conf = context.getResources().getConfiguration();
             conf = new Configuration(conf);
             conf.setLocale(locale);
@@ -67,7 +67,7 @@ public class ResourceHelper {
     private synchronized static Resources getSecondResources() {
         if (mSecondResources == null) {
             Context context = AppUtils.getApplicationContext();
-            Locale locale = getLocal(ConfigSwitcherServer.getConfig(ConfigKey.CONFIG_SECOND_LOCAL, "zh_CN"));
+            Locale locale = getLocal(ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_SECOND_LOCAL, "zh_CN"));
             Configuration conf = context.getResources().getConfiguration();
             conf = new Configuration(conf);
             conf.setLocale(locale);

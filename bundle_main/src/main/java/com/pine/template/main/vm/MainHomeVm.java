@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.template.config.ConfigKey;
+import com.pine.app.template.bundle_main.BuildConfigKey;
 import com.pine.template.config.router.command.RouterFaceCommand;
 import com.pine.template.config.router.command.RouterMvcCommand;
 import com.pine.template.config.router.command.RouterMvpCommand;
@@ -27,31 +27,31 @@ public class MainHomeVm extends ViewModel {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject;
         try {
-            if (RouterManager.isBundleEnable(ConfigKey.BIZ_BUNDLE_MVC)) {
+            if (RouterManager.isBundleEnable(BuildConfigKey.BIZ_BUNDLE_MVC)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvc");
-                jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_MVC);
+                jsonObject.put("bundle", BuildConfigKey.BIZ_BUNDLE_MVC);
                 jsonObject.put("command", RouterMvcCommand.goMvcHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (RouterManager.isBundleEnable(ConfigKey.BIZ_BUNDLE_MVP)) {
+            if (RouterManager.isBundleEnable(BuildConfigKey.BIZ_BUNDLE_MVP)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvp");
-                jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_MVP);
+                jsonObject.put("bundle", BuildConfigKey.BIZ_BUNDLE_MVP);
                 jsonObject.put("command", RouterMvpCommand.goMvpHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (RouterManager.isBundleEnable(ConfigKey.BIZ_BUNDLE_MVVM)) {
+            if (RouterManager.isBundleEnable(BuildConfigKey.BIZ_BUNDLE_MVVM)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Mvvm");
-                jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_MVVM);
+                jsonObject.put("bundle", BuildConfigKey.BIZ_BUNDLE_MVVM);
                 jsonObject.put("command", RouterMvvmCommand.goMvvmHomeActivity);
                 jsonArray.put(jsonObject);
             }
-            if (RouterManager.isBundleEnable(ConfigKey.BIZ_BUNDLE_FACE)) {
+            if (RouterManager.isBundleEnable(BuildConfigKey.BIZ_BUNDLE_FACE)) {
                 jsonObject = new JSONObject();
                 jsonObject.put("name", "Business Face");
-                jsonObject.put("bundle", ConfigKey.BIZ_BUNDLE_FACE);
+                jsonObject.put("bundle", BuildConfigKey.BIZ_BUNDLE_FACE);
                 jsonObject.put("command", RouterFaceCommand.goFaceHomeActivity);
                 jsonArray.put(jsonObject);
             }

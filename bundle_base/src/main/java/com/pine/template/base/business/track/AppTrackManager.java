@@ -5,8 +5,8 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.app.template.bundle_base.BuildConfigKey;
 import com.pine.template.base.business.track.entity.AppTrack;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.util.LogUtils;
 
@@ -42,8 +42,8 @@ public class AppTrackManager {
 
     public void init(@NonNull Context application, @NonNull String uploadUrl) {
         mContext = application;
-        mEnable = ConfigSwitcherServer.isEnable(ConfigKey.FUN_APP_TRACK)
-                && ConfigSwitcherServer.isEnable(ConfigKey.ENABLE_APP_TRACK);
+        mEnable = ConfigSwitcherServer.isEnable(BuildConfigKey.FUN_APP_TRACK)
+                && ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_APP_TRACK);
         mHelper = new TrackHelper(application, uploadUrl, mOpenModuleMap);
         mIsInit = true;
 
@@ -57,7 +57,7 @@ public class AppTrackManager {
         if (!enableTrack()) {
             return;
         }
-        int interval = ConfigSwitcherServer.getConfigInt(ConfigKey.CONFIG_APP_TRACK_LOOP_INTERVAL);
+        int interval = ConfigSwitcherServer.getConfigInt(BuildConfigKey.CONFIG_APP_TRACK_LOOP_INTERVAL);
         if (interval > 0) {
             startLoopUploadTrack(interval * 1000);
         }
@@ -217,7 +217,7 @@ public class AppTrackManager {
         if (!isInit()) {
             return false;
         }
-        return mEnable && ConfigSwitcherServer.isEnable(ConfigKey.ENABLE_UPLOAD_APP_TRACK);
+        return mEnable && ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_UPLOAD_APP_TRACK);
     }
 
     private boolean canTrack(@NonNull String trackModule) {

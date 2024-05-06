@@ -8,9 +8,9 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
+import com.pine.app.template.app_welcome.BuildConfigKey;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.base.business.track.AppTrackManager;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.router.command.RouterMainCommand;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.welcome.R;
@@ -65,7 +65,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
                 AppTrackManager.getInstance().init(WelcomeApplication.mApplication,
                         WelUrlConstants.APP_TRACK());
                 if (!ConfigSwitcherServer
-                        .isEnable(ConfigKey.ENABLE_AUTO_CHECK_UPDATE)) {
+                        .isEnable(BuildConfigKey.ENABLE_AUTO_CHECK_UPDATE)) {
                     autoLogin(-1);
                     return;
                 }
@@ -163,7 +163,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     }
 
     public void autoLogin(final int delayTogo) {
-        if (!ConfigSwitcherServer.isEnable(ConfigKey.BUNDLE_LOGIN_KEY) ||
+        if (!ConfigSwitcherServer.isEnable(BuildConfigKey.BUNDLE_LOGIN) ||
                 WelcomeApplication.isLogin() || !ENABLE_LOADING_AUTO_LOGIN) {
             gotoNext(delayTogo);
             return;

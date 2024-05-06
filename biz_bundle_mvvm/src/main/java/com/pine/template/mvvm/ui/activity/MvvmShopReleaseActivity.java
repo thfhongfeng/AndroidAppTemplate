@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
+import com.pine.app.template.biz_bundle_mvvm.BuildConfigKey;
 import com.pine.template.base.BaseConstants;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.template.base.business.access.UiAccessAction;
@@ -26,7 +27,6 @@ import com.pine.template.base.widget.dialog.DateSelectDialog;
 import com.pine.template.base.widget.dialog.InputTextDialog;
 import com.pine.template.base.widget.dialog.ProvinceSelectDialog;
 import com.pine.template.base.widget.dialog.SelectItemDialog;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.mvvm.MvvmUrlConstants;
 import com.pine.template.mvvm.R;
 import com.pine.template.mvvm.bean.MvvmShopDetailEntity;
@@ -47,7 +47,7 @@ import java.util.Map;
  */
 
 @UiAccessAnnotation(AccessTypes = {UiAccessType.LOGIN, UiAccessType.CONFIG_SWITCHER, UiAccessType.VIP_LEVEL},
-        AccessArgs = {"", ConfigKey.FUN_ADD_SHOP, VipLevel.VIP1},
+        AccessArgs = {"", BuildConfigKey.FUN_ADD_SHOP, VipLevel.VIP1},
         AccessActions = {"", UiAccessAction.CONFIG_SWITCHER_ACCESS_FALSE_ON_CREATE_SHOW_TOAST})
 public class MvvmShopReleaseActivity extends
         BaseMvvmActionBarTextMenuActivity<MvvmShopReleaseActivityBinding, MvvmShopReleaseVm> {

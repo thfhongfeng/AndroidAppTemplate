@@ -1,0 +1,87 @@
+apply from: "${rootDir}/configKey/ConfigKey.gradle"
+
+// 定义自定义任务的类
+class GenerateConfigKeyTask extends DefaultTask {
+    // 定义 android 和 buildDir 属性，用于保存 Android 插件的一些属性
+    @Input
+    def taskProject
+    @Input
+    def taskRootProject
+    @Input
+    def buildDir
+    @Input
+    def variantFlavorName
+    @Input
+    def variantBuildTypeName
+
+    @TaskAction
+    void generateConfigKeyTask() {
+        // 获取所有的 Variant
+        def variants = taskProject.android.libraryVariants
+
+        // 遍历所有的 Variant
+        variants.all { variant ->
+            // 获取当前 Variant 的 Flavor 名称
+            def flavorName = variant.flavorName
+
+            // 获取当前构建的构建类型名称
+            def buildTypeName = variant.buildType.name
+            if (variantFlavorName == flavorName && variantBuildTypeName == buildTypeName) {
+                def buildPackage = taskRootProject.ext.build_flavor_product[flavorName].build_product_applicationId
+                def buildModelPackage = "${buildPackage}.${taskProject.name}"
+                // 构建正确的目录路径
+                def outputDir = "${buildDir}/generated/source/buildConfig/${flavorName}/${buildTypeName}/${buildModelPackage.replace('.', '/')}"
+
+                // 在这里生成 CustomBuildConfig 文件并写入到指定路径
+                def content = """
+package ${buildModelPackage};
+
+public final class BuildConfigKey {
+${generateKeyValuePairs()}
+}
+                """
+                def file = taskProject.file("${outputDir}/BuildConfigKey.java")
+                file.parentFile.mkdirs()
+                file.write(content)
+
+                // 打印日志
+                getLogger().lifecycle("Generated BuildConfigKey file ${file.getPath()} for flavor: ${flavorName} and build type: ${buildTypeName}")
+
+            }
+        }
+    }
+
+    String generateKeyValuePairs() {
+        def result = ""
+        taskRootProject.ext.configKeyMap.each { _, item ->
+            if (item != null) {
+                item.each { key, value ->
+                    result += "     public static final String  $key = \"$value\";\n"
+                }
+            }
+        }
+        return result
+    }
+}
+
+afterEvaluate {
+    project.android.libraryVariants.all { variant ->
+        // 获取当前 Variant 的 Flavor 名称
+        def flavorName = variant.flavorName
+        // 获取当前构建的构建类型名称
+        def buildTypeName = variant.buildType.name
+        def taskName = "${project.name}-generate${flavorName}${buildTypeName}ConfigKeyTask"
+        // 定义自定义生成 BuildConfigKey 类文件的任务
+        tasks.create("${taskName}", GenerateConfigKeyTask) {
+            // 通过构造函数传递 android 对象的一些属性
+            taskRootProject = rootProject
+            taskProject = project
+            buildDir = project.buildDir
+            variantFlavorName = flavorName
+            variantBuildTypeName = buildTypeName
+        }
+        def buildConfigTask = variant.getGenerateBuildConfig() as Task
+        println "Generated BuildConfigKey afterEvaluate ${buildConfigTask} dependOn ${taskName}"
+        buildConfigTask.dependsOn("${taskName}")
+    }
+}

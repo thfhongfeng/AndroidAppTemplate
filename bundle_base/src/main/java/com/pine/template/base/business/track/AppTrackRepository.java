@@ -5,10 +5,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.app.template.bundle_base.BuildConfigKey;
 import com.pine.template.base.business.db.DbRoomDatabase;
 import com.pine.template.base.business.track.dao.AppTrackDao;
 import com.pine.template.base.business.track.entity.AppTrack;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.util.LogUtils;
 
@@ -41,7 +41,7 @@ public class AppTrackRepository {
     private AppTrackRepository(Context application) {
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
             mApplicationContext = application;
-            MAX_COUNT = ConfigSwitcherServer.getConfigInt(ConfigKey.CONFIG_APP_TRACK_MAX_COUNT, 100000);
+            MAX_COUNT = ConfigSwitcherServer.getConfigInt(BuildConfigKey.CONFIG_APP_TRACK_MAX_COUNT, 100000);
             roomDatabase = DbRoomDatabase.getINSTANCE(application);
             appTrackDao = roomDatabase.appTrackDao();
             count = appTrackDao.getCount();

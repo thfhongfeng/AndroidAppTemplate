@@ -10,9 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.pine.app.template.biz_bundle_mvp.BuildConfigKey;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarImageMenuActivity;
 import com.pine.template.base.widget.view.ViewPagerTabLayout;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.contract.IMvpHomeContract;
@@ -69,7 +69,7 @@ public class MvpHomeActivity extends BaseMvpActionBarImageMenuActivity<IMvpHomeC
     @Override
     protected void setupActionBar(View actionbar, ImageView goBackIv, TextView titleTv, ImageView menuBtnIv) {
         titleTv.setText(R.string.mvp_home_title);
-        if (ConfigSwitcherServer.isEnable(ConfigKey.FUN_ADD_SHOP)) {
+        if (ConfigSwitcherServer.isEnable(BuildConfigKey.FUN_ADD_SHOP)) {
             menuBtnIv.setImageResource(R.mipmap.base_ic_add);
             menuBtnIv.setOnClickListener(new View.OnClickListener() {
                 @Override

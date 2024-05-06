@@ -3,8 +3,8 @@ package com.pine.template.base.remote;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.pine.app.template.bundle_base.BuildConfigKey;
 import com.pine.template.base.business.bean.AccountBean;
-import com.pine.template.config.ConfigKey;
 import com.pine.template.config.router.command.RouterLoginCommand;
 import com.pine.template.config.router.command.RouterMainCommand;
 import com.pine.template.config.router.command.RouterUserCommand;
@@ -15,18 +15,18 @@ import com.pine.tool.router.RouterManager;
 public class BaseRouterClient {
 
     public static void autoLogin(Context context, Bundle args, IRouterCallback callback) {
-        RouterManager.callOpCommand(context, ConfigKey.BUNDLE_LOGIN_KEY,
+        RouterManager.callOpCommand(context, BuildConfigKey.BUNDLE_LOGIN,
                 RouterLoginCommand.autoLogin, args, callback);
     }
 
     public static void goLoginActivity(Context context, Bundle args, IRouterCallback callback) {
-        RouterManager.callUiCommand(context, ConfigKey.BUNDLE_LOGIN_KEY,
+        RouterManager.callUiCommand(context, BuildConfigKey.BUNDLE_LOGIN,
                 RouterLoginCommand.goLoginActivity, args, callback);
     }
 
     public static AccountBean getLoginAccount(Context context, Bundle args) {
         try {
-            return RouterManager.callDataCommandDirect(context, ConfigKey.BUNDLE_LOGIN_KEY,
+            return RouterManager.callDataCommandDirect(context, BuildConfigKey.BUNDLE_LOGIN,
                     RouterLoginCommand.getLoginAccount, args);
         } catch (RouterException e) {
             return null;
@@ -34,17 +34,17 @@ public class BaseRouterClient {
     }
 
     public static void goMainHomeActivity(Context context, Bundle args, IRouterCallback callback) {
-        RouterManager.callUiCommand(context, ConfigKey.BUNDLE_MAIN_KEY,
+        RouterManager.callUiCommand(context, BuildConfigKey.BUNDLE_MAIN,
                 RouterMainCommand.goMainHomeActivity, args, callback);
     }
 
     public static void goUserHomeActivity(Context context, Bundle args, IRouterCallback callback) {
-        RouterManager.callUiCommand(context, ConfigKey.BUNDLE_USER_KEY,
+        RouterManager.callUiCommand(context, BuildConfigKey.BUNDLE_USER,
                 RouterUserCommand.goUserHomeActivity, args, callback);
     }
 
     public static void goUserRechargeActivity(Context context, Bundle args, IRouterCallback callback) {
-        RouterManager.callUiCommand(context, ConfigKey.BUNDLE_USER_KEY,
+        RouterManager.callUiCommand(context, BuildConfigKey.BUNDLE_USER,
                 RouterUserCommand.goUserRechargeActivity, args, callback);
     }
 }
