@@ -1,3 +1,4 @@
+/maven
 *.iml
 .gradle
 /local.properties
