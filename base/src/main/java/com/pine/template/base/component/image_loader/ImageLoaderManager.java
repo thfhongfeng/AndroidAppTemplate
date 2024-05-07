@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 
 import com.pine.template.base.R;
 import com.pine.template.base.component.image_loader.glide.GlideImageLoaderManager;
-import com.pine.template.config.BuildConfig;
 
 import java.io.File;
 
@@ -24,14 +23,20 @@ public class ImageLoaderManager {
     private final static int DEFAULT_LOADING_RES_ID = R.drawable.base_animated_loading;
     private final static int DEFAULT_EMPTY_RES_ID = R.mipmap.base_ic_default_image;
 
+    private static String PROVIDER = "glide";
+
     private ImageLoaderManager() {
 
+    }
+
+    public synchronized static void init(String provider) {
+        PROVIDER = provider;
     }
 
     public synchronized static ImageLoaderManager getInstance() {
         if (mInstance == null) {
             mInstance = new ImageLoaderManager();
-            switch (BuildConfig.APP_THIRD_IMAGE_LOADER_PROVIDER) {
+            switch (PROVIDER) {
                 case "glide":
                     mImpl = GlideImageLoaderManager.getInstance();
                 default:

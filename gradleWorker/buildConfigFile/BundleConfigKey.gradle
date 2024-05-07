@@ -1,0 +1,16 @@
+def bundleConfigKeyMap = [:]
+
+/**
+ [key1：value1, key2：value2]生成代码
+ public final static String key1 = value1;
+ public final static String key2 = value2;
+ */
+
+//  biz_bundle_mvc, biz_bundle_mvp, biz_bundle_mvvm模块
+bundleConfigKeyMap.mvcMvpMvvm = [FUN_ADD_SHOP       : "FUN_ADD_SHOP",
+                                 FUN_ADD_PRODUCT    : "FUN_ADD_PRODUCT",
+                                 FUN_ADD_TRAVEL_NOTE: "FUN_ADD_TRAVEL_NOTE"]
+//  biz_bundle_face模块
+bundleConfigKeyMap.face = [:]
+
+rootProject.ext.bundleConfigKeyMap = bundleConfigKeyMap

@@ -5,15 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.BaseUrlConstants;
 import com.pine.template.base.component.share.bean.ShareBean;
 import com.pine.template.base.component.share.bean.UriListShareBean;
 import com.pine.template.base.component.share.bean.UrlTextShareBean;
 import com.pine.template.base.util.DialogUtils;
-import com.pine.template.config.BuildConfig;
 import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
@@ -41,20 +38,19 @@ public class ShareManager {
         return mInstance;
     }
 
-    public void init(Context context, @DrawableRes int iconId) {
-        initTencent(BuildConfig.QQ_FOR_APP_ID, BuildConfig.WX_FOR_APP_ID, BuildConfig.WX_SECRET_KEY,
-                iconId, BuildConfig.APP_NAME_ID, BaseUrlConstants.SERVER());
-        initSina(context, BuildConfig.WEI_BO_FOR_APP_KEY, BuildConfig.WEI_BO_REDIRECT_URL);
+    public static void init(Context context, String appNameId, String baseUrl,
+                            TencentShareManager.TencentConfig tencentConfig,
+                            SinaShareManager.SinaConfig sinaConfig) {
+        getInstance().initTencent(tencentConfig, appNameId, baseUrl);
+        getInstance().initSina(context, sinaConfig);
     }
 
-    public void initTencent(String qq_for_app_id, String wx_for_app_id, String wx_secret_key,
-                            int icon, String appName, String baseUrl) {
-        TencentShareManager.getInstance().init(qq_for_app_id, wx_for_app_id, wx_secret_key,
-                icon, appName, baseUrl);
+    public void initTencent(TencentShareManager.TencentConfig tencentConfig, String appName, String baseUrl) {
+        TencentShareManager.getInstance().init(tencentConfig, appName, baseUrl);
     }
 
-    public void initSina(Context context, String wei_bo_for_app_key, String wei_bo_redirect_url) {
-        SinaShareManager.getInstance().init(context, wei_bo_for_app_key, wei_bo_redirect_url);
+    public void initSina(Context context, SinaShareManager.SinaConfig sinaConfig) {
+        SinaShareManager.getInstance().init(context, sinaConfig);
     }
 
     public AlertDialog createShareDialog(final Activity context, @NonNull final ArrayList<ShareBean> shareBeanList) {

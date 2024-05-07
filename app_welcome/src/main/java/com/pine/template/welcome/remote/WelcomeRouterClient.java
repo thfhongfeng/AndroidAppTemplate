@@ -3,9 +3,9 @@ package com.pine.template.welcome.remote;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.pine.app.template.config.BuildConfigKey;
-import com.pine.template.config.router.command.RouterLoginCommand;
-import com.pine.template.config.router.command.RouterMainCommand;
+import com.pine.app.template.app_welcome.BuildConfigKey;
+import com.pine.app.template.app_welcome.router.RouterLoginCommand;
+import com.pine.app.template.app_welcome.router.RouterMainCommand;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.router.RouterManager;
 

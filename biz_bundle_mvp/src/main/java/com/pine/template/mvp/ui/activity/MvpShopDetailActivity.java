@@ -10,7 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.pine.app.template.biz_bundle_mvp.BuildConfigKey;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarActivity;
 import com.pine.template.base.component.uploader.ui.BaseImageUploadRecycleView;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.bean.MvpShopDetailEntity;
 import com.pine.template.mvp.contract.IMvpShopDetailContract;

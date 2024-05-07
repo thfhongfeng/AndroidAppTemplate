@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.pine.app.template.biz_bundle_mvvm.BuildConfigKey;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarImageMenuActivity;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvvm.R;
 import com.pine.template.mvvm.databinding.MvvmHomeActivityBinding;
 import com.pine.template.mvvm.ui.fragment.MvvmShopNoPaginationListFragment;

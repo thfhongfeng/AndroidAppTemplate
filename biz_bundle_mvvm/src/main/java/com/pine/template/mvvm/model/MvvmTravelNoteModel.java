@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.template.config.BuildConfig;
+import com.pine.template.bundle_base.BuildConfig;
 import com.pine.template.mvvm.MvvmConstants;
 import com.pine.template.mvvm.MvvmUrlConstants;
 import com.pine.template.mvvm.bean.MvvmTravelNoteCommentEntity;

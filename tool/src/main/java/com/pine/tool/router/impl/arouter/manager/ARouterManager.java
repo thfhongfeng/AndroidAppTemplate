@@ -70,6 +70,17 @@ public class ARouterManager implements IRouterManager {
     }
 
     @Override
+    public void init(Application application, HashMap<String, String> bundlePathMap) {
+        if (AppUtils.isApkDebuggable(AppUtils.getApplication())) {
+            ARouter.openLog();
+            ARouter.openDebug();
+        }
+        ARouter.init(AppUtils.getApplication());
+        mBundleActionMap = bundlePathMap;
+        LogUtils.d(TAG, "init bundle action map:" + mBundleActionMap);
+    }
+
+    @Override
     public void callCommand(final Context context, final String bundleKey, final String commandType, String commandName,
                             Bundle args, final IRouterCallback callback) {
         if (!checkBundleValidity(bundleKey, commandType, context, callback)) {

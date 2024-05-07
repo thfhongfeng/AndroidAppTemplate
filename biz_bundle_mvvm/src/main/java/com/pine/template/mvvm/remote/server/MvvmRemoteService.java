@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.config.router.command.RouterMvvmCommand;
+import com.pine.app.template.biz_bundle_mvvm.router.RouterMvvmCommand;
 import com.pine.template.mvvm.MvvmApplication;
 import com.pine.template.mvvm.ui.activity.MvvmHomeActivity;
 import com.pine.tool.router.IServiceCallback;

@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.pine.app.template.bundle_base.BuildConfigKey;
 import com.pine.template.base.business.track.entity.AppTrack;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.util.LogUtils;
 
 import java.util.HashMap;

@@ -31,7 +31,7 @@ public class SinaShareManager {
         return mInstance;
     }
 
-    public void init(Context context, String wei_bo_for_app_key, String wei_bo_redirect_url) {
+    public void init(Context context, SinaShareManager.SinaConfig sinaConfig) {
         String scope = "email,direct_messages_read,direct_messages_write,"
                 + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
                 + "follow_app_official_microblog," + "invitation_write";
@@ -87,5 +87,15 @@ public class SinaShareManager {
         }
         // TODO: 2022/9/27
         return true;
+    }
+
+    public static class SinaConfig {
+        public String weboAppKey;
+        public String weboRedirectKey;
+
+        public SinaConfig(String weboAppKey, String weboRedirectKey) {
+            this.weboAppKey = weboAppKey;
+            this.weboRedirectKey = weboRedirectKey;
+        }
     }
 }

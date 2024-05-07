@@ -13,7 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.pine.app.template.biz_bundle_mvp.BuildConfigKey;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarImageMenuActivity;
 import com.pine.template.base.widget.view.ViewPagerTabLayout;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.contract.IMvpHomeContract;
 import com.pine.template.mvp.presenter.MvpHomePresenter;

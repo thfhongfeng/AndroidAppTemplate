@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.config.router.command.RouterWelcomeCommand;
+import com.pine.app.template.app_welcome.router.RouterWelcomeCommand;
 import com.pine.template.welcome.updater.ApkVersionManager;
 import com.pine.template.welcome.updater.VersionEntity;
 import com.pine.tool.router.IServiceCallback;

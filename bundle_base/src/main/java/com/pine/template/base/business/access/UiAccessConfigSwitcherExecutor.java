@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.pine.template.base.R;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.access.IUiAccessExecutor;
 import com.pine.tool.access.UiAccessTimeInterval;
 

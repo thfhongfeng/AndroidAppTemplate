@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import com.pine.app.template.base.BuildConfigKey;
 import com.pine.template.base.R;
 import com.pine.template.base.helper.ResourceHelper;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 
 public class BilingualTextView extends LinearLayout {
 

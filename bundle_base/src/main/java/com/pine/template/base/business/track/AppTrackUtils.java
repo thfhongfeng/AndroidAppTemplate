@@ -9,7 +9,7 @@ import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.base.business.track.entity.AppTrack;
 import com.pine.template.base.business.track.entity.AppTracksHeader;
 import com.pine.template.base.remote.BaseRouterClient;
-import com.pine.template.config.DeviceConfig;
+import com.pine.template.base.DeviceConfig;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.NetWorkUtils;
 

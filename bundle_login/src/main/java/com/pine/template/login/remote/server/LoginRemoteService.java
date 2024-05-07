@@ -6,8 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.pine.app.template.bundle_login.router.RouterLoginCommand;
 import com.pine.template.base.business.bean.AccountBean;
-import com.pine.template.config.router.command.RouterLoginCommand;
 import com.pine.template.login.LoginApplication;
 import com.pine.template.login.LoginConstants;
 import com.pine.template.login.LoginSPKeyConstants;

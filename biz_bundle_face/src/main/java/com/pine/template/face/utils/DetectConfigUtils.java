@@ -2,7 +2,7 @@ package com.pine.template.face.utils;
 
 import com.pine.app.lib.face.detect.CameraConfig;
 import com.pine.app.lib.face.detect.DetectConfig;
-import com.pine.template.config.DeviceConfig;
+import com.pine.template.base.DeviceConfig;
 import com.pine.tool.util.AppUtils;
 
 public class DetectConfigUtils {

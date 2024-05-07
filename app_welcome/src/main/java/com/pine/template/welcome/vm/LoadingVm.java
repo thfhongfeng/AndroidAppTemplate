@@ -4,8 +4,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.pine.template.base.BaseApplication;
 import com.pine.template.base.business.utils.AccountUtils;
-import com.pine.template.config.ConfigApplication;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
+import com.pine.template.welcome.WelUrlConstants;
+import com.pine.template.welcome.WelcomeApplication;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
 /**
@@ -15,8 +16,8 @@ import com.pine.tool.architecture.mvvm.vm.ViewModel;
 public class LoadingVm extends ViewModel {
 
     public void setupConfigSwitcher() {
-        ConfigSwitcherServer.setupConfigSwitcher(BaseApplication.isLogin(),
-                AccountUtils.getAccountInfoAndIpParams(ConfigApplication.mApplication),
+        ConfigSwitcherServer.setupConfigSwitcher(WelUrlConstants.CONFIG(), BaseApplication.isLogin(),
+                AccountUtils.getAccountInfoAndIpParams(WelcomeApplication.mApplication),
                 new ConfigSwitcherServer.IConfigSwitcherCallback() {
                     @Override
                     public void onSetupComplete() {

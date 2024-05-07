@@ -8,10 +8,10 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.base.business.utils.AccountUtils;
-import com.pine.template.config.ConfigApplication;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.login.LoginApplication;
 import com.pine.template.login.LoginConstants;
+import com.pine.template.login.LoginUrlConstants;
 import com.pine.template.login.manager.LoginManager;
 import com.pine.template.login.model.ILoginResponse;
 import com.pine.template.login.ui.activity.LoginActivity;
@@ -78,8 +78,8 @@ public class LoginCallback extends JsonCallback {
             final AccountBean accountBean = responseAccount;
             LoginManager.saveLoginInfo(accountBean);
             LoginApplication.setLogin(true);
-            ConfigSwitcherServer.setupConfigSwitcher(true,
-                    AccountUtils.getAccountInfoAndIpParams(ConfigApplication.mApplication),
+            ConfigSwitcherServer.setupConfigSwitcher(LoginUrlConstants.CONFIG(), true,
+                    AccountUtils.getAccountInfoAndIpParams(LoginApplication.mApplication),
                     new ConfigSwitcherServer.IConfigSwitcherCallback() {
                         @Override
                         public void onSetupComplete() {

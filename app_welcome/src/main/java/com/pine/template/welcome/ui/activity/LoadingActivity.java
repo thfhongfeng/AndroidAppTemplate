@@ -9,10 +9,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import com.pine.app.template.app_welcome.BuildConfigKey;
+import com.pine.app.template.app_welcome.router.RouterMainCommand;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.base.business.track.AppTrackManager;
-import com.pine.template.config.router.command.RouterMainCommand;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.welcome.R;
 import com.pine.template.welcome.WelUrlConstants;
 import com.pine.template.welcome.WelcomeApplication;

@@ -1,6 +1,6 @@
 package com.pine.template.login;
 
-import com.pine.template.config.BuildConfig;
+import com.pine.template.bundle_base.BuildConfig;
 import com.pine.template.login.model.interceptor.LoginResponseInterceptor;
 import com.pine.tool.RootApplication;
 import com.pine.tool.request.RequestManager;

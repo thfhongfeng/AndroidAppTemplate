@@ -1,0 +1,152 @@
+apply from: "${rootDir}/gradleWorker/buildCOnfigFile/ModuleBuildKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildCOnfigFile/ModuleMethodKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildCOnfigFile/BaseConfigKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildCOnfigFile/BundleConfigKey.gradle"
+
+// 定义自定义任务的类
+class GenerateConfigKeyTask extends DefaultTask {
+    // 定义 android 和 buildDir 属性，用于保存 Android 插件的一些属性
+    @Input
+    def taskProject
+    @Input
+    def taskRootProject
+    @Input
+    def buildDir
+    @Input
+    def variantFlavorName
+    @Input
+    def variantBuildTypeName
+
+    @TaskAction
+    void generateConfigKeyTask() {
+        // 获取所有的 Variant
+        def variants = taskProject.android.libraryVariants
+        // 遍历所有的 Variant
+        variants.all { variant ->
+            // 获取当前 Variant 的 Flavor 名称
+            def flavorName = variant.flavorName
+            // 获取当前构建的构建类型名称
+            def buildTypeName = variant.buildType.name
+            if (variantFlavorName == flavorName && variantBuildTypeName == buildTypeName) {
+                generateBuildConfigKeyFile()
+                generateRouterCommandFile()
+            }
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////// 生成BuildConfigKey.java文件 ///////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
+    // 生成BuildConfigKey.java文件
+    void generateBuildConfigKeyFile() {
+        def buildPackage = taskRootProject.ext.build_flavor_product[variantFlavorName].build_product_applicationId
+        def buildModelPackage = "${buildPackage}.${taskProject.name}"
+        // 构建正确的目录路径
+        def outputDir = "${buildDir}/generated/source/buildConfig/${variantFlavorName}/${variantBuildTypeName}/${buildModelPackage.replace('.', '/')}"
+
+        // 在这里生成 CustomBuildConfig 文件并写入到指定路径
+        def content = """
+package ${buildModelPackage};
+
+import java.util.HashMap;
+
+public final class BuildConfigKey {
+${generateConfigKeyContent()}
+}
+                """
+        def file = taskProject.file("${outputDir}/BuildConfigKey.java")
+        if (!file.parentFile.exists()) {
+            file.parentFile.mkdirs()
+        }
+        file.write(content)
+
+        // 打印日志
+        println "Generated BuildConfigKey file ${file.getPath()} for flavor: ${variantFlavorName} and build type: ${variantBuildTypeName}"
+    }
+
+    String generateConfigKeyContent() {
+        def result = ""
+        def keyResult = ""
+        def methodResult = "     public final static HashMap<String, String> getBundleRouterMap() {\n" +
+                "          HashMap<String, String> map = new HashMap<>();\n"
+        taskRootProject.ext.moduleBuildKey.each { key, item ->
+            if (item != null) {
+                keyResult += "     public static final String $key = \"${item.value}\";\n"
+                methodResult += "          map.put(${key}, \"${item.path}\");\n"
+            }
+        }
+        taskRootProject.ext.baseConfigKey.each { key, value ->
+            keyResult += "     public static final String $key = \"$value\";\n"
+        }
+        taskRootProject.ext.bundleConfigKeyMap.each { _, item ->
+            if (item != null) {
+                item.each { key, value ->
+                    keyResult += "     public static final String $key = \"$value\";\n"
+                }
+            }
+        }
+        methodResult += "          return map;\n"
+        methodResult += "     }"
+        result = keyResult + "\n" + methodResult
+        return result
+    }
+    //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////// 生成RouterCommand文件 ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
+    // 生成BuildConfigKey.java文件
+    void generateRouterCommandFile() {
+        def buildPackage = taskRootProject.ext.build_flavor_product[variantFlavorName].build_product_applicationId
+        def buildModelPackage = "${buildPackage}.${taskProject.name}.router"
+        // 构建正确的目录路径
+        def outputDir = "${buildDir}/generated/source/buildConfig/${variantFlavorName}/${variantBuildTypeName}/${buildModelPackage.replace('.', '/')}"
+        taskRootProject.ext.moduleMethodKey.each { key, item ->
+            if (item != null && item.method != null) {
+                // 在这里生成 CustomBuildConfig 文件并写入到指定路径
+                def content = """
+package ${buildModelPackage};
+
+public interface ${item.name} {
+${generateRouterCommandContent(item.method)}
+}
+                """
+                def file = taskProject.file("${outputDir}/${item.name}.java")
+                if (!file.parentFile.exists()) {
+                    file.parentFile.mkdirs()
+                }
+                file.write(content)
+                // 打印日志
+                println "Generated RouterCommand file ${file.getPath()} for flavor: ${variantFlavorName} and build type: ${variantBuildTypeName}"
+            }
+        }
+    }
+
+    String generateRouterCommandContent(methodItem) {
+        def result = ""
+        methodItem.each { key, value ->
+            result += "     String $key = \"${value}\";\n"
+        }
+        return result
+    }
+}
+
+afterEvaluate {
+    project.android.libraryVariants.all { variant ->
+        // 获取当前 Variant 的 Flavor 名称
+        def flavorName = variant.flavorName
+        // 获取当前构建的构建类型名称
+        def buildTypeName = variant.buildType.name
+        def taskName = "${project.name}-generate${flavorName}${buildTypeName}ConfigKeyTask"
+        def buildConfigTask = variant.getGenerateBuildConfig() as Task
+        // 定义自定义生成 BuildConfigKey 类文件的任务，并在buildConfigTask任务之后执行
+        // （buildConfigTask任务会先清空的debug目录，因此只能在之后执行自己的文件生成任务）
+        buildConfigTask.finalizedBy(tasks.create("${taskName}", GenerateConfigKeyTask) {
+            // 通过构造函数传递 android 对象的一些属性
+            taskRootProject = rootProject
+            taskProject = project
+            buildDir = project.buildDir
+            variantFlavorName = flavorName
+            variantBuildTypeName = buildTypeName
+        })
+        println "Generated BuildConfigKey afterEvaluate ${buildConfigTask} finalizedBy ${taskName}"
+    }
+}

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.pine.app.template.bundle_main.BuildConfigKey;
-import com.pine.template.config.router.command.RouterWelcomeCommand;
+import com.pine.app.template.bundle_main.router.RouterWelcomeCommand;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.router.RouterManager;
 

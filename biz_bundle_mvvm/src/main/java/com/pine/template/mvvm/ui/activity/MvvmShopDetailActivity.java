@@ -14,7 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.pine.app.template.biz_bundle_mvvm.BuildConfigKey;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.template.base.component.map.MapSdkManager;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.mvvm.MvvmUrlConstants;
 import com.pine.template.mvvm.R;
 import com.pine.template.mvvm.bean.MvvmShopDetailEntity;

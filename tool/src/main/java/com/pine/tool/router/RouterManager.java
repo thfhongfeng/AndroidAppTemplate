@@ -11,6 +11,7 @@ import com.pine.tool.util.AndroidClassUtils;
 import com.pine.tool.util.AppUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,7 +23,8 @@ public class RouterManager {
     private static volatile IRouterManagerFactory mRouterManagerFactory;
     private static volatile IRouterManager mRouterManagerImpl;
 
-    public static void init(Application application, @NonNull String commandPackage, @NonNull IRouterManagerFactory factory) {
+    public static void init(Application application, @NonNull String commandPackage,
+                            @NonNull IRouterManagerFactory factory) {
         try {
             List<String> commandClassNameList = AndroidClassUtils.getFileNameByPackageName(AppUtils.getApplicationContext(),
                     commandPackage);
@@ -37,6 +39,14 @@ public class RouterManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void init(Application application, @NonNull HashMap<String, String> bundlePathMap,
+                            @NonNull IRouterManagerFactory factory) {
+        mRouterManagerFactory = factory;
+        mRouterManagerImpl = factory.makeRouterManager();
+        mRouterManagerImpl.init(application, bundlePathMap);
+        mIsInit = true;
     }
 
     public static void callUiCommand(final Context context, final String bundleKey, String commandName,

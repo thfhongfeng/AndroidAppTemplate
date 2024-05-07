@@ -3,8 +3,8 @@ package com.pine.template.welcome.ui.activity;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.pine.app.template.app_welcome.router.RouterMainCommand;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
-import com.pine.template.config.router.command.RouterMainCommand;
 import com.pine.template.welcome.R;
 import com.pine.template.welcome.databinding.WelcomeActivityBinding;
 import com.pine.template.welcome.remote.WelcomeRouterClient;

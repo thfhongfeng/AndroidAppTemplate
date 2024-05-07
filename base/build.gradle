@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: "${rootDir}/configKey/GenerateConfigKeyTask.gradle"
+apply from: "${rootDir}/gradleWorker/GradleWorker.gradle"
 
 android {
     compileSdkVersion build_versions.compileSdkVersion
@@ -68,8 +68,11 @@ dependencies {
     api project(':base_lib_zxing')
     // library project end
 
+    // 公共工具模块 begin
+    api project(':tool')
+    // 公共工具模块 end
+
     // 配置模块 begin
-    api project(':config')
     api project(':resource')
     // 配置模块 end
 }

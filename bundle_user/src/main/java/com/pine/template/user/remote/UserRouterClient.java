@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.pine.app.template.bundle_user.BuildConfigKey;
+import com.pine.app.template.bundle_user.router.RouterLoginCommand;
 import com.pine.template.base.business.bean.AccountBean;
-import com.pine.template.config.router.command.RouterLoginCommand;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.router.RouterException;
 import com.pine.tool.router.RouterManager;

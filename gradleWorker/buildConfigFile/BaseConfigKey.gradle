@@ -1,0 +1,45 @@
+// [key1：value1, key2：value2]生成代码
+// public final static String key1 = value1;
+// public final static String key2 = value2;
+def baseConfigKey = [
+        // app使用痕迹埋点
+        FUN_APP_TRACK                  : "FUN_APP_TRACK",
+        ENABLE_APP_TRACK               : "ENABLE_APP_TRACK",
+        ENABLE_UPLOAD_APP_TRACK        : "ENABLE_UPLOAD_APP_TRACK",
+        CONFIG_APP_TRACK_URL           : "CONFIG_APP_TRACK_URL",
+        CONFIG_APP_TRACK_LOOP_INTERVAL : "CONFIG_APP_TRACK_LOOP_INTERVAL",
+        CONFIG_APP_TRACK_MAX_COUNT     : "CONFIG_APP_TRACK_MAX_COUNT",
+        // app更新
+        ENABLE_AUTO_CHECK_UPDATE       : "ENABLE_AUTO_CHECK_UPDATE",
+        CONFIG_APK_UPDATE_URL          : "CONFIG_APK_UPDATE_URL",
+        // 双语文本UI
+        ENABLE_BILINGUAL_TEXT          : "ENABLE_BILINGUAL_TEXT",
+        CONFIG_FIRST_LOCAL             : "CONFIG_FIRST_LOCAL",
+        CONFIG_SECOND_LOCAL            : "CONFIG_SECOND_LOCAL",
+        // 业务服务器根地址
+        CONFIG_SERVER_URL              : "CONFIG_SERVER_URL",
+        // 文件上传完整地址
+        CONFIG_FILE_UPLOAD_URL         : "CONFIG_FILE_UPLOAD_URL",
+        // 文件服务器完整地址
+        CONFIG_FILE_SERVER_URL         : "CONFIG_FILE_SERVER_URL",
+        // MQTT
+        CONFIG_MQTT_HOST               : "CONFIG_MQTT_HOST",
+        CACHE_MQTT_TTL_INTERVAL        : "CACHE_MQTT_TTL_INTERVAL",
+        // SOCKET完整地址
+        CONFIG_SOCKET_URL              : "CONFIG_SOCKET_URL",
+        // app配置项获取完整地址
+        CONFIG_APP_CONFIG_URL          : "CONFIG_APP_CONFIG_URL",
+        // app账号注册完整地址
+        CONFIG_APP_REGISTER_ACCOUNT_URL: "CONFIG_APP_REGISTER_ACCOUNT_URL",
+        // app账号登录完整地址
+        CONFIG_APP_LOGIN_URL           : "CONFIG_APP_LOGIN_URL",
+        // app账号登出完整地址
+        CONFIG_APP_LOGOUT_URL          : "CONFIG_APP_LOGOUT_URL",
+        // app账号图形验证码完整地址
+        CONFIG_APP_VERIFY_CODE_URL     : "CONFIG_APP_VERIFY_CODE_URL",
+
+        // 用户协议
+        CONFIG_H5_PRIVACY_USER         : "CONFIG_H5_PRIVACY_USER",
+        CONFIG_H5_PRIVACY_POLICY       : "CONFIG_H5_PRIVACY_POLICY"
+]
+rootProject.ext.baseConfigKey = baseConfigKey

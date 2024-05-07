@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 
 import com.pine.app.template.base.BuildConfigKey;
-import com.pine.template.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 

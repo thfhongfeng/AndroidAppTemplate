@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: "${rootDir}/configKey/GenerateConfigKeyTask.gradle"
+apply from: "${rootDir}/gradleWorker/GradleWorker.gradle"
 
 android {
     compileSdkVersion build_versions.compileSdkVersion
@@ -7,6 +7,22 @@ android {
     defaultConfig {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
+
+        buildConfigField "String", "WEI_BO_REDIRECT_URL", "\"${app_url.wei_bo_secret_key}\""
+
+        buildConfigField "String", "QQ_FOR_APP_ID", "\"${app_key.qq_for_app_id}\""
+        buildConfigField "String", "WX_FOR_APP_ID", "\"${app_key.wx_for_app_id}\""
+        buildConfigField "String", "WX_SECRET_KEY", "\"${app_key.wx_secret_key}\""
+        buildConfigField "String", "WEI_BO_FOR_APP_KEY", "\"${app_key.wei_bo_for_app_key}\""
+        buildConfigField "String", "WEI_BO_SECRET_KEY", "\"${app_key.wei_bo_secret_key}\""
+
+        buildConfigField "String", "APP_THIRD_ROUTER_PROVIDER", "\"${app_third_sdk_provider.router_provider}\""
+        buildConfigField "String", "APP_THIRD_MAP_PROVIDER", "\"${app_third_sdk_provider.map_provider}\""
+        buildConfigField "String", "APP_THIRD_IMAGE_LOADER_PROVIDER", "\"${app_third_sdk_provider.image_loader_provider}\""
+        buildConfigField "String", "APP_THIRD_HTTP_REQUEST_PROVIDER", "\"${app_third_sdk_provider.http_request_provider}\""
+        buildConfigField "String", "APP_THIRD_DATA_SOURCE_PROVIDER", "\"${app_third_sdk_provider.data_source_provider}\""
+        buildConfigField "String", "APP_THIRD_SCAN_PROVIDER", "\"${app_third_sdk_provider.scan_provider}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //必须要保证所有的flavor 都属于同一个维度
@@ -22,11 +38,17 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+
+        }
     }
 
     productFlavors {
         build_flavor_product.each { flavorName, _ ->
             "$flavorName" {
+                buildConfigField "String", "APP_NAME_ID", "\"${build_flavor_product[flavorName].build_product_appName}\""
+                buildConfigField "String[]", "BUILD_BIZ_BUNDLE", "{${build_biz_bundle(flavorName).join(',')}}"
             }
         }
     }

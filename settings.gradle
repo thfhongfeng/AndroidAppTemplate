@@ -1,9 +1,7 @@
 rootProject.name = "AndroidAppTemplate"
 include ':tool'
-include ':config'
 include ':base_lib_zxing'
 include ':base_lib_immersionbar'
-include ':lib_jni'
 include ':base'
 include ':bundle_base'
 include ':resource'
@@ -13,11 +11,11 @@ include ':bundle_login'
 include ':bundle_user'
 include ':bundle_main'
 include ':db_server'
+
+include ':lib_opencv'
+include ':lib_face_dr'
+
 include ':biz_bundle_mvc'
 include ':biz_bundle_mvp'
 include ':biz_bundle_mvvm'
-
-include ':face_lib_opencv'
-include ':face_lib_fdr'
-include ':biz_bundle_face'
 include ':biz_bundle_face'

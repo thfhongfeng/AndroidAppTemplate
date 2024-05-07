@@ -32,12 +32,11 @@ public class TencentShareManager {
         return mInstance;
     }
 
-    public void init(String qq_for_app_id, String wx_for_app_id, String wx_secret_key,
-                     int icon, String appName, String baseUrl) {
-        QQ_FOR_APP_ID = qq_for_app_id;
-        WX_FOR_APP_ID = wx_for_app_id;
-        WX_SECRET_KEY = wx_secret_key;
-        ICON_ID = icon;
+    public void init(TencentShareManager.TencentConfig tencentConfig, String appName, String baseUrl) {
+        QQ_FOR_APP_ID = tencentConfig.qqAppKey;
+        WX_FOR_APP_ID = tencentConfig.wxAppKey;
+        WX_SECRET_KEY = tencentConfig.wxSecretKey;
+        ICON_ID = tencentConfig.iconResId;
         APP_NAME_ID = appName;
         HOST = baseUrl;
     }
@@ -69,5 +68,19 @@ public class TencentShareManager {
         }
         // TODO: 2022/9/27
         return true;
+    }
+
+    public static class TencentConfig {
+        public String qqAppKey;
+        public String wxAppKey;
+        public String wxSecretKey;
+        public int iconResId;
+
+        public TencentConfig(String qqAppKey, String wxAppKey, String wxSecretKey, int iconResId) {
+            this.qqAppKey = qqAppKey;
+            this.wxAppKey = wxAppKey;
+            this.wxSecretKey = wxSecretKey;
+            this.iconResId = iconResId;
+        }
     }
 }

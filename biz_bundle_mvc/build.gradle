@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: "${rootDir}/configKey/GenerateConfigKeyTask.gradle"
+apply from: "${rootDir}/gradleWorker/GradleWorker.gradle"
 
 android {
     compileSdkVersion build_versions.compileSdkVersion
