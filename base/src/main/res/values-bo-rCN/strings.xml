@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="base_app_name">应用模板</string>
+
     <string name="base_network_err">དྲ་རྒྱར་སྐྱོན་ཤོར་འདུག，བརྟག་དཔྱད་གནང་རྗེས་ཡང་བསྐྱར་ཚོད་ལྟ་གནང་རོགས།</string>
     <string name="base_server_err">དྲ་ཚིགས་ཞབས་ཞུར་སྐྱོན་ཤོར་འདུག，ཏོག་ཙམ་ནས་ཡང་བསྐྱར་ཚོད་ལྟ་གནང་རོགས།</string>
     <string name="base_json_data_err">དྲ་ཚིགས་ཞབས་ཞུའི་གཞི་གྲངས་ཏག་ཏག་བསྡད་མི་འདུག，ཡང་བསྐྱར་ཚོད་ལྟ་གནང་རོགས།</string>

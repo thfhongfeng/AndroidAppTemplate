@@ -18,6 +18,8 @@ import com.pine.template.base.component.share.manager.SinaShareManager;
 import com.pine.template.base.component.share.manager.TencentShareManager;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.helper.DeviceInfoHelper;
+import com.pine.template.base.helper.ResourceHelper;
+import com.pine.template.base.widget.view.BilingualTextView;
 import com.pine.template.bundle_base.BuildConfig;
 import com.pine.tool.RootApplication;
 import com.pine.tool.access.UiAccessManager;
@@ -53,6 +55,11 @@ public class BundleBaseApplication extends RootApplication {
     }
 
     public final static void initManager() {
+        BilingualTextView.setup(ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_BILINGUAL_TEXT));
+
+        ResourceHelper.setup(ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_FIRST_LOCAL, "zh_CN"),
+                ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_SECOND_LOCAL, "zh_CN"));
+
         ImageLoaderManager.init(BuildConfig.APP_THIRD_IMAGE_LOADER_PROVIDER);
 
         TencentShareManager.TencentConfig tencentConfig =

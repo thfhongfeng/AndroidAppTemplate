@@ -82,6 +82,10 @@ static def releaseTime() {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    // 配置模块 begin
+    api project(':resource')
+    // 配置模块 end
+
     // 入口模块 begin
     implementation project(':app_welcome')
     // 入口模块 end

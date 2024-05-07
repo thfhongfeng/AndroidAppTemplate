@@ -1,5 +1,7 @@
 package com.pine.tool.util;
 
+import android.nfc.FormatException;
+
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ public class DataConversion {
      * @param number
      * @return
      */
-    public static byte intToByte(int number) {
+    public static byte intToByte(int number) throws FormatException {
         return hexToByte(intToHex(number));
     }
 
@@ -89,16 +91,16 @@ public class DataConversion {
      * @param hexString
      * @return
      */
-    public static byte hexToByte(String hexString) {
+    public static byte hexToByte(String hexString) throws FormatException {
         int firstDigit = toDigit(hexString.charAt(0));
         int secondDigit = toDigit(hexString.charAt(1));
         return (byte) ((firstDigit << 4) + secondDigit);
     }
 
-    private static int toDigit(char hexChar) {
+    private static int toDigit(char hexChar) throws FormatException {
         int digit = Character.digit(hexChar, 16);
         if (digit == -1) {
-            throw new IllegalArgumentException(
+            throw new FormatException(
                     "Invalid Hexadecimal Character: " + hexChar);
         }
         return digit;
@@ -145,9 +147,9 @@ public class DataConversion {
      * @param hexString
      * @return
      */
-    public static byte[] decodeHexString(String hexString) {
+    public static byte[] decodeHexString(String hexString) throws FormatException {
         if (hexString.length() % 2 == 1) {
-            throw new IllegalArgumentException(
+            throw new FormatException(
                     "Invalid hexadecimal String supplied.");
         }
         byte[] bytes = new byte[hexString.length() / 2];

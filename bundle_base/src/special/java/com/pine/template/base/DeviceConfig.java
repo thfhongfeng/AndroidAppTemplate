@@ -2,6 +2,7 @@ package com.pine.template.base;
 
 import android.content.Context;
 
+import com.pine.template.base.helper.DefaultDeviceConfig;
 import com.pine.tool.util.AppUtils;
 
 public class DeviceConfig extends DefaultDeviceConfig {
