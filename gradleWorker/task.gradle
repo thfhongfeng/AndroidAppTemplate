@@ -1,4 +1,8 @@
+apply from: "${rootDir}/gradleWorker/buildConfig/ModuleBuildConfig.gradle"
+apply from: "${rootDir}/gradleWorker/publish_all_module.gradle"
+
 task specialDimens {
+    setGroup("private")
     doLast {
         calAndCopyDimensFile("${rootProject.rootDir}/resource/src/main/res/values/dimens-constant.xml",
                 "${rootProject.rootDir}/resource/src/special/res/values/dimens-constant.xml", 1.2)

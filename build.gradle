@@ -1,11 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    apply from: 'task.gradle'
     apply from: 'config_build.gradle'
     apply from: 'config_product.gradle'
     apply from: 'config_app.gradle'
-    apply from: "${rootDir}/gradleWorker/buildConfig/ModuleBuildConfig.gradle"
+    apply from: "${rootDir}/gradleWorker/task.gradle"
     repositories {
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/public' }

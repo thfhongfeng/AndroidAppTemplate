@@ -1,0 +1,24 @@
+// 需要配置全局gradle和java11环境
+task allPublishToMavenLocal(type: Exec) {
+    setGroup("private")
+    println("> Task :allPublishToMavenLocal")
+    def cmd = buildShell("publishToMavenLocal")
+    commandLine 'sh', '-c', cmd
+}
+
+
+task allPublish(type: Exec) {
+    setGroup("private")
+    println("> Task :allPublish")
+    def cmd = buildShell("publish")
+    commandLine 'sh', '-c', cmd
+}
+
+String buildShell(String type) {
+    def shellContent = new StringBuilder()
+    rootProject.ext.modulePkgConfig.each { moduleName, item ->
+        shellContent.append("cd ./$moduleName && gradle  $type && cd .. &&")
+    }
+    shellContent.append("gradle  $type")
+    return shellContent.toString()
+}

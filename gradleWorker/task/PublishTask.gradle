@@ -17,18 +17,20 @@ afterEvaluate {
         def arrFileName = "${moduleConfig.libArtifactId}-${moduleConfig.libVersion}.aar"
         publishing {
             project.android.libraryVariants.all { variant ->
-                if (variant.buildType.name == 'release') {
+                def buildType = variant.buildType.name
+                if (buildType == 'release') {
                     def flavorName = variant.flavorName
-                    def publicationName = "${project.name}-${flavorName}"
-                    if (flavorName != null && flavorName != "") {
-                        publicationName = "${project.name}-${variant.name}"
+                    def publicationName = "${project.name}${flavorName}${buildType}"
+                    def componentName = "${flavorName}Release"
+                    if (flavorName == null || flavorName == "") {
+                        componentName = "release"
                     }
-                    def component = components.findByName("release")
+                    def component = components.findByName(componentName)
                     if (component != null) {
                         publishing.publications.create(publicationName, MavenPublication) {
                             from component
                             groupId = "com.pine.libs"
-                            artifactId = moduleConfig.libArtifactId
+                            artifactId = "${moduleConfig.libArtifactId}-${flavorName}"
                             version = moduleConfig.libVersion
                         }
                     }
@@ -38,17 +40,6 @@ afterEvaluate {
             repositories {
                 maven {
                     url "${rootDir}/maven"
-                }
-            }
-        }
-
-        var publishTasks = project.getTasksByName("publish", true)
-        if (publishTasks != null && publishTasks.size() == 1) {
-            publishTasks[0].doLast {
-                def arrPath = "file:///${rootDir}/maven/com/pine/libs/${moduleConfig.libArtifactId}/${moduleConfig.libVersion}/${arrFileName}"
-                copy {
-                    from "${arrPath}"
-                    into "${rootDir}/libs"
                 }
             }
         }
