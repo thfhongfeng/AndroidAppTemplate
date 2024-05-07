@@ -1,7 +1,6 @@
-apply from: "${rootDir}/gradleWorker/buildCOnfigFile/ModuleBuildKey.gradle"
-apply from: "${rootDir}/gradleWorker/buildCOnfigFile/ModuleMethodKey.gradle"
-apply from: "${rootDir}/gradleWorker/buildCOnfigFile/BaseConfigKey.gradle"
-apply from: "${rootDir}/gradleWorker/buildCOnfigFile/BundleConfigKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildConfig/ModuleMethodKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildConfig/BaseConfigKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildConfig/BundleConfigKey.gradle"
 
 // 定义自定义任务的类
 class GenerateConfigKeyTask extends DefaultTask {
@@ -69,7 +68,7 @@ ${generateConfigKeyContent()}
         def keyResult = ""
         def methodResult = "     public final static HashMap<String, String> getBundleRouterMap() {\n" +
                 "          HashMap<String, String> map = new HashMap<>();\n"
-        taskRootProject.ext.moduleBuildKey.each { key, item ->
+        taskRootProject.ext.moduleBuildConfig.each { key, item ->
             if (item != null) {
                 keyResult += "     public static final String $key = \"${item.value}\";\n"
                 methodResult += "          map.put(${key}, \"${item.path}\");\n"

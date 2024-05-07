@@ -88,8 +88,12 @@
 //   }
 //
 
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
 apply plugin: 'kotlin-android'
+apply from: "${rootDir}/gradleWorker/task/PublishTask.gradle"
 
 def openCVersionName = "4.7.0-dev"
 def openCVersionCode = ((4 * 100 + 7) * 100 + 0) * 10 + 0

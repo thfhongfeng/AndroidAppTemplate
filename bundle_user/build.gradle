@@ -1,5 +1,9 @@
-apply plugin: 'com.android.library'
-apply from: "${rootDir}/gradleWorker/GradleWorker.gradle"
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+apply from: "${rootDir}/gradleWorker/task/GenerateFileTask.gradle"
+apply from: "${rootDir}/gradleWorker/task/PublishTask.gradle"
 
 android {
     compileSdkVersion build_versions.compileSdkVersion
@@ -69,6 +73,5 @@ dependencies {
 
     // 业务基础模块 begin
     api project(':bundle_base')
-    api project(':resource')
     // 业务基础模块 end
 }

@@ -1,0 +1,56 @@
+rootProject.ext.dependencyCustom = { moduleName ->
+    def moduleConfig = rootProject.ext.modulePkgConfig[moduleName]
+    if (moduleConfig) {
+        if (moduleConfig.libDepend) {
+            return files("${rootDir}/libs/${moduleConfig.libArtifactId}-${moduleConfig.libVersion}.aar")
+        } else {
+            return project(":${moduleName}")
+        }
+    } else {
+        return project(":${moduleName}")
+    }
+}
+
+afterEvaluate {
+    def moduleConfig = rootProject.ext.modulePkgConfig[project.name]
+    if (moduleConfig != null) {
+        def arrFileName = "${moduleConfig.libArtifactId}-${moduleConfig.libVersion}.aar"
+        publishing {
+            project.android.libraryVariants.all { variant ->
+                if (variant.buildType.name == 'release') {
+                    def flavorName = variant.flavorName
+                    def publicationName = "${project.name}-${flavorName}"
+                    if (flavorName != null && flavorName != "") {
+                        publicationName = "${project.name}-${variant.name}"
+                    }
+                    def component = components.findByName("release")
+                    if (component != null) {
+                        publishing.publications.create(publicationName, MavenPublication) {
+                            from component
+                            groupId = "com.pine.libs"
+                            artifactId = moduleConfig.libArtifactId
+                            version = moduleConfig.libVersion
+                        }
+                    }
+                }
+            }
+
+            repositories {
+                maven {
+                    url "${rootDir}/maven"
+                }
+            }
+        }
+
+        var publishTasks = project.getTasksByName("publish", true)
+        if (publishTasks != null && publishTasks.size() == 1) {
+            publishTasks[0].doLast {
+                def arrPath = "file:///${rootDir}/maven/com/pine/libs/${moduleConfig.libArtifactId}/${moduleConfig.libVersion}/${arrFileName}"
+                copy {
+                    from "${arrPath}"
+                    into "${rootDir}/libs"
+                }
+            }
+        }
+    }
+}

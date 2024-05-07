@@ -99,7 +99,7 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
 3. 业务模块的UrlConstants常量类统一继承bundle_base模块的BaseUrlConstants类。
 4. 业务模块的SPKeyConstants常量类统一继承bundle_base模块的BaseSPKeyConstants类。
 5. 业务模块arouter通信的搭建（结合arouter的通信方式说明文档来理解）：
-   a. ModuleBuildKey.gradle中添加模块信息，包括模块的Key标识，模块的路由标识。
+   a. ModuleBuildConfig.gradle中添加模块信息，包括模块的Key标识，模块的路由标识，模块打包信息。
    b. 模块中编写XxxRemote（可参考已有模块，基本内容都差不多）和XxxRemoteService类（通信方法写在该类中，使用注解方式），用于向外部模块提供统一的跨模块服务。
    c. 模块中编写XxxClientManager（可参考已有模块），用于统一调用外部模块的跨模块方法。
    d. ModuleMethodKey.gradle中添加通信命令信息（可选，可参考已有模块），
@@ -108,4 +108,8 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
      RouterManager.callXxCommand(Context context, String bundleKey, String commandName, Bundle args, IRouterCallback callback)。
      该调用统一写在XxxClientManager中
 6. 业务功能开关及配置项Key标识统一添加到BundleConfigKey.gradle，编译时会生成BuildConfigKey.java类，方便调用者使用开关及配置标识。
+
+
+
+开发编译时，可以在ModuleBuildConfig.gradle中设置"libDepend"的值来决定对应模块是使用lib依赖方式还是工程依赖方式进行编译
 
