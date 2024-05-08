@@ -1,5 +1,4 @@
-apply from: "${rootDir}/gradleWorker/buildConfig/ModuleBuildConfig.gradle"
-apply from: "${rootDir}/gradleWorker/publish_all_module.gradle"
+apply from: "${rootDir}/gradleWorker/task/PublishAllModule.gradle"
 
 task specialDimens {
     setGroup("private")

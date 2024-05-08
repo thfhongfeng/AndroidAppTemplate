@@ -4,7 +4,7 @@ buildscript {
     apply from: 'config_build.gradle'
     apply from: 'config_product.gradle'
     apply from: 'config_app.gradle'
-    apply from: "${rootDir}/gradleWorker/task.gradle"
+    apply from: "${rootDir}/gradleWorker/init/gradle_worker_init.gradle"
     repositories {
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/public' }
@@ -31,23 +31,21 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
-
-//        google()
-//        mavenLocal()
+        mavenLocal()
+        maven {
+            url "${rootDir}/maven"
+        }
 //        mavenCentral()
-//        maven { url 'https://maven.google.com' }
 //        jcenter()
+//        google()
+//        maven { url 'https://maven.google.com' }
+
         flatDir {
             // 由于Library module中引用的 aar，在多 module 的情况下，
             // 其他的module编译会报错，所以需要在所有工程的repositories
             // 下把Library module中的libs目录添加到依赖关系中
             dirs 'libs'
             dirs project(':app').file('libs')
-            //借助 project()函数的位置查找
-            dirs project(':tool').file('libs')
-            dirs project(':base').file('libs')
-            dirs project(':bundle_main').file('libs')
-            dirs project(':lib_face_dr').file('libs')
         }
     }
 }

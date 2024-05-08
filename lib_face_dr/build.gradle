@@ -29,7 +29,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation(name: 'MinicreateLiveFace-1.0.0', ext: 'aar')
+    // 发布的模块包含本地的libs包时，该包需要加上group，才会在发布该模块时将该包放到发布的aar包中
+    implementation(group: 'com.pine.templete.libs', name: 'MinicreateLiveFace-1.0.0', ext: 'aar')
 
     // 测试 dependency begin
     androidTestImplementation(build_dependency["test_espresso_core"], {
@@ -43,6 +44,6 @@ dependencies {
     // android官方 dependency end
 
     // library project begin
-    api project(':lib_opencv')
+    api rootProject.ext.dependencyCustom("lib_opencv", "")
     // library project end
 }

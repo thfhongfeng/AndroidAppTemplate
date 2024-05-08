@@ -1,6 +1,13 @@
-// [key1：value1, key2：value2]生成代码
-// public final static String key1 = value1;
-// public final static String key2 = value2;
+/*
+ [key1：value1, key2：value2]
+ BuildConfigKey.java中生成代码
+ public final static String key1 = value1;
+ public final static String key2 = value2;
+ */
+
+/**
+ * 基础功能开关及配置项Key标识，编译时添加到生成的BuildConfigKey.java类中，方便调用者使用开关及配置标识
+ */
 def baseConfigKey = [
         // app使用痕迹埋点
         FUN_APP_TRACK                  : "FUN_APP_TRACK",

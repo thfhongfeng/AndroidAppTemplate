@@ -1,5 +1,11 @@
 简书：https://www.jianshu.com/nb/38854280
 
+本Android应用开发模板特点：
+1. 实现了完全的组件化分离，且业务模块渠道化，可以随意组装
+2. 自动化全模块maven库发布
+3. 非开发模块可以随时切换为maven库依赖方式来提高编译效率
+
+
 模块说明，从下到上：
 1. tool模块为公共模块，与项目和业务无关，主要是一些通用的工具类，控件类及组件。
 2. base模块为基础模块，该模块放置了所有项目和业务通用基础库（与项目相关，但不与具体业务相关）。
@@ -99,10 +105,10 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
 3. 业务模块的UrlConstants常量类统一继承bundle_base模块的BaseUrlConstants类。
 4. 业务模块的SPKeyConstants常量类统一继承bundle_base模块的BaseSPKeyConstants类。
 5. 业务模块arouter通信的搭建（结合arouter的通信方式说明文档来理解）：
-   a. ModuleBuildConfig.gradle中添加模块信息，包括模块的Key标识，模块的路由标识，模块打包信息。
+   a. ModuleBuildConfig.gradle中添加模块信息，包括模块的Key标识，模块的路由标识，模块打包信息（必需）。
    b. 模块中编写XxxRemote（可参考已有模块，基本内容都差不多）和XxxRemoteService类（通信方法写在该类中，使用注解方式），用于向外部模块提供统一的跨模块服务。
    c. 模块中编写XxxClientManager（可参考已有模块），用于统一调用外部模块的跨模块方法。
-   d. ModuleMethodKey.gradle中添加通信命令信息（可选，可参考已有模块），
+   d. RouterMethodKey.gradle中添加通信命令信息（可选，可参考已有模块），
       该步骤非必需，该步骤主要是生成RouterCommand类，方便调用者通过接口常量指定要调用的模块的方法，而不用记住常量内容。
    e. 模块间通信使用方式：
      RouterManager.callXxCommand(Context context, String bundleKey, String commandName, Bundle args, IRouterCallback callback)。
@@ -110,6 +116,15 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
 6. 业务功能开关及配置项Key标识统一添加到BundleConfigKey.gradle，编译时会生成BuildConfigKey.java类，方便调用者使用开关及配置标识。
 
 
+其它注意事项：
+1. 所有本地aar包均放置到app/libs/目录下，否则无法使用maven库依赖的方式进行高效率的编译
 
-开发编译时，可以在ModuleBuildConfig.gradle中设置"libDepend"的值来决定对应模块是使用lib依赖方式还是工程依赖方式进行编译
+
+提高开发过程中编译效率的方法：
+1. 如果没有发布所有模块的aar包到本地或者线上maven库（已发布则这跳过该步骤），则先发布
+   发布步骤：
+   a. 在dev_config.gradle中设置gradle.ext.compileMode="upload"
+   b. 执行allPublishToMavenLocal或者allPublish任务
+2. 开发时，确保gradle.ext.compileMode="dev"
+   在dev_config.gradle中设置非开发模块的"libDepend"的值为true，从而使用lib依赖方式进行编译，提高编译效率。
 

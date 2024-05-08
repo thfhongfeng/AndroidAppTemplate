@@ -1,0 +1,84 @@
+project.ext.embeddedAarFileNames = []
+// 发布的模块包含本地的libs包时，加上group，就会发布该模块时将该包放到发布的aar包中，不需要这里的额外处理（也没有处理成功），废弃
+afterEvaluate {
+    project.android.libraryVariants.all {
+        libraryVariant ->
+            String flavorName = libraryVariant.flavorName
+            String buildType = libraryVariant.buildType.name
+            String flavorBuildType = libraryVariant.name.capitalize()
+            def packaged_class = "$buildDir/intermediates/aar_libs_directory"
+            boolean enableProguard = libraryVariant.buildType.minifyEnabled
+
+            def embeddedAarDirs = ["${project.projectDir}/libs"]
+            def embeddedAar = []
+            embeddedAarDirs.each { aarPath ->
+                FileTree aars = project.fileTree(dir: aarPath, include: '*.aar')
+                embeddedAar.addAll(aars)
+                aars.each { file ->
+                    project.ext.embeddedAarFileNames.add(file.name)
+                }
+            }
+
+            Task embedAarTask = project.task("embed${flavorBuildType}LibAar", group: 'fat-aar').doLast {
+                if (!enableProguard) {
+                    // Copy all additional jar files to bundle lib
+                    project.copy {
+                        from embeddedAar
+                        into project.file("$packaged_class/$flavorName/$buildType/libs")
+                    }
+                }
+            }
+            Task bundleAarTask = project.tasks.getByName("sync${flavorBuildType}LibJars")
+            bundleAarTask.finalizedBy embedAarTask
+    }
+
+    def moduleConfig = gradle.ext.modulePkgConfig[project.name]
+    if (moduleConfig != null) {
+        publishing {
+            project.android.libraryVariants.all { variant ->
+                def buildType = variant.buildType.name
+                if (buildType == 'release') {
+                    def flavorName = variant.flavorName
+                    def publicationName = "${project.name}${flavorName}${buildType}"
+                    def componentName = "${flavorName}Release"
+                    def artifactIdStr = "${moduleConfig.libArtifactId}-${flavorName}"
+                    if (flavorName == null || flavorName == "") {
+                        componentName = "release"
+                        artifactIdStr = moduleConfig.libArtifactId
+                    }
+                    def component = components.findByName(componentName)
+                    if (component != null) {
+                        publishing.publications.create(publicationName, MavenPublication) {
+                            from component
+                            groupId = "com.pine.templete.libs"
+                            artifactId = artifactIdStr
+                            version = moduleConfig.libVersion
+
+                            // 配置发布的 POM
+                            pom.withXml {
+                                def rootNode = asNode()
+                                // 获取<dependencies>节点
+                                rootNode.findAll { node ->
+                                    node.name().toString().contains('dependencies')
+                                } each { dependenciesNode ->
+                                    dependenciesNode.children().findAll { node ->
+                                        node.name().toString().contains('dependency')
+                                                && project.ext.embeddedAarFileNames.contains(node.artifactId.text() + ".aar")
+                                    }.each { unwantedDependency ->
+                                        unwantedDependency.replaceNode {}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            repositories {
+                maven {
+                    url "${rootDir}/maven"
+                }
+            }
+        }
+    }
+}

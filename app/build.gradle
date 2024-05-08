@@ -80,38 +80,32 @@ static def releaseTime() {
 }
 
 dependencies {
-    // 配置模块 begin
-    implementation project(':resource')
-    // 配置模块 end
-
-    // 入口模块 begin
-    implementation project(':app_welcome')
-    // 入口模块 end
-
-    // bundle模块 begin
-    implementation project(':bundle_login')
-    implementation project(':bundle_main')
-    implementation project(':bundle_user')
-
-    implementation project(':db_server')
-    // bundle模块 end
-
-    // biz_bundle模块 begin
     android.applicationVariants.all { variant ->
         // 获取当前 variant 的 flavor 名称
         def flavorName = variant.flavorName
+
+        // 资源模块 begin
+        "${flavorName}Implementation" rootProject.ext.dependencyCustom("resource", flavorName)
+        // 资源模块 end
+
+        // 入口模块 begin
+        "${flavorName}Implementation" rootProject.ext.dependencyCustom("app_welcome", flavorName)
+        // 入口模块 end
+
+        // bundle模块 begin
+        "${flavorName}Implementation" rootProject.ext.dependencyCustom("bundle_login", flavorName)
+        "${flavorName}Implementation" rootProject.ext.dependencyCustom("bundle_main", flavorName)
+        "${flavorName}Implementation" rootProject.ext.dependencyCustom("bundle_user", flavorName)
+
+        "${flavorName}Implementation" rootProject.ext.dependencyCustom("db_server", flavorName)
+        // bundle模块 begin
+
+        // biz_bundle模块 begin
         build_flavor_product[flavorName].build_product_biz_bundle_module.each { moduleKey, moduleValue ->
-            def moduleConfig = rootProject.ext.modulePkgConfig[moduleValue]
-            if (moduleConfig) {
-                if (moduleConfig.libDepend) {
-                    "${flavorName}Implementation" files("${rootDir}/libs/${moduleConfig.libArtifactId}-${moduleConfig.libVersion}.aar")
-                } else {
-                    "${flavorName}Implementation" project(":$moduleValue")
-                }
-            }
+            "${flavorName}Implementation" rootProject.ext.dependencyCustom(moduleValue, flavorName)
         }
+        // biz_bundle模块 end
     }
-    // biz_bundle模块 end
 }
 
 afterEvaluate {
@@ -137,5 +131,10 @@ afterEvaluate {
                 url "file:///D:/PineProducts"
             }
         }
+    }
+
+    // 将发布任务添加到自定义组
+    tasks.named('publish') {
+        group = 'private'
     }
 }

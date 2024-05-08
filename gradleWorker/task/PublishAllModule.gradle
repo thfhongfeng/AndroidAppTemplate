@@ -1,0 +1,45 @@
+if (gradle.ext.compileMode == "upload") {
+    gradle.projectsEvaluated {
+        // 定义要执行的发布任务列表
+        def prePublishTask = null
+        def prePublishToMavenLocalTask = null
+        gradle.ext.modulePkgConfig.each { moduleName, item ->
+            if (project(":${moduleName}").tasks.findByName("publish")) {
+                def task = project(":${moduleName}").tasks.getByName("publish")
+                if (prePublishTask == null) {
+                    rootProject.tasks.getByName("allPublish").finalizedBy(task)
+                } else {
+                    prePublishTask.finalizedBy(task)
+                }
+                prePublishTask = task
+            } else {
+                println ":${moduleName}:publish not found"
+            }
+
+            if (project(":${moduleName}").tasks.findByName("publishToMavenLocal")) {
+                def task = project(":${moduleName}").tasks.getByName("publishToMavenLocal")
+                if (prePublishToMavenLocalTask == null) {
+                    rootProject.tasks.getByName("allPublishToMavenLocal").finalizedBy(task)
+                } else {
+                    prePublishToMavenLocalTask.finalizedBy(task)
+                }
+                prePublishToMavenLocalTask = task
+            } else {
+                println ":${moduleName}:publishToMavenLocal not found"
+            }
+        }
+    }
+}
+
+task allPublish {
+    setGroup("private")
+    doLast {
+
+    }
+}
+
+task allPublishToMavenLocal {
+    setGroup("private")
+    doLast {
+    }
+}

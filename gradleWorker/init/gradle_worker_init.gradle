@@ -1,0 +1,29 @@
+apply from: "${rootDir}/gradleWorker/buildConfig/ModuleBuildConfig.gradle"
+apply from: "${rootDir}/gradleWorker/buildConfig/RouterMethodKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildConfig/BaseConfigKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildConfig/BundleConfigKey.gradle"
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+ext.dependencyCustom = { moduleName, flavorName ->
+    def moduleConfig = gradle.ext.modulePkgConfig[moduleName]
+    if (moduleConfig) {
+        if (moduleConfig.libDepend || gradle.ext.compileMode == "upload") {
+            def artifactIdStr = "${moduleConfig.libArtifactId}-${flavorName}"
+            if (flavorName == null || flavorName == "") {
+                artifactIdStr = moduleConfig.libArtifactId
+            }
+            return "com.pine.templete.libs:${artifactIdStr}:${moduleConfig.libVersion}"
+        } else {
+            return project(":${moduleName}")
+        }
+    } else {
+        return project(":${moduleName}")
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+apply from: "${rootDir}/gradleWorker/task/Task.gradle"

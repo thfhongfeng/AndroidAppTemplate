@@ -70,8 +70,7 @@ dependencies {
     api build_dependency["tencent_wcdb_android"]
     // 第三方 dependency end
 
-    // 配置模块 begin
-//    api project(':base')
-    api rootProject.ext.dependencyCustom("base")
-    // 配置模块 end
+    // 基础模块 begin
+    api rootProject.ext.dependencyCustom("base", "")
+    // 基础模块 end
 }

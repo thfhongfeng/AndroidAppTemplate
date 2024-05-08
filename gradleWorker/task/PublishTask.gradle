@@ -1,20 +1,6 @@
-rootProject.ext.dependencyCustom = { moduleName ->
-    def moduleConfig = rootProject.ext.modulePkgConfig[moduleName]
-    if (moduleConfig) {
-        if (moduleConfig.libDepend) {
-            return files("${rootDir}/libs/${moduleConfig.libArtifactId}-${moduleConfig.libVersion}.aar")
-        } else {
-            return project(":${moduleName}")
-        }
-    } else {
-        return project(":${moduleName}")
-    }
-}
-
 afterEvaluate {
-    def moduleConfig = rootProject.ext.modulePkgConfig[project.name]
+    def moduleConfig = gradle.ext.modulePkgConfig[project.name]
     if (moduleConfig != null) {
-        def arrFileName = "${moduleConfig.libArtifactId}-${moduleConfig.libVersion}.aar"
         publishing {
             project.android.libraryVariants.all { variant ->
                 def buildType = variant.buildType.name
@@ -22,15 +8,17 @@ afterEvaluate {
                     def flavorName = variant.flavorName
                     def publicationName = "${project.name}${flavorName}${buildType}"
                     def componentName = "${flavorName}Release"
+                    def artifactIdStr = "${moduleConfig.libArtifactId}-${flavorName}"
                     if (flavorName == null || flavorName == "") {
                         componentName = "release"
+                        artifactIdStr = moduleConfig.libArtifactId
                     }
                     def component = components.findByName(componentName)
                     if (component != null) {
                         publishing.publications.create(publicationName, MavenPublication) {
                             from component
-                            groupId = "com.pine.libs"
-                            artifactId = "${moduleConfig.libArtifactId}-${flavorName}"
+                            groupId = "com.pine.templete.libs"
+                            artifactId = artifactIdStr
                             version = moduleConfig.libVersion
                         }
                     }

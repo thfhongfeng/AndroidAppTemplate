@@ -1,21 +1,10 @@
 rootProject.name = "AndroidAppTemplate"
-include ':tool'
-include ':base_lib_zxing'
-include ':base_lib_immersionbar'
-include ':base'
-include ':bundle_base'
-include ':resource'
 include ':app'
-include ':app_welcome'
-include ':bundle_login'
-include ':bundle_user'
-include ':bundle_main'
-include ':db_server'
 
-include ':lib_opencv'
-include ':lib_face_dr'
+apply from: "${rootDir}/gradleWorker/dev_config.gradle"
 
-include ':biz_bundle_mvc'
-include ':biz_bundle_mvp'
-include ':biz_bundle_mvvm'
-include ':biz_bundle_face'
+gradle.ext.modulePkgConfig.each { moduleName, item ->
+    if (gradle.ext.compileMode == "upload" || !item.libDepend) {
+        include ":${moduleName}"
+    }
+}

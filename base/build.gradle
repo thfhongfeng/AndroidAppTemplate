@@ -61,10 +61,10 @@ dependencies {
     // 第三方 dependency end
 
     // library project begin
-    api project(':base_lib_zxing')
+    api rootProject.ext.dependencyCustom("base_lib_zxing", "")
     // library project end
 
     // 公共工具模块 begin
-    api project(':tool')
+    api rootProject.ext.dependencyCustom("tool", "")
     // 公共工具模块 end
 }

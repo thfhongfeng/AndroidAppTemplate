@@ -1,9 +1,16 @@
-// [key1：[name:"className1",method:[method1Key:"method1",...]], ...]
-// 生成代码代码文件className1.java
-// public interface className1 {
-//     String method1Key = method1;
-//     ......
-// }
+/*
+ [key1：[name:"className1",method:[method1Key:"method1",...]], ...]
+ 生成代码代码文件className1.java
+ public interface className1 {
+     String method1Key = method1;
+     ......
+ }
+/*
+
+/*
+ 模块间路由方法命名，主要方便调用者通过接口常量指定要调用的模块的方法，而不用记住常量内容。
+ 模块添加对外方法时可选添加，编译时生成类名为name的接口。
+ */
 def moduleMethodKey = [
         BUNDLE_WELCOME : [name  : "RouterWelcomeCommand",
                           method: [

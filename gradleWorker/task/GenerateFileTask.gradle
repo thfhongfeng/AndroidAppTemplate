@@ -1,10 +1,8 @@
-apply from: "${rootDir}/gradleWorker/buildConfig/ModuleMethodKey.gradle"
-apply from: "${rootDir}/gradleWorker/buildConfig/BaseConfigKey.gradle"
-apply from: "${rootDir}/gradleWorker/buildConfig/BundleConfigKey.gradle"
-
 // 定义自定义任务的类
 class GenerateConfigKeyTask extends DefaultTask {
     // 定义 android 和 buildDir 属性，用于保存 Android 插件的一些属性
+    @Input
+    def taskGradle
     @Input
     def taskProject
     @Input
@@ -42,7 +40,6 @@ class GenerateConfigKeyTask extends DefaultTask {
         def buildModelPackage = "${buildPackage}.${taskProject.name}"
         // 构建正确的目录路径
         def outputDir = "${buildDir}/generated/source/buildConfig/${variantFlavorName}/${variantBuildTypeName}/${buildModelPackage.replace('.', '/')}"
-
         // 在这里生成 CustomBuildConfig 文件并写入到指定路径
         def content = """
 package ${buildModelPackage};
@@ -58,7 +55,6 @@ ${generateConfigKeyContent()}
             file.parentFile.mkdirs()
         }
         file.write(content)
-
         // 打印日志
         println "Generated BuildConfigKey file ${file.getPath()} for flavor: ${variantFlavorName} and build type: ${variantBuildTypeName}"
     }
@@ -68,7 +64,7 @@ ${generateConfigKeyContent()}
         def keyResult = ""
         def methodResult = "     public final static HashMap<String, String> getBundleRouterMap() {\n" +
                 "          HashMap<String, String> map = new HashMap<>();\n"
-        taskRootProject.ext.moduleBuildConfig.each { key, item ->
+        taskGradle.ext.moduleBuildConfig.each { key, item ->
             if (item != null) {
                 keyResult += "     public static final String $key = \"${item.value}\";\n"
                 methodResult += "          map.put(${key}, \"${item.path}\");\n"
@@ -140,6 +136,7 @@ afterEvaluate {
         // （buildConfigTask任务会先清空的debug目录，因此只能在之后执行自己的文件生成任务）
         buildConfigTask.finalizedBy(tasks.create("${taskName}", GenerateConfigKeyTask) {
             // 通过构造函数传递 android 对象的一些属性
+            taskGradle = gradle
             taskRootProject = rootProject
             taskProject = project
             buildDir = project.buildDir

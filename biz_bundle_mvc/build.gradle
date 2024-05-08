@@ -54,7 +54,12 @@ dependencies {
     // 第三方 dependency begin
     // 第三方 dependency end
 
-    // 业务基础模块 begin
-    api project(':bundle_base')
-    // 业务基础模块 begin
+    android.libraryVariants.all { variant ->
+        // 获取当前 variant 的 flavor 名称
+        def flavorName = variant.flavorName
+
+        // 业务基础模块 begin
+        "${flavorName}Api" rootProject.ext.dependencyCustom("bundle_base", flavorName)
+        // 业务基础模块 end
+    }
 }
