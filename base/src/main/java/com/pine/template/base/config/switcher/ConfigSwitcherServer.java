@@ -27,6 +27,8 @@ import java.util.Set;
 public class ConfigSwitcherServer {
     private static final String TAG = LogUtils.makeLogTag(ConfigSwitcherServer.class);
 
+    private final static String PRODUCT_CUSTOMER = "persist.vendor.product_customer_tag";
+
     public final static boolean ENABLE_REMOTE_LOADING_CONFIG_SWITCH = false;
 
     private static volatile ConfigSwitcherServer mInstance;
@@ -48,6 +50,20 @@ public class ConfigSwitcherServer {
 
     private ConfigSwitcherServer() {
         initLocalConfig();
+    }
+
+    boolean isAssertFileExists(AssetManager assetManager, String filename) {
+        try {
+            String[] files = assetManager.list("");
+            for (String file : files) {
+                if (file.equals(filename)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private synchronized void initLocalConfig() {
@@ -194,14 +210,14 @@ public class ConfigSwitcherServer {
         }
     }
 
-    private synchronized void updateRemoteConfig(boolean isLogin, @NonNull ConfigSwitcherInfo switcherInfo) {
+    public synchronized boolean updateRemoteConfigImpl(boolean isLogin, @NonNull ConfigSwitcherInfo switcherInfo) {
         String version = SharePreferenceUtils.readStringFromConfig(SPKeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
         if (TextUtils.isEmpty(switcherInfo.getVersion()) || TextUtils.equals(version, switcherInfo.getVersion())) {
-            return;
+            return true;
         }
         List<ConfigSwitcherEntity> list = switcherInfo.getConfigList();
         if (list == null) {
-            return;
+            return true;
         }
         if (isLogin) {
             if (list != null && list.size() > 0) {
@@ -234,6 +250,7 @@ public class ConfigSwitcherServer {
                 SharePreferenceUtils.saveToConfig(SPKeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
             }
         }
+        return true;
     }
 
     private boolean shouldOverrideConfig(ConfigSwitcherEntity srcEntity, ConfigSwitcherEntity targetEntity) {
@@ -263,7 +280,7 @@ public class ConfigSwitcherServer {
                     @Override
                     public void onResponse(ConfigSwitcherInfo switcherInfo) {
                         if (switcherInfo != null) {
-                            updateRemoteConfig(isLogin, switcherInfo);
+                            updateRemoteConfigImpl(isLogin, switcherInfo);
                         }
                         if (callback != null) {
                             callback.onSetupComplete();
@@ -391,10 +408,18 @@ public class ConfigSwitcherServer {
         mInstance.saveConfigImpl(key, value, configType);
     }
 
-    public static void setupConfigSwitcher(final String configUrl, final boolean isLogin,
+    public static void setupConfigSwitcher(String configUrl, final boolean isLogin,
                                            @NonNull HashMap<String, String> params,
                                            final IConfigSwitcherCallback callback) {
         mInstance.setupConfigSwitcherImpl(configUrl, isLogin, params, callback);
+    }
+
+    public static void updateRemoteConfig(final boolean isLogin, @NonNull ConfigSwitcherInfo switcherInfo,
+                                          final IConfigSwitcherCallback callback) {
+        mInstance.updateRemoteConfigImpl(isLogin, switcherInfo);
+        if (callback != null) {
+            callback.onSetupComplete();
+        }
     }
 
     public interface IConfigSwitcherCallback {

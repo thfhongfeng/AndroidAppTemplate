@@ -17,6 +17,7 @@ public class ConfigSwitcherEntity {
     /**
      * key : bundle_login
      * value : true
+     * name : true
      * configType : 0
      * force : false
      */
@@ -25,6 +26,8 @@ public class ConfigSwitcherEntity {
     private String key;
     // 配置key的值(不同配置对应数据结构不一样)
     private String value;
+    // 配置name
+    private String name;
     // 配置类型：0-本地初始配置；1-本地用户配置；2-在线配置
     private int configType;
     // 进行线上配置更新时，是否强制更新为线上配置
@@ -35,6 +38,14 @@ public class ConfigSwitcherEntity {
         this.value = value;
         this.configType = configType;
     }
+
+    public ConfigSwitcherEntity(@NonNull String key, @NonNull String value, String name, int configType) {
+        this.key = key;
+        this.value = value;
+        this.name = name;
+        this.configType = configType;
+    }
+
 
     public String getKey() {
         return key;
@@ -50,6 +61,14 @@ public class ConfigSwitcherEntity {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getConfigType() {
@@ -73,7 +92,7 @@ public class ConfigSwitcherEntity {
     }
 
     public ConfigSwitcherEntity clone() {
-        ConfigSwitcherEntity entity = new ConfigSwitcherEntity(key, value, configType);
+        ConfigSwitcherEntity entity = new ConfigSwitcherEntity(key, value, name, configType);
         entity.force = force;
         return entity;
     }

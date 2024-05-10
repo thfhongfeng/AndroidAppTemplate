@@ -8,17 +8,17 @@ def modulePkgConfig = [
         resource             : [libDepend: false, libArtifactId: "resource", libVersion: "1.0.0"],
 
 /** lib库模块begin（独立库不用注意顺序，非独立则要注意顺序） **/
-        base_lib_zxing       : [libDepend: true, libArtifactId: "base_lib_zxing", libVersion: "1.0.0"],
-        base_lib_immersionbar: [libDepend: true, libArtifactId: "base_lib_immersionbar", libVersion: "1.0.0"],
+        base_lib_zxing       : [libDepend: false, libArtifactId: "base_lib_zxing", libVersion: "1.0.0"],
+        base_lib_immersionbar: [libDepend: false, libArtifactId: "base_lib_immersionbar", libVersion: "1.0.0"],
 
-        lib_opencv           : [libDepend: true, libArtifactId: "lib_opencv", libVersion: "1.0.0"],
-        lib_face_dr          : [libDepend: true, libArtifactId: "lib_face_dr", libVersion: "1.0.0"],
+        lib_opencv           : [libDepend: false, libArtifactId: "lib_opencv", libVersion: "1.0.0"],
+        lib_face_dr          : [libDepend: false, libArtifactId: "lib_face_dr", libVersion: "1.0.0"],
 /** lib库模块end（独立库不用注意顺序，非独立则要注意顺序） **/
 
 /** 基础模块begin（注意顺序） **/
-        tool                 : [libDepend: true, libArtifactId: "tool", libVersion: "1.0.0"],
-        base                 : [libDepend: true, libArtifactId: "base", libVersion: "1.0.0"],
-        bundle_base          : [libDepend: true, libArtifactId: "bundle_base", libVersion: "1.0.0"],
+        tool                 : [libDepend: false, libArtifactId: "tool", libVersion: "1.0.0"],
+        base                 : [libDepend: false, libArtifactId: "base", libVersion: "1.0.0"],
+        bundle_base          : [libDepend: false, libArtifactId: "bundle_base", libVersion: "1.0.0"],
 /** 基础模块end（注意顺序） **/
 
 /** 业务模块begin（这里不用注意顺序） **/
@@ -33,7 +33,7 @@ def modulePkgConfig = [
         biz_bundle_mvvm      : [libDepend: false, libArtifactId: "biz_bundle_mvvm", libVersion: "1.0.0"],
         biz_bundle_face      : [libDepend: false, libArtifactId: "biz_bundle_face", libVersion: "1.0.0"],
 
-        db_server            : [libDepend: true, libArtifactId: "db_server", libVersion: "1.0.0"],
+        db_server            : [libDepend: false, libArtifactId: "db_server", libVersion: "1.0.0"],
 /** 业务模块end（这里不用注意顺序） **/
 ]
 gradle.ext.modulePkgConfig = modulePkgConfig

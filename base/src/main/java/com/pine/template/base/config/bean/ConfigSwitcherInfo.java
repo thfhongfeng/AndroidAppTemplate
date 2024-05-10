@@ -1,5 +1,6 @@
 package com.pine.template.base.config.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
 public class ConfigSwitcherInfo {
     private String version;
 
-    private List<ConfigSwitcherEntity> configList;
+    private List<RemoteConfigEntity> configList;
 
     public String getVersion() {
         return version;
@@ -20,10 +21,17 @@ public class ConfigSwitcherInfo {
     }
 
     public List<ConfigSwitcherEntity> getConfigList() {
-        return configList;
+        if (configList == null) {
+            return null;
+        }
+        List<ConfigSwitcherEntity> list = new ArrayList<>();
+        for (RemoteConfigEntity entity : configList) {
+            list.add(entity.toConfigSwitcherEntity());
+        }
+        return list;
     }
 
-    public void setConfigList(List<ConfigSwitcherEntity> configList) {
+    public void setConfigList(List<RemoteConfigEntity> configList) {
         this.configList = configList;
     }
 }
