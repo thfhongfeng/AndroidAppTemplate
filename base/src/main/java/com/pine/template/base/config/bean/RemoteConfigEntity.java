@@ -12,7 +12,7 @@ public class RemoteConfigEntity {
      * configValue : true
      * configName : true
      * configType : 0
-     * force : 1
+     * forceUpdate : 1
      */
 
     // 配置key
@@ -24,7 +24,7 @@ public class RemoteConfigEntity {
     // 配置类型：0-本地初始配置；1-本地用户配置；2-在线配置
     private int configType;
     // 进行线上配置更新时，是否强制更新为线上配置:0-不强制；1-强制
-    private int force;
+    private int forceUpdate;
 
     public RemoteConfigEntity(@NonNull String key, @NonNull String value, int configType) {
         this.configKey = key;
@@ -71,17 +71,17 @@ public class RemoteConfigEntity {
         this.configType = configType;
     }
 
-    public int getForce() {
-        return force;
+    public int getForceUpdate() {
+        return forceUpdate;
     }
 
-    public void setForce(int force) {
-        this.force = force;
+    public void setForceUpdate(int forceUpdate) {
+        this.forceUpdate = forceUpdate;
     }
 
     public ConfigSwitcherEntity toConfigSwitcherEntity() {
         ConfigSwitcherEntity entity = new ConfigSwitcherEntity(configKey, configValue, configName, configType);
-        entity.setForce(force == 1);
+        entity.setForce(forceUpdate == 1);
         return entity;
     }
 }
