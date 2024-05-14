@@ -9,86 +9,97 @@
     android:background="@drawable/base_shape_round_white"
     android:orientation="vertical">
 
-    <com.pine.template.base.widget.view.BilingualTextView
-        android:id="@+id/dialog_title_tv"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="@dimen/dp_22"
-        android:paddingBottom="@dimen/dp_20"
-        app:base_textColor="#00000b"
-        app:base_textSize="@dimen/sp_16" />
+        android:layout_height="match_parent">
 
-    <com.pine.tool.widget.view.ThousandthNumberEditText
-        android:id="@+id/dialog_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
-        android:layout_marginBottom="@dimen/dp_20"
-        android:background="#eeeeee"
-        android:gravity="start"
-        android:hint="@string/base_input_hint"
-        android:maxLines="20"
-        android:minHeight="@dimen/dp_88"
-        android:padding="@dimen/dp_15"
-        android:singleLine="false"
-        android:textColor="#333333"
-        android:textColorHint="#969ca6"
-        android:textSize="@dimen/sp_14" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_1"
-        android:background="#dbdbdb" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.pine.template.base.widget.view.BilingualTextView
-            android:id="@+id/dialog_cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            app:base_text="@string/base_cancel"
-            app:base_textColor="#007aff"
-            app:base_textSize="@dimen/sp_15" />
-
-        <View
-            android:layout_width="@dimen/dp_1"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#dbdbdb" />
+            android:orientation="vertical">
 
-        <com.pine.template.base.widget.view.BilingualTextView
-            android:id="@+id/clear_btn_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            app:base_text="@string/base_clear"
-            app:base_textColor="#007aff"
-            app:base_textSize="@dimen/sp_15" />
+            <com.pine.template.base.widget.view.BilingualTextView
+                android:id="@+id/dialog_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="@dimen/dp_22"
+                android:paddingBottom="@dimen/dp_20"
+                app:base_textColor="#00000b"
+                app:base_textSize="@dimen/sp_16" />
 
-        <View
-            android:layout_width="@dimen/dp_1"
-            android:layout_height="match_parent"
-            android:background="#dbdbdb" />
+            <com.pine.tool.widget.view.ThousandthNumberEditText
+                android:id="@+id/dialog_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:background="#eeeeee"
+                android:gravity="start"
+                android:hint="@string/base_input_hint"
+                android:maxLines="20"
+                android:minHeight="@dimen/dp_88"
+                android:padding="@dimen/dp_15"
+                android:singleLine="false"
+                android:textColor="#333333"
+                android:textColorHint="#969ca6"
+                android:textSize="@dimen/sp_14" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="#dbdbdb" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.pine.template.base.widget.view.BilingualTextView
+                    android:id="@+id/dialog_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    app:base_text="@string/base_cancel"
+                    app:base_textColor="#007aff"
+                    app:base_textSize="@dimen/sp_15" />
+
+                <View
+                    android:layout_width="@dimen/dp_1"
+                    android:layout_height="match_parent"
+                    android:background="#dbdbdb" />
+
+                <com.pine.template.base.widget.view.BilingualTextView
+                    android:id="@+id/clear_btn_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    app:base_text="@string/base_clear"
+                    app:base_textColor="#007aff"
+                    app:base_textSize="@dimen/sp_15" />
+
+                <View
+                    android:layout_width="@dimen/dp_1"
+                    android:layout_height="match_parent"
+                    android:background="#dbdbdb" />
 
 
-        <com.pine.template.base.widget.view.BilingualTextView
-            android:id="@+id/dialog_submit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            app:base_text="@string/base_submit"
-            app:base_textColor="#007aff"
-            app:base_textSize="@dimen/sp_15" />
-    </LinearLayout>
+                <com.pine.template.base.widget.view.BilingualTextView
+                    android:id="@+id/dialog_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    app:base_text="@string/base_submit"
+                    app:base_textColor="#007aff"
+                    app:base_textSize="@dimen/sp_15" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
