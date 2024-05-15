@@ -20,6 +20,7 @@ import com.pine.template.base.R;
 import com.pine.template.base.recycle_view.BaseListViewHolder;
 import com.pine.template.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
+import com.pine.template.base.util.DialogUtils;
 
 import java.util.List;
 
@@ -89,7 +90,13 @@ public class CustomListDialog extends BaseDialog {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final CustomListDialog dialog = new CustomListDialog(context, R.style.BaseDialogStyle);
-            View layout = inflater.inflate(R.layout.base_dialog_custom_list, null);
+            View layout = null;
+            float ratio = DialogUtils.getScreenAspectRatio(context);
+            if (ratio > 2.0f) {
+                layout = inflater.inflate(R.layout.base_dialog_custom_list_scroll, null);
+            } else {
+                layout = inflater.inflate(R.layout.base_dialog_custom_list, null);
+            }
             dialog.setContentView(layout);
             Window window = dialog.getWindow();
             if (layoutGravity == Gravity.BOTTOM && fillWidth) {

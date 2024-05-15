@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.pine.template.base.widget.dialog.SelectItemDialog;
 import com.pine.template.base.widget.dialog.SelectMultiItemsDialog;
 import com.pine.template.base.widget.dialog.TimeSelectDialog;
 import com.pine.template.base.widget.view.BilingualTextView;
+import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +49,25 @@ import java.util.Map;
  */
 
 public class DialogUtils {
+
+    /**
+     * 获取屏幕宽高比
+     *
+     * @param context 上下文
+     * @return 屏幕宽高比
+     */
+    public static float getScreenAspectRatio(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getRealMetrics(displayMetrics);
+        float radio = 0.0f;
+        if (displayMetrics.heightPixels > 0) {
+            radio = displayMetrics.widthPixels / (float) displayMetrics.heightPixels;
+        }
+        LogUtils.d("DialogUtils", "getScreenAspectRatio radio:" + radio +
+                ", widthPixels:" + displayMetrics.widthPixels + ", heightPixels:" + displayMetrics.heightPixels);
+        return radio;
+    }
 
     public static void showShortToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();

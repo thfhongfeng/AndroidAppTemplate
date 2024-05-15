@@ -20,6 +20,7 @@ import com.pine.template.base.R;
 import com.pine.template.base.recycle_view.BaseListViewHolder;
 import com.pine.template.base.recycle_view.adapter.BaseNoPaginationListAdapter;
 import com.pine.template.base.recycle_view.bean.BaseListAdapterItemProperty;
+import com.pine.template.base.util.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +137,13 @@ public class SelectItemDialog extends BaseDialog {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final SelectItemDialog dialog = new SelectItemDialog(context, R.style.BaseDialogStyle);
-            View layout = inflater.inflate(R.layout.base_dialog_item_select, null);
+            View layout = null;
+            float ratio = DialogUtils.getScreenAspectRatio(context);
+            if (ratio > 2.0f) {
+                layout = inflater.inflate(R.layout.base_dialog_item_select_scroll, null);
+            } else {
+                layout = inflater.inflate(R.layout.base_dialog_item_select, null);
+            }
             dialog.setContentView(layout);
             title_tv = layout.findViewById(R.id.title_tv);
             cancel_btn_tv = layout.findViewById(R.id.cancel_btn_tv);
