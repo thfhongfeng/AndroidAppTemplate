@@ -198,7 +198,7 @@ public class SFMatchAlgorithm extends MatchAlgorithm {
         if (maxSimilarDegree < 0) {
             return false;
         }
-        int calNode = 80;
+        int calNode = 60;
         switch (mRecognizerType) {
             case FaceRecognizerSF.FR_COSINE:
                 double cosine_confidence = cosine_similarity_threshold;
