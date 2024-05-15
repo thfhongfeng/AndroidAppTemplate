@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_weight="8"
     android:background="@drawable/base_shape_round_white"
+    android:gravity="center"
     android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
