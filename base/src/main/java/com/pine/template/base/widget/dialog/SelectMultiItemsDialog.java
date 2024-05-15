@@ -110,8 +110,7 @@ public class SelectMultiItemsDialog extends BaseDialog {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final SelectMultiItemsDialog dialog = new SelectMultiItemsDialog(context, R.style.BaseDialogStyle);
             View layout = null;
-            float ratio = DialogUtils.getScreenAspectRatio(context);
-            if (ratio > 2.0f) {
+            if (DialogUtils.outOfScreen(context)) {
                 layout = inflater.inflate(R.layout.base_dialog_multi_item_select_scroll, null);
             } else {
                 layout = inflater.inflate(R.layout.base_dialog_multi_item_select, null);

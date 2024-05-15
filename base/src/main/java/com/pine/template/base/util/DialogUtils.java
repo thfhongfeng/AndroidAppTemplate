@@ -50,23 +50,22 @@ import java.util.Map;
 
 public class DialogUtils {
 
-    /**
-     * 获取屏幕宽高比
-     *
-     * @param context 上下文
-     * @return 屏幕宽高比
-     */
-    public static float getScreenAspectRatio(Context context) {
+    public static boolean outOfScreen(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getRealMetrics(displayMetrics);
+        float density = displayMetrics.density;
         float radio = 0.0f;
+        boolean outOfScreen = false;
         if (displayMetrics.heightPixels > 0) {
             radio = displayMetrics.widthPixels / (float) displayMetrics.heightPixels;
         }
-        LogUtils.d("DialogUtils", "getScreenAspectRatio radio:" + radio +
-                ", widthPixels:" + displayMetrics.widthPixels + ", heightPixels:" + displayMetrics.heightPixels);
-        return radio;
+        if (radio > 2.0f || displayMetrics.heightPixels / density < 480.0f) {
+            outOfScreen = true;
+        }
+        LogUtils.d("DialogUtils", "outOfScreen radio:" + radio + ", outOfScreen:"
+                + outOfScreen + ", displayMetrics:" + displayMetrics);
+        return outOfScreen;
     }
 
     public static void showShortToast(Context context, String msg) {

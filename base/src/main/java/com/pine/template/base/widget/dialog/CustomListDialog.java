@@ -91,8 +91,7 @@ public class CustomListDialog extends BaseDialog {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final CustomListDialog dialog = new CustomListDialog(context, R.style.BaseDialogStyle);
             View layout = null;
-            float ratio = DialogUtils.getScreenAspectRatio(context);
-            if (ratio > 2.0f) {
+            if (DialogUtils.outOfScreen(context)) {
                 layout = inflater.inflate(R.layout.base_dialog_custom_list_scroll, null);
             } else {
                 layout = inflater.inflate(R.layout.base_dialog_custom_list, null);
