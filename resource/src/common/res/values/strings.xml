@@ -1,3 +1,5 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
+    <string name="app_name">Co应用模板</string>
     <string name="wel_loading_content">App for Common Loading……</string>
 </resources>
