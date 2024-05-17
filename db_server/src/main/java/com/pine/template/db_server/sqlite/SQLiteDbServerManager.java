@@ -7,6 +7,8 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.template.base.request.impl.dbServer.DbRequestBean;
+import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.DbSession;
 import com.pine.template.db_server.DbUrlConstants;
@@ -17,8 +19,6 @@ import com.pine.template.db_server.sqlite.server.SQLiteShopServer;
 import com.pine.template.db_server.sqlite.server.SQLiteTravelNoteServer;
 import com.pine.template.db_server.sqlite.server.SQLiteWelcomeServer;
 import com.pine.tool.request.IRequestManager;
-import com.pine.tool.request.impl.database.DbRequestBean;
-import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 

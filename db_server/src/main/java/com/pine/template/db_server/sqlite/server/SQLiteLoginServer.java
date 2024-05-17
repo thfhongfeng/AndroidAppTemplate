@@ -14,12 +14,12 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.template.base.request.impl.dbServer.DbRequestBean;
+import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.DbSession;
 import com.pine.template.db_server.sqlite.SQLiteDbHelper;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
-import com.pine.tool.request.impl.database.DbRequestBean;
-import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.util.RandomUtils;
 
 import org.json.JSONException;

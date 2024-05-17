@@ -6,9 +6,9 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.template.base.request.impl.dbServer.DbRequestBean;
+import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.tool.exception.MessageException;
-import com.pine.tool.request.impl.database.DbRequestBean;
-import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.TypeConvertUtils;
 import com.pine.tool.util.builder.ImageCodeBuilder;

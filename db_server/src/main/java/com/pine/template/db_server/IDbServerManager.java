@@ -4,8 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.pine.tool.request.impl.database.DbRequestBean;
-import com.pine.tool.request.impl.database.DbResponse;
+import com.pine.template.base.request.impl.dbServer.DbRequestBean;
+import com.pine.template.base.request.impl.dbServer.DbResponse;
 
 import java.util.HashMap;
 

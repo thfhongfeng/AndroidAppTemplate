@@ -1,4 +1,4 @@
-package com.pine.tool.request.impl.database;
+package com.pine.template.base.request.impl.dbServer;
 
 import java.io.Serializable;
 import java.util.HashMap;

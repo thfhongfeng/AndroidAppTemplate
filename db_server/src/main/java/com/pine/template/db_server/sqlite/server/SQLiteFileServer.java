@@ -10,10 +10,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.template.base.request.impl.dbServer.DbRequestBean;
+import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.sqlite.SQLiteDbHelper;
-import com.pine.tool.request.impl.database.DbRequestBean;
-import com.pine.tool.request.impl.database.DbResponse;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.PathUtils;
 
