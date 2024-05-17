@@ -20,7 +20,6 @@ import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.helper.DeviceInfoHelper;
 import com.pine.template.base.helper.ResourceHelper;
 import com.pine.template.base.request.impl.dbServer.DbRequestManager;
-import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.base.request.impl.dbServer.IDbRequestServer;
 import com.pine.template.base.request.impl.http.nohttp.NoRequestManager;
 import com.pine.template.base.widget.view.BilingualTextView;
@@ -30,6 +29,7 @@ import com.pine.tool.access.UiAccessManager;
 import com.pine.tool.request.IRequestManager;
 import com.pine.tool.request.IRequestManagerFactory;
 import com.pine.tool.request.RequestManager;
+import com.pine.tool.request.Response;
 import com.pine.tool.router.IRouterManager;
 import com.pine.tool.router.IRouterManagerFactory;
 import com.pine.tool.router.RouterException;
@@ -102,13 +102,13 @@ public class BundleBaseApplication extends RootApplication {
                     case "local":
                         return DbRequestManager.getInstance(new IDbRequestServer() {
                             @Override
-                            public DbResponse request(Bundle bundle) {
+                            public Response request(Bundle bundle) {
                                 try {
                                     return RouterManager.callDataCommandDirect(mApplication,
                                             BuildConfigKey.BUNDLE_DB_SEVER,
                                             RouterDbServerCommand.callDbServerCommand, bundle);
                                 } catch (RouterException e) {
-                                    return new DbResponse();
+                                    return new Response();
                                 }
                             }
                         });

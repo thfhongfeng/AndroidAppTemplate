@@ -4,12 +4,12 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.request.impl.dbServer.DbRequestBean;
-import com.pine.template.base.request.impl.dbServer.DbResponse;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.Response;
 
 import java.util.HashMap;
 
 public interface IDbServerManager {
-    DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                           HashMap<String, String> header);
+    Response callCommand(@NonNull Context context, @NonNull RequestBean requestBean,
+                         HashMap<String, String> header);
 }

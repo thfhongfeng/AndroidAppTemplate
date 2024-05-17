@@ -6,11 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.pine.app.template.db_server.router.RouterDbServerCommand;
-import com.pine.template.base.request.impl.dbServer.DbRequestBean;
-import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.base.request.impl.dbServer.IDbRequestServer;
 import com.pine.template.db_server.IDbServerManager;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.Response;
 import com.pine.tool.router.annotation.RouterCommand;
 import com.pine.tool.util.LogUtils;
 
@@ -26,10 +26,10 @@ public class DbRemoteService {
     private IDbServerManager mDbServerManager = SQLiteDbServerManager.getInstance();
 
     @RouterCommand(CommandName = RouterDbServerCommand.callDbServerCommand)
-    public DbResponse callDbServerCommand(@NonNull Context context, Bundle args) {
+    public Response callDbServerCommand(@NonNull Context context, Bundle args) {
         LogUtils.d(TAG, "callDbServerCommand execute");
         return mDbServerManager.callCommand(context,
-                (DbRequestBean) args.getSerializable(IDbRequestServer.requestBeanKey),
+                (RequestBean) args.getSerializable(IDbRequestServer.requestBeanKey),
                 (HashMap<String, String>) args.getSerializable(IDbRequestServer.cookiesKey));
     }
 }

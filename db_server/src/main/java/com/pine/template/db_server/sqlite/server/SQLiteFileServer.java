@@ -10,10 +10,11 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.request.impl.dbServer.DbRequestBean;
-import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.sqlite.SQLiteDbHelper;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.Response;
+import com.pine.tool.request.UploadRequestBean;
 import com.pine.tool.util.FileUtils;
 import com.pine.tool.util.PathUtils;
 
@@ -25,15 +26,15 @@ import java.util.Map;
 
 public class SQLiteFileServer extends SQLiteBaseServer {
 
-    public static DbResponse uploadSingleFile(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                              @NonNull HashMap<String, String> cookies) {
+    public static Response uploadSingleFile(@NonNull Context context, @NonNull RequestBean requestBean,
+                                            @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            List<DbRequestBean.FileBean> fileBeanList = requestBean.getUploadFileList();
+            List<UploadRequestBean.FileBean> fileBeanList = ((UploadRequestBean) requestBean).getUploadFileList();
             Map<String, String> requestParams = requestBean.getParams();
             if (fileBeanList != null && fileBeanList.size() == 1) {
                 ContentValues contentValues = new ContentValues();
-                DbRequestBean.FileBean fileBean = fileBeanList.get(0);
+                UploadRequestBean.FileBean fileBean = fileBeanList.get(0);
                 String fileName = fileBean.getFileName();
                 String filePath = fileBean.getFile().getAbsolutePath();
                 if (TextUtils.isEmpty(fileName) || TextUtils.isEmpty(filePath)) {
@@ -83,11 +84,11 @@ public class SQLiteFileServer extends SQLiteBaseServer {
         }
     }
 
-    public static DbResponse uploadMultiFile(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                             @NonNull HashMap<String, String> cookies) {
+    public static Response uploadMultiFile(@NonNull Context context, @NonNull RequestBean requestBean,
+                                           @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
-            List<DbRequestBean.FileBean> fileBeanList = requestBean.getUploadFileList();
+            List<UploadRequestBean.FileBean> fileBeanList = ((UploadRequestBean) requestBean).getUploadFileList();
             Map<String, String> requestParams = requestBean.getParams();
             if (fileBeanList != null && fileBeanList.size() > 0) {
                 String filePaths = "";
@@ -96,7 +97,7 @@ public class SQLiteFileServer extends SQLiteBaseServer {
                 db.beginTransaction();
                 for (int i = 0; i < fileBeanList.size(); i++) {
                     ContentValues contentValues = new ContentValues();
-                    DbRequestBean.FileBean fileBean = fileBeanList.get(0);
+                    UploadRequestBean.FileBean fileBean = fileBeanList.get(0);
                     String fileName = fileBean.getFileName();
                     String filePath = fileBean.getFile().getAbsolutePath();
                     if (TextUtils.isEmpty(fileName) || TextUtils.isEmpty(filePath)) {

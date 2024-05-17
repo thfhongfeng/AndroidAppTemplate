@@ -6,6 +6,7 @@ import com.pine.tool.request.IRequestManager.ActionType;
 import com.pine.tool.request.IRequestManager.RequestType;
 import com.pine.tool.request.callback.AbstractBaseCallback;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * Created by tanghongfeng on 2018/9/10.
  */
 
-public class RequestBean {
+public class RequestBean implements Serializable {
     // 该callback对应的请求的key
     private String key;
     // 请求URL

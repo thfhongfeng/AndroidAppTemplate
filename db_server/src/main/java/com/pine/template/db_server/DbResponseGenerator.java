@@ -6,9 +6,9 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.request.impl.dbServer.DbRequestBean;
-import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.Response;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.TypeConvertUtils;
 import com.pine.tool.util.builder.ImageCodeBuilder;
@@ -27,11 +27,11 @@ import java.util.Map;
 public class DbResponseGenerator {
     private final static String TAG = DbResponseGenerator.class.getSimpleName();
 
-    public static DbResponse getSuccessUrlBitmapBytesRep(DbRequestBean requestBean,
-                                                         HashMap<String, String> cookies,
-                                                         String url) {
+    public static Response getSuccessUrlBitmapBytesRep(RequestBean requestBean,
+                                                       HashMap<String, String> cookies,
+                                                       String url) {
         Bitmap bitmap = urlToBitmap(url);
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(true);
         response.setCookies(cookies);
         if (bitmap != null) {
@@ -42,11 +42,11 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getSuccessCodeBitmapBytesRep(DbRequestBean requestBean,
-                                                          HashMap<String, String> cookies,
-                                                          String data) {
+    public static Response getSuccessCodeBitmapBytesRep(RequestBean requestBean,
+                                                        HashMap<String, String> cookies,
+                                                        String data) {
         Bitmap bitmap = ImageCodeBuilder.getInstance().createBitmap(data);
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(true);
         response.setCookies(cookies);
         response.setData(TypeConvertUtils.toByteArray(bitmap));
@@ -55,16 +55,16 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getSuccessJsonRep(DbRequestBean requestBean,
-                                               HashMap<String, String> cookies,
-                                               String data) {
+    public static Response getSuccessJsonRep(RequestBean requestBean,
+                                             HashMap<String, String> cookies,
+                                             String data) {
         String dataContainer;
         if (!TextUtils.isEmpty(data)) {
             dataContainer = "{'success':true, 'code':200, 'message':'','data':" + data + "}";
         } else {
             dataContainer = "{'success':true, 'code':200, 'message':''}";
         }
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(true);
         response.setCookies(cookies);
         response.setData(dataContainer);
@@ -73,10 +73,10 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getLoginFailJsonRep(DbRequestBean requestBean,
-                                                 HashMap<String, String> cookies, String message) {
+    public static Response getLoginFailJsonRep(RequestBean requestBean,
+                                               HashMap<String, String> cookies, String message) {
         String dataContainer = "{'success':false, 'code':401, 'message':'" + message + "'}";
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(true);
         response.setCookies(cookies);
         response.setException(new MessageException(message));
@@ -86,10 +86,10 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getServerFailJsonRep(DbRequestBean requestBean,
-                                                  HashMap<String, String> cookies, String message) {
+    public static Response getServerFailJsonRep(RequestBean requestBean,
+                                                HashMap<String, String> cookies, String message) {
         String dataContainer = "{'success':false, 'code':501, 'message':'" + message + "'}";
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(true);
         response.setCookies(cookies);
         response.setException(new Exception(message));
@@ -99,10 +99,10 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getServerDbOpFailJsonRep(DbRequestBean requestBean,
-                                                      HashMap<String, String> cookies, String message) {
+    public static Response getServerDbOpFailJsonRep(RequestBean requestBean,
+                                                    HashMap<String, String> cookies, String message) {
         String dataContainer = "{'success':false, 'code':502, 'message':'" + message + "'}";
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(true);
         response.setCookies(cookies);
         response.setException(new Exception(message));
@@ -112,10 +112,10 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getExistAccountJsonRep(DbRequestBean requestBean,
-                                                    HashMap<String, String> cookies, String message) {
+    public static Response getExistAccountJsonRep(RequestBean requestBean,
+                                                  HashMap<String, String> cookies, String message) {
         String dataContainer = "{'success':false, 'code':601, 'message':'" + message + "'}";
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(true);
         response.setCookies(cookies);
         response.setException(new MessageException(message));
@@ -125,10 +125,10 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getNoSuchTableJsonRep(DbRequestBean requestBean,
-                                                   HashMap<String, String> cookies) {
+    public static Response getNoSuchTableJsonRep(RequestBean requestBean,
+                                                 HashMap<String, String> cookies) {
         String dataContainer = "{'success':false, 'code':602, 'message':'No table'}";
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(false);
         response.setCookies(cookies);
         response.setException(new Exception("No table"));
@@ -138,15 +138,15 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getBadArgsJsonRep(DbRequestBean requestBean,
-                                               HashMap<String, String> cookies) {
+    public static Response getBadArgsJsonRep(RequestBean requestBean,
+                                             HashMap<String, String> cookies) {
         return getBadArgsJsonRep(requestBean, cookies, "Bad args");
     }
 
-    public static DbResponse getBadArgsJsonRep(DbRequestBean requestBean,
-                                               HashMap<String, String> cookies, String msg) {
+    public static Response getBadArgsJsonRep(RequestBean requestBean,
+                                             HashMap<String, String> cookies, String msg) {
         String dataContainer = "{'success':false, 'code':603, 'message':'Bad args'}";
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(false);
         response.setCookies(cookies);
         response.setException(new MessageException(msg));
@@ -156,10 +156,10 @@ public class DbResponseGenerator {
         return response;
     }
 
-    public static DbResponse getExceptionJsonRep(DbRequestBean requestBean,
-                                                 HashMap<String, String> cookies, Exception e) {
+    public static Response getExceptionJsonRep(RequestBean requestBean,
+                                               HashMap<String, String> cookies, Exception e) {
         String dataContainer = "{'success':false, 'code':604, 'message':'" + e.toString() + "'}";
-        DbResponse response = new DbResponse();
+        Response response = new Response();
         response.setSucceed(false);
         response.setCookies(cookies);
         response.setException(e);
@@ -169,7 +169,7 @@ public class DbResponseGenerator {
         return response;
     }
 
-    private static void insertHeaders(@NonNull DbResponse response, HashMap<String, String> cookies,
+    private static void insertHeaders(@NonNull Response response, HashMap<String, String> cookies,
                                       String responseCode) {
         if (response == null) {
             return;

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -175,24 +176,22 @@ public class DbRequestManager implements IRequestManager {
                                        @NonNull IResponseListener.OnResponseListener listener,
                                        boolean requestFromMainThread) {
         dispatchStartResponse(requestBean, listener, requestFromMainThread);
-        DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(IDbRequestServer.requestBeanKey, dbRequestBean);
+        bundle.putSerializable(IDbRequestServer.requestBeanKey, requestBean);
         bundle.putSerializable(IDbRequestServer.cookiesKey, mCookies);
 
-        DbResponse dbResponse = mRequestServer.request(bundle);
-        if (dbResponse == null) {
-            Response response = new Response();
+        Response response = mRequestServer.request(bundle);
+        if (response == null) {
+            response = new Response();
             response.setSucceed(false);
             response.setData(null);
             response.setException(new Exception("remote error"));
             dispatchResponse(requestBean, response, listener, requestFromMainThread);
             return;
         }
-        dbResponse.setData(TypeConvertUtils.toByteArray(dbResponse.getData()));
-        Response response = toResponse(dbResponse, requestBean);
+        response.setData(TypeConvertUtils.toByteArray(response.getData()));
 
-        mCookies = dbResponse.getCookies();
+        mCookies = response.getCookies();
         dispatchResponse(requestBean, response, listener, requestFromMainThread);
     }
 
@@ -216,24 +215,21 @@ public class DbRequestManager implements IRequestManager {
                                         boolean requestFromMainThread) {
         dispatchStartResponse(requestBean, listener, requestFromMainThread);
 
-        DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
-
         Bundle bundle = new Bundle();
-        bundle.putSerializable(IDbRequestServer.requestBeanKey, dbRequestBean);
+        bundle.putSerializable(IDbRequestServer.requestBeanKey, requestBean);
         bundle.putSerializable(IDbRequestServer.cookiesKey, mCookies);
-        DbResponse dbResponse = mRequestServer.request(bundle);
-        if (dbResponse == null) {
-            Response response = new Response();
+        Response response = mRequestServer.request(bundle);
+        if (response == null) {
+            response = new Response();
             response.setSucceed(false);
             response.setData(new JSONObject().toString());
             response.setException(new Exception("remote error"));
             dispatchResponse(requestBean, response, listener, requestFromMainThread);
             return;
         }
-        dbResponse.setData(dbResponse.getData().toString());
-        Response response = toResponse(dbResponse, requestBean);
+        response.setData(response.getData().toString());
 
-        mCookies = dbResponse.getCookies();
+        mCookies = response.getCookies();
         dispatchResponse(requestBean, response, listener, requestFromMainThread);
     }
 
@@ -257,27 +253,24 @@ public class DbRequestManager implements IRequestManager {
                                         boolean requestFromMainThread) {
         dispatchStartResponse(requestBean, listener, requestFromMainThread);
 
-        DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
-
         Bundle bundle = new Bundle();
-        bundle.putSerializable(IDbRequestServer.requestBeanKey, dbRequestBean);
+        bundle.putSerializable(IDbRequestServer.requestBeanKey, requestBean);
         bundle.putSerializable(IDbRequestServer.cookiesKey, mCookies);
-        DbResponse dbResponse = mRequestServer.request(bundle);
-        if (dbResponse == null) {
-            Response response = new Response();
+        Response response = mRequestServer.request(bundle);
+        if (response == null) {
+            response = new Response();
             response.setSucceed(false);
             response.setData(null);
             response.setException(new Exception("remote error"));
             dispatchResponse(requestBean, response, listener, requestFromMainThread);
             return;
         }
-        Bitmap bitmap = TypeConvertUtils.toBitmap((byte[]) dbResponse.getData());
+        Bitmap bitmap = TypeConvertUtils.toBitmap((byte[]) response.getData());
         if (bitmap != null) {
-            dbResponse.setData(bitmap);
+            response.setData(bitmap);
         }
-        Response response = toResponse(dbResponse, requestBean);
 
-        mCookies = dbResponse.getCookies();
+        mCookies = response.getCookies();
         dispatchResponse(requestBean, response, listener, requestFromMainThread);
     }
 
@@ -316,17 +309,14 @@ public class DbRequestManager implements IRequestManager {
     private void setDownloadRequestWorker(final @NonNull DownloadRequestBean requestBean,
                                           final @NonNull IResponseListener.OnDownloadListener listener,
                                           final boolean requestFromMainThread) {
-        DbRequestBean dbRequestBean = toDbRequestBean(requestBean);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(IDbRequestServer.requestBeanKey, dbRequestBean);
+        bundle.putSerializable(IDbRequestServer.requestBeanKey, requestBean);
         bundle.putSerializable(IDbRequestServer.cookiesKey, mCookies);
-        DbResponse dbResponse = mRequestServer.request(bundle);
-        if (dbResponse == null) {
+        Response response = mRequestServer.request(bundle);
+        if (response == null) {
             dispatchDownloadErrorResponse(requestBean, new Exception("remote error"), listener, requestFromMainThread);
             return;
         }
-        dbResponse.setData(dbResponse.getData());
-        final Response response = toResponse(dbResponse, requestBean);
         DownloadRequestData requestData = new DownloadRequestData();
         requestData.handler = mDownloadThreadHandler;
         requestData.listener = listener;
@@ -445,38 +435,34 @@ public class DbRequestManager implements IRequestManager {
             return;
         }
         boolean isAllSuccess = true;
-        boolean isMultiUpload = true;
+        final boolean isMultiUpload = TextUtils.isEmpty(requestBean.getUpLoadFileKey());
         mUploadCountMap.put(requestBean.hashCode(), fileBeanList.size());
         HashMap<String, String> cookies = new HashMap<>();
         final List<Object> respDataList = new ArrayList<>();
         dispatchStartResponse(requestBean, responseListener, requestFromMainThread);
         for (final UploadRequestBean.FileBean fileBean : fileBeanList) {
-            final DbRequestBean bean = toDbRequestBean(requestBean);
-            ArrayList<DbRequestBean.FileBean> list = new ArrayList<>();
-            list.add(new DbRequestBean.FileBean(fileBean.getFileKey(), fileBean.getFileName(), fileBean.getFile(), fileBean.getPosition()));
-            bean.setUploadFileList(list);
             if (requestFromMainThread) {
                 mMainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        processListener.onStart(bean.getWhat(), null);
+                        processListener.onStart(fileBean.getWhat(), null);
                     }
                 });
             } else {
-                processListener.onStart(bean.getWhat(), null);
+                processListener.onStart(fileBean.getWhat(), null);
             }
             Bundle bundle = new Bundle();
-            bundle.putSerializable(IDbRequestServer.requestBeanKey, bean);
+            bundle.putSerializable(IDbRequestServer.requestBeanKey, requestBean);
             bundle.putSerializable(IDbRequestServer.cookiesKey, mCookies);
-            DbResponse dbResponse = mRequestServer.request(bundle);
-            if (dbResponse == null) {
-                dbResponse = new DbResponse();
-                dbResponse.setSucceed(false);
-                dbResponse.setException(new Exception("remote error"));
+            Response r = mRequestServer.request(bundle);
+            if (r == null) {
+                r = new Response();
+                r.setSucceed(false);
+                r.setException(new Exception("remote error"));
             } else {
-                cookies = dbResponse.getCookies();
+                cookies = r.getCookies();
             }
-            final Response response = toResponse(dbResponse, requestBean);
+            final Response response = r;
             UploadRequestData requestData = new UploadRequestData();
             requestData.handler = mUploadThreadHandler;
             requestData.listener = processListener;
@@ -496,11 +482,11 @@ public class DbRequestManager implements IRequestManager {
                             mMainHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    processListener.onProgress(bean.getWhat(), fileBean, progress);
+                                    processListener.onProgress(fileBean.getWhat(), fileBean, progress);
                                 }
                             });
                         } else {
-                            processListener.onProgress(bean.getWhat(), fileBean, progress);
+                            processListener.onProgress(fileBean.getWhat(), fileBean, progress);
                         }
                         if (this.progress < 100) {
                             this.progress = this.progress + interval;
@@ -513,11 +499,11 @@ public class DbRequestManager implements IRequestManager {
                                         mMainHandler.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                processListener.onFinish(bean.getWhat(), fileBean);
+                                                processListener.onFinish(fileBean.getWhat(), fileBean);
                                             }
                                         });
                                     } else {
-                                        processListener.onFinish(bean.getWhat(), fileBean);
+                                        processListener.onFinish(fileBean.getWhat(), fileBean);
                                     }
                                     if (mUploadCountMap.containsKey(requestBean.hashCode())) {
                                         mUploadCountMap.put(requestBean.hashCode(), (mUploadCountMap.get(requestBean.hashCode()) - 1));
@@ -528,7 +514,6 @@ public class DbRequestManager implements IRequestManager {
                         }
                     }
                 });
-                isMultiUpload = dbResponse.isMultiUpload();
                 respDataList.add(response.getData());
             } else {
                 isAllSuccess = false;
@@ -545,7 +530,6 @@ public class DbRequestManager implements IRequestManager {
             }
         }
         final HashMap<String, String> finalCookies = cookies;
-        final boolean finalIsMultiUpload = isMultiUpload;
         if (!isAllSuccess) {
             sendDelayMessage(requestBean, mUploadThreadHandler, new Runnable() {
                 @Override
@@ -571,7 +555,7 @@ public class DbRequestManager implements IRequestManager {
                         Response successRep = new Response();
                         successRep.setSucceed(true);
                         successRep.setCookies(mCookies);
-                        if (finalIsMultiUpload) {
+                        if (isMultiUpload) {
                             String paths = "";
                             String names = "";
                             try {
@@ -664,60 +648,6 @@ public class DbRequestManager implements IRequestManager {
     @Override
     public void setSessionId(String sysTag, String sessionId) {
         mSessionIdMap.put(sysTag, sessionId);
-    }
-
-    private DbRequestBean toDbRequestBean(@NonNull RequestBean requestBean) {
-        DbRequestBean dbRequestBean = new DbRequestBean(requestBean.getWhat());
-        dbRequestBean.setUrl(requestBean.getUrl());
-        dbRequestBean.setParams(requestBean.getParams());
-        dbRequestBean.setModuleTag(requestBean.getModuleTag());
-        dbRequestBean.setNeedLogin(requestBean.isNeedLogin());
-        dbRequestBean.setRequestType(requestBean.getRequestType());
-        dbRequestBean.setActionType(requestBean.getActionType());
-
-        if (requestBean instanceof DownloadRequestBean) {
-            dbRequestBean.setSaveFolder(((DownloadRequestBean) requestBean).getSaveFolder());
-            dbRequestBean.setSaveFileName(((DownloadRequestBean) requestBean).getSaveFileName());
-            dbRequestBean.setContinue(((DownloadRequestBean) requestBean).isContinue());
-            dbRequestBean.setDeleteOld(((DownloadRequestBean) requestBean).isDeleteOld());
-        }
-
-        if (requestBean instanceof UploadRequestBean) {
-            dbRequestBean.setUpLoadFileKey(((UploadRequestBean) requestBean).getUpLoadFileKey());
-            List<UploadRequestBean.FileBean> fileBeanList = ((UploadRequestBean) requestBean).getUploadFileList();
-            if (fileBeanList != null && ((UploadRequestBean) requestBean).getUploadFileList().size() > 0) {
-                List<DbRequestBean.FileBean> dbFileBeanList = new ArrayList<>();
-                for (UploadRequestBean.FileBean entity : fileBeanList) {
-                    DbRequestBean.FileBean fileBean = new DbRequestBean.FileBean(entity.getFileKey(),
-                            entity.getFileName(), entity.getFile(), entity.getPosition());
-                    dbFileBeanList.add(fileBean);
-                }
-                dbRequestBean.setUploadFileList(dbFileBeanList);
-            }
-        }
-        return dbRequestBean;
-    }
-
-    private Response toResponse(@NonNull DbResponse dbResponse, RequestBean requestBean) {
-        Response response = new Response();
-        response.setSucceed(dbResponse.isSucceed());
-        response.setTag(dbResponse.getTag());
-        response.setResponseCode(dbResponse.getResponseCode());
-        response.setData(dbResponse.getData());
-        response.setHeaders(dbResponse.getHeaders());
-        HashMap<String, String> cookies = dbResponse.getCookies();
-        if (cookies != null && cookies.size() > 0) {
-            Iterator<Map.Entry<String, String>> iterator = cookies.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, String> entry = iterator.next();
-                if (SESSION_ID.equals(entry.getKey().toUpperCase())) {
-                    setSessionId(requestBean.getSysTag(), entry.getValue());
-                }
-            }
-        }
-        response.setCookies(dbResponse.getCookies());
-        response.setException(dbResponse.getException());
-        return response;
     }
 
     public class DownloadRequestData {

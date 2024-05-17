@@ -7,8 +7,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.request.impl.dbServer.DbRequestBean;
-import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.DbSession;
 import com.pine.template.db_server.DbUrlConstants;
@@ -19,6 +17,8 @@ import com.pine.template.db_server.sqlite.server.SQLiteShopServer;
 import com.pine.template.db_server.sqlite.server.SQLiteTravelNoteServer;
 import com.pine.template.db_server.sqlite.server.SQLiteWelcomeServer;
 import com.pine.tool.request.IRequestManager;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.Response;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -70,8 +70,8 @@ public class SQLiteDbServerManager implements IDbServerManager {
 
     @Override
     @NonNull
-    public DbResponse callCommand(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                  HashMap<String, String> header) {
+    public Response callCommand(@NonNull Context context, @NonNull RequestBean requestBean,
+                                HashMap<String, String> header) {
         LogUtils.d(TAG, "callCommand url:" + requestBean.getUrl());
         if (DbUrlConstants.CONFIG().equals(requestBean.getUrl())) {
             synchronized (this) {

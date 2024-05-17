@@ -19,12 +19,12 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.request.impl.dbServer.DbRequestBean;
-import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.DbSession;
 import com.pine.template.db_server.sqlite.SQLiteDbHelper;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,8 +39,8 @@ import java.util.Map;
 public class SQLiteTravelNoteServer extends SQLiteBaseServer {
 
     @SuppressLint("Range")
-    public static DbResponse addTravelNote(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                           @NonNull HashMap<String, String> cookies) {
+    public static Response addTravelNote(@NonNull Context context, @NonNull RequestBean requestBean,
+                                         @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
             DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
@@ -115,8 +115,8 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
     }
 
     @SuppressLint("Range")
-    public static DbResponse queryTravelNoteDetail(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                                   @NonNull HashMap<String, String> cookies) {
+    public static Response queryTravelNoteDetail(@NonNull Context context, @NonNull RequestBean requestBean,
+                                                 @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
             db.beginTransaction();
@@ -173,8 +173,8 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
     }
 
     @SuppressLint("Range")
-    public static DbResponse queryTravelNoteList(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                                 @NonNull HashMap<String, String> cookies) {
+    public static Response queryTravelNoteList(@NonNull Context context, @NonNull RequestBean requestBean,
+                                               @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
             Map<String, String> requestParams = requestBean.getParams();
@@ -229,8 +229,8 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
     }
 
     @SuppressLint("Range")
-    public static DbResponse queryTravelNoteCommentList(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                                        @NonNull HashMap<String, String> cookies) {
+    public static Response queryTravelNoteCommentList(@NonNull Context context, @NonNull RequestBean requestBean,
+                                                      @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getReadableDatabase();
         try {
             Map<String, String> requestParams = requestBean.getParams();

@@ -14,12 +14,12 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.request.impl.dbServer.DbRequestBean;
-import com.pine.template.base.request.impl.dbServer.DbResponse;
 import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.DbSession;
 import com.pine.template.db_server.sqlite.SQLiteDbHelper;
 import com.pine.template.db_server.sqlite.SQLiteDbServerManager;
+import com.pine.tool.request.RequestBean;
+import com.pine.tool.request.Response;
 import com.pine.tool.util.RandomUtils;
 
 import org.json.JSONException;
@@ -32,16 +32,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SQLiteLoginServer extends SQLiteBaseServer {
-    public static DbResponse getVerifyCode(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                           @NonNull HashMap<String, String> cookies) {
+    public static Response getVerifyCode(@NonNull Context context, @NonNull RequestBean requestBean,
+                                         @NonNull HashMap<String, String> cookies) {
         DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
         String verifyCode = RandomUtils.getRandomNumbersAndLetters(4);
         session.setVerifyCode(verifyCode);
         return DbResponseGenerator.getSuccessCodeBitmapBytesRep(requestBean, cookies, verifyCode);
     }
 
-    public static DbResponse register(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                      @NonNull HashMap<String, String> cookies) {
+    public static Response register(@NonNull Context context, @NonNull RequestBean requestBean,
+                                    @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
             Map<String, String> requestParams = requestBean.getParams();
@@ -109,8 +109,8 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
     }
 
     @SuppressLint("Range")
-    public static DbResponse login(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                   @NonNull HashMap<String, String> cookies) {
+    public static Response login(@NonNull Context context, @NonNull RequestBean requestBean,
+                                 @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
             Map<String, String> requestParams = requestBean.getParams();
@@ -162,8 +162,8 @@ public class SQLiteLoginServer extends SQLiteBaseServer {
     }
 
     @SuppressLint("Range")
-    public static DbResponse logout(@NonNull Context context, @NonNull DbRequestBean requestBean,
-                                    @NonNull HashMap<String, String> cookies) {
+    public static Response logout(@NonNull Context context, @NonNull RequestBean requestBean,
+                                  @NonNull HashMap<String, String> cookies) {
         SQLiteDatabase db = new SQLiteDbHelper(context).getWritableDatabase();
         try {
             DbSession session = SQLiteDbServerManager.getInstance().getOrGenerateSession(cookies.get(SESSION_ID));
