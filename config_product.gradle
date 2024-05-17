@@ -1,6 +1,7 @@
 /**
- * 渠道打包参数
+ * 打包参数
  */
+ext.build_lib_groupId = "com.pine.app.template.libs"
 def build_flavor_product = [:]
 build_flavor_product = [
         common : [

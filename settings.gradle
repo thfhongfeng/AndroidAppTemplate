@@ -4,7 +4,7 @@ include ':app'
 apply from: "${rootDir}/gradleWorker/dev_config.gradle"
 
 gradle.ext.modulePkgConfig.each { moduleName, item ->
-    if (gradle.ext.compileMode == "upload" || !item.libDepend) {
+    if (gradle.ext.compileMode == "allUpload" || !item.libDepend) {
         include ":${moduleName}"
     }
 }

@@ -9,12 +9,12 @@ apply from: "${rootDir}/gradleWorker/buildConfig/BundleConfigKey.gradle"
 ext.dependencyCustom = { moduleName, flavorName ->
     def moduleConfig = gradle.ext.modulePkgConfig[moduleName]
     if (moduleConfig) {
-        if (moduleConfig.libDepend || gradle.ext.compileMode == "upload") {
+        if (moduleConfig.libDepend || gradle.ext.compileMode == "allUpload") {
             def artifactIdStr = "${moduleConfig.libArtifactId}-${flavorName}"
             if (flavorName == null || flavorName == "") {
                 artifactIdStr = moduleConfig.libArtifactId
             }
-            return "com.pine.templete.libs:${artifactIdStr}:${moduleConfig.libVersion}"
+            return "${rootProject.ext.build_lib_groupId}:${artifactIdStr}:${moduleConfig.libVersion}"
         } else {
             return project(":${moduleName}")
         }

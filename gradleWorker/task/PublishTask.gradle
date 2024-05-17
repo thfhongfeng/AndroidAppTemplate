@@ -17,7 +17,7 @@ afterEvaluate {
                     if (component != null) {
                         publishing.publications.create(publicationName, MavenPublication) {
                             from component
-                            groupId = "com.pine.templete.libs"
+                            groupId = rootProject.ext.build_lib_groupId
                             artifactId = artifactIdStr
                             version = moduleConfig.libVersion
                         }
