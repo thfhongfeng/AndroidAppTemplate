@@ -64,10 +64,10 @@ ${generateConfigKeyContent()}
         def keyResult = ""
         def methodResult = "     public final static HashMap<String, String> getBundleRouterMap() {\n" +
                 "          HashMap<String, String> map = new HashMap<>();\n"
-        taskGradle.ext.moduleBuildConfig.each { key, item ->
+        taskRootProject.ext.bundleRouterConfig.each { key, item ->
             if (item != null) {
-                keyResult += "     public static final String $key = \"${item.value}\";\n"
-                methodResult += "          map.put(${key}, \"${item.path}\");\n"
+                keyResult += "     public static final String $key = \"${key}\";\n"
+                methodResult += "          map.put(\"${key}\", \"${item.path}\");\n"
             }
         }
         taskRootProject.ext.baseConfigKey.each { key, value ->
@@ -94,7 +94,7 @@ ${generateConfigKeyContent()}
         def buildModelPackage = "${buildPackage}.${taskProject.name}.router"
         // 构建正确的目录路径
         def outputDir = "${buildDir}/generated/source/buildConfig/${variantFlavorName}/${variantBuildTypeName}/${buildModelPackage.replace('.', '/')}"
-        taskRootProject.ext.moduleMethodKey.each { key, item ->
+        taskRootProject.ext.bundleRouterConfig.each { key, item ->
             if (item != null && item.method != null) {
                 // 在这里生成 CustomBuildConfig 文件并写入到指定路径
                 def content = """

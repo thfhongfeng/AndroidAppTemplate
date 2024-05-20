@@ -1,5 +1,4 @@
-apply from: "${rootDir}/gradleWorker/buildConfig/ModuleBuildConfig.gradle"
-apply from: "${rootDir}/gradleWorker/buildConfig/RouterMethodKey.gradle"
+apply from: "${rootDir}/gradleWorker/buildConfig/BundleRouterConfig.gradle"
 apply from: "${rootDir}/gradleWorker/buildConfig/BaseConfigKey.gradle"
 apply from: "${rootDir}/gradleWorker/buildConfig/BundleConfigKey.gradle"
 

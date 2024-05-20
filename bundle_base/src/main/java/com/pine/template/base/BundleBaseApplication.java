@@ -84,9 +84,9 @@ public class BundleBaseApplication extends RootApplication {
 
                     @Override
                     public boolean isBundleEnable(String bundleKey) {
-                        if (BuildConfig.BUILD_BIZ_BUNDLE != null) {
-                            for (String bizBundle : BuildConfig.BUILD_BIZ_BUNDLE) {
-                                if (bundleKey.equals(bizBundle)) {
+                        if (BuildConfig.BUILD_ALL_BUNDLE != null) {
+                            for (String bundle : BuildConfig.BUILD_ALL_BUNDLE) {
+                                if (bundleKey.equals(bundle)) {
                                     return true;
                                 }
                             }

@@ -38,18 +38,18 @@ public class ConfigSwitcherServer {
     private Map<String, ConfigSwitcherEntity> mGuestConfigStateMap = new HashMap();
     private Map<String, ConfigSwitcherEntity> mUserConfigStateMap = new HashMap();
 
-    public static void init() {
+    public synchronized static void init() {
+        init("config.ini");
+    }
+
+    public synchronized static void init(@NonNull String configFileName) {
         if (mInstance == null) {
-            synchronized (ConfigSwitcherServer.class) {
-                if (mInstance == null) {
-                    mInstance = new ConfigSwitcherServer();
-                }
-            }
+            mInstance = new ConfigSwitcherServer(configFileName);
         }
     }
 
-    private ConfigSwitcherServer() {
-        initLocalConfig();
+    private ConfigSwitcherServer(String configFileName) {
+        initLocalConfig(configFileName);
     }
 
     boolean isAssertFileExists(AssetManager assetManager, String filename) {
@@ -66,12 +66,13 @@ public class ConfigSwitcherServer {
         return false;
     }
 
-    private synchronized void initLocalConfig() {
+    private synchronized void initLocalConfig(String configFileName) {
         AssetManager assetManager = AppUtils.getApplication().getResources().getAssets();
         try {
             Properties properties = new Properties();
+            LogUtils.d(TAG, "use config file:" + configFileName);
             // 打开INI文件的InputStream
-            InputStream inputStream = assetManager.open("config.ini");
+            InputStream inputStream = assetManager.open(configFileName);
             // 使用指定的字符编码创建InputStreamReader
             InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8");
             properties.load(reader);
@@ -429,11 +430,14 @@ public class ConfigSwitcherServer {
     }
 
     // for test env
-    public static boolean switchToTestEnv(boolean local) {
+    public static boolean switchToTestEnv(String configFileName) {
+        if (TextUtils.isEmpty(configFileName)) {
+            return false;
+        }
         AssetManager assetManager = AppUtils.getApplication().getResources().getAssets();
         try {
             Properties properties = new Properties();
-            properties.load(assetManager.open(local ? "test_local_config.ini" : "test_remote_config.ini"));
+            properties.load(assetManager.open(configFileName));
             Set keySet = properties.keySet();
             for (Object object : keySet) {
                 String propKey = object.toString();
