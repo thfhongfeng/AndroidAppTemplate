@@ -14,6 +14,7 @@ def modulePkgConfig = [
 
         lib_opencv           : [libDepend: false, libArtifactId: "lib_opencv", libVersion: "1.0.0"],
         lib_face_dr          : [libDepend: false, libArtifactId: "lib_face_dr", libVersion: "1.0.0"],
+        lib_jni              : [libDepend: false, libArtifactId: "lib_jni", libVersion: "1.0.0"],
 /** lib库模块end（独立库不用注意顺序，非独立则要注意顺序） **/
 
 /** 基础模块begin（注意顺序） **/
