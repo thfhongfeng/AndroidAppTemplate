@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.template.bundle_base.BuildConfig;
-import com.pine.template.mvp.MvpConstants;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.MvpUrlConstants;
 import com.pine.template.mvp.bean.MvpProductDetailEntity;
 import com.pine.template.mvp.bean.MvpShopAndProductEntity;
@@ -97,8 +97,8 @@ public class MvpShopModel {
                         }
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -114,8 +114,8 @@ public class MvpShopModel {
                         jsonObject = getShopDetailData(carryData);
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -131,8 +131,8 @@ public class MvpShopModel {
                         jsonObject = getShopListData(carryData);
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<List<MvpShopItemEntity>>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<List<MvpShopItemEntity>>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -148,8 +148,8 @@ public class MvpShopModel {
                         jsonObject = getShopAndProductListData(carryData);
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<List<MvpShopAndProductEntity>>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<List<MvpShopAndProductEntity>>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -169,8 +169,8 @@ public class MvpShopModel {
                         }
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpProductDetailEntity>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpProductDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -263,8 +263,8 @@ public class MvpShopModel {
         }
         int imageTotalCount = SHOP_IMAGES.length;
         Map<String, String> params = (HashMap<String, String>) paramsObj;
-        int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
-        int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
+        int pageNo = params.containsKey(MvpKeyConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpKeyConstants.PAGE_NO)) : 1;
+        int pageSize = params.containsKey(MvpKeyConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpKeyConstants.PAGE_SIZE)) : 12;
         double endLatBd = 31.221367;
         double endLonBd = 121.635707;
         double startLatBd = DecimalUtils.add(endLatBd, new Random().nextDouble(), 6);
@@ -306,8 +306,8 @@ public class MvpShopModel {
         }
         int imageTotalCount = SHOP_IMAGES.length;
         Map<String, String> params = (HashMap<String, String>) paramsObj;
-        int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
-        int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
+        int pageNo = params.containsKey(MvpKeyConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpKeyConstants.PAGE_NO)) : 1;
+        int pageSize = params.containsKey(MvpKeyConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpKeyConstants.PAGE_SIZE)) : 12;
         double endLatBd = 31.221367;
         double endLonBd = 121.635707;
         double startLatBd = DecimalUtils.add(endLatBd, new Random().nextDouble(), 6);

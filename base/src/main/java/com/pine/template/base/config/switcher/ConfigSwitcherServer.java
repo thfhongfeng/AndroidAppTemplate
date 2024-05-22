@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.pine.template.base.BaseApplication;
-import com.pine.template.base.SPKeyConstants;
+import com.pine.template.base.KeyConstants;
 import com.pine.template.base.config.bean.ConfigSwitcherEntity;
 import com.pine.template.base.config.bean.ConfigSwitcherInfo;
 import com.pine.template.base.config.model.ConfigSwitcherModel;
@@ -90,7 +90,7 @@ public class ConfigSwitcherServer {
         }
 
         Map<String, ConfigSwitcherEntity> userConfigMap =
-                SharePreferenceUtils.readMapFromConfig(SPKeyConstants.USER_CONFIG_KEY,
+                SharePreferenceUtils.readMapFromConfig(KeyConstants.USER_CONFIG_KEY,
                         String.class, ConfigSwitcherEntity.class);
         if (userConfigMap == null || userConfigMap.size() < 1) {
             checkInitConfigAndCopy(mInitConfigStateMap, mUserConfigStateMap);
@@ -99,7 +99,7 @@ public class ConfigSwitcherServer {
         }
 
         Map<String, ConfigSwitcherEntity> guestConfigMap =
-                SharePreferenceUtils.readMapFromConfig(SPKeyConstants.GUEST_CONFIG_KEY, String.class,
+                SharePreferenceUtils.readMapFromConfig(KeyConstants.GUEST_CONFIG_KEY, String.class,
                         ConfigSwitcherEntity.class);
         if (guestConfigMap == null || guestConfigMap.size() < 1) {
             checkInitConfigAndCopy(mInitConfigStateMap, mGuestConfigStateMap);
@@ -176,14 +176,14 @@ public class ConfigSwitcherServer {
                 mUserConfigStateMap.put(key, new ConfigSwitcherEntity(key, configMap.get(key),
                         ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_USER));
             }
-            SharePreferenceUtils.saveToConfig(SPKeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
+            SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
         } else {
             Set<String> keySet = configMap.keySet();
             for (String key : keySet) {
                 mGuestConfigStateMap.put(key, new ConfigSwitcherEntity(key, configMap.get(key),
                         ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_USER));
             }
-            SharePreferenceUtils.saveToConfig(SPKeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
+            SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
         }
     }
 
@@ -203,16 +203,16 @@ public class ConfigSwitcherServer {
         if (BaseApplication.isLogin()) {
             mUserConfigStateMap.put(key,
                     new ConfigSwitcherEntity(key, value, configType));
-            SharePreferenceUtils.saveToConfig(SPKeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
+            SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
         } else {
             mGuestConfigStateMap.put(key,
                     new ConfigSwitcherEntity(key, value, configType));
-            SharePreferenceUtils.saveToConfig(SPKeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
+            SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
         }
     }
 
     public synchronized boolean updateRemoteConfigImpl(boolean isLogin, @NonNull ConfigSwitcherInfo switcherInfo) {
-        String version = SharePreferenceUtils.readStringFromConfig(SPKeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
+        String version = SharePreferenceUtils.readStringFromConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
         if (TextUtils.isEmpty(switcherInfo.getVersion()) || TextUtils.equals(version, switcherInfo.getVersion())) {
             return true;
         }
@@ -232,8 +232,8 @@ public class ConfigSwitcherServer {
                         mUserConfigStateMap.put(entity.getKey(), entity);
                     }
                 }
-                SharePreferenceUtils.saveToConfig(SPKeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
-                SharePreferenceUtils.saveToConfig(SPKeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
+                SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
+                SharePreferenceUtils.saveToConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
             }
         } else {
             if (list != null && list.size() > 0) {
@@ -247,8 +247,8 @@ public class ConfigSwitcherServer {
                         mGuestConfigStateMap.put(entity.getKey(), entity);
                     }
                 }
-                SharePreferenceUtils.saveToConfig(SPKeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
-                SharePreferenceUtils.saveToConfig(SPKeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
+                SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
+                SharePreferenceUtils.saveToConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
             }
         }
         return true;
@@ -271,7 +271,7 @@ public class ConfigSwitcherServer {
             callback.onSetupComplete();
             return;
         }
-        String version = SharePreferenceUtils.readStringFromConfig(SPKeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
+        String version = SharePreferenceUtils.readStringFromConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
         if (!TextUtils.isEmpty(version)) {
             params.put("version", version);
         }

@@ -17,6 +17,8 @@ import com.pine.template.base.component.share.manager.ShareManager;
 import com.pine.template.base.component.share.manager.SinaShareManager;
 import com.pine.template.base.component.share.manager.TencentShareManager;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
+import com.pine.template.base.device_sdk.DeviceSdkManager;
+import com.pine.template.base.device_sdk.DeviceSdkProxy;
 import com.pine.template.base.helper.DeviceInfoHelper;
 import com.pine.template.base.helper.ResourceHelper;
 import com.pine.template.base.request.impl.dbServer.DbRequestManager;
@@ -45,12 +47,14 @@ import java.util.HashMap;
 
 public class BundleBaseApplication extends RootApplication {
     private final static String TAG = LogUtils.makeLogTag(BundleBaseApplication.class);
+    public static boolean SDK_INIT_ALREADY = false;
 
     protected BundleBaseApplication() {
         throw new IllegalArgumentException(getClass() + " prohibited from being constructed");
     }
 
     public static void onCreate() {
+        SDK_INIT_ALREADY = DeviceSdkManager.init(mApplication, new DeviceSdkProxy());
         ConfigSwitcherServer.init();
     }
 

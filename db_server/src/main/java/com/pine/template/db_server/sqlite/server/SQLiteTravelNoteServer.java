@@ -1,7 +1,5 @@
 package com.pine.template.db_server.sqlite.server;
 
-import static com.pine.template.base.BaseConstants.PAGE_NO;
-import static com.pine.template.base.BaseConstants.PAGE_SIZE;
 import static com.pine.template.db_server.DbConstants.ACCOUNT_TABLE_NAME;
 import static com.pine.template.db_server.DbConstants.SHOP_TABLE_NAME;
 import static com.pine.template.db_server.DbConstants.TRAVEL_NOTE_COMMENT_TABLE_NAME;
@@ -19,6 +17,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.template.db_server.DbKeyConstants;
 import com.pine.template.db_server.DbResponseGenerator;
 import com.pine.template.db_server.DbSession;
 import com.pine.template.db_server.sqlite.SQLiteDbHelper;
@@ -182,11 +181,11 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
             if (requestParams.containsKey("id")) {
                 params.put("shopId", requestParams.get("id"));
             }
-            if (requestParams.containsKey(PAGE_NO)) {
-                params.put(PAGE_NO, requestParams.get(PAGE_NO));
+            if (requestParams.containsKey(DbKeyConstants.PAGE_NO)) {
+                params.put(DbKeyConstants.PAGE_NO, requestParams.get(DbKeyConstants.PAGE_NO));
             }
-            if (requestParams.containsKey(PAGE_SIZE)) {
-                params.put(PAGE_SIZE, requestParams.get(PAGE_SIZE));
+            if (requestParams.containsKey(DbKeyConstants.PAGE_SIZE)) {
+                params.put(DbKeyConstants.PAGE_SIZE, requestParams.get(DbKeyConstants.PAGE_SIZE));
             }
             db.beginTransaction();
             Cursor cursor = query(db, TRAVEL_NOTE_SHOP_TABLE_NAME, params);
@@ -238,11 +237,11 @@ public class SQLiteTravelNoteServer extends SQLiteBaseServer {
             if (requestParams.containsKey("id")) {
                 params.put("travelNoteId", requestParams.get("id"));
             }
-            if (requestParams.containsKey(PAGE_NO)) {
-                params.put(PAGE_NO, requestParams.get(PAGE_NO));
+            if (requestParams.containsKey(DbKeyConstants.PAGE_NO)) {
+                params.put(DbKeyConstants.PAGE_NO, requestParams.get(DbKeyConstants.PAGE_NO));
             }
-            if (requestParams.containsKey(PAGE_SIZE)) {
-                params.put(PAGE_SIZE, requestParams.get(PAGE_SIZE));
+            if (requestParams.containsKey(DbKeyConstants.PAGE_SIZE)) {
+                params.put(DbKeyConstants.PAGE_SIZE, requestParams.get(DbKeyConstants.PAGE_SIZE));
             }
             Cursor cursor = query(db, TRAVEL_NOTE_COMMENT_TABLE_NAME, params);
             try {

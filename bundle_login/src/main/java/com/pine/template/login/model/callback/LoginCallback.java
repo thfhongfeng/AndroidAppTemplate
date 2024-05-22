@@ -10,7 +10,7 @@ import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.base.business.utils.AccountUtils;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.login.LoginApplication;
-import com.pine.template.login.LoginConstants;
+import com.pine.template.login.LoginKeyConstants;
 import com.pine.template.login.LoginUrlConstants;
 import com.pine.template.login.manager.LoginManager;
 import com.pine.template.login.model.ILoginResponse;
@@ -66,15 +66,15 @@ public class LoginCallback extends JsonCallback {
             LoginApplication.setLogin(false);
             return;
         } else {
-            if (jsonObject == null || !jsonObject.optBoolean(LoginConstants.SUCCESS, false)) {
+            if (jsonObject == null || !jsonObject.optBoolean(LoginKeyConstants.SUCCESS, false)) {
                 loginFail(what, jsonObject == null ?
-                        "" : jsonObject.optString(LoginConstants.MESSAGE), "登陆失败！");
+                        "" : jsonObject.optString(LoginKeyConstants.MESSAGE), "登陆失败！");
                 if (AUTO_LOGIN_CODE != what) {
                     goLoginActivity();
                 }
                 return;
             }
-            AccountBean responseAccount = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), AccountBean.class);
+            AccountBean responseAccount = new Gson().fromJson(jsonObject.optString(LoginKeyConstants.DATA), AccountBean.class);
             final AccountBean accountBean = responseAccount;
             LoginManager.saveLoginInfo(accountBean);
             LoginApplication.setLogin(true);
@@ -90,7 +90,7 @@ public class LoginCallback extends JsonCallback {
                         public boolean onSetupFail() {
                             LoginManager.logout();
                             loginFail(what, jsonObject == null ?
-                                    "" : jsonObject.optString(LoginConstants.MESSAGE), "登陆失败，服务器异常，请重试！");
+                                    "" : jsonObject.optString(LoginKeyConstants.MESSAGE), "登陆失败，服务器异常，请重试！");
                             return true;
                         }
                     });

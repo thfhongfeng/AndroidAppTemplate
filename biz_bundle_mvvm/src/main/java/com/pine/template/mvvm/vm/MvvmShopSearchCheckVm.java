@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.pine.template.mvvm.MvvmConstants;
+import com.pine.template.mvvm.MvvmKeyConstants;
 import com.pine.template.mvvm.bean.MvvmShopItemEntity;
 import com.pine.template.mvvm.bean.MvvmShopSearchBean;
 import com.pine.template.mvvm.model.MvvmShopModel;
@@ -45,8 +45,8 @@ public class MvvmShopSearchCheckVm extends ViewModel {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
-        params.put(MvvmConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvvmConstants.PAGE_SIZE, String.valueOf(pageSize));
+        params.put(MvvmKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvvmKeyConstants.PAGE_SIZE, String.valueOf(pageSize));
 
         MvvmShopSearchBean searchKeyBean = mSearchKeyData.getValue();
         if (TextUtils.isEmpty(searchKeyBean.getName())) {

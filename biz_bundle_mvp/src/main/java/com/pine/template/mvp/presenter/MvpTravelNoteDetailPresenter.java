@@ -3,7 +3,7 @@ package com.pine.template.mvp.presenter;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.pine.template.mvp.MvpConstants;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.adapter.MvpTravelNoteDetailComplexAdapter;
 import com.pine.template.mvp.bean.MvpTravelNoteCommentEntity;
 import com.pine.template.mvp.bean.MvpTravelNoteDetailEntity;
@@ -99,8 +99,8 @@ public class MvpTravelNoteDetailPresenter extends Presenter<IMvpTravelNoteDetail
         if (!refresh) {
             pageNo = mTravelNoteDetailAdapter.getNextPageNo();
         }
-        params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvpConstants.PAGE_SIZE, String.valueOf(mTravelNoteDetailAdapter.getPageSize()));
+        params.put(MvpKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvpKeyConstants.PAGE_SIZE, String.valueOf(mTravelNoteDetailAdapter.getPageSize()));
         params.put("id", mId);
         setUiLoading(true);
         mTravelNoteModel.requestTravelNoteCommentData(params, new IModelAsyncResponse<ArrayList<MvpTravelNoteCommentEntity>>() {

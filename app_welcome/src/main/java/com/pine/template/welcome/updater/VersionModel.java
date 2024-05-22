@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.template.base.BaseConstants;
 import com.pine.template.base.BaseUrlConstants;
+import com.pine.template.welcome.WelcomeKeyConstants;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
@@ -42,8 +42,8 @@ public class VersionModel {
             @Override
             public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (REQUEST_QUERY_VERSION_INFO == what) {
-                    if (jsonObject.optBoolean(BaseConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(BaseConstants.DATA),
+                    if (jsonObject.optBoolean(WelcomeKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(WelcomeKeyConstants.DATA),
                                 new TypeToken<VersionEntity>() {
                                 }.getType());
                         if (callback != null) {

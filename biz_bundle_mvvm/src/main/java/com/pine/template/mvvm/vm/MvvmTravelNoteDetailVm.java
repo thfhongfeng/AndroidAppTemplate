@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.pine.template.mvvm.MvvmConstants;
+import com.pine.template.mvvm.MvvmKeyConstants;
 import com.pine.template.mvvm.bean.MvvmTravelNoteCommentEntity;
 import com.pine.template.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.template.mvvm.model.MvvmTravelNoteModel;
@@ -77,8 +77,8 @@ public class MvvmTravelNoteDetailVm extends ViewModel {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
-        params.put(MvvmConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvvmConstants.PAGE_SIZE, String.valueOf(pageSize));
+        params.put(MvvmKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvvmKeyConstants.PAGE_SIZE, String.valueOf(pageSize));
         params.put("id", mId);
         setUiLoading(true);
         mTravelNoteModel.requestTravelNoteCommentData(params, new IModelAsyncResponse<ArrayList<MvvmTravelNoteCommentEntity>>() {

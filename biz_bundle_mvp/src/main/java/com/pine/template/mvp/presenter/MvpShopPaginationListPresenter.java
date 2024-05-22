@@ -6,7 +6,7 @@ import com.pine.template.base.component.map.ILocationListener;
 import com.pine.template.base.component.map.LocationActionType;
 import com.pine.template.base.component.map.LocationInfo;
 import com.pine.template.base.component.map.MapSdkManager;
-import com.pine.template.mvp.MvpConstants;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.adapter.MvpShopListPaginationAdapter;
 import com.pine.template.mvp.bean.MvpShopItemEntity;
 import com.pine.template.mvp.contract.IMvpShopPaginationContract;
@@ -82,8 +82,8 @@ public class MvpShopPaginationListPresenter extends Presenter<IMvpShopPagination
         if (!refresh) {
             pageNo = mMvpHomeItemAdapter.getNextPageNo();
         }
-        params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvpConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));
+        params.put(MvpKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvpKeyConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));
         LocationInfo location = MapSdkManager.getLocation();
         if (location != null) {
             params.put("latitude", String.valueOf(location.getLatitude()));

@@ -1,7 +1,7 @@
 package com.pine.template.login.model.interceptor;
 
 import com.pine.template.login.LoginApplication;
-import com.pine.template.login.LoginConstants;
+import com.pine.template.login.LoginKeyConstants;
 import com.pine.template.login.ResponseCode;
 import com.pine.template.login.manager.LoginManager;
 import com.pine.template.login.model.callback.LoginCallback;
@@ -49,7 +49,7 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
                 String res = (String) response.getData();
                 try {
                     JSONObject jsonObject = new JSONObject(res);
-                    if (jsonObject == null || !jsonObject.optBoolean(LoginConstants.SUCCESS, false)) {
+                    if (jsonObject == null || !jsonObject.optBoolean(LoginKeyConstants.SUCCESS, false)) {
                         mPerReLoginCount = 0;
                         reloadAllNoAuthRequest();
                     }

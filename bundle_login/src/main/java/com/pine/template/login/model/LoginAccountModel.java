@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.template.base.business.bean.AccountBean;
-import com.pine.template.login.LoginConstants;
+import com.pine.template.login.LoginKeyConstants;
 import com.pine.template.login.LoginUrlConstants;
 import com.pine.template.login.model.callback.LoginCallback;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
@@ -53,8 +53,8 @@ public class LoginAccountModel {
             @Override
             public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (what == REQUEST_REGISTER) {
-                    if (jsonObject.optBoolean(LoginConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(LoginConstants.DATA), new TypeToken<AccountBean>() {
+                    if (jsonObject.optBoolean(LoginKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(LoginKeyConstants.DATA), new TypeToken<AccountBean>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);

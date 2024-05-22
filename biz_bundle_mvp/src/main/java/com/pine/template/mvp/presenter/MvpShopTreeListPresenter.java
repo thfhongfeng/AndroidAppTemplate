@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.pine.template.base.component.map.LocationInfo;
 import com.pine.template.base.component.map.MapSdkManager;
-import com.pine.template.mvp.MvpConstants;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.adapter.MvpShopListPaginationTreeAdapter;
 import com.pine.template.mvp.bean.MvpShopAndProductEntity;
 import com.pine.template.mvp.contract.IMvpShopTreeListContract;
@@ -48,8 +48,8 @@ public class MvpShopTreeListPresenter extends Presenter<IMvpShopTreeListContract
         if (!refresh) {
             pageNo = mMvpHomeItemAdapter.getNextPageNo();
         }
-        params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvpConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));
+        params.put(MvpKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvpKeyConstants.PAGE_SIZE, String.valueOf(mMvpHomeItemAdapter.getPageSize()));
         LocationInfo location = MapSdkManager.getLocation();
         if (location != null) {
             params.put("latitude", String.valueOf(location.getLatitude()));

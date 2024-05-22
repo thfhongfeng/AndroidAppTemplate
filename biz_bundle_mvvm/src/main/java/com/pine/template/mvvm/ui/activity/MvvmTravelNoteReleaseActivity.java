@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import com.pine.app.template.biz_bundle_mvvm.BuildConfigKey;
-import com.pine.template.base.BaseConstants;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarTextMenuActivity;
 import com.pine.template.base.business.access.UiAccessAction;
 import com.pine.template.base.business.access.UiAccessType;
@@ -24,6 +23,7 @@ import com.pine.template.base.component.uploader.bean.RemoteUploadFileInfo;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.DateSelectDialog;
 import com.pine.template.base.widget.dialog.InputTextDialog;
+import com.pine.template.mvvm.MvvmKeyConstants;
 import com.pine.template.mvvm.MvvmUrlConstants;
 import com.pine.template.mvvm.R;
 import com.pine.template.mvvm.bean.MvvmShopItemEntity;
@@ -89,10 +89,10 @@ public class MvvmTravelNoteReleaseActivity extends
             if (response == null) {
                 return null;
             }
-            if (!response.optBoolean(BaseConstants.SUCCESS)) {
+            if (!response.optBoolean(MvvmKeyConstants.SUCCESS)) {
                 return null;
             }
-            JSONObject data = response.optJSONObject(BaseConstants.DATA);
+            JSONObject data = response.optJSONObject(MvvmKeyConstants.DATA);
             if (data == null) {
                 return null;
             }

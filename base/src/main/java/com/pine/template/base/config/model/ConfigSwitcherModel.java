@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pine.template.base.Constants;
+import com.pine.template.base.KeyConstants;
 import com.pine.template.base.config.bean.ConfigSwitcherInfo;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
@@ -39,8 +39,8 @@ public class ConfigSwitcherModel {
             @Override
             public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER == what) {
-                    if (jsonObject.optBoolean(Constants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(Constants.DATA),
+                    if (jsonObject.optBoolean(KeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(KeyConstants.DATA),
                                 new TypeToken<ConfigSwitcherInfo>() {
                                 }.getType());
                         if (callback != null) {

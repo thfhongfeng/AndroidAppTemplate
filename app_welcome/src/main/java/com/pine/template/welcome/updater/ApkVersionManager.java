@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.BaseSPKeyConstants;
+import com.pine.template.base.BaseKeyConstants;
 import com.pine.template.base.R;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.ProgressDialog;
@@ -303,7 +303,7 @@ public class ApkVersionManager {
                                         final @NonNull VersionEntity versionEntity,
                                         String filePath,
                                         final IUpdateCallback callback) {
-        SharePreferenceUtils.saveToConfig(BaseSPKeyConstants.APK_DOWNLOAD_FILE_PATH, filePath);
+        SharePreferenceUtils.saveToConfig(BaseKeyConstants.APK_DOWNLOAD_FILE_PATH, filePath);
         boolean ret = installNewVersionApk(activity, versionEntity, callback);
         if (callback != null) {
             if (ret) {
@@ -338,11 +338,11 @@ public class ApkVersionManager {
     }
 
     private String getDownLoadFilePath() {
-        return SharePreferenceUtils.readStringFromConfig(BaseSPKeyConstants.APK_DOWNLOAD_FILE_PATH, "");
+        return SharePreferenceUtils.readStringFromConfig(BaseKeyConstants.APK_DOWNLOAD_FILE_PATH, "");
     }
 
     private File getDownLoadFile() {
-        String apkFilePath = SharePreferenceUtils.readStringFromConfig(BaseSPKeyConstants.APK_DOWNLOAD_FILE_PATH, "");
+        String apkFilePath = SharePreferenceUtils.readStringFromConfig(BaseKeyConstants.APK_DOWNLOAD_FILE_PATH, "");
         return new File(apkFilePath);
     }
 

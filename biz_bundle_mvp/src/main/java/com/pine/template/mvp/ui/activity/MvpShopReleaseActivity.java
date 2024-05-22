@@ -16,7 +16,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pine.app.template.biz_bundle_mvp.BuildConfigKey;
-import com.pine.template.base.BaseConstants;
 import com.pine.template.base.architecture.mvp.ui.activity.BaseMvpActionBarTextMenuActivity;
 import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.business.access.UiAccessAction;
@@ -32,6 +31,7 @@ import com.pine.template.base.widget.dialog.DateSelectDialog;
 import com.pine.template.base.widget.dialog.InputTextDialog;
 import com.pine.template.base.widget.dialog.ProvinceSelectDialog;
 import com.pine.template.base.widget.dialog.SelectItemDialog;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.MvpUrlConstants;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.contract.IMvpShopReleaseContract;
@@ -130,10 +130,10 @@ public class MvpShopReleaseActivity extends
                 if (response == null) {
                     return null;
                 }
-                if (!response.optBoolean(BaseConstants.SUCCESS)) {
+                if (!response.optBoolean(MvpKeyConstants.SUCCESS)) {
                     return null;
                 }
-                JSONObject data = response.optJSONObject(BaseConstants.DATA);
+                JSONObject data = response.optJSONObject(MvpKeyConstants.DATA);
                 if (data == null) {
                     return null;
                 }

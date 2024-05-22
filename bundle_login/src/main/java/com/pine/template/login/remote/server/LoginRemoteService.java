@@ -9,8 +9,7 @@ import androidx.annotation.NonNull;
 import com.pine.app.template.bundle_login.router.RouterLoginCommand;
 import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.login.LoginApplication;
-import com.pine.template.login.LoginConstants;
-import com.pine.template.login.LoginSPKeyConstants;
+import com.pine.template.login.LoginKeyConstants;
 import com.pine.template.login.manager.LoginManager;
 import com.pine.template.login.model.ILoginResponse;
 import com.pine.template.login.ui.activity.LoginActivity;
@@ -28,24 +27,24 @@ public class LoginRemoteService {
     public void autoLogin(@NonNull Context context, Bundle args, @NonNull final IServiceCallback callback) {
         final Bundle responseBundle = new Bundle();
         if (LoginApplication.isLogin()) {
-            responseBundle.putBoolean(LoginConstants.SUCCESS, true);
-            responseBundle.putString(LoginConstants.MESSAGE, "");
+            responseBundle.putBoolean(LoginKeyConstants.SUCCESS, true);
+            responseBundle.putString(LoginKeyConstants.MESSAGE, "");
             callback.onResponse(responseBundle);
             return;
         }
-        String account = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, "");
-        String password = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, "");
+        String account = SharePreferenceUtils.readStringFromCache(LoginKeyConstants.ACCOUNT_ACCOUNT, "");
+        String password = SharePreferenceUtils.readStringFromCache(LoginKeyConstants.ACCOUNT_PASSWORD, "");
         if (account.length() == 0 || password.length() == 0) {
-            responseBundle.putBoolean(LoginConstants.SUCCESS, false);
-            responseBundle.putString(LoginConstants.MESSAGE, "no account on local");
+            responseBundle.putBoolean(LoginKeyConstants.SUCCESS, false);
+            responseBundle.putString(LoginKeyConstants.MESSAGE, "no account on local");
             callback.onResponse(responseBundle);
             return;
         }
         LoginManager.autoLogin(account, password, new ILoginResponse() {
             @Override
             public boolean onLoginResponse(boolean isSuccess, String msg) {
-                responseBundle.putBoolean(LoginConstants.SUCCESS, isSuccess);
-                responseBundle.putString(LoginConstants.MESSAGE, msg);
+                responseBundle.putBoolean(LoginKeyConstants.SUCCESS, isSuccess);
+                responseBundle.putString(LoginKeyConstants.MESSAGE, msg);
                 callback.onResponse(responseBundle);
                 return true;
             }
@@ -76,15 +75,15 @@ public class LoginRemoteService {
     @RouterCommand(CommandName = RouterLoginCommand.getLoginAccount)
     public AccountBean getLoginAccount(@NonNull Context context, Bundle args) {
         AccountBean accountBean = new AccountBean();
-        accountBean.setId(SharePreferenceUtils.readStringFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_ID, ""));
-        accountBean.setAccount(SharePreferenceUtils.readStringFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, ""));
-        accountBean.setAccountType(SharePreferenceUtils.readIntFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_TYPE, 0));
-        accountBean.setName(SharePreferenceUtils.readStringFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_NAME, ""));
-        accountBean.setHeadImgUrl(SharePreferenceUtils.readStringFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_HEAD_IMG_URL, ""));
-        accountBean.setMobile(SharePreferenceUtils.readStringFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_MOBILE, ""));
-        accountBean.setCurLoginTimeStamp(SharePreferenceUtils.readLongFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_CUR_LOGIN_TIME_STAMP, -1));
-        accountBean.setCreateTime(SharePreferenceUtils.readStringFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_CREATE_TIME, ""));
-        accountBean.setUpdateTime(SharePreferenceUtils.readStringFromAppLivedCache(LoginSPKeyConstants.ACCOUNT_UPDATE_TIME, ""));
+        accountBean.setId(SharePreferenceUtils.readStringFromAppLivedCache(LoginKeyConstants.ACCOUNT_ID, ""));
+        accountBean.setAccount(SharePreferenceUtils.readStringFromAppLivedCache(LoginKeyConstants.ACCOUNT_ACCOUNT, ""));
+        accountBean.setAccountType(SharePreferenceUtils.readIntFromAppLivedCache(LoginKeyConstants.ACCOUNT_TYPE, 0));
+        accountBean.setName(SharePreferenceUtils.readStringFromAppLivedCache(LoginKeyConstants.ACCOUNT_NAME, ""));
+        accountBean.setHeadImgUrl(SharePreferenceUtils.readStringFromAppLivedCache(LoginKeyConstants.ACCOUNT_HEAD_IMG_URL, ""));
+        accountBean.setMobile(SharePreferenceUtils.readStringFromAppLivedCache(LoginKeyConstants.ACCOUNT_MOBILE, ""));
+        accountBean.setCurLoginTimeStamp(SharePreferenceUtils.readLongFromAppLivedCache(LoginKeyConstants.ACCOUNT_CUR_LOGIN_TIME_STAMP, -1));
+        accountBean.setCreateTime(SharePreferenceUtils.readStringFromAppLivedCache(LoginKeyConstants.ACCOUNT_CREATE_TIME, ""));
+        accountBean.setUpdateTime(SharePreferenceUtils.readStringFromAppLivedCache(LoginKeyConstants.ACCOUNT_UPDATE_TIME, ""));
         return accountBean;
     }
 }

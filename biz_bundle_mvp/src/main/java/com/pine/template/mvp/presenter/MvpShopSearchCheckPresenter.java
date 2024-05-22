@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.pine.template.base.bean.InputParam;
-import com.pine.template.mvp.MvpConstants;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.adapter.MvpShopCheckListPaginationAdapter;
 import com.pine.template.mvp.bean.MvpShopItemEntity;
@@ -63,8 +63,8 @@ public class MvpShopSearchCheckPresenter extends Presenter<IMvpShopSearchCheckCo
         if (!refresh) {
             pageNo = mAdapter.getNextPageNo();
         }
-        params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvpConstants.PAGE_SIZE, String.valueOf(mAdapter.getPageSize()));
+        params.put(MvpKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvpKeyConstants.PAGE_SIZE, String.valueOf(mAdapter.getPageSize()));
 
         InputParam<String> searchKey = getUi().getSearchKey("searchKey");
         if (TextUtils.isEmpty(searchKey.getValue())) {

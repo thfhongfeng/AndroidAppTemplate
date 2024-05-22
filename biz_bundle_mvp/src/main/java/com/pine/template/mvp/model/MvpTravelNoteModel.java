@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.template.bundle_base.BuildConfig;
-import com.pine.template.mvp.MvpConstants;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.MvpUrlConstants;
 import com.pine.template.mvp.bean.MvpTravelNoteCommentEntity;
 import com.pine.template.mvp.bean.MvpTravelNoteDetailEntity;
@@ -83,8 +83,8 @@ public class MvpTravelNoteModel {
                         jsonObject = getTravelNoteDetailData(carryData);
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpTravelNoteDetailEntity>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpTravelNoteDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -100,8 +100,8 @@ public class MvpTravelNoteModel {
                         jsonObject = getTravelNoteDetailData(carryData);
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<MvpTravelNoteDetailEntity>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpTravelNoteDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -117,8 +117,8 @@ public class MvpTravelNoteModel {
                         jsonObject = getTravelNoteListData(carryData);
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<List<MvpTravelNoteItemEntity>>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<List<MvpTravelNoteItemEntity>>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -134,8 +134,8 @@ public class MvpTravelNoteModel {
                         jsonObject = getTravelNoteCommentData(carryData);
                     }
                     // Test code end
-                    if (jsonObject.optBoolean(MvpConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpConstants.DATA), new TypeToken<List<MvpTravelNoteCommentEntity>>() {
+                    if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
+                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<List<MvpTravelNoteCommentEntity>>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -232,8 +232,8 @@ public class MvpTravelNoteModel {
             return null;
         }
         Map<String, String> params = (HashMap<String, String>) paramsObj;
-        int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
-        int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
+        int pageNo = params.containsKey(MvpKeyConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpKeyConstants.PAGE_NO)) : 1;
+        int pageSize = params.containsKey(MvpKeyConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpKeyConstants.PAGE_SIZE)) : 12;
         int index = (pageNo - 1) * 10 + 1;
         String id = "1102201903281020000000" + (index > 9 ? index : "0" + index);
         String res = "{success:true,code:200,message:'',data:" +
@@ -266,8 +266,8 @@ public class MvpTravelNoteModel {
         }
         int imageTotalCount = HEAD_IMAGES.length;
         Map<String, String> params = (HashMap<String, String>) paramsObj;
-        int pageNo = params.containsKey(MvpConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpConstants.PAGE_NO)) : 1;
-        int pageSize = params.containsKey(MvpConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpConstants.PAGE_SIZE)) : 12;
+        int pageNo = params.containsKey(MvpKeyConstants.PAGE_NO) ? Integer.parseInt(params.get(MvpKeyConstants.PAGE_NO)) : 1;
+        int pageSize = params.containsKey(MvpKeyConstants.PAGE_SIZE) ? Integer.parseInt(params.get(MvpKeyConstants.PAGE_SIZE)) : 12;
         int index = (pageNo - 1) * 10 + 1;
         String id = "1103201903281020000000" + (index > 9 ? index : "0" + index);
         String res = "{success:true,code:200,message:'',data:" +

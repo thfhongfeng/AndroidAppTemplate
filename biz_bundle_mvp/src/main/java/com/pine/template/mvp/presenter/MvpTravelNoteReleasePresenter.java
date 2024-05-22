@@ -6,13 +6,13 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.pine.template.base.BaseConstants;
 import com.pine.template.base.bean.InputParam;
 import com.pine.template.base.component.editor.bean.TextImageEntity;
 import com.pine.template.base.component.editor.bean.TextImageItemEntity;
 import com.pine.template.base.component.uploader.FileUploadComponent;
 import com.pine.template.base.component.uploader.bean.FileUploadBean;
 import com.pine.template.base.component.uploader.bean.RemoteUploadFileInfo;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.MvpUrlConstants;
 import com.pine.template.mvp.R;
 import com.pine.template.mvp.bean.MvpShopItemEntity;
@@ -81,10 +81,10 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
                 if (response == null) {
                     return null;
                 }
-                if (!response.optBoolean(BaseConstants.SUCCESS)) {
+                if (!response.optBoolean(MvpKeyConstants.SUCCESS)) {
                     return null;
                 }
-                JSONObject data = response.optJSONObject(BaseConstants.DATA);
+                JSONObject data = response.optJSONObject(MvpKeyConstants.DATA);
                 if (data == null) {
                     return null;
                 }

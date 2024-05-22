@@ -16,8 +16,7 @@ import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.welcome.R;
 import com.pine.template.welcome.WelUrlConstants;
 import com.pine.template.welcome.WelcomeApplication;
-import com.pine.template.welcome.WelcomeConstants;
-import com.pine.template.welcome.WelcomeSPKeyConstants;
+import com.pine.template.welcome.WelcomeKeyConstants;
 import com.pine.template.welcome.databinding.LoadingActivityBinding;
 import com.pine.template.welcome.remote.WelcomeRouterClient;
 import com.pine.template.welcome.updater.ApkVersionManager;
@@ -126,7 +125,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        if (!SharePreferenceUtils.readBooleanFromConfig(WelcomeSPKeyConstants.USER_PRIVACY_AGREE, false)
+        if (!SharePreferenceUtils.readBooleanFromConfig(WelcomeKeyConstants.USER_PRIVACY_AGREE, false)
                 && ENABLE_LOADING_GO_ASSIGN) {
             startActivityForResult(new Intent(this, UserPrivacyActivity.class), REQUEST_CODE_USER_PRIVACY);
         } else {
@@ -224,7 +223,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     }
 
     private boolean isGoAssignActivityAction() {
-        Intent startupIntent = getIntent().getParcelableExtra(WelcomeConstants.STARTUP_INTENT);
+        Intent startupIntent = getIntent().getParcelableExtra(WelcomeKeyConstants.STARTUP_INTENT);
         boolean isGoAssignActivityAction = Intent.ACTION_VIEW.equals(startupIntent.getAction());
         LogUtils.d(TAG, "gotoNext startupIntent: " + startupIntent
                 + ", isGoAssignActivityAction: " + isGoAssignActivityAction);
@@ -232,11 +231,11 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     }
 
     private void goAssignActivity() {
-        Intent startupIntent = getIntent().getParcelableExtra(WelcomeConstants.STARTUP_INTENT);
+        Intent startupIntent = getIntent().getParcelableExtra(WelcomeKeyConstants.STARTUP_INTENT);
         if (Intent.ACTION_VIEW.equals(startupIntent.getAction())) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(WelcomeConstants.STARTUP_INTENT, startupIntent);
-            bundle.putInt(WelcomeConstants.REQUEST_CODE, REQUEST_CODE_GO_ASSIGN_UI);
+            bundle.putParcelable(WelcomeKeyConstants.STARTUP_INTENT, startupIntent);
+            bundle.putInt(WelcomeKeyConstants.REQUEST_CODE, REQUEST_CODE_GO_ASSIGN_UI);
             if (startupIntent.getType() != null) {
 
             } else {

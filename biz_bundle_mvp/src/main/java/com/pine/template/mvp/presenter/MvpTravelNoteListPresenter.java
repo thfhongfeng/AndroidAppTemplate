@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.pine.template.mvp.MvpConstants;
+import com.pine.template.mvp.MvpKeyConstants;
 import com.pine.template.mvp.adapter.MvpTravelNoteListPaginationAdapter;
 import com.pine.template.mvp.bean.MvpTravelNoteItemEntity;
 import com.pine.template.mvp.contract.IMvpTravelNoteListContract;
@@ -66,8 +66,8 @@ public class MvpTravelNoteListPresenter extends Presenter<IMvpTravelNoteListCont
         if (!refresh) {
             pageNo = mMvpTravelNoteItemAdapter.getNextPageNo();
         }
-        params.put(MvpConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvpConstants.PAGE_SIZE, String.valueOf(mMvpTravelNoteItemAdapter.getPageSize()));
+        params.put(MvpKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvpKeyConstants.PAGE_SIZE, String.valueOf(mMvpTravelNoteItemAdapter.getPageSize()));
         params.put("id", mId);
         setUiLoading(true);
         mTravelNoteModel.requestTravelNoteListData(params, new IModelAsyncResponse<ArrayList<MvpTravelNoteItemEntity>>() {

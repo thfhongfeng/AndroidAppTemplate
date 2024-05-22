@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.BaseConstants;
+import com.pine.template.db_server.DbKeyConstants;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONObject;
@@ -103,9 +103,9 @@ public class SQLiteBaseServer {
             Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<String, String> entry = iterator.next();
-                if (BaseConstants.PAGE_NO.equals(entry.getKey())) {
+                if (DbKeyConstants.PAGE_NO.equals(entry.getKey())) {
                     pageNo = Integer.parseInt(entry.getValue());
-                } else if (BaseConstants.PAGE_SIZE.equals(entry.getKey())) {
+                } else if (DbKeyConstants.PAGE_SIZE.equals(entry.getKey())) {
                     pageSize = Integer.parseInt(entry.getValue());
                 } else {
                     filter += " " + entry.getKey() + "=?" + " and";
@@ -142,9 +142,9 @@ public class SQLiteBaseServer {
             Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<String, String> entry = iterator.next();
-                if (BaseConstants.PAGE_NO.equals(entry.getKey())) {
+                if (DbKeyConstants.PAGE_NO.equals(entry.getKey())) {
                     pageNo = Integer.parseInt(entry.getValue());
-                } else if (BaseConstants.PAGE_SIZE.equals(entry.getKey())) {
+                } else if (DbKeyConstants.PAGE_SIZE.equals(entry.getKey())) {
                     pageSize = Integer.parseInt(entry.getValue());
                 } else {
                     if (!TextUtils.isEmpty(entry.getValue())) {

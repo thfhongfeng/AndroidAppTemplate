@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.pine.template.base.component.map.LocationInfo;
 import com.pine.template.base.component.map.MapSdkManager;
 import com.pine.template.mvvm.MvvmConstants;
+import com.pine.template.mvvm.MvvmKeyConstants;
 import com.pine.template.mvvm.bean.MvvmShopItemEntity;
 import com.pine.template.mvvm.model.MvvmShopModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
@@ -23,8 +24,8 @@ public class MvvmShopPaginationListVm extends ViewModel {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
-        params.put(MvvmConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvvmConstants.PAGE_SIZE, String.valueOf(pageSize));
+        params.put(MvvmKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvvmKeyConstants.PAGE_SIZE, String.valueOf(pageSize));
         LocationInfo location = MapSdkManager.getLocation();
         if (location != null) {
             params.put("latitude", String.valueOf(location.getLatitude()));

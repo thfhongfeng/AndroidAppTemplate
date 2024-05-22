@@ -18,8 +18,7 @@ import androidx.annotation.Nullable;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.welcome.R;
-import com.pine.template.welcome.WelcomeConstants;
-import com.pine.template.welcome.WelcomeSPKeyConstants;
+import com.pine.template.welcome.WelcomeKeyConstants;
 import com.pine.template.welcome.databinding.UserPrivacyActivityBinding;
 import com.pine.template.welcome.vm.UserPrivacyVm;
 import com.pine.tool.util.SharePreferenceUtils;
@@ -36,7 +35,7 @@ public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyA
     @Override
     protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         super.beforeInitOnCreate(savedInstanceState);
-        boolean userPrivacyAgree = SharePreferenceUtils.readBooleanFromConfig(WelcomeSPKeyConstants.USER_PRIVACY_AGREE, false);
+        boolean userPrivacyAgree = SharePreferenceUtils.readBooleanFromConfig(WelcomeKeyConstants.USER_PRIVACY_AGREE, false);
         if (userPrivacyAgree || !LoadingActivity.ENABLE_LOADING_GO_ASSIGN) {
             goLoadingActivity();
         }
@@ -113,13 +112,13 @@ public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyA
 
     private void goLoadingActivity() {
         Intent intent = new Intent(this, LoadingActivity.class);
-        intent.putExtra(WelcomeConstants.STARTUP_INTENT, getIntent());
+        intent.putExtra(WelcomeKeyConstants.STARTUP_INTENT, getIntent());
         startActivity(intent);
     }
 
     public class Presenter {
         public void onAgree(View view) {
-            SharePreferenceUtils.saveToConfig(WelcomeSPKeyConstants.USER_PRIVACY_AGREE, true);
+            SharePreferenceUtils.saveToConfig(WelcomeKeyConstants.USER_PRIVACY_AGREE, true);
             goLoadingActivity();
             finish();
         }

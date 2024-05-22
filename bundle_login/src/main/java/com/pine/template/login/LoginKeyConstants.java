@@ -1,12 +1,12 @@
 package com.pine.template.login;
 
-import com.pine.template.base.BaseSPKeyConstants;
+import com.pine.template.base.BaseKeyConstants;
 
 /**
  * Created by tanghongfeng on 2019/11/1.
  */
 
-public interface LoginSPKeyConstants extends BaseSPKeyConstants {
+public interface LoginKeyConstants extends BaseKeyConstants {
     String ACCOUNT_ID = "account_id";
     String ACCOUNT_ACCOUNT = "account_account";
     String ACCOUNT_PASSWORD = "account_password";

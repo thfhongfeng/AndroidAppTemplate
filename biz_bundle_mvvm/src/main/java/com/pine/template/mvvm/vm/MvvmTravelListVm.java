@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.pine.template.mvvm.MvvmConstants;
+import com.pine.template.mvvm.MvvmKeyConstants;
 import com.pine.template.mvvm.bean.MvvmTravelNoteItemEntity;
 import com.pine.template.mvvm.model.MvvmTravelNoteModel;
 import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
@@ -34,8 +34,8 @@ public class MvvmTravelListVm extends ViewModel {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
-        params.put(MvvmConstants.PAGE_NO, String.valueOf(pageNo));
-        params.put(MvvmConstants.PAGE_SIZE, String.valueOf(pageSize));
+        params.put(MvvmKeyConstants.PAGE_NO, String.valueOf(pageNo));
+        params.put(MvvmKeyConstants.PAGE_SIZE, String.valueOf(pageSize));
         params.put("id", mId);
         setUiLoading(true);
         mTravelNoteModel.requestTravelNoteListData(params, new IModelAsyncResponse<ArrayList<MvvmTravelNoteItemEntity>>() {

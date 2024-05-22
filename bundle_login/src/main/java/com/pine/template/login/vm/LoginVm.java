@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.pine.template.login.LoginSPKeyConstants;
+import com.pine.template.login.LoginKeyConstants;
 import com.pine.template.login.R;
 import com.pine.template.login.bean.LoginBean;
 import com.pine.template.login.manager.LoginManager;
@@ -18,8 +18,8 @@ public class LoginVm extends ViewModel {
     @Override
     public void afterViewInit(Context activity) {
         LoginBean loginBean = new LoginBean();
-        String account = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_ACCOUNT, "");
-        String password = SharePreferenceUtils.readStringFromCache(LoginSPKeyConstants.ACCOUNT_PASSWORD, "");
+        String account = SharePreferenceUtils.readStringFromCache(LoginKeyConstants.ACCOUNT_ACCOUNT, "");
+        String password = SharePreferenceUtils.readStringFromCache(LoginKeyConstants.ACCOUNT_PASSWORD, "");
         loginBean.setMobile(account);
         loginBean.setPassword(password);
         setLoginBean(loginBean);
