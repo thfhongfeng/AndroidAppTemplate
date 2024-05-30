@@ -126,6 +126,7 @@ public class CameraHelper {
                 if (listener != null) {
                     listener.onCameraInit(false);
                 }
+                mCameraInitProcessing = false;
                 return;
             }
             if (TextUtils.equals(mCameraType, CameraConfig.DEFAULT)) {
@@ -165,6 +166,7 @@ public class CameraHelper {
             if (listener != null) {
                 listener.onCameraInit(false);
             }
+            mCameraInitProcessing = false;
         }
     }
 

@@ -117,8 +117,8 @@ public class DefaultTtsManager implements ITtsManager {
     }
 
     @Override
-    public boolean play(String tag, String msg, boolean immediately, final TtsPlayProgress listener) {
-        LogUtils.d(TAG, "play TTS tag:" + tag + ",msg:" + msg
+    public boolean play(String utteranceId, String msg, boolean immediately, final TtsPlayProgress listener) {
+        LogUtils.d(TAG, "play TTS utteranceId:" + utteranceId + ",msg:" + msg
                 + ",immediately:" + immediately + ",listener:" + listener
                 + ",mLocale:" + mLocale + ",mIsSupport:" + mIsSupport);
         if (!check(listener)) {
@@ -126,14 +126,14 @@ public class DefaultTtsManager implements ITtsManager {
         }
         if (listener != null) {
             synchronized (mListenerMap) {
-                mListenerMap.put(msg, listener);
+                mListenerMap.put(utteranceId, listener);
             }
         }
         int queueMode = immediately ? TextToSpeech.QUEUE_FLUSH : TextToSpeech.QUEUE_ADD;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Bundle params = new Bundle();
             params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_NOTIFICATION);
-            mSpeech.speak(msg, queueMode, params, msg);
+            mSpeech.speak(msg, queueMode, params, utteranceId);
 
         } else {
             HashMap<String, String> params = new HashMap<>();

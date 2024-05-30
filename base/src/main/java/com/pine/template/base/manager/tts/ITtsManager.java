@@ -11,7 +11,7 @@ public interface ITtsManager {
 
     void shutDown();
 
-    boolean play(String tag, String msg, boolean immediately, final TtsPlayProgress listener);
+    boolean play(String utteranceId, String msg, boolean immediately, final TtsPlayProgress listener);
 
     interface TtsPlayProgress {
         void onDone();
