@@ -29,11 +29,11 @@ public class SFMatchAlgorithm extends MatchAlgorithm {
     private String detectModeFilePath = "";
     // 用于过滤出置信度低于指定值的检测框的阈值
     // 一般来说，这个值可以设置为一个较高的值，以确保只有高置信度的检测结果被保留。通常可以尝试设置为0.5或更高。
-    private float score_thresh = 0.7f;
+    private float score_thresh = 0.75f;
     // 用于非最大抑制的阈值。它是一个浮点数，用于抑制 IoU（交并比）大于指定值的检测框、
     // 这个值用于控制重叠检测框之间的抑制程度。较高的值会导致更少的检测框被抑制，较低的值会导致更多的检测框被抑制。
     // 通常可以尝试设置为0.3到0.5之间的值。(此处设置为0.1避免过多重叠框)
-    private float nms_thresh = 0.1f;
+    private float nms_thresh = 0.3f;
     // 在进行非最大抑制之前，保留的最高置信度检测结果数量
     // 这个值用于限制在非最大抑制之前保留的最高置信度检测结果的数量。这个值可以根据你的需求和应用场景来调整，
     // 通常可以尝试设置为100或更高，具体取决于你希望保留的检测结果数量。
@@ -198,7 +198,7 @@ public class SFMatchAlgorithm extends MatchAlgorithm {
         if (maxSimilarDegree < 0) {
             return false;
         }
-        int calNode = 60;
+        int calNode = 80;
         switch (mRecognizerType) {
             case FaceRecognizerSF.FR_COSINE:
                 double cosine_confidence = cosine_similarity_threshold;
