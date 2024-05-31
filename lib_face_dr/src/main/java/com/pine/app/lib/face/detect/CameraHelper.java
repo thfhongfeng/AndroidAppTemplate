@@ -209,7 +209,7 @@ public class CameraHelper {
             return false;
         }
         Camera.Parameters cameraParam = mCamera.getParameters();
-        Camera.Size preSize = getBestSize(containerW, containerH,
+        Camera.Size preSize = getBestSize(mDisplayRotation, containerW, containerH,
                 cameraParam.getSupportedPreviewSizes());
         if (preSize == null) {
             return false;
@@ -250,7 +250,7 @@ public class CameraHelper {
         mCameraSurfaceParams.yuvDataRotate = yuvDataRotate;
         mCameraSurfaceParams.yuvDataRlMirror = yuvDataRlMirror;
 
-        Camera.Size picSize = getBestSize(
+        Camera.Size picSize = getBestSize(mDisplayRotation,
                 mCameraSurfaceParams.frameWidth > 0 ? mCameraSurfaceParams.frameWidth : containerW,
                 mCameraSurfaceParams.frameHeight > 0 ? mCameraSurfaceParams.frameHeight : containerH,
                 cameraParam.getSupportedPictureSizes());
@@ -578,7 +578,7 @@ public class CameraHelper {
     }
 
     //获取与指定宽高相等或最接近的尺寸
-    public static Camera.Size getBestSize(int targetWidth, int targetHeight, List<Camera.Size> sizeList) {
+    public static Camera.Size getBestSize(int rotation, int targetWidth, int targetHeight, List<Camera.Size> sizeList) {
         Camera.Size bestSize = null;
         int minDiff = Integer.MAX_VALUE;
         StringBuilder sizeLogSb = new StringBuilder();
@@ -588,8 +588,14 @@ public class CameraHelper {
                 bestSize = size;
                 break;
             }
-            int offsetW = Math.abs(targetWidth - size.width);
-            int offsetH = Math.abs(targetHeight - size.height);
+            int supportW = size.width;
+            int supportH = size.height;
+            if (rotation == 90 || rotation == 270) {
+                supportW = size.height;
+                supportH = size.width;
+            }
+            int offsetW = Math.abs(targetWidth - supportW);
+            int offsetH = Math.abs(targetHeight - supportH);
             int offset = offsetW * offsetW + offsetH * offsetH;
             if (Math.abs(offset) < minDiff) {
                 minDiff = offset;
@@ -598,7 +604,7 @@ public class CameraHelper {
         }
         Log.d(TAG, "support sizes:" + (sizeLogSb.length() > 0 ? sizeLogSb.substring(0, sizeLogSb.length() - 1) : ""));
         Log.d(TAG, "目标尺寸:" + targetWidth + "*" + targetHeight);
-        Log.d(TAG, "最优尺寸:" + bestSize.width + "*" + bestSize.height);
+        Log.d(TAG, "最优尺寸:" + bestSize.width + "*" + bestSize.height + " for rotation:" + rotation);
         return bestSize;
     }
 

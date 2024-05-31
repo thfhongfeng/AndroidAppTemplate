@@ -6,7 +6,6 @@ import android.graphics.SurfaceTexture;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
@@ -19,8 +18,8 @@ import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CameraTextureView extends TextureView implements View.OnLayoutChangeListener {
-    private String TAG = "CameraTextureView";
+public class CameraTexture extends TextureView implements View.OnLayoutChangeListener {
+    private String TAG = this.getClass().getSimpleName();
 
     /**
      * frame为innerFrame容器，innerFrame为TextureView容器
@@ -38,13 +37,8 @@ public class CameraTextureView extends TextureView implements View.OnLayoutChang
 
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
 
-    public CameraTextureView(Context context) {
+    public CameraTexture(Context context) {
         super(context);
-        initView();
-    }
-
-    public CameraTextureView(Context context, AttributeSet attrs) {
-        super(context, attrs);
         initView();
     }
 
@@ -124,7 +118,7 @@ public class CameraTextureView extends TextureView implements View.OnLayoutChang
         int frameWidth = frame.getWidth();
         int frameHeight = frame.getHeight();
         boolean setup = mCameraHelper.setupMainSurfaceView(
-                CameraTextureView.this, innerFrame, getConfig(),
+                CameraTexture.this, innerFrame, getConfig(),
                 frameWidth, frameHeight, new ICameraCallback.ICameraSetListener() {
                     @Override
                     public boolean onParamSet(@NonNull CameraSurfaceParams params) {

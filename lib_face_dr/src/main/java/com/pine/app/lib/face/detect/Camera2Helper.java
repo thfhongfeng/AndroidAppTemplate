@@ -751,7 +751,7 @@ public class Camera2Helper {
         } catch (Exception e) {
             return null;
         }
-        return getBestSize(targetWidth, targetHeight, sizes);
+        return getBestSize(mDisplayRotation, targetWidth, targetHeight, sizes);
     }
 
     private Size choosePicSize(String cameraId, int targetWidth, int targetHeight) {
@@ -767,11 +767,11 @@ public class Camera2Helper {
         } catch (Exception e) {
             return null;
         }
-        return getBestSize(targetWidth, targetHeight, sizes);
+        return getBestSize(mDisplayRotation, targetWidth, targetHeight, sizes);
     }
 
     //获取与指定宽高相等或最接近的尺寸
-    public static Size getBestSize(int targetWidth, int targetHeight, List<Size> sizeList) {
+    public static Size getBestSize(int rotation, int targetWidth, int targetHeight, List<Size> sizeList) {
         Size bestSize = null;
         int minDiff = Integer.MAX_VALUE;
         StringBuilder sizeLogSb = new StringBuilder();
@@ -781,8 +781,14 @@ public class Camera2Helper {
                 bestSize = size;
                 break;
             }
-            int offsetW = Math.abs(targetWidth - size.getWidth());
-            int offsetH = Math.abs(targetHeight - size.getHeight());
+            int supportW = size.getWidth();
+            int supportH = size.getHeight();
+            if (rotation == 90 || rotation == 270) {
+                supportW = size.getHeight();
+                supportH = size.getWidth();
+            }
+            int offsetW = Math.abs(targetWidth - supportW);
+            int offsetH = Math.abs(targetHeight - supportH);
             int offset = offsetW * offsetW + offsetH * offsetH;
             if (Math.abs(offset) < minDiff) {
                 minDiff = offset;
@@ -791,7 +797,7 @@ public class Camera2Helper {
         }
         Log.d(TAG, "support sizes:" + (sizeLogSb.length() > 0 ? sizeLogSb.substring(0, sizeLogSb.length() - 1) : ""));
         Log.d(TAG, "目标尺寸:" + targetWidth + "*" + targetHeight);
-        Log.d(TAG, "最优尺寸:" + bestSize.getWidth() + "*" + bestSize.getHeight());
+        Log.d(TAG, "最优尺寸:" + bestSize.getWidth() + "*" + bestSize.getHeight() + " for rotation:" + rotation);
         return bestSize;
     }
 
