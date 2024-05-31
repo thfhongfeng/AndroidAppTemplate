@@ -7,7 +7,8 @@ public class CameraConfig {
     public final static String EXTERNAL = "external";
 
     // 相机相关配置
-    public String cameraType = FRONT;//摄像头类型默认是前置摄像头
+    public String cameraType = FRONT;//摄像头类型默认是前置摄像头（如果设置了cameraId，则cameraId的方式打开摄像头）
+    public int cameraIndex = -1;//摄像头ID索引
     public boolean rlMirror; // 左右镜像
 
     public int preWidth = -1; // 固定预览宽度，preWidth和preHeight有一个小于等于0，则自动计算合适的预览尺寸

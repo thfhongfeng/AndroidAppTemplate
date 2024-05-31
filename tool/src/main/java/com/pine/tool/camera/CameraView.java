@@ -26,7 +26,10 @@ public class CameraView extends RelativeLayout {
         initView();
     }
 
+
     private void initView() {
+        removeAllViews();
+
         cameraTexture = new CameraTexture(getContext());
         cameraTexture.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
@@ -36,6 +39,8 @@ public class CameraView extends RelativeLayout {
     }
 
     public void init(@NonNull CameraConfig config, final CameraTexture.ICameraPreparedCallback listener) {
+        initView();
+
         cameraTexture.setConfig(config);
         cameraTexture.setCameraPreparedListener(listener);
     }
@@ -53,7 +58,9 @@ public class CameraView extends RelativeLayout {
     }
 
     public void takePicture(final CameraTexture.PicCallback callback) {
-
+        if (cameraTexture != null) {
+            cameraTexture.takePicture(callback);
+        }
     }
 
     public synchronized void listenFrameData(final ICameraCallback.PreviewCallback callback) {

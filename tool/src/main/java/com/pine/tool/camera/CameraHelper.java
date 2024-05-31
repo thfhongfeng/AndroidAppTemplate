@@ -129,19 +129,23 @@ public class CameraHelper {
                 mCameraInitProcessing = false;
                 return;
             }
-            if (TextUtils.equals(mCameraType, CameraConfig.DEFAULT)) {
-                mCameraType = config.cameraType;
-            }
-            mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
-            switch (mCameraType) {
-                case CameraConfig.FRONT:
-                    mCamera = openFrontCamera();
-                    mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                    break;
-                default:
-                    mCamera = openBackCamera();
-                    mCameraFacing = Camera.CameraInfo.CAMERA_FACING_BACK;
-                    break;
+            if (config.cameraIndex >= 0) {
+                mCamera = openCamera(config.cameraIndex);
+            } else {
+                if (TextUtils.equals(mCameraType, CameraConfig.DEFAULT)) {
+                    mCameraType = config.cameraType;
+                }
+                mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                switch (mCameraType) {
+                    case CameraConfig.FRONT:
+                        mCamera = openFrontCamera();
+                        mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                        break;
+                    default:
+                        mCamera = openBackCamera();
+                        mCameraFacing = Camera.CameraInfo.CAMERA_FACING_BACK;
+                        break;
+                }
             }
             //如果都初始化失败了，不区别摄像头类型重新初始化一遍(默认情况下会打开后置摄像头)
             if (mCamera == null) {
@@ -539,6 +543,27 @@ public class CameraHelper {
      */
     public boolean isSupportCamera() {
         return Camera.getNumberOfCameras() > 0;
+    }
+
+    public synchronized Camera openCamera(int cameraIndex) {
+        int numberOfCameras = Camera.getNumberOfCameras();
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        for (int index = 0; index < numberOfCameras; index++) {
+            Camera.getCameraInfo(index, cameraInfo);
+            if (cameraIndex == index) {
+                mCameraFacing = cameraInfo.facing;
+                switch (mCameraFacing) {
+                    case Camera.CameraInfo.CAMERA_FACING_FRONT:
+                        mCameraType = CameraConfig.FRONT;
+                        break;
+                    case Camera.CameraInfo.CAMERA_FACING_BACK:
+                        mCameraType = CameraConfig.BACK;
+                        break;
+                }
+                return Camera.open(index);
+            }
+        }
+        return null;
     }
 
     public synchronized Camera openFrontCamera() {
