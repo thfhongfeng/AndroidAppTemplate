@@ -11,9 +11,6 @@ android {
         minSdkVersion build_versions.minSdkVersion
         targetSdkVersion build_versions.targetSdkVersion
 
-        manifestPlaceholders = [baidu_for_app_key: app_key.baidu_for_app_key,
-                                gaode_for_app_key: app_key.gaode_for_app_key]
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //必须要保证所有的flavor 都属于同一个维度

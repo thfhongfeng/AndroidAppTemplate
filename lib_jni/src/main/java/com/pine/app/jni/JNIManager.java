@@ -5,8 +5,6 @@ import androidx.annotation.NonNull;
 import com.pine.app.jni.listener.IJniListener;
 import com.pine.app.jni.listener.IRequestListener;
 
-import java.nio.charset.StandardCharsets;
-
 public class JNIManager {
     private final String TAG = this.getClass().getSimpleName();
 
@@ -17,7 +15,7 @@ public class JNIManager {
     private volatile static boolean mIsInit;
 
     public synchronized static void init() {
-        init("com.minicreate.app.jni.JniObserver", "onResponse", "onFail", "onReceive");
+        init("com.pine.app.jni.JniObserver", "onResponse", "onFail", "onReceive");
     }
 
     /**
@@ -35,12 +33,22 @@ public class JNIManager {
         return mIsInit;
     }
 
+    public JNIManager() {
+        synchronized (JNIManager.class) {
+            if (!isInit()) {
+                JNIManager.init();
+            }
+        }
+    }
+
     public static native int nativeInitRequest(String callbackClass, String responseMethod,
                                                String failMethod, String listenerMethod);
 
-    public native byte[] nativeSyncRequest(String action, String data, int maxSize);
+    public native String nativeSyncRequest(String action, String data, int maxSize);
 
     public native int nativeAsyncRequest(String action, String callTag, String data);
+
+    public native byte[] nativeCameraFrameRequest(int cameraIndex, int width, int height, int maxSize);
 
     /**
      * 同步请求
@@ -55,11 +63,7 @@ public class JNIManager {
         if (!isInit()) {
             throw new JniException("not init");
         }
-        byte[] bytes = nativeSyncRequest(action, data, maxSize);
-        String str = null;
-        if (bytes != null) {
-            str = new String(bytes, StandardCharsets.UTF_8);
-        }
+        String str = nativeSyncRequest(action, data, maxSize);
         return str;
     }
 
@@ -67,7 +71,7 @@ public class JNIManager {
      * 异步请求
      *
      * @param action   请求的业务行为标识
-     * @param callTag  请求者的标识
+     * @param callTag  本次请求者的标识
      * @param data     请求参数数据
      * @param listener 请求回调
      * @return
@@ -78,7 +82,7 @@ public class JNIManager {
         if (!isInit()) {
             throw new JniException("not init");
         }
-        JniObserver.addCallback(action, callTag, listener);
+        JniObserver.addCallback(action, callTag, data, listener);
         int ret = nativeAsyncRequest(action, callTag, data);
         return ret == 1;
     }
@@ -87,7 +91,7 @@ public class JNIManager {
      * 监听信息（会先返回最近一条信息）
      *
      * @param action   请求的业务行为标识
-     * @param callTag  请求者的标识
+     * @param callTag  本次请求者的标识
      * @param listener
      * @throws JniException
      */
@@ -102,7 +106,7 @@ public class JNIManager {
      * 监听信息
      *
      * @param action   请求的业务行为标识
-     * @param callTag  请求者的标识
+     * @param callTag  本次请求者的标识
      * @param listener
      * @throws JniException
      */
@@ -125,5 +129,13 @@ public class JNIManager {
             throw new JniException("not init");
         }
         JniObserver.unListen(action, callTag);
+    }
+
+    public byte[] cameraFrameRequest(int cameraIndex, int width, int height, int maxSize) throws JniException {
+        if (!isInit()) {
+            throw new JniException("not init");
+        }
+        android.util.Log.d(TAG, "aa");
+        return nativeCameraFrameRequest(cameraIndex, width, height, maxSize);
     }
 }

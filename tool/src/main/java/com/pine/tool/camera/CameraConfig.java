@@ -29,4 +29,24 @@ public class CameraConfig {
     public int deviceFixOrientation = -1;
 
     public String savePicFilePath = "";//照片（原照片）保存路径
+
+    @Override
+    public String toString() {
+        return "CameraConfig{" +
+                "cameraType='" + cameraType + '\'' +
+                ", cameraIndex=" + cameraIndex +
+                ", rlMirror=" + rlMirror +
+                ", preWidth=" + preWidth +
+                ", preHeight=" + preHeight +
+                ", takePicRlMirror=" + takePicRlMirror +
+                ", picWidth=" + picWidth +
+                ", picHeight=" + picHeight +
+                ", takePicRotation=" + takePicRotation +
+                ", displayFixTranslationX=" + displayFixTranslationX +
+                ", displayFixTranslationY=" + displayFixTranslationY +
+                ", zoomOffset=" + zoomOffset +
+                ", deviceFixOrientation=" + deviceFixOrientation +
+                ", savePicFilePath='" + savePicFilePath + '\'' +
+                '}';
+    }
 }

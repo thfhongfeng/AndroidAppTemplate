@@ -27,32 +27,28 @@ import java.util.List;
 public class CameraHelper {
     private static String TAG = CameraHelper.class.getSimpleName();
 
-    private static HashMap<String, CameraHelper> instanceMap = new HashMap<>();
+    private static HashMap<Integer, CameraHelper> instanceMap = new HashMap<>();
 
     public static synchronized CameraHelper getInstance() {
-        CameraHelper instance = instanceMap.get(CameraConfig.DEFAULT);
+        return getInstance(0);
+    }
+
+    public static synchronized CameraHelper getInstance(int cameraIdIndex) {
+        CameraHelper instance = instanceMap.get(cameraIdIndex);
         if (instance == null) {
-            instance = new CameraHelper(CameraConfig.DEFAULT);
-            instanceMap.put(CameraConfig.DEFAULT, instance);
+            instance = new CameraHelper(cameraIdIndex);
+            instanceMap.put(cameraIdIndex, instance);
         }
         return instance;
     }
 
-    public static synchronized CameraHelper getInstance(String cameraType) {
-        CameraHelper instance = instanceMap.get(cameraType);
-        if (instance == null) {
-            instance = new CameraHelper(cameraType);
-            instanceMap.put(cameraType, instance);
-        }
-        return instance;
-    }
-
-    private CameraHelper(String cameraType) {
-        mCameraType = cameraType;
-        Log.d(TAG, "create camera for: " + cameraType);
+    private CameraHelper(int cameraIdIndex) {
+        mCameraIdIndex = cameraIdIndex;
+        Log.d(TAG, "create camera for: " + cameraIdIndex);
     }
 
     private String mCameraType = CameraConfig.DEFAULT;
+    private int mCameraIdIndex = 0;
     private int mCameraFacing = -1;
     private CameraConfig mCameraConfig;
 

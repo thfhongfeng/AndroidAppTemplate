@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 public class RequestInfo {
     private String action;
     private String callTag;
+    private String requestData;
     private IRequestListener listener;
     private long callTime;
 
@@ -27,6 +28,14 @@ public class RequestInfo {
 
     public void setCallTag(String callTag) {
         this.callTag = callTag;
+    }
+
+    public String getRequestData() {
+        return requestData;
+    }
+
+    public void setRequestData(String requestData) {
+        this.requestData = requestData;
     }
 
     public IRequestListener getListener() {

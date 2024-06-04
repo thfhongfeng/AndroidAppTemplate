@@ -32,7 +32,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
 
     private int mInnerFrameWidth, mInnerFrameHeight;
 
-    private CameraHelper mCameraHelper = CameraHelper.getInstance();
+    private CameraHelper mCameraHelper;
     private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
@@ -50,6 +50,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     }
 
     public void init(CameraConfig config, ICameraPreparedCallback listener) {
+        mCameraHelper = CameraHelper.getInstance(config.cameraIndex);
         setConfig(config);
         setCameraPreparedListener(listener);
     }
@@ -74,8 +75,11 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
 
     //初始化摄像头
     private void initCamera(boolean force, final ICameraPreparedCallback listener) {
+        if (mCameraHelper == null) {
+            mCameraHelper = CameraHelper.getInstance();
+        }
         boolean needForce = force && mInnerFrameWidth != getWidth() && mInnerFrameHeight != getHeight();
-        Log.d(TAG, "initCamera force:" + force + ", needForce:" + needForce);
+        Log.d(TAG, "initCamera force:" + force + ", needForce:" + needForce + ", config:" + config);
         if (!needForce && mCameraHelper.isCameraPrepared()) {
             if (listener != null) {
                 listener.onCameraPrepared(true, mCameraHelper.getCameraSurfaceParams());
@@ -192,27 +196,42 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
 
     public void stopCameraPreview() {
         mMainHandler.removeCallbacksAndMessages(null);
-        mCameraHelper.stopCameraPreview();
-        mCameraHelper.release();
+        if (mCameraHelper != null) {
+            mCameraHelper.stopCameraPreview();
+            mCameraHelper.release();
+        }
     }
 
     public synchronized void listenFrameData(final ICameraCallback.PreviewCallback callback) {
-        mCameraHelper.listenFrameData(callback);
+        if (mCameraHelper != null) {
+            mCameraHelper.listenFrameData(callback);
+        }
     }
 
     public synchronized void unListenFrameData() {
-        mCameraHelper.unListenFrameData();
+        if (mCameraHelper != null) {
+            mCameraHelper.unListenFrameData();
+        }
     }
 
     public boolean startRecording(RecordConfig config, ICameraCallback.IRecordCallback callback) {
+        if (mCameraHelper == null) {
+            return false;
+        }
         return mCameraHelper.startRecording(config, callback);
     }
 
     public void completeRecording(boolean resumePreview) {
+        if (mCameraHelper == null) {
+            return;
+        }
         mCameraHelper.completeRecording(resumePreview);
     }
 
     public void stopRecording(boolean resumePreview) {
+        if (mCameraHelper == null) {
+            return;
+        }
         mCameraHelper.stopRecording(resumePreview);
     }
 
@@ -233,6 +252,12 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
      * @param callback
      */
     public void takePicture(final PicCallback callback) {
+        if (mCameraHelper == null) {
+            if (callback != null) {
+                callback.onFail();
+            }
+            return;
+        }
         mCameraHelper.takePicture(new ICameraCallback.TakePicListener() {
             @Override
             public void onPictureTaken(Bitmap bitmap) {

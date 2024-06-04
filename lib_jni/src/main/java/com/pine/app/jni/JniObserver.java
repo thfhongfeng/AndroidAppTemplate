@@ -1,6 +1,7 @@
 package com.pine.app.jni;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class JniObserver {
     public static HashMap<String, HashMap<String, IJniListener>> mListenerMap = new HashMap<>();
     public static HashMap<String, String> mLastListenDataInfo = new HashMap<>();
+    private static Handler mCheckRequestHandler = new Handler(Looper.getMainLooper());
 
     public static void listen(@NonNull String action, String callTag, IJniListener listener) {
         if (listener == null) {
@@ -98,7 +100,7 @@ public class JniObserver {
 
     public static HashMap<String, HashMap<String, RequestInfo>> mRequestMap = new HashMap<>();
 
-    public static void addCallback(@NonNull String action, @NonNull String callTag,
+    public static void addCallback(@NonNull String action, @NonNull String callTag, String data,
                                    IRequestListener listener) {
         if (listener == null) {
             return;
@@ -111,10 +113,12 @@ public class JniObserver {
             }
             RequestInfo requestInfo = new RequestInfo(action, callTag);
             requestInfo.setCallTime(SystemClock.uptimeMillis());
+            requestInfo.setRequestData(data);
             requestInfo.setListener(listener);
             map.put(callTag, requestInfo);
         }
-        new Handler().post(new Runnable() {
+        mCheckRequestHandler.removeCallbacksAndMessages(null);
+        mCheckRequestHandler.post(new Runnable() {
             @Override
             public void run() {
                 checkRequestListenerState();

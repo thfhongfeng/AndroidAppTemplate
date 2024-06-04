@@ -15,7 +15,7 @@ using namespace std;
 
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_minicreate_app_jni_JNIManager_nativeInitRequest
+Java_com_pine_app_jni_JNIManager_nativeInitRequest
         (JNIEnv *env, jclass clazz, jstring callbackClass, jstring responseMethod,
          jstring failMethod, jstring listenerMethod) {
     int ret = 0;
@@ -34,29 +34,29 @@ Java_com_minicreate_app_jni_JNIManager_nativeInitRequest
     return ret;
 }
 
-extern "C" JNIEXPORT jbyteArray JNICALL
-Java_com_minicreate_app_jni_JNIManager_nativeSyncRequest
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_pine_app_jni_JNIManager_nativeSyncRequest
         (JNIEnv *env, jobject /* this */, jstring action, jstring data,
          jint maxSize) {
-    BYTE buf[maxSize];
+    char *nativeBuffer;
     int len = 0;
     const char *actionChars = env->GetStringUTFChars(action, 0);
     const char *dataChars = env->GetStringUTFChars(data, 0);
 
     // todo
+    nativeBuffer = (char *) malloc(maxSize);
+    len = maxSize;
 
     env->ReleaseStringUTFChars(action, actionChars);
     env->ReleaseStringUTFChars(data, dataChars);
     if (len < 1) return NULL;
-    jbyteArray byteArray;
-    jbyte *bytes = reinterpret_cast<jbyte *>(buf);
-    byteArray = env->NewByteArray(len);
-    env->SetByteArrayRegion(byteArray, 0, len, bytes);
-    return byteArray;
+    jstring str = env->NewStringUTF(nativeBuffer);
+    free(nativeBuffer);
+    return str;
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_minicreate_app_jni_JNIManager_nativeAsyncRequest
+Java_com_pine_app_jni_JNIManager_nativeAsyncRequest
         (JNIEnv *env, jobject /* this */, jstring action, jstring callTag, jstring data) {
     int ret = 0;
     const char *actionChars = env->GetStringUTFChars(action, 0);
@@ -66,16 +66,38 @@ Java_com_minicreate_app_jni_JNIManager_nativeAsyncRequest
     // todo
     // test code begin
     // 获取MyJNIClass类
-    jclass cls = env->FindClass("com/minicreate/app/jni/JniObserver");
+    jclass cls = env->FindClass("com/pine/app/jni/JniObserver");
     // 获取静态方法的方法ID
     jmethodID methodId = env->GetStaticMethodID(cls, "onResponse",
                                                 "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
-    // test code end
     // 调用静态方法
     env->CallStaticVoidMethod(cls, methodId, action, callTag, data);
+    // test code end
 
     env->ReleaseStringUTFChars(action, actionChars);
     env->ReleaseStringUTFChars(callTag, callTagChars);
     env->ReleaseStringUTFChars(data, dataChars);
     return ret;
+}
+
+extern "C" JNIEXPORT jbyteArray JNICALL
+Java_com_pine_app_jni_JNIManager_nativeCameraFrameRequest
+        (JNIEnv *env, jobject /* this */, jint cameraIndex, jint width, jint height, jint maxSize) {
+    unsigned char *nativeBuffer;
+    int len = 0;
+
+    // todo
+    nativeBuffer = (unsigned char *) malloc(maxSize);
+    for (int i = 0; i < maxSize; i++) {
+        nativeBuffer[i] = 0x22;
+        len++;
+    }
+
+    if (len < 1) return NULL;
+    jbyteArray byteArray;
+    jbyte *bytes = reinterpret_cast<jbyte *>(nativeBuffer);
+    byteArray = env->NewByteArray(len);
+    env->SetByteArrayRegion(byteArray, 0, len, bytes);
+    free(nativeBuffer);
+    return byteArray;
 }

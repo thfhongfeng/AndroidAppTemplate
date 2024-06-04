@@ -40,9 +40,7 @@ public class CameraView extends RelativeLayout {
 
     public void init(@NonNull CameraConfig config, final CameraTexture.ICameraPreparedCallback listener) {
         initView();
-
-        cameraTexture.setConfig(config);
-        cameraTexture.setCameraPreparedListener(listener);
+        cameraTexture.init(config, listener);
     }
 
     public void startCameraPreview() {
