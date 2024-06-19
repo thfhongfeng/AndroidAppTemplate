@@ -88,7 +88,7 @@ public class SysSettingsUtils {
      * @param context
      * @param brightness
      */
-    public static void setSysScreenBrightness(Context context, int brightness) {
+    public static int setSysScreenBrightness(Context context, int brightness) {
         try {
             if (brightness < MIN_BRIGHTNESS) {
                 brightness = MIN_BRIGHTNESS;
@@ -104,6 +104,7 @@ public class SysSettingsUtils {
         } catch (Exception e) {
             LogUtils.d(TAG, "setSysScreenBrightness Exception:" + e);
         }
+        return brightness;
     }
 
     /**
@@ -112,9 +113,9 @@ public class SysSettingsUtils {
      * @param context
      * @param brightnessPct 百分比：0-100
      */
-    public static void setSysScreenBrightnessPct(Context context, int brightnessPct) {
+    public static int setSysScreenBrightnessPct(Context context, int brightnessPct) {
+        int brightness = brightnessPct * MAX_BRIGHTNESS / 100;
         try {
-            int brightness = brightnessPct * MAX_BRIGHTNESS / 100;
             if (brightness < MIN_BRIGHTNESS) {
                 brightness = MIN_BRIGHTNESS;
             }
@@ -130,6 +131,7 @@ public class SysSettingsUtils {
         } catch (Exception e) {
             LogUtils.d(TAG, "setSysScreenBrightnessPct Exception:" + e);
         }
+        return brightness * 100 / MAX_BRIGHTNESS;
     }
 
     /**
@@ -138,7 +140,7 @@ public class SysSettingsUtils {
      * @param activity
      * @param brightnessPct 百分比：0-100
      */
-    public static void setActScreenBrightnessPct(final Activity activity, int brightnessPct) {
+    public static int setActScreenBrightnessPct(final Activity activity, int brightnessPct) {
         int brightness = brightnessPct * MAX_BRIGHTNESS / 100;
         if (brightness < MIN_BRIGHTNESS) {
             brightness = MIN_BRIGHTNESS;
@@ -151,6 +153,7 @@ public class SysSettingsUtils {
         LogUtils.d(TAG, "setActScreenBrightnessPct brightnessPct:" + brightnessPct +
                 ", lp.screenBrightness:" + lp.screenBrightness);
         activity.getWindow().setAttributes(lp);
+        return brightness * 100 / MAX_BRIGHTNESS;
     }
 
     /**
@@ -175,8 +178,8 @@ public class SysSettingsUtils {
      * @param context
      * @param volume
      */
-    public static void setMusicVolume(Context context, int volume) {
-        setVolume(context, volume, AudioManager.STREAM_MUSIC);
+    public static int setMusicVolume(Context context, int volume) {
+        return setVolume(context, volume, AudioManager.STREAM_MUSIC);
     }
 
     /**
@@ -185,8 +188,8 @@ public class SysSettingsUtils {
      * @param context
      * @param volumePct 百分比：0-100
      */
-    public static void setMusicVolumePct(Context context, int volumePct) {
-        setVolumePct(context, volumePct, AudioManager.STREAM_MUSIC);
+    public static int setMusicVolumePct(Context context, int volumePct) {
+        return setVolumePct(context, volumePct, AudioManager.STREAM_MUSIC);
     }
 
     /**
@@ -211,8 +214,8 @@ public class SysSettingsUtils {
      * @param context
      * @param volume
      */
-    public static void setTtsVolume(Context context, int volume) {
-        setVolume(context, volume, AudioManager.STREAM_NOTIFICATION);
+    public static int setTtsVolume(Context context, int volume) {
+        return setVolume(context, volume, AudioManager.STREAM_NOTIFICATION);
     }
 
     /**
@@ -221,8 +224,8 @@ public class SysSettingsUtils {
      * @param context
      * @param volumePct 百分比：0-100
      */
-    public static void setTtsVolumePct(Context context, int volumePct) {
-        setVolumePct(context, volumePct, AudioManager.STREAM_NOTIFICATION);
+    public static int setTtsVolumePct(Context context, int volumePct) {
+        return setVolumePct(context, volumePct, AudioManager.STREAM_NOTIFICATION);
     }
 
     /**
@@ -244,9 +247,9 @@ public class SysSettingsUtils {
      */
     public static int getVolumePct(Context context, int steamType) {
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        int maxVolume = mAudioManager.getStreamMaxVolume(steamType) * 100;
+        int maxVolume = mAudioManager.getStreamMaxVolume(steamType);
         int volume = mAudioManager.getStreamVolume(steamType);
-        int volumePct = volume / maxVolume;
+        int volumePct = volume * 100 / maxVolume;
         LogUtils.d(TAG, "getVolumePct volume:" + volume + ",maxVolume:" + maxVolume +
                 ",volumePct:" + volumePct + ", steamType:" + steamType);
         return volumePct;
@@ -259,7 +262,7 @@ public class SysSettingsUtils {
      * @param volume
      * @param steamType
      */
-    public static void setVolume(Context context, int volume, int steamType) {
+    public static int setVolume(Context context, int volume, int steamType) {
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = mAudioManager.getStreamMaxVolume(steamType);
         if (volume < 0) {
@@ -271,6 +274,7 @@ public class SysSettingsUtils {
         LogUtils.d(TAG, "setVolume volume:" + volume + ",maxVolume:" + maxVolume +
                 ", steamType:" + steamType);
         mAudioManager.setStreamVolume(steamType, volume, 0);
+        return volume;
     }
 
     /**
@@ -280,7 +284,7 @@ public class SysSettingsUtils {
      * @param volumePct 百分比：0-100
      * @param steamType
      */
-    public static void setVolumePct(Context context, int volumePct, int steamType) {
+    public static int setVolumePct(Context context, int volumePct, int steamType) {
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = mAudioManager.getStreamMaxVolume(steamType);
         int volume = volumePct * maxVolume / 100;
@@ -293,6 +297,10 @@ public class SysSettingsUtils {
         LogUtils.d(TAG, "setVolumePct volume:" + volume + ",maxVolume:" + maxVolume +
                 ",volumePct:" + volumePct + ", steamType:" + steamType);
         mAudioManager.setStreamVolume(steamType, volume, 0);
+        if (maxVolume > 0) {
+            return volume * 100 / maxVolume;
+        }
+        return 0;
     }
 
     /**
@@ -315,7 +323,7 @@ public class SysSettingsUtils {
      * @param context
      * @param sleepTime
      */
-    public static void setSleepTime(Context context, int sleepTime) {
+    public static int setSleepTime(Context context, int sleepTime) {
         if (sleepTime <= 0) {
             sleepTime = Integer.MAX_VALUE;
         }
@@ -324,5 +332,6 @@ public class SysSettingsUtils {
         Uri uri = Settings.System
                 .getUriFor(Settings.System.SCREEN_OFF_TIMEOUT);
         context.getContentResolver().notifyChange(uri, null);
+        return sleepTime;
     }
 }

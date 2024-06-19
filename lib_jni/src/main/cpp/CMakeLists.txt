@@ -12,14 +12,23 @@ project("jniLib")
 # 1. 定义so库和头文件所在目录，方面后面使用
 # src/main/jniLibs有特殊含义，该文件夹用于存放预构建的本地库文件的标准目录，用于jni加载调用。
 # c++使用导入时不要用此目录，否则会报包重复错误
-set(jni_lib_dir ${CMAKE_SOURCE_DIR}/../third/${ANDROID_ABI})
+set(jni_lib_dir ${CMAKE_SOURCE_DIR}/jniLibs/${ANDROID_ABI})
 set(jni_head_dir ${CMAKE_SOURCE_DIR}/head)
 
 # 2. 添加头文件目录
 include_directories(${jni_head_dir}/include)
 
 # 3. 添加相关的so库
-
+#导入第三方so包，并声明为 IMPORTED 属性，指明只是想把 so 导入到项目中
+#add_library必须在set_target_properties之前
+add_library(lib-xxx
+        SHARED
+        IMPORTED)
+#指明 so 库的路径，CMAKE_SOURCE_DIR 表示 CMakeLists.txt 的路径
+set_target_properties(
+        lib-xxx
+        PROPERTIES IMPORTED_LOCATION
+        ${jni_lib_dir}/xxx.so)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -58,6 +67,8 @@ target_link_libraries( # Specifies the target library.
         jniLib
 
         # 4. 连接相关的库
+        #lib-xxx
+
         android
 
         # Links the target library to the log library
