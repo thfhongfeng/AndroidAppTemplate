@@ -20,7 +20,7 @@ jobject jniManagerCbObj = nullptr;
 
 extern "C" JNIEXPORT jint JNICALL
 Java_com_minicreate_app_jni_JNIManager_nativeInitJniManager
-        (JNIEnv *env, jclass objInstance) {
+        (JNIEnv *env, jobject objInstance) {
     int ret = 0;
     jniManagerCbObj = env->NewGlobalRef(objInstance);
     return ret;
@@ -28,7 +28,7 @@ Java_com_minicreate_app_jni_JNIManager_nativeInitJniManager
 
 extern "C" JNIEXPORT jint JNICALL
 Java_com_minicreate_app_jni_JNIManager_nativeReleaseJniManager
-        (JNIEnv *env, jclass objInstance) {
+        (JNIEnv *env, jobject objInstance) {
     int ret = 0;
     if (jniManagerCbObj != nullptr) {
         env->DeleteGlobalRef(jniManagerCbObj);
