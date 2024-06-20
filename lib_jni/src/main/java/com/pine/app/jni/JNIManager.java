@@ -2,6 +2,7 @@ package com.pine.app.jni;
 
 import androidx.annotation.NonNull;
 
+import com.pine.app.jni.listener.ICameraFrameListener;
 import com.pine.app.jni.listener.IJniListener;
 import com.pine.app.jni.listener.IRequestListener;
 
@@ -135,7 +136,65 @@ public class JNIManager {
         if (!isInit()) {
             throw new JniException("not init");
         }
-        android.util.Log.d(TAG, "aa");
         return nativeCameraFrameRequest(cameraIndex, width, height, maxSize);
+    }
+
+
+    public native int nativeInitCCamera();
+
+    public native int nativeStartCCameraFrame(int cameraIndex);
+
+    public native int nativeStopCCameraFrame();
+
+    public native int nativeReleaseCCamera();
+
+    private boolean mCCameraInit;
+
+    private static ICameraFrameListener mCameraFrameListener;
+
+    private static Object mCameraFrameLock = new Object();
+
+    public synchronized boolean initCCamera(ICameraFrameListener listener) {
+        mCCameraInit = nativeInitCCamera() == 0;
+        if (mCCameraInit) {
+            synchronized (mCameraFrameLock) {
+                mCameraFrameListener = listener;
+            }
+        }
+        return mCCameraInit;
+    }
+
+    public synchronized boolean startCCameraFrame(int cameraIndex) {
+        if (!mCCameraInit) {
+            return false;
+        }
+        return nativeStartCCameraFrame(cameraIndex) == 0;
+    }
+
+    public synchronized boolean stopCCameraFrame() {
+        if (!mCCameraInit) {
+            return false;
+        }
+        return nativeStopCCameraFrame() == 0;
+    }
+
+    public synchronized boolean releaseCCamera() {
+        int ret = nativeReleaseCCamera();
+        synchronized (mCameraFrameLock) {
+            mCameraFrameListener = null;
+        }
+        mCCameraInit = false;
+        return ret == 0;
+    }
+
+    public static void cameraFrameCallback(int cameraIndex, byte[] ptr, int size,
+                                           int mtype, int frameIndex, long ts) {
+        ICameraFrameListener listener = null;
+        synchronized (mCameraFrameLock) {
+            listener = mCameraFrameListener;
+        }
+        if (listener != null) {
+            mCameraFrameListener.onFrame(cameraIndex, ptr, size, mtype, frameIndex, ts);
+        }
     }
 }
