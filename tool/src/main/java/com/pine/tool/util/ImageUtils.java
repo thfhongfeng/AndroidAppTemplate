@@ -1978,14 +1978,14 @@ public class ImageUtils {
             saveFile.delete();
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        src.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        src.compress(CompressFormat.JPEG, 100, baos);
         LogUtils.d(TAG, "需要压缩到" + maxByteSize + "byte，" +
                 "图片压缩前大小：" + baos.toByteArray().length + "byte");
         byte[] bytes;
         int compressQuality = 0;
         if (baos.size() > maxByteSize && maxByteSize > 0) {
             baos.reset();
-            src.compress(Bitmap.CompressFormat.JPEG, 0, baos);
+            src.compress(CompressFormat.JPEG, 0, baos);
             if (baos.size() < maxByteSize) { // 最差质量不小于最大字节，则返回最差质量
                 // 二分法寻找最佳质量
                 int st = 0;
@@ -1994,7 +1994,7 @@ public class ImageUtils {
                 while (st < end) {
                     mid = (st + end) / 2;
                     baos.reset();
-                    src.compress(Bitmap.CompressFormat.JPEG, mid, baos);
+                    src.compress(CompressFormat.JPEG, mid, baos);
                     int len = baos.size();
                     if (len == maxByteSize) {
                         break;
@@ -2006,7 +2006,7 @@ public class ImageUtils {
                 }
                 if (end == mid - 1) {
                     baos.reset();
-                    src.compress(Bitmap.CompressFormat.JPEG, st, baos);
+                    src.compress(CompressFormat.JPEG, st, baos);
                     compressQuality = st;
                 }
             }

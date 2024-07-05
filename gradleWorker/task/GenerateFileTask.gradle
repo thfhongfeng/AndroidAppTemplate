@@ -37,7 +37,7 @@ class GenerateConfigKeyTask extends DefaultTask {
     // 生成BuildConfigKey.java文件
     void generateBuildConfigKeyFile() {
         def buildPackage = taskRootProject.ext.build_flavor_product[variantFlavorName].build_product_applicationId
-        def buildModelPackage = "${buildPackage}.${taskProject.name}"
+        def buildModelPackage = "com.pine.app.template.${taskProject.name}"
         // 构建正确的目录路径
         def outputDir = "${buildDir}/generated/source/buildConfig/${variantFlavorName}/${variantBuildTypeName}/${buildModelPackage.replace('.', '/')}"
         // 在这里生成 CustomBuildConfig 文件并写入到指定路径
@@ -91,7 +91,7 @@ ${generateConfigKeyContent()}
     // 生成BuildConfigKey.java文件
     void generateRouterCommandFile() {
         def buildPackage = taskRootProject.ext.build_flavor_product[variantFlavorName].build_product_applicationId
-        def buildModelPackage = "${buildPackage}.${taskProject.name}.router"
+        def buildModelPackage = "com.pine.app.template.${taskProject.name}.router"
         // 构建正确的目录路径
         def outputDir = "${buildDir}/generated/source/buildConfig/${variantFlavorName}/${variantBuildTypeName}/${buildModelPackage.replace('.', '/')}"
         taskRootProject.ext.bundleRouterConfig.each { key, item ->

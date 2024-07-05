@@ -75,6 +75,7 @@ public class NetWorkUtils {
      *
      * @return null：没有网络连接
      */
+    @SuppressLint("MissingPermission")
     public static String getIpAddress() {
         NetworkInfo networkInfo = ((ConnectivityManager) AppUtils.getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();

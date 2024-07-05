@@ -8,7 +8,10 @@ import java.util.Map;
  */
 
 public interface IResponseListener {
-    interface OnResponseListener {
+    interface ResponseListener {
+    }
+
+    interface OnResponseListener extends ResponseListener {
         void onStart(int what);
 
         void onSucceed(int what, Response response);
@@ -18,7 +21,7 @@ public interface IResponseListener {
         void onFinish(int what);
     }
 
-    interface OnDownloadListener {
+    interface OnDownloadListener extends ResponseListener {
         void onDownloadError(int what, Exception exception);
 
         void onStart(int what, boolean isResume, long rangeSize, Map<String, List<String>> responseHeaders, long allCount);
@@ -36,7 +39,7 @@ public interface IResponseListener {
         void onCancel(int what);
     }
 
-    interface OnUploadListener {
+    interface OnUploadListener extends ResponseListener {
         void onStart(int what, UploadRequestBean.FileBean fileBean);
 
         void onCancel(int what, UploadRequestBean.FileBean fileBean);

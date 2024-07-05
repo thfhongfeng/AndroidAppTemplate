@@ -30,7 +30,7 @@ public class AppSettingsDialog implements Parcelable {
     public static final int DEFAULT_SETTINGS_REQ_CODE = 16061;
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    public static final Parcelable.Creator<AppSettingsDialog> CREATOR = new Parcelable.Creator<AppSettingsDialog>() {
+    public static final Creator<AppSettingsDialog> CREATOR = new Creator<AppSettingsDialog>() {
         @Override
         public AppSettingsDialog createFromParcel(Parcel in) {
             return new AppSettingsDialog(in);
@@ -314,7 +314,7 @@ public class AppSettingsDialog implements Parcelable {
 
         /**
          * Set whether the settings screen should be opened in a separate task. This is achieved by
-         * setting {@link android.content.Intent#FLAG_ACTIVITY_NEW_TASK#FLAG_ACTIVITY_NEW_TASK} on
+         * setting {@link Intent#FLAG_ACTIVITY_NEW_TASK#FLAG_ACTIVITY_NEW_TASK} on
          * the Intent used to open the settings screen.
          */
         @NonNull

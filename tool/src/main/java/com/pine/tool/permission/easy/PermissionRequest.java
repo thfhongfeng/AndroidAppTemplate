@@ -20,7 +20,7 @@ import java.util.Arrays;
  * such as the permissions, request code, and rationale.
  *
  * @see EasyPermissions#requestPermissions(PermissionRequest)
- * @see PermissionRequest.Builder
+ * @see Builder
  */
 public final class PermissionRequest {
     private final PermissionHelper mHelper;
