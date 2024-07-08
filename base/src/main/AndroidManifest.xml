@@ -55,7 +55,6 @@
         <activity
             android:name="com.pine.tool.permission.easy.AppSettingsDialogHolderActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
         <service
