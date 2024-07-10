@@ -69,6 +69,20 @@ public class TtsManager {
         mProxy.shutDown();
     }
 
+    public boolean play(TtsEntity entity) {
+        if (!isInit()) {
+            return false;
+        }
+        return play(entity, null);
+    }
+
+    public boolean play(TtsEntity entity, final ITtsManager.TtsPlayProgress listener) {
+        if (!isInit()) {
+            return false;
+        }
+        return mProxy.play(entity, listener);
+    }
+
     public boolean play(String msg) {
         if (!isInit()) {
             return false;
@@ -94,7 +108,10 @@ public class TtsManager {
         if (!isInit()) {
             return false;
         }
-        return mProxy.play(msg, msg, immediately, listener);
+        TtsEntity entity = new TtsEntity(msg);
+        entity.setMsg(msg);
+        entity.setImmediately(immediately);
+        return mProxy.play(entity, listener);
     }
 
     public boolean play(String utteranceId, String msg) {
@@ -122,7 +139,10 @@ public class TtsManager {
         if (!isInit()) {
             return false;
         }
-        return mProxy.play(utteranceId, msg, immediately, listener);
+        TtsEntity entity = new TtsEntity(utteranceId);
+        entity.setMsg(msg);
+        entity.setImmediately(immediately);
+        return mProxy.play(entity, listener);
     }
 
     public boolean play(@StringRes int resId) {
@@ -151,7 +171,10 @@ public class TtsManager {
             return false;
         }
         String msg = ResourceManager.getInstance().getString(mLocale, resId);
-        return mProxy.play(msg, msg, immediately, listener);
+        TtsEntity entity = new TtsEntity(msg);
+        entity.setMsg(msg);
+        entity.setImmediately(immediately);
+        return mProxy.play(entity, listener);
     }
 
     public boolean play(String utteranceId, @StringRes int resId) {
@@ -179,7 +202,10 @@ public class TtsManager {
         if (!isInit()) {
             return false;
         }
-        return mProxy.play(utteranceId, ResourceManager.getInstance().getString(mLocale, resId), immediately, listener);
+        TtsEntity entity = new TtsEntity(utteranceId);
+        entity.setMsg(ResourceManager.getInstance().getString(mLocale, resId));
+        entity.setImmediately(immediately);
+        return mProxy.play(entity, listener);
     }
 
     public boolean play(@StringRes int resId, Object... formatArgs) {
@@ -207,7 +233,10 @@ public class TtsManager {
             return false;
         }
         String msg = ResourceManager.getInstance().getString(mLocale, resId, formatArgs);
-        return mProxy.play(msg, msg, immediately, listener);
+        TtsEntity entity = new TtsEntity(msg);
+        entity.setMsg(msg);
+        entity.setImmediately(immediately);
+        return mProxy.play(entity, listener);
     }
 
     public boolean play(String utteranceId, @StringRes int resId, Object... formatArgs) {
@@ -238,6 +267,9 @@ public class TtsManager {
         if (!isInit()) {
             return false;
         }
-        return mProxy.play(utteranceId, ResourceManager.getInstance().getString(mLocale, resId, formatArgs), immediately, listener);
+        TtsEntity entity = new TtsEntity(utteranceId);
+        entity.setMsg(ResourceManager.getInstance().getString(mLocale, resId, formatArgs));
+        entity.setImmediately(immediately);
+        return mProxy.play(entity, listener);
     }
 }

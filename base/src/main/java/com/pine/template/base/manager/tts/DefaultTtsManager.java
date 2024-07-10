@@ -91,8 +91,8 @@ public class DefaultTtsManager implements ITtsManager {
         });
     }
 
-    private boolean check(final TtsPlayProgress listener) {
-        if (mLocale == null || !mIsSupport) {
+    private boolean check(TtsEntity ttsEntity, final TtsPlayProgress listener) {
+        if (mLocale == null || !mIsSupport || ttsEntity == null || !ttsEntity.isValid()) {
             mMainHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -117,28 +117,27 @@ public class DefaultTtsManager implements ITtsManager {
     }
 
     @Override
-    public boolean play(String utteranceId, String msg, boolean immediately, final TtsPlayProgress listener) {
-        LogUtils.d(TAG, "play TTS utteranceId:" + utteranceId + ",msg:" + msg
-                + ",immediately:" + immediately + ",listener:" + listener
+    public boolean play(TtsEntity ttsEntity, TtsPlayProgress listener) {
+        LogUtils.d(TAG, "play TTS:" + ttsEntity + ",listener:" + listener
                 + ",mLocale:" + mLocale + ",mIsSupport:" + mIsSupport);
-        if (!check(listener)) {
+        if (!check(ttsEntity, listener)) {
             return false;
         }
         if (listener != null) {
             synchronized (mListenerMap) {
-                mListenerMap.put(utteranceId, listener);
+                mListenerMap.put(ttsEntity.getUtteranceId(), listener);
             }
         }
-        int queueMode = immediately ? TextToSpeech.QUEUE_FLUSH : TextToSpeech.QUEUE_ADD;
+        int queueMode = ttsEntity.isImmediately() ? TextToSpeech.QUEUE_FLUSH : TextToSpeech.QUEUE_ADD;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Bundle params = new Bundle();
             params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_NOTIFICATION);
-            mSpeech.speak(msg, queueMode, params, utteranceId);
+            mSpeech.speak(ttsEntity.getMsg(), queueMode, params, ttsEntity.getUtteranceId());
 
         } else {
             HashMap<String, String> params = new HashMap<>();
             params.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_NOTIFICATION));
-            mSpeech.speak(msg, queueMode, params);
+            mSpeech.speak(ttsEntity.getMsg(), queueMode, params);
         }
         return true;
     }
