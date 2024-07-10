@@ -50,12 +50,13 @@ public class DefaultTtsManager implements ITtsManager {
         mSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
-
+                LogUtils.d(TAG, "onStart utteranceId:" + utteranceId);
             }
 
             @Override
             public void onDone(final String utteranceId) {
-                mMainHandler.postDelayed(new Runnable() {
+                LogUtils.d(TAG, "onDone utteranceId:" + utteranceId);
+                mMainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         TtsPlayProgress listener = null;
@@ -68,12 +69,13 @@ public class DefaultTtsManager implements ITtsManager {
                             listener.onDone();
                         }
                     }
-                }, 1000);
+                });
             }
 
             @Override
             public void onError(final String utteranceId) {
-                mMainHandler.postDelayed(new Runnable() {
+                LogUtils.d(TAG, "onError utteranceId:" + utteranceId);
+                mMainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         TtsPlayProgress listener = null;
@@ -86,21 +88,21 @@ public class DefaultTtsManager implements ITtsManager {
                             listener.onFail();
                         }
                     }
-                }, 500);
+                });
             }
         });
     }
 
     private boolean check(TtsEntity ttsEntity, final TtsPlayProgress listener) {
         if (mLocale == null || !mIsSupport || ttsEntity == null || !ttsEntity.isValid()) {
-            mMainHandler.postDelayed(new Runnable() {
+            mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     if (listener != null) {
                         listener.onFail();
                     }
                 }
-            }, 500);
+            });
             return false;
         }
         return true;
@@ -113,6 +115,7 @@ public class DefaultTtsManager implements ITtsManager {
 
     @Override
     public void shutDown() {
+        mMainHandler.removeCallbacksAndMessages(null);
         mSpeech.shutdown();
     }
 
@@ -133,7 +136,6 @@ public class DefaultTtsManager implements ITtsManager {
             Bundle params = new Bundle();
             params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_NOTIFICATION);
             mSpeech.speak(ttsEntity.getMsg(), queueMode, params, ttsEntity.getUtteranceId());
-
         } else {
             HashMap<String, String> params = new HashMap<>();
             params.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_NOTIFICATION));
