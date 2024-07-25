@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -16,6 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class JniObserver {
+    private final static String TAG = JniObserver.class.getSimpleName();
+
+    private static final boolean TEST_MODE = true;
+
     public static HashMap<String, HashMap<String, IJniListener>> mListenerMap = new HashMap<>();
     public static HashMap<String, String> mLastListenDataInfo = new HashMap<>();
     private static Handler mCheckRequestHandler = new Handler(Looper.getMainLooper());
@@ -127,6 +132,7 @@ public class JniObserver {
     }
 
     public static void onResponse(@NonNull String action, @NonNull String callTag, String data) {
+        Log.d(TAG, "onResponse action:" + action + ", callTag:" + callTag + ", data:" + data);
         RequestInfo requestInfo = null;
         synchronized (mRequestMap) {
             HashMap<String, RequestInfo> actionMap = mRequestMap.get(action);
@@ -135,7 +141,7 @@ public class JniObserver {
             }
         }
         if (requestInfo != null && requestInfo.getListener() != null) {
-            requestInfo.getListener().onResponse(action, data);
+            requestInfo.getListener().onJniResponse(action, data);
         }
     }
 
@@ -148,7 +154,7 @@ public class JniObserver {
             }
         }
         if (requestInfo != null && requestInfo.getListener() != null) {
-            requestInfo.getListener().onFail(action, errCode);
+            requestInfo.getListener().onJniFail(action, errCode);
         }
     }
 
@@ -173,7 +179,7 @@ public class JniObserver {
         }
         for (RequestInfo requestInfo : listeners) {
             if (!TextUtils.isEmpty(requestInfo.getAction()) && requestInfo.getListener() != null) {
-                requestInfo.getListener().onFail(requestInfo.getAction(), IRequestListener.ERR_CODE_TIMEOUT);
+                requestInfo.getListener().onJniFail(requestInfo.getAction(), IRequestListener.ERR_CODE_TIMEOUT);
             }
         }
     }

@@ -211,6 +211,43 @@ public class ConfigSwitcherServer {
         }
     }
 
+    public synchronized void saveConfigMapAllStateImpl(@NonNull HashMap<String, String> configMap) {
+        if (configMap == null || configMap.size() < 1) {
+            return;
+        }
+        Set<String> keySet = configMap.keySet();
+        for (String key : keySet) {
+            mUserConfigStateMap.put(key, new ConfigSwitcherEntity(key, configMap.get(key),
+                    ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_USER));
+            mGuestConfigStateMap.put(key, new ConfigSwitcherEntity(key, configMap.get(key),
+                    ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_USER));
+        }
+        SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
+        SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
+    }
+
+    public synchronized void saveConfigAllStateImpl(@NonNull String key, String value) {
+        saveConfigAllStateImpl(key, value, ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_USER);
+    }
+
+    public synchronized void saveConfigAllStateImpl(@NonNull String key, String value, int configType) {
+        if (TextUtils.isEmpty(value)) {
+            ConfigSwitcherEntity entity = mInitConfigStateMap.get(key);
+            if (entity != null) {
+                value = entity.getValue();
+            } else {
+                value = "";
+            }
+        }
+        mUserConfigStateMap.put(key,
+                new ConfigSwitcherEntity(key, value, configType));
+        SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
+
+        mGuestConfigStateMap.put(key,
+                new ConfigSwitcherEntity(key, value, configType));
+        SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
+    }
+
     public synchronized boolean updateRemoteConfigImpl(boolean isLogin, @NonNull ConfigSwitcherInfo switcherInfo) {
         String version = SharePreferenceUtils.readStringFromConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
         if (TextUtils.isEmpty(switcherInfo.getVersion()) || TextUtils.equals(version, switcherInfo.getVersion())) {
@@ -407,6 +444,18 @@ public class ConfigSwitcherServer {
 
     public static void saveConfig(@NonNull String key, String value, int configType) {
         mInstance.saveConfigImpl(key, value, configType);
+    }
+
+    public static void saveConfigMapAllState(@NonNull HashMap<String, String> configMap) {
+        mInstance.saveConfigMapAllStateImpl(configMap);
+    }
+
+    public static void saveConfigAllState(@NonNull String key, String value) {
+        mInstance.saveConfigAllStateImpl(key, value);
+    }
+
+    public static void saveConfigAllState(@NonNull String key, String value, int configType) {
+        mInstance.saveConfigAllStateImpl(key, value, configType);
     }
 
     public static void setupConfigSwitcher(String configUrl, final boolean isLogin,

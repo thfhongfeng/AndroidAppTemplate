@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.minicreate.app.jni">
+    package="com.pine.app.jni">
 
     <application android:allowBackup="true" />
 

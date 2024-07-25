@@ -7,28 +7,38 @@ cmake_minimum_required(VERSION 3.4.1)
 
 # Declares and names the project.
 
-project("jniLib")
+project("RequestJni")
 
 # 1. 定义so库和头文件所在目录，方面后面使用
 # src/main/jniLibs有特殊含义，该文件夹用于存放预构建的本地库文件的标准目录，用于jni加载调用。
 # c++使用导入时不要用此目录，否则会报包重复错误
-set(jni_lib_dir ${CMAKE_SOURCE_DIR}/jniLibs/${ANDROID_ABI})
+set(jni_lib_dir ${CMAKE_SOURCE_DIR}/thirdLibs/${ANDROID_ABI})
 set(jni_head_dir ${CMAKE_SOURCE_DIR}/head)
 
 # 2. 添加头文件目录
+# include_directories 是一个全局设置，它会影响所有后续的目标
 include_directories(${jni_head_dir}/include)
 
 # 3. 添加相关的so库
-#导入第三方so包，并声明为 IMPORTED 属性，指明只是想把 so 导入到项目中
-#add_library必须在set_target_properties之前
-add_library(lib-xxx
+# 导入第三方so包，并声明为 IMPORTED 属性，指明只是想把 so 导入到项目中
+# add_library必须在set_target_properties之前
+add_library(lib-video4cal
         SHARED
         IMPORTED)
-#指明 so 库的路径，CMAKE_SOURCE_DIR 表示 CMakeLists.txt 的路径
+# 指明 so 库的路径，CMAKE_SOURCE_DIR 表示 CMakeLists.txt 的路径
 set_target_properties(
-        lib-xxx
+        lib-video4cal
         PROPERTIES IMPORTED_LOCATION
-        ${jni_lib_dir}/xxx.so)
+        ${jni_lib_dir}/libvideo4cal.so)
+
+add_library(lib-c
+        SHARED
+        IMPORTED)
+# 指明 so 库的路径，CMAKE_SOURCE_DIR 表示 CMakeLists.txt 的路径
+set_target_properties(
+        lib-c
+        PROPERTIES IMPORTED_LOCATION
+        ${jni_lib_dir}/libc.so)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -36,15 +46,28 @@ set_target_properties(
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-        jniLib
+        RequestJni
 
         # Sets the library as a shared library.
         SHARED
 
         # Provides a relative path to your source file(s).
+        include/GpioPort.h
+        GpioPort.cpp
+        include/SerialPort.h
+        SerialPort.cpp
+        message.c
+        include/includes.h
+        include/message.h
 
         JNIManager.cpp
         include/JniLog.h)
+
+target_compile_options(RequestJni PRIVATE
+        -Wno-unused-variable
+        -Wno-incompatible-pointer-types-discards-qualifiers
+        -Wno-implicit-function-declaration
+        -Wno-format)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -64,11 +87,12 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-        jniLib
+        RequestJni
+
+        lib-video4cal
+        lib-c
 
         # 4. 连接相关的库
-        #lib-xxx
-
         android
 
         # Links the target library to the log library
