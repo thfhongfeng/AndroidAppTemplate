@@ -249,6 +249,14 @@ public class ApkVersionManager {
             return;
         }
         String fileName = versionEntity.getFileName();
+        if (TextUtils.isEmpty(fileName)) {
+            if (callback != null) {
+                callback.onUpdateErr(3,
+                        activity.getString(R.string.base_new_version_download_fail),
+                        versionEntity);
+            }
+            return;
+        }
         File oldFile = new File(mDownloadDir, fileName);
         if (versionEntity.isFileDownloaded(oldFile)) {
             onFileDownloadComplete(activity, versionEntity, oldFile.getPath(), callback);
