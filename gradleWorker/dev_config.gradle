@@ -1,4 +1,4 @@
-// 当前开发模式（dev-开发；allUpload-打包所有模块）
+// 当前开发模式（dev-开发模式；publishMode-打包模式）
 // 打包单个模块时请使用dev模式
 gradle.ext.compileMode = "dev"
 

@@ -1,4 +1,4 @@
-if (gradle.ext.compileMode == "allUpload") {
+if (gradle.ext.compileMode == "publishMode") {
     gradle.projectsEvaluated {
         // 定义要执行的发布任务列表
         def prePublishTask = null

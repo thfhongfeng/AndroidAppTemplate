@@ -8,7 +8,7 @@ apply from: "${rootDir}/gradleWorker/buildConfig/BundleConfigKey.gradle"
 ext.dependencyCustom = { moduleName, flavorName ->
     def moduleConfig = gradle.ext.modulePkgConfig[moduleName]
     if (moduleConfig) {
-        if (moduleConfig.libDepend || gradle.ext.compileMode == "allUpload") {
+        if (moduleConfig.libDepend || gradle.ext.compileMode == "publishMode") {
             def artifactIdStr = "${moduleConfig.libArtifactId}-${flavorName}"
             if (flavorName == null || flavorName == "") {
                 artifactIdStr = moduleConfig.libArtifactId
