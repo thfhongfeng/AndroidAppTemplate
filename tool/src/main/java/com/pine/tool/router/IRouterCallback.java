@@ -7,7 +7,7 @@ import android.os.Bundle;
  */
 
 public interface IRouterCallback {
-    void onSuccess(Bundle responseBundle);
+    boolean onSuccess(Bundle responseBundle);
 
     /**
      * @param code

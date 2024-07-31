@@ -41,8 +41,8 @@ public class UiAccessVipLevelExecutor implements IUiAccessExecutor {
                 if (!doNotGoVipActivity(actionsMap, accessTimeInterval)) {
                     BaseRouterClient.goUserRechargeActivity(activity, null, new IRouterCallback() {
                         @Override
-                        public void onSuccess(Bundle responseBundle) {
-
+                        public boolean onSuccess(Bundle responseBundle) {
+                            return true;
                         }
 
                         @Override

@@ -169,8 +169,9 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
         }
         WelcomeRouterClient.autoLogin(this, null, new IRouterCallback() {
             @Override
-            public void onSuccess(Bundle responseBundle) {
+            public boolean onSuccess(Bundle responseBundle) {
                 gotoNext(delayTogo);
+                return true;
             }
 
             @Override
@@ -209,10 +210,10 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     private void goMainHomeActivity() {
         WelcomeRouterClient.goMainHomeActivity(LoadingActivity.this, null, new IRouterCallback() {
             @Override
-            public void onSuccess(Bundle responseBundle) {
+            public boolean onSuccess(Bundle responseBundle) {
                 LogUtils.d(TAG, "onSuccess " + RouterMainCommand.goMainHomeActivity);
                 finish();
-                return;
+                return true;
             }
 
             @Override

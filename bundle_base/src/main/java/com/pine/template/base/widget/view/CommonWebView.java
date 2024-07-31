@@ -163,8 +163,9 @@ public class CommonWebView extends WebView {
                 if (mTryLoginCount < MAX_TRY_LOGIN_COUNT) {
                     BaseRouterClient.autoLogin(mActivity, null, new IRouterCallback() {
                         @Override
-                        public void onSuccess(Bundle responseBundle) {
+                        public boolean onSuccess(Bundle responseBundle) {
                             loadUrl();
+                            return true;
                         }
 
                         @Override

@@ -51,8 +51,8 @@ public class MainBusinessAdapter extends BaseNoPaginationListAdapter {
                     MainRouterClient.callCommand(mContext, content.getBundle(), RouterCommandType.TYPE_UI_COMMAND,
                             content.getCommand(), null, new IRouterCallback() {
                                 @Override
-                                public void onSuccess(Bundle responseBundle) {
-
+                                public boolean onSuccess(Bundle responseBundle) {
+                                    return true;
                                 }
 
                                 @Override

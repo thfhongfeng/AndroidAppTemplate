@@ -40,10 +40,10 @@ public class WelcomeActivity extends BaseMvvmFullScreenActivity<WelcomeActivityB
             public void run() {
                 WelcomeRouterClient.goMainHomeActivity(WelcomeActivity.this, null, new IRouterCallback() {
                     @Override
-                    public void onSuccess(Bundle responseBundle) {
+                    public boolean onSuccess(Bundle responseBundle) {
                         LogUtils.d(TAG, "onSuccess " + RouterMainCommand.goMainHomeActivity);
                         finish();
-                        return;
+                        return true;
                     }
 
                     @Override

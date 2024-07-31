@@ -36,8 +36,8 @@ public class UiAccessLoginExecutor implements IUiAccessExecutor {
             if (!doNotGoLoginActivity(actionsMap, accessTimeInterval)) {
                 BaseRouterClient.goLoginActivity(activity, null, new IRouterCallback() {
                     @Override
-                    public void onSuccess(Bundle responseBundle) {
-
+                    public boolean onSuccess(Bundle responseBundle) {
+                        return true;
                     }
 
                     @Override

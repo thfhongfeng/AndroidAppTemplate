@@ -7,5 +7,5 @@ import android.os.Bundle;
  */
 
 public interface IServiceCallback {
-    void onResponse(Bundle bundle);
+    boolean onResponse(Bundle bundle);
 }

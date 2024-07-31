@@ -53,13 +53,14 @@ public abstract class ARouterBundleRemote<T> implements IProvider {
                 try {
                     mMethods[i].invoke(mRemoteService, context, args, new IServiceCallback() {
                         @Override
-                        public void onResponse(Bundle bundle) {
+                        public boolean onResponse(Bundle bundle) {
                             if (bundle == null) {
                                 bundle = new Bundle();
                             }
                             if (callback != null) {
-                                callback.onSuccess(bundle);
+                                return callback.onSuccess(bundle);
                             }
+                            return false;
                         }
                     });
                     return;

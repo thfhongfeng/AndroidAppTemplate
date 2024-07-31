@@ -69,8 +69,9 @@ public class UserHomeActivity extends BaseMvvmNoActionBarActivity<UserHomeActivi
             UserRouterClient.logout(UserHomeActivity.this, null,
                     new IRouterCallback() {
                         @Override
-                        public void onSuccess(Bundle responseBundle) {
+                        public boolean onSuccess(Bundle responseBundle) {
                             finish();
+                            return true;
                         }
 
                         @Override
