@@ -179,6 +179,11 @@ public abstract class DefaultDeviceSdkProxy implements IDeviceSdkManager {
     }
 
     @Override
+    public boolean reInitMsgQueue(int msgType) throws DeviceSdkException {
+        throw new DeviceSdkException("not impl method");
+    }
+
+    @Override
     public boolean sendLinuxMsg(int msgType, String msg) throws DeviceSdkException {
         throw new DeviceSdkException("not impl method");
     }

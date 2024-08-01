@@ -175,57 +175,112 @@ int g_iJniComMsgQid;     // 安卓JNI串口消息队列
 //--------------------------------------------------------------------------------------
 
 
-void InitMsgQueue(void) {
+int InitMsgQueue(void) {
+    InitNetDriverMsgQueue();
+    InitAvPlayMsgQueue();
+    InitPeripheralMsgQueue();
+    InitGpsMsgQueue();
+    InitSystemMsgQueue();
+    InitSchMsgQueue();
+    InitStationMsgQueue();
+    InitMonitorMsgQueue();
+    InitAdtMsgQueue();
+    InitUpdateMsgQueue();
+    InitWdtMsgQueue();
+    InitControllerMsgQueue();
+    InitJniComMsgQueue();
+    return 0;
+}
+
+int InitNetDriverMsgQueue(void) {
     // 建立网络驱动进程的消息标识符
     g_iNetDriverMsgQid = CreatMsgQueue(KEY_MSG_NET_DRIVER);
+    LOGD("LinuxMsg>> InitMsgQueue NetDriverMsg: %d", g_iNetDriverMsgQid);
+    return g_iNetDriverMsgQid;
+}
 
+int InitAvPlayMsgQueue(void) {
     // 建立系统级驱动进程的消息标识符
     g_iAvPlayMsgQid = CreatMsgQueue(KEY_MSG_AV_PLAY);
+    LOGD("LinuxMsg>> InitMsgQueue AvPlayMsg: %d", g_iAvPlayMsgQid);
+    return g_iAvPlayMsgQid;
+}
 
+int InitPeripheralMsgQueue(void) {
     // 建立系统级驱动进程的消息标识符
     g_iPeripheralMsgQid = CreatMsgQueue(KEY_MSG_PERIPHERAL);
+    LOGD("LinuxMsg>> InitMsgQueue PeripheralMsg: %d", g_iPeripheralMsgQid);
+    return g_iPeripheralMsgQid;
+}
 
+int InitGpsMsgQueue(void) {
     // 建立系统级驱动进程的消息标识符
     g_iGpsMsgQid = CreatMsgQueue(KEY_MSG_GPS);
+    LOGD("LinuxMsg>> InitMsgQueue GpsMsg: %d", g_iGpsMsgQid);
+    return g_iGpsMsgQid;
+}
 
+int InitSystemMsgQueue(void) {
     // 系统进程的消息标识符
     g_iSystemMsgQid = CreatMsgQueue(KEY_MSG_SYSTEM);
+    LOGD("LinuxMsg>> InitMsgQueue SystemMsg: %d", g_iSystemMsgQid);
+    return g_iSystemMsgQid;
+}
 
+int InitSchMsgQueue(void) {
     // 调度进程的消息队列
     g_iSchMsgQid = CreatMsgQueue(KEY_MSG_SCH);
+    LOGD("LinuxMsg>> InitMsgQueue SchMsg: %d", g_iSchMsgQid);
+    return g_iSchMsgQid;
+}
 
+int InitStationMsgQueue(void) {
     // 报站进程的消息队列
     g_iStationMsgQid = CreatMsgQueue(KEY_MSG_STATION);
+    LOGD("LinuxMsg>> InitMsgQueue StationMsg: %d", g_iStationMsgQid);
+    return g_iStationMsgQid;
+}
 
+int InitMonitorMsgQueue(void) {
     // 监控进程的消息队列
     g_iMonitorMsgQid = CreatMsgQueue(KEY_MSG_MONITOR);
+    LOGD("LinuxMsg>> InitMsgQueue MonitorMsg: %d", g_iMonitorMsgQid);
+    return g_iMonitorMsgQid;
+}
 
+int InitAdtMsgQueue(void) {
     // 广告进程的消息队列
     g_iAdtMsgQid = CreatMsgQueue(KEY_MSG_ADVERTISE);
+    LOGD("LinuxMsg>> InitMsgQueue AdtMsg: %d", g_iAdtMsgQid);
+    return g_iAdtMsgQid;
+}
 
+int InitUpdateMsgQueue(void) {
     // 广告进程的消息队列
     g_iUpdateMsgQid = CreatMsgQueue(KEY_MSG_UPDATE);
+    LOGD("LinuxMsg>> InitMsgQueue UpdateMsg: %d", g_iUpdateMsgQid);
+    return g_iUpdateMsgQid;
+}
 
+int InitWdtMsgQueue(void) {
     // 看门狗清零的消息队列
     g_iWdtMsgQid = CreatMsgQueue(KEY_MSG_WATCHDOG);
+    LOGD("LinuxMsg>> InitMsgQueue WdtMsg: %d", g_iWdtMsgQid);
+    return g_iWdtMsgQid;
+}
 
+int InitControllerMsgQueue(void) {
     // 安卓控制器消息队列
     g_iControllerMsgQid = CreatMsgQueue(KEY_MSG_CONTROLLER);
+    LOGD("LinuxMsg>> InitMsgQueue ControllerMsg: %d", g_iControllerMsgQid);
+    return g_iControllerMsgQid;
+}
 
+int InitJniComMsgQueue(void) {
     // 安卓JNI串口消息队列
     g_iJniComMsgQid = CreatMsgQueue(KEY_MSG_JNI_COM);
-
-    LOGD("LinuxMsg>> InitMsgQueue NetDriverMsg: %d, AvPlayMsg: %d", g_iNetDriverMsgQid,
-         g_iAvPlayMsgQid);
-    LOGD("LinuxMsg>> InitMsgQueue PeripheralMsg: %d, GpsMsg: %d", g_iPeripheralMsgQid,
-         g_iGpsMsgQid);
-    LOGD("LinuxMsg>> InitMsgQueue SystemMsg: %d, SchMsg: %d", g_iSystemMsgQid, g_iSchMsgQid);
-    LOGD("LinuxMsg>> InitMsgQueue AdtMsg: %d, UpdateMsg: %d", g_iAdtMsgQid, g_iUpdateMsgQid);
-    LOGD("LinuxMsg>> InitMsgQueue StationMsg: %d, MonitorMsg: %d", g_iStationMsgQid,
-         g_iMonitorMsgQid);
-    LOGD("LinuxMsg>> InitMsgQueue WdtMsg: %d, ControllerMsg: %d", g_iWdtMsgQid,
-         g_iControllerMsgQid);
     LOGD("LinuxMsg>> InitMsgQueue JniComMsg: %d", g_iJniComMsgQid);
+    return g_iJniComMsgQid;
 }
 
 

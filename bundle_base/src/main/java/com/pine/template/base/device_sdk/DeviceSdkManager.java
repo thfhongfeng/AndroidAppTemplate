@@ -620,6 +620,21 @@ public class DeviceSdkManager {
     }
 
     /**
+     * 重新初始化消息队列
+     *
+     * @param msgType -1表示所有
+     * @return
+     * @throws DeviceSdkException
+     */
+    public boolean reInitMsgQueue(int msgType)
+            throws DeviceSdkException {
+        if (!checkSdkInit()) {
+            throw new DeviceSdkException("device sdk is not init");
+        }
+        return mManager.reInitMsgQueue(msgType);
+    }
+
+    /**
      * 发送linux消息
      *
      * @param msgType 1-g_iNetDriverMsgQid

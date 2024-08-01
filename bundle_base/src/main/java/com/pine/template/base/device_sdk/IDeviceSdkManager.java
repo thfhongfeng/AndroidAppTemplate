@@ -81,6 +81,8 @@ public interface IDeviceSdkManager {
 
     void showStatusBar(boolean show) throws DeviceSdkException;
 
+    boolean reInitMsgQueue(int msgType) throws DeviceSdkException;
+
     boolean sendLinuxMsg(int msgType, String msg) throws DeviceSdkException;
 
     String getLinuxMsg(int msgType) throws DeviceSdkException;

@@ -32,7 +32,7 @@ public class SphThreads {
     /**
      * 开启读取数据线程
      */
-    public void startReadThread() {
+    public synchronized void startReadThread() {
         if (readThread == null) {
             readThread = new Thread(new ReadThread());
             readThread.start();
@@ -42,7 +42,7 @@ public class SphThreads {
     /**
      * 开启发送数据线程
      */
-    public void startWriteThread() {
+    public synchronized void startWriteThread() {
         if (writeThread == null) {
             writeThread = new Thread(new WriteThread());
             writeThread.start();
@@ -57,7 +57,7 @@ public class SphThreads {
 
         @Override
         public void run() {
-            while (!readThread.isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 if (readRunning) {
                     if (config.readInterval > 0) {
                         long interval = System.currentTimeMillis() - lasTimeStamp;
@@ -66,7 +66,7 @@ public class SphThreads {
                                 Thread.sleep(config.readInterval - interval);
                             } catch (InterruptedException e) {
                                 LogUtils.e(TAG, "readThread sleep InterruptedException");
-                                readThread.interrupt();
+                                Thread.currentThread().interrupt();
                                 continue;
                             }
                         }
@@ -76,11 +76,9 @@ public class SphThreads {
                     processingData.createReadBuff();
                     // 读取数据
                     byte[] bytes = SerialPortJNI.readPort(config.path, processingData.getMaxSize());
-                    if (bytes != null) {
-                        int revLength = bytes.length;
-                        if (revLength > 0) {
-                            processingData.processingRecData(bytes, revLength);
-                        }
+                    int revLength = bytes == null ? 0 : bytes.length;
+                    if (readRunning && revLength > 0) {
+                        processingData.processingRecData(bytes, revLength);
                     }
                 } else {
                     synchronized (readWaitLock) {
@@ -90,7 +88,7 @@ public class SphThreads {
                             LogUtils.d(TAG, "readThread be notified for read stop");
                         } catch (InterruptedException e) {
                             LogUtils.e(TAG, "readThread wait InterruptedException for read stop");
-                            readThread.interrupt();
+                            Thread.currentThread().interrupt();
                             continue;
                         }
                     }
@@ -105,7 +103,7 @@ public class SphThreads {
     public class WriteThread implements Runnable {
         @Override
         public void run() {
-            while (!writeThread.isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 processingData.writeData();
             }
         }
@@ -131,7 +129,7 @@ public class SphThreads {
     /**
      * 停止线程
      */
-    public void stop() {
+    public synchronized void stop() {
         if (readThread != null) {
             stopRead();
             readThread.interrupt();

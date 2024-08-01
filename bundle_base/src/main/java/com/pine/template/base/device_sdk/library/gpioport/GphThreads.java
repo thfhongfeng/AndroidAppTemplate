@@ -32,7 +32,7 @@ public class GphThreads {
     /**
      * 开启读取数据线程
      */
-    public void startReadThread() {
+    public synchronized void startReadThread() {
         if (readThread == null) {
             readThread = new Thread(new ReadThread());
             readThread.start();
@@ -42,7 +42,7 @@ public class GphThreads {
     /**
      * 开启发送数据线程
      */
-    public void startWriteThread() {
+    public synchronized void startWriteThread() {
         if (writeThread == null) {
             writeThread = new Thread(new WriteThread());
             writeThread.start();
@@ -57,7 +57,7 @@ public class GphThreads {
 
         @Override
         public void run() {
-            while (!readThread.isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 if (readRunning) {
                     if (config.readInterval > 0) {
                         long interval = System.currentTimeMillis() - lasTimeStamp;
@@ -66,14 +66,14 @@ public class GphThreads {
                                 Thread.sleep(config.readInterval - interval);
                             } catch (InterruptedException e) {
                                 LogUtils.e(TAG, "readThread InterruptedException");
-                                readThread.interrupt();
+                                Thread.currentThread().interrupt();
                             }
                         }
                         lasTimeStamp = System.currentTimeMillis();
                     }
                     // 读取数据
                     int status = GpioPortJNI.readPort(config.port);
-                    if (status > -1) {
+                    if (readRunning && status > -1) {
                         processingData.processingRecData(status);
                     }
                 } else {
@@ -84,7 +84,7 @@ public class GphThreads {
                             LogUtils.d(TAG, "readThread be notified for read stop");
                         } catch (InterruptedException e) {
                             LogUtils.e(TAG, "readThread wait InterruptedException for read stop");
-                            readThread.interrupt();
+                            Thread.currentThread().interrupt();
                             continue;
                         }
                     }
@@ -99,12 +99,16 @@ public class GphThreads {
     public class WriteThread implements Runnable {
         @Override
         public void run() {
-            while (!writeThread.isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 if (!readRunning) {
                     processingData.writeData();
                 }
             }
         }
+    }
+
+    public int readDirect() {
+        return GpioPortJNI.readDirect(config.port);
     }
 
     /**
@@ -124,14 +128,10 @@ public class GphThreads {
         readRunning = false;
     }
 
-    public int readDirect() {
-        return GpioPortJNI.readDirect(config.port);
-    }
-
     /**
      * 停止线程
      */
-    public void stop() {
+    public synchronized void stop() {
         if (readThread != null) {
             readThread.interrupt();
             stopRead();

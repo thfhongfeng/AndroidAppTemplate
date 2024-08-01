@@ -61,7 +61,33 @@ extern int RecvMsg(int iQid, char* pcMsg);
 
 
 
-extern void InitMsgQueue(void);
+extern int InitMsgQueue(void);
+
+extern int InitNetDriverMsgQueue(void);
+
+extern int InitAvPlayMsgQueue(void);
+
+extern int InitPeripheralMsgQueue(void);
+
+extern int InitGpsMsgQueue(void);
+
+extern int InitSystemMsgQueue(void);
+
+extern int InitSchMsgQueue(void);
+
+extern int InitStationMsgQueue(void);
+
+extern int InitMonitorMsgQueue(void);
+
+extern int InitAdtMsgQueue(void);
+
+extern int InitUpdateMsgQueue(void);
+
+extern int InitWdtMsgQueue(void);
+
+extern int InitControllerMsgQueue(void);
+
+extern int InitJniComMsgQueue(void);
 
 
 

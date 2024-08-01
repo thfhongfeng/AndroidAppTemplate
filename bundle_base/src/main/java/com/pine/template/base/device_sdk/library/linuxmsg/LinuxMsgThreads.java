@@ -34,7 +34,7 @@ public class LinuxMsgThreads {
     /**
      * 开启读取数据线程
      */
-    public void startReadThread() {
+    public synchronized void startReadThread() {
         if (readThread == null) {
             readThread = new Thread(new ReadThread());
             readThread.start();
@@ -44,7 +44,7 @@ public class LinuxMsgThreads {
     /**
      * 开启发送数据线程
      */
-    public void startWriteThread() {
+    public synchronized void startWriteThread() {
         if (writeThread == null) {
             writeThread = new Thread(new WriteThread());
             writeThread.start();
@@ -60,7 +60,7 @@ public class LinuxMsgThreads {
 
         @Override
         public void run() {
-            while (!readThread.isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 if (readRunning || !TextUtils.isEmpty(lastData)) {
                     if (config.readInterval > 0) {
                         long interval = System.currentTimeMillis() - lastTimeStamp;
@@ -69,14 +69,14 @@ public class LinuxMsgThreads {
                                 Thread.sleep(config.readInterval - interval);
                             } catch (InterruptedException e) {
                                 LogUtils.e(TAG, "readThread InterruptedException");
-                                readThread.interrupt();
+                                Thread.currentThread().interrupt();
                             }
                         }
                         lastTimeStamp = System.currentTimeMillis();
                     }
                     // 读取数据
                     String data = LinuxMsgJNI.getMsg(config.readMsgType);
-                    if (!TextUtils.isEmpty(data)) {
+                    if (readRunning && !TextUtils.isEmpty(data)) {
                         processingData.processingRecData(data);
                     }
                     lastData = data;
@@ -88,7 +88,7 @@ public class LinuxMsgThreads {
                             LogUtils.d(TAG, "readThread be notified for read stop");
                         } catch (InterruptedException e) {
                             LogUtils.e(TAG, "readThread wait InterruptedException for read stop");
-                            readThread.interrupt();
+                            Thread.currentThread().interrupt();
                             continue;
                         }
                     }
@@ -103,7 +103,7 @@ public class LinuxMsgThreads {
     public class WriteThread implements Runnable {
         @Override
         public void run() {
-            while (!writeThread.isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 processingData.writeData();
             }
         }
@@ -129,7 +129,7 @@ public class LinuxMsgThreads {
     /**
      * 停止线程
      */
-    public void stop() {
+    public synchronized void stop() {
         if (readThread != null) {
             readThread.interrupt();
             stopRead();

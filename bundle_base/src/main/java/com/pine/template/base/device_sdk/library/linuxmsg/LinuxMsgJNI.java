@@ -24,4 +24,13 @@ public class LinuxMsgJNI {
         }
         return null;
     }
+
+    public static boolean reInitMsgQueue(int msgType) {
+        try {
+            return DeviceSdkManager.getInstance().reInitMsgQueue(msgType);
+        } catch (DeviceSdkException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

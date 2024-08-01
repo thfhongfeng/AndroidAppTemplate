@@ -41,7 +41,9 @@ public class JNIManager {
             if (!isInit()) {
                 mIsInit = nativeInitJniManager() == 0;
             }
-            nativeInitMsgQueue();
+            if (isInit()) {
+                nativeInitMsgQueue();
+            }
         }
     }
 
@@ -211,6 +213,8 @@ public class JNIManager {
 
     public native int nativeInitMsgQueue();
 
+    public native int nativeReInitMsgQueue(int msgType);
+
     /**
      * @param msgType 1-g_iNetDriverMsgQid
      *                2-g_iAvPlayMsgQid
@@ -251,28 +255,47 @@ public class JNIManager {
 
     private volatile static boolean mIsMsgQueueInit;
 
-    public synchronized boolean checkAndTryInitMsgQueue() {
-        if (!mIsMsgQueueInit) {
-            mIsMsgQueueInit = nativeInitMsgQueue() == 0;
+    private Object mMsgLock = new Object();
+
+    public boolean checkAndTryInitMsgQueue(boolean force) {
+        synchronized (mMsgLock) {
+            if (force) {
+                mIsMsgQueueInit = nativeInitMsgQueue() == 0;
+            } else {
+                if (!mIsMsgQueueInit) {
+                    mIsMsgQueueInit = nativeInitMsgQueue() == 0;
+                }
+            }
+            return mIsMsgQueueInit;
         }
-        return mIsMsgQueueInit;
     }
 
-    public synchronized boolean sendMessage(int msgType, String msg) throws JniException {
+    public boolean reInitMsgQueue(int msgType) {
+        synchronized (mMsgLock) {
+            nativeReInitMsgQueue(msgType);
+            return true;
+        }
+    }
+
+    public boolean sendMessage(int msgType, String msg) throws JniException {
         if (TextUtils.isEmpty(msg)) {
             return false;
         }
-        if (!checkAndTryInitMsgQueue()) {
+        if (!checkAndTryInitMsgQueue(false)) {
             throw new JniException("not init");
         }
-        return nativeSendMsg(msgType, msg, msg.getBytes().length) != -1;
+        synchronized (mMsgLock) {
+            return nativeSendMsg(msgType, msg, msg.getBytes().length) != -1;
+        }
     }
 
-    public synchronized String getMessage(int msgType) throws JniException {
-        if (!checkAndTryInitMsgQueue()) {
+    public String getMessage(int msgType) throws JniException {
+        if (!checkAndTryInitMsgQueue(false)) {
             throw new JniException("not init");
         }
-        return nativeGetMsg(msgType);
+        synchronized (mMsgLock) {
+            return nativeGetMsg(msgType);
+        }
     }
 
 

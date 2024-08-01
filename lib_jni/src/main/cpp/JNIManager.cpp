@@ -210,10 +210,78 @@ Java_com_pine_app_jni_JNIManager_nativeReleaseCCamera
     return ret;
 }
 
-extern "C" JNIEXPORT jint JNICALL Java_com_pine_app_jni_JNIManager_nativeInitMsgQueue
+extern "C" JNIEXPORT jint JNICALL Java_com_minicreate_app_jni_JNIManager_nativeInitMsgQueue
         (JNIEnv *env, jobject jclazz) {
-    InitMsgQueue();
-    return 0;
+    return InitMsgQueue();
+}
+
+extern "C" JNIEXPORT jint JNICALL Java_com_minicreate_app_jni_JNIManager_nativeReInitMsgQueue
+        (JNIEnv *env, jobject jclazz, jint msgType) {
+    if (msgType < 0) {
+        return InitMsgQueue();
+    } else if (msgType == 1) {
+        return InitNetDriverMsgQueue();
+    } else if (msgType == 2) {
+        return InitAdtMsgQueue();
+    } else if (msgType == 3) {
+        return InitPeripheralMsgQueue();
+    } else if (msgType == 4) {
+        return InitGpsMsgQueue();
+    } else if (msgType == 5) {
+        return InitSystemMsgQueue();
+    } else if (msgType == 6) {
+        return InitSchMsgQueue();
+    } else if (msgType == 7) {
+        return InitStationMsgQueue();
+    } else if (msgType == 8) {
+        return InitMonitorMsgQueue();
+    } else if (msgType == 9) {
+        return InitAdtMsgQueue();
+    } else if (msgType == 10) {
+        return InitUpdateMsgQueue();
+    } else if (msgType == 11) {
+        return InitWdtMsgQueue();
+    } else if (msgType == 12) {
+        return InitJniComMsgQueue();
+    } else if (msgType == 99) {
+        return InitControllerMsgQueue();
+    }
+    return -1;
+}
+
+extern "C" JNIEXPORT jint JNICALL Java_com_minicreate_app_jni_JNIManager_nativeSendMsg
+        (JNIEnv *env, jobject jclazz, jint msgType, jstring data, jint size) {
+    const char *dataChars = env->GetStringUTFChars(data, 0);
+    int ret = -1;
+    if (msgType == 1) {
+        ret = SendMsgToNetDriver(dataChars, size);
+    } else if (msgType == 2) {
+        ret = SendMsgToAvPlay(dataChars, size);
+    } else if (msgType == 3) {
+        ret = SendMsgToPeripheral(dataChars, size);
+    } else if (msgType == 4) {
+        ret = SendMsgToGps(dataChars, size);
+    } else if (msgType == 5) {
+        ret = SendMsgToSystem(dataChars, size);
+    } else if (msgType == 6) {
+        ret = SendMsgToSch(dataChars, size);
+    } else if (msgType == 7) {
+        ret = SendMsgToStation(dataChars, size);
+    } else if (msgType == 8) {
+        ret = SendMsgToMonitor(dataChars, size);
+    } else if (msgType == 9) {
+        ret = SendMsgToAdt(dataChars, size);
+    } else if (msgType == 10) {
+        ret = SendMsgToUpdate(dataChars, size);
+    } else if (msgType == 11) {
+        ret = SendMsgToWdt(dataChars, size);
+    } else if (msgType == 12) {
+        ret = SendMsgToJniCom(dataChars, size);
+    } else if (msgType == 99) {
+        ret = SendMsgToController(dataChars, size);
+    }
+    env->ReleaseStringUTFChars(data, dataChars);
+    return ret;
 }
 
 extern "C" JNIEXPORT jint JNICALL Java_com_pine_app_jni_JNIManager_nativeSendMsg
