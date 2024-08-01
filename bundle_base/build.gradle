@@ -55,7 +55,7 @@ android {
         build_flavor_product.each { flavorName, _ ->
             "$flavorName" {
                 buildConfigField "String", "APP_NAME_ID", "\"${build_flavor_product[flavorName].build_product_appName}\""
-                buildConfigField "String[]", "BUILD_ALL_BUNDLE", "{${build_all_bundle().join(',')}}"
+                buildConfigField "String[]", "BUILD_ALL_BUNDLE", "{${build_all_bundle(flavorName).join(',')}}"
                 buildConfigField "String[]", "BUILD_BIZ_BUNDLE", "{${build_biz_bundle(flavorName).join(',')}}"
             }
         }

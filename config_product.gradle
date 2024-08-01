@@ -5,31 +5,49 @@ ext.build_lib_groupId = "com.pine.app.template.libs"
 def build_flavor_product = [:]
 build_flavor_product = [
         common : [
-                build_product_applicationId    : "com.pine.app.template",
-                build_product_groupId          : "com.pine.app.template.common",
-                build_product_versionCode      : 10001,
-                build_product_versionName      : "1.0.001",
-                build_product_appName          : "PineAppTemplate",
-                build_product_storeFile        : "../signapk/common/template.jks",
-                build_product_storePassword    : "pine123",
-                build_product_keyAlias         : "AppTemplate",
-                build_product_keyPassword      : "pine123",
-                build_product_biz_bundle_module: [BIZ_BUNDLE_MVC : "biz_bundle_mvc",
-                                                  BIZ_BUNDLE_MVP : "biz_bundle_mvp",
-                                                  BIZ_BUNDLE_MVVM: "biz_bundle_mvvm",
-                                                  BIZ_BUNDLE_FACE: "biz_bundle_face"]
+                build_product_applicationId     : "com.pine.app.template",
+                build_product_groupId           : "com.pine.app.template.common",
+                build_product_versionCode       : 10001,
+                build_product_versionName       : "1.0.001",
+                build_product_appName           : "PineAppTemplate",
+                build_product_storeFile         : "../signapk/common/template.jks",
+                build_product_storePassword     : "pine123",
+                build_product_keyAlias          : "AppTemplate",
+                build_product_keyPassword       : "pine123",
+                build_product_core_bundle_module: [
+                        BUNDLE_WELCOME : "app_welcome",
+                        BUNDLE_LOGIN   : "bundle_login",
+                        BUNDLE_MAIN    : "bundle_main",
+                        BUNDLE_USER    : "bundle_user",
+                        BUNDLE_DB_SEVER: "db_server"
+                ],
+                build_product_biz_bundle_module : [
+                        BIZ_BUNDLE_MVC : "biz_bundle_mvc",
+                        BIZ_BUNDLE_MVP : "biz_bundle_mvp",
+                        BIZ_BUNDLE_MVVM: "biz_bundle_mvvm",
+                        BIZ_BUNDLE_FACE: "biz_bundle_face"
+                ]
         ],
         special: [
-                build_product_applicationId    : "com.pine.app.template",
-                build_product_groupId          : "com.pine.app.template.special",
-                build_product_versionCode      : 10001,
-                build_product_versionName      : "1.0.001",
-                build_product_appName          : "PineAppTemplate",
-                build_product_storeFile        : "../signapk/special/template.jks",
-                build_product_storePassword    : "pine123",
-                build_product_keyAlias         : "AppTemplate",
-                build_product_keyPassword      : "pine123",
-                build_product_biz_bundle_module: [BIZ_BUNDLE_MVVM: "biz_bundle_mvvm"]
+                build_product_applicationId     : "com.pine.app.template",
+                build_product_groupId           : "com.pine.app.template.special",
+                build_product_versionCode       : 10001,
+                build_product_versionName       : "1.0.001",
+                build_product_appName           : "PineAppTemplate",
+                build_product_storeFile         : "../signapk/special/template.jks",
+                build_product_storePassword     : "pine123",
+                build_product_keyAlias          : "AppTemplate",
+                build_product_keyPassword       : "pine123",
+                build_product_core_bundle_module: [
+                        BUNDLE_WELCOME : "app_welcome",
+                        BUNDLE_LOGIN   : "bundle_login",
+                        BUNDLE_MAIN    : "bundle_main",
+                        BUNDLE_USER    : "bundle_user",
+                        BUNDLE_DB_SEVER: "db_server"
+                ],
+                build_product_biz_bundle_module : [
+                        BIZ_BUNDLE_MVVM: "biz_bundle_mvvm"
+                ]
         ]
 ]
 ext.build_flavor_product = build_flavor_product
@@ -43,4 +61,22 @@ ext.build_biz_bundle = { flavorName ->
         }
     }
     return biz_bundle
+}
+
+ext.build_all_bundle = { flavorName ->
+    def all_bundle = []
+
+    def build_product_core_bundle_module = build_flavor_product[flavorName]["build_product_core_bundle_module"]
+    if (build_product_core_bundle_module) {
+        build_product_core_bundle_module.each { key, value ->
+            all_bundle.add("\"${key}\"")
+        }
+    }
+    def build_product_biz_bundle_module = build_flavor_product[flavorName]["build_product_biz_bundle_module"]
+    if (build_product_biz_bundle_module) {
+        build_product_biz_bundle_module.each { key, value ->
+            all_bundle.add("\"${key}\"")
+        }
+    }
+    return all_bundle
 }

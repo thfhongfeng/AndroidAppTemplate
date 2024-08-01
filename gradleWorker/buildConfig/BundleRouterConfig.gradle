@@ -84,12 +84,3 @@ def bundleRouterConfig = [
         ],
 ]
 rootProject.ext.bundleRouterConfig = bundleRouterConfig
-rootProject.ext.build_all_bundle = {
-    def bundle = []
-    if (bundleRouterConfig) {
-        bundleRouterConfig.each { key, value ->
-            bundle.add("\"${key}\"")
-        }
-    }
-    return bundle
-}
