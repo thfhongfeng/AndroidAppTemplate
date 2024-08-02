@@ -1,5 +1,7 @@
 package com.pine.template.base.manager.tts;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
@@ -73,12 +75,18 @@ public class TtsManager {
         if (!isInit()) {
             return false;
         }
+        if (TextUtils.isEmpty(entity.getUtteranceId())) {
+            entity.setUtteranceId(String.valueOf(entity.hashCode()));
+        }
         return play(entity, null);
     }
 
     public boolean play(TtsEntity entity, final ITtsManager.TtsPlayProgress listener) {
         if (!isInit()) {
             return false;
+        }
+        if (TextUtils.isEmpty(entity.getUtteranceId())) {
+            entity.setUtteranceId(String.valueOf(entity.hashCode()));
         }
         return mProxy.play(entity, listener);
     }
@@ -108,7 +116,8 @@ public class TtsManager {
         if (!isInit()) {
             return false;
         }
-        TtsEntity entity = new TtsEntity(msg);
+        TtsEntity entity = new TtsEntity();
+        entity.setUtteranceId(String.valueOf(entity.hashCode()));
         entity.setMsg(msg);
         entity.setImmediately(immediately);
         return mProxy.play(entity, listener);
@@ -171,7 +180,8 @@ public class TtsManager {
             return false;
         }
         String msg = ResourceManager.getInstance().getString(mLocale, resId);
-        TtsEntity entity = new TtsEntity(msg);
+        TtsEntity entity = new TtsEntity();
+        entity.setUtteranceId(String.valueOf(entity.hashCode()));
         entity.setMsg(msg);
         entity.setImmediately(immediately);
         return mProxy.play(entity, listener);
@@ -233,7 +243,8 @@ public class TtsManager {
             return false;
         }
         String msg = ResourceManager.getInstance().getString(mLocale, resId, formatArgs);
-        TtsEntity entity = new TtsEntity(msg);
+        TtsEntity entity = new TtsEntity();
+        entity.setUtteranceId(String.valueOf(entity.hashCode()));
         entity.setMsg(msg);
         entity.setImmediately(immediately);
         return mProxy.play(entity, listener);

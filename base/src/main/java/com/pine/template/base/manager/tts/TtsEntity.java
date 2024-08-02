@@ -13,6 +13,10 @@ public class TtsEntity {
         return !TextUtils.isEmpty(utteranceId) && !TextUtils.isEmpty(msg);
     }
 
+    public TtsEntity() {
+
+    }
+
     public TtsEntity(String utteranceId) {
         this.utteranceId = utteranceId;
     }
