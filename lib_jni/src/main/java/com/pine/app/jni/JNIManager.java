@@ -42,7 +42,7 @@ public class JNIManager {
                 mIsInit = nativeInitJniManager() == 0;
             }
             if (isInit()) {
-                nativeInitMsgQueue();
+                nativeInitMsgQueue(1);
             }
         }
     }
@@ -211,9 +211,9 @@ public class JNIManager {
         return ret;
     }
 
-    public native int nativeInitMsgQueue();
+    public native int nativeInitMsgQueue(int clearQueueFlag);
 
-    public native int nativeReInitMsgQueue(int msgType);
+    public native int nativeReInitMsgQueue(int msgType, int clearQueueFlag);
 
     /**
      * @param msgType 1-g_iNetDriverMsgQid
@@ -260,19 +260,19 @@ public class JNIManager {
     public boolean checkAndTryInitMsgQueue(boolean force) {
         synchronized (mMsgLock) {
             if (force) {
-                mIsMsgQueueInit = nativeInitMsgQueue() == 0;
+                mIsMsgQueueInit = nativeInitMsgQueue(1) == 0;
             } else {
                 if (!mIsMsgQueueInit) {
-                    mIsMsgQueueInit = nativeInitMsgQueue() == 0;
+                    mIsMsgQueueInit = nativeInitMsgQueue(1) == 0;
                 }
             }
             return mIsMsgQueueInit;
         }
     }
 
-    public boolean reInitMsgQueue(int msgType) {
+    public boolean reInitMsgQueue(int msgType, boolean clearQueue) {
         synchronized (mMsgLock) {
-            nativeReInitMsgQueue(msgType);
+            nativeReInitMsgQueue(msgType, clearQueue ? 1 : 0);
             return true;
         }
     }

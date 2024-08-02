@@ -179,7 +179,7 @@ public abstract class DefaultDeviceSdkProxy implements IDeviceSdkManager {
     }
 
     @Override
-    public boolean reInitMsgQueue(int msgType) throws DeviceSdkException {
+    public boolean reInitMsgQueue(int msgType, boolean clearQueue) throws DeviceSdkException {
         throw new DeviceSdkException("not impl method");
     }
 

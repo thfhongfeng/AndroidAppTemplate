@@ -61,34 +61,33 @@ extern int RecvMsg(int iQid, char* pcMsg);
 
 
 
-extern int InitMsgQueue(void);
+extern int InitMsgQueue(int clearQueueFlag);
 
-extern int InitNetDriverMsgQueue(void);
+extern int InitNetDriverMsgQueue(int clearQueueFlag);
 
-extern int InitAvPlayMsgQueue(void);
+extern int InitAvPlayMsgQueue(int clearQueueFlag);
 
-extern int InitPeripheralMsgQueue(void);
+extern int InitPeripheralMsgQueue(int clearQueueFlag);
 
-extern int InitGpsMsgQueue(void);
+extern int InitGpsMsgQueue(int clearQueueFlag);
 
-extern int InitSystemMsgQueue(void);
+extern int InitSystemMsgQueue(int clearQueueFlag);
 
-extern int InitSchMsgQueue(void);
+extern int InitSchMsgQueue(int clearQueueFlag);
 
-extern int InitStationMsgQueue(void);
+extern int InitStationMsgQueue(int clearQueueFlag);
 
-extern int InitMonitorMsgQueue(void);
+extern int InitMonitorMsgQueue(int clearQueueFlag);
 
-extern int InitAdtMsgQueue(void);
+extern int InitAdtMsgQueue(int clearQueueFlag);
 
-extern int InitUpdateMsgQueue(void);
+extern int InitUpdateMsgQueue(int clearQueueFlag);
 
-extern int InitWdtMsgQueue(void);
+extern int InitWdtMsgQueue(int clearQueueFlag);
 
-extern int InitControllerMsgQueue(void);
+extern int InitControllerMsgQueue(int clearQueueFlag);
 
-extern int InitJniComMsgQueue(void);
-
+extern int InitJniComMsgQueue(int clearQueueFlag);
 
 
 extern int SendMsgToNetDriver(const char * pcMsg, int iLen);

@@ -48,7 +48,8 @@ int SendMsg(int msqid, const char *msg, int iLen) {
             fclose(file);
         } else {
             // 错误处理，文件打开失败
-            LOGE("LinuxMsg>> SendMsg fopen: Error opening file: %s, error:%s", filePath, strerror(errno));
+            LOGE("LinuxMsg>> SendMsg fopen: Error opening file: %s, error:%s", filePath,
+                 strerror(errno));
         }
         iLen = strlen(filePath);
         memcpy(buf.mtext, filePath, iLen);
@@ -69,7 +70,8 @@ int SendMsg(int msqid, const char *msg, int iLen) {
 char *read_file_to_string(const char *filename, int *rlen) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        LOGE("LinuxMsg>> RecvMsg read_file_to_string: Error opening file: %s, error:%s", filename, strerror(errno));
+        LOGE("LinuxMsg>> RecvMsg read_file_to_string: Error opening file: %s, error:%s", filename,
+             strerror(errno));
         return NULL;
     }
 
@@ -81,11 +83,13 @@ char *read_file_to_string(const char *filename, int *rlen) {
     // 为文件内容分配内存
     char *buffer = (char *) malloc(filesize + 1); // +1 为了末尾的空字符
     if (buffer == NULL) {
-        LOGE("LinuxMsg>> RecvMsg read_file_to_string: Memory allocation file: %s, error:%s", filename, strerror(errno));
+        LOGE("LinuxMsg>> RecvMsg read_file_to_string: Memory allocation file: %s, error:%s",
+             filename, strerror(errno));
         fclose(file);
         // 删除文件
         if (remove(filename) != 0) {
-            LOGE("LinuxMsg>> RecvMsg read_file_to_string: Error deleting file: %s, error:%s", filename, strerror(errno));
+            LOGE("LinuxMsg>> RecvMsg read_file_to_string: Error deleting file: %s, error:%s",
+                 filename, strerror(errno));
         }
         return NULL;
     }
@@ -95,11 +99,13 @@ char *read_file_to_string(const char *filename, int *rlen) {
     if (n != filesize) {
         // 读取失败或文件大小在读取时发生了变化（不太可能）
         free(buffer);
-        LOGE("LinuxMsg>> RecvMsg read_file_to_string: Failed to read file: %s, error:%s", filename, strerror(errno));
+        LOGE("LinuxMsg>> RecvMsg read_file_to_string: Failed to read file: %s, error:%s", filename,
+             strerror(errno));
         fclose(file);
         // 删除文件
         if (remove(filename) != 0) {
-            LOGE("LinuxMsg>> RecvMsg read_file_to_string: Error deleting file: %s, error:%s", filename, strerror(errno));
+            LOGE("LinuxMsg>> RecvMsg read_file_to_string: Error deleting file: %s, error:%s",
+                 filename, strerror(errno));
         }
         return NULL;
     }
@@ -110,7 +116,8 @@ char *read_file_to_string(const char *filename, int *rlen) {
     fclose(file);
     // 删除文件
     if (remove(filename) != 0) {
-        LOGE("LinuxMsg>> RecvMsg read_file_to_string: Error deleting file: %s, error:%s", filename, strerror(errno));
+        LOGE("LinuxMsg>> RecvMsg read_file_to_string: Error deleting file: %s, error:%s", filename,
+             strerror(errno));
     }
 
     *rlen = filesize + 1;
@@ -132,11 +139,11 @@ int RecvMsg(int iQid, char *pcMsg) {
 
     iMsgType = 0;
     bzero(buffer.mtext, MAX_MESSAGE_LEN);
-
+    LOGD("LinuxMsg>> RecvMsg called msqid: %d", iQid);
     iResult = msgrcv(iQid, &buffer, MAX_MESSAGE_LEN, iMsgType, IPC_NOWAIT);
     if (iResult == -1) {
-//        LOGE("LinuxMsg>> cannot RecvMsg from the %d message queue error: %s\r\n", iQid,
-//             strerror(errno));
+        LOGE("LinuxMsg>> cannot RecvMsg from the %d message queue error: %s\r\n", iQid,
+             strerror(errno));
     } else {
         if (buffer.mtype == 1) {
             memcpy(pcMsg, buffer.mtext, iResult);
@@ -175,108 +182,108 @@ int g_iJniComMsgQid;     // 安卓JNI串口消息队列
 //--------------------------------------------------------------------------------------
 
 
-int InitMsgQueue(void) {
-    InitNetDriverMsgQueue();
-    InitAvPlayMsgQueue();
-    InitPeripheralMsgQueue();
-    InitGpsMsgQueue();
-    InitSystemMsgQueue();
-    InitSchMsgQueue();
-    InitStationMsgQueue();
-    InitMonitorMsgQueue();
-    InitAdtMsgQueue();
-    InitUpdateMsgQueue();
-    InitWdtMsgQueue();
-    InitControllerMsgQueue();
-    InitJniComMsgQueue();
+int InitMsgQueue(int clearQueueFlag) {
+    InitNetDriverMsgQueue(clearQueueFlag);
+    InitAvPlayMsgQueue(clearQueueFlag);
+    InitPeripheralMsgQueue(clearQueueFlag);
+    InitGpsMsgQueue(clearQueueFlag);
+    InitSystemMsgQueue(clearQueueFlag);
+    InitSchMsgQueue(clearQueueFlag);
+    InitStationMsgQueue(clearQueueFlag);
+    InitMonitorMsgQueue(clearQueueFlag);
+    InitAdtMsgQueue(clearQueueFlag);
+    InitUpdateMsgQueue(clearQueueFlag);
+    InitWdtMsgQueue(clearQueueFlag);
+    InitControllerMsgQueue(clearQueueFlag);
+    InitJniComMsgQueue(clearQueueFlag);
     return 0;
 }
 
-int InitNetDriverMsgQueue(void) {
+int InitNetDriverMsgQueue(int clearQueueFlag) {
     // 建立网络驱动进程的消息标识符
     g_iNetDriverMsgQid = CreatMsgQueue(KEY_MSG_NET_DRIVER);
     LOGD("LinuxMsg>> InitMsgQueue NetDriverMsg: %d", g_iNetDriverMsgQid);
     return g_iNetDriverMsgQid;
 }
 
-int InitAvPlayMsgQueue(void) {
+int InitAvPlayMsgQueue(int clearQueueFlag) {
     // 建立系统级驱动进程的消息标识符
     g_iAvPlayMsgQid = CreatMsgQueue(KEY_MSG_AV_PLAY);
     LOGD("LinuxMsg>> InitMsgQueue AvPlayMsg: %d", g_iAvPlayMsgQid);
     return g_iAvPlayMsgQid;
 }
 
-int InitPeripheralMsgQueue(void) {
+int InitPeripheralMsgQueue(int clearQueueFlag) {
     // 建立系统级驱动进程的消息标识符
     g_iPeripheralMsgQid = CreatMsgQueue(KEY_MSG_PERIPHERAL);
     LOGD("LinuxMsg>> InitMsgQueue PeripheralMsg: %d", g_iPeripheralMsgQid);
     return g_iPeripheralMsgQid;
 }
 
-int InitGpsMsgQueue(void) {
+int InitGpsMsgQueue(int clearQueueFlag) {
     // 建立系统级驱动进程的消息标识符
     g_iGpsMsgQid = CreatMsgQueue(KEY_MSG_GPS);
     LOGD("LinuxMsg>> InitMsgQueue GpsMsg: %d", g_iGpsMsgQid);
     return g_iGpsMsgQid;
 }
 
-int InitSystemMsgQueue(void) {
+int InitSystemMsgQueue(int clearQueueFlag) {
     // 系统进程的消息标识符
     g_iSystemMsgQid = CreatMsgQueue(KEY_MSG_SYSTEM);
     LOGD("LinuxMsg>> InitMsgQueue SystemMsg: %d", g_iSystemMsgQid);
     return g_iSystemMsgQid;
 }
 
-int InitSchMsgQueue(void) {
+int InitSchMsgQueue(int clearQueueFlag) {
     // 调度进程的消息队列
     g_iSchMsgQid = CreatMsgQueue(KEY_MSG_SCH);
     LOGD("LinuxMsg>> InitMsgQueue SchMsg: %d", g_iSchMsgQid);
     return g_iSchMsgQid;
 }
 
-int InitStationMsgQueue(void) {
+int InitStationMsgQueue(int clearQueueFlag) {
     // 报站进程的消息队列
     g_iStationMsgQid = CreatMsgQueue(KEY_MSG_STATION);
     LOGD("LinuxMsg>> InitMsgQueue StationMsg: %d", g_iStationMsgQid);
     return g_iStationMsgQid;
 }
 
-int InitMonitorMsgQueue(void) {
+int InitMonitorMsgQueue(int clearQueueFlag) {
     // 监控进程的消息队列
     g_iMonitorMsgQid = CreatMsgQueue(KEY_MSG_MONITOR);
     LOGD("LinuxMsg>> InitMsgQueue MonitorMsg: %d", g_iMonitorMsgQid);
     return g_iMonitorMsgQid;
 }
 
-int InitAdtMsgQueue(void) {
+int InitAdtMsgQueue(int clearQueueFlag) {
     // 广告进程的消息队列
     g_iAdtMsgQid = CreatMsgQueue(KEY_MSG_ADVERTISE);
     LOGD("LinuxMsg>> InitMsgQueue AdtMsg: %d", g_iAdtMsgQid);
     return g_iAdtMsgQid;
 }
 
-int InitUpdateMsgQueue(void) {
+int InitUpdateMsgQueue(int clearQueueFlag) {
     // 广告进程的消息队列
     g_iUpdateMsgQid = CreatMsgQueue(KEY_MSG_UPDATE);
     LOGD("LinuxMsg>> InitMsgQueue UpdateMsg: %d", g_iUpdateMsgQid);
     return g_iUpdateMsgQid;
 }
 
-int InitWdtMsgQueue(void) {
+int InitWdtMsgQueue(int clearQueueFlag) {
     // 看门狗清零的消息队列
     g_iWdtMsgQid = CreatMsgQueue(KEY_MSG_WATCHDOG);
     LOGD("LinuxMsg>> InitMsgQueue WdtMsg: %d", g_iWdtMsgQid);
     return g_iWdtMsgQid;
 }
 
-int InitControllerMsgQueue(void) {
+int InitControllerMsgQueue(int clearQueueFlag) {
     // 安卓控制器消息队列
     g_iControllerMsgQid = CreatMsgQueue(KEY_MSG_CONTROLLER);
     LOGD("LinuxMsg>> InitMsgQueue ControllerMsg: %d", g_iControllerMsgQid);
     return g_iControllerMsgQid;
 }
 
-int InitJniComMsgQueue(void) {
+int InitJniComMsgQueue(int clearQueueFlag) {
     // 安卓JNI串口消息队列
     g_iJniComMsgQid = CreatMsgQueue(KEY_MSG_JNI_COM);
     LOGD("LinuxMsg>> InitMsgQueue JniComMsg: %d", g_iJniComMsgQid);

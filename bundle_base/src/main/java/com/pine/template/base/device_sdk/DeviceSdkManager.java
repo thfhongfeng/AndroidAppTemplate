@@ -623,15 +623,16 @@ public class DeviceSdkManager {
      * 重新初始化消息队列
      *
      * @param msgType -1表示所有
+     * @param clearQueue 是否清除队列旧数据
      * @return
      * @throws DeviceSdkException
      */
-    public boolean reInitMsgQueue(int msgType)
+    public boolean reInitMsgQueue(int msgType, boolean clearQueue)
             throws DeviceSdkException {
         if (!checkSdkInit()) {
             throw new DeviceSdkException("device sdk is not init");
         }
-        return mManager.reInitMsgQueue(msgType);
+        return mManager.reInitMsgQueue(msgType, clearQueue);
     }
 
     /**

@@ -210,41 +210,41 @@ Java_com_pine_app_jni_JNIManager_nativeReleaseCCamera
     return ret;
 }
 
-extern "C" JNIEXPORT jint JNICALL Java_com_minicreate_app_jni_JNIManager_nativeInitMsgQueue
-        (JNIEnv *env, jobject jclazz) {
-    return InitMsgQueue();
+extern "C" JNIEXPORT jint JNICALL Java_com_pine_app_jni_JNIManager_nativeInitMsgQueue
+        (JNIEnv *env, jobject jclazz, jint clearQueueFlag) {
+    return InitMsgQueue(clearQueueFlag);
 }
 
-extern "C" JNIEXPORT jint JNICALL Java_com_minicreate_app_jni_JNIManager_nativeReInitMsgQueue
-        (JNIEnv *env, jobject jclazz, jint msgType) {
+extern "C" JNIEXPORT jint JNICALL Java_com_pine_app_jni_JNIManager_nativeReInitMsgQueue
+        (JNIEnv *env, jobject jclazz, jint msgType, jint clearQueueFlag) {
     if (msgType < 0) {
-        return InitMsgQueue();
+        return InitMsgQueue(clearQueueFlag);
     } else if (msgType == 1) {
-        return InitNetDriverMsgQueue();
+        return InitNetDriverMsgQueue(clearQueueFlag);
     } else if (msgType == 2) {
-        return InitAdtMsgQueue();
+        return InitAdtMsgQueue(clearQueueFlag);
     } else if (msgType == 3) {
-        return InitPeripheralMsgQueue();
+        return InitPeripheralMsgQueue(clearQueueFlag);
     } else if (msgType == 4) {
-        return InitGpsMsgQueue();
+        return InitGpsMsgQueue(clearQueueFlag);
     } else if (msgType == 5) {
-        return InitSystemMsgQueue();
+        return InitSystemMsgQueue(clearQueueFlag);
     } else if (msgType == 6) {
-        return InitSchMsgQueue();
+        return InitSchMsgQueue(clearQueueFlag);
     } else if (msgType == 7) {
-        return InitStationMsgQueue();
+        return InitStationMsgQueue(clearQueueFlag);
     } else if (msgType == 8) {
-        return InitMonitorMsgQueue();
+        return InitMonitorMsgQueue(clearQueueFlag);
     } else if (msgType == 9) {
-        return InitAdtMsgQueue();
+        return InitAdtMsgQueue(clearQueueFlag);
     } else if (msgType == 10) {
-        return InitUpdateMsgQueue();
+        return InitUpdateMsgQueue(clearQueueFlag);
     } else if (msgType == 11) {
-        return InitWdtMsgQueue();
+        return InitWdtMsgQueue(clearQueueFlag);
     } else if (msgType == 12) {
-        return InitJniComMsgQueue();
+        return InitJniComMsgQueue(clearQueueFlag);
     } else if (msgType == 99) {
-        return InitControllerMsgQueue();
+        return InitControllerMsgQueue(clearQueueFlag);
     }
     return -1;
 }
