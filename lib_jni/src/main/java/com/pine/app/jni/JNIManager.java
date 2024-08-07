@@ -10,6 +10,7 @@ import com.pine.app.jni.listener.IJniListener;
 import com.pine.app.jni.listener.IRequestListener;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 
 public class JNIManager {
@@ -251,7 +252,7 @@ public class JNIManager {
      *                99-g_iControllerMsgQid
      * @return
      */
-    public native String nativeGetMsg(int msgType);
+    public native byte[] nativeGetMsg(int msgType);
 
     private volatile static boolean mIsMsgQueueInit;
 
@@ -294,12 +295,13 @@ public class JNIManager {
             throw new JniException("not init");
         }
         synchronized (mMsgLock) {
-            return nativeGetMsg(msgType);
+            byte[] result = nativeGetMsg(msgType);
+            return result == null ? null : new String(result, Charset.forName("UTF-8"));
         }
     }
 
 
-    public native String nativeSyncRequest(String action, String data, int maxSize);
+    public native byte[] nativeSyncRequest(String action, String data, int maxSize);
 
     public native int nativeAsyncRequest(String action, String callTag, String data);
 
@@ -331,8 +333,8 @@ public class JNIManager {
         if (!checkAndTryInit()) {
             throw new JniException("not init");
         }
-        String str = nativeSyncRequest(action, data, maxSize);
-        return str;
+        byte[] result = nativeSyncRequest(action, data, maxSize);
+        return result == null ? null : new String(result, Charset.forName("UTF-8"));
     }
 
     /**

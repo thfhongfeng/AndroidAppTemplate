@@ -46,7 +46,7 @@ Java_com_pine_app_jni_JNIManager_nativeReleaseJniManager
     return ret;
 }
 
-extern "C" JNIEXPORT jstring JNICALL
+extern "C" JNIEXPORT jbyteArray JNICALL
 Java_com_pine_app_jni_JNIManager_nativeSyncRequest
         (JNIEnv *env, jobject /* this */, jstring action, jstring data,
          jint maxSize) {
@@ -62,9 +62,14 @@ Java_com_pine_app_jni_JNIManager_nativeSyncRequest
     env->ReleaseStringUTFChars(action, actionChars);
     env->ReleaseStringUTFChars(data, dataChars);
     if (len < 1) return NULL;
-    jstring str = env->NewStringUTF(nativeBuffer);
+
+    jbyte *dataArr = reinterpret_cast<jbyte *>(nativeBuffer);
+    jbyteArray arr = (env)->NewByteArray(len);
+    // 将数据复制到Java字符数组
+    (env)->SetByteArrayRegion(arr, 0, len, dataArr);
+
     free(nativeBuffer);
-    return str;
+    return arr;
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -319,40 +324,43 @@ extern "C" JNIEXPORT jint JNICALL Java_com_pine_app_jni_JNIManager_nativeSendMsg
     return ret;
 }
 
-extern "C" JNIEXPORT jstring JNICALL Java_com_pine_app_jni_JNIManager_nativeGetMsg
+extern "C" JNIEXPORT jbyteArray JNICALL Java_com_minicreate_app_jni_JNIManager_nativeGetMsg
         (JNIEnv *env, jobject jclazz, jint msgType) {
-    int ret = -1;
-    char data[2 * MAX_MESSAGE_LEN + 1];
+    int len = -1;
+    char data[MAX_MESSAGE_LEN + 1];
     if (msgType == 1) {
-        ret = RecvMsg(g_iNetDriverMsgQid, data);
+        len = RecvMsg(g_iNetDriverMsgQid, data);
     } else if (msgType == 2) {
-        ret = RecvMsg(g_iAvPlayMsgQid, data);
+        len = RecvMsg(g_iAvPlayMsgQid, data);
     } else if (msgType == 3) {
-        ret = RecvMsg(g_iPeripheralMsgQid, data);
+        len = RecvMsg(g_iPeripheralMsgQid, data);
     } else if (msgType == 4) {
-        ret = RecvMsg(g_iGpsMsgQid, data);
+        len = RecvMsg(g_iGpsMsgQid, data);
     } else if (msgType == 5) {
-        ret = RecvMsg(g_iSystemMsgQid, data);
+        len = RecvMsg(g_iSystemMsgQid, data);
     } else if (msgType == 6) {
-        ret = RecvMsg(g_iSchMsgQid, data);
+        len = RecvMsg(g_iSchMsgQid, data);
     } else if (msgType == 7) {
-        ret = RecvMsg(g_iStationMsgQid, data);
+        len = RecvMsg(g_iStationMsgQid, data);
     } else if (msgType == 8) {
-        ret = RecvMsg(g_iMonitorMsgQid, data);
+        len = RecvMsg(g_iMonitorMsgQid, data);
     } else if (msgType == 9) {
-        ret = RecvMsg(g_iAdtMsgQid, data);
+        len = RecvMsg(g_iAdtMsgQid, data);
     } else if (msgType == 10) {
-        ret = RecvMsg(g_iUpdateMsgQid, data);
+        len = RecvMsg(g_iUpdateMsgQid, data);
     } else if (msgType == 11) {
-        ret = RecvMsg(g_iWdtMsgQid, data);
+        len = RecvMsg(g_iWdtMsgQid, data);
     } else if (msgType == 12) {
-        ret = RecvMsg(g_iJniComMsgQid, data);
+        len = RecvMsg(g_iJniComMsgQid, data);
     } else if (msgType == 99) {
-        ret = RecvMsg(g_iControllerMsgQid, data);
+        len = RecvMsg(g_iControllerMsgQid, data);
     }
-    if (ret != -1) {
-        jstring result = (env)->NewStringUTF(data);
-        return result;
+    if (len > 0) {
+        jbyte *dataArr = reinterpret_cast<jbyte *>(data);
+        jbyteArray arr = (env)->NewByteArray(len);
+        // 将数据复制到Java字符数组
+        (env)->SetByteArrayRegion(arr, 0, len, dataArr);
+        return arr;
     } else {
         return NULL;
     }
