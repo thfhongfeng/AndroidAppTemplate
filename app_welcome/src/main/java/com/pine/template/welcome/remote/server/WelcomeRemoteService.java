@@ -40,6 +40,7 @@ public class WelcomeRemoteService {
                         responseBundle.putString("action", "onNewVersionFound");
                         responseBundle.putBoolean("newVersion", true);
                         responseBundle.putString("data", sGson.toJson(versionEntity));
+                        responseBundle.putBoolean("forceUpdate", versionEntity.isForce());
                         callback.onResponse(responseBundle);
                     }
 
@@ -47,6 +48,7 @@ public class WelcomeRemoteService {
                     public boolean installApk(VersionEntity versionEntity, File apkFile) {
                         responseBundle.putString("action", "installApk");
                         responseBundle.putString("data", sGson.toJson(versionEntity));
+                        responseBundle.putBoolean("forceUpdate", versionEntity.isForce());
                         responseBundle.putString("path", apkFile.getPath());
                         callback.onResponse(responseBundle);
                         return false;
@@ -56,6 +58,7 @@ public class WelcomeRemoteService {
                     public void onUpdateComplete(VersionEntity versionEntity) {
                         responseBundle.putString("action", "onUpdateComplete");
                         responseBundle.putString("data", sGson.toJson(versionEntity));
+                        responseBundle.putBoolean("forceUpdate", versionEntity.isForce());
                         callback.onResponse(responseBundle);
                     }
 
@@ -64,6 +67,7 @@ public class WelcomeRemoteService {
                                             VersionEntity versionEntity) {
                         responseBundle.putString("action", "onUpdateErr");
                         responseBundle.putString("data", sGson.toJson(versionEntity));
+                        responseBundle.putBoolean("forceUpdate", versionEntity.isForce());
                         responseBundle.putInt("errCode", errCode);
                         responseBundle.putString("errMsg", errMsg);
                         callback.onResponse(responseBundle);
