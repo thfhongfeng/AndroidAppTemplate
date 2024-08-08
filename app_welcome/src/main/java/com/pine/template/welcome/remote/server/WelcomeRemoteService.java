@@ -46,7 +46,6 @@ public class WelcomeRemoteService {
 
                     @Override
                     public void onUpdateComplete(VersionEntity versionEntity) {
-                        ApkVersionManager.getInstance().onClear();
                         ((Activity) context).finish();
                     }
 

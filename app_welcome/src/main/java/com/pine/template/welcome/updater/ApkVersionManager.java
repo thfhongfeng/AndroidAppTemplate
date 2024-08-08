@@ -113,6 +113,7 @@ public class ApkVersionManager {
 
             @Override
             public boolean onFail(Exception e) {
+                onClear();
                 if (callback != null) {
                     callback.onNoNewVersion();
                 }
@@ -121,6 +122,7 @@ public class ApkVersionManager {
 
             @Override
             public void onCancel() {
+                onClear();
                 if (callback != null) {
                     callback.onNoNewVersion();
                 }
@@ -152,7 +154,7 @@ public class ApkVersionManager {
         mUpdateConfirmDialog.findViewById(R.id.cancel_btn_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUpdateConfirmDialog.dismiss();
+                onClear();
                 if (callback != null) {
                     callback.onUpdateErr(0, "", versionEntity);
                 }
@@ -241,6 +243,7 @@ public class ApkVersionManager {
             return;
         }
         if (TextUtils.isEmpty(mDownloadDir)) {
+            onClear();
             if (callback != null) {
                 callback.onUpdateErr(1,
                         activity.getString(R.string.base_version_get_download_path_fail, mDownloadDir),
@@ -250,6 +253,7 @@ public class ApkVersionManager {
         }
         String fileName = versionEntity.getFileName();
         if (TextUtils.isEmpty(fileName)) {
+            onClear();
             if (callback != null) {
                 callback.onUpdateErr(3,
                         activity.getString(R.string.base_new_version_download_fail),
@@ -288,6 +292,7 @@ public class ApkVersionManager {
 
             @Override
             public void onCancel(int what) {
+                onClear();
                 if (callback != null) {
                     callback.onUpdateErr(0, "", versionEntity);
                 }
@@ -295,6 +300,7 @@ public class ApkVersionManager {
 
             @Override
             public boolean onError(int what, Exception e) {
+                onClear();
                 if (callback != null) {
                     if (e instanceof MessageException) {
                         callback.onUpdateErr(2, e.getMessage(), versionEntity);
@@ -313,6 +319,7 @@ public class ApkVersionManager {
                                         final IUpdateCallback callback) {
         SharePreferenceUtils.saveToConfig(BaseKeyConstants.APK_DOWNLOAD_FILE_PATH, filePath);
         boolean ret = installNewVersionApk(activity, versionEntity, callback);
+        onClear();
         if (callback != null) {
             if (ret) {
                 callback.onUpdateComplete(versionEntity);
