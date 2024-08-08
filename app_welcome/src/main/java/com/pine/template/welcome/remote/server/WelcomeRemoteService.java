@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.pine.app.template.app_welcome.router.RouterWelcomeCommand;
 import com.pine.template.welcome.updater.ApkVersionManager;
 import com.pine.template.welcome.updater.VersionEntity;
@@ -19,6 +20,8 @@ import java.io.File;
  */
 
 public class WelcomeRemoteService {
+    private Gson sGson = new Gson().newBuilder().disableHtmlEscaping().create();
+
     @RouterCommand(CommandName = RouterWelcomeCommand.checkApkUpdate)
     public void checkApkUpdate(@NonNull final Context context, Bundle args,
                                @NonNull final IServiceCallback callback) {
@@ -27,35 +30,42 @@ public class WelcomeRemoteService {
                 new ApkVersionManager.IUpdateCallback() {
                     @Override
                     public void onNoNewVersion() {
-                        responseBundle.putBoolean("success", true);
+                        responseBundle.putString("action", "onNoNewVersion");
                         responseBundle.putBoolean("newVersion", false);
                         callback.onResponse(responseBundle);
                     }
 
                     @Override
                     public void onNewVersionFound(VersionEntity versionEntity) {
-                        responseBundle.putBoolean("success", true);
+                        responseBundle.putString("action", "onNewVersionFound");
                         responseBundle.putBoolean("newVersion", true);
+                        responseBundle.putString("data", sGson.toJson(versionEntity));
                         callback.onResponse(responseBundle);
                     }
 
                     @Override
                     public boolean installApk(VersionEntity versionEntity, File apkFile) {
+                        responseBundle.putString("action", "installApk");
+                        responseBundle.putString("data", sGson.toJson(versionEntity));
+                        responseBundle.putString("path", apkFile.getPath());
+                        callback.onResponse(responseBundle);
                         return false;
                     }
 
                     @Override
                     public void onUpdateComplete(VersionEntity versionEntity) {
-                        ((Activity) context).finish();
+                        responseBundle.putString("action", "onUpdateComplete");
+                        responseBundle.putString("data", sGson.toJson(versionEntity));
+                        callback.onResponse(responseBundle);
                     }
 
                     @Override
                     public void onUpdateErr(int errCode, String errMsg,
                                             VersionEntity versionEntity) {
-                        responseBundle.putBoolean("success", false);
+                        responseBundle.putString("action", "onUpdateErr");
+                        responseBundle.putString("data", sGson.toJson(versionEntity));
                         responseBundle.putInt("errCode", errCode);
                         responseBundle.putString("errMsg", errMsg);
-                        responseBundle.putBoolean("newVersion", false);
                         callback.onResponse(responseBundle);
                     }
                 });
