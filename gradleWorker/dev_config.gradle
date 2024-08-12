@@ -1,10 +1,100 @@
+apply from: "${rootDir}/gradleWorker/config_key.gradle"
+
 // 当前开发模式（dev-开发模式；publishMode-打包模式）
 // 打包单个模块时请使用dev模式
 gradle.ext.compileMode = "dev"
 
-// 模块信息
-// libDepend用于编译时判断是依赖编译好的lib包还是模块工程
-// 添加新模块时注意依赖顺序，总是后面的依赖前面的模块关系
+/*
+ [key1：[path:"routerPath1", name:"className1",method:[method1Key:"method1",...]], ...]
+
+ 生成代码代码文件className1.java
+ public interface className1 {
+     String method1Key = method1;
+     ......
+ }
+
+ BuildConfigKey.java中生成代码
+ public final static String key1 = valueStr1;
+ ......
+ public final static HashMap<String, String> getBundleRouterMap() {
+    HashMap<String, String> map = new HashMap<>();
+    map.put(key1, routerPath1);
+    ......
+ }
+ */
+/*
+ 模块间路由配置，主要方便调用者通过接口常量指定要调用的模块的方法，而不用记住常量内容。
+ 模块添加对外方法时可选添加，编译时生成类名为name的接口。
+ */
+def bundleRouterConfig = [
+        BUNDLE_WELCOME : [
+                path  : "/wel/service",
+                name  : "RouterWelcomeCommand",
+                method: [
+                        checkApkUpdate: "checkApkUpdate",
+                ]
+        ],
+        BUNDLE_LOGIN   : [
+                path  : "/login/service", name: "RouterLoginCommand",
+                method: [
+                        goLoginActivity: "goLoginActivity",
+                        autoLogin      : "autoLogin",
+                        logout         : "logout",
+                        getLoginAccount: "getLoginAccount",
+                ]
+        ],
+        BUNDLE_MAIN    : [
+                path  : "/main/service", name: "RouterMainCommand",
+                method: [
+                        goMainHomeActivity: "goMainHomeActivity",
+                ]
+        ],
+        BUNDLE_USER    : [
+                path  : "/user/service", name: "RouterUserCommand",
+                method: [
+                        goUserHomeActivity    : "goUserHomeActivity",
+                        goUserRechargeActivity: "goUserRechargeActivity",
+                ]
+        ],
+        BUNDLE_DB_SEVER: [
+                path  : "/db/service", name: "RouterDbServerCommand",
+                method: [
+                        callDbServerCommand: "callDbServerCommand",
+                ]
+        ],
+        BIZ_BUNDLE_MVC : [
+                path  : "/mvc/service", name: "RouterMvcCommand",
+                method: [
+                        goMvcHomeActivity: "goMvcHomeActivity",
+                ]
+        ],
+        BIZ_BUNDLE_MVP : [
+                path  : "/mvp/service", name: "RouterMvpCommand",
+                method: [
+                        goMvpHomeActivity: "goMvpHomeActivity",
+                ]
+        ],
+        BIZ_BUNDLE_MVVM: [
+                path  : "/mvvm/service", name: "RouterMvvmCommand",
+                method: [
+                        goMvvmHomeActivity: "goMvvmHomeActivity",
+                ]
+        ],
+        BIZ_BUNDLE_FACE: [
+                path  : "/face/service", name: "RouterFaceCommand",
+                method: [
+                        goFaceHomeActivity: "goFaceHomeActivity",
+                ]
+        ],
+]
+gradle.ext.bundleRouterConfig = bundleRouterConfig
+
+/**
+ * 模块信息（添加新模块时注意依赖顺序，总是后面的依赖前面的模块关系）
+ * libDepend：用于编译时判断是依赖编译好的lib包还是模块工程
+ * libArtifactId：模块打包artifactId信息（打包的groupId信息统一为ext.build_lib_groupId的值）
+ * libVersion：模块打包版本信息
+ */
 def modulePkgConfig = [
         resource             : [libDepend: false, libArtifactId: "resource", libVersion: "1.0.0"],
 

@@ -37,7 +37,7 @@ class GenerateConfigKeyTask extends DefaultTask {
     // 生成BuildConfigKey.java文件
     void generateBuildConfigKeyFile() {
         def buildPackage = taskRootProject.ext.build_flavor_product[variantFlavorName].build_product_applicationId
-        def buildModelPackage = "com.pine.app.template.${taskProject.name}"
+        def buildModelPackage = "${buildPackage}.${taskProject.name}"
         // 构建正确的目录路径
         def outputDir = "${buildDir}/generated/source/buildConfig/${variantFlavorName}/${variantBuildTypeName}/${buildModelPackage.replace('.', '/')}"
         // 在这里生成 CustomBuildConfig 文件并写入到指定路径
@@ -64,16 +64,16 @@ ${generateConfigKeyContent()}
         def keyResult = ""
         def methodResult = "     public final static HashMap<String, String> getBundleRouterMap() {\n" +
                 "          HashMap<String, String> map = new HashMap<>();\n"
-        taskRootProject.ext.bundleRouterConfig.each { key, item ->
+        taskGradle.ext.bundleRouterConfig.each { key, item ->
             if (item != null) {
                 keyResult += "     public static final String $key = \"${key}\";\n"
                 methodResult += "          map.put(\"${key}\", \"${item.path}\");\n"
             }
         }
-        taskRootProject.ext.baseConfigKey.each { key, value ->
+        taskGradle.ext.baseConfigKey.each { key, value ->
             keyResult += "     public static final String $key = \"$value\";\n"
         }
-        taskRootProject.ext.bundleConfigKeyMap.each { _, item ->
+        taskGradle.ext.bundleConfigKeyMap.each { _, item ->
             if (item != null) {
                 item.each { key, value ->
                     keyResult += "     public static final String $key = \"$value\";\n"
@@ -91,10 +91,10 @@ ${generateConfigKeyContent()}
     // 生成BuildConfigKey.java文件
     void generateRouterCommandFile() {
         def buildPackage = taskRootProject.ext.build_flavor_product[variantFlavorName].build_product_applicationId
-        def buildModelPackage = "com.pine.app.template.${taskProject.name}.router"
+        def buildModelPackage = "${buildPackage}.${taskProject.name}.router"
         // 构建正确的目录路径
         def outputDir = "${buildDir}/generated/source/buildConfig/${variantFlavorName}/${variantBuildTypeName}/${buildModelPackage.replace('.', '/')}"
-        taskRootProject.ext.bundleRouterConfig.each { key, item ->
+        taskGradle.ext.bundleRouterConfig.each { key, item ->
             if (item != null && item.method != null) {
                 // 在这里生成 CustomBuildConfig 文件并写入到指定路径
                 def content = """

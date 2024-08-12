@@ -49,7 +49,7 @@ ui-----------------------通用Activity和fragment封装，默认android原生�
 
 
 模块多渠道客制化步骤：
-分两种渠道：common渠道为通用渠道（开发功能时的默认渠道）；其它渠道（special等）
+以两种渠道为例：common渠道为通用渠道（开发功能时的默认渠道）；其它渠道（special等）
 1. 在src下建立不同渠道对应的文件夹（如：common、special）。
 2. config_product.gradle的build_flavor_product添加渠道项信息，如：
         special: [
@@ -113,7 +113,9 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
    e. 模块间通信使用方式：
      RouterManager.callXxCommand(Context context, String bundleKey, String commandName, Bundle args, IRouterCallback callback)。
      该调用统一写在XxxClientManager中
-6. 业务功能开关及配置项Key标识统一添加到BundleConfigKey.gradle，编译时会生成BuildConfigKey.java类，方便调用者使用开关及配置标识。
+6. 将业务模块信息添加到dev_config.gradle的modulePkgConfig参数中，如有路由需求则需要同时在bundleRouterConfig参数中添加相关信息。
+7. 业务功能开关及配置项Key标识统一添加到config_key.gradle，编译时会生成BuildConfigKey.java类，方便调用者使用开关及配置标识。
+
 
 
 其它注意事项：

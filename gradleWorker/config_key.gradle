@@ -4,6 +4,18 @@
  public final static String key1 = value1;
  public final static String key2 = value2;
  */
+/**
+ * 业务功能开关及配置项Key标识，编译时添加到生成的BuildConfigKey.java类中，方便调用者使用开关及配置标识
+ */
+def bundleConfigKeyMap = [:]
+//  biz_bundle_mvc, biz_bundle_mvp, biz_bundle_mvvm模块
+bundleConfigKeyMap.mvcMvpMvvm = [FUN_ADD_SHOP       : "FUN_ADD_SHOP",
+                                 FUN_ADD_PRODUCT    : "FUN_ADD_PRODUCT",
+                                 FUN_ADD_TRAVEL_NOTE: "FUN_ADD_TRAVEL_NOTE"]
+//  biz_bundle_face模块
+bundleConfigKeyMap.face = [:]
+
+gradle.ext.bundleConfigKeyMap = bundleConfigKeyMap
 
 /**
  * 基础功能开关及配置项Key标识，编译时添加到生成的BuildConfigKey.java类中，方便调用者使用开关及配置标识
@@ -49,4 +61,4 @@ def baseConfigKey = [
         CONFIG_H5_PRIVACY_USER         : "CONFIG_H5_PRIVACY_USER",
         CONFIG_H5_PRIVACY_POLICY       : "CONFIG_H5_PRIVACY_POLICY"
 ]
-rootProject.ext.baseConfigKey = baseConfigKey
+gradle.ext.baseConfigKey = baseConfigKey
