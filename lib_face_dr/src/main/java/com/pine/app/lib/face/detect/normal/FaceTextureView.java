@@ -426,7 +426,6 @@ public class FaceTextureView extends TextureView implements View.OnLayoutChangeL
     public void stopCameraPreview() {
         getConfig().setEnableFaceDetect(false);
         mMainHandler.removeCallbacksAndMessages(null);
-        mCameraHelper.stopCameraPreview();
         mCameraHelper.release();
     }
 

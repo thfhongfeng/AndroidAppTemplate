@@ -54,6 +54,7 @@ public class CameraHelper {
 
     private Camera mCamera;
     private Camera.CameraInfo mCameraInfo;
+    private Camera.Parameters mCameraParam;
 
     private int mDeviceRotation;
     private int mDisplayRotation;
@@ -66,7 +67,7 @@ public class CameraHelper {
     private volatile boolean mMainSurfaceInit;
 
     public synchronized boolean isCameraInit() {
-        return mCamera != null && mCameraInfo != null && mCameraInit;
+        return mCamera != null && mCameraInfo != null && mCameraInit && mCameraParam != null;
     }
 
     public synchronized boolean isCameraPrepared() {
@@ -111,11 +112,15 @@ public class CameraHelper {
                 mDeviceRotation = 270;
                 break;
         }
+        mTryOpenCount = 0;
         openCamera(config, listener);
     }
 
+    private int mTryOpenCount = 0;
+    private Handler mTryOpenH = new Handler(Looper.getMainLooper());
+
     private void openCamera(@NonNull final CameraConfig config,
-                            ICameraCallback.ICameraInitListener listener) {
+                            final ICameraCallback.ICameraInitListener listener) {
         try {
             if (!isSupportCamera()) {
                 Log.d(TAG, "openCamera camera is not support");
@@ -155,6 +160,9 @@ public class CameraHelper {
             mCameraInfo = getCameraInfo(mCameraFacing);
             boolean openSuccess = mCamera != null && mCameraInfo != null;
             Log.d(TAG, "openCamera success:" + openSuccess + ", mCameraType:" + mCameraType);
+            if (openSuccess) {
+                mCameraParam = mCamera.getParameters();
+            }
             mCameraInit = openSuccess && judgeOrientation(config);
             if (listener != null) {
                 listener.onCameraInit(mCameraInit);
@@ -163,10 +171,19 @@ public class CameraHelper {
             return;
         } catch (Exception e) {
             Log.e(TAG, "openCamera exception:" + e);
-            if (listener != null) {
-                listener.onCameraInit(false);
-            }
-            mCameraInitProcessing = false;
+            e.printStackTrace();
+//            if (listener != null) {
+//                listener.onCameraInit(false);
+//            }
+//            mCameraInitProcessing = false;
+            mTryOpenCount = (mTryOpenCount + 1) % 100;
+            release();
+            mTryOpenH.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    openCamera(config, listener);
+                }
+            }, mTryOpenCount * 100);
         }
     }
 
@@ -208,9 +225,8 @@ public class CameraHelper {
         if (containerW <= 0 || containerH <= 0) {
             return false;
         }
-        Camera.Parameters cameraParam = mCamera.getParameters();
         Camera.Size preSize = getBestSize(mDisplayRotation, containerW, containerH,
-                cameraParam.getSupportedPreviewSizes());
+                mCameraParam.getSupportedPreviewSizes());
         if (preSize == null) {
             return false;
         }
@@ -253,7 +269,7 @@ public class CameraHelper {
         Camera.Size picSize = getBestSize(mDisplayRotation,
                 mCameraSurfaceParams.frameWidth > 0 ? mCameraSurfaceParams.frameWidth : containerW,
                 mCameraSurfaceParams.frameHeight > 0 ? mCameraSurfaceParams.frameHeight : containerH,
-                cameraParam.getSupportedPictureSizes());
+                mCameraParam.getSupportedPictureSizes());
         //设置Pic, 视频时可以忽略Pic尺寸
         int picSizeW = config.picWidth;
         int picSizeH = config.picHeight;
@@ -270,30 +286,30 @@ public class CameraHelper {
 
         if (preSizeW > 0 && preSizeH > 0) {
             Log.i(TAG, "Camera Parameters preSize " + preSizeW + " - " + preSizeH);
-            cameraParam.setPreviewSize(preSizeW, preSizeH);
+            mCameraParam.setPreviewSize(preSizeW, preSizeH);
         }
         if (picSizeW > 0 && picSizeH > 0) {//拍摄图片时不可null
             Log.i(TAG, "Camera Parameters picSize " + picSizeW + " - " + picSizeH);
-            cameraParam.setPictureSize(picSizeW, picSizeH);
+            mCameraParam.setPictureSize(picSizeW, picSizeH);
         }
-        cameraParam.setPictureFormat(PixelFormat.JPEG);
-        cameraParam.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-        if (cameraParam.isZoomSupported()) {
-            int maxZoom = cameraParam.getMaxZoom();
-            int defaultZoom = cameraParam.getZoom();
-            int zoom = cameraParam.getZoom() + mCameraConfig.zoomOffset;
+        mCameraParam.setPictureFormat(PixelFormat.JPEG);
+        mCameraParam.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+        if (mCameraParam.isZoomSupported()) {
+            int maxZoom = mCameraParam.getMaxZoom();
+            int defaultZoom = mCameraParam.getZoom();
+            int zoom = mCameraParam.getZoom() + mCameraConfig.zoomOffset;
             if (zoom > maxZoom) {
                 zoom = maxZoom;
             } else if (zoom < 0) {
                 zoom = 1;
             }
-            cameraParam.setZoom(zoom);
+            mCameraParam.setZoom(zoom);
             Log.i(TAG, "Camera Parameters support zoom maxZoom: " + maxZoom
                     + ", default zoom:" + defaultZoom + ", set zoom: " + zoom);
         }
 //        cameraParam.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
         mCamera.setDisplayOrientation(mDisplayRotation);
-        mCamera.setParameters(cameraParam);
+        mCamera.setParameters(mCameraParam);
 
         // 先比例缩放再transformMatrix（先镜像而后移动）。顺序不不同，宽高参数不同，所以要明确顺序
         ViewGroup.LayoutParams layoutParams = innerFrame.getLayoutParams();
@@ -436,12 +452,14 @@ public class CameraHelper {
 
     public synchronized void startCameraPreview() {
         if (isRecording) {
+            Log.w(TAG, "startCameraPreview abort for isRecording:" + isRecording);
             return;
         }
         try {
             if (isCameraPrepared() && mTextureView != null) {
                 mCamera.setPreviewTexture(mTextureView.getSurfaceTexture());
                 mCamera.startPreview();
+                Log.i(TAG, "startCameraPreview success for camera:" + mCamera);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -450,12 +468,14 @@ public class CameraHelper {
 
     public synchronized void stopCameraPreview() {
         if (isRecording) {
+            Log.w(TAG, "stopCameraPreview abort for isRecording:" + isRecording);
             return;
         }
         try {
             if (mCamera != null) {
                 mCamera.stopPreview();
                 mCamera.setPreviewTexture(null);
+                Log.i(TAG, "stopCameraPreview success for camera:" + mCamera);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -197,7 +197,6 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     public void stopCameraPreview() {
         mMainHandler.removeCallbacksAndMessages(null);
         if (mCameraHelper != null) {
-            mCameraHelper.stopCameraPreview();
             mCameraHelper.release();
         }
     }
