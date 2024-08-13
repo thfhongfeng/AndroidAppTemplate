@@ -455,6 +455,7 @@ public class CameraHelper {
             Log.w(TAG, "startCameraPreview abort for isRecording:" + isRecording);
             return;
         }
+        mTryOpenH.removeCallbacksAndMessages(null);
         try {
             if (isCameraPrepared() && mTextureView != null) {
                 mCamera.setPreviewTexture(mTextureView.getSurfaceTexture());
@@ -471,6 +472,7 @@ public class CameraHelper {
             Log.w(TAG, "stopCameraPreview abort for isRecording:" + isRecording);
             return;
         }
+        mTryOpenH.removeCallbacksAndMessages(null);
         try {
             if (mCamera != null) {
                 mCamera.stopPreview();
@@ -511,6 +513,7 @@ public class CameraHelper {
 
     public synchronized void release() {
         Log.d(TAG, "release mCamera:" + mCamera);
+        mTryOpenH.removeCallbacksAndMessages(null);
         unListenFrameData();
         stopRecording(false);
         stopCameraPreview();
