@@ -136,7 +136,12 @@ public class LinuxMsgHelper {
     }
 
     public void sendMsg(String msg, LinuxMsgResponseCallback callback) {
+        sendMsg(msg, 0, callback);
+    }
+
+    public void sendMsg(String msg, int timeout, LinuxMsgResponseCallback callback) {
         LinuxMsgEntity entity = new LinuxMsgEntity(senderTag, msg);
+        entity.setTimeout(timeout);
         entity.setMsgType(config.writeMsgType);
         entity.setMsgClass(1);
         // 添加发送

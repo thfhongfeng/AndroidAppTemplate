@@ -32,6 +32,8 @@ public class LinuxMsgEntity {
     private int msgType;
     private String msg;
 
+    private int timeout;
+
     public LinuxMsgEntity(String senderTag, String msg) {
         this.senderTag = senderTag;
         this.msg = msg;
@@ -76,6 +78,14 @@ public class LinuxMsgEntity {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 
     @Override

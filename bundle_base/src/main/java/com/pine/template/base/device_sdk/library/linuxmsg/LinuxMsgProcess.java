@@ -71,9 +71,10 @@ public class LinuxMsgProcess {
             if (currentEntity == null) {
                 return;
             }
-            // 设置了超时时间
-            boolean hasTimeout = config.timeout > 0;
             final LinuxMsgEntity entity = currentEntity;
+            // 设置了超时时间
+            int timeout = entity.getTimeout() > 0 ? entity.getTimeout() : config.timeout;
+            boolean hasTimeout = timeout > 0;
             if (hasTimeout) {
                 Runnable runnable = new Runnable() {
                     @Override
@@ -93,7 +94,7 @@ public class LinuxMsgProcess {
                 synchronized (timeoutRunnableMap) {
                     timeoutRunnableMap.put(entity.getMsgCode(), runnable);
                 }
-                entityHandler.postDelayed(runnable, config.timeout);
+                entityHandler.postDelayed(runnable, timeout);
             }
             sendMessage(currentEntity, ON_SEND_WHAT);
             boolean success = LinuxMsgJNI.sendMsg(currentEntity.getMsgType(), currentEntity.toJson());
