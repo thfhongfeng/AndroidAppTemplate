@@ -96,6 +96,7 @@ public class LinuxMsgEntity {
                 ", msgClass=" + msgClass +
                 ", msgType=" + msgType +
                 ", msg='" + msg + '\'' +
+                ", timeout=" + timeout +
                 '}';
     }
 
@@ -112,6 +113,7 @@ public class LinuxMsgEntity {
             } catch (JSONException e) {
                 obj.put("msg", msg);
             }
+            obj.put("timeout", timeout);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -129,6 +131,7 @@ public class LinuxMsgEntity {
             entity.setMsgCode(object.optString("msgCode"));
             entity.setMsgClass(object.optInt("msgClass"));
             entity.setMsgType(object.optInt("msgType"));
+            entity.setTimeout(object.optInt("timeout"));
             return entity;
         } catch (JSONException e) {
             e.printStackTrace();

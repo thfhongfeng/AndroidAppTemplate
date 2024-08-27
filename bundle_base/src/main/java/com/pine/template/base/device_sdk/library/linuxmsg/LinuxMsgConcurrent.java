@@ -50,8 +50,7 @@ public class LinuxMsgConcurrent {
                     Set<String> keySet = mResponseMap.keySet();
                     for (String key : keySet) {
                         LinuxMsgResponseCallback value = mResponseMap.get(key);
-                        long timeout = config.timeout > 0 ? config.timeout + 30000 : 1000 * 60;
-                        if (System.currentTimeMillis() - value.sendTimeStamp > timeout) {
+                        if (System.currentTimeMillis() - value.sendTimeStamp > 6 * 60 * 60 * 1000) {
                             mResponseMap.remove(key);
                         }
                     }
