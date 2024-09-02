@@ -27,8 +27,6 @@ import java.util.Set;
 public class ConfigSwitcherServer {
     private static final String TAG = LogUtils.makeLogTag(ConfigSwitcherServer.class);
 
-    private final static String PRODUCT_CUSTOMER = "persist.vendor.product_customer_tag";
-
     public final static boolean ENABLE_REMOTE_LOADING_CONFIG_SWITCH = false;
 
     private static volatile ConfigSwitcherServer mInstance;
@@ -44,12 +42,13 @@ public class ConfigSwitcherServer {
 
     public synchronized static void init(@NonNull String configFileName) {
         if (mInstance == null) {
-            mInstance = new ConfigSwitcherServer(configFileName);
+            mInstance = new ConfigSwitcherServer();
+            mInstance.initLocalConfig(configFileName);
         }
     }
 
-    private ConfigSwitcherServer(String configFileName) {
-        initLocalConfig(configFileName);
+    private ConfigSwitcherServer() {
+
     }
 
     boolean isAssertFileExists(AssetManager assetManager, String filename) {
@@ -68,25 +67,29 @@ public class ConfigSwitcherServer {
 
     private synchronized void initLocalConfig(String configFileName) {
         AssetManager assetManager = AppUtils.getApplication().getResources().getAssets();
-        try {
-            Properties properties = new Properties();
-            LogUtils.d(TAG, "use config file:" + configFileName);
-            // 打开INI文件的InputStream
-            InputStream inputStream = assetManager.open(configFileName);
-            // 使用指定的字符编码创建InputStreamReader
-            InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8");
-            properties.load(reader);
-            Set keySet = properties.keySet();
-            for (Object object : keySet) {
-                String propKey = object.toString();
-                String propValue = properties.getProperty(propKey);
-                ConfigSwitcherEntity entity = new ConfigSwitcherEntity(propKey,
-                        propValue, ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_INIT);
-                mInitConfigStateMap.put(propKey, entity);
+        if (!TextUtils.isEmpty(configFileName) && isAssertFileExists(assetManager, configFileName)) {
+            try {
+                Properties properties = new Properties();
+                LogUtils.d(TAG, "use config file:" + configFileName);
+                // 打开INI文件的InputStream
+                InputStream inputStream = assetManager.open(configFileName);
+                // 使用指定的字符编码创建InputStreamReader
+                InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8");
+                properties.load(reader);
+                Set keySet = properties.keySet();
+                for (Object object : keySet) {
+                    String propKey = object.toString();
+                    String propValue = properties.getProperty(propKey);
+                    ConfigSwitcherEntity entity = new ConfigSwitcherEntity(propKey,
+                            propValue, ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_INIT);
+                    mInitConfigStateMap.put(propKey, entity);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+        } else {
+            LogUtils.d(TAG, "use config file:" + configFileName + " not exist, ignore");
         }
 
         Map<String, ConfigSwitcherEntity> userConfigMap =
