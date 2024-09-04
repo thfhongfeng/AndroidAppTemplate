@@ -22,6 +22,7 @@ public class DeviceInfoHelper {
         params.put("systemVersion", DeviceConfig.getSystemVersion(context));
         params.put("deviceModel", DeviceConfig.getDeviceModel(context));
         params.put("deviceId", DeviceConfig.getDeviceUniqueNum(context));
+        params.put("productCustomer", DeviceConfig.getProductCustomer(context));
         return params;
     }
 }

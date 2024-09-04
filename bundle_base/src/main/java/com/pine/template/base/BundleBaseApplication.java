@@ -18,7 +18,6 @@ import com.pine.template.base.component.share.manager.ShareManager;
 import com.pine.template.base.component.share.manager.SinaShareManager;
 import com.pine.template.base.component.share.manager.TencentShareManager;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
-import com.pine.template.base.device_sdk.DeviceSdkException;
 import com.pine.template.base.device_sdk.DeviceSdkManager;
 import com.pine.template.base.device_sdk.DeviceSdkProxy;
 import com.pine.template.base.helper.DeviceInfoHelper;
@@ -51,8 +50,6 @@ public class BundleBaseApplication extends RootApplication {
     private final static String TAG = LogUtils.makeLogTag(BundleBaseApplication.class);
     public static boolean SDK_INIT_ALREADY = false;
 
-    private final static String PRODUCT_CUSTOMER = "persist.vendor.product_customer_tag";
-
     protected BundleBaseApplication() {
         throw new IllegalArgumentException(getClass() + " prohibited from being constructed");
     }
@@ -64,13 +61,9 @@ public class BundleBaseApplication extends RootApplication {
 
     private static void initConfigSwitcherServer() {
         String fileName = "config.ini";
-        try {
-            String productTag = DeviceSdkManager.getInstance().getProperty(PRODUCT_CUSTOMER, "");
-            if (!TextUtils.isEmpty(productTag)) {
-                fileName = "config_" + productTag;
-            }
-        } catch (DeviceSdkException e) {
-            e.printStackTrace();
+        String productTag = DeviceConfig.getProductCustomer(mApplication);
+        if (!TextUtils.isEmpty(productTag)) {
+            fileName = "config_" + productTag;
         }
         ConfigSwitcherServer.init(fileName);
     }
