@@ -263,6 +263,8 @@ public class ConfigSwitcherServer {
         if (list == null) {
             return true;
         }
+        boolean guestChange = false;
+        boolean userChange = false;
         for (int i = 0; i < list.size(); i++) {
             ConfigSwitcherEntity entity = list.get(i);
             if (entity == null) {
@@ -272,18 +274,24 @@ public class ConfigSwitcherServer {
             if (switcherInfo.isAllState() || switcherInfo.isGuestState()) {
                 if (shouldOverrideConfig(entity, mGuestConfigStateMap.get(entity.getKey()))) {
                     mGuestConfigStateMap.put(entity.getKey(), entity);
+                    guestChange = true;
                 }
             }
             if (switcherInfo.isAllState() || switcherInfo.isLoginState()) {
                 if (shouldOverrideConfig(entity, mUserConfigStateMap.get(entity.getKey()))) {
                     mUserConfigStateMap.put(entity.getKey(), entity);
+                    userChange = true;
                 }
             }
         }
         SharePreferenceUtils.saveToConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
 
-        SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
-        SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
+        if (guestChange) {
+            SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
+        }
+        if (userChange) {
+            SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
+        }
         return true;
     }
 
