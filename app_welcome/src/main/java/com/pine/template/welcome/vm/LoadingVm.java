@@ -16,7 +16,7 @@ import com.pine.tool.architecture.mvvm.vm.ViewModel;
 public class LoadingVm extends ViewModel {
 
     public void setupConfigSwitcher() {
-        ConfigSwitcherServer.setupConfigSwitcher(WelUrlConstants.CONFIG(), BaseApplication.isLogin(),
+        ConfigSwitcherServer.setupConfigSwitcher(WelUrlConstants.CONFIG(),
                 AccountUtils.getAccountInfoAndIpParams(WelcomeApplication.mApplication),
                 new ConfigSwitcherServer.IConfigSwitcherCallback() {
                     @Override

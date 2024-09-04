@@ -1,5 +1,6 @@
 package com.pine.template.welcome.updater;
 
+import com.pine.template.base.config.bean.ConfigSwitcherInfo;
 import com.pine.tool.util.AppUtils;
 
 import java.io.File;
@@ -31,6 +32,8 @@ public class VersionEntity {
     private int force;
     private int minSupportedVersion;
     private String remark;
+
+    private ConfigSwitcherInfo baseConfigInfo;
 
     public String getPackageName() {
         return packageName;
@@ -104,6 +107,14 @@ public class VersionEntity {
         this.remark = remark;
     }
 
+    public ConfigSwitcherInfo getBaseConfigInfo() {
+        return baseConfigInfo;
+    }
+
+    public void setBaseConfigInfo(ConfigSwitcherInfo baseConfigInfo) {
+        this.baseConfigInfo = baseConfigInfo;
+    }
+
     public boolean isForce() {
         return force == 2;
     }
@@ -131,6 +142,7 @@ public class VersionEntity {
                 ", force=" + force +
                 ", minSupportedVersion=" + minSupportedVersion +
                 ", remark='" + remark + '\'' +
+                ", baseConfigInfo=" + baseConfigInfo +
                 '}';
     }
 }

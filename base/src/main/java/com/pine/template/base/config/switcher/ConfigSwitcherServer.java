@@ -254,7 +254,7 @@ public class ConfigSwitcherServer {
         SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
     }
 
-    public synchronized boolean updateRemoteConfigImpl(boolean isLogin, @NonNull ConfigSwitcherInfo switcherInfo) {
+    public synchronized boolean updateRemoteConfigImpl(@NonNull ConfigSwitcherInfo switcherInfo) {
         String version = SharePreferenceUtils.readStringFromConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
         if (TextUtils.isEmpty(switcherInfo.getVersion()) || TextUtils.equals(version, switcherInfo.getVersion())) {
             return true;
@@ -263,37 +263,27 @@ public class ConfigSwitcherServer {
         if (list == null) {
             return true;
         }
-        if (isLogin) {
-            if (list != null && list.size() > 0) {
-                for (int i = 0; i < list.size(); i++) {
-                    ConfigSwitcherEntity entity = list.get(i);
-                    if (entity == null) {
-                        continue;
-                    }
-                    entity.setConfigType(ConfigSwitcherEntity.CONFIG_TYPE_REMOTE);
-                    if (shouldOverrideConfig(entity, mUserConfigStateMap.get(entity.getKey()))) {
-                        mUserConfigStateMap.put(entity.getKey(), entity);
-                    }
-                }
-                SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
-                SharePreferenceUtils.saveToConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
+        for (int i = 0; i < list.size(); i++) {
+            ConfigSwitcherEntity entity = list.get(i);
+            if (entity == null) {
+                continue;
             }
-        } else {
-            if (list != null && list.size() > 0) {
-                for (int i = 0; i < list.size(); i++) {
-                    ConfigSwitcherEntity entity = list.get(i);
-                    if (entity == null) {
-                        continue;
-                    }
-                    entity.setConfigType(ConfigSwitcherEntity.CONFIG_TYPE_REMOTE);
-                    if (shouldOverrideConfig(entity, mGuestConfigStateMap.get(entity.getKey()))) {
-                        mGuestConfigStateMap.put(entity.getKey(), entity);
-                    }
+            entity.setConfigType(ConfigSwitcherEntity.CONFIG_TYPE_REMOTE);
+            if (switcherInfo.isAllState() || switcherInfo.isGuestState()) {
+                if (shouldOverrideConfig(entity, mGuestConfigStateMap.get(entity.getKey()))) {
+                    mGuestConfigStateMap.put(entity.getKey(), entity);
                 }
-                SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
-                SharePreferenceUtils.saveToConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
+            }
+            if (switcherInfo.isAllState() || switcherInfo.isLoginState()) {
+                if (shouldOverrideConfig(entity, mUserConfigStateMap.get(entity.getKey()))) {
+                    mUserConfigStateMap.put(entity.getKey(), entity);
+                }
             }
         }
+        SharePreferenceUtils.saveToConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, version);
+
+        SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, mGuestConfigStateMap);
+        SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
         return true;
     }
 
@@ -307,7 +297,7 @@ public class ConfigSwitcherServer {
         return false;
     }
 
-    public void setupConfigSwitcherImpl(final String configUrl, final boolean isLogin,
+    public void setupConfigSwitcherImpl(final String configUrl,
                                         @NonNull HashMap<String, String> params,
                                         final IConfigSwitcherCallback callback) {
         if (!ENABLE_REMOTE_LOADING_CONFIG_SWITCH) {
@@ -318,13 +308,12 @@ public class ConfigSwitcherServer {
         if (!TextUtils.isEmpty(version)) {
             params.put("version", version);
         }
-        params.put("isLogin", String.valueOf(isLogin));
         mConfigSwitcherModel.requestBundleSwitcherData(configUrl, params,
                 new IModelAsyncResponse<ConfigSwitcherInfo>() {
                     @Override
                     public void onResponse(ConfigSwitcherInfo switcherInfo) {
                         if (switcherInfo != null) {
-                            updateRemoteConfigImpl(isLogin, switcherInfo);
+                            updateRemoteConfigImpl(switcherInfo);
                         }
                         if (callback != null) {
                             callback.onSetupComplete();
@@ -464,15 +453,15 @@ public class ConfigSwitcherServer {
         mInstance.saveConfigAllStateImpl(key, value, configType);
     }
 
-    public static void setupConfigSwitcher(String configUrl, final boolean isLogin,
+    public static void setupConfigSwitcher(String configUrl,
                                            @NonNull HashMap<String, String> params,
                                            final IConfigSwitcherCallback callback) {
-        mInstance.setupConfigSwitcherImpl(configUrl, isLogin, params, callback);
+        mInstance.setupConfigSwitcherImpl(configUrl, params, callback);
     }
 
-    public static void updateRemoteConfig(final boolean isLogin, @NonNull ConfigSwitcherInfo switcherInfo,
+    public static void updateRemoteConfig(@NonNull ConfigSwitcherInfo switcherInfo,
                                           final IConfigSwitcherCallback callback) {
-        mInstance.updateRemoteConfigImpl(isLogin, switcherInfo);
+        mInstance.updateRemoteConfigImpl(switcherInfo);
         if (callback != null) {
             callback.onSetupComplete();
         }

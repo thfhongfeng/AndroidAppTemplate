@@ -78,7 +78,7 @@ public class LoginCallback extends JsonCallback {
             final AccountBean accountBean = responseAccount;
             LoginManager.saveLoginInfo(accountBean);
             LoginApplication.setLogin(true);
-            ConfigSwitcherServer.setupConfigSwitcher(LoginUrlConstants.CONFIG(), true,
+            ConfigSwitcherServer.setupConfigSwitcher(LoginUrlConstants.CONFIG(),
                     AccountUtils.getAccountInfoAndIpParams(LoginApplication.mApplication),
                     new ConfigSwitcherServer.IConfigSwitcherCallback() {
                         @Override

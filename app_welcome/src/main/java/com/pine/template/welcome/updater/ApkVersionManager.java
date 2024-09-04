@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.pine.template.base.BaseKeyConstants;
 import com.pine.template.base.R;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.ProgressDialog;
 import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
@@ -94,6 +95,9 @@ public class ApkVersionManager {
             @Override
             public void onResponse(VersionEntity versionEntity) {
                 if (versionEntity != null) {
+                    if (versionEntity.getBaseConfigInfo() != null) {
+                        ConfigSwitcherServer.updateRemoteConfig(versionEntity.getBaseConfigInfo(), null);
+                    }
                     if (versionEntity.isNewVersion()) {
                         if (callback != null) {
                             callback.onNewVersionFound(versionEntity);

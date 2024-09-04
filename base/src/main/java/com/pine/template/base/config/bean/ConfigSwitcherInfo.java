@@ -9,6 +9,8 @@ import java.util.List;
 
 public class ConfigSwitcherInfo {
     private String version;
+    // 0-所有；-1-访客；1-登录用户
+    private int stateRange;
 
     private List<RemoteConfigEntity> configList;
 
@@ -18,6 +20,26 @@ public class ConfigSwitcherInfo {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public int getStateRange() {
+        return stateRange;
+    }
+
+    public void setStateRange(int stateRange) {
+        this.stateRange = stateRange;
+    }
+
+    public boolean isLoginState() {
+        return stateRange == 1;
+    }
+
+    public boolean isGuestState() {
+        return stateRange == -1;
+    }
+
+    public boolean isAllState() {
+        return stateRange == 0;
     }
 
     public List<ConfigSwitcherEntity> getConfigList() {
@@ -33,5 +55,14 @@ public class ConfigSwitcherInfo {
 
     public void setConfigList(List<RemoteConfigEntity> configList) {
         this.configList = configList;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigSwitcherInfo{" +
+                "version='" + version + '\'' +
+                ", stateRange=" + stateRange +
+                ", configList size=" + (configList == null ? 0 : configList.size()) +
+                '}';
     }
 }
