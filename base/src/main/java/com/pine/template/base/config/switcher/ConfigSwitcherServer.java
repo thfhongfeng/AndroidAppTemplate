@@ -299,7 +299,8 @@ public class ConfigSwitcherServer {
         if (srcEntity == null) {
             return false;
         }
-        if (srcEntity.isForce() || targetEntity.getConfigType() != ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_USER) {
+        if (targetEntity == null || srcEntity.isForce()
+                || targetEntity.getConfigType() != ConfigSwitcherEntity.CONFIG_TYPE_LOCAL_USER) {
             return true;
         }
         return false;
