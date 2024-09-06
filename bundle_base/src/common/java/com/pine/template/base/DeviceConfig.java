@@ -46,4 +46,12 @@ public class DeviceConfig extends DefaultDeviceConfig {
         }
         return productCustomer;
     }
+
+    public static void setProductCustomer(Context context, String tag) {
+        try {
+            DeviceSdkManager.getInstance().setProperty(PRODUCT_CUSTOMER, tag);
+        } catch (DeviceSdkException e) {
+            e.printStackTrace();
+        }
+    }
 }

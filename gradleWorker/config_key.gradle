@@ -21,6 +21,9 @@ gradle.ext.bundleConfigKeyMap = bundleConfigKeyMap
  * 基础功能开关及配置项Key标识，编译时添加到生成的BuildConfigKey.java类中，方便调用者使用开关及配置标识
  */
 def baseConfigKey = [
+        // 客户标识
+        PRODUCT_CUSTOMER_TAG                  : "PRODUCT_CUSTOMER_TAG",
+
         // app使用痕迹埋点
         FUN_APP_TRACK                  : "FUN_APP_TRACK",
         ENABLE_APP_TRACK               : "ENABLE_APP_TRACK",
