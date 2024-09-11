@@ -219,6 +219,12 @@ public class OcvFaceMatcherHist implements IFaceMatcher {
 
     @Override
     public boolean maxSimilarChange(double maxSimilarDegree, double degree) {
+        if (maxSimilarDegree < 0) {
+            return true;
+        }
+        if (degree < 0) {
+            return false;
+        }
         return degree > maxSimilarDegree;
     }
 

@@ -178,6 +178,12 @@ public class SFMatchAlgorithm extends MatchAlgorithm {
 
     @Override
     public boolean maxSimilarChange(double maxSimilarDegree, double degree) {
+        if (maxSimilarDegree < 0) {
+            return true;
+        }
+        if (degree < 0) {
+            return false;
+        }
         switch (mRecognizerType) {
             case FaceRecognizerSF.FR_NORM_L2:
                 return degree < maxSimilarDegree;
@@ -204,16 +210,22 @@ public class SFMatchAlgorithm extends MatchAlgorithm {
                 double cosine_confidence = cosine_similarity_threshold;
                 if (confidence > calNode) {
                     cosine_confidence = cosine_similarity_threshold +
-                            (1 - cosine_similarity_threshold) * (confidence - calNode) / (100 - calNode);
+                            (0.8 - cosine_similarity_threshold) * (confidence - calNode) / (100 - calNode);
                 }
-                return maxSimilarDegree >= cosine_confidence;
+                boolean cosinePass = maxSimilarDegree >= cosine_confidence;
+                Log.d(TAG, "use FR_COSINE passConfidence:" + cosinePass + "; confidence:" + confidence
+                        + ", maxSimilarDegree:" + maxSimilarDegree + ", cosine_confidence:" + cosine_confidence);
+                return cosinePass;
             case FaceRecognizerSF.FR_NORM_L2:
                 double l2_confidence = l2_similarity_threshold;
                 if (confidence > calNode) {
                     l2_confidence = l2_similarity_threshold -
-                            (l2_similarity_threshold - 0) * (confidence - calNode) / (100 - calNode);
+                            (l2_similarity_threshold - 0.3) * (confidence - calNode) / (100 - calNode);
                 }
-                return maxSimilarDegree <= l2_confidence;
+                boolean l2Pass = maxSimilarDegree <= l2_confidence;
+                Log.d(TAG, "use FR_NORM_L2 passConfidence:" + l2Pass + "; confidence:" + confidence
+                        + ", maxSimilarDegree:" + maxSimilarDegree + ", l2_confidence:" + l2_confidence);
+                return l2Pass;
             default:
                 return false;
         }
