@@ -1,5 +1,7 @@
 package com.pine.app.lib.face.detect;
 
+import com.pine.app.lib.face.detect.normal.FaceTextureView;
+
 import java.util.List;
 
 public class FaceRange {
@@ -17,7 +19,8 @@ public class FaceRange {
         bottom = 0;
     }
 
-    public boolean matchDetect(List<FaceRange> detectRanges, DetectConfig config) {
+    public boolean matchDetect(List<FaceRange> detectRanges, DetectConfig config,
+                               FaceTextureView.IFramePreViewListener listener) {
         float centerFactor = config.matchCenterDiffFactor > 0 ? config.matchCenterDiffFactor : -1;
         float edgeFactor = config.matchEdgeDiffFactor <= 0 ? 0.1f : config.matchEdgeDiffFactor;
         // 微视截框较小，适当增加边缘偏差
@@ -59,8 +62,17 @@ public class FaceRange {
                         && rightXOffsetA + bottomYOffsetA < validA;
             }
             boolean rectangleMatch = detectArea < matchMaxArea && detectArea > matchMinArea;
+            int rectMatchStatus = IOnFacePicListener.RECT_MATCH;
+            if (!rectangleMatch) {
+                rectMatchStatus = detectArea < matchMaxArea ? IOnFacePicListener.RECT_SMALL
+                        : IOnFacePicListener.RECT_BIG;
+            }
             if (centerMatch && rectangleMatch) {
                 return true;
+            } else {
+                if (listener != null) {
+                    listener.onInvalidFace(centerMatch, rectMatchStatus);
+                }
             }
         }
         return false;

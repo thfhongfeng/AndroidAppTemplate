@@ -86,9 +86,14 @@ public class GetFaceMarkActivity extends
             }
 
             @Override
-            public boolean onFail() {
+            public boolean onFacePicSavedFail() {
                 TtsManager.getInstance().play(R.string.face_get_face_tip_fail);
                 restartFaceDetect();
+                return false;
+            }
+
+            @Override
+            public boolean onFaceGetProcess(boolean centerMatch, int rectState) {
                 return false;
             }
         });

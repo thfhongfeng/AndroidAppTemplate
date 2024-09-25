@@ -366,7 +366,7 @@ public class FaceTextureView extends TextureView implements View.OnLayoutChangeL
                 synchronized (syncLock) {
                     if (mFaceValidRange != null) {
                         if (faceRangeList != null
-                                && mFaceValidRange.matchDetect(faceRangeList, getConfig())) {
+                                && mFaceValidRange.matchDetect(faceRangeList, getConfig(), framePreViewListener)) {
                             faceMatchValid = true;
                         }
                     } else {
@@ -494,6 +494,15 @@ public class FaceTextureView extends TextureView implements View.OnLayoutChangeL
     public interface IFramePreViewListener {
         //这个preFrame没次都复制一份出来，记得主动回收
         boolean onFaceFrame(Bitmap faceFrame, List<FacePosDetail> facePosDetails);
+
+        /**
+         * 获取人脸，但不符合规定范围的回调（获取过程持续回调，直至获取到符合规定的人脸）
+         *
+         * @param centerMatch 获取到不符合规定范围人脸时，中点是否在规定范围
+         * @param rectState   获取到不符合规定范围人脸时，边框的匹配状态（RECT_SMALL等）
+         * @return
+         */
+        boolean onInvalidFace(boolean centerMatch, int rectState);
 
         boolean onParamSet(@NonNull CameraSurfaceParams params);
     }

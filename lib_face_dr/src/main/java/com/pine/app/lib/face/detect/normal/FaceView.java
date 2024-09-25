@@ -77,6 +77,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
     private DetectConfig mConfig = new DetectConfig("");
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private volatile boolean allowPicSave = true;
+    private Handler mOnFacePicListenerH = new Handler(Looper.getMainLooper());
 
     private void initView() {
         faceTextureView = new FaceTextureView(getContext());
@@ -120,6 +121,19 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
                 //这帧preFrame处理了就是进行了回收，返回true
                 //否则返回false，内部进行回收处理
                 return true;
+            }
+
+            @Override
+            public boolean onInvalidFace(boolean centerMatch, int rectState) {
+                mOnFacePicListenerH.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (listener != null) {
+                            listener.onFaceGetProcess(centerMatch, rectState);
+                        }
+                    }
+                });
+                return false;
             }
 
             @Override
@@ -274,6 +288,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
 
     @Override
     public void release() {
+        mOnFacePicListenerH.removeCallbacksAndMessages(null);
         if (faceTextureView != null) {
             faceTextureView.release();
         }
@@ -311,7 +326,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
                 bitmap.recycle();
             }
             final boolean finalSave = saved;
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+            mOnFacePicListenerH.post(new Runnable() {
                 @Override
                 public void run() {
                     if (listener != null) {
@@ -319,7 +334,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
                             allowPicSave = listener.onFacePicSaved(mConfig.savePicFilePath,
                                     compressFilePath, faceCropFilePath);
                         } else {
-                            allowPicSave = listener.onFail();
+                            allowPicSave = listener.onFacePicSavedFail();
                         }
                     }
                 }
@@ -363,7 +378,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
         faceRange.bottom = faceMantleRy + innerRecHalf;
         faceTextureView.setFaceValidRange(faceRange);
         Log.d(TAG, "face valid rang:" + faceRange);
-        addView(faceMantleView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        addView(faceMantleView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
     }
 

@@ -14,6 +14,7 @@ import com.pine.app.lib.face.detect.IFaceDetectView;
 import com.pine.app.lib.face.detect.IOnFacePicListener;
 import com.pine.app.lib.face.detect.RecordConfig;
 
+
 public class CameraView extends RelativeLayout implements IFaceDetectView {
     private IOnFacePicListener mOnFacePicListener;
 
@@ -82,7 +83,7 @@ public class CameraView extends RelativeLayout implements IFaceDetectView {
                 @Override
                 public void onFail() {
                     if (mOnFacePicListener != null) {
-                        mOnFacePicListener.onFail();
+                        mOnFacePicListener.onFacePicSavedFail();
                     }
                     startCameraPreview();
                 }
