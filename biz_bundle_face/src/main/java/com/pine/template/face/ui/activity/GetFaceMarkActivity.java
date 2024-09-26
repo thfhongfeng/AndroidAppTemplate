@@ -93,7 +93,7 @@ public class GetFaceMarkActivity extends
             }
 
             @Override
-            public boolean onFaceGetProcess(boolean centerMatch, int rectState) {
+            public boolean onFaceRangeJudge(boolean centerMatch, int rectState) {
                 return false;
             }
         });

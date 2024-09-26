@@ -77,7 +77,8 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
     private DetectConfig mConfig = new DetectConfig("");
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private volatile boolean allowPicSave = true;
-    private Handler mOnFacePicListenerH = new Handler(Looper.getMainLooper());
+    private Handler mOnFacePicSaveH = new Handler(Looper.getMainLooper());
+    private Handler mOnFaceGetProcessH = new Handler(Looper.getMainLooper());
 
     private void initView() {
         faceTextureView = new FaceTextureView(getContext());
@@ -115,6 +116,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
                 //faces是检测出来的人脸参数
                 //检测到人脸的回调,保存人脸图片到本地
                 if (allowPicSave) {
+                    mOnFaceGetProcessH.removeCallbacksAndMessages(null);
                     allowPicSave = false;
                     executorService.submit(new SavePicRunnable(faceFrame, listener));
                 }
@@ -124,15 +126,20 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
             }
 
             @Override
-            public boolean onInvalidFace(boolean centerMatch, int rectState) {
-                mOnFacePicListenerH.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (listener != null) {
-                            listener.onFaceGetProcess(centerMatch, rectState);
+            public boolean onFaceRangeJudge(final boolean centerMatch, final int rectState) {
+                if (startDetectTimeStamp + mConfig.delayForSaveFlow / 2 > System.currentTimeMillis()) {
+                    return false;
+                }
+                if (listener != null) {
+                    mOnFaceGetProcessH.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onFaceRangeJudge(centerMatch, rectState);
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 return false;
             }
 
@@ -230,6 +237,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
 
     @Override
     public void stopFaceDetect() {
+        mOnFaceGetProcessH.removeCallbacksAndMessages(null);
         mConfig.setEnableFaceDetect(false);
         if (getFaceRectView() != null) {
             getFaceRectView().clearBorder();
@@ -288,7 +296,8 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
 
     @Override
     public void release() {
-        mOnFacePicListenerH.removeCallbacksAndMessages(null);
+        mOnFaceGetProcessH.removeCallbacksAndMessages(null);
+        mOnFacePicSaveH.removeCallbacksAndMessages(null);
         if (faceTextureView != null) {
             faceTextureView.release();
         }
@@ -325,20 +334,22 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
             if (bitmap != null && !bitmap.isRecycled()) {
                 bitmap.recycle();
             }
-            final boolean finalSave = saved;
-            mOnFacePicListenerH.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (listener != null) {
-                        if (finalSave) {
-                            allowPicSave = listener.onFacePicSaved(mConfig.savePicFilePath,
-                                    compressFilePath, faceCropFilePath);
-                        } else {
-                            allowPicSave = listener.onFacePicSavedFail();
+            if (listener != null) {
+                final boolean finalSave = saved;
+                mOnFacePicSaveH.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (listener != null) {
+                            if (finalSave) {
+                                allowPicSave = listener.onFacePicSaved(mConfig.savePicFilePath,
+                                        compressFilePath, faceCropFilePath);
+                            } else {
+                                allowPicSave = listener.onFacePicSavedFail();
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         }
     }
 

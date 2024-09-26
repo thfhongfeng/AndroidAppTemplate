@@ -62,17 +62,16 @@ public class FaceRange {
                         && rightXOffsetA + bottomYOffsetA < validA;
             }
             boolean rectangleMatch = detectArea < matchMaxArea && detectArea > matchMinArea;
-            int rectMatchStatus = IOnFacePicListener.RECT_MATCH;
-            if (!rectangleMatch) {
-                rectMatchStatus = detectArea < matchMaxArea ? IOnFacePicListener.RECT_SMALL
-                        : IOnFacePicListener.RECT_BIG;
+            if (listener != null) {
+                int rectMatchStatus = IOnFacePicListener.RECT_MATCH;
+                if (!rectangleMatch) {
+                    rectMatchStatus = detectArea < matchMaxArea ? IOnFacePicListener.RECT_SMALL
+                            : IOnFacePicListener.RECT_BIG;
+                }
+                listener.onFaceRangeJudge(centerMatch, rectMatchStatus);
             }
             if (centerMatch && rectangleMatch) {
                 return true;
-            } else {
-                if (listener != null) {
-                    listener.onInvalidFace(centerMatch, rectMatchStatus);
-                }
             }
         }
         return false;

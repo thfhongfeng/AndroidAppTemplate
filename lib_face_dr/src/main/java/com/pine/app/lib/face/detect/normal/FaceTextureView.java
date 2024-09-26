@@ -496,13 +496,13 @@ public class FaceTextureView extends TextureView implements View.OnLayoutChangeL
         boolean onFaceFrame(Bitmap faceFrame, List<FacePosDetail> facePosDetails);
 
         /**
-         * 获取人脸，但不符合规定范围的回调（获取过程持续回调，直至获取到符合规定的人脸）
+         * 获取人脸，对规定范围进行判断的回调（获取过程持续回调）
          *
-         * @param centerMatch 获取到不符合规定范围人脸时，中点是否在规定范围
-         * @param rectState   获取到不符合规定范围人脸时，边框的匹配状态（RECT_SMALL等）
+         * @param centerMatch 人脸中点是否在规定范围
+         * @param rectState   人脸边框的匹配状态（RECT_SMALL等）
          * @return
          */
-        boolean onInvalidFace(boolean centerMatch, int rectState);
+        boolean onFaceRangeJudge(boolean centerMatch, int rectState);
 
         boolean onParamSet(@NonNull CameraSurfaceParams params);
     }
