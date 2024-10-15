@@ -37,7 +37,11 @@ public class DeviceConfig extends DefaultDeviceConfig {
         return AppUtils.getFwVersion();
     }
 
-    public static String getProductCustomer(Context context) {
+    public static String getSystemDisplayId() {
+        return AppUtils.getSystemDisplayId();
+    }
+
+    public static String getProductCustomer() {
         String productCustomer = "";
         try {
             productCustomer = DeviceSdkManager.getInstance().getProperty(PRODUCT_CUSTOMER, "");
@@ -47,7 +51,7 @@ public class DeviceConfig extends DefaultDeviceConfig {
         return productCustomer;
     }
 
-    public static void setProductCustomer(Context context, String tag) {
+    public static void setProductCustomer(String tag) {
         try {
             DeviceSdkManager.getInstance().setProperty(PRODUCT_CUSTOMER, tag);
         } catch (DeviceSdkException e) {

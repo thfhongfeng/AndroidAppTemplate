@@ -51,6 +51,8 @@ public class AppUtils {
     // Firmware version
     private static String mFwVersion = "";
 
+    private static String mFwVersionDisPlay = "";
+
     private static String mHwRevision = "";
 
     private static String mDeviceModel = "";
@@ -466,6 +468,13 @@ public class AppUtils {
             mFwVersion = getProperty("ro.vendor.product_version_number", "1.0.0.000");
         }
         return mFwVersion;
+    }
+
+    public static String getSystemDisplayId() {
+        if (TextUtils.isEmpty(mFwVersionDisPlay)) {
+            mFwVersionDisPlay = getProperty("ro.build.display.id", "");
+        }
+        return mFwVersionDisPlay;
     }
 
     public static String getHwRevision() {

@@ -35,12 +35,16 @@ public class DeviceConfig extends DefaultDeviceConfig {
         return AppUtils.getFwVersion();
     }
 
-    public static String getProductCustomer(Context context) {
+    public static String getSystemDisplayId() {
+        return AppUtils.getSystemDisplayId();
+    }
+
+    public static String getProductCustomer() {
         String productCustomer = ConfigSwitcherServer.getConfig(BuildConfigKey.PRODUCT_CUSTOMER_TAG);
         return productCustomer;
     }
 
-    public static void setProductCustomer(Context context, String productCustomer) {
+    public static void setProductCustomer(String productCustomer) {
         ConfigSwitcherServer.saveConfig(BuildConfigKey.PRODUCT_CUSTOMER_TAG, productCustomer);
     }
 }
