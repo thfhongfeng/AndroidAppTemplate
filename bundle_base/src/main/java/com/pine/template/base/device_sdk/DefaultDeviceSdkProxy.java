@@ -34,7 +34,12 @@ public abstract class DefaultDeviceSdkProxy implements IDeviceSdkManager {
     }
 
     @Override
-    public String getProductVersionNumber() throws DeviceSdkException {
+    public String getSysVersionNumber() throws DeviceSdkException {
+        throw new DeviceSdkException("not impl method");
+    }
+
+    @Override
+    public String getSysVersionDetail() throws DeviceSdkException {
         throw new DeviceSdkException("not impl method");
     }
 

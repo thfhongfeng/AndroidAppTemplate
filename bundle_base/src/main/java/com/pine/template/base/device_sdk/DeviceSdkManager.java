@@ -166,11 +166,23 @@ public class DeviceSdkManager {
      * @return x.x.x.xxx.xxxxxxxx
      * @throws DeviceSdkException
      */
-    public String getProductVersionNumber() throws DeviceSdkException {
+    public String getSysVersionNumber() throws DeviceSdkException {
         if (!checkSdkInit()) {
             throw new DeviceSdkException("device sdk is not init");
         }
-        return mManager.getProductVersionNumber();
+        return mManager.getSysVersionNumber();
+    }
+
+    /**
+     * 获取系统版本详细信息
+     *
+     * @throws DeviceSdkException
+     */
+    public String getSysVersionDetail() throws DeviceSdkException {
+        if (!checkSdkInit()) {
+            throw new DeviceSdkException("device sdk is not init");
+        }
+        return mManager.getSysVersionDetail();
     }
 
     /**

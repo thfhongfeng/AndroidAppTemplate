@@ -23,7 +23,9 @@ public interface IDeviceSdkManager {
 
     String getAllConfigState() throws DeviceSdkException;
 
-    String getProductVersionNumber() throws DeviceSdkException;
+    String getSysVersionNumber() throws DeviceSdkException;
+
+    String getSysVersionDetail() throws DeviceSdkException;
 
     String getSystemRotation() throws DeviceSdkException;
 

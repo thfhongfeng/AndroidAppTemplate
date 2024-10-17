@@ -3,7 +3,7 @@ apply from: "${rootDir}/gradleWorker/config_key.gradle"
 // 当前开发模式（dev-开发模式；publishMode-打包模式）
 // 打包单个模块时请使用dev模式
 // 发布APK时需要先确保本地库中已有各个模块的发布包，没有的话先要执行allPublishToMavenLocal或者allPublish任务
-gradle.ext.compileMode = "publishMode"
+gradle.ext.compileMode = "dev"
 
 /*
  [key1：[path:"routerPath1", name:"className1",method:[method1Key:"method1",...]], ...]
