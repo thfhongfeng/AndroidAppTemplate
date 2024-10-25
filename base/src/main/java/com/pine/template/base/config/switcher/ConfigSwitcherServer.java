@@ -259,7 +259,7 @@ public class ConfigSwitcherServer {
         if (TextUtils.isEmpty(switcherInfo.getVersion()) || TextUtils.equals(version, switcherInfo.getVersion())) {
             return true;
         }
-        List<ConfigSwitcherEntity> list = switcherInfo.getConfigList();
+        List<ConfigSwitcherEntity> list = switcherInfo.getLocalConfigList();
         if (list == null) {
             return true;
         }

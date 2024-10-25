@@ -17,7 +17,7 @@ public class ConfigSwitcherEntity {
     /**
      * key : bundle_login
      * value : true
-     * name : true
+     * name : 登录模块
      * configType : 0
      * force : false
      */

@@ -42,7 +42,15 @@ public class ConfigSwitcherInfo {
         return stateRange == 0;
     }
 
-    public List<ConfigSwitcherEntity> getConfigList() {
+    public List<RemoteConfigEntity> getRemoteConfigList() {
+        return configList;
+    }
+
+    public void setRemoteConfigList(List<RemoteConfigEntity> configList) {
+        this.configList = configList;
+    }
+
+    public List<ConfigSwitcherEntity> getLocalConfigList() {
         if (configList == null) {
             return null;
         }
@@ -51,10 +59,6 @@ public class ConfigSwitcherInfo {
             list.add(entity.toConfigSwitcherEntity());
         }
         return list;
-    }
-
-    public void setConfigList(List<RemoteConfigEntity> configList) {
-        this.configList = configList;
     }
 
     @Override
