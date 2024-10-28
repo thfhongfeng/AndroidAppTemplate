@@ -82,7 +82,7 @@ public class LoginCallback extends JsonCallback {
                     AccountUtils.getAccountInfoAndIpParams(LoginApplication.mApplication),
                     new ConfigSwitcherServer.IConfigSwitcherCallback() {
                         @Override
-                        public void onSetupComplete() {
+                        public void onSetupComplete(boolean change) {
                             loginSuccess(what, accountBean, "登陆成功！");
                         }
 

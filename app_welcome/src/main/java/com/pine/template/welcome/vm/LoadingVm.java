@@ -2,7 +2,6 @@ package com.pine.template.welcome.vm;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.pine.template.base.BaseApplication;
 import com.pine.template.base.business.utils.AccountUtils;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.welcome.WelUrlConstants;
@@ -20,7 +19,7 @@ public class LoadingVm extends ViewModel {
                 AccountUtils.getAccountInfoAndIpParams(WelcomeApplication.mApplication),
                 new ConfigSwitcherServer.IConfigSwitcherCallback() {
                     @Override
-                    public void onSetupComplete() {
+                    public void onSetupComplete(boolean change) {
                         setCheckVersion(true);
                     }
 

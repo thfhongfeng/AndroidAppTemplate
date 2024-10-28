@@ -257,11 +257,11 @@ public class ConfigSwitcherServer {
     public synchronized boolean updateRemoteConfigImpl(@NonNull ConfigSwitcherInfo switcherInfo) {
         String version = SharePreferenceUtils.readStringFromConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
         if (TextUtils.isEmpty(switcherInfo.getVersion()) || TextUtils.equals(version, switcherInfo.getVersion())) {
-            return true;
+            return false;
         }
         List<ConfigSwitcherEntity> list = switcherInfo.getLocalConfigList();
         if (list == null) {
-            return true;
+            return false;
         }
         boolean guestChange = false;
         boolean userChange = false;
@@ -292,7 +292,7 @@ public class ConfigSwitcherServer {
         if (userChange) {
             SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, mUserConfigStateMap);
         }
-        return true;
+        return guestChange || userChange;
     }
 
     private boolean shouldOverrideConfig(ConfigSwitcherEntity srcEntity, ConfigSwitcherEntity targetEntity) {
@@ -310,7 +310,7 @@ public class ConfigSwitcherServer {
                                         @NonNull HashMap<String, String> params,
                                         final IConfigSwitcherCallback callback) {
         if (!ENABLE_REMOTE_LOADING_CONFIG_SWITCH) {
-            callback.onSetupComplete();
+            callback.onSetupComplete(false);
             return;
         }
         String version = SharePreferenceUtils.readStringFromConfig(KeyConstants.CONFIG_REMOTE_VERSION_CODE, "");
@@ -321,11 +321,12 @@ public class ConfigSwitcherServer {
                 new IModelAsyncResponse<ConfigSwitcherInfo>() {
                     @Override
                     public void onResponse(ConfigSwitcherInfo switcherInfo) {
+                        boolean change = false;
                         if (switcherInfo != null) {
-                            updateRemoteConfigImpl(switcherInfo);
+                            change = updateRemoteConfigImpl(switcherInfo);
                         }
                         if (callback != null) {
-                            callback.onSetupComplete();
+                            callback.onSetupComplete(change);
                         }
                     }
 
@@ -470,14 +471,14 @@ public class ConfigSwitcherServer {
 
     public static void updateRemoteConfig(@NonNull ConfigSwitcherInfo switcherInfo,
                                           final IConfigSwitcherCallback callback) {
-        mInstance.updateRemoteConfigImpl(switcherInfo);
+        boolean change = mInstance.updateRemoteConfigImpl(switcherInfo);
         if (callback != null) {
-            callback.onSetupComplete();
+            callback.onSetupComplete(change);
         }
     }
 
     public interface IConfigSwitcherCallback {
-        void onSetupComplete();
+        void onSetupComplete(boolean change);
 
         boolean onSetupFail();
     }
