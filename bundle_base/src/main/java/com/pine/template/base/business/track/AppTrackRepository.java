@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.minicreate.app.lvm.bundle_base.BuildConfigKey;
+import com.pine.app.template.bundle_base.BuildConfigKey;
 import com.pine.template.base.business.db.DbRoomDatabase;
 import com.pine.template.base.business.track.dao.AppTrackDao;
 import com.pine.template.base.business.track.entity.AppTrack;

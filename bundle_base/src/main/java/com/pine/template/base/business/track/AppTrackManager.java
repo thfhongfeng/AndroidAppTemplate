@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.minicreate.app.lvm.bundle_base.BuildConfigKey;
+import com.pine.app.template.bundle_base.BuildConfigKey;
 import com.pine.template.base.business.track.entity.AppTrack;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.util.LogUtils;
