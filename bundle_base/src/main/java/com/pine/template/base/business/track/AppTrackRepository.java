@@ -240,7 +240,7 @@ public class AppTrackRepository {
             List<AppTrack> deleteTrackList = new ArrayList<>();
             if (count > MAX_COUNT) {
                 int curCount = count;
-                LogUtils.d(TAG, "insert appTrack ,cur count > " + MAX_COUNT + " ,delete half old data");
+                LogUtils.d(TAG, "insert appTrack, cur count > " + MAX_COUNT + ", delete half old data");
                 appTrackDao.deleteOldData(MAX_COUNT / 2);
                 count = appTrackDao.getCount();
                 deleteTrackList.add(TrackModuleTag.getDeleteOldDataTrack(mApplicationContext, "", curCount - count));
@@ -249,22 +249,26 @@ public class AppTrackRepository {
             int maxModuleCount = TrackModuleTag.getModuleMaxCount(moduleTag);
             if (moduleCount > maxModuleCount) {
                 int curCount = moduleCount;
-                LogUtils.d(TAG, "insert module record ,cur count > " + maxModuleCount + " ,delete half old data");
+                LogUtils.d(TAG, "insert module record, cur count > " + maxModuleCount + ", delete half old data");
                 appTrackDao.deleteOldDataByModuleTag(moduleTag, maxModuleCount / 2);
                 deleteTrackList.add(TrackModuleTag.getDeleteOldDataTrack(mApplicationContext, moduleTag, curCount - moduleCount));
             }
-            if (deleteTrackList.size() > 0) {
-                Long[] ids = appTrackDao.insertAll(deleteTrackList);
-                int size = ids == null ? 0 : ids.length;
-                LogUtils.d(TAG, "insert appTrack ,add deleteTrack size : " + size);
-                count = count + size;
-            }
-            appTrack.setId(0);
-            long id = appTrackDao.insert(appTrack);
-            if (id >= 0) {
-                appTrack.setId(id);
-                count++;
-                return true;
+            try {
+                if (deleteTrackList.size() > 0) {
+                    Long[] ids = appTrackDao.insertAll(deleteTrackList);
+                    int size = ids == null ? 0 : ids.length;
+                    LogUtils.d(TAG, "insert appTrack, add deleteTrack size : " + size);
+                    count = count + size;
+                }
+                appTrack.setId(0);
+                long id = appTrackDao.insert(appTrack);
+                if (id >= 0) {
+                    appTrack.setId(id);
+                    count++;
+                    return true;
+                }
+            } catch (Exception e) {
+                LogUtils.e(TAG, "insert appTrack, Exception : " + e);
             }
             return false;
         }
