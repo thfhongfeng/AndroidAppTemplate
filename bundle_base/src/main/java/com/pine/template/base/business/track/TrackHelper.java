@@ -109,12 +109,20 @@ public class TrackHelper {
         return AppTrackRepository.getInstance(mContext).queryTrackList(moduleTag, actionNames, pageNo, pageSize);
     }
 
-    public List<AppTrack> getTrackList(@NonNull List<String> moduleTagList,
+    public List<AppTrack> getTrackList(@NonNull List<String> moduleTagList, String actionName,
                                        int pageNo, int pageSize) {
         if (moduleTagList == null || moduleTagList.size() < 1) {
             return null;
         }
-        return AppTrackRepository.getInstance(mContext).queryTrackList(moduleTagList, pageNo, pageSize);
+        return AppTrackRepository.getInstance(mContext).queryTrackList(moduleTagList, actionName, pageNo, pageSize);
+    }
+
+    public List<AppTrack> getTrackList(@NonNull List<String> moduleTagList, List<String> actionNames,
+                                       int pageNo, int pageSize) {
+        if (moduleTagList == null || moduleTagList.size() < 1) {
+            return null;
+        }
+        return AppTrackRepository.getInstance(mContext).queryTrackList(moduleTagList, actionNames, pageNo, pageSize);
     }
 
     /**

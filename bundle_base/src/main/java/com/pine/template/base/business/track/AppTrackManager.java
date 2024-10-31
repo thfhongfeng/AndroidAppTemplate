@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.pine.app.template.bundle_base.BuildConfigKey;
+import com.minicreate.app.lvm.bundle_base.BuildConfigKey;
 import com.pine.template.base.business.track.entity.AppTrack;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.util.LogUtils;
@@ -27,10 +27,7 @@ public class AppTrackManager {
     private Map<String, Boolean> mOpenModuleMap = new HashMap<>();
 
     private AppTrackManager() {
-        mOpenModuleMap.put(TrackModuleTag.MODULE_DEFAULT, true);
-        mOpenModuleMap.put(TrackModuleTag.MODULE_BASE, true);
-
-        mOpenModuleMap.put(TrackModuleTag.MODULE_OPERATION_RECORD, false);
+        TrackModuleTag.buildModuleMap(mOpenModuleMap);
     }
 
     public synchronized static AppTrackManager getInstance() {
@@ -120,31 +117,31 @@ public class AppTrackManager {
         mHelper.track(appTrack, immediately);
     }
 
-    public void recordOperation(@NonNull String curClass,
+    public void recordOperation(@NonNull String moduleTag, @NonNull String curClass,
                                 @NonNull String actionName, @NonNull String actionData,
                                 long recordTime) {
-        recordOperation(curClass, actionName, actionData, recordTime, false, false);
+        recordOperation(moduleTag, curClass, actionName, actionData, recordTime, false, false);
     }
 
-    public void recordOperation(@NonNull String curClass,
+    public void recordOperation(@NonNull String moduleTag, @NonNull String curClass,
                                 @NonNull String actionName, @NonNull String actionData,
                                 long recordTime,
                                 boolean containBaseInfo) {
-        recordOperation(curClass, actionName, actionData, recordTime, containBaseInfo, false);
+        recordOperation(moduleTag, curClass, actionName, actionData, recordTime, containBaseInfo, false);
     }
 
-    public void recordOperation(@NonNull String curClass,
+    public void recordOperation(@NonNull String moduleTag, @NonNull String curClass,
                                 @NonNull String actionName, @NonNull String actionData,
                                 long recordTime,
                                 boolean containBaseInfo, boolean immediately) {
-        if (!canTrack(TrackModuleTag.MODULE_OPERATION_RECORD)) {
+        if (!canTrack(moduleTag)) {
             return;
         }
         AppTrack appTrack = new AppTrack();
         appTrack.setCurClass(curClass);
         appTrack.setTrackType(9899);
         appTrack.setActionName(actionName);
-        appTrack.setModuleTag(TrackModuleTag.MODULE_OPERATION_RECORD);
+        appTrack.setModuleTag(moduleTag);
         appTrack.setActionData(actionData);
         appTrack.setActionInStamp(recordTime);
         if (!containBaseInfo) {
@@ -154,17 +151,19 @@ public class AppTrackManager {
     }
 
     public List<AppTrack> getOperationRecord(String actionName, int pageNo, int pageSize) {
-        if (!canTrack(TrackModuleTag.MODULE_OPERATION_RECORD)) {
+        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        if (!canTrack(moduleTagList)) {
             return null;
         }
-        return mHelper.getTrackList(TrackModuleTag.MODULE_OPERATION_RECORD, actionName, pageNo, pageSize);
+        return mHelper.getTrackList(moduleTagList, actionName, pageNo, pageSize);
     }
 
     public List<AppTrack> getOperationRecord(List<String> actionNames, int pageNo, int pageSize) {
-        if (!canTrack(TrackModuleTag.MODULE_OPERATION_RECORD)) {
+        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        if (!canTrack(moduleTagList)) {
             return null;
         }
-        return mHelper.getTrackList(TrackModuleTag.MODULE_OPERATION_RECORD, actionNames, pageNo, pageSize);
+        return mHelper.getTrackList(moduleTagList, actionNames, pageNo, pageSize);
     }
 
     /**
@@ -227,6 +226,23 @@ public class AppTrackManager {
         synchronized (mOpenModuleMap) {
             return mEnable && mOpenModuleMap.containsKey(trackModule);
         }
+    }
+
+    private boolean canTrack(@NonNull List<String> trackModules) {
+        if (!isInit()) {
+            return false;
+        }
+        if (!mEnable) {
+            return false;
+        }
+        synchronized (mOpenModuleMap) {
+            for (String trackModule : trackModules) {
+                if (!mOpenModuleMap.containsKey(trackModule)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private boolean isInit() {

@@ -16,6 +16,9 @@ public interface AppTrackDao {
     @Insert
     long insert(AppTrack appTrack);
 
+    @Insert
+    Long[] insertAll(List<AppTrack> appTrackList);
+
     @Update
     int update(AppTrack appTrack);
 
@@ -46,27 +49,58 @@ public interface AppTrackDao {
     @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag ORDER BY time_in_stamp ASC")
     List<AppTrack> queryAllListByModule(String moduleTag);
 
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) ORDER BY time_in_stamp ASC")
+    List<AppTrack> queryAllListByModules(List<String> moduleTags);
+
+    @Query("SELECT * FROM db_app_track WHERE module_tag = :actionName ORDER BY time_in_stamp ASC")
+    List<AppTrack> queryAllListByAction(String actionName);
+
+    @Query("SELECT * FROM db_app_track WHERE action_name IN (:actionNames) ORDER BY time_in_stamp ASC")
+    List<AppTrack> queryAllListByActions(List<String> actionNames);
+
     @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag AND action_name = :actionName ORDER BY time_in_stamp ASC")
-    List<AppTrack> queryAllListByModule(String moduleTag, String actionName);
+    List<AppTrack> queryAllList(String moduleTag, String actionName);
 
     @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag AND action_name IN (:actionNames) ORDER BY time_in_stamp ASC")
-    List<AppTrack> queryAllListByModule(String moduleTag, List<String> actionNames);
+    List<AppTrack> queryAllList(String moduleTag, List<String> actionNames);
+
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) AND action_name = :actionName ORDER BY time_in_stamp ASC")
+    List<AppTrack> queryAllList(List<String> moduleTags, String actionName);
+
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) AND action_name IN (:actionNames) ORDER BY time_in_stamp ASC")
+    List<AppTrack> queryAllList(List<String> moduleTags, List<String> actionNames);
 
     @Transaction
     @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
-    List<AppTrack> queryListByPage(String moduleTag, int startIndex, int pageSize);
-
-    @Transaction
-    @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag AND action_name = :actionName ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
-    List<AppTrack> queryListByPage(String moduleTag, String actionName, int startIndex, int pageSize);
-
-    @Transaction
-    @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag AND action_name IN (:actionNames) ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
-    List<AppTrack> queryListByPage(String moduleTag, List<String> actionNames, int startIndex, int pageSize);
+    List<AppTrack> queryPageListByModule(String moduleTag, int startIndex, int pageSize);
 
     @Transaction
     @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
-    List<AppTrack> queryListByPage(List<String> moduleTags, int startIndex, int pageSize);
+    List<AppTrack> queryPageListByModules(List<String> moduleTags, int startIndex, int pageSize);
+
+    @Transaction
+    @Query("SELECT * FROM db_app_track WHERE action_name = :actionName ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
+    List<AppTrack> queryPageListByAction(String actionName, int startIndex, int pageSize);
+
+    @Transaction
+    @Query("SELECT * FROM db_app_track WHERE action_name IN (:actionNames) ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
+    List<AppTrack> queryPageListByActions(List<String> actionNames, int startIndex, int pageSize);
+
+    @Transaction
+    @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag AND action_name = :actionName ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
+    List<AppTrack> queryPageList(String moduleTag, String actionName, int startIndex, int pageSize);
+
+    @Transaction
+    @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag AND action_name IN (:actionNames) ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
+    List<AppTrack> queryPageList(String moduleTag, List<String> actionNames, int startIndex, int pageSize);
+
+    @Transaction
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) AND action_name = :actionName ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
+    List<AppTrack> queryPageList(List<String> moduleTags, String actionName, int startIndex, int pageSize);
+
+    @Transaction
+    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) AND action_name IN (:actionNames) ORDER BY time_in_stamp DESC LIMIT :startIndex,:pageSize")
+    List<AppTrack> queryPageList(List<String> moduleTags, List<String> actionNames, int startIndex, int pageSize);
 
     @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag AND time_in_stamp >= :startTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModuleAndStartTime(String moduleTag, long startTime);
@@ -76,9 +110,6 @@ public interface AppTrackDao {
 
     @Query("SELECT * FROM db_app_track WHERE module_tag = :moduleTag AND time_in_stamp >= :startTime AND time_in_stamp < :endTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModuleAndTime(String moduleTag, long startTime, long endTime);
-
-    @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) ORDER BY time_in_stamp ASC")
-    List<AppTrack> queryAllListByModules(List<String> moduleTags);
 
     @Query("SELECT * FROM db_app_track WHERE module_tag IN (:moduleTags) AND time_in_stamp >= :startTime ORDER BY time_in_stamp ASC")
     List<AppTrack> queryListByModulesAndStartTime(List<String> moduleTags, long startTime);
