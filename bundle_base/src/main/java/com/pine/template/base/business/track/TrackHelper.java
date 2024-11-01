@@ -37,6 +37,7 @@ public class TrackHelper {
     private WorkHandler mWorkHandler;
     // 单位秒
     private int mLoopInterval = 60;
+    private boolean mLoopStart;
 
     private Map<String, Boolean> mOpenModuleMap = new HashMap<>();
 
@@ -66,10 +67,12 @@ public class TrackHelper {
                 case MSG_UPLOAD_TRACK:
                     long timeStamp = System.currentTimeMillis();
                     updateTrackTask(-1, -1);
-                    mWorkHandler.removeMessages(MSG_UPLOAD_TRACK);
-                    long updateSum = System.currentTimeMillis() - timeStamp;
-                    long delay = mLoopInterval * 1000 > updateSum ? mLoopInterval * 1000 - updateSum : 0;
-                    mWorkHandler.sendEmptyMessageDelayed(MSG_UPLOAD_TRACK, delay);
+                    if (mLoopStart) {
+                        mWorkHandler.removeMessages(MSG_UPLOAD_TRACK);
+                        long updateSum = System.currentTimeMillis() - timeStamp;
+                        long delay = mLoopInterval * 1000 > updateSum ? mLoopInterval * 1000 - updateSum : 0;
+                        mWorkHandler.sendEmptyMessageDelayed(MSG_UPLOAD_TRACK, delay);
+                    }
                     break;
                 default:
                     break;
@@ -143,16 +146,18 @@ public class TrackHelper {
     /**
      * @param delay
      */
-    public void startLoopUploadTrack(long delay) {
+    public synchronized void startLoopUploadTrack(long delay) {
         stopLoopUploadTrack();
+        mLoopStart = true;
         mWorkHandler.sendEmptyMessageDelayed(MSG_UPLOAD_TRACK, delay > 0 ? delay : 0);
     }
 
-    public void stopLoopUploadTrack() {
+    public synchronized void stopLoopUploadTrack() {
         mWorkHandler.removeMessages(MSG_UPLOAD_TRACK);
+        mLoopStart = false;
     }
 
-    public void clearAllWaitTrackTask() {
+    public synchronized void clearAllWaitTrackTask() {
         mWorkHandler.removeCallbacksAndMessages(null);
     }
 

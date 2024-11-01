@@ -50,6 +50,11 @@ public class AppTrackManager {
         doSetupJob();
     }
 
+    public void release() {
+        stopLoopUploadTrack();
+        clearAllWaitTrackTask();
+    }
+
     private void doSetupJob() {
         if (!enableTrack()) {
             return;
