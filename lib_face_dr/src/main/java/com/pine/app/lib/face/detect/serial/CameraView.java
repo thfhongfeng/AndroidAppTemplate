@@ -11,12 +11,12 @@ import androidx.annotation.Nullable;
 import com.pine.app.lib.face.detect.DetectConfig;
 import com.pine.app.lib.face.detect.ICameraCallback;
 import com.pine.app.lib.face.detect.IFaceDetectView;
-import com.pine.app.lib.face.detect.IOnFacePicListener;
+import com.pine.app.lib.face.detect.IOnFaceListener;
 import com.pine.app.lib.face.detect.RecordConfig;
 
 
 public class CameraView extends RelativeLayout implements IFaceDetectView {
-    private IOnFacePicListener mOnFacePicListener;
+    private IOnFaceListener mOnFacePicListener;
 
     private ISerialActionProxy mSerialActionProxy;
 
@@ -41,7 +41,7 @@ public class CameraView extends RelativeLayout implements IFaceDetectView {
     }
 
     @Override
-    public void init(@NonNull DetectConfig config, IOnFacePicListener listener) {
+    public void init(@NonNull DetectConfig config, IOnFaceListener listener) {
         mConfig.merge(config);
         textureView.setConfig(mConfig);
         mOnFacePicListener = listener;

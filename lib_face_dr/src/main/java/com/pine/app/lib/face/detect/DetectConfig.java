@@ -37,6 +37,9 @@ public class DetectConfig extends CameraConfig {
 
     public float matchEdgeDiffFactor = 0.2f;//人脸检测标准框边框位置差异百分比（决定人脸会被检测到的位置误差）
     public float matchCenterDiffFactor = 0.2f;//人脸检测标准框中心位置差异百分比（决定人脸会被检测到的位置误差）
+    public int edgeBigTipResId = -1;    //人脸检测标准框比实际人脸范围大且超过差异百分比（matchEdgeDiffFactor）的提醒文本资源id
+    public int edgeSmallTipResId = -1;  //人脸检测标准框比实际人脸范围小且超过差异百分比（matchEdgeDiffFactor）的提醒文本资源id
+    public int centerDiffTipResId = -1; //人脸检测中心位与比实际人脸中心位置超过差异百分比（matchCenterDiffFactor）的提醒文本资源id
     public volatile long PreDetectTime = 0;//上一次检测时刻
     public volatile long PreFaceTime = 0;//上一次检测到人脸的时刻
     //图片检测时的压缩取样率，0~1，越小检测越流畅，
@@ -84,6 +87,9 @@ public class DetectConfig extends CameraConfig {
         autoCalFaceRang = config.autoCalFaceRang;
         matchEdgeDiffFactor = config.matchEdgeDiffFactor;
         matchCenterDiffFactor = config.matchCenterDiffFactor;
+        edgeBigTipResId = config.edgeBigTipResId;
+        edgeSmallTipResId = config.edgeSmallTipResId;
+        centerDiffTipResId = config.centerDiffTipResId;
         MinDetectTime = config.MinDetectTime;
         MaxDetectTime = config.MaxDetectTime;
         EnableFaceDetect = config.EnableFaceDetect;
@@ -104,6 +110,11 @@ public class DetectConfig extends CameraConfig {
 
     public void mergeChange(DetectConfig config) {
         merge(config);
+    }
+
+    public boolean hasDiffTip() {
+        return edgeBigTipResId > -1 || edgeSmallTipResId > -1
+                || centerDiffTipResId > -1;
     }
 
     @Override
@@ -131,6 +142,9 @@ public class DetectConfig extends CameraConfig {
                 ", cameraDetectProvider='" + cameraDetectProvider + '\'' +
                 ", matchEdgeDiffFactor=" + matchEdgeDiffFactor +
                 ", matchCenterDiffFactor=" + matchCenterDiffFactor +
+                ", edgeBigTipResId=" + edgeBigTipResId +
+                ", edgeSmallTipResId=" + edgeSmallTipResId +
+                ", centerDiffTipResId=" + centerDiffTipResId +
                 ", PreDetectTime=" + PreDetectTime +
                 ", PreFaceTime=" + PreFaceTime +
                 ", Simple=" + Simple +

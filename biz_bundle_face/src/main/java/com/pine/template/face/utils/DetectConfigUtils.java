@@ -3,6 +3,7 @@ package com.pine.template.face.utils;
 import com.pine.app.lib.face.detect.CameraConfig;
 import com.pine.app.lib.face.detect.DetectConfig;
 import com.pine.template.base.DeviceConfig;
+import com.pine.template.face.R;
 import com.pine.tool.util.AppUtils;
 
 public class DetectConfigUtils {
@@ -31,6 +32,9 @@ public class DetectConfigUtils {
         config.delayForSaveFlow = 3000;
         config.faceRangeRatio = AppUtils.isPortScreen() ? 0.8f : 0.6f;
         config.matchCenterDiffFactor = 0.2f;
+        config.centerDiffTipResId = R.string.face_tip_identity_face_rang_center_not_match;
+        config.edgeSmallTipResId = R.string.face_tip_identity_face_rang_rect_not_match_small;
+        config.edgeBigTipResId = R.string.face_tip_identity_face_rang_rect_not_match_big;
         config.liveConfidenceEnable = false;
         if (config.liveConfidenceEnable) {
             // 目前只有DETECT_PROVIDER_MINI_VISION支持活体检测

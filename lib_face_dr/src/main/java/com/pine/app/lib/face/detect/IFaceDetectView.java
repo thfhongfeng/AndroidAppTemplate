@@ -8,7 +8,7 @@ import com.pine.app.lib.face.detect.serial.ISerialActionProxy;
 public interface IFaceDetectView {
     String TAG = "FaceDetectView";
 
-    void init(@NonNull DetectConfig config, final IOnFacePicListener listener);
+    void init(@NonNull DetectConfig config, final IOnFaceListener listener);
 
     void resetDetectConfig(@NonNull DetectConfig config);
 

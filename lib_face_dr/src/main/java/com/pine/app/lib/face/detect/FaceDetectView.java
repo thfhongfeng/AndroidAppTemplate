@@ -57,13 +57,13 @@ public class FaceDetectView extends FrameLayout implements IFaceDetectView {
         faceMantleRy = ta.getDimensionPixelOffset(R.styleable.FaceDetectView_hole_radius_y, Integer.MAX_VALUE);
     }
 
-    public void init(int detectType, @NonNull DetectConfig config, final IOnFacePicListener listener) {
+    public void init(int detectType, @NonNull DetectConfig config, final IOnFaceListener listener) {
         mDetectType = detectType;
         init(config, listener);
     }
 
     @Override
-    public void init(@NonNull DetectConfig config, IOnFacePicListener listener) {
+    public void init(@NonNull DetectConfig config, IOnFaceListener listener) {
         switch (mDetectType) {
             default:
                 mDetectView = new FaceView(mContext);

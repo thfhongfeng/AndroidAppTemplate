@@ -8,9 +8,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +27,7 @@ import com.pine.app.lib.face.detect.FaceRange;
 import com.pine.app.lib.face.detect.FrameLayoutWithHole;
 import com.pine.app.lib.face.detect.ICameraCallback;
 import com.pine.app.lib.face.detect.IFaceDetectView;
-import com.pine.app.lib.face.detect.IOnFacePicListener;
+import com.pine.app.lib.face.detect.IOnFaceListener;
 import com.pine.app.lib.face.detect.PicSaver;
 import com.pine.app.lib.face.detect.RecordConfig;
 import com.pine.app.lib.face.detect.serial.ISerialActionProxy;
@@ -102,7 +106,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
     }
 
     @Override
-    public void init(@NonNull DetectConfig config, final IOnFacePicListener listener) {
+    public void init(@NonNull DetectConfig config, final IOnFaceListener listener) {
         mConfig.merge(config);
         faceTextureView.setConfig(mConfig);
         faceRectView.setupDetectConfig(mConfig);
@@ -125,6 +129,17 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
                 return true;
             }
 
+            private void setDiffTip(int resId) {
+                if (faceMantleDiffTipTv == null) {
+                    return;
+                }
+                if (resId > -1) {
+                    faceMantleDiffTipTv.setText(resId);
+                } else {
+                    faceMantleDiffTipTv.setText("");
+                }
+            }
+
             @Override
             public boolean onFaceRangeJudge(final boolean centerMatch, final int rectState) {
                 if (startDetectTimeStamp + mConfig.delayForSaveFlow / 2 > System.currentTimeMillis()) {
@@ -134,8 +149,23 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
                     mOnFaceGetProcessH.post(new Runnable() {
                         @Override
                         public void run() {
+                            if (!centerMatch) {
+                                setDiffTip(mConfig.centerDiffTipResId);
+                            } else {
+                                switch (rectState) {
+                                    case IOnFaceListener.RECT_SMALL:
+                                        setDiffTip(mConfig.edgeSmallTipResId);
+                                        break;
+                                    case IOnFaceListener.RECT_BIG:
+                                        setDiffTip(mConfig.edgeBigTipResId);
+                                        break;
+                                    default:
+                                        setDiffTip(-1);
+                                        break;
+                                }
+                            }
                             if (listener != null) {
-                                listener.onFaceRangeJudge(centerMatch, rectState);
+                                listener.onFaceRangeJudge(centerMatch, rectState, faceMantleDiffTipTv);
                             }
                         }
                     });
@@ -306,9 +336,9 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
 
     private class SavePicRunnable implements Runnable {
         Bitmap bitmap;
-        IOnFacePicListener listener;
+        IOnFaceListener listener;
 
-        SavePicRunnable(Bitmap bitmap, IOnFacePicListener listener) {
+        SavePicRunnable(Bitmap bitmap, IOnFaceListener listener) {
             this.bitmap = bitmap;
             this.listener = listener;
         }
@@ -353,6 +383,8 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
         }
     }
 
+    private TextView faceMantleDiffTipTv;
+
     private void addFaceMantleView() {
         if (faceTextureView == null) {
             return;
@@ -381,6 +413,16 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
         faceMantleView = new FrameLayoutWithHole(getContext(), faceMantleBgColor, faceRadius,
                 faceMantleRx, faceMantleRy, false);
 
+        faceMantleDiffTipTv = new TextView(getContext());
+        faceMantleDiffTipTv.setTextColor(Color.parseColor("#FF8C00"));
+        faceMantleDiffTipTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        LinearLayout.LayoutParams tipLp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 2 * faceRadius);
+        tipLp.setMargins(20, faceMantleRy - faceRadius, 20, 0);
+        faceMantleDiffTipTv.setGravity(Gravity.CENTER);
+        faceMantleDiffTipTv.setLayoutParams(tipLp);
+        faceMantleView.addView(faceMantleDiffTipTv);
+
         FaceRange faceRange = new FaceRange();
         int innerRecHalf = faceRadius * 5 / 6;
         faceRange.left = faceMantleRx - innerRecHalf;
@@ -395,6 +437,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
 
     private void removeFaceMantleView() {
         if (faceMantleView != null) {
+            faceMantleView.removeAllViews();
             removeView(faceMantleView);
         }
     }

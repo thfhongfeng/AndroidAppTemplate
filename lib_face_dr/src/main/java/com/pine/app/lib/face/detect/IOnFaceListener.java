@@ -1,6 +1,8 @@
 package com.pine.app.lib.face.detect;
 
-public interface IOnFacePicListener {
+import android.widget.TextView;
+
+public interface IOnFaceListener {
     int RECT_MATCH = 0;
     int RECT_SMALL = 1;
     int RECT_BIG = 2;
@@ -23,7 +25,8 @@ public interface IOnFacePicListener {
      *
      * @param centerMatch 人脸中点是否在规定范围
      * @param rectState   人脸边框的匹配状态（RECT_SMALL等）
+     * @param middleTipTv 人脸边框的中心的提示框
      * @return
      */
-    boolean onFaceRangeJudge(boolean centerMatch, int rectState);
+    boolean onFaceRangeJudge(boolean centerMatch, int rectState, TextView middleTipTv);
 }

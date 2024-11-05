@@ -63,10 +63,10 @@ public class FaceRange {
             }
             boolean rectangleMatch = detectArea < matchMaxArea && detectArea > matchMinArea;
             if (listener != null) {
-                int rectMatchStatus = IOnFacePicListener.RECT_MATCH;
+                int rectMatchStatus = IOnFaceListener.RECT_MATCH;
                 if (!rectangleMatch) {
-                    rectMatchStatus = detectArea < matchMaxArea ? IOnFacePicListener.RECT_SMALL
-                            : IOnFacePicListener.RECT_BIG;
+                    rectMatchStatus = detectArea < matchMaxArea ? IOnFaceListener.RECT_SMALL
+                            : IOnFaceListener.RECT_BIG;
                 }
                 listener.onFaceRangeJudge(centerMatch, rectMatchStatus);
             }

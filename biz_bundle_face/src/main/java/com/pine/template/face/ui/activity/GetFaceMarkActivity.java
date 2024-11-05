@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import com.pine.app.lib.face.detect.DetectConfig;
-import com.pine.app.lib.face.detect.IOnFacePicListener;
+import com.pine.app.lib.face.detect.IOnFaceListener;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.template.base.manager.tts.TtsManager;
 import com.pine.template.face.FaceConstants;
@@ -67,7 +67,7 @@ public class GetFaceMarkActivity extends
         DetectConfig config = getDetectConfig();
         LogUtils.d(TAG, "initDetect " + config);
         mBinding.faceDetectView.setFaceMantleCenter(0.5f, 0.5f);
-        mBinding.faceDetectView.init(FaceConstants.DETECT_PROVIDER, config, new IOnFacePicListener() {
+        mBinding.faceDetectView.init(FaceConstants.DETECT_PROVIDER, config, new IOnFaceListener() {
             @Override
             public boolean onFacePicSaved(String picPath, String compressPicPath, String faceCropFilePath) {
                 LogUtils.d(TAG, "onFacePicSaved picPath:" + picPath
@@ -93,7 +93,7 @@ public class GetFaceMarkActivity extends
             }
 
             @Override
-            public boolean onFaceRangeJudge(boolean centerMatch, int rectState) {
+            public boolean onFaceRangeJudge(boolean centerMatch, int rectState, TextView middleTipTv) {
                 return false;
             }
         });

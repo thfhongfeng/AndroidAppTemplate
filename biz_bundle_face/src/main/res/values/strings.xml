@@ -45,4 +45,8 @@
     <string name="face_person_d_save_msg">确认保存人员吗？</string>
     <string name="face_person_d_clear_title">清理全部人员</string>
     <string name="face_person_d_clear_msg">确认清理全部人员吗？</string>
+
+    <string name="face_tip_identity_face_rang_center_not_match">请移动位置让人脸中心与圆框中心尽量契合</string>
+    <string name="face_tip_identity_face_rang_rect_not_match_big">请向后移动让人脸与圆框尽量契合</string>
+    <string name="face_tip_identity_face_rang_rect_not_match_small">请向前移动让人脸与圆框尽量契合</string>
 </resources>
