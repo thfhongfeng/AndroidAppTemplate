@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import com.pine.app.lib.face.detect.DetectConfig;
+import com.pine.app.lib.face.detect.FaceBorder;
 import com.pine.app.lib.face.detect.IOnFaceListener;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmActionBarActivity;
 import com.pine.template.base.manager.tts.TtsManager;
@@ -24,6 +25,8 @@ import com.pine.template.face.utils.DetectConfigUtils;
 import com.pine.template.face.vm.GetFaceMarkVm;
 import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.util.LogUtils;
+
+import java.util.List;
 
 @PermissionsAnnotation(Permissions = {Manifest.permission.CAMERA})
 public class GetFaceMarkActivity extends
@@ -93,7 +96,7 @@ public class GetFaceMarkActivity extends
             }
 
             @Override
-            public boolean onFaceRangeJudge(boolean centerMatch, int rectState, TextView middleTipTv) {
+            public boolean onFaceRangeJudged(FaceBorder mainFaceBorder, List<FaceBorder> faceBorders, TextView middleTipTv) {
                 return false;
             }
         });

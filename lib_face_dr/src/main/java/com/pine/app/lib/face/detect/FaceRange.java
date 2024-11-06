@@ -19,7 +19,7 @@ public class FaceRange {
         bottom = 0;
     }
 
-    public boolean matchDetect(List<FaceRange> detectRanges, DetectConfig config,
+    public boolean matchDetect(List<FaceBorder> faceBorders, DetectConfig config,
                                FaceTextureView.IFramePreViewListener listener) {
         float centerFactor = config.matchCenterDiffFactor > 0 ? config.matchCenterDiffFactor : -1;
         float edgeFactor = config.matchEdgeDiffFactor <= 0 ? 0.1f : config.matchEdgeDiffFactor;
@@ -40,7 +40,10 @@ public class FaceRange {
         float minEdgeFactorScale = 1 - edgeFactor;
         minEdgeFactorScale = minEdgeFactorScale > 0 ? minEdgeFactorScale : 0;
         double matchMinArea = validArea * minEdgeFactorScale * minEdgeFactorScale;
-        for (FaceRange detectRange : detectRanges) {
+        boolean matched = false;
+        FaceBorder mainFaceBorder = null;
+        for (FaceBorder faceBorder : faceBorders) {
+            FaceRange detectRange = faceBorder.faceRange;
             float detectWidth = Math.abs(detectRange.right - detectRange.left);
             float detectHeight = Math.abs(detectRange.bottom - detectRange.top);
             float detectCenterX = (detectRange.left + detectRange.right) / 2;
@@ -62,19 +65,25 @@ public class FaceRange {
                         && rightXOffsetA + bottomYOffsetA < validA;
             }
             boolean rectangleMatch = detectArea < matchMaxArea && detectArea > matchMinArea;
-            if (listener != null) {
-                int rectMatchStatus = IOnFaceListener.RECT_MATCH;
-                if (!rectangleMatch) {
-                    rectMatchStatus = detectArea < matchMaxArea ? IOnFaceListener.RECT_SMALL
-                            : IOnFaceListener.RECT_BIG;
-                }
-                listener.onFaceRangeJudge(centerMatch, rectMatchStatus);
+
+            faceBorder.centerMatchState = centerMatch ? FaceBorder.CENTER_MATCH : FaceBorder.CENTER_NOT_MATCH;
+            if (rectangleMatch) {
+                faceBorder.rectMatchState = FaceBorder.RECT_MATCH;
+            } else {
+                faceBorder.rectMatchState = detectArea < matchMaxArea ? FaceBorder.RECT_SMALL
+                        : FaceBorder.RECT_BIG;
             }
             if (centerMatch && rectangleMatch) {
-                return true;
+                matched = true;
+            }
+            if (faceBorder.mainFace) {
+                mainFaceBorder = faceBorder;
             }
         }
-        return false;
+        if (listener != null) {
+            listener.onFaceRangeJudged(mainFaceBorder, faceBorders);
+        }
+        return matched;
     }
 
     @Override

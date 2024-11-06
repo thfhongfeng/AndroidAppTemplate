@@ -24,6 +24,7 @@ import com.pine.app.lib.face.FacePosDetail;
 import com.pine.app.lib.face.detect.CameraHelper;
 import com.pine.app.lib.face.detect.CameraSurfaceParams;
 import com.pine.app.lib.face.detect.DetectConfig;
+import com.pine.app.lib.face.detect.FaceBorder;
 import com.pine.app.lib.face.detect.FaceRange;
 import com.pine.app.lib.face.detect.ICameraCallback;
 import com.pine.app.lib.face.detect.RecordConfig;
@@ -352,21 +353,21 @@ public class FaceTextureView extends TextureView implements View.OnLayoutChangeL
             boolean hasFace = facePosDetails != null && facePosDetails.size() > 0;
             if (hasFace && getConfig().getEnableFaceDetect()) {
                 getConfig().PreFaceTime = System.currentTimeMillis();
-                List<FaceRange> faceRangeList = null;
+                List<FaceBorder> faceBorderList = null;
                 synchronized (syncLock) {
                     if (faceRectView != null) {
                         if (getConfig().getEnableFaceDetect()) {
                             faceRectView.drawFacesBorder(facePosDetails, getConfig(), innerFrame.getWidth(),
                                     innerFrame.getHeight());
-                            faceRangeList = faceRectView.getFaceRangList();
+                            faceBorderList = faceRectView.getFaceBorderList();
                         }
                     }
                 }
                 boolean faceMatchValid = false;
                 synchronized (syncLock) {
                     if (mFaceValidRange != null) {
-                        if (faceRangeList != null
-                                && mFaceValidRange.matchDetect(faceRangeList, getConfig(), framePreViewListener)) {
+                        if (faceBorderList != null
+                                && mFaceValidRange.matchDetect(faceBorderList, getConfig(), framePreViewListener)) {
                             faceMatchValid = true;
                         }
                     } else {
@@ -390,6 +391,9 @@ public class FaceTextureView extends TextureView implements View.OnLayoutChangeL
                 synchronized (syncLock) {
                     if (faceRectView != null) {
                         faceRectView.clearBorder();
+                    }
+                    if (framePreViewListener != null) {
+                        framePreViewListener.onFaceRangeJudged(null, null);
                     }
                 }
             }
@@ -490,19 +494,24 @@ public class FaceTextureView extends TextureView implements View.OnLayoutChangeL
         }
     }
 
-    //PreView each frame of the camera
     public interface IFramePreViewListener {
-        //这个preFrame没次都复制一份出来，记得主动回收
+        //这个preFrame每次都复制一份出来，记得主动回收
+
+        /**
+         * @param faceFrame      检测到人脸时的图片帧（这个preFrame每次都复制一份出来，记得主动回收）
+         * @param facePosDetails 所有人脸位置信息列表
+         * @return
+         */
         boolean onFaceFrame(Bitmap faceFrame, List<FacePosDetail> facePosDetails);
 
         /**
-         * 获取人脸，对规定范围进行判断的回调（获取过程持续回调）
+         * 对获取的人脸信息进行边界判断后的回调（获取过程持续回调）
          *
-         * @param centerMatch 人脸中点是否在规定范围
-         * @param rectState   人脸边框的匹配状态（RECT_SMALL等）
+         * @param mainFaceBorder 最大人脸边框信息
+         * @param faceBorders    人脸边框信息集合
          * @return
          */
-        boolean onFaceRangeJudge(boolean centerMatch, int rectState);
+        boolean onFaceRangeJudged(FaceBorder mainFaceBorder, List<FaceBorder> faceBorders);
 
         boolean onParamSet(@NonNull CameraSurfaceParams params);
     }

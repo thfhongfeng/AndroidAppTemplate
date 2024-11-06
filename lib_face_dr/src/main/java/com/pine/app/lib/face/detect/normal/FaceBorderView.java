@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.pine.app.lib.face.FacePosDetail;
 import com.pine.app.lib.face.detect.DetectConfig;
-import com.pine.app.lib.face.detect.FaceRange;
+import com.pine.app.lib.face.detect.FaceBorder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,12 +79,6 @@ public class FaceBorderView extends View implements IFaceRectView {
                 faceBorder.faceRange.right = rightX;
                 faceBorder.faceRange.top = topY;
                 faceBorder.faceRange.bottom = bottomY;
-                faceBorder.borderPath.reset();
-                faceBorder.borderPath.moveTo(leftX, topY);
-                faceBorder.borderPath.lineTo(rightX, topY);
-                faceBorder.borderPath.lineTo(rightX, bottomY);
-                faceBorder.borderPath.lineTo(leftX, bottomY);
-                faceBorder.borderPath.lineTo(leftX, topY);
                 faceBorder.confidence = facePosDetail.confidence;
                 faceBorder.liveConfidence = facePosDetail.liveConfidence;
                 faceBorderList.add(faceBorder);
@@ -96,12 +90,12 @@ public class FaceBorderView extends View implements IFaceRectView {
     private List<FaceBorder> faceBorderList = new ArrayList<FaceBorder>();
 
     @Override
-    public synchronized List<FaceRange> getFaceRangList() {
-        List<FaceRange> list = new ArrayList<>();
+    public synchronized List<FaceBorder> getFaceBorderList() {
+        List<FaceBorder> list = new ArrayList<>();
         for (FaceBorder faceBorder : faceBorderList) {
             if (!detectConfig.liveConfidenceEnable
                     || faceBorder.liveConfidence > detectConfig.liveConfidenceThreshold) {
-                list.add(faceBorder.faceRange);
+                list.add(faceBorder);
             }
         }
         return list;
@@ -111,7 +105,13 @@ public class FaceBorderView extends View implements IFaceRectView {
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (FaceBorder faceBorder : faceBorderList) {
-            canvas.drawPath(faceBorder.borderPath, paint);
+            Path borderPath = new Path();
+            borderPath.moveTo(faceBorder.faceRange.left, faceBorder.faceRange.top);
+            borderPath.lineTo(faceBorder.faceRange.right, faceBorder.faceRange.top);
+            borderPath.lineTo(faceBorder.faceRange.right, faceBorder.faceRange.bottom);
+            borderPath.lineTo(faceBorder.faceRange.left, faceBorder.faceRange.bottom);
+            borderPath.lineTo(faceBorder.faceRange.left, faceBorder.faceRange.top);
+            canvas.drawPath(borderPath, paint);
         }
     }
 
@@ -119,12 +119,5 @@ public class FaceBorderView extends View implements IFaceRectView {
     public synchronized void clearBorder() {
         faceBorderList.clear();
         postInvalidate();
-    }
-
-    class FaceBorder {
-        public Path borderPath = new Path();
-        public FaceRange faceRange = new FaceRange();
-        public float confidence = 0f;
-        public float liveConfidence = 0f;
     }
 }

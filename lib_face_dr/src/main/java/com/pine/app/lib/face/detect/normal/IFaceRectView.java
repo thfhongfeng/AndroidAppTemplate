@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.pine.app.lib.face.FacePosDetail;
 import com.pine.app.lib.face.detect.DetectConfig;
-import com.pine.app.lib.face.detect.FaceRange;
+import com.pine.app.lib.face.detect.FaceBorder;
 
 import java.util.List;
 
@@ -22,5 +22,5 @@ public interface IFaceRectView {
     //清除边框线
     void clearBorder();
 
-    List<FaceRange> getFaceRangList();
+    List<FaceBorder> getFaceBorderList();
 }

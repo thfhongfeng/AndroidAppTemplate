@@ -23,6 +23,7 @@ import com.pine.app.lib.face.FacePosDetail;
 import com.pine.app.lib.face.R;
 import com.pine.app.lib.face.detect.CameraSurfaceParams;
 import com.pine.app.lib.face.detect.DetectConfig;
+import com.pine.app.lib.face.detect.FaceBorder;
 import com.pine.app.lib.face.detect.FaceRange;
 import com.pine.app.lib.face.detect.FrameLayoutWithHole;
 import com.pine.app.lib.face.detect.ICameraCallback;
@@ -141,35 +142,38 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
             }
 
             @Override
-            public boolean onFaceRangeJudge(final boolean centerMatch, final int rectState) {
+            public boolean onFaceRangeJudged(final FaceBorder mainFaceBorder, final List<FaceBorder> faceBorders) {
                 if (startDetectTimeStamp + mConfig.delayForSaveFlow / 2 > System.currentTimeMillis()) {
                     return false;
                 }
-                if (listener != null) {
-                    mOnFaceGetProcessH.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!centerMatch) {
-                                setDiffTip(mConfig.centerDiffTipResId);
-                            } else {
-                                switch (rectState) {
-                                    case IOnFaceListener.RECT_SMALL:
+                mOnFaceGetProcessH.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mainFaceBorder != null) {
+                            if (mainFaceBorder.centerMatchState == FaceBorder.CENTER_MATCH) {
+                                switch (mainFaceBorder.rectMatchState) {
+                                    case FaceBorder.RECT_SMALL:
                                         setDiffTip(mConfig.edgeSmallTipResId);
                                         break;
-                                    case IOnFaceListener.RECT_BIG:
+                                    case FaceBorder.RECT_BIG:
                                         setDiffTip(mConfig.edgeBigTipResId);
                                         break;
                                     default:
                                         setDiffTip(-1);
                                         break;
                                 }
+                            } else {
+                                setDiffTip(mConfig.centerDiffTipResId);
                             }
-                            if (listener != null) {
-                                listener.onFaceRangeJudge(centerMatch, rectState, faceMantleDiffTipTv);
-                            }
+                        } else {
+                            setDiffTip(-1);
                         }
-                    });
-                }
+
+                        if (listener != null) {
+                            listener.onFaceRangeJudged(mainFaceBorder, faceBorders, faceMantleDiffTipTv);
+                        }
+                    }
+                });
                 return false;
             }
 
@@ -224,7 +228,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
     public void setFaceMantleCenter(float faceMantleRxWeight, float faceMantleRyWeight) {
         this.faceMantleRxWeight = faceMantleRxWeight;
         this.faceMantleRyWeight = faceMantleRyWeight;
-        if (mConfig != null && mConfig.getEnableFaceDetect()) {
+        if (mConfig.getEnableFaceDetect()) {
             addFaceMantleView();
         }
     }
@@ -240,7 +244,7 @@ public class FaceView extends RelativeLayout implements IFaceDetectView {
         this.faceMantleRadius = faceMantleRadius;
         this.faceMantleRx = faceMantleRx;
         this.faceMantleRy = faceMantleRy;
-        if (mConfig != null && mConfig.getEnableFaceDetect()) {
+        if (mConfig.getEnableFaceDetect()) {
             addFaceMantleView();
         }
     }

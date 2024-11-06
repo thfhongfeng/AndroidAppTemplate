@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.pine.app.lib.face.FacePosDetail;
 import com.pine.app.lib.face.R;
 import com.pine.app.lib.face.detect.DetectConfig;
+import com.pine.app.lib.face.detect.FaceBorder;
 import com.pine.app.lib.face.detect.FaceRange;
 
 import java.text.DecimalFormat;
@@ -248,21 +249,14 @@ public class FaceRectView extends View implements IFaceRectView {
     }
 
     @Override
-    public synchronized List<FaceRange> getFaceRangList() {
-        List<FaceRange> list = new ArrayList<>();
+    public synchronized List<FaceBorder> getFaceBorderList() {
+        List<FaceBorder> list = new ArrayList<>();
         for (FaceBorder faceBorder : faceBorderList) {
             if (!detectConfig.liveConfidenceEnable
                     || faceBorder.liveConfidence > detectConfig.liveConfidenceThreshold) {
-                list.add(faceBorder.faceRange);
+                list.add(faceBorder);
             }
         }
         return list;
-    }
-
-    class FaceBorder {
-        public FaceRange faceRange = new FaceRange();
-        public boolean mainFace = false;
-        public float confidence = 0f;
-        public float liveConfidence = 0f;
     }
 }
