@@ -50,6 +50,10 @@ public class AppTrackManager {
         doSetupJob();
     }
 
+    public void addLeftTrackImmediately() {
+        mHelper.addLeftTrackImmediately();
+    }
+
     public void release() {
         stopLoopUploadTrack();
         clearAllWaitTrackTask();
@@ -160,7 +164,7 @@ public class AppTrackManager {
         if (!canTrack(moduleTagList)) {
             return null;
         }
-        return mHelper.getTrackList(moduleTagList, actionName, pageNo, pageSize);
+        return mHelper.getTrackList(9899, moduleTagList, actionName, pageNo, pageSize);
     }
 
     public List<AppTrack> getOperationRecord(List<String> actionNames, int pageNo, int pageSize) {
@@ -168,7 +172,117 @@ public class AppTrackManager {
         if (!canTrack(moduleTagList)) {
             return null;
         }
-        return mHelper.getTrackList(moduleTagList, actionNames, pageNo, pageSize);
+        return mHelper.getTrackList(9899, moduleTagList, actionNames, pageNo, pageSize);
+    }
+
+    public void recordInfoState(@NonNull String moduleTag, @NonNull String curClass,
+                                @NonNull String actionName, @NonNull String actionData,
+                                long recordTime) {
+        recordInfoState(moduleTag, curClass, actionName, actionData, recordTime, false, false);
+    }
+
+    public void recordInfoState(@NonNull String moduleTag, @NonNull String curClass,
+                                @NonNull String actionName, @NonNull String actionData,
+                                long recordTime,
+                                boolean containBaseInfo) {
+        recordInfoState(moduleTag, curClass, actionName, actionData, recordTime, containBaseInfo, false);
+    }
+
+    public void recordInfoState(@NonNull String moduleTag, @NonNull String curClass,
+                                @NonNull String actionName, @NonNull String actionData,
+                                long recordTime,
+                                boolean containBaseInfo, boolean immediately) {
+        if (!canTrack(moduleTag)) {
+            return;
+        }
+        AppTrack appTrack = new AppTrack();
+        appTrack.setCurClass(curClass);
+        appTrack.setTrackType(9799);
+        appTrack.setActionName(actionName);
+        appTrack.setModuleTag(moduleTag);
+        appTrack.setActionData(actionData);
+        appTrack.setActionInStamp(recordTime);
+        if (!containBaseInfo) {
+            AppTrackUtils.setBaseInfoAndIp(mContext, appTrack);
+        }
+        mHelper.track(appTrack, immediately);
+    }
+
+    public List<AppTrack> getInfoRecord(String actionName, int pageNo, int pageSize) {
+        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        if (!canTrack(moduleTagList)) {
+            return null;
+        }
+        return mHelper.getTrackList(9799, moduleTagList, actionName, pageNo, pageSize);
+    }
+
+    public List<AppTrack> getInfoRecord(List<String> actionNames, int pageNo, int pageSize) {
+        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        if (!canTrack(moduleTagList)) {
+            return null;
+        }
+        return mHelper.getTrackList(9799, moduleTagList, actionNames, pageNo, pageSize);
+    }
+
+    public void record(@NonNull String moduleTag, @NonNull String curClass, int trackType,
+                       @NonNull String actionName, @NonNull String actionData,
+                       long recordTime) {
+        record(moduleTag, curClass, trackType, actionName, actionData, recordTime, false, false);
+    }
+
+    public void record(@NonNull String moduleTag, @NonNull String curClass, int trackType,
+                       @NonNull String actionName, @NonNull String actionData,
+                       long recordTime,
+                       boolean containBaseInfo) {
+        record(moduleTag, curClass, trackType, actionName, actionData, recordTime, containBaseInfo, false);
+    }
+
+    public void record(@NonNull String moduleTag, @NonNull String curClass, int trackType,
+                       @NonNull String actionName, @NonNull String actionData,
+                       long recordTime,
+                       boolean containBaseInfo, boolean immediately) {
+        if (!canTrack(moduleTag)) {
+            return;
+        }
+        AppTrack appTrack = new AppTrack();
+        appTrack.setCurClass(curClass);
+        appTrack.setTrackType(trackType);
+        appTrack.setActionName(actionName);
+        appTrack.setModuleTag(moduleTag);
+        appTrack.setActionData(actionData);
+        appTrack.setActionInStamp(recordTime);
+        if (!containBaseInfo) {
+            AppTrackUtils.setBaseInfoAndIp(mContext, appTrack);
+        }
+        mHelper.track(appTrack, immediately);
+    }
+
+    public List<AppTrack> getRecord(int trackType, String actionName, int pageNo, int pageSize) {
+        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        if (!canTrack(moduleTagList)) {
+            return null;
+        }
+        return mHelper.getTrackList(trackType, moduleTagList, actionName, pageNo, pageSize);
+    }
+
+    public List<AppTrack> getRecord(int trackType, List<String> actionNames, int pageNo, int pageSize) {
+        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        if (!canTrack(moduleTagList)) {
+            return null;
+        }
+        return mHelper.getTrackList(trackType, moduleTagList, actionNames, pageNo, pageSize);
+    }
+
+    public int getRecordCount(List<String> actionNames, long startTime, long endTime) {
+        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        return getRecordCount(moduleTagList, actionNames, startTime, endTime);
+    }
+
+    public int getRecordCount(List<String> moduleTagList, List<String> actionNames, long startTime, long endTime) {
+        if (!canTrack(moduleTagList)) {
+            return -1;
+        }
+        return mHelper.getTrackCount(moduleTagList, actionNames, startTime, endTime);
     }
 
     /**

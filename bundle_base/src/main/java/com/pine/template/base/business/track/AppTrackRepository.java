@@ -5,15 +5,15 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.pine.app.template.bundle_base.BuildConfigKey;
 import com.pine.template.base.business.db.DbRoomDatabase;
 import com.pine.template.base.business.track.dao.AppTrackDao;
 import com.pine.template.base.business.track.entity.AppTrack;
-import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class AppTrackRepository {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
@@ -23,7 +23,7 @@ public class AppTrackRepository {
 
     private AppTrackDao appTrackDao;
 
-    private int MAX_COUNT = 100000;
+    private int MAX_COUNT;
     private int count;
 
     public static AppTrackRepository getInstance(Context application) {
@@ -40,7 +40,7 @@ public class AppTrackRepository {
     private AppTrackRepository(Context application) {
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
             mApplicationContext = application;
-            MAX_COUNT = ConfigSwitcherServer.getConfigInt(BuildConfigKey.CONFIG_APP_TRACK_MAX_COUNT, 100000);
+            MAX_COUNT = AppTrackUtils.getMaxStoreCount();
             roomDatabase = DbRoomDatabase.getINSTANCE(application);
             appTrackDao = roomDatabase.appTrackDao();
             count = appTrackDao.getCount();
@@ -144,6 +144,55 @@ public class AppTrackRepository {
         }
     }
 
+    public List<AppTrack> queryTrackList(int trackType, @NonNull List<String> moduleTags, String actionName,
+                                         int pageNo, int pageSize) {
+        synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
+            LogUtils.d(TAG, "queryTrackList trackType: " + trackType + ", moduleTags: " + moduleTags +
+                    ", actionName: " + actionName + ", pageNo: " + pageNo + ", pageSize: " + pageSize);
+            List<AppTrack> retList = null;
+            if (pageSize > 0 && pageNo > 0) {
+                int startIndex = (pageNo - 1) * pageSize;
+                if (TextUtils.isEmpty(actionName)) {
+                    retList = appTrackDao.queryPageListByModules(trackType, moduleTags, startIndex, pageSize);
+                } else {
+                    retList = appTrackDao.queryPageList(trackType, moduleTags, actionName, startIndex, pageSize);
+                }
+            } else {
+                if (TextUtils.isEmpty(actionName)) {
+                    retList = appTrackDao.queryAllListByModules(trackType, moduleTags);
+                } else {
+                    retList = appTrackDao.queryAllList(trackType, moduleTags, actionName);
+                }
+            }
+            return retList;
+        }
+    }
+
+    public List<AppTrack> queryTrackList(int trackType, @NonNull List<String> moduleTags, List<String> actionNames,
+                                         int pageNo, int pageSize) {
+        synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
+            LogUtils.d(TAG, "queryTrackList trackType: " + trackType + ", moduleTags: " + moduleTags +
+                    ", actionNames: " + actionNames + ", pageNo: " + pageNo + ", pageSize: " + pageSize);
+            List<AppTrack> retList = null;
+            if (pageSize > 0 && pageNo > 0) {
+                int startIndex = (pageNo - 1) * pageSize;
+                if (actionNames == null || actionNames.size() < 1) {
+                    retList = appTrackDao.queryPageListByModules(trackType, moduleTags, startIndex, pageSize);
+                } else {
+                    retList = appTrackDao.queryPageList(trackType, moduleTags, actionNames, startIndex, pageSize);
+                }
+            } else {
+                if (actionNames == null || actionNames.size() < 1) {
+                    retList = appTrackDao.queryAllListByModules(trackType, moduleTags);
+                } else {
+                    retList = appTrackDao.queryAllList(trackType, moduleTags, actionNames);
+                }
+            }
+            return retList;
+        }
+    }
+
+
     public List<AppTrack> queryTrackList(@NonNull List<String> moduleTags, int pageNo, int pageSize) {
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
             LogUtils.d(TAG, "queryTrackList moduleTags: " + moduleTags +
@@ -177,6 +226,32 @@ public class AppTrackRepository {
                 retList = appTrackDao.queryListByEndTime(endTime);
             } else {
                 retList = appTrackDao.queryAllList();
+            }
+            return retList;
+        }
+    }
+
+    /**
+     * @param moduleTags
+     * @param actionNames
+     * @param startTime   include
+     * @param endTime     exclude
+     * @return
+     */
+    public List<AppTrack> queryTrackListByTime(@NonNull List<String> moduleTags,
+                                               @NonNull List<String> actionNames, long startTime, long endTime) {
+        synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
+            LogUtils.d(TAG, "queryTrackListByTime moduleTags: " + moduleTags + ", actionNames: " + actionNames +
+                    ", startTime: " + startTime + ", endTime: " + endTime);
+            List<AppTrack> retList = null;
+            if (startTime > 0 && endTime > 0) {
+                retList = appTrackDao.queryListByTime(moduleTags, actionNames, startTime, endTime);
+            } else if (startTime > 0) {
+                retList = appTrackDao.queryListByStartTime(moduleTags, actionNames, startTime);
+            } else if (endTime > 0) {
+                retList = appTrackDao.queryListByEndTime(moduleTags, actionNames, endTime);
+            } else {
+                retList = appTrackDao.queryAllList(moduleTags, actionNames);
             }
             return retList;
         }
@@ -231,47 +306,68 @@ public class AppTrackRepository {
     }
 
     public boolean insert(@NonNull AppTrack appTrack) {
-        if (TextUtils.isEmpty(appTrack.getModuleTag())) {
-            appTrack.setModuleTag(TrackModuleTag.MODULE_DEFAULT);
+        List<AppTrack> list = new ArrayList<>();
+        list.add(appTrack);
+        return insert(list);
+    }
+
+    public boolean insert(@NonNull List<AppTrack> appTrackList) {
+        HashMap<String, List<AppTrack>> map = new HashMap<>();
+        for (AppTrack appTrack : appTrackList) {
+            appTrack.setId(0);
+            if (TextUtils.isEmpty(appTrack.getModuleTag())) {
+                appTrack.setModuleTag(TrackModuleTag.MODULE_DEFAULT);
+            }
+            List<AppTrack> list = map.get(appTrack.getModuleTag());
+            if (list == null) {
+                list = new ArrayList<>();
+                map.put(appTrack.getModuleTag(), list);
+            }
+            list.add(appTrack);
         }
-        String moduleTag = appTrack.getModuleTag();
+        int newCount = appTrackList.size();
+        Set<String> keys = map.keySet();
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
-            LogUtils.d(TAG, "insert appTrack: " + appTrack + ",cur count:" + count);
-            List<AppTrack> deleteTrackList = new ArrayList<>();
-            if (count > MAX_COUNT) {
-                int curCount = count;
-                LogUtils.d(TAG, "insert appTrack, cur count > " + MAX_COUNT + ", delete half old data");
-                appTrackDao.deleteOldData(MAX_COUNT / 2);
-                count = appTrackDao.getCount();
-                deleteTrackList.add(TrackModuleTag.getDeleteOldDataTrack(mApplicationContext, "", curCount - count));
-            }
-            int moduleCount = appTrackDao.getCountByModuleTag(moduleTag);
-            int maxModuleCount = TrackModuleTag.getModuleMaxCount(moduleTag);
-            if (moduleCount > maxModuleCount) {
-                int curCount = moduleCount;
-                LogUtils.d(TAG, "insert module record, cur count > " + maxModuleCount + ", delete half old data");
-                appTrackDao.deleteOldDataByModuleTag(moduleTag, maxModuleCount / 2);
-                deleteTrackList.add(TrackModuleTag.getDeleteOldDataTrack(mApplicationContext, moduleTag, curCount - moduleCount));
-            }
-            try {
-                if (deleteTrackList.size() > 0) {
-                    Long[] ids = appTrackDao.insertAll(deleteTrackList);
-                    int size = ids == null ? 0 : ids.length;
-                    LogUtils.d(TAG, "insert appTrack, add deleteTrack size : " + size);
-                    count = count + size;
+            for (String moduleTag : keys) {
+                List<AppTrack> list = map.get(moduleTag);
+                LogUtils.d(TAG, "insert appTrack list: " + list + ",cur count:" + count);
+                List<AppTrack> deleteTrackList = new ArrayList<>();
+                if (count + newCount > MAX_COUNT) {
+                    int curCount = count;
+                    LogUtils.d(TAG, "insert appTrack, cur count > " + MAX_COUNT + ", delete half old data");
+                    appTrackDao.deleteOldData(MAX_COUNT / 4);
+                    count = appTrackDao.getCount();
+                    deleteTrackList.add(TrackModuleTag.getDeleteOldDataTrack(mApplicationContext, "", curCount - count));
                 }
-                appTrack.setId(0);
-                long id = appTrackDao.insert(appTrack);
-                if (id >= 0) {
-                    appTrack.setId(id);
-                    count++;
-                    return true;
+                int moduleCount = appTrackDao.getCountByModuleTag(moduleTag);
+                int maxModuleCount = AppTrackUtils.getModuleMaxCount(moduleTag);
+                if (moduleCount + newCount > maxModuleCount) {
+                    int curCount = moduleCount;
+                    LogUtils.d(TAG, "insert module record, cur count > " + maxModuleCount + ", delete half old data");
+                    appTrackDao.deleteOldDataByModuleTag(moduleTag, maxModuleCount / 4);
+                    deleteTrackList.add(TrackModuleTag.getDeleteOldDataTrack(mApplicationContext, moduleTag, curCount - moduleCount));
                 }
-            } catch (Exception e) {
-                LogUtils.e(TAG, "insert appTrack, Exception : " + e);
+                try {
+                    if (deleteTrackList.size() > 0) {
+                        Long[] ids = appTrackDao.insertAll(deleteTrackList);
+                        int size = ids == null ? 0 : ids.length;
+                        LogUtils.d(TAG, "insert appTrack, add deleteTrack size : " + size);
+                        count = count + size;
+                    }
+                    Long[] ids = appTrackDao.insertAll(list);
+                    if (ids != null && ids.length == list.size()) {
+                        for (int i = 0; i < ids.length; i++) {
+                            list.get(i).setId(ids[i]);
+                            count++;
+                        }
+                    }
+                } catch (Exception e) {
+                    LogUtils.e(TAG, "insert appTrack, Exception : " + e);
+                }
+                return false;
             }
-            return false;
         }
+        return true;
     }
 
     public boolean delete(@NonNull List<AppTrack> appTrackList) {

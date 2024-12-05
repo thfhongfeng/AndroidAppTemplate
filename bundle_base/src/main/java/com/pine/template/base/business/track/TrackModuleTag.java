@@ -17,6 +17,7 @@ public class TrackModuleTag {
     public static final String MODULE_BUSINESS_RECORD = "module_business_record";
     public static final String MODULE_ADMIN_RECORD = "module_admin_record";
     public static final String MODULE_REMOTE_RECORD = "module_remote_record";
+    public static final String MODULE_STATE_INFO = "module_state_info";
 
     public static void buildModuleMap(Map<String, Boolean> map) {
         map.put(MODULE_DEFAULT, true);
@@ -24,6 +25,7 @@ public class TrackModuleTag {
 
         map.put(MODULE_ADMIN_RECORD, true);
         map.put(MODULE_REMOTE_RECORD, true);
+        map.put(MODULE_STATE_INFO, true);
 
         map.put(MODULE_BUSINESS_RECORD, false);
     }
@@ -33,6 +35,7 @@ public class TrackModuleTag {
         list.add(MODULE_ADMIN_RECORD);
         list.add(MODULE_BUSINESS_RECORD);
         list.add(MODULE_REMOTE_RECORD);
+        list.add(MODULE_STATE_INFO);
         return list;
     }
 
@@ -48,14 +51,5 @@ public class TrackModuleTag {
         appTrack.setActionOutStamp(System.currentTimeMillis());
         AppTrackUtils.setBaseInfoAndIp(context, appTrack);
         return appTrack;
-    }
-
-    public static int getModuleMaxCount(String moduleTag) {
-        switch (moduleTag) {
-            case MODULE_BUSINESS_RECORD:
-                return 50000;
-            default:
-                return 10000;
-        }
     }
 }

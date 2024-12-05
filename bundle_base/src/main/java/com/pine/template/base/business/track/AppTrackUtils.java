@@ -5,10 +5,12 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.pine.app.template.bundle_base.BuildConfigKey;
 import com.pine.template.base.DeviceConfig;
 import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.base.business.track.entity.AppTrack;
 import com.pine.template.base.business.track.entity.AppTracksHeader;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.remote.BaseRouterClient;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.NetWorkUtils;
@@ -41,5 +43,20 @@ public class AppTrackUtils {
         header.setDeviceModel(AppUtils.getDeviceModel());
         header.setPkgName(context.getPackageName());
         return header;
+    }
+
+    public static int getMaxStoreCount() {
+        return ConfigSwitcherServer.getConfigInt(BuildConfigKey.CONFIG_APP_TRACK_MAX_COUNT, 100000);
+    }
+
+    public static int getModuleMaxCount(String moduleTag) {
+        switch (moduleTag) {
+            case TrackModuleTag.MODULE_BUSINESS_RECORD:
+                return 50000;
+            case TrackModuleTag.MODULE_STATE_INFO:
+                return 20000;
+            default:
+                return 10000;
+        }
     }
 }

@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +41,8 @@ public class TrackHelper {
     private boolean mLoopStart;
 
     private Map<String, Boolean> mOpenModuleMap = new HashMap<>();
+
+    private LinkedList<AppTrack> mLeftList = new LinkedList<>();
 
     private Context mContext;
     private String mUploadUrl;
@@ -87,10 +90,13 @@ public class TrackHelper {
         if (immediately) {
             AppTrackRepository.getInstance(mContext).insert(appTrack);
         } else {
+            synchronized (mLeftList) {
+                mLeftList.add(appTrack);
+            }
             mWorkHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    AppTrackRepository.getInstance(mContext).insert(appTrack);
+                    addLeftTrackImmediately();
                 }
             });
         }
@@ -128,6 +134,31 @@ public class TrackHelper {
         return AppTrackRepository.getInstance(mContext).queryTrackList(moduleTagList, actionNames, pageNo, pageSize);
     }
 
+    public List<AppTrack> getTrackList(int trackType, @NonNull List<String> moduleTagList, String actionName,
+                                       int pageNo, int pageSize) {
+        if (moduleTagList == null || moduleTagList.size() < 1) {
+            return null;
+        }
+        return AppTrackRepository.getInstance(mContext).queryTrackList(moduleTagList, actionName, pageNo, pageSize);
+    }
+
+    public List<AppTrack> getTrackList(int trackType, @NonNull List<String> moduleTagList, List<String> actionNames,
+                                       int pageNo, int pageSize) {
+        if (moduleTagList == null || moduleTagList.size() < 1) {
+            return null;
+        }
+        return AppTrackRepository.getInstance(mContext).queryTrackList(moduleTagList, actionNames, pageNo, pageSize);
+    }
+
+    public int getTrackCount(@NonNull List<String> moduleTagList, List<String> actionNames,
+                             long startTime, long endTime) {
+        if (moduleTagList == null || moduleTagList.size() < 1) {
+            return 0;
+        }
+        List<AppTrack> list = AppTrackRepository.getInstance(mContext).queryTrackListByTime(moduleTagList, actionNames, startTime, endTime);
+        return list == null ? 0 : list.size();
+    }
+
     /**
      * @param startTimeStamp include
      * @param endTimeStamp   exclude
@@ -159,6 +190,16 @@ public class TrackHelper {
 
     public synchronized void clearAllWaitTrackTask() {
         mWorkHandler.removeCallbacksAndMessages(null);
+        addLeftTrackImmediately();
+    }
+
+    public void addLeftTrackImmediately() {
+        synchronized (mLeftList) {
+            if (mLeftList.size() > 0) {
+                AppTrackRepository.getInstance(mContext).insert(mLeftList);
+            }
+            mLeftList.clear();
+        }
     }
 
     private volatile boolean mUploading = false;
