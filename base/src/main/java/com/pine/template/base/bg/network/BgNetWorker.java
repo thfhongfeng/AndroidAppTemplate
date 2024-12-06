@@ -56,6 +56,9 @@ public class BgNetWorker {
     }
 
     private void onNetworkType(OnNetworkChangedListener newListener) {
+        if (mNetworkType == null) {
+            return;
+        }
         List<OnNetworkChangedListener> listeners = getListeners(newListener);
         boolean isWifiType = BgNetworkHelper.isWifiType(mNetworkType);
         boolean isMobileType = BgNetworkHelper.isMobilType(mNetworkType);
