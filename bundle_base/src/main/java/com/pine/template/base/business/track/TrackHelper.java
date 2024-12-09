@@ -150,6 +150,22 @@ public class TrackHelper {
         return AppTrackRepository.getInstance(mContext).queryTrackList(moduleTagList, actionNames, pageNo, pageSize);
     }
 
+    public List<AppTrack> queryTrackListByStartTime(@NonNull List<String> moduleTagList, List<String> actionNames,
+                                                    long startTime, int count) {
+        if (moduleTagList == null || moduleTagList.size() < 1) {
+            return null;
+        }
+        return AppTrackRepository.getInstance(mContext).queryTrackListByStartTime(moduleTagList, actionNames, startTime, count);
+    }
+
+    public List<AppTrack> queryTrackListByEndTime(@NonNull List<String> moduleTagList, List<String> actionNames,
+                                                  long endTime, int count) {
+        if (moduleTagList == null || moduleTagList.size() < 1) {
+            return null;
+        }
+        return AppTrackRepository.getInstance(mContext).queryTrackListByEndTime(moduleTagList, actionNames, endTime, count);
+    }
+
     public int getTrackCount(@NonNull List<String> moduleTagList, List<String> actionNames,
                              long startTime, long endTime) {
         if (moduleTagList == null || moduleTagList.size() < 1) {

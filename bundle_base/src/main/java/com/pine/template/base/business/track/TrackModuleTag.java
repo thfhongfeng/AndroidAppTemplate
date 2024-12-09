@@ -30,7 +30,7 @@ public class TrackModuleTag {
         map.put(MODULE_BUSINESS_RECORD, false);
     }
 
-    public static List<String> getOperationModuleList() {
+    public static List<String> getLogModuleList() {
         List<String> list = new ArrayList<>();
         list.add(MODULE_ADMIN_RECORD);
         list.add(MODULE_BUSINESS_RECORD);

@@ -258,6 +258,42 @@ public class AppTrackRepository {
     }
 
     /**
+     * @param moduleTags
+     * @param actionNames
+     * @param endTime     exclude
+     * @param count
+     * @return
+     */
+    public List<AppTrack> queryTrackListByEndTime(@NonNull List<String> moduleTags,
+                                                  @NonNull List<String> actionNames, long endTime, int count) {
+        synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
+            LogUtils.d(TAG, "queryTrackListByCount moduleTags: " + moduleTags + ", actionNames: " + actionNames +
+                    ", endTime: " + endTime + ", count: " + count);
+            List<AppTrack> retList = null;
+            retList = appTrackDao.queryTrackListByEndTime(moduleTags, actionNames, endTime, count);
+            return retList;
+        }
+    }
+
+    /**
+     * @param moduleTags
+     * @param actionNames
+     * @param startTime   exclude
+     * @param count
+     * @return
+     */
+    public List<AppTrack> queryTrackListByStartTime(@NonNull List<String> moduleTags,
+                                                    @NonNull List<String> actionNames, long startTime, int count) {
+        synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
+            LogUtils.d(TAG, "queryTrackListByCount moduleTags: " + moduleTags + ", actionNames: " + actionNames +
+                    ", startTime: " + startTime + ", count: " + count);
+            List<AppTrack> retList = null;
+            retList = appTrackDao.queryTrackListByStartTime(moduleTags, actionNames, startTime, count);
+            return retList;
+        }
+    }
+
+    /**
      * @param moduleTag
      * @param startTime include
      * @param endTime   exclude

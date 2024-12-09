@@ -160,7 +160,7 @@ public class AppTrackManager {
     }
 
     public List<AppTrack> getOperationRecord(String actionName, int pageNo, int pageSize) {
-        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
         if (!canTrack(moduleTagList)) {
             return null;
         }
@@ -168,7 +168,7 @@ public class AppTrackManager {
     }
 
     public List<AppTrack> getOperationRecord(List<String> actionNames, int pageNo, int pageSize) {
-        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
         if (!canTrack(moduleTagList)) {
             return null;
         }
@@ -209,7 +209,7 @@ public class AppTrackManager {
     }
 
     public List<AppTrack> getInfoRecord(String actionName, int pageNo, int pageSize) {
-        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
         if (!canTrack(moduleTagList)) {
             return null;
         }
@@ -217,7 +217,7 @@ public class AppTrackManager {
     }
 
     public List<AppTrack> getInfoRecord(List<String> actionNames, int pageNo, int pageSize) {
-        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
         if (!canTrack(moduleTagList)) {
             return null;
         }
@@ -258,7 +258,7 @@ public class AppTrackManager {
     }
 
     public List<AppTrack> getRecord(int trackType, String actionName, int pageNo, int pageSize) {
-        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
         if (!canTrack(moduleTagList)) {
             return null;
         }
@@ -266,15 +266,39 @@ public class AppTrackManager {
     }
 
     public List<AppTrack> getRecord(int trackType, List<String> actionNames, int pageNo, int pageSize) {
-        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
         if (!canTrack(moduleTagList)) {
             return null;
         }
         return mHelper.getTrackList(trackType, moduleTagList, actionNames, pageNo, pageSize);
     }
 
+    public List<AppTrack> getTrackListByStartTime(List<String> actionNames, long startTime, int count) {
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
+        return getTrackListByStartTime(moduleTagList, actionNames, startTime, count);
+    }
+
+    public List<AppTrack> getTrackListByStartTime(List<String> moduleTagList, List<String> actionNames, long startTime, int count) {
+        if (!canTrack(moduleTagList)) {
+            return null;
+        }
+        return mHelper.queryTrackListByStartTime(moduleTagList, actionNames, startTime, count);
+    }
+
+    public List<AppTrack> getTrackListByEndTime(List<String> actionNames, long endTime, int count) {
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
+        return getTrackListByEndTime(moduleTagList, actionNames, endTime, count);
+    }
+
+    public List<AppTrack> getTrackListByEndTime(List<String> moduleTagList, List<String> actionNames, long endTime, int count) {
+        if (!canTrack(moduleTagList)) {
+            return null;
+        }
+        return mHelper.queryTrackListByEndTime(moduleTagList, actionNames, endTime, count);
+    }
+
     public int getRecordCount(List<String> actionNames, long startTime, long endTime) {
-        List<String> moduleTagList = TrackModuleTag.getOperationModuleList();
+        List<String> moduleTagList = TrackModuleTag.getLogModuleList();
         return getRecordCount(moduleTagList, actionNames, startTime, endTime);
     }
 
