@@ -52,11 +52,11 @@ public class AppTrackUtils {
     public static int getModuleMaxCount(String moduleTag) {
         switch (moduleTag) {
             case TrackModuleTag.MODULE_BUSINESS_RECORD:
-                return 50000;
+                return 90000;
             case TrackModuleTag.MODULE_STATE_INFO:
-                return 20000;
+                return 80000;
             default:
-                return 10000;
+                return 50000;
         }
     }
 }
