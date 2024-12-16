@@ -8,8 +8,11 @@ import com.pine.template.base.device_sdk.DeviceSdkException;
 import com.pine.template.base.device_sdk.DeviceSdkManager;
 import com.pine.template.base.helper.DefaultDeviceConfig;
 import com.pine.tool.util.AppUtils;
+import com.pine.tool.util.LogUtils;
 
 public class DeviceConfig extends DefaultDeviceConfig {
+    private static final String TAG = DeviceConfig.class.getSimpleName();
+
     public final static String PRODUCT_CUSTOMER = "persist.vendor.product_customer_tag";
 
     public static void init() {
@@ -46,7 +49,7 @@ public class DeviceConfig extends DefaultDeviceConfig {
         try {
             productCustomer = DeviceSdkManager.getInstance().getProperty(PRODUCT_CUSTOMER, "");
         } catch (DeviceSdkException e) {
-            e.printStackTrace();
+            LogUtils.w(TAG, "DeviceSdkException setProperty getProperty, ignore");
         }
         return productCustomer;
     }
@@ -55,7 +58,7 @@ public class DeviceConfig extends DefaultDeviceConfig {
         try {
             DeviceSdkManager.getInstance().setProperty(PRODUCT_CUSTOMER, tag);
         } catch (DeviceSdkException e) {
-            e.printStackTrace();
+            LogUtils.w(TAG, "DeviceSdkException setProperty init, ignore");
         }
     }
 }

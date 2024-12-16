@@ -48,6 +48,7 @@ public class DeviceSdkManager {
             try {
                 return mManager.init(appContext);
             } catch (DeviceSdkException e) {
+                LogUtils.w(TAG, "DeviceSdkException for init, ignore");
             }
         }
         return false;
