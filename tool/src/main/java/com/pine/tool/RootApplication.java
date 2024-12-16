@@ -173,9 +173,6 @@ public class RootApplication {
         synchronized (mOnAppStateListeners) {
             mOnAppStateListeners.put(tag, listener);
         }
-        synchronized (mAppIsForeground) {
-            listener.onAppForegroundChange(mAppIsForeground);
-        }
     }
 
     public static void removeAppStateListener(String tag) {
