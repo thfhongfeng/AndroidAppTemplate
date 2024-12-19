@@ -309,6 +309,10 @@ public class AppTrackManager {
         return mHelper.getTrackCount(moduleTagList, actionNames, startTime, endTime);
     }
 
+    public int deleteForStorageOut(int delCount, int minLeft) {
+        return mHelper.deleteForStorageOut(delCount, minLeft);
+    }
+
     /**
      * @param startTimeStamp include
      * @param endTimeStamp   exclude

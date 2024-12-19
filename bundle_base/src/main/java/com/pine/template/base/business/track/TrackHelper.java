@@ -175,6 +175,10 @@ public class TrackHelper {
         return list == null ? 0 : list.size();
     }
 
+    public int deleteForStorageOut(int delCount, int minLeft) {
+        return AppTrackRepository.getInstance(mContext).deleteForStorageOut(delCount, minLeft);
+    }
+
     /**
      * @param startTimeStamp include
      * @param endTimeStamp   exclude

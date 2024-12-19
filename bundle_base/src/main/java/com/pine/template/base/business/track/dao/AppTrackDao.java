@@ -30,10 +30,10 @@ public interface AppTrackDao {
     int getCountByModuleTag(String moduleTag);
 
     @Query("DELETE FROM db_app_track WHERE _id IN (SELECT _id FROM db_app_track ORDER BY _id ASC LIMIT :deleteCount)")
-    void deleteOldData(int deleteCount);
+    int deleteOldData(int deleteCount);
 
     @Query("DELETE FROM db_app_track WHERE _id IN (SELECT _id FROM db_app_track WHERE module_tag = :moduleTag ORDER BY _id ASC LIMIT :deleteCount)")
-    void deleteOldDataByModuleTag(String moduleTag, int deleteCount);
+    int deleteOldDataByModuleTag(String moduleTag, int deleteCount);
 
     @Query("SELECT * FROM db_app_track ORDER BY time_in_stamp DESC")
     List<AppTrack> queryAllList();

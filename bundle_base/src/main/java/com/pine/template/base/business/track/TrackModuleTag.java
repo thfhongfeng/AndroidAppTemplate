@@ -39,7 +39,7 @@ public class TrackModuleTag {
         return list;
     }
 
-    public static AppTrack getDeleteOldDataTrack(Context context, String moduleTag, int count) {
+    public static AppTrack getDeleteOldDataTrackForDbOut(Context context, String moduleTag, int count) {
         AppTrack appTrack = new AppTrack();
         appTrack.setModuleTag(MODULE_BASE);
         appTrack.setTrackType(9999);
@@ -47,6 +47,19 @@ public class TrackModuleTag {
         appTrack.setActionName("db_exceeded_del");
         appTrack.setActionData("delete " + (TextUtils.isEmpty(moduleTag) ? "" : moduleTag + " ")
                 + count + " tracks for db exceeded");
+        appTrack.setActionInStamp(System.currentTimeMillis());
+        appTrack.setActionOutStamp(System.currentTimeMillis());
+        AppTrackUtils.setBaseInfoAndIp(context, appTrack);
+        return appTrack;
+    }
+
+    public static AppTrack getDeleteOldDataTrackForStorageOut(Context context, int count) {
+        AppTrack appTrack = new AppTrack();
+        appTrack.setModuleTag(MODULE_BASE);
+        appTrack.setTrackType(9999);
+        appTrack.setCurClass(AppTrackRepository.class.getSimpleName());
+        appTrack.setActionName("db_exceeded_del");
+        appTrack.setActionData("delete " + count + " tracks for storage exceeded");
         appTrack.setActionInStamp(System.currentTimeMillis());
         appTrack.setActionOutStamp(System.currentTimeMillis());
         AppTrackUtils.setBaseInfoAndIp(context, appTrack);
