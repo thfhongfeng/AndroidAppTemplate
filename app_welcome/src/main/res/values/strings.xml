@@ -3,6 +3,8 @@
 
     <string name="wel_welcome_content">欢迎</string>
 
+    <string name="wel_loading_waiting_for_network">等待网络连接中，请稍后</string>
+
     <string name="wel_user_privacy_title">Pine用户服务协议与隐私政策</string>
     <string name="wel_user_privacy_content">感谢您下载Pine！当您开始使用本软件时，我们会在您许可的前提下，对您及所在组织机构的部分基础信息进行收集、使用和共享。
         请您仔细阅读《Pine用户服务协议与隐私政策》并确定了解我们对您所提供信息的处理规则，包括：

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
@@ -16,7 +17,6 @@ import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.welcome.R;
 import com.pine.template.welcome.WelUrlConstants;
 import com.pine.template.welcome.WelcomeApplication;
-import com.pine.template.welcome.WelcomeKeyConstants;
 import com.pine.template.welcome.databinding.LoadingActivityBinding;
 import com.pine.template.welcome.remote.WelcomeRouterClient;
 import com.pine.template.welcome.updater.ApkVersionManager;
@@ -25,7 +25,7 @@ import com.pine.template.welcome.vm.LoadingVm;
 import com.pine.tool.permission.PermissionsAnnotation;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.util.LogUtils;
-import com.pine.tool.util.SharePreferenceUtils;
+import com.pine.tool.util.NetWorkUtils;
 
 import java.io.File;
 
@@ -33,28 +33,21 @@ import java.io.File;
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE})
 public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityBinding, LoadingVm> {
-    private final static int REQUEST_CODE_USER_PRIVACY = 9998;
-    private final static int REQUEST_CODE_GO_ASSIGN_UI = 9999;
     private final static int LOADING_STAY_MIN_TIME = 1000;
 
-    public final static boolean ENABLE_LOADING_GO_ASSIGN = true;
+    // 是否检查网络状态(如果无网络则等待一段时间才开始后续流程)
+    public final static boolean ENABLE_LOADING_CHECK_NET = true;
+    private final static int LOADING_CHECK_NET_PER_DELAY = 1 * 1000;
+    private final static int LOADING_CHECK_NET_MAX_COUNT = 30;
+    private int mNetCheckCount;
+    private Handler mNetCheckHandler = new Handler(Looper.getMainLooper());
+
+    // 是否允许自动登录
     public final static boolean ENABLE_LOADING_AUTO_LOGIN = true;
+    // 是否允许先跳转到welcome界面
     public final static boolean ENABLE_LOADING_GO_WELCOME = false;
 
     private long mStartTimeMillis;
-
-    @Override
-    protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
-        super.beforeInitOnCreate(savedInstanceState);
-        boolean isTaskRoot = isTaskRoot();
-        boolean isGoAssignActivityAction = isGoAssignActivityAction();
-        boolean interrupt = !isTaskRoot && !isGoAssignActivityAction && ENABLE_LOADING_GO_ASSIGN;
-        LogUtils.d(TAG, "isTaskRoot:" + isTaskRoot
-                + ", isGoAssignActivityAction:" + isGoAssignActivityAction
-                + ", ENABLE_LOADING_GO_ASSIGN:" + ENABLE_LOADING_GO_ASSIGN
-                + ", interrupt:" + interrupt);
-        return interrupt;
-    }
 
     @Override
     public void observeInitLiveData(Bundle savedInstanceState) {
@@ -125,24 +118,29 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        if (!SharePreferenceUtils.readBooleanFromConfig(WelcomeKeyConstants.USER_PRIVACY_AGREE, false)
-                && ENABLE_LOADING_GO_ASSIGN) {
-            startActivityForResult(new Intent(this, UserPrivacyActivity.class), REQUEST_CODE_USER_PRIVACY);
+        if (ENABLE_LOADING_CHECK_NET) {
+            scheduleNetCheck();
         } else {
             doneAppStartTask();
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE_USER_PRIVACY == requestCode && resultCode == RESULT_OK) {
+    private void scheduleNetCheck() {
+        mNetCheckCount++;
+        if (NetWorkUtils.checkNetWork() || mNetCheckCount > LOADING_CHECK_NET_MAX_COUNT) {
+            mBinding.tvToast.setText("");
+            mNetCheckHandler.removeCallbacksAndMessages(null);
             doneAppStartTask();
-        } else if (REQUEST_CODE_GO_ASSIGN_UI == requestCode) {
-            goWelcomeActivity();
-        } else {
-            finish();
+            return;
         }
+        mBinding.tvToast.setText(R.string.wel_loading_waiting_for_network);
+        mNetCheckHandler.removeCallbacksAndMessages(null);
+        mNetCheckHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scheduleNetCheck();
+            }
+        }, LOADING_CHECK_NET_PER_DELAY);
     }
 
     private void doneAppStartTask() {
@@ -152,6 +150,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
 
     @Override
     protected void onDestroy() {
+        mNetCheckHandler.removeCallbacksAndMessages(null);
         ApkVersionManager.getInstance().onClear();
         super.onDestroy();
     }
@@ -185,16 +184,12 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     private void gotoNext(int delayTogo) {
         long delay = LOADING_STAY_MIN_TIME - (System.currentTimeMillis() - mStartTimeMillis);
         delay = delay > delayTogo ? delay : delayTogo > 0 ? delayTogo : 0;
-        if (isGoAssignActivityAction()) {
-            goAssignActivity();
-        } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    goWelcomeActivity();
-                }
-            }, delay);
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                goWelcomeActivity();
+            }
+        }, delay);
     }
 
     private void goWelcomeActivity() {
@@ -221,29 +216,5 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
                 return false;
             }
         });
-    }
-
-    private boolean isGoAssignActivityAction() {
-        Intent startupIntent = getIntent().getParcelableExtra(WelcomeKeyConstants.STARTUP_INTENT);
-        boolean isGoAssignActivityAction = Intent.ACTION_VIEW.equals(startupIntent.getAction());
-        LogUtils.d(TAG, "gotoNext startupIntent: " + startupIntent
-                + ", isGoAssignActivityAction: " + isGoAssignActivityAction);
-        return isGoAssignActivityAction;
-    }
-
-    private void goAssignActivity() {
-        Intent startupIntent = getIntent().getParcelableExtra(WelcomeKeyConstants.STARTUP_INTENT);
-        if (Intent.ACTION_VIEW.equals(startupIntent.getAction())) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(WelcomeKeyConstants.STARTUP_INTENT, startupIntent);
-            bundle.putInt(WelcomeKeyConstants.REQUEST_CODE, REQUEST_CODE_GO_ASSIGN_UI);
-            if (startupIntent.getType() != null) {
-
-            } else {
-                goWelcomeActivity();
-            }
-        } else {
-            goWelcomeActivity();
-        }
     }
 }

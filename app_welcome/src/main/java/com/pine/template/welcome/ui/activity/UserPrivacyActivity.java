@@ -24,6 +24,10 @@ import com.pine.template.welcome.vm.UserPrivacyVm;
 import com.pine.tool.util.SharePreferenceUtils;
 
 public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyActivityBinding, UserPrivacyVm> {
+
+    // 是否需要用户隐私授权协议签署界面
+    public final static boolean ENABLE_USER_PRIVACY_ASSIGN = false;
+
     private Dialog mTipDialog;
 
     private int mTipDialogShowCount = 0;
@@ -36,10 +40,10 @@ public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyA
     protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         super.beforeInitOnCreate(savedInstanceState);
         boolean userPrivacyAgree = SharePreferenceUtils.readBooleanFromConfig(WelcomeKeyConstants.USER_PRIVACY_AGREE, false);
-        if (userPrivacyAgree || !LoadingActivity.ENABLE_LOADING_GO_ASSIGN) {
+        if (userPrivacyAgree || !ENABLE_USER_PRIVACY_ASSIGN) {
             goLoadingActivity();
         }
-        return !isTaskRoot() || userPrivacyAgree || !LoadingActivity.ENABLE_LOADING_GO_ASSIGN;
+        return !isTaskRoot() || userPrivacyAgree || !ENABLE_USER_PRIVACY_ASSIGN;
     }
 
     @Override
@@ -112,7 +116,6 @@ public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyA
 
     private void goLoadingActivity() {
         Intent intent = new Intent(this, LoadingActivity.class);
-        intent.putExtra(WelcomeKeyConstants.STARTUP_INTENT, getIntent());
         startActivity(intent);
     }
 
