@@ -24,6 +24,11 @@ def baseConfigKey = [
         // 客户标识
         PRODUCT_CUSTOMER_TAG                  : "PRODUCT_CUSTOMER_TAG",
 
+        // 应用启动时，否检查网络状态(如果无网络则持续循环检查，直至超过最大允许检查次数或者有网络了才开始后续流程)
+        ENABLE_LOADING_CHECK_NET          : "ENABLE_LOADING_CHECK_NET",
+        // 应用启动时，检查网络状态最大允许次数
+        CONFIG_LOADING_CHECK_NET_MAX_COUNT: "CONFIG_LOADING_CHECK_NET_MAX_COUNT",
+
         // app使用痕迹埋点
         FUN_APP_TRACK                  : "FUN_APP_TRACK",
         ENABLE_APP_TRACK               : "ENABLE_APP_TRACK",

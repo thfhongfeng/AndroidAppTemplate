@@ -35,10 +35,8 @@ import java.io.File;
 public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityBinding, LoadingVm> {
     private final static int LOADING_STAY_MIN_TIME = 1000;
 
-    // 是否检查网络状态(如果无网络则等待一段时间才开始后续流程)
-    public final static boolean ENABLE_LOADING_CHECK_NET = true;
+    // 检查网络状态间隔
     private final static int LOADING_CHECK_NET_PER_DELAY = 1 * 1000;
-    private final static int LOADING_CHECK_NET_MAX_COUNT = 30;
     private int mNetCheckCount;
     private Handler mNetCheckHandler = new Handler(Looper.getMainLooper());
 
@@ -116,9 +114,13 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
         return R.layout.wel_activity_loading;
     }
 
+    private int mLoadingCheckNetMaxCount = 30;
+
     @Override
     protected void init(Bundle savedInstanceState) {
-        if (ENABLE_LOADING_CHECK_NET) {
+        boolean enableLoadingCheckNet = ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_LOADING_CHECK_NET, true);
+        if (enableLoadingCheckNet) {
+            mLoadingCheckNetMaxCount = ConfigSwitcherServer.getConfigInt(BuildConfigKey.CONFIG_LOADING_CHECK_NET_MAX_COUNT, 30);
             scheduleNetCheck();
         } else {
             doneAppStartTask();
@@ -127,7 +129,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
 
     private void scheduleNetCheck() {
         mNetCheckCount++;
-        if (NetWorkUtils.checkNetWork() || mNetCheckCount > LOADING_CHECK_NET_MAX_COUNT) {
+        if (NetWorkUtils.checkNetWork() || mNetCheckCount > mLoadingCheckNetMaxCount) {
             mBinding.tvToast.setText("");
             mNetCheckHandler.removeCallbacksAndMessages(null);
             doneAppStartTask();
