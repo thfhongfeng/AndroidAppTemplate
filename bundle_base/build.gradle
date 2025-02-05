@@ -57,6 +57,8 @@ android {
                 buildConfigField "String", "APP_NAME_ID", "\"${build_flavor_product[flavorName].build_product_appName}\""
                 buildConfigField "String[]", "BUILD_ALL_BUNDLE", "{${build_all_bundle(flavorName).join(',')}}"
                 buildConfigField "String[]", "BUILD_BIZ_BUNDLE", "{${build_biz_bundle(flavorName).join(',')}}"
+                buildConfigField "String[]", "BUILD_PRODUCT_CUSTOMER_KEY", "{${build_product_customer_key(flavorName).join(',')}}"
+                buildConfigField "String[]", "BUILD_PRODUCT_CUSTOMER_NAME", "{${build_product_customer_name(flavorName).join(',')}}"
             }
         }
     }

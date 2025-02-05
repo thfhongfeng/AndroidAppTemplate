@@ -26,7 +26,8 @@ build_flavor_product = [
                         BIZ_BUNDLE_MVP : "biz_bundle_mvp",
                         BIZ_BUNDLE_MVVM: "biz_bundle_mvvm",
                         BIZ_BUNDLE_FACE: "biz_bundle_face"
-                ]
+                ],
+                build_product_customer          : [:]
         ],
         special: [
                 build_product_applicationId     : "com.pine.app.template",
@@ -47,7 +48,8 @@ build_flavor_product = [
                 ],
                 build_product_biz_bundle_module : [
                         BIZ_BUNDLE_MVVM: "biz_bundle_mvvm"
-                ]
+                ],
+                build_product_customer          : [:]
         ]
 ]
 ext.build_flavor_product = build_flavor_product
@@ -79,4 +81,26 @@ ext.build_all_bundle = { flavorName ->
         }
     }
     return all_bundle
+}
+
+ext.build_product_customer_key = { flavorName ->
+    def product_customer_key = []
+    def build_product_customer = build_flavor_product[flavorName]["build_product_customer"]
+    if (build_product_customer) {
+        build_product_customer.each { key, value ->
+            product_customer_key.add("\"${key}\"")
+        }
+    }
+    return product_customer_key
+}
+
+ext.build_product_customer_name = { flavorName ->
+    def product_customer_name = []
+    def build_product_customer = build_flavor_product[flavorName]["build_product_customer"]
+    if (build_product_customer) {
+        build_product_customer.each { key, value ->
+            product_customer_name.add("\"${value}\"")
+        }
+    }
+    return product_customer_name
 }
