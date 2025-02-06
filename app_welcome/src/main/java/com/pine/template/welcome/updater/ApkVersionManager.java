@@ -105,12 +105,12 @@ public class ApkVersionManager {
                         showVersionUpdateConfirmDialog(activity, versionEntity, callback);
                     } else {
                         if (callback != null) {
-                            callback.onNoNewVersion();
+                            callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_NO_FOUND);
                         }
                     }
                 } else {
                     if (callback != null) {
-                        callback.onNoNewVersion();
+                        callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_NO_FOUND);
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class ApkVersionManager {
             public boolean onFail(Exception e) {
                 onClear();
                 if (callback != null) {
-                    callback.onNoNewVersion();
+                    callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_REQUEST_FAIL);
                 }
                 return true;
             }
@@ -128,7 +128,7 @@ public class ApkVersionManager {
             public void onCancel() {
                 onClear();
                 if (callback != null) {
-                    callback.onNoNewVersion();
+                    callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_REQUEST_CANCEL);
                 }
             }
         });
@@ -366,7 +366,11 @@ public class ApkVersionManager {
     }
 
     public interface IUpdateCallback {
-        void onNoNewVersion();
+        String NO_NEW_CAUSE_NO_FOUND = "NO_NEW_CAUSE_NO_FOUND";
+        String NO_NEW_CAUSE_REQUEST_FAIL = "NO_NEW_CAUSE_REQUEST_FAIL";
+        String NO_NEW_CAUSE_REQUEST_CANCEL = "NO_NEW_CAUSE_REQUEST_CANCEL";
+
+        void onNoNewVersion(String cause);
 
         void onNewVersionFound(VersionEntity versionEntity);
 

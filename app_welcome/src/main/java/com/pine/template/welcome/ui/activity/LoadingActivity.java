@@ -62,7 +62,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
                 ApkVersionManager.getInstance().checkAndUpdateApk(LoadingActivity.this, true, true,
                         new ApkVersionManager.IUpdateCallback() {
                             @Override
-                            public void onNoNewVersion() {
+                            public void onNoNewVersion(String cause) {
                                 autoLogin(-1);
                             }
 

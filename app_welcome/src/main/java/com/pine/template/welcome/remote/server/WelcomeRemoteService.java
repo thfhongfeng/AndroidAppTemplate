@@ -29,7 +29,7 @@ public class WelcomeRemoteService {
         ApkVersionManager.getInstance().checkAndUpdateApk((Activity) context, true, true,
                 new ApkVersionManager.IUpdateCallback() {
                     @Override
-                    public void onNoNewVersion() {
+                    public void onNoNewVersion(String cause) {
                         responseBundle.putString("action", "onNoNewVersion");
                         responseBundle.putBoolean("newVersion", false);
                         callback.onResponse(responseBundle);
