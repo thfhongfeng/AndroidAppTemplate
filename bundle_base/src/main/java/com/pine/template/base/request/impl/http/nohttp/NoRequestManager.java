@@ -35,7 +35,6 @@ import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.ssl.TLSSocketFactory;
 import com.yanzhenjie.nohttp.tools.HeaderUtils;
 
 import java.io.FileInputStream;
@@ -43,6 +42,8 @@ import java.io.FileNotFoundException;
 import java.net.ConnectException;
 import java.net.HttpCookie;
 import java.net.URI;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -51,7 +52,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * Created by tanghongfeng on 2018/9/16
@@ -314,8 +319,8 @@ public class NoRequestManager implements IRequestManager {
             }
         }
         configBuilder
-                // 全局SSLSocketFactory。默认TLSSocketFactory
-                .sslSocketFactory(new TLSSocketFactory())
+                // 全局SSLSocketFactory。不要使用默认的（有些sl_ciphers会有问题）
+                .sslSocketFactory(getSSLSocketFactory())
                 // 全局HostnameVerifier。
                 .hostnameVerifier(new HostnameVerifier() {
                     public boolean verify(String hostname, SSLSession session) {
@@ -330,6 +335,26 @@ public class NoRequestManager implements IRequestManager {
 
         mRequestQueue = NoHttp.newRequestQueue();
         mDownloadQueue = NoHttp.newDownloadQueue();
+    }
+
+    private SSLSocketFactory getSSLSocketFactory() {
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, new TrustManager[]{new X509TrustManager() {   // 信任所有证书
+                public void checkClientTrusted(X509Certificate[] chain, String authType) {
+                }
+
+                public void checkServerTrusted(X509Certificate[] chain, String authType) {
+                }
+
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[]{};
+                }
+            }}, new SecureRandom());
+            return sslContext.getSocketFactory();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
