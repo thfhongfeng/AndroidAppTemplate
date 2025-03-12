@@ -10,9 +10,9 @@ import com.pine.template.mvp.bean.MvpTravelNoteItemEntity;
 import com.pine.template.mvp.contract.IMvpTravelNoteListContract;
 import com.pine.template.mvp.model.MvpTravelNoteModel;
 import com.pine.template.mvp.ui.activity.MvpTravelNoteReleaseActivity;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public class MvpTravelNoteListPresenter extends Presenter<IMvpTravelNoteListCont
         params.put(MvpKeyConstants.PAGE_SIZE, String.valueOf(mMvpTravelNoteItemAdapter.getPageSize()));
         params.put("id", mId);
         setUiLoading(true);
-        mTravelNoteModel.requestTravelNoteListData(params, new IModelAsyncResponse<ArrayList<MvpTravelNoteItemEntity>>() {
+        mTravelNoteModel.requestTravelNoteListData(params, new IAsyncResponse<ArrayList<MvpTravelNoteItemEntity>>() {
             @Override
             public void onResponse(ArrayList<MvpTravelNoteItemEntity> list) {
                 setUiLoading(false);

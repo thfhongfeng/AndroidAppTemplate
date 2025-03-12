@@ -9,9 +9,9 @@ import com.pine.template.mvp.bean.MvpTravelNoteCommentEntity;
 import com.pine.template.mvp.bean.MvpTravelNoteDetailEntity;
 import com.pine.template.mvp.contract.IMvpTravelNoteDetailContract;
 import com.pine.template.mvp.model.MvpTravelNoteModel;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +58,7 @@ public class MvpTravelNoteDetailPresenter extends Presenter<IMvpTravelNoteDetail
         HashMap<String, String> params = new HashMap<>();
         params.put("id", mId);
         setUiLoading(true);
-        mTravelNoteModel.requestTravelNoteDetailData(params, new IModelAsyncResponse<MvpTravelNoteDetailEntity>() {
+        mTravelNoteModel.requestTravelNoteDetailData(params, new IAsyncResponse<MvpTravelNoteDetailEntity>() {
             @Override
             public void onResponse(MvpTravelNoteDetailEntity entity) {
                 setUiLoading(false);
@@ -103,7 +103,7 @@ public class MvpTravelNoteDetailPresenter extends Presenter<IMvpTravelNoteDetail
         params.put(MvpKeyConstants.PAGE_SIZE, String.valueOf(mTravelNoteDetailAdapter.getPageSize()));
         params.put("id", mId);
         setUiLoading(true);
-        mTravelNoteModel.requestTravelNoteCommentData(params, new IModelAsyncResponse<ArrayList<MvpTravelNoteCommentEntity>>() {
+        mTravelNoteModel.requestTravelNoteCommentData(params, new IAsyncResponse<ArrayList<MvpTravelNoteCommentEntity>>() {
             @Override
             public void onResponse(ArrayList<MvpTravelNoteCommentEntity> list) {
                 setUiLoading(false);

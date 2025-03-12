@@ -9,9 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.pine.template.mvvm.R;
 import com.pine.template.mvvm.bean.MvvmProductDetailEntity;
 import com.pine.template.mvvm.model.MvvmShopModel;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 /**
  * Created by tanghongfeng on 2019/3/1
@@ -59,7 +59,7 @@ public class MvvmProductReleaseVm extends ViewModel {
         }
         entity.setShopId(mShopId);
         setUiLoading(true);
-        mShopModel.requestAddProduct(entity.toMapJsonIgnoreEmpty(), new IModelAsyncResponse<MvvmProductDetailEntity>() {
+        mShopModel.requestAddProduct(entity.toMapJsonIgnoreEmpty(), new IAsyncResponse<MvvmProductDetailEntity>() {
             @Override
             public void onResponse(MvvmProductDetailEntity entity) {
                 setUiLoading(false);

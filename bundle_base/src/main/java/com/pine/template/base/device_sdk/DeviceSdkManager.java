@@ -635,7 +635,7 @@ public class DeviceSdkManager {
     /**
      * 重新初始化消息队列
      *
-     * @param msgType -1表示所有
+     * @param msgType    -1表示所有
      * @param clearQueue 是否清除队列旧数据
      * @return
      * @throws DeviceSdkException

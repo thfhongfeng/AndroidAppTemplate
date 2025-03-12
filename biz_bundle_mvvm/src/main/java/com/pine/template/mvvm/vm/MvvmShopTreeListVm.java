@@ -7,10 +7,10 @@ import com.pine.template.base.component.map.MapSdkManager;
 import com.pine.template.mvvm.MvvmKeyConstants;
 import com.pine.template.mvvm.bean.MvvmShopAndProductEntity;
 import com.pine.template.mvvm.model.MvvmShopModel;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.binding.data.ParametricLiveData;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class MvvmShopTreeListVm extends ViewModel {
             params.put("longitude", String.valueOf(location.getLongitude()));
         }
         setUiLoading(true);
-        mShopModel.requestShopAndProductListData(params, new IModelAsyncResponse<ArrayList<MvvmShopAndProductEntity>>() {
+        mShopModel.requestShopAndProductListData(params, new IAsyncResponse<ArrayList<MvvmShopAndProductEntity>>() {
             @Override
             public void onResponse(ArrayList<MvvmShopAndProductEntity> list) {
                 setUiLoading(false);

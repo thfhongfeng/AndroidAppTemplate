@@ -14,10 +14,10 @@ import com.pine.template.face.db.LocalWorker;
 import com.pine.template.face.db.entity.PersonEntity;
 import com.pine.template.face.model.PersonDataWorker;
 import com.pine.template.face.utils.DocumentUtils;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.binding.data.ParametricLiveData;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
 
 import java.io.File;
@@ -61,7 +61,7 @@ public class FaceHomeVm extends ViewModel {
     public void onFacePicSelect(String picPath) {
         LogUtils.d(TAG, "onFacePicSelect picPath:" + picPath);
         setUiLoading(true);
-        PersonDataWorker.getInstance().identityCheck(picPath, new IModelAsyncResponse<PersonEntity>() {
+        PersonDataWorker.getInstance().identityCheck(picPath, new IAsyncResponse<PersonEntity>() {
             @Override
             public void onResponse(PersonEntity entity) {
                 setUiLoading(false);
@@ -93,7 +93,7 @@ public class FaceHomeVm extends ViewModel {
         }
         setUiLoading(true);
         LocalWorker.getInstance().requestPersonListData(pageNo, FaceConstants.PERSON_PAGE_SIZE,
-                new IModelAsyncResponse<List<PersonEntity>>() {
+                new IAsyncResponse<List<PersonEntity>>() {
                     @Override
                     public void onResponse(List<PersonEntity> list) {
                         setUiLoading(false);
@@ -118,7 +118,7 @@ public class FaceHomeVm extends ViewModel {
 
     public void delPerson(PersonEntity entity) {
         setUiLoading(true);
-        LocalWorker.getInstance().requestDeletePerson(entity, new IModelAsyncResponse<Boolean>() {
+        LocalWorker.getInstance().requestDeletePerson(entity, new IAsyncResponse<Boolean>() {
             @Override
             public void onResponse(Boolean success) {
                 setUiLoading(false);
@@ -175,7 +175,7 @@ public class FaceHomeVm extends ViewModel {
                 return;
             }
         }
-        LocalWorker.getInstance().requestSavePerson(newAdd, personEntity, new IModelAsyncResponse<PersonEntity>() {
+        LocalWorker.getInstance().requestSavePerson(newAdd, personEntity, new IAsyncResponse<PersonEntity>() {
             @Override
             public void onResponse(PersonEntity entity) {
                 setUiLoading(false);
@@ -201,7 +201,7 @@ public class FaceHomeVm extends ViewModel {
 
     public void clearData() {
         setUiLoading(true);
-        LocalWorker.getInstance().requestClearPersonList(new IModelAsyncResponse<Boolean>() {
+        LocalWorker.getInstance().requestClearPersonList(new IAsyncResponse<Boolean>() {
             @Override
             public void onResponse(Boolean success) {
                 setUiLoading(false);
@@ -227,7 +227,7 @@ public class FaceHomeVm extends ViewModel {
 
     public void importFaces(Context context, Uri uri) {
         setUiLoading(true);
-        LocalWorker.getInstance().requestImportPersonList(context, uri, new IModelAsyncResponse<Boolean>() {
+        LocalWorker.getInstance().requestImportPersonList(context, uri, new IAsyncResponse<Boolean>() {
             @Override
             public void onResponse(Boolean success) {
                 setUiLoading(false);

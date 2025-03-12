@@ -12,10 +12,10 @@ import com.pine.template.mvvm.MvvmKeyConstants;
 import com.pine.template.mvvm.bean.MvvmShopItemEntity;
 import com.pine.template.mvvm.bean.MvvmShopSearchBean;
 import com.pine.template.mvvm.model.MvvmShopModel;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.binding.data.ParametricLiveData;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +57,7 @@ public class MvvmShopSearchCheckVm extends ViewModel {
         }
 
         setUiLoading(true);
-        mShopModel.requestShopListData(params, new IModelAsyncResponse<ArrayList<MvvmShopItemEntity>>() {
+        mShopModel.requestShopListData(params, new IAsyncResponse<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onResponse(ArrayList<MvvmShopItemEntity> mvvmShopItemEntities) {
                 setUiLoading(false);

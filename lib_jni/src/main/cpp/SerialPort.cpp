@@ -232,30 +232,30 @@ int SerialPort::writeData(BYTE *data, int len) {
     int result;
     result = static_cast<int>(write(fd, data, static_cast<size_t>(len)));
     LOGD("SerialPort>> writeData success len: %d, result: %d", len, result);
-    return result < 0 ? FALSE : TRUE ;
+    return result < 0 ? FALSE : TRUE;
 }
 
-int SerialPort::setMode(int mode){
-   struct termios options;
-   if(tcgetattr(fd, &options) != 0){
-       LOGE("SerialPort>> The method tcgetattr exception!");
-       return FALSE;
-   }
-   if(mode != 0){
-       if(mode == 1){
-           options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);   //input
-           options.c_oflag &= ~OPOST;                            //out put
-       }else if(mode == 2){
-           options.c_lflag |= (ICANON | ECHO | ECHOE | ISIG);    //input
-           options.c_oflag |= OPOST;                             //out put
-       }
-       if(tcsetattr(fd, TCSANOW, &options) != 0){
-           LOGE("SerialPort>> The method tcsetattr exception!");
-           return FALSE;
-       }
-   }
-   LOGD("SerialPort>> writeData success mode: %d", mode);
-   return TRUE;
+int SerialPort::setMode(int mode) {
+    struct termios options;
+    if (tcgetattr(fd, &options) != 0) {
+        LOGE("SerialPort>> The method tcgetattr exception!");
+        return FALSE;
+    }
+    if (mode != 0) {
+        if (mode == 1) {
+            options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);   //input
+            options.c_oflag &= ~OPOST;                            //out put
+        } else if (mode == 2) {
+            options.c_lflag |= (ICANON | ECHO | ECHOE | ISIG);    //input
+            options.c_oflag |= OPOST;                             //out put
+        }
+        if (tcsetattr(fd, TCSANOW, &options) != 0) {
+            LOGE("SerialPort>> The method tcsetattr exception!");
+            return FALSE;
+        }
+    }
+    LOGD("SerialPort>> writeData success mode: %d", mode);
+    return TRUE;
 }
 
 int SerialPort::closePort() {

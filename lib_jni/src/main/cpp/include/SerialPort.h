@@ -1,5 +1,6 @@
 #ifndef SERIALPORTHELPER_SERIALPORT_H
 #define SERIALPORTHELPER_SERIALPORT_H
+
 #include <sys/ioctl.h>
 #include <string>
 
@@ -63,7 +64,7 @@ public:
      * @param timeval read time
      * @return data length
      */
-    int readData(BYTE *data,int size);
+    int readData(BYTE *data, int size);
 
     /**
      * @brief Write serial port data.
@@ -87,4 +88,5 @@ public:
      */
     speed_t getBaudrate(int baudrate);
 };
+
 #endif //SERIALPORTHELPER_SERIALPORT_H

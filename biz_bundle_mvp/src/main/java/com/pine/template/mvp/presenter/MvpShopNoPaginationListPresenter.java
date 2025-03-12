@@ -8,9 +8,9 @@ import com.pine.template.mvp.adapter.MvpShopListNoPaginationAdapter;
 import com.pine.template.mvp.bean.MvpShopItemEntity;
 import com.pine.template.mvp.contract.IMvpShopNoPaginationListContract;
 import com.pine.template.mvp.model.MvpShopModel;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class MvpShopNoPaginationListPresenter extends Presenter<IMvpShopNoPagina
             params.put("longitude", String.valueOf(location.getLongitude()));
         }
         setUiLoading(true);
-        mShopModel.requestShopListData(params, new IModelAsyncResponse<ArrayList<MvpShopItemEntity>>() {
+        mShopModel.requestShopListData(params, new IAsyncResponse<ArrayList<MvpShopItemEntity>>() {
             @Override
             public void onResponse(ArrayList<MvpShopItemEntity> list) {
                 setUiLoading(false);

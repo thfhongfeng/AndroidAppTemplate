@@ -12,12 +12,12 @@ import com.pine.template.mvp.MvpUrlConstants;
 import com.pine.template.mvp.bean.MvpTravelNoteCommentEntity;
 import com.pine.template.mvp.bean.MvpTravelNoteDetailEntity;
 import com.pine.template.mvp.bean.MvpTravelNoteItemEntity;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONException;
@@ -41,7 +41,7 @@ public class MvpTravelNoteModel {
     private static final int REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST = 4;
 
     public void requestAddTravelNote(final Map<String, String> params,
-                                     @NonNull final IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {
+                                     @NonNull final IAsyncResponse<MvpTravelNoteDetailEntity> callback) {
         String url = MvpUrlConstants.Add_TravelNote();
         RequestBean requestBean = new RequestBean(url, REQUEST_ADD_TRAVEL_NOTE, params);
         requestBean.setModuleTag(TAG);
@@ -49,7 +49,7 @@ public class MvpTravelNoteModel {
     }
 
     public void requestTravelNoteDetailData(final Map<String, String> params,
-                                            @NonNull final IModelAsyncResponse<MvpTravelNoteDetailEntity> callback) {
+                                            @NonNull final IAsyncResponse<MvpTravelNoteDetailEntity> callback) {
         String url = MvpUrlConstants.Query_TravelNoteDetail();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_TRAVEL_NOTE_DETAIL, params);
         requestBean.setModuleTag(TAG);
@@ -57,7 +57,7 @@ public class MvpTravelNoteModel {
     }
 
     public void requestTravelNoteListData(final Map<String, String> params,
-                                          @NonNull final IModelAsyncResponse<ArrayList<MvpTravelNoteItemEntity>> callback) {
+                                          @NonNull final IAsyncResponse<ArrayList<MvpTravelNoteItemEntity>> callback) {
         String url = MvpUrlConstants.Query_TravelNoteList();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_TRAVEL_NOTE_LIST, params);
         requestBean.setModuleTag(TAG);
@@ -65,14 +65,14 @@ public class MvpTravelNoteModel {
     }
 
     public void requestTravelNoteCommentData(final Map<String, String> params,
-                                             @NonNull final IModelAsyncResponse<ArrayList<MvpTravelNoteCommentEntity>> callback) {
+                                             @NonNull final IAsyncResponse<ArrayList<MvpTravelNoteCommentEntity>> callback) {
         String url = MvpUrlConstants.Query_TravelNoteCommentList();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_TRAVEL_NOTE_COMMENT_LIST, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
     }
 
-    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback,
+    private <T> JsonCallback handleResponse(final IAsyncResponse<T> callback,
                                             final Object carryData) {
         return new JsonCallback() {
             @Override

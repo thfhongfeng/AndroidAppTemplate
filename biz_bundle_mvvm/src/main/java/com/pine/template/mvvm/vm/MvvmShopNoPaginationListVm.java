@@ -8,9 +8,9 @@ import com.pine.template.base.component.map.LocationInfo;
 import com.pine.template.base.component.map.MapSdkManager;
 import com.pine.template.mvvm.bean.MvvmShopItemEntity;
 import com.pine.template.mvvm.model.MvvmShopModel;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class MvvmShopNoPaginationListVm extends ViewModel {
             params.put("longitude", String.valueOf(location.getLongitude()));
         }
         setUiLoading(true);
-        mShopModel.requestShopListData(params, new IModelAsyncResponse<ArrayList<MvvmShopItemEntity>>() {
+        mShopModel.requestShopListData(params, new IAsyncResponse<ArrayList<MvvmShopItemEntity>>() {
             @Override
             public void onResponse(ArrayList<MvvmShopItemEntity> list) {
                 setUiLoading(false);

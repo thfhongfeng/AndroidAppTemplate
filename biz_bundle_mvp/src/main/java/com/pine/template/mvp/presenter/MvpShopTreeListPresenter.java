@@ -9,9 +9,9 @@ import com.pine.template.mvp.adapter.MvpShopListPaginationTreeAdapter;
 import com.pine.template.mvp.bean.MvpShopAndProductEntity;
 import com.pine.template.mvp.contract.IMvpShopTreeListContract;
 import com.pine.template.mvp.model.MvpShopModel;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +56,7 @@ public class MvpShopTreeListPresenter extends Presenter<IMvpShopTreeListContract
             params.put("longitude", String.valueOf(location.getLongitude()));
         }
         setUiLoading(true);
-        mShopModel.requestShopAndProductListData(params, new IModelAsyncResponse<ArrayList<MvpShopAndProductEntity>>() {
+        mShopModel.requestShopAndProductListData(params, new IAsyncResponse<ArrayList<MvpShopAndProductEntity>>() {
             @Override
             public void onResponse(ArrayList<MvpShopAndProductEntity> list) {
                 setUiLoading(false);

@@ -12,9 +12,9 @@ import com.pine.template.mvp.model.MvpShopModel;
 import com.pine.template.mvp.ui.activity.MvpProductReleaseActivity;
 import com.pine.template.mvp.ui.activity.MvpTravelNoteListActivity;
 import com.pine.template.mvp.ui.activity.MvpWebViewActivity;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.DecimalUtils;
 
 import java.util.HashMap;
@@ -51,7 +51,7 @@ public class MvpShopDetailPresenter extends Presenter<IMvpShopDetailContract.Ui>
         HashMap<String, String> params = new HashMap<>();
         params.put("id", mId);
         setUiLoading(true);
-        mShopModel.requestShopDetailData(params, new IModelAsyncResponse<MvpShopDetailEntity>() {
+        mShopModel.requestShopDetailData(params, new IAsyncResponse<MvpShopDetailEntity>() {
             @Override
             public void onResponse(MvpShopDetailEntity entity) {
                 setUiLoading(false);

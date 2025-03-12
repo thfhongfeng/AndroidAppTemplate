@@ -15,12 +15,12 @@ import com.pine.template.base.R;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.ProgressDialog;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.RequestMethod;
 import com.pine.tool.request.callback.DownloadCallback;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.InstallUtil;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.PathUtils;
@@ -91,7 +91,7 @@ public class ApkVersionManager {
         mFullScreen = fullScreen;
         mSilentUpdate = silentUpdate;
         HashMap<String, String> params = new HashMap<>();
-        mVersionModel.requestUpdateVersionData(params, new IModelAsyncResponse<VersionEntity>() {
+        mVersionModel.requestUpdateVersionData(params, new IAsyncResponse<VersionEntity>() {
             @Override
             public void onResponse(VersionEntity versionEntity) {
                 if (versionEntity != null) {

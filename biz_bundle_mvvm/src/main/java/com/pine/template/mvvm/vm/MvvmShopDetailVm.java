@@ -8,9 +8,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.pine.template.mvvm.bean.MvvmShopDetailEntity;
 import com.pine.template.mvvm.model.MvvmShopModel;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.HashMap;
 
@@ -39,7 +39,7 @@ public class MvvmShopDetailVm extends ViewModel {
         HashMap<String, String> params = new HashMap<>();
         params.put("id", mId);
         setUiLoading(true);
-        mShopModel.requestShopDetailData(params, new IModelAsyncResponse<MvvmShopDetailEntity>() {
+        mShopModel.requestShopDetailData(params, new IAsyncResponse<MvvmShopDetailEntity>() {
             @Override
             public void onResponse(MvvmShopDetailEntity entity) {
                 setUiLoading(false);

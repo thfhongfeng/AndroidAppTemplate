@@ -9,9 +9,9 @@ import com.pine.template.mvp.R;
 import com.pine.template.mvp.bean.MvpShopDetailEntity;
 import com.pine.template.mvp.contract.IMvpShopReleaseContract;
 import com.pine.template.mvp.model.MvpShopModel;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.HashMap;
 
@@ -135,7 +135,7 @@ public class MvpShopReleasePresenter extends Presenter<IMvpShopReleaseContract.U
         }
 
         setUiLoading(true);
-        mShopModel.requestAddShop(params, new IModelAsyncResponse<MvpShopDetailEntity>() {
+        mShopModel.requestAddShop(params, new IAsyncResponse<MvpShopDetailEntity>() {
             @Override
             public void onResponse(MvpShopDetailEntity entity) {
                 setUiLoading(false);

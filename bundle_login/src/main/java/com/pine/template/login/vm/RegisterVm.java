@@ -13,9 +13,9 @@ import com.pine.template.login.manager.LoginManager;
 import com.pine.template.login.model.ILoginResponse;
 import com.pine.template.login.model.LoginAccountModel;
 import com.pine.template.login.ui.activity.LoginActivity;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.RegexUtils;
 
 public class RegisterVm extends ViewModel {
@@ -48,7 +48,7 @@ public class RegisterVm extends ViewModel {
             return;
         }
         setUiLoading(true);
-        LoginManager.register(registerBean, new IModelAsyncResponse<AccountBean>() {
+        LoginManager.register(registerBean, new IAsyncResponse<AccountBean>() {
             @Override
             public void onResponse(AccountBean accountBean) {
                 setUiLoading(false);

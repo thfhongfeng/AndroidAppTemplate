@@ -14,8 +14,8 @@ import com.pine.template.face.FaceUrlConstants;
 import com.pine.template.face.db.entity.PersonEntity;
 import com.pine.template.face.db.repository.PersonRepository;
 import com.pine.template.face.utils.DocumentUtils;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.io.File;
 import java.util.List;
@@ -43,14 +43,14 @@ public class LocalWorker {
 
     private Gson sGson = new GsonBuilder().disableHtmlEscaping().create();
 
-    public void requestPersonListData(IModelAsyncResponse<List<PersonEntity>> callback) {
+    public void requestPersonListData(IAsyncResponse<List<PersonEntity>> callback) {
         List<PersonEntity> list = PersonRepository.getInstance().queryAllList();
         if (callback != null) {
             callback.onResponse(list);
         }
     }
 
-    public void requestPersonListData(int pageNo, int pageSize, IModelAsyncResponse<List<PersonEntity>> callback) {
+    public void requestPersonListData(int pageNo, int pageSize, IAsyncResponse<List<PersonEntity>> callback) {
         List<PersonEntity> list = PersonRepository.getInstance().queryByPage(pageNo, pageSize);
         if (callback != null) {
             callback.onResponse(list);
@@ -63,7 +63,7 @@ public class LocalWorker {
     }
 
     public void requestSavePerson(boolean newAdd, PersonEntity entity,
-                                  IModelAsyncResponse<PersonEntity> callback) {
+                                  IAsyncResponse<PersonEntity> callback) {
         if (newAdd) {
             requestAddPerson(entity, callback);
         } else {
@@ -72,7 +72,7 @@ public class LocalWorker {
     }
 
     public void requestAddPerson(PersonEntity entity,
-                                 IModelAsyncResponse<PersonEntity> callback) {
+                                 IAsyncResponse<PersonEntity> callback) {
         if (entity != null && PersonRepository.getInstance().insert(entity)) {
             if (callback != null) {
                 callback.onResponse(entity);
@@ -85,7 +85,7 @@ public class LocalWorker {
     }
 
     public void requestUpdatePerson(PersonEntity entity,
-                                    IModelAsyncResponse<PersonEntity> callback) {
+                                    IAsyncResponse<PersonEntity> callback) {
         if (entity != null && PersonRepository.getInstance().update(entity)) {
             if (callback != null) {
                 callback.onResponse(entity);
@@ -98,7 +98,7 @@ public class LocalWorker {
     }
 
     public void requestDeletePerson(PersonEntity entity,
-                                    IModelAsyncResponse<Boolean> callback) {
+                                    IAsyncResponse<Boolean> callback) {
         if (entity != null && PersonRepository.getInstance().delete(entity)) {
             if (callback != null) {
                 callback.onResponse(true);
@@ -111,7 +111,7 @@ public class LocalWorker {
     }
 
     public void requestDeletePersonList(List<PersonEntity> list,
-                                        IModelAsyncResponse<Boolean> callback) {
+                                        IAsyncResponse<Boolean> callback) {
         if (list != null && PersonRepository.getInstance().delete(list)) {
             if (callback != null) {
                 callback.onResponse(true);
@@ -123,7 +123,7 @@ public class LocalWorker {
         }
     }
 
-    public void requestClearPersonList(IModelAsyncResponse<Boolean> callback) {
+    public void requestClearPersonList(IAsyncResponse<Boolean> callback) {
         if (PersonRepository.getInstance().deleteAll()) {
             File dir = new File(FaceUrlConstants.PERSON_DB_FACE_DIR());
             if (dir.exists()) {
@@ -139,7 +139,7 @@ public class LocalWorker {
         }
     }
 
-    public void requestImportPersonList(Context context, Uri uri, IModelAsyncResponse<Boolean> callback) {
+    public void requestImportPersonList(Context context, Uri uri, IAsyncResponse<Boolean> callback) {
         Handler handler = new Handler();
         mWorkHandler.post(new Runnable() {
             @Override

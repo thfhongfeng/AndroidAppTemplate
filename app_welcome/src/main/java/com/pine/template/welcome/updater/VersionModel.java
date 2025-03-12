@@ -6,13 +6,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.template.base.BaseUrlConstants;
 import com.pine.template.welcome.WelcomeKeyConstants;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.RequestMethod;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ public class VersionModel {
     private static final int REQUEST_QUERY_VERSION_INFO = 1;
 
     public boolean requestUpdateVersionData(final HashMap<String, String> params,
-                                            @NonNull IModelAsyncResponse<VersionEntity> callback) {
+                                            @NonNull IAsyncResponse<VersionEntity> callback) {
         String url = BaseUrlConstants.APK_UPDATE();
         RequestBean requestBean = new RequestBean(RequestManager.buildGetUrl(url, params),
                 REQUEST_QUERY_VERSION_INFO, new HashMap<String, String>());
@@ -37,7 +37,7 @@ public class VersionModel {
         return RequestManager.setJsonRequest(requestBean, handleResponse(callback));
     }
 
-    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {
+    private <T> JsonCallback handleResponse(final IAsyncResponse<T> callback) {
         return new JsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject, Response response) {

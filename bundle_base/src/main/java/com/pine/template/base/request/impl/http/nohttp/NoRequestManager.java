@@ -337,6 +337,13 @@ public class NoRequestManager implements IRequestManager {
         mDownloadQueue = NoHttp.newDownloadQueue();
     }
 
+    /**
+     * Android 8.0（API26）才开始支持TLS1.3，因此如果服务器要求最低TLS1.3。请确保不要使用Android 8.0（API26）以下版本，否则会报：
+     * javax.net.ssl.SSLHandshakeException: Read error: ssl=0xa2e07728: Failure in SSL library, usually a protocol error。
+     * 对于服务器只支持TLS1.3的情况下，只能使用Android 8.0（API26）及以上的版本。
+     *
+     * @return
+     */
     private SSLSocketFactory getSSLSocketFactory() {
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");

@@ -13,9 +13,9 @@ import com.pine.template.mvvm.bean.MvvmShopItemEntity;
 import com.pine.template.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.template.mvvm.model.MvvmTravelNoteModel;
 import com.pine.template.mvvm.ui.activity.MvvmShopSearchCheckActivity;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +109,7 @@ public class MvvmTravelNoteReleaseVm extends ViewModel {
         }
         entity.setDays(days);
         setUiLoading(true);
-        mTravelNoteModel.requestAddTravelNote(entity.toMapJsonIgnoreEmpty(), new IModelAsyncResponse<MvvmTravelNoteDetailEntity>() {
+        mTravelNoteModel.requestAddTravelNote(entity.toMapJsonIgnoreEmpty(), new IAsyncResponse<MvvmTravelNoteDetailEntity>() {
             @Override
             public void onResponse(MvvmTravelNoteDetailEntity entity) {
                 setUiLoading(false);

@@ -10,8 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.pine.template.bundle_base.R;
 import com.pine.template.base.remote.BaseRouterClient;
+import com.pine.template.bundle_base.R;
 
 /**
  * Created by tanghongfeng on 2018/9/13

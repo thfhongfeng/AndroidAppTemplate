@@ -20,9 +20,9 @@ import com.pine.template.mvp.bean.MvpTravelNoteDetailEntity;
 import com.pine.template.mvp.contract.IMvpTravelNoteReleaseContract;
 import com.pine.template.mvp.model.MvpTravelNoteModel;
 import com.pine.template.mvp.ui.activity.MvpShopSearchCheckActivity;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -216,7 +216,7 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
             params.put(daysBean.getKey(), daysArr.toString());
         }
         setUiLoading(true);
-        mTravelNoteModel.requestAddTravelNote(params, new IModelAsyncResponse<MvpTravelNoteDetailEntity>() {
+        mTravelNoteModel.requestAddTravelNote(params, new IAsyncResponse<MvpTravelNoteDetailEntity>() {
             @Override
             public void onResponse(MvpTravelNoteDetailEntity entity) {
                 setUiLoading(false);

@@ -36,7 +36,7 @@ extern int g_iPeripheralMsgQid;
 extern int g_iGpsMsgQid;
 extern int g_iSystemMsgQid;
 extern int g_iSchMsgQid;
-extern int g_iStationMsgQid; 
+extern int g_iStationMsgQid;
 extern int g_iMonitorMsgQid;
 extern int g_iAdtMsgQid;
 extern int g_iUpdateMsgQid;
@@ -50,15 +50,16 @@ extern int g_iJniComMsgQid;
 
 // 消息
 typedef struct {
-	long mtype;
-	char mtext[MAX_MESSAGE_LEN];
-}msg_info;
+    long mtype;
+    char mtext[MAX_MESSAGE_LEN];
+} msg_info;
 
 
 extern int CreatMsgQueue(key_t key);
-extern int SendMsg(int msqid, const char* msg, int iLen);
-extern int RecvMsg(int iQid, char* pcMsg);
 
+extern int SendMsg(int msqid, const char *msg, int iLen);
+
+extern int RecvMsg(int iQid, char *pcMsg);
 
 
 extern int InitMsgQueue(int clearQueueFlag);
@@ -90,31 +91,31 @@ extern int InitControllerMsgQueue(int clearQueueFlag);
 extern int InitJniComMsgQueue(int clearQueueFlag);
 
 
-extern int SendMsgToNetDriver(const char * pcMsg, int iLen);
+extern int SendMsgToNetDriver(const char *pcMsg, int iLen);
 
-extern int SendMsgToAvPlay(const char * pcMsg, int iLen);
+extern int SendMsgToAvPlay(const char *pcMsg, int iLen);
 
-extern int SendMsgToPeripheral(const char * pcMsg, int iLen);
+extern int SendMsgToPeripheral(const char *pcMsg, int iLen);
 
-extern int SendMsgToGps(const char * pcMsg, int iLen);
+extern int SendMsgToGps(const char *pcMsg, int iLen);
 
-extern int SendMsgToSystem(const char * pcMsg, int iLen);
+extern int SendMsgToSystem(const char *pcMsg, int iLen);
 
-extern int SendMsgToSch(const char * pcMsg, int iLen);
+extern int SendMsgToSch(const char *pcMsg, int iLen);
 
-extern int SendMsgToStation(const char * pcMsg, int iLen);
+extern int SendMsgToStation(const char *pcMsg, int iLen);
 
-extern int SendMsgToMonitor(const char * pcMsg, int iLen);
+extern int SendMsgToMonitor(const char *pcMsg, int iLen);
 
-extern int SendMsgToAdt(const char * pcMsg, int iLen);
+extern int SendMsgToAdt(const char *pcMsg, int iLen);
 
-extern int SendMsgToUpdate(const char * pcMsg, int iLen);
+extern int SendMsgToUpdate(const char *pcMsg, int iLen);
 
-extern int SendMsgToWdt(const char * pcMsg, int iLen);
+extern int SendMsgToWdt(const char *pcMsg, int iLen);
 
-extern int SendMsgToController(const char * pcMsg, int iLen);
+extern int SendMsgToController(const char *pcMsg, int iLen);
 
-extern int SendMsgToJniCom(const char * pcMsg, int iLen);
+extern int SendMsgToJniCom(const char *pcMsg, int iLen);
 
 #endif
 

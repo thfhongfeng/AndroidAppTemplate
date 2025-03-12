@@ -9,7 +9,7 @@ import com.pine.app.lib.face.matcher.FaceMatcher;
 import com.pine.template.face.FaceUrlConstants;
 import com.pine.template.face.db.entity.PersonEntity;
 import com.pine.template.face.db.repository.PersonRepository;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
 
 import java.util.List;
@@ -49,12 +49,12 @@ public class PersonDataWorker {
     private PersonEntity mMatchEntity;
     private boolean mMatchAll;
 
-    public synchronized void identityCheck(@NonNull final IModelAsyncResponse<PersonEntity> callback) {
+    public synchronized void identityCheck(@NonNull final IAsyncResponse<PersonEntity> callback) {
         identityCheck(FaceUrlConstants.IDENTITY_FACE_PATH(), callback);
     }
 
     public synchronized void identityCheck(String faceFilePath,
-                                           @NonNull final IModelAsyncResponse<PersonEntity> callback) {
+                                           @NonNull final IAsyncResponse<PersonEntity> callback) {
         Handler handler = new Handler();
         pageNo = 1;
         mMaxDegree = -1.0f;
@@ -70,7 +70,7 @@ public class PersonDataWorker {
     }
 
     private void processCheck(Handler handler, String faceFilePath,
-                              @NonNull final IModelAsyncResponse<PersonEntity> callback) {
+                              @NonNull final IAsyncResponse<PersonEntity> callback) {
         if (!FaceMatcher.getInstance().prepareCheckCompare(faceFilePath)) {
             LogUtils.d(TAG, "prepareCheckCompare fail");
             onMatchFailToHandler(callback, handler, new Exception());
@@ -81,7 +81,7 @@ public class PersonDataWorker {
 
     private void faceMatch(String faceFilePath,
                            List<PersonEntity> entities, Handler handler,
-                           @NonNull final IModelAsyncResponse<PersonEntity> callback) {
+                           @NonNull final IAsyncResponse<PersonEntity> callback) {
         if (entities != null) {
             for (PersonEntity entity : entities) {
                 double degree = FaceMatcher.getInstance().doCheckCompare(entity.getFaceFeatureBytes());
@@ -107,7 +107,7 @@ public class PersonDataWorker {
         }
     }
 
-    private void onFaceMatched(IModelAsyncResponse<PersonEntity> callback,
+    private void onFaceMatched(IAsyncResponse<PersonEntity> callback,
                                Handler handler, PersonEntity personEntity, double degree) {
         LogUtils.d(TAG, "onFaceMatched maxDegree:" + degree + ", go judging pass confidence next flow");
         if (personEntity == null || !FaceMatcher.getInstance().passConfidence(degree, mFaceConfidence)) {
@@ -117,7 +117,7 @@ public class PersonDataWorker {
         onMatchResponseToHandler(callback, handler, personEntity);
     }
 
-    private <T> void onMatchResponseToHandler(IModelAsyncResponse<T> callback, Handler handler, T t) {
+    private <T> void onMatchResponseToHandler(IAsyncResponse<T> callback, Handler handler, T t) {
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -127,7 +127,7 @@ public class PersonDataWorker {
         });
     }
 
-    private <T> void onMatchFailToHandler(IModelAsyncResponse<T> callback, Handler handler, Exception e) {
+    private <T> void onMatchFailToHandler(IAsyncResponse<T> callback, Handler handler, Exception e) {
         handler.post(new Runnable() {
             @Override
             public void run() {

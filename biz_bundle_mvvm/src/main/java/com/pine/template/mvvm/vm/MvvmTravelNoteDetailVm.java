@@ -10,10 +10,10 @@ import com.pine.template.mvvm.MvvmKeyConstants;
 import com.pine.template.mvvm.bean.MvvmTravelNoteCommentEntity;
 import com.pine.template.mvvm.bean.MvvmTravelNoteDetailEntity;
 import com.pine.template.mvvm.model.MvvmTravelNoteModel;
-import com.pine.tool.architecture.mvvm.model.IModelAsyncResponse;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.binding.data.ParametricLiveData;
 import com.pine.tool.exception.MessageException;
+import com.pine.tool.request.response.IAsyncResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class MvvmTravelNoteDetailVm extends ViewModel {
         params.put("id", mId);
         setUiLoading(true);
         mTravelNoteModel.requestTravelNoteDetailData(params, new
-                IModelAsyncResponse<MvvmTravelNoteDetailEntity>() {
+                IAsyncResponse<MvvmTravelNoteDetailEntity>() {
                     @Override
                     public void onResponse(MvvmTravelNoteDetailEntity entity) {
                         setUiLoading(false);
@@ -81,7 +81,7 @@ public class MvvmTravelNoteDetailVm extends ViewModel {
         params.put(MvvmKeyConstants.PAGE_SIZE, String.valueOf(pageSize));
         params.put("id", mId);
         setUiLoading(true);
-        mTravelNoteModel.requestTravelNoteCommentData(params, new IModelAsyncResponse<ArrayList<MvvmTravelNoteCommentEntity>>() {
+        mTravelNoteModel.requestTravelNoteCommentData(params, new IAsyncResponse<ArrayList<MvvmTravelNoteCommentEntity>>() {
             @Override
             public void onResponse(ArrayList<MvvmTravelNoteCommentEntity> list) {
                 setUiLoading(false);

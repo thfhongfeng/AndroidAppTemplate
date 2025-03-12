@@ -10,7 +10,7 @@ import com.pine.template.base.KeyConstants;
 import com.pine.template.base.config.bean.ConfigSwitcherEntity;
 import com.pine.template.base.config.bean.ConfigSwitcherInfo;
 import com.pine.template.base.config.model.ConfigSwitcherModel;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.SharePreferenceUtils;
@@ -318,7 +318,7 @@ public class ConfigSwitcherServer {
             params.put("version", version);
         }
         mConfigSwitcherModel.requestBundleSwitcherData(configUrl, params,
-                new IModelAsyncResponse<ConfigSwitcherInfo>() {
+                new IAsyncResponse<ConfigSwitcherInfo>() {
                     @Override
                     public void onResponse(ConfigSwitcherInfo switcherInfo) {
                         boolean change = false;

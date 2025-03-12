@@ -1,5 +1,6 @@
 #ifndef GPIOPORTHELPER_GPIOPORT_H
 #define GPIOPORTHELPER_GPIOPORT_H
+
 #include <sys/ioctl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -45,4 +46,5 @@ public:
 
     int setDirection(int direction);
 };
+
 #endif //GPIOPORTHELPER_GPIOPORT_H

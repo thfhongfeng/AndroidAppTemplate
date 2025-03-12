@@ -7,7 +7,7 @@ import com.pine.template.login.bean.RegisterBean;
 import com.pine.template.login.model.ILoginResponse;
 import com.pine.template.login.model.LoginAccountModel;
 import com.pine.template.login.model.callback.LoginCallback;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.SecurityUtils;
 import com.pine.tool.util.SharePreferenceUtils;
@@ -25,7 +25,7 @@ public class LoginManager {
     private static volatile String mPassword;
 
     // 自动登录
-    public static void register(RegisterBean registerBean, IModelAsyncResponse<AccountBean> callback) {
+    public static void register(RegisterBean registerBean, IAsyncResponse<AccountBean> callback) {
         HashMap<String, String> params = new HashMap<>();
         params.put(LoginKeyConstants.LOGIN_ACCOUNT, registerBean.getMobile());
         String securityPwd = SecurityUtils.generateMD5(registerBean.getPassword());

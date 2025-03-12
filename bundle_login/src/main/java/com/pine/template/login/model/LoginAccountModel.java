@@ -8,12 +8,12 @@ import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.login.LoginKeyConstants;
 import com.pine.template.login.LoginUrlConstants;
 import com.pine.template.login.model.callback.LoginCallback;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONObject;
@@ -41,14 +41,14 @@ public class LoginAccountModel {
     }
 
     public void requestRegister(final HashMap<String, String> params,
-                                @NonNull final IModelAsyncResponse<AccountBean> callback) {
+                                @NonNull final IAsyncResponse<AccountBean> callback) {
         String url = LoginUrlConstants.REGISTER_ACCOUNT();
         RequestBean requestBean = new RequestBean(url, REQUEST_REGISTER, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback));
     }
 
-    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {
+    private <T> JsonCallback handleResponse(final IAsyncResponse<T> callback) {
         return new JsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject, Response response) {

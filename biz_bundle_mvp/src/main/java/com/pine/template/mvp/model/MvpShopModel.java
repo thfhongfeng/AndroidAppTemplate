@@ -11,12 +11,12 @@ import com.pine.template.mvp.bean.MvpProductDetailEntity;
 import com.pine.template.mvp.bean.MvpShopAndProductEntity;
 import com.pine.template.mvp.bean.MvpShopDetailEntity;
 import com.pine.template.mvp.bean.MvpShopItemEntity;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.DecimalUtils;
 import com.pine.tool.util.GPSUtils;
 import com.pine.tool.util.LogUtils;
@@ -43,7 +43,7 @@ public class MvpShopModel {
     private static final int REQUEST_ADD_PRODUCT = 5;
 
     public void requestAddShop(final Map<String, String> params,
-                               @NonNull final IModelAsyncResponse<MvpShopDetailEntity> callback) {
+                               @NonNull final IAsyncResponse<MvpShopDetailEntity> callback) {
         String url = MvpUrlConstants.Add_Shop();
         RequestBean requestBean = new RequestBean(url, REQUEST_ADD_SHOP, params);
         requestBean.setModuleTag(TAG);
@@ -51,7 +51,7 @@ public class MvpShopModel {
     }
 
     public void requestShopDetailData(final Map<String, String> params,
-                                      @NonNull final IModelAsyncResponse<MvpShopDetailEntity> callback) {
+                                      @NonNull final IAsyncResponse<MvpShopDetailEntity> callback) {
         String url = MvpUrlConstants.Query_ShopDetail();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_DETAIL, params);
         requestBean.setModuleTag(TAG);
@@ -59,7 +59,7 @@ public class MvpShopModel {
     }
 
     public void requestShopListData(final Map<String, String> params,
-                                    @NonNull final IModelAsyncResponse<ArrayList<MvpShopItemEntity>> callback) {
+                                    @NonNull final IAsyncResponse<ArrayList<MvpShopItemEntity>> callback) {
         String url = MvpUrlConstants.Query_ShopList();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_LIST, params);
         requestBean.setModuleTag(TAG);
@@ -67,7 +67,7 @@ public class MvpShopModel {
     }
 
     public void requestShopAndProductListData(Map<String, String> params,
-                                              @NonNull final IModelAsyncResponse<ArrayList<MvpShopAndProductEntity>> callback) {
+                                              @NonNull final IAsyncResponse<ArrayList<MvpShopAndProductEntity>> callback) {
         String url = MvpUrlConstants.Query_ShopAndProductList();
         RequestBean requestBean = new RequestBean(url, REQUEST_QUERY_SHOP_AND_PRODUCT_LIST, params);
         requestBean.setModuleTag(TAG);
@@ -75,14 +75,14 @@ public class MvpShopModel {
     }
 
     public void requestAddProduct(final Map<String, String> params,
-                                  @NonNull final IModelAsyncResponse<MvpProductDetailEntity> callback) {
+                                  @NonNull final IAsyncResponse<MvpProductDetailEntity> callback) {
         String url = MvpUrlConstants.Add_Product();
         RequestBean requestBean = new RequestBean(url, REQUEST_ADD_PRODUCT, params);
         requestBean.setModuleTag(TAG);
         RequestManager.setJsonRequest(requestBean, handleResponse(callback, params));
     }
 
-    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback,
+    private <T> JsonCallback handleResponse(final IAsyncResponse<T> callback,
                                             final Object carryData) {
         return new JsonCallback() {
             @Override

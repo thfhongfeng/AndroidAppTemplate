@@ -6,12 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.template.base.KeyConstants;
 import com.pine.template.base.config.bean.ConfigSwitcherInfo;
-import com.pine.tool.architecture.mvp.model.IModelAsyncResponse;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
+import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
 
 import org.json.JSONObject;
@@ -27,14 +27,14 @@ public class ConfigSwitcherModel {
     private static final int REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER = 1;
 
     public boolean requestBundleSwitcherData(final String configUrl, HashMap<String, String> params,
-                                             @NonNull IModelAsyncResponse<ConfigSwitcherInfo> callback) {
+                                             @NonNull IAsyncResponse<ConfigSwitcherInfo> callback) {
         JsonCallback httpStringCallback = handleResponse(callback);
         RequestBean requestBean = new RequestBean(configUrl, REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER, params);
         requestBean.setModuleTag(TAG);
         return RequestManager.setJsonRequest(requestBean, httpStringCallback);
     }
 
-    private <T> JsonCallback handleResponse(final IModelAsyncResponse<T> callback) {
+    private <T> JsonCallback handleResponse(final IAsyncResponse<T> callback) {
         return new JsonCallback() {
             @Override
             public void onResponse(int what, JSONObject jsonObject, Response response) {
