@@ -31,6 +31,8 @@ public class AppBgReceiver extends BroadcastReceiver {
             // 有概率会networkType会为NETWORK_NO，因此延时再做一次网络检查和设置
             mMainHandler.removeCallbacksAndMessages(null);
             if (networkType == NetworkType.NETWORK_NO) {
+                LogUtils.i(TAG, "CONNECTIVITY_ACTION NetworkType is NETWORK_NO," +
+                        " try check and set network type after 500ms for some reason");
                 mMainHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
