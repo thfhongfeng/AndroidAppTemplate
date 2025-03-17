@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.pine.template.base.bg.network.BgNetWorker;
@@ -16,6 +18,7 @@ import com.pine.tool.util.LogUtils;
 
 public class AppBgReceiver extends BroadcastReceiver {
     private final String TAG = this.getClass().getSimpleName();
+    private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -24,6 +27,18 @@ public class AppBgReceiver extends BroadcastReceiver {
         if (TextUtils.equals(ConnectivityManager.CONNECTIVITY_ACTION, action)) {
             NetworkType networkType = BgNetworkHelper.getNetworkType();
             BgNetWorker.getInstance().setNetworkType(networkType);
+            // 切换飞行模式时，在关闭飞行模式网络恢复后，如果马上获取网络状态，
+            // 有概率会networkType会为NETWORK_NO，因此延时再做一次网络检查和设置
+            mMainHandler.removeCallbacksAndMessages(null);
+            if (networkType == NetworkType.NETWORK_NO) {
+                mMainHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        NetworkType networkType = BgNetworkHelper.getNetworkType();
+                        BgNetWorker.getInstance().setNetworkType(networkType);
+                    }
+                }, 500);
+            }
         } else if (TextUtils.equals(WifiManager.RSSI_CHANGED_ACTION, action)) {
             BgNetWorker.getInstance().setWifiLevel(true);
         }
