@@ -84,10 +84,6 @@ dependencies {
         // 获取当前 variant 的 flavor 名称
         def flavorName = variant.flavorName
 
-        // 资源模块 begin
-        "${flavorName}Implementation" rootProject.ext.dependencyCustom("resource", flavorName)
-        // 资源模块 end
-
         // 入口模块 begin
         "${flavorName}Implementation" rootProject.ext.dependencyCustom("app_welcome", flavorName)
         // 入口模块 end
@@ -105,6 +101,10 @@ dependencies {
             "${flavorName}Implementation" rootProject.ext.dependencyCustom(moduleValue, flavorName)
         }
         // biz_bundle模块 end
+
+        // 资源模块 begin（确保资源模块最后，同形式的库（aar或者代码库）下的资源覆盖原则：后声明的依赖 > 先声明的依赖）
+        "${flavorName}Implementation" rootProject.ext.dependencyCustom("resource", flavorName)
+        // 资源模块 end
     }
 }
 

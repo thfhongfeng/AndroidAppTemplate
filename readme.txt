@@ -62,7 +62,8 @@ ui-----------------------通用Activity和fragment封装，默认android原生�
                 build_product_storePassword    : "pine123",
                 build_product_keyAlias         : "AppTemplate",
                 build_product_keyPassword      : "pine123",
-                build_product_biz_bundle_module: [BIZ_BUNDLE_MVVM: "biz_bundle_mvvm"]
+                build_product_biz_bundle_module: [BIZ_BUNDLE_MVVM: "biz_bundle_mvvm"],
+                build_product_customer         : ["guanghan": "广汉"]
         ]
 说明：
     build_product_applicationId：渠道应用id;
@@ -75,6 +76,7 @@ ui-----------------------通用Activity和fragment封装，默认android原生�
     build_product_keyAlias：渠道应用keyAlias;
     build_product_keyPassword：渠道应用keyPassword;
     build_product_biz_bundle_module：渠道应用包含的功能业务模块（只打包有选项的功能业务模块，起到模块组装效果）;
+    build_product_customer：所有客户标识集合，在代码中用于规范化区分客户的标识集合，也同时说明了该产品渠道有哪些客户;
 3. 将模块中渠道有差异化的实现代码写在对应渠道文件夹中：
    a. 差异化的资源文件，直接同名到各个渠道文件夹中（渠道中的同名资源文件会自动覆盖掉main中的资源文件，从而实现渠道差异化）；
    b. 差异化的代码文件则需放在common中进行开发，然后拷贝到各个渠道文件夹中进行差异化开发（各个渠道文件保持路径一致）。
@@ -129,4 +131,14 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
    b. 执行allPublishToMavenLocal或者allPublish任务
 2. 开发时，确保gradle.ext.compileMode="dev"
    在dev_config.gradle中设置非开发模块的"libDepend"的值为true，从而使用lib依赖方式进行编译，提高编译效率。
+
+
+资源包覆盖原则：
+"resource"资源模块用于资源风格客制化。
+资源分为开发时资源和生产后资源：分别对应开发时用到的资源和生产包的客制化资源。
+1. 开发时：默认资源放入功能模块，资源模块不添加新资源。
+2. 生产后：根据需要，在资源模块添加相应风格的替换资源，在打包时通过资源替换原则实现风格资源替换。
+一般来说：资源替换效果只在生产包中产生效果：
+Gradle资源合并优先级：主模块资源 > 后声明的库模块（资源模块） > 先声明的库模块（功能模块） > 第三方依赖库
+生产时打包aar包形式下：后声明的依赖包 > 先声明的依赖包
 
