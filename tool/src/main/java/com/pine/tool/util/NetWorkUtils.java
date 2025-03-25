@@ -37,8 +37,8 @@ public class NetWorkUtils {
             NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
             if (networkInfo != null && networkInfo.length > 0) {
                 for (int i = 0; i < networkInfo.length; i++) {
-                    System.out.println(i + "===状态===" + networkInfo[i].getState());
-                    System.out.println(i + "===类型===" + networkInfo[i].getTypeName());
+                    LogUtils.i("NetWorkUtils", "=== 状态:" + networkInfo[i].getState()
+                            + " , 类型:" + networkInfo[i].getTypeName() + " ===");
                     // 判断当前网络状态是否为连接状态
                     if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
                         return true;
@@ -75,7 +75,6 @@ public class NetWorkUtils {
      *
      * @return null：没有网络连接
      */
-    @SuppressLint("MissingPermission")
     public static String getIpAddress() {
         NetworkInfo networkInfo = ((ConnectivityManager) AppUtils.getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
