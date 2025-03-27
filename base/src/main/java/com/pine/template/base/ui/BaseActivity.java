@@ -100,8 +100,8 @@ public abstract class BaseActivity extends Activity {
         }
         hideSoftInputFromWindow();
         findViewById(R.id.base_loading_layout).setVisibility(visibility ? View.VISIBLE : View.GONE);
+        mLoadingUiTimeoutHandler.removeCallbacksAndMessages(null);
         if (visibility && mLoadingUiTimeoutGone > 0) {
-            mLoadingUiTimeoutHandler.removeCallbacksAndMessages(null);
             mLoadingUiTimeoutHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
