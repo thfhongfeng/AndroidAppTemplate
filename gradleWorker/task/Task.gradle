@@ -1,6 +1,14 @@
 apply from: "${rootDir}/gradleWorker/task/PublishAllModule.gradle"
 
-task specialDimens {
+task baseDimens {
+    setGroup("private")
+    doLast {
+        calAndCopyDimensFile("${rootProject.rootDir}/base/src/main/res/values/dimens-constant.xml",
+                "${rootProject.rootDir}/base/src/special/res/values/dimens-constant.xml", 1.2)
+    }
+}
+
+task resourceDimens {
     setGroup("private")
     doLast {
         calAndCopyDimensFile("${rootProject.rootDir}/resource/src/main/res/values/dimens-constant.xml",
