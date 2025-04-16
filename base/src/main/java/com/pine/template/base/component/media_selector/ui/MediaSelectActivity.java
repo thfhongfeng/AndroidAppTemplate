@@ -34,8 +34,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pine.template.base.R;
 import com.pine.template.base.component.image_loader.ImageLoaderManager;
-import com.pine.template.base.component.media_selector.OnBackPressedListener;
 import com.pine.template.base.component.media_selector.MediaSelector;
+import com.pine.template.base.component.media_selector.OnBackPressedListener;
 import com.pine.template.base.component.media_selector.bean.MediaBean;
 import com.pine.template.base.component.media_selector.bean.MediaFolderBean;
 import com.pine.template.base.component.media_selector.bean.MediaItemBean;
@@ -340,16 +340,30 @@ public class MediaSelectActivity extends BaseFullScreenActivity {
         selection += ")";
         String[] selectionArgs = null;
         String likeStr = treeDoc;
-        if (!TextUtils.isEmpty(treeDoc)) {
-            int index = treeDoc.indexOf("/");
-            if (index > 0) {
-                likeStr = likeStr.substring(index + 1);
+        if (!TextUtils.isEmpty(likeStr)) {
+            if (likeStr.startsWith("primary") || !likeStr.contains("-")) { // 内部存储sdcard
+                int index = treeDoc.indexOf("/");
+                if (index > 0) {
+                    likeStr = likeStr.substring(index);
+                }
+                if (!likeStr.endsWith("/")) {
+                    likeStr = likeStr + "/";
+                }
+                if (!likeStr.startsWith("/")) {
+                    likeStr = "/" + likeStr;
+                }
+                selection += " AND " + MediaStore.Files.FileColumns.DATA + " LIKE ?";
+                selectionArgs = new String[]{"%/emulated/%" + likeStr + "%"};
+            } else {    // U盘
+                if (!likeStr.endsWith("/")) {
+                    likeStr = likeStr + "/";
+                }
+                if (!likeStr.startsWith("/")) {
+                    likeStr = "/" + likeStr;
+                }
+                selection += " AND " + MediaStore.Files.FileColumns.DATA + " LIKE ?";
+                selectionArgs = new String[]{"%" + likeStr + "%"};
             }
-            if (!likeStr.endsWith("/")) {
-                likeStr += "/";
-            }
-            selection += " AND " + MediaStore.Files.FileColumns.RELATIVE_PATH + " LIKE ?";
-            selectionArgs = new String[]{likeStr + "%"};
         }
         LogUtils.d(TAG, "scanDirectory selection:" + selection + " => likeStr:" + likeStr + ", treeDoc:" + treeDoc);
         String order = null;
@@ -646,7 +660,7 @@ public class MediaSelectActivity extends BaseFullScreenActivity {
     class FolderAdapter extends BaseNoPaginationListAdapter<MediaFolderBean> {
         @Override
         public BaseListViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            BaseListViewHolder viewHolder = new FolderAdapter.ViewHolder(parent.getContext(),
+            BaseListViewHolder viewHolder = new ViewHolder(parent.getContext(),
                     LayoutInflater.from(parent.getContext())
                             .inflate(R.layout.base_item_folder, parent, false));
             return viewHolder;
