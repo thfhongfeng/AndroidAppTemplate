@@ -70,6 +70,12 @@
     <string name="base_file_upload_file_null">文件不存在</string>
     <string name="base_file_upload_compress_file_null">文件压缩失败</string>
 
+    <string name="base_media_selected_exceeding_msg">数量已超过%1$d个</string>
+    <string name="base_unit_zhang">张</string>
+    <string name="base_media_select">选择Media</string>>
+    <string name="base_all_media">所有</string>
+    <string name="base_media_root_dir">根目录:%s</string>
+
     <string name="base_input_hint">点击输入</string>
     <string name="base_text_max_length">最多允许输入%1d个字符</string>
     <string name="base_number_max_length">最多允许输入%1d个非小数</string>
@@ -102,8 +108,6 @@
 
     <string name="base_main_tab_home">首页</string>
     <string name="base_main_tab_mine">我的</string>
-
-    <string name="base_bg_service_content_title">%s后台服务</string>
 
     <string name="base_q_complete_d_title">完成答题</string>
     <string name="base_q_complete_d_not_all_msg">您还有题目未答完，是否仍然完成答题？</string>

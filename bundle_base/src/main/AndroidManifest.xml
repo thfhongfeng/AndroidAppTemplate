@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.pine.template.bundle_base"></manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pine.template.bundle_base">
+    <!-- [高危]未关闭备份模式
+     风险详情：APP 开启了数据备份和恢复的功能时，可通过 ADB 备份数据，存在信息泄露的风险。
+     修复建议在：AndroidManifest.xml 配置文件中显式配置 android:allowBackup=false。 -->
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+        <service
+            android:name="com.pine.template.base.bgwork.service.AppBgService"
+            android:enabled="true"
+            android:exported="false" />
+    </application>
+</manifest>

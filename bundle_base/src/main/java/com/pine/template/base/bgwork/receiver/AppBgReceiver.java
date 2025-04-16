@@ -1,4 +1,4 @@
-package com.pine.template.base.bg.receiver;
+package com.pine.template.base.bgwork.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,10 +10,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.pine.template.base.bg.network.BgNetWorker;
-import com.pine.template.base.bg.network.BgNetworkHelper;
-import com.pine.template.base.bg.network.NetworkType;
-import com.pine.template.base.bg.service.AppBgService;
+import com.pine.template.base.bgwork.network.BgNetWorker;
+import com.pine.template.base.bgwork.network.BgNetworkHelper;
+import com.pine.template.base.bgwork.network.NetworkType;
+import com.pine.template.base.bgwork.service.AppBgService;
 import com.pine.tool.util.LogUtils;
 
 public class AppBgReceiver extends BroadcastReceiver {

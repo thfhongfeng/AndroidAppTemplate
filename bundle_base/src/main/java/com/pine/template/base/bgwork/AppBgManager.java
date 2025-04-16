@@ -1,12 +1,12 @@
-package com.pine.template.base.bg;
+package com.pine.template.base.bgwork;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.pine.template.base.bg.network.BgNetWorker;
-import com.pine.template.base.bg.network.OnNetworkChangedListener;
-import com.pine.template.base.bg.service.AppBgService;
+import com.pine.template.base.bgwork.network.BgNetWorker;
+import com.pine.template.base.bgwork.network.OnNetworkChangedListener;
+import com.pine.template.base.bgwork.service.AppBgService;
 
 public class AppBgManager {
     private static final boolean mServiceEnable = true;

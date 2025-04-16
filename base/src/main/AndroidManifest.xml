@@ -28,8 +28,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 震动-->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!-- 读取联系人-->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- 前台服务-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
@@ -41,15 +39,14 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".component.image_selector.ui.ImageSelectActivity"
+            android:name=".component.media_selector.ui.ImageDisplayActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
         <activity
-            android:name=".component.image_selector.ui.ImageDisplayActivity"
+            android:name=".component.media_selector.ui.MediaSelectActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
         <activity
@@ -57,9 +54,5 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
-        <service
-            android:name="com.pine.template.base.bg.service.AppBgService"
-            android:enabled="true"
-            android:exported="false" />
     </application>
 </manifest>

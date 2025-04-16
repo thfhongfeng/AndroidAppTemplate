@@ -344,7 +344,6 @@ public class InputTextDialog extends BaseDialog {
                     dialog.hideKeyboard(input_et);
                     ArrayList<String> list = new ArrayList<>();
                     list.add(input_et.getText().toString());
-                    list.add(input_et.getText().toString());
                     if (actionClickListener == null || !actionClickListener.onSubmitClick(dialog, list)) {
                         dialog.dismiss();
                     }

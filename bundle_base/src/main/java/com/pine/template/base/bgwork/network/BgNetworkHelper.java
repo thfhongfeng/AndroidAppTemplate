@@ -1,4 +1,4 @@
-package com.pine.template.base.bg.network;
+package com.pine.template.base.bgwork.network;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 

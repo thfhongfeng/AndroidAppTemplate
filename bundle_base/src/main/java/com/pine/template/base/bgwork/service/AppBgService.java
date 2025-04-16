@@ -1,4 +1,4 @@
-package com.pine.template.base.bg.service;
+package com.pine.template.base.bgwork.service;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -18,8 +18,8 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 
-import com.pine.template.base.R;
-import com.pine.template.base.bg.receiver.AppBgReceiver;
+import com.pine.template.base.bgwork.receiver.AppBgReceiver;
+import com.pine.template.bundle_base.R;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 

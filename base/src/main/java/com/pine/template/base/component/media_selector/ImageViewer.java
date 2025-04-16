@@ -1,12 +1,12 @@
-package com.pine.template.base.component.image_selector;
+package com.pine.template.base.component.media_selector;
 
 import android.app.Activity;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
-import com.pine.template.base.component.image_selector.bean.ImageItemBean;
-import com.pine.template.base.component.image_selector.ui.ImageDisplayActivity;
+import com.pine.template.base.component.media_selector.bean.MediaBean;
+import com.pine.template.base.component.media_selector.ui.ImageDisplayActivity;
 
 import java.util.ArrayList;
 
@@ -24,11 +24,13 @@ public class ImageViewer {
     public static final String INTENT_ENABLE_IMAGE_SCALE = "intent_enable_image_scale";
     public static final String INTENT_ENABLE_IMAGE_TRANSLATE = "intent_enable_image_translate";
     public static final String INTENT_ENABLE_IMAGE_ROTATE = "intent_enable_image_rotate";
-    public static ArrayList<ImageItemBean> mBigOriginBeanData;
-    private int mMaxCount = 9;
+
+    public static final int DEFAULT_MAX_IMAGE_COUNT = 9;
+    public static ArrayList<MediaBean> mBigOriginBeanData;
+    private int mMaxCount = DEFAULT_MAX_IMAGE_COUNT;
     private int mCurPosition = 0;
     private boolean mCanSelect = false;
-    private ArrayList<ImageItemBean> mOriginBeanData;
+    private ArrayList<MediaBean> mOriginBeanData;
     private ArrayList<String> mSelectedData;
     private boolean mEnableImageScale = false; // 是否开启图片缩放功能
     private boolean mEnableImageTranslate = false; // 是否开启图片平移功能
@@ -60,12 +62,12 @@ public class ImageViewer {
     public ImageViewer origin(@NonNull ArrayList<String> images) {
         mOriginBeanData = new ArrayList<>();
         for (String each : images) {
-            mOriginBeanData.add(new ImageItemBean(each));
+            mOriginBeanData.add(MediaBean.buildImageBean(each));
         }
         return this;
     }
 
-    public ImageViewer originBean(@NonNull ArrayList<ImageItemBean> beans) {
+    public ImageViewer originBean(@NonNull ArrayList<MediaBean> beans) {
         mOriginBeanData = beans;
         return this;
     }

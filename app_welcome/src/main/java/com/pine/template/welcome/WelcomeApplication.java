@@ -1,6 +1,5 @@
 package com.pine.template.welcome;
 
-import com.pine.template.base.bg.AppBgManager;
 import com.pine.tool.RootApplication;
 import com.pine.tool.util.LogUtils;
 
@@ -16,6 +15,6 @@ public class WelcomeApplication extends RootApplication {
     }
 
     public static void attach() {
-        AppBgManager.startBgService(mApplication);
+//        AppBgManager.startBgService(mApplication);
     }
 }

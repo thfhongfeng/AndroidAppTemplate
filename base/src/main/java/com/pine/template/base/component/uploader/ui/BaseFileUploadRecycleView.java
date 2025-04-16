@@ -401,7 +401,7 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
             private LinearLayout show_container;
             private RelativeLayout state_rl;
             private ImageView show_iv, delete_iv, loading_iv;
-            private TextView file_desc_tv, num_max_tv, fail_tv, loading_tv;
+            private TextView file_demain_tv, num_max_tv, fail_tv, loading_tv;
 
 
             public UploadFileViewHolder(Context context, View itemView) {
@@ -410,7 +410,7 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
                 show_container = itemView.findViewById(R.id.show_container);
                 state_rl = itemView.findViewById(R.id.state_rl);
                 show_iv = itemView.findViewById(R.id.show_iv);
-                file_desc_tv = itemView.findViewById(R.id.file_desc_tv);
+                file_demain_tv = itemView.findViewById(R.id.file_demain_tv);
                 delete_iv = itemView.findViewById(R.id.delete_iv);
                 loading_iv = itemView.findViewById(R.id.loading_iv);
                 loading_tv = itemView.findViewById(R.id.loading_tv);
@@ -433,8 +433,8 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
                         ImageLoaderManager.getInstance().loadImage(context, imageUrl, show_iv);
                     } else {
                         ImageLoaderManager.getInstance().loadImage(context, R.mipmap.base_iv_file, show_iv);
-                        if (file_desc_tv != null) {
-                            file_desc_tv.setText(imageUrl);
+                        if (file_demain_tv != null) {
+                            file_demain_tv.setText(imageUrl);
                         }
                     }
                     loading_iv.setVisibility(View.GONE);
@@ -516,8 +516,8 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
                         num_max_tv.setText(successSize + "/" + mMaxFileCount);
                         num_max_tv.setVisibility(VISIBLE);
                     } else {
-                        if (file_desc_tv != null) {
-                            file_desc_tv.setText(successSize + "/" + mMaxFileCount);
+                        if (file_demain_tv != null) {
+                            file_demain_tv.setText(successSize + "/" + mMaxFileCount);
                         }
                     }
                     show_container.setOnClickListener(new OnClickListener() {

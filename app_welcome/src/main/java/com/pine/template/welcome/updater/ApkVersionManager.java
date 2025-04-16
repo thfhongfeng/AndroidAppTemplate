@@ -11,10 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.pine.template.base.BaseKeyConstants;
-import com.pine.template.base.R;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.ProgressDialog;
+import com.pine.template.welcome.R;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.DownloadRequestBean;
 import com.pine.tool.request.RequestManager;
@@ -148,7 +148,7 @@ public class ApkVersionManager {
             mCountDownTimer = null;
         }
         mUpdateConfirmDialog = new Dialog(activity);
-        mUpdateConfirmDialog.setContentView(R.layout.base_dialog_version_update_confirm);
+        mUpdateConfirmDialog.setContentView(R.layout.wel_dialog_version_update_confirm);
         mUpdateConfirmDialog.setCanceledOnTouchOutside(false);
         mUpdateConfirmDialog.setCancelable(false);
         mUpdateConfirmDialog.setOwnerActivity(activity);

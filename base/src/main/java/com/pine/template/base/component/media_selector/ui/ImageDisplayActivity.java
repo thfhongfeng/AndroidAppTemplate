@@ -1,4 +1,4 @@
-package com.pine.template.base.component.image_selector.ui;
+package com.pine.template.base.component.media_selector.ui;
 
 import android.Manifest;
 import android.app.Activity;
@@ -22,8 +22,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.pine.template.base.R;
 import com.pine.template.base.component.image_loader.ImageLoaderManager;
-import com.pine.template.base.component.image_selector.ImageViewer;
-import com.pine.template.base.component.image_selector.bean.ImageItemBean;
+import com.pine.template.base.component.media_selector.ImageViewer;
+import com.pine.template.base.component.media_selector.bean.MediaBean;
 import com.pine.template.base.ui.BaseActionBarTextMenuActivity;
 import com.pine.template.base.widget.view.TransformImageView;
 import com.pine.tool.permission.PermissionsAnnotation;
@@ -37,7 +37,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
     private TextView choose_tv;
     private Button check_btn;
     private TextView mTitleTv, mMenuBtnTv;
-    private ArrayList<ImageItemBean> mImageBeanList;
+    private ArrayList<MediaBean> mImageBeanList;
     private ViewPagerAdapter mAdapter;
     private ArrayList<String> mSelectedImageList = new ArrayList<>();
     private int mCurPosition;
@@ -67,7 +67,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
     protected boolean parseIntentData() {
         Intent intent = getIntent();
         if (intent.hasExtra(ImageViewer.INTENT_IMAGE_BEAN_LIST)) {
-            mImageBeanList = (ArrayList<ImageItemBean>) intent.getSerializableExtra(ImageViewer.INTENT_IMAGE_BEAN_LIST);
+            mImageBeanList = (ArrayList<MediaBean>) intent.getSerializableExtra(ImageViewer.INTENT_IMAGE_BEAN_LIST);
         } else if (ImageViewer.mBigOriginBeanData != null) {
             mImageBeanList = ImageViewer.mBigOriginBeanData;
             ImageViewer.mBigOriginBeanData = null;
@@ -79,8 +79,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
         if (mSelectedImageList == null) {
             mSelectedImageList = new ArrayList<>();
         }
-        mMaxImgCount = intent.getIntExtra(ImageViewer.INTENT_MAX_SELECTED_COUNT,
-                ImageSelectActivity.DEFAULT_MAX_IMAGE_COUNT);
+        mMaxImgCount = intent.getIntExtra(ImageViewer.INTENT_MAX_SELECTED_COUNT, ImageViewer.DEFAULT_MAX_IMAGE_COUNT);
         mCanSelected = intent.getBooleanExtra(ImageViewer.INTENT_CAN_SELECT, false);
         mEnableImageScale = intent.getBooleanExtra(ImageViewer.INTENT_ENABLE_IMAGE_SCALE, false);
         mEnableImageTranslate = intent.getBooleanExtra(ImageViewer.INTENT_ENABLE_IMAGE_TRANSLATE, false);
@@ -110,8 +109,8 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
             @Override
             public void onPageSelected(int position) {
                 mTitleTv.setText(String.format("%1$s/%2$s", position + 1, mImageBeanList.size()));
-                ImageItemBean item = mImageBeanList.get(view_pager.getCurrentItem());
-                boolean isSelected = mSelectedImageList.contains(item.path);
+                MediaBean item = mImageBeanList.get(view_pager.getCurrentItem());
+                boolean isSelected = mSelectedImageList.contains(item.getUrl());
                 check_btn.setSelected(isSelected);
             }
 
@@ -121,14 +120,14 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
         });
 
         if (mCanSelected) {
-            check_btn.setSelected(mSelectedImageList.contains(mImageBeanList.get(mCurPosition).path));
+            check_btn.setSelected(mSelectedImageList.contains(mImageBeanList.get(mCurPosition).getUrl()));
             check_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ImageItemBean item = mImageBeanList.get(view_pager.getCurrentItem());
-                    boolean isSelected = mSelectedImageList.contains(item.path);
+                    MediaBean item = mImageBeanList.get(view_pager.getCurrentItem());
+                    boolean isSelected = mSelectedImageList.contains(item.getUrl());
                     if (isSelected) {
-                        mSelectedImageList.remove(item.path);
+                        mSelectedImageList.remove(item.getUrl());
                     } else {
                         if (mSelectedImageList.size() >= mMaxImgCount) {
                             Toast.makeText(ImageDisplayActivity.this,
@@ -136,7 +135,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
                             check_btn.setSelected(false);
                             return;
                         }
-                        mSelectedImageList.add(item.path);
+                        mSelectedImageList.add(item.getUrl());
                     }
                     check_btn.setSelected(!isSelected);
                     updateDoneButton();
@@ -203,7 +202,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
             do {
                 // 获取图片的路径
                 String path = mCursor.getString(_date);
-                mImageBeanList.add(new ImageItemBean(path));
+                mImageBeanList.add(MediaBean.buildImageBean(path));
             } while (mCursor.moveToNext());
         }
         mCursor.close();
@@ -238,7 +237,7 @@ public class ImageDisplayActivity extends BaseActionBarTextMenuActivity {
             imageView.enableImageScale(mEnableImageScale);
             imageView.enableImageImageScale(mEnableImageTranslate);
             imageView.enableImageRotate(mEnableImageRotate);
-            String path = mImageBeanList.get(position).path;
+            String path = mImageBeanList.get(position).getUrl();
             if (!TextUtils.isEmpty(path) && (path.startsWith("http://") ||
                     path.startsWith("https://") || path.startsWith("file://"))) {
                 ImageLoaderManager.getInstance().loadImage(ImageDisplayActivity.this,

@@ -18,8 +18,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.pine.template.base.R;
-import com.pine.template.base.component.image_selector.ImageSelector;
-import com.pine.template.base.component.image_selector.ImageViewer;
+import com.pine.template.base.component.media_selector.ImageViewer;
+import com.pine.template.base.component.media_selector.MediaSelector;
+import com.pine.template.base.component.media_selector.bean.MediaBean;
 import com.pine.template.base.component.uploader.bean.FileUploadBean;
 import com.pine.template.base.component.uploader.bean.FileUploadState;
 import com.pine.template.base.component.uploader.bean.RemoteUploadFileInfo;
@@ -276,8 +277,9 @@ public class FileUploadHelper implements ILifeCircleView {
                 MAX_PER_UPLOAD_FILE_COUNT : mMaxFileCount - validCount);
         LogUtils.d(TAG, "selectImages mEnableCrop:" + mEnableCrop +
                 ", allowCount:" + allowCount);
-        ImageSelector.create()
+        MediaSelector.createImageSelector()
                 .count(mEnableCrop ? 1 : allowCount)
+                .addCameraTakePic()
                 .start(mActivity, mRequestCodeSelectFile);
     }
 
@@ -384,8 +386,8 @@ public class FileUploadHelper implements ILifeCircleView {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        List<String> newSelectList = new ArrayList<>();
-                        newSelectList.add(mCurCropPhotoPath);
+                        List<MediaBean> newSelectList = new ArrayList<>();
+                        newSelectList.add(MediaBean.buildImageBean(mCurCropPhotoPath));
                         LogUtils.d(TAG, "onActivityResult REQUEST_CODE_CROP" +
                                 " mCurCropPhotoPath:" + mCurCropPhotoPath + ", return uri:" + uri);
                         uploadFileOneByOne(newSelectList);
@@ -395,10 +397,8 @@ public class FileUploadHelper implements ILifeCircleView {
         } else if (requestCode == mRequestCodeSelectFile) {
             if (resultCode == Activity.RESULT_OK) {
                 if (mFileUploaderConfig.getUploadFileType() == FileUploadComponent.TYPE_IMAGE) {
-                    List<String> newSelectList = data.getStringArrayListExtra(
-                            ImageSelector.INTENT_SELECTED_IMAGE_LIST);
-                    mIsReUpload = data.getBooleanExtra(
-                            ImageSelector.INTENT_IS_RESELECT, false);
+                    List<MediaBean> newSelectList = MediaSelector.getIntentResultData(data);
+                    mIsReUpload = data.getBooleanExtra(MediaSelector.INTENT_IS_RESELECT, false);
                     if (newSelectList.size() < 1) {
                         return;
                     }
@@ -406,7 +406,7 @@ public class FileUploadHelper implements ILifeCircleView {
                             " mEnableCrop:" + mEnableCrop + ", mTogetherUploadMode:" + mTogetherUploadMode +
                             ", newSelectList.size():" + newSelectList.size());
                     if (mEnableCrop) {
-                        startCropImage(newSelectList.get(0));
+                        startCropImage(newSelectList.get(0).getUrl());
                     } else {
                         if (mTogetherUploadMode) {
                             uploadFileList(newSelectList);
@@ -429,8 +429,8 @@ public class FileUploadHelper implements ILifeCircleView {
                     LogUtils.d(TAG, "onActivityResult REQUEST_CODE_SELECT_IMAGE" +
                             " mTogetherUploadMode:" + mTogetherUploadMode +
                             ", path:" + path);
-                    List<String> list = new ArrayList<>();
-                    list.add(path);
+                    List<MediaBean> list = new ArrayList<>();
+                    list.add(MediaBean.buildImageBean(path));
                     if (mTogetherUploadMode) {
                         uploadFileList(list);
                     } else {
@@ -441,7 +441,7 @@ public class FileUploadHelper implements ILifeCircleView {
         }
     }
 
-    private void uploadFileOneByOne(final List<String> list) {
+    private void uploadFileOneByOne(final List<MediaBean> list) {
         if (!mIsInit) {
             throw new IllegalStateException("You should call init() method before use this view");
         }
@@ -461,7 +461,7 @@ public class FileUploadHelper implements ILifeCircleView {
         FileUploadBean fileUploadBean = null;
         for (int i = 0; i < list.size(); i++) {
             fileUploadBean = new FileUploadBean();
-            String filePath = list.get(i);
+            String filePath = list.get(i).getUrl();
             fileUploadBean.setFileKey(mOneByOneUploadAdapter.getFileKey(fileUploadBean));
             fileUploadBean.setFileType(mFileUploaderConfig.getUploadFileType());
             fileUploadBean.setLocalFilePath(filePath);
@@ -585,7 +585,7 @@ public class FileUploadHelper implements ILifeCircleView {
         });
     }
 
-    private void uploadFileList(final List<String> list) {
+    private void uploadFileList(final List<MediaBean> list) {
         if (!mIsInit) {
             throw new IllegalStateException("You should call init() method before use this view");
         }
@@ -605,7 +605,7 @@ public class FileUploadHelper implements ILifeCircleView {
         FileUploadBean fileUploadBean = null;
         for (int i = 0; i < list.size(); i++) {
             fileUploadBean = new FileUploadBean();
-            String filePath = list.get(i);
+            String filePath = list.get(i).getUrl();
             fileUploadBean.setFileKey(mTogetherUploadAdapter.getFileKey(fileUploadBean));
             fileUploadBean.setFileType(mFileUploaderConfig.getUploadFileType());
             fileUploadBean.setLocalFilePath(filePath);

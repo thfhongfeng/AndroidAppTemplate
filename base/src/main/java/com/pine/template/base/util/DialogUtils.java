@@ -30,6 +30,7 @@ import com.pine.template.base.component.share.manager.ShareManager;
 import com.pine.template.base.widget.dialog.CustomDialog;
 import com.pine.template.base.widget.dialog.CustomListDialog;
 import com.pine.template.base.widget.dialog.DateSelectDialog;
+import com.pine.template.base.widget.dialog.DateTimeSelectDialog;
 import com.pine.template.base.widget.dialog.InputTextDialog;
 import com.pine.template.base.widget.dialog.ProgressDialog;
 import com.pine.template.base.widget.dialog.ProvinceSelectDialog;
@@ -710,6 +711,12 @@ public class DialogUtils {
                                                           boolean showMinute, boolean showSecond,
                                                           TimeSelectDialog.IDialogTimeSelected dialogSelect) {
         return new TimeSelectDialog.Builder(context).create(dialogSelect, showHour, showMinute, showSecond);
+    }
+
+    public static DateTimeSelectDialog createDateTimeSelectDialog(final Context context,
+                                                                  int startYear, int endYear,
+                                                                  DateTimeSelectDialog.IDialogDateSelected dialogSelect) {
+        return new DateTimeSelectDialog.Builder(context).create(dialogSelect, startYear, endYear, true);
     }
 
     /**
