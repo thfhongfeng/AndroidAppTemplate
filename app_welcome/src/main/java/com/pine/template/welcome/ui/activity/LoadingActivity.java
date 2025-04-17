@@ -41,9 +41,9 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     private Handler mNetCheckHandler = new Handler(Looper.getMainLooper());
 
     // 是否允许自动登录
-    public final static boolean ENABLE_LOADING_AUTO_LOGIN = true;
+    public static boolean ENABLE_LOADING_AUTO_LOGIN = false;
     // 是否允许先跳转到welcome界面
-    public final static boolean ENABLE_LOADING_GO_WELCOME = false;
+    public static boolean ENABLE_LOADING_GO_WELCOME = false;
 
     private long mStartTimeMillis;
 
@@ -119,6 +119,8 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     @Override
     protected void init(Bundle savedInstanceState) {
         boolean enableLoadingCheckNet = ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_LOADING_CHECK_NET, true);
+        ENABLE_LOADING_AUTO_LOGIN = ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_LOADING_AUTO_LOGIN, false);
+        ENABLE_LOADING_GO_WELCOME = ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_LOADING_GO_WELCOME, false);
         if (enableLoadingCheckNet) {
             mLoadingCheckNetMaxCount = ConfigSwitcherServer.getConfigInt(BuildConfigKey.CONFIG_LOADING_CHECK_NET_MAX_COUNT, 30);
             scheduleNetCheck();
@@ -163,8 +165,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
     }
 
     public void autoLogin(final int delayTogo) {
-        if (!ConfigSwitcherServer.isEnable(BuildConfigKey.BUNDLE_LOGIN) ||
-                WelcomeApplication.isLogin() || !ENABLE_LOADING_AUTO_LOGIN) {
+        if (WelcomeApplication.isLogin() || !ENABLE_LOADING_AUTO_LOGIN) {
             gotoNext(delayTogo);
             return;
         }

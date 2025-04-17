@@ -6,5 +6,8 @@
     <string name="input_number_range_err_msg_2">%s必须小于%s</string>
     <string name="input_str_range_err_msg">%s的长度必须大于等于%d小于等于%d</string>
 
+    <string name="info_storage_not_enough">%s 存储状态:内部存储不足%s，删除%d条日志</string>
+    <string name="info_external_storage_not_enough">%s 存储状态:外部存储不足%s</string>
+
     <string name="base_bg_service_content_title">%s后台服务</string>
 </resources>

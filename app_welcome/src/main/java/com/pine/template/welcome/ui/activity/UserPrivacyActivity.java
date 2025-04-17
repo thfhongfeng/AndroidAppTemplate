@@ -15,7 +15,9 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.pine.app.template.app_welcome.BuildConfigKey;
 import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.welcome.R;
 import com.pine.template.welcome.WelcomeKeyConstants;
@@ -24,9 +26,6 @@ import com.pine.template.welcome.vm.UserPrivacyVm;
 import com.pine.tool.util.SharePreferenceUtils;
 
 public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyActivityBinding, UserPrivacyVm> {
-
-    // 是否需要用户隐私授权协议签署界面
-    public final static boolean ENABLE_USER_PRIVACY_ASSIGN = false;
 
     private Dialog mTipDialog;
 
@@ -40,10 +39,12 @@ public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyA
     protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
         super.beforeInitOnCreate(savedInstanceState);
         boolean userPrivacyAgree = SharePreferenceUtils.readBooleanFromConfig(WelcomeKeyConstants.USER_PRIVACY_AGREE, false);
-        if (userPrivacyAgree || !ENABLE_USER_PRIVACY_ASSIGN) {
+        // 是否需要用户隐私授权协议签署界面
+        boolean enableUserPrivacyAssign = ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_USER_PRIVACY_ASSIGN, false);
+        if (userPrivacyAgree || !enableUserPrivacyAssign) {
             goLoadingActivity();
         }
-        return !isTaskRoot() || userPrivacyAgree || !ENABLE_USER_PRIVACY_ASSIGN;
+        return !isTaskRoot() || userPrivacyAgree || !enableUserPrivacyAssign;
     }
 
     @Override
