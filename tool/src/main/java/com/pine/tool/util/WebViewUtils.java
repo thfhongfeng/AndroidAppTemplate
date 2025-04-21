@@ -22,7 +22,7 @@ public class WebViewUtils {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(true);
-        webSettings.setAppCacheEnabled(false);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setAllowContentAccess(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (downloadListener != null) {

@@ -12,9 +12,9 @@ if (!destinationFile.exists()) {
  * 编译打包参数
  */
 def build_versions = [:]
-build_versions.compileSdkVersion = 32
+build_versions.compileSdkVersion = 34
 build_versions.minSdkVersion = 23
-build_versions.targetSdkVersion = 32
+build_versions.targetSdkVersion = 34
 
 build_versions.apkHeadName = "PineAndroidTemplate"
 
