@@ -2,6 +2,7 @@ package com.pine.template.base.component.image_loader;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
@@ -266,6 +267,48 @@ public class ImageLoaderManager {
     public void loadImage(@NonNull Context context, @NonNull File file, Drawable error,
                           Drawable placeholder, Drawable empty, @NonNull ImageView imageView) {
         mImpl.loadImage(context, file, error, placeholder, empty, imageView);
+    }
+
+    /**
+     * 加载本地Uri图片
+     *
+     * @param context   Context
+     * @param uri       图片地址
+     * @param imageView
+     */
+    public void loadImage(@NonNull Context context, @NonNull Uri uri,
+                          @NonNull ImageView imageView) {
+        loadImage(context, uri, DEFAULT_ERROR_RES_ID, DEFAULT_LOADING_RES_ID, DEFAULT_EMPTY_RES_ID, imageView);
+    }
+
+    /**
+     * 加载本地Uri图片
+     *
+     * @param context     Context
+     * @param uri         图片地址
+     * @param error       加载错误时的默认图（0：使用初始化时配置的图片，无效id：无图）
+     * @param placeholder 加载中的占位图（0：使用初始化时配置的图片，无效id：无图）
+     * @param empty       无图片的占位图（0：使用初始化时配置的图片）
+     * @param imageView
+     */
+    public void loadImage(@NonNull Context context, @NonNull Uri uri, @DrawableRes int error,
+                          @DrawableRes int placeholder, @DrawableRes int empty, @NonNull ImageView imageView) {
+        mImpl.loadImage(context, uri, error, placeholder, empty, imageView);
+    }
+
+    /**
+     * 加载本地Uri图片
+     *
+     * @param context     Context
+     * @param uri         图片地址
+     * @param error       加载错误时的默认图（null：使用初始化时配置的图片）
+     * @param placeholder 加载中的占位图（null：使用初始化时配置的图片）
+     * @param empty       无图片的占位图（null：使用初始化时配置的图片）
+     * @param imageView
+     */
+    public void loadImage(@NonNull Context context, @NonNull Uri uri, Drawable error,
+                          Drawable placeholder, Drawable empty, @NonNull ImageView imageView) {
+        mImpl.loadImage(context, uri, error, placeholder, empty, imageView);
     }
 
     /**

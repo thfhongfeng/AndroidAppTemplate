@@ -3,6 +3,7 @@ package com.pine.template.base.component.image_loader.glide;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -215,6 +216,40 @@ public class GlideImageLoaderManager implements IImageLoaderManager {
         }
         Glide.with(context)
                 .load(file == null ? (empty == null ? mEmptyImageResId : empty) : file)
+                .apply(options)
+                .into(imageView);
+    }
+
+    @Override
+    public void loadImage(@NonNull Context context, @NonNull Uri uri, int error, int placeholder,
+                          int empty, @NonNull ImageView imageView) {
+        RequestOptions options = mDefaultOption.clone()
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
+        if (error != 0) {
+            options.error(error);
+        }
+        if (placeholder != 0) {
+            options.placeholder(placeholder);
+        }
+        Glide.with(context)
+                .load(uri == null ? (empty == 0 ? mEmptyImageResId : empty) : uri)
+                .apply(options)
+                .into(imageView);
+    }
+
+    @Override
+    public void loadImage(@NonNull Context context, @NonNull Uri uri, Drawable error,
+                          Drawable placeholder, Drawable empty, @NonNull ImageView imageView) {
+        RequestOptions options = mDefaultOption.clone()
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
+        if (error != null) {
+            options.error(error);
+        }
+        if (placeholder != null) {
+            options.placeholder(placeholder);
+        }
+        Glide.with(context)
+                .load(uri == null ? (empty == null ? mEmptyImageResId : empty) : uri)
                 .apply(options)
                 .into(imageView);
     }

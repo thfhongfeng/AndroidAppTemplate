@@ -10,6 +10,9 @@ public class MediaBean implements Parcelable {
 
     private int mediaType;
     private String storeId;
+    // 0-url地址;1-file;2-uri
+    private int resType;
+    // 根据resType确定文件目录路径的结构
     private String url;
     private String remark;
 
@@ -52,6 +55,14 @@ public class MediaBean implements Parcelable {
         this.url = url;
     }
 
+    public int getResType() {
+        return resType;
+    }
+
+    public void setResType(int resType) {
+        this.resType = resType;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -60,9 +71,34 @@ public class MediaBean implements Parcelable {
         this.remark = remark;
     }
 
+    public boolean isResTypeUrl() {
+        return this.resType == 0;
+    }
+
+    public void setResTypeUrl() {
+        this.resType = 0;
+    }
+
+    public boolean isResTypeFile() {
+        return this.resType == 1;
+    }
+
+    public void setResTypeFile() {
+        this.resType = 1;
+    }
+
+    public boolean isResTypeUri() {
+        return this.resType == 1;
+    }
+
+    public void setResTypeUri() {
+        this.resType = 2;
+    }
+
     protected MediaBean(Parcel in) {
         mediaType = in.readInt();
         storeId = in.readString();
+        resType = in.readInt();
         url = in.readString();
         remark = in.readString();
     }
@@ -88,6 +124,7 @@ public class MediaBean implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mediaType);
         dest.writeString(storeId);
+        dest.writeInt(resType);
         dest.writeString(url);
         dest.writeString(remark);
     }

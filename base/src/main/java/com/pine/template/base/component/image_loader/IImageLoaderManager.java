@@ -2,6 +2,7 @@ package com.pine.template.base.component.image_loader;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
@@ -121,6 +122,32 @@ public interface IImageLoaderManager {
      * @param imageView
      */
     void loadImage(@NonNull Context context, @NonNull File file, Drawable error,
+                   Drawable placeholder, Drawable empty, @NonNull ImageView imageView);
+
+    /**
+     * 加载本地Uri图片
+     *
+     * @param context     Context
+     * @param uri        图片Uri
+     * @param error       加载错误时的默认图
+     * @param placeholder 加载中的占位图
+     * @param empty       无图片的占位图
+     * @param imageView
+     */
+    void loadImage(@NonNull Context context, @NonNull Uri uri, @DrawableRes int error,
+                   @DrawableRes int placeholder, @DrawableRes int empty, @NonNull ImageView imageView);
+
+    /**
+     * 加载本地Uri图片
+     *
+     * @param context     Context
+     * @param uri        图片地址Uri
+     * @param error       加载错误时的默认图
+     * @param placeholder 加载中的占位图
+     * @param empty       无图片的占位图
+     * @param imageView
+     */
+    void loadImage(@NonNull Context context, @NonNull Uri uri, Drawable error,
                    Drawable placeholder, Drawable empty, @NonNull ImageView imageView);
 
     /**
