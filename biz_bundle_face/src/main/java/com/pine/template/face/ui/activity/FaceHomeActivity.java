@@ -152,8 +152,8 @@ public class FaceHomeActivity extends BaseMvvmActionBarActivity<FaceHomeActivity
                     }
                 });
 
-        mPicShowDialog = DialogUtils.createCustomDialog(this, R.layout.face_view_pic_show,
-                Gravity.CENTER, 0.8f, 0.8f, null);
+        mPicShowDialog = new CustomDialog.Builder(this, R.layout.face_view_pic_show)
+                .create(Gravity.CENTER, 0.8f, 0.8f, null);
         mPicShowDialogIv = mPicShowDialog.findViewById(R.id.iv_target);
         mPicShowDialogIv.setOnClickListener(new View.OnClickListener() {
             @Override

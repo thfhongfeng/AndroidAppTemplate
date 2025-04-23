@@ -46,6 +46,7 @@ public class TimeSelectDialog extends BaseDialog {
 
     public static class Builder {
         private static final int MAX_YEARS = 10;
+        private int themeResId = R.style.BaseDialogStyle;
         private TextView cancel_tv, clear_tv, confirm_tv;
         private WheelPicker wheel_one, wheel_two, wheel_three;
         private Context context;
@@ -53,6 +54,11 @@ public class TimeSelectDialog extends BaseDialog {
 
         public Builder(Context context) {
             this.context = context;
+        }
+
+        public Builder(Context context, int themeResId) {
+            this.context = context;
+            this.themeResId = themeResId;
         }
 
         public TimeSelectDialog create(IDialogTimeSelected dialogSelect) {
@@ -70,7 +76,7 @@ public class TimeSelectDialog extends BaseDialog {
             }
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final TimeSelectDialog dialog = new TimeSelectDialog(context, R.style.BaseDialogStyle);
+            final TimeSelectDialog dialog = new TimeSelectDialog(context, themeResId);
             View layout = inflater.inflate(R.layout.base_dialog_date_or_time_select, null);
             cancel_tv = layout.findViewById(R.id.cancel_tv);
             clear_tv = layout.findViewById(R.id.clear_tv);
@@ -183,23 +189,6 @@ public class TimeSelectDialog extends BaseDialog {
                     }
                 }
             });
-        }
-    }
-
-    public void show(boolean fullScreenMode) {
-        if (fullScreenMode) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            show();
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        } else {
-            show();
         }
     }
 }

@@ -135,6 +135,7 @@ public class ProvinceSelectDialog extends BaseDialog {
     }
 
     public static class Builder {
+        private int themeResId = R.style.BaseDialogStyle;
         private TextView cancel_tv, confirm_tv;
         private WheelPicker wheel_one, wheel_two, wheel_three;
         private int curProvinceIndex, curCityIndex, curDistrictIndex;
@@ -144,10 +145,15 @@ public class ProvinceSelectDialog extends BaseDialog {
             this.context = context;
         }
 
+        public Builder(Context context, int themeResId) {
+            this.context = context;
+            this.themeResId = themeResId;
+        }
+
         public ProvinceSelectDialog create(IDialogDateSelected dialogSelect) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final ProvinceSelectDialog dialog = new ProvinceSelectDialog(context, R.style.BaseDialogStyle);
+            final ProvinceSelectDialog dialog = new ProvinceSelectDialog(context, themeResId);
             View layout = inflater.inflate(R.layout.base_dialog_locate_select, null);
             cancel_tv = layout.findViewById(R.id.cancel_tv);
             confirm_tv = layout.findViewById(R.id.confirm_tv);
@@ -226,23 +232,6 @@ public class ProvinceSelectDialog extends BaseDialog {
             wheel_three.setData(mDistrictListMap.get(mCityListMap.get(mProvinceList.get(curProvinceIndex)).get(curCityIndex)));
             curDistrictIndex = 0;
             wheel_three.setSelectedItemPosition(curDistrictIndex);
-        }
-    }
-
-    public void show(boolean fullScreenMode) {
-        if (fullScreenMode) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            show();
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        } else {
-            show();
         }
     }
 }

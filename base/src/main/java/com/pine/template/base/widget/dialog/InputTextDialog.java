@@ -171,6 +171,8 @@ public class InputTextDialog extends BaseDialog {
 
     public static class Builder {
         private Context context;
+
+        private int themeResId = R.style.BaseInputTextDialogStyle;
         private IActionClickListener actionClickListener;
         private BilingualTextView title_tv;
         private EditText input_et;
@@ -178,6 +180,11 @@ public class InputTextDialog extends BaseDialog {
 
         public Builder(Context context) {
             this.context = context;
+        }
+
+        public Builder(Context context, int themeResId) {
+            this.context = context;
+            this.themeResId = themeResId;
         }
 
         public IActionClickListener getActionClickListener() {
@@ -200,7 +207,7 @@ public class InputTextDialog extends BaseDialog {
                                       int inputType, boolean bilingual) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final InputTextDialog dialog = new InputTextDialog(context, R.style.BaseInputTextDialogStyle);
+            final InputTextDialog dialog = new InputTextDialog(context, themeResId);
             View layout = inflater.inflate(R.layout.base_dialog_text_input, null);
             title_tv = layout.findViewById(R.id.title_tv);
             input_et = layout.findViewById(R.id.input_et);
@@ -236,7 +243,6 @@ public class InputTextDialog extends BaseDialog {
                 public void onClick(View v) {
                     dialog.hideKeyboard(input_et);
                     ArrayList<String> list = new ArrayList<>();
-                    list.add(input_et.getText().toString());
                     list.add(input_et.getText().toString());
                     if (actionClickListener == null || !actionClickListener.onSubmitClick(dialog, list)) {
                         dialog.dismiss();
@@ -311,7 +317,7 @@ public class InputTextDialog extends BaseDialog {
         public InputTextDialog create(String title, String originalText, final int inputMaxLength, int inputType) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final InputTextDialog dialog = new InputTextDialog(context, R.style.BaseInputTextDialogStyle);
+            final InputTextDialog dialog = new InputTextDialog(context, themeResId);
             View layout = inflater.inflate(R.layout.base_dialog_text_input, null);
             title_tv = layout.findViewById(R.id.title_tv);
             input_et = layout.findViewById(R.id.input_et);
@@ -343,6 +349,7 @@ public class InputTextDialog extends BaseDialog {
                 public void onClick(View v) {
                     dialog.hideKeyboard(input_et);
                     ArrayList<String> list = new ArrayList<>();
+                    list.add(input_et.getText().toString());
                     list.add(input_et.getText().toString());
                     if (actionClickListener == null || !actionClickListener.onSubmitClick(dialog, list)) {
                         dialog.dismiss();
@@ -413,7 +420,7 @@ public class InputTextDialog extends BaseDialog {
                                                            int decimalNum) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final InputTextDialog dialog = new InputTextDialog(context, R.style.BaseInputTextDialogStyle);
+            final InputTextDialog dialog = new InputTextDialog(context, themeResId);
             View layout = inflater.inflate(R.layout.base_dialog_thounsandth_number_text_input, null);
             BilingualTextView title_tv = layout.findViewById(R.id.title_tv);
             input_et = layout.findViewById(R.id.input_et);
