@@ -31,6 +31,7 @@ import com.pine.tool.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -296,19 +297,73 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
         }
     }
 
-    public void showShortToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    private LinkedList<ToastEntity> mToastList = new LinkedList<>();
+    private int mMaxWaitToast = 1;
+    private int mMaxToastDuration = 10 * 1000;
+
+    public void setupWaitToastConfig(int maxWaitToast, int maxToastDuration) {
+        mMaxWaitToast = maxWaitToast;
+        if (maxToastDuration > 5 * 1000 && maxToastDuration < 60 * 1000) {
+            mMaxToastDuration = maxToastDuration;
+        }
     }
 
-    public void showShortToast(@StringRes int resId) {
-        Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
+    private void showToast(@NonNull Toast toast) {
+        toast.show();
+        long now = System.currentTimeMillis();
+        // 清理掉残留
+        while (mToastList.size() > 0 &&
+                (now - mToastList.getFirst().getTimeStamp()) > mToastList.size() * mMaxToastDuration) {
+            mToastList.removeFirst();
+        }
+
+        if (mToastList.size() > 0 && mToastList.size() > mMaxWaitToast) {
+            ToastEntity toastOld = mToastList.removeFirst();
+            if (toastOld.getToast() != null) {
+                toastOld.getToast().cancel();
+            }
+        }
+        ToastEntity toastEntity = new ToastEntity(toast, now);
+        mToastList.add(toastEntity);
     }
 
-    public void showLongToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    public synchronized void showShortToast(String message) {
+        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        showToast(toast);
     }
 
-    public void showLongToast(@StringRes int resId) {
-        Toast.makeText(getContext(), resId, Toast.LENGTH_LONG).show();
+    public synchronized void showShortToast(@StringRes int resId) {
+        Toast toast = Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT);
+        showToast(toast);
+    }
+
+    public synchronized void showShortToast(@StringRes int resId, Integer... formatArgs) {
+        Object[] args = new Object[formatArgs.length];
+        for (int i = 0; i < formatArgs.length; i++) {
+            Object idObj = formatArgs[i];
+            args[i] = getString((int) idObj);
+        }
+        Toast toast = Toast.makeText(getContext(), getString(resId, args), Toast.LENGTH_SHORT);
+        showToast(toast);
+    }
+
+    public synchronized void showLongToast(String message) {
+        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+        showToast(toast);
+    }
+
+    public synchronized void showLongToast(@StringRes int resId) {
+        Toast toast = Toast.makeText(getContext(), resId, Toast.LENGTH_LONG);
+        showToast(toast);
+    }
+
+    public synchronized void showLongToast(@StringRes int resId, Integer... formatArgs) {
+        Object[] args = new Object[formatArgs.length];
+        for (int i = 0; i < formatArgs.length; i++) {
+            Object idObj = formatArgs[i];
+            args[i] = getString((int) idObj);
+        }
+        Toast toast = Toast.makeText(getContext(), getString(resId, args), Toast.LENGTH_LONG);
+        showToast(toast);
     }
 }

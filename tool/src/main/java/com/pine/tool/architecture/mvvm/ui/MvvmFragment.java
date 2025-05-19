@@ -78,6 +78,33 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
             showShortToast(resId);
         }
     };
+    private Observer<Integer> mToastResFormatDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer resId) {
+            showShortToast(resId, mViewModel.getToastResFormatData().getCustomData());
+        }
+    };
+
+    private Observer<String> mLongToastMsgDataObserver = new Observer<String>() {
+        @Override
+        public void onChanged(@Nullable String msg) {
+            showLongToast(msg);
+        }
+    };
+
+    private Observer<Integer> mLongToastResIdDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer resId) {
+            showLongToast(resId);
+        }
+    };
+
+    private Observer<Integer> mLongToastResFormatDataObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable Integer resId) {
+            showLongToast(resId, mViewModel.getToastResFormatData().getCustomData());
+        }
+    };
 
     @CallSuper
     @Override
@@ -95,6 +122,10 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         mViewModel.getUiLoadingData().observe(this, mUiLoadingDataObserver);
         mViewModel.getToastMsgData().observe(this, mToastMsgDataObserver);
         mViewModel.getToastResIdData().observe(this, mToastResIdDataObserver);
+        mViewModel.getToastResFormatData().observe(this, mToastResFormatDataObserver);
+        mViewModel.getLongToastMsgData().observe(this, mLongToastMsgDataObserver);
+        mViewModel.getLongToastResIdData().observe(this, mLongToastResIdDataObserver);
+        mViewModel.getLongToastResFormatData().observe(this, mLongToastResFormatDataObserver);
         observeInitLiveData(savedInstanceState);
     }
 
@@ -175,7 +206,10 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
             mViewModel.onUiState(getActivity(), UiState.UI_STATE_ON_DETACH);
         }
         super.onDestroyView();
+        mBinding = null;
     }
+
+    public abstract void onFragmentVisible(boolean first);
 
     public void setLoadingUiVisibility(boolean visibility) {
 
