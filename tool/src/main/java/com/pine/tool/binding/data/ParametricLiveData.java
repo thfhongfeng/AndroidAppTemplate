@@ -6,6 +6,12 @@ import androidx.lifecycle.MutableLiveData;
  * Created by tanghongfeng on 2019/3/1
  */
 
+/**
+ * 让MutableLiveData携带额外参数数据
+ *
+ * @param <T>
+ * @param <P>
+ */
 public class ParametricLiveData<T, P> extends MutableLiveData<T> {
     private P customData;
 
