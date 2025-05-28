@@ -4,6 +4,8 @@ plugins {
 }
 
 android {
+    namespace "com.pine.template"
+
     compileSdk build_versions.compileSdkVersion
 
     defaultConfig {
@@ -17,11 +19,15 @@ android {
 
     buildFeatures {
         dataBinding = true
+        //AGP 8.0+ 默认不再为库模块生成 BuildConfig。需要主动打开功能
+        buildConfig = true
+        //AGP 8.0+ 默认不再为AIDL生成java。需要主动打开功能
+        aidl = true
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     productFlavors {

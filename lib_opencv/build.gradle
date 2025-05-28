@@ -101,11 +101,13 @@ def openCVersionCode = ((4 * 100 + 7) * 100 + 0) * 10 + 0
 println "OpenCV: " + openCVersionName + " " + project.buildscript.sourceFile
 
 android {
-    compileSdkVersion 32
+    namespace "org.opencv"
+
+    compileSdkVersion build_versions.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 32
+        minSdkVersion build_versions.minSdkVersion
+        targetSdkVersion build_versions.targetSdkVersio
 
         versionCode openCVersionCode
         versionName openCVersionName
@@ -116,6 +118,22 @@ android {
                 targets "opencv_jni_shared"
             }
         }
+    }
+
+    buildFeatures {
+        //AGP 8.0+ 默认不再为库模块生成 BuildConfig。需要主动打开功能
+        buildConfig = true
+        //AGP 8.0+ 默认不再为AIDL生成java。需要主动打开功能
+        aidl = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    kotlinOptions {
+        jvmTarget = "21" // 与 Java 版本一致
     }
 
     buildTypes {

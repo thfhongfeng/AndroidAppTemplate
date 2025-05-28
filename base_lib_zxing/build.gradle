@@ -5,6 +5,8 @@ plugins {
 apply from: "${rootDir}/gradleWorker/task/PublishTask.gradle"
 
 android {
+    namespace "com.uuzuche.lib_zxing"
+
     compileSdkVersion build_versions.compileSdkVersion
 
     defaultConfig {

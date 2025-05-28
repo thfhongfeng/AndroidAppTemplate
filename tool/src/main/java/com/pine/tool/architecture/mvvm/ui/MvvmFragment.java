@@ -209,8 +209,6 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         mBinding = null;
     }
 
-    public abstract void onFragmentVisible(boolean first);
-
     public void setLoadingUiVisibility(boolean visibility) {
 
     }

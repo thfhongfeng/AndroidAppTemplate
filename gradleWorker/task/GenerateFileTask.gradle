@@ -131,6 +131,7 @@ afterEvaluate {
         // 获取当前构建的构建类型名称
         def buildTypeName = variant.buildType.name
         def taskName = "${project.name}-generate${flavorName}${buildTypeName}ConfigKeyTask"
+        // AGP 8.0+ 设置 buildConfig = true 后getGenerateBuildConfig()才不会为空
         def buildConfigTask = variant.getGenerateBuildConfig() as Task
         // 定义自定义生成 BuildConfigKey 类文件的任务，并在buildConfigTask任务之后执行
         // （buildConfigTask任务会先清空的debug目录，因此只能在之后执行自己的文件生成任务）

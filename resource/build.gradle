@@ -5,6 +5,8 @@ plugins {
 apply from: "${rootDir}/gradleWorker/task/PublishTask.gradle"
 
 android {
+    namespace "com.pine.template.res"
+
     compileSdkVersion build_versions.compileSdkVersion
 
     defaultConfig {
@@ -15,6 +17,14 @@ android {
 
         //必须要保证所有的flavor 都属于同一个维度
         flavorDimensions "default"
+    }
+
+    buildFeatures {
+        dataBinding = true
+        //AGP 8.0+ 默认不再为库模块生成 BuildConfig。需要主动打开功能
+        buildConfig = true
+        //AGP 8.0+ 默认不再为AIDL生成java。需要主动打开功能
+        aidl = true
     }
 
     buildTypes {

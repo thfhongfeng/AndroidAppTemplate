@@ -11,15 +11,15 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
 
-//        google()
+        google()
+        mavenCentral()
 //        mavenLocal()
-//        mavenCentral()
 //        maven { url 'https://maven.google.com' }
 //        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0'
+        classpath 'com.android.tools.build:gradle:8.10.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -31,14 +31,15 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        mavenLocal()
         maven {
             url "${rootDir}/maven"
         }
-//        mavenCentral()
-//        jcenter()
-//        google()
+
+        google()
+        mavenCentral()
+//        mavenLocal()
 //        maven { url 'https://maven.google.com' }
+//        jcenter()
 
         flatDir {
             // 由于Library module中引用的 aar，在多 module 的情况下，
