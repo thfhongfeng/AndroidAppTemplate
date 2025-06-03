@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.ViewTreeObserver;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
@@ -38,6 +39,7 @@ import com.pine.tool.request.RequestManager;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.util.DensityUtils;
 import com.pine.tool.util.ImageUtils;
+import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.NetWorkUtils;
 import com.pine.tool.util.UrlUtils;
 import com.pine.tool.util.WebViewUtils;
@@ -53,10 +55,14 @@ import java.util.Calendar;
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
 
 public class CommonWebView extends WebView {
+    private final String TAG = this.getClass().getSimpleName();
+
     private Activity mActivity;
     private JsInterface mJsInterface;
 
     private boolean mIsUseJsGoBackHistory = false;
+
+    private IWebViewInitListener mInitListener;
     private IWebViewListener mListener;
 
     // 当前网页链接
@@ -80,16 +86,65 @@ public class CommonWebView extends WebView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void init(Activity activity, String startUrl) {
-        init(activity, startUrl, null);
+    public void init(Activity activity, String startUrl, IWebViewInitListener initListener) {
+        init(activity, startUrl, false, true, initListener, null);
     }
 
-    public void init(Activity activity, String startUrl, IWebViewListener listener) {
+    public void init(Activity activity, String startUrl, boolean autoLoad) {
+        init(activity, startUrl, false, autoLoad, null, null);
+    }
+
+    public void init(Activity activity, String startUrl, boolean matchWH, boolean autoLoad) {
+        init(activity, startUrl, matchWH, autoLoad, null, null);
+    }
+
+    public void init(Activity activity, String startUrl, boolean matchWH, boolean autoLoad, IWebViewInitListener initListener) {
+        init(activity, startUrl, matchWH, autoLoad, initListener, null);
+    }
+
+    private int mWidth, mHeight;
+
+    public void init(Activity activity, String startUrl, boolean matchWH,
+                     boolean autoLoad, IWebViewInitListener initListener, IWebViewListener listener) {
+        LogUtils.d(TAG, "init startUrl:" + startUrl + ", matchWH:" + matchWH + ", autoLoad:" + autoLoad);
+        mInitListener = initListener;
         mListener = listener;
-        mUrl = startUrl;
-        setupUrlHistoryType();
         mActivity = activity;
         initWebView();
+
+        if (matchWH) {
+            getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // 确保只执行一次
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    } else {
+                        getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
+                    mWidth = getWidth();
+                    mHeight = getHeight();
+                    LogUtils.d(TAG, "onGlobalLayout w:" + mWidth + ", h:" + mHeight);
+                    if (autoLoad && !TextUtils.isEmpty(startUrl)) {
+                        mUrl = startUrl + "&w=" + mWidth + "&h=" + mHeight;
+                        setupUrlHistoryType();
+                        loadUrl();
+                    }
+                    if (mInitListener != null) {
+                        mInitListener.onInit(CommonWebView.this, mUrl);
+                    }
+                }
+            });
+        } else {
+            if (autoLoad && !TextUtils.isEmpty(startUrl)) {
+                mUrl = startUrl;
+                setupUrlHistoryType();
+                loadUrl();
+            }
+            if (mInitListener != null) {
+                mInitListener.onInit(CommonWebView.this, mUrl);
+            }
+        }
     }
 
     private void initWebView() {
@@ -192,12 +247,10 @@ public class CommonWebView extends WebView {
         });
         mJsInterface = new JsInterface(this);
         addJavascriptInterface(mJsInterface, "appInterface");
-        if (!TextUtils.isEmpty(mUrl)) {
-            loadUrl();
-        }
     }
 
     private void loadUrl() {
+        LogUtils.d(TAG, "loadUrl:" + mUrl);
         synCookies(mUrl);
         loadUrl(mUrl);
     }
@@ -244,7 +297,6 @@ public class CommonWebView extends WebView {
             goBack();
         } else {
             finishUi();
-            return;
         }
     }
 
@@ -303,7 +355,7 @@ public class CommonWebView extends WebView {
     }
 
     private void setupUrlHistoryType() {
-        if (TextUtils.isEmpty(mUrl)) {
+        if (!TextUtils.isEmpty(mUrl)) {
             String backTag = UrlUtils.getValueByNameFromUrl(mUrl, "isBlockPrBack");
             if ("1".equals(backTag)) {
                 mIsUseJsGoBackHistory = true;
@@ -641,5 +693,9 @@ public class CommonWebView extends WebView {
         void onProgressChange(WebView view, int newProgress);
 
         boolean onJsAlert(WebView view, String url, String message);
+    }
+
+    public interface IWebViewInitListener {
+        void onInit(WebView view, String startUrl);
     }
 }

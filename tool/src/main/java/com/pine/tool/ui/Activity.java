@@ -47,6 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by tanghongfeng on 2018/9/28
@@ -629,7 +630,7 @@ public abstract class Activity extends AppCompatActivity
 
     private Handler mUserNoOperateHandler;
     private volatile long mLastUserOperateTime;
-    private HashMap<String, OnUserNoOperateInfo> mUserNoOperateListenerMap = new HashMap<>();
+    private ConcurrentHashMap<String, OnUserNoOperateInfo> mUserNoOperateListenerMap = new ConcurrentHashMap<>();
 
     public synchronized void listenUserNoOperate(@NonNull String tag,
                                                  @NonNull IOnUserNoOperateListener listener,
@@ -641,9 +642,7 @@ public abstract class Activity extends AppCompatActivity
         info.tag = tag;
         info.listener = listener;
         info.idleSecondTime = idleSecondTime;
-        synchronized (Activity.this) {
-            mUserNoOperateListenerMap.put(tag, info);
-        }
+        mUserNoOperateListenerMap.put(tag, info);
 
         if (mUserNoOperateHandler == null) {
             mUserNoOperateHandler = new Handler(Looper.getMainLooper()) {
@@ -655,32 +654,27 @@ public abstract class Activity extends AppCompatActivity
                     }
                     long now = System.currentTimeMillis();
                     long offset = (now - mLastUserOperateTime) / 1000;
-                    synchronized (Activity.this) {
-                        Set<String> keys = mUserNoOperateListenerMap.keySet();
-                        for (String key : keys) {
-                            OnUserNoOperateInfo item = mUserNoOperateListenerMap.get(key);
-                            if (item.idleSecondTime <= offset) {
-                                item.listener.OnUserNoOperate(offset);
-                            }
+                    Set<String> keys = mUserNoOperateListenerMap.keySet();
+                    for (String key : keys) {
+                        OnUserNoOperateInfo item = mUserNoOperateListenerMap.get(key);
+                        if (item != null && item.idleSecondTime <= offset) {
+                            item.listener.OnUserNoOperate(offset);
                         }
                     }
                 }
             };
         }
-        mLastUserOperateTime = System.currentTimeMillis();
         mUserNoOperateHandler.removeMessages(0);
         mUserNoOperateHandler.sendEmptyMessageDelayed(0, 1000);
     }
 
-    public void unListenUserNoOperate(@NonNull String tag) {
-        synchronized (Activity.this) {
-            OnUserNoOperateInfo listenerInfo = mUserNoOperateListenerMap.get(tag);
-            if (listenerInfo != null) {
-                mUserNoOperateListenerMap.remove(tag);
-            }
-            if (mUserNoOperateListenerMap.size() < 1 && mUserNoOperateHandler != null) {
-                mUserNoOperateHandler.removeCallbacksAndMessages(null);
-            }
+    public synchronized void unListenUserNoOperate(@NonNull String tag) {
+        OnUserNoOperateInfo listenerInfo = mUserNoOperateListenerMap.get(tag);
+        if (listenerInfo != null) {
+            mUserNoOperateListenerMap.remove(tag);
+        }
+        if (mUserNoOperateListenerMap.size() < 1 && mUserNoOperateHandler != null) {
+            mUserNoOperateHandler.removeCallbacksAndMessages(null);
         }
     }
 
