@@ -81,7 +81,7 @@ public class RouterManager {
         mRouterManagerImpl.callCommand(context, bundleKey, commandType, commandName, args, callback);
     }
 
-    public <R> R callUiCommandDirect(final Context context, final String bundleKey, String commandName, Bundle args)
+    public static <R> R callUiCommandDirect(final Context context, final String bundleKey, String commandName, Bundle args)
             throws RouterException {
         if (!mIsInit) {
             throw new IllegalArgumentException("RouterManager should be init first");

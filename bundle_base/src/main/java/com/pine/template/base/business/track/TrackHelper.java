@@ -23,10 +23,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class TrackHelper {
@@ -40,18 +38,14 @@ public class TrackHelper {
     private int mLoopInterval = 60;
     private boolean mLoopStart;
 
-    private Map<String, Boolean> mOpenModuleMap = new HashMap<>();
-
     private LinkedList<AppTrack> mLeftList = new LinkedList<>();
 
     private Context mContext;
     private String mUploadUrl;
 
-    public TrackHelper(@NonNull Context application, @NonNull String uploadUrl,
-                       @NonNull Map<String, Boolean> openModuleMap) {
+    public TrackHelper(@NonNull Context application, @NonNull String uploadUrl) {
         mContext = application;
         mUploadUrl = uploadUrl;
-        mOpenModuleMap = openModuleMap;
 
         mWorkThread = new HandlerThread("app track");
         mWorkThread.start();
@@ -69,7 +63,7 @@ public class TrackHelper {
             switch (msg.what) {
                 case MSG_UPLOAD_TRACK:
                     long timeStamp = System.currentTimeMillis();
-                    updateTrackTask(-1, -1);
+                    updateTrackTask(-1, -1, (List<String>) msg.obj);
                     if (mLoopStart) {
                         mWorkHandler.removeMessages(MSG_UPLOAD_TRACK);
                         long updateSum = System.currentTimeMillis() - timeStamp;
@@ -182,14 +176,15 @@ public class TrackHelper {
     /**
      * @param startTimeStamp include
      * @param endTimeStamp   exclude
+     * @param endTimeStamp   moduleList
      */
-    public void uploadTrack(final long startTimeStamp, final long endTimeStamp) {
+    public void uploadTrack(final long startTimeStamp, final long endTimeStamp, List<String> moduleList) {
         LogUtils.d(TAG, "uploadTrack startTimeStamp:" + startTimeStamp
                 + ",endTimeStamp:" + endTimeStamp);
         mWorkHandler.post(new Runnable() {
             @Override
             public void run() {
-                updateTrackTask(startTimeStamp, endTimeStamp);
+                updateTrackTask(startTimeStamp, endTimeStamp, moduleList);
             }
         });
     }
@@ -197,10 +192,11 @@ public class TrackHelper {
     /**
      * @param delay
      */
-    public synchronized void startLoopUploadTrack(long delay) {
+    public synchronized void startLoopUploadTrack(long delay, List<String> moduleList) {
         stopLoopUploadTrack();
         mLoopStart = true;
-        mWorkHandler.sendEmptyMessageDelayed(MSG_UPLOAD_TRACK, delay > 0 ? delay : 0);
+        Message message = mWorkHandler.obtainMessage(MSG_UPLOAD_TRACK, moduleList);
+        mWorkHandler.sendMessageDelayed(message, delay > 0 ? delay : 0);
     }
 
     public synchronized void stopLoopUploadTrack() {
@@ -224,23 +220,13 @@ public class TrackHelper {
 
     private volatile boolean mUploading = false;
 
-    private void updateTrackTask(long startTimeStamp, long endTimeStamp) {
+    private void updateTrackTask(long startTimeStamp, long endTimeStamp, List<String> moduleList) {
         if (mUploading) {
             LogUtils.d(TAG, "update track, task already processing, return");
             return;
         }
         final List<AppTrack> uploadList = new ArrayList<>();
-        List<String> moduleList = new ArrayList<>();
-        synchronized (mOpenModuleMap) {
-            Iterator<Map.Entry<String, Boolean>> iterator = mOpenModuleMap.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, Boolean> entry = iterator.next();
-                if (entry.getValue()) {
-                    moduleList.add(entry.getKey());
-                }
-            }
-        }
-        if (moduleList.size() < 1) {
+        if (moduleList == null || moduleList.size() < 1) {
             LogUtils.d(TAG, "update track, there is no open module");
             return;
         }
@@ -275,7 +261,8 @@ public class TrackHelper {
                 uploadList.addAll(list);
             }
             dataObj.put("trackData", trackObj);
-            dataObj.put("deviceInfo", new JSONObject(new Gson().toJson(AppTrackUtils.getTrackHeader(mContext))));
+            dataObj.put("deviceInfo", new JSONObject(
+                    new Gson().toJson(AppTrackManager.getInstance().getTrackAdapter().getTrackHeader(mContext))));
         } catch (JSONException e) {
             LogUtils.d(TAG, "update track, data format incorrect");
             return;

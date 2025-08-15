@@ -1,15 +1,17 @@
-package com.pine.template.base.track;
+package com.pine.template.base.business.track;
 
 import java.util.List;
 
-public class TrackActionNameInfo {
+public class TrackModuleInfo {
     private String moduleName;
     private String moduleDesc;
-    private List<TrackActionName> actions;
+    private List<TrackActionInfo> actions;
+    private boolean canUpload;
 
-    public TrackActionNameInfo(String moduleName, String moduleDesc) {
+    public TrackModuleInfo(String moduleName, String moduleDesc, boolean canUpload) {
         this.moduleName = moduleName;
         this.moduleDesc = moduleDesc;
+        this.canUpload = canUpload;
     }
 
     public String getModuleName() {
@@ -28,20 +30,19 @@ public class TrackActionNameInfo {
         this.moduleDesc = moduleDesc;
     }
 
-    public List<TrackActionName> getActions() {
+    public List<TrackActionInfo> getActions() {
         return actions;
     }
 
-    public void setActions(List<TrackActionName> actions) {
+    public void setActions(List<TrackActionInfo> actions) {
         this.actions = actions;
     }
 
-    @Override
-    public String toString() {
-        return "TrackActionInfo{" +
-                "moduleName='" + moduleName + '\'' +
-                ", moduleDesc='" + moduleDesc + '\'' +
-                ", actions=" + actions +
-                '}';
+    public boolean isCanUpload() {
+        return canUpload;
+    }
+
+    public void setCanUpload(boolean canUpload) {
+        this.canUpload = canUpload;
     }
 }

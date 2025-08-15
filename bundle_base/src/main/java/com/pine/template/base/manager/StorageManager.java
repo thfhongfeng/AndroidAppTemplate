@@ -10,8 +10,7 @@ import android.text.format.Formatter;
 import com.pine.template.base.bean.DiskInfo;
 import com.pine.template.base.bgwork.BgWorkManager;
 import com.pine.template.base.business.track.AppTrackManager;
-import com.pine.template.base.business.track.TrackModuleTag;
-import com.pine.template.base.track.TrackActionNameBuilder;
+import com.pine.template.base.business.track.TrackDefaultBuilder;
 import com.pine.template.bundle_base.BuildConfig;
 import com.pine.template.bundle_base.R;
 import com.pine.tool.util.AppUtils;
@@ -139,8 +138,8 @@ public class StorageManager {
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.info_storage_not_enough,
                 mSimpleDateFormat.format(recordDate), Formatter.formatFileSize(mContext, threshold), trackDelCount);
-        AppTrackManager.getInstance().recordInfoState(TrackModuleTag.MODULE_STATE_INFO, DEFAULT_CUR_CLASS,
-                TrackActionNameBuilder.INFO_STORAGE_NOT_ENOUGH, actionData,
+        AppTrackManager.getInstance().recordInfoState(TrackDefaultBuilder.MODULE_STATE_INFO, DEFAULT_CUR_CLASS,
+                TrackDefaultBuilder.INFO_STORAGE_NOT_ENOUGH, actionData,
                 recordDate.getTime(), true);
     }
 
@@ -151,8 +150,8 @@ public class StorageManager {
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.info_external_storage_not_enough,
                 mSimpleDateFormat.format(recordDate), Formatter.formatFileSize(mContext, threshold));
-        AppTrackManager.getInstance().recordInfoState(TrackModuleTag.MODULE_STATE_INFO, DEFAULT_CUR_CLASS,
-                TrackActionNameBuilder.INFO_STORAGE_NOT_ENOUGH, actionData,
+        AppTrackManager.getInstance().recordInfoState(TrackDefaultBuilder.MODULE_STATE_INFO, DEFAULT_CUR_CLASS,
+                TrackDefaultBuilder.INFO_STORAGE_NOT_ENOUGH, actionData,
                 recordDate.getTime(), true);
     }
 }

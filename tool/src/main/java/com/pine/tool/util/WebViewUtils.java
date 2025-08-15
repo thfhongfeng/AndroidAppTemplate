@@ -51,4 +51,25 @@ public class WebViewUtils {
         }
         webView.removeJavascriptInterface("searchBoxJavaBredge_");
     }
+
+    public static void setForDesktopUserAgent(WebView webView) {
+        WebSettings webSettings = webView.getSettings();
+        // 1. 获取桌面版 User-Agent（示例为 Chrome 的 PC 端标识）
+        String desktopUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
+        // 2. 设置 User-Agent
+        webSettings.setUserAgentString(desktopUserAgent);
+        // 清除缓存（可选）
+        webView.clearCache(true);
+        webView.clearHistory();
+    }
+
+    public static void setUserAgent(WebView webView, String agent) {
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setUserAgentString(agent);
+    }
+
+    public static String getUserAgent(WebView webView) {
+        WebSettings webSettings = webView.getSettings();
+        return webSettings.getUserAgentString();
+    }
 }

@@ -1,10 +1,10 @@
-package com.pine.template.base.track;
+package com.pine.template.base.business.track;
 
-public class TrackActionName {
+public class TrackActionInfo {
     private String actionName;
     private String actionDesc;
 
-    public TrackActionName(String name, String desc) {
+    public TrackActionInfo(String name, String desc) {
         actionName = name;
         actionDesc = desc;
     }

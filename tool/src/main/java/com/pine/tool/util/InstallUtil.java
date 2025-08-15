@@ -32,7 +32,7 @@ public class InstallUtil {
     }
 
     public static boolean installApk(Context context, String path, boolean silent) {
-        return install(context, path, silent);
+        return InstallUtil.install(context, path, silent);
     }
 
     /**

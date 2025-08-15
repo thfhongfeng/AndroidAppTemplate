@@ -23,8 +23,6 @@ public class AppTrackRepository {
 
     private AppTrackDao appTrackDao;
 
-    private int MAX_COUNT;
-
     public static AppTrackRepository getInstance(Context application) {
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
             if (mInstance == null) {
@@ -39,7 +37,6 @@ public class AppTrackRepository {
     private AppTrackRepository(Context application) {
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
             mApplicationContext = application;
-            MAX_COUNT = AppTrackUtils.getMaxStoreCount();
             roomDatabase = DbRoomDatabase.getINSTANCE(application);
             appTrackDao = roomDatabase.appTrackDao();
         }
@@ -349,7 +346,7 @@ public class AppTrackRepository {
         for (AppTrack appTrack : appTrackList) {
             appTrack.setId(0);
             if (TextUtils.isEmpty(appTrack.getModuleTag())) {
-                appTrack.setModuleTag(TrackModuleTag.MODULE_DEFAULT);
+                appTrack.setModuleTag(TrackDefaultBuilder.MODULE_DEFAULT);
             }
             List<AppTrack> list = map.get(appTrack.getModuleTag());
             if (list == null) {
@@ -361,25 +358,26 @@ public class AppTrackRepository {
         int newCount = appTrackList.size();
         Set<String> keys = map.keySet();
         int count = appTrackDao.getCount();
+        int maxStore = AppTrackManager.getInstance().getMaxStoreCount();
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
             for (String moduleTag : keys) {
                 List<AppTrack> list = map.get(moduleTag);
                 LogUtils.d(TAG, "insert appTrack list: " + list + ",cur count:" + count);
                 List<AppTrack> deleteTrackList = new ArrayList<>();
-                if (count + newCount > MAX_COUNT) {
+                if (count + newCount > maxStore) {
                     int curCount = count;
-                    LogUtils.d(TAG, "insert appTrack, cur count > " + MAX_COUNT + ", delete half old data");
-                    appTrackDao.deleteOldData(MAX_COUNT / 4);
+                    LogUtils.d(TAG, "insert appTrack, cur count > " + maxStore + ", delete half old data");
+                    appTrackDao.deleteOldData(maxStore / 4);
                     count = appTrackDao.getCount();
-                    deleteTrackList.add(TrackModuleTag.getDeleteOldDataTrackForDbOut(mApplicationContext, "", curCount - count));
+                    deleteTrackList.add(TrackDefaultBuilder.getDeleteOldDataTrackForDbOut(mApplicationContext, "", curCount - count));
                 }
                 int moduleCount = appTrackDao.getCountByModuleTag(moduleTag);
-                int maxModuleCount = AppTrackUtils.getModuleMaxCount(moduleTag);
+                int maxModuleCount = AppTrackManager.getInstance().getModuleMaxCount(moduleTag);
                 if (moduleCount + newCount > maxModuleCount) {
                     int curCount = moduleCount;
                     LogUtils.d(TAG, "insert module record, cur count > " + maxModuleCount + ", delete half old data");
                     appTrackDao.deleteOldDataByModuleTag(moduleTag, maxModuleCount / 4);
-                    deleteTrackList.add(TrackModuleTag.getDeleteOldDataTrackForDbOut(mApplicationContext, moduleTag, curCount - moduleCount));
+                    deleteTrackList.add(TrackDefaultBuilder.getDeleteOldDataTrackForDbOut(mApplicationContext, moduleTag, curCount - moduleCount));
                 }
                 try {
                     if (deleteTrackList.size() > 0) {
@@ -413,7 +411,7 @@ public class AppTrackRepository {
             delCount = curCount - minLeft > delCount ? delCount : curCount - minLeft;
             int del = appTrackDao.deleteOldData(delCount);
             if (del > 0) {
-                appTrackDao.insert(TrackModuleTag.getDeleteOldDataTrackForStorageOut(mApplicationContext, delCount));
+                appTrackDao.insert(TrackDefaultBuilder.getDeleteOldDataTrackForStorageOut(mApplicationContext, delCount));
                 return del;
             }
             return 0;

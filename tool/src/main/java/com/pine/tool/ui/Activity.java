@@ -684,6 +684,10 @@ public abstract class Activity extends AppCompatActivity
         mLastUserOperateTime = System.currentTimeMillis();
     }
 
+    public void refreshUserOperateTime() {
+        mLastUserOperateTime = System.currentTimeMillis();
+    }
+
     public interface IOnUserNoOperateListener {
         void OnUserNoOperate(long idleTime);
     }
