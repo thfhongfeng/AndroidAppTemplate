@@ -127,13 +127,18 @@ android {
         aidl = true
     }
 
+    // Android Gradle Plugin 8.1.0 最高仅支持 Java 17，无法直接使用 Java 21
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
+//        sourceCompatibility JavaVersion.VERSION_17
+//        targetCompatibility JavaVersion.VERSION_17
     }
 
+    // Android Gradle Plugin 8.1.0 最高仅支持 Java 17，无法直接使用 Java 21
     kotlinOptions {
         jvmTarget = "21" // 与 Java 版本一致
+//        jvmTarget = "17" // 与 Java 版本一致
     }
 
     buildTypes {
