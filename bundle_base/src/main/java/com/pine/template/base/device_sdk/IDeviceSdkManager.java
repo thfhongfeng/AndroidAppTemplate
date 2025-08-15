@@ -13,6 +13,8 @@ public interface IDeviceSdkManager {
 
     boolean init(Context context, String authorityKey) throws DeviceSdkException;
 
+    boolean setForegroundAppKeepLive(String packageName, int keepAliveTimeSec) throws DeviceSdkException;
+
     String getProperty(String key, String defaultValue) throws DeviceSdkException;
 
     boolean setProperty(String key, String value) throws DeviceSdkException;

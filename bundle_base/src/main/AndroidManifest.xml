@@ -7,6 +7,15 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
+        <receiver
+            android:name="com.pine.template.base.receiver.AutoPowerReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.pine.template.action.ACTION_AUTO_REBOOT" />
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
         <service
             android:name="com.pine.template.base.bgwork.service.AppBgService"
             android:enabled="true"

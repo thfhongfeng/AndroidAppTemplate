@@ -54,6 +54,14 @@ public class DeviceSdkManager {
         return false;
     }
 
+    public boolean setForegroundAppKeepLive(String packageName, int keepAliveTimeSec)
+            throws DeviceSdkException {
+        if (!checkSdkInit()) {
+            throw new DeviceSdkException("device device_sdk is not init");
+        }
+        return mManager.setForegroundAppKeepLive(packageName, keepAliveTimeSec);
+    }
+
     /**
      * 获取属性值
      *

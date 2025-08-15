@@ -8,6 +8,11 @@ import java.util.List;
 
 public abstract class DefaultDeviceSdkProxy implements IDeviceSdkManager {
 
+    public boolean setForegroundAppKeepLive(String packageName, int keepAliveTimeSec)
+            throws DeviceSdkException {
+        throw new DeviceSdkException("not impl method");
+    }
+
     @Override
     public String getProperty(String key, String defaultValue) throws DeviceSdkException {
         throw new DeviceSdkException("not impl method");
