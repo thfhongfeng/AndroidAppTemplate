@@ -20,6 +20,7 @@ import com.pine.template.base.helper.AutoRebootHelper;
 import com.pine.template.base.manager.MainTtsManager;
 import com.pine.template.base.manager.tts.TtsManager;
 import com.pine.template.base.remote.BaseRouterClient;
+import com.pine.template.main.mqtt.MqttClient;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.NetWorkUtils;
@@ -31,6 +32,7 @@ import com.pine.tool.util.SysSettingsUtils;
 
 public class MainApplication extends BaseApplication {
     private final static String TAG = LogUtils.makeLogTag(MainApplication.class);
+    public static String DEVICE_ID;
 
     public static String APP_KEY;
     public static String VERSION_NAME;
@@ -41,6 +43,7 @@ public class MainApplication extends BaseApplication {
 
     public static void attach() {
         DeviceConfig.init();
+        DEVICE_ID = DeviceConfig.getDeviceUniqueNum(mApplication);
         APP_KEY = mApplication.getPackageName();
         VERSION_NAME = AppUtils.getVersionName();
         VERSION_CODE = AppUtils.getVersionCode();
@@ -48,6 +51,8 @@ public class MainApplication extends BaseApplication {
         LogUtils.d(TAG, "APP_Info APP_KEY:" + APP_KEY
                 + ", VERSION_NAME:" + VERSION_NAME + ", VERSION_CODE:" + VERSION_CODE
                 + ", SDK_TYPE:" + SDK_TYPE);
+
+        MqttClient.getInstance().register();
 
         AppTrackManager.getInstance().init(mApplication, MainUrlConstants.APP_TRACK(), new DefaultAppTrackAdapter() {
             @Override
@@ -109,10 +114,14 @@ public class MainApplication extends BaseApplication {
                 AppTrackManager.getInstance().doStartJob();
 
                 BgCheckManager.getInstance().scheduleChecker();
+
+                MqttClient.getInstance().init(mApplication);
             }
 
             @Override
             public void onAppDestroyed() {
+                MqttClient.getInstance().release();
+
                 BgCheckManager.getInstance().releaseChecker();
 
                 AppTrackManager.getInstance().doFinishJob();

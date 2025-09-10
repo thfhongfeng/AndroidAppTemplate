@@ -1,3 +1,17 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
     <string name="main_home_title">Main Home</string>
+
+    <string name="main_info_mqtt_state_connect">%s MQTT状态:连接成功</string>
+    <string name="main_info_mqtt_state_keep_live">%s MQTT状态:心跳次数(发:%s,回:%s),服务存活(%s)</string>
+    <string name="main_info_mqtt_state_keep_live_fail">%s MQTT状态:心跳检查，失败原因(%s)</string>
+    <string name="main_info_mqtt_state_reconnect_by_check">%s MQTT状态:MQTT检查机制启动重连</string>
+    <string name="main_info_mqtt_state_disconnect">%s MQTT状态:已断开,原因(%s)</string>
+    <string name="main_info_mqtt_state_service">%s MQTT状态:MQTT服务(%s)</string>
+    <string name="main_info_net_state_signal">,信号(%s)</string>
+    <string name="main_info_net_state_connect">%s 网络状态:已连接,网络类型(%s)%s</string>
+    <string name="main_info_net_state_connect_signal">%s 网络状态:%s,信号(%s)</string>
+    <string name="main_info_net_state_disconnect">%s 网络状态:已断开</string>
+
+    <string name="main_info_app_start">%s 应用状态:启动成功</string>
+    <string name="main_info_app_stop">%s 应用状态:正常关闭</string>
 </resources>

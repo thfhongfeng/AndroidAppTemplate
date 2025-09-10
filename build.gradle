@@ -21,8 +21,8 @@ buildscript {
         // Android Gradle Plugin 8.1.0 最高仅支持 Java 17，
         // 无法直接使用 Java 21，若因为Android studio版本问题不能使用8.10.0，
         // 还需要修改模块的compileOptions和kotlinOptions
-//        classpath 'com.android.tools.build:gradle:8.1.0'
-        classpath 'com.android.tools.build:gradle:8.10.0'
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        //classpath 'com.android.tools.build:gradle:8.10.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

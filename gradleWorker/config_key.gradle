@@ -10,7 +10,7 @@
 def bundleConfigKeyMap = [:]
 //  bundle_main模块
 bundleConfigKeyMap.main = [
-        CONFIG_VOLUME          : "CONFIG_VOLUME",
+        CONFIG_VOLUME: "CONFIG_VOLUME",
 ]
 //  biz_bundle_mvc, biz_bundle_mvp, biz_bundle_mvvm模块
 bundleConfigKeyMap.mvcMvpMvvm = [FUN_ADD_SHOP       : "FUN_ADD_SHOP",
@@ -26,52 +26,58 @@ gradle.ext.bundleConfigKeyMap = bundleConfigKeyMap
  */
 def baseConfigKey = [
         // 客户标识
-        PRODUCT_CUSTOMER_TAG                  : "PRODUCT_CUSTOMER_TAG",
+        PRODUCT_CUSTOMER_TAG                : "PRODUCT_CUSTOMER_TAG",
 
         // 应用启动时，否检查网络状态(如果无网络则持续循环检查，直至超过最大允许检查次数或者有网络了才开始后续流程)
-        ENABLE_LOADING_CHECK_NET          : "ENABLE_LOADING_CHECK_NET",
+        ENABLE_LOADING_CHECK_NET            : "ENABLE_LOADING_CHECK_NET",
         // 应用启动时，检查网络状态最大允许次数
-        CONFIG_LOADING_CHECK_NET_MAX_COUNT: "CONFIG_LOADING_CHECK_NET_MAX_COUNT",
+        CONFIG_LOADING_CHECK_NET_MAX_COUNT  : "CONFIG_LOADING_CHECK_NET_MAX_COUNT",
 
         // app使用痕迹埋点
-        FUN_APP_TRACK                  : "FUN_APP_TRACK",
-        ENABLE_APP_TRACK               : "ENABLE_APP_TRACK",
-        ENABLE_UPLOAD_APP_TRACK        : "ENABLE_UPLOAD_APP_TRACK",
-        CONFIG_APP_TRACK_URL           : "CONFIG_APP_TRACK_URL",
-        CONFIG_APP_TRACK_LOOP_INTERVAL : "CONFIG_APP_TRACK_LOOP_INTERVAL",
-        CONFIG_APP_TRACK_MAX_COUNT     : "CONFIG_APP_TRACK_MAX_COUNT",
+        FUN_APP_TRACK                       : "FUN_APP_TRACK",
+        ENABLE_APP_TRACK                    : "ENABLE_APP_TRACK",
+        ENABLE_UPLOAD_APP_TRACK             : "ENABLE_UPLOAD_APP_TRACK",
+        CONFIG_APP_TRACK_URL                : "CONFIG_APP_TRACK_URL",
+        CONFIG_APP_TRACK_LOOP_INTERVAL      : "CONFIG_APP_TRACK_LOOP_INTERVAL",
+        CONFIG_APP_TRACK_MAX_COUNT          : "CONFIG_APP_TRACK_MAX_COUNT",
         // app更新
-        ENABLE_AUTO_CHECK_UPDATE       : "ENABLE_AUTO_CHECK_UPDATE",
-        CONFIG_APK_UPDATE_URL          : "CONFIG_APK_UPDATE_URL",
+        ENABLE_AUTO_CHECK_UPDATE            : "ENABLE_AUTO_CHECK_UPDATE",
+        CONFIG_APK_UPDATE_URL               : "CONFIG_APK_UPDATE_URL",
         // 双语文本UI
-        ENABLE_BILINGUAL_TEXT          : "ENABLE_BILINGUAL_TEXT",
-        CONFIG_FIRST_LOCAL             : "CONFIG_FIRST_LOCAL",
-        CONFIG_SECOND_LOCAL            : "CONFIG_SECOND_LOCAL",
+        ENABLE_BILINGUAL_TEXT               : "ENABLE_BILINGUAL_TEXT",
+        CONFIG_FIRST_LOCAL                  : "CONFIG_FIRST_LOCAL",
+        CONFIG_SECOND_LOCAL                 : "CONFIG_SECOND_LOCAL",
         // 业务服务器根地址
-        CONFIG_SERVER_URL              : "CONFIG_SERVER_URL",
+        CONFIG_SERVER_URL                   : "CONFIG_SERVER_URL",
         // 文件上传完整地址
-        CONFIG_FILE_UPLOAD_URL         : "CONFIG_FILE_UPLOAD_URL",
+        CONFIG_FILE_UPLOAD_URL              : "CONFIG_FILE_UPLOAD_URL",
         // 文件服务器完整地址
-        CONFIG_FILE_SERVER_URL         : "CONFIG_FILE_SERVER_URL",
+        CONFIG_FILE_SERVER_URL              : "CONFIG_FILE_SERVER_URL",
         // MQTT
-        CONFIG_MQTT_HOST               : "CONFIG_MQTT_HOST",
-        CACHE_MQTT_TTL_INTERVAL        : "CACHE_MQTT_TTL_INTERVAL",
+        FUN_MQTT                            : "FUN_MQTT",
+        ENABLE_MQTT                         : "ENABLE_MQTT",
+        CONFIG_MQTT_HOST                    : "CONFIG_MQTT_HOST",
+        CACHE_MQTT_TTL_INTERVAL             : "CACHE_MQTT_TTL_INTERVAL",
+        CONFIG_MQTT_DEVICE_TYPE_GROUP       : "CONFIG_MQTT_DEVICE_TYPE_GROUP",
+        CONFIG_MQTT_TOPIC_HEAD              : "CONFIG_MQTT_TOPIC_HEAD",
+        CONFIG_MQTT_USERNAME                : "CONFIG_MQTT_USERNAME",
+        CONFIG_MQTT_PWD                     : "CONFIG_MQTT_PWD",
         // SOCKET完整地址
-        CONFIG_SOCKET_URL              : "CONFIG_SOCKET_URL",
+        CONFIG_SOCKET_URL                   : "CONFIG_SOCKET_URL",
         // app配置项获取完整地址
-        CONFIG_APP_CONFIG_URL          : "CONFIG_APP_CONFIG_URL",
+        CONFIG_APP_CONFIG_URL               : "CONFIG_APP_CONFIG_URL",
         // app账号注册完整地址
-        CONFIG_APP_REGISTER_ACCOUNT_URL: "CONFIG_APP_REGISTER_ACCOUNT_URL",
+        CONFIG_APP_REGISTER_ACCOUNT_URL     : "CONFIG_APP_REGISTER_ACCOUNT_URL",
         // app账号登录完整地址
-        CONFIG_APP_LOGIN_URL           : "CONFIG_APP_LOGIN_URL",
+        CONFIG_APP_LOGIN_URL                : "CONFIG_APP_LOGIN_URL",
         // app账号登出完整地址
-        CONFIG_APP_LOGOUT_URL          : "CONFIG_APP_LOGOUT_URL",
+        CONFIG_APP_LOGOUT_URL               : "CONFIG_APP_LOGOUT_URL",
         // app账号图形验证码完整地址
-        CONFIG_APP_VERIFY_CODE_URL     : "CONFIG_APP_VERIFY_CODE_URL",
+        CONFIG_APP_VERIFY_CODE_URL          : "CONFIG_APP_VERIFY_CODE_URL",
 
         // 用户协议
-        CONFIG_H5_PRIVACY_USER         : "CONFIG_H5_PRIVACY_USER",
-        CONFIG_H5_PRIVACY_POLICY       : "CONFIG_H5_PRIVACY_POLICY",
+        CONFIG_H5_PRIVACY_USER              : "CONFIG_H5_PRIVACY_USER",
+        CONFIG_H5_PRIVACY_POLICY            : "CONFIG_H5_PRIVACY_POLICY",
 
         // 是否开启自动重启
         ENABLE_SCHEDULE_REBOOT              : "ENABLE_SCHEDULE_REBOOT",
@@ -81,9 +87,9 @@ def baseConfigKey = [
         CONFIG_RANDOM_PWD                   : "CONFIG_RANDOM_PWD",
 
         // 加载界面功能
-        ENABLE_USER_PRIVACY_ASSIGN         : "ENABLE_USER_PRIVACY_ASSIGN",
-        ENABLE_LOADING_AUTO_LOGIN          : "ENABLE_LOADING_AUTO_LOGIN",
-        ENABLE_LOADING_GO_WELCOME          : "ENABLE_LOADING_GO_WELCOME",
+        ENABLE_USER_PRIVACY_ASSIGN          : "ENABLE_USER_PRIVACY_ASSIGN",
+        ENABLE_LOADING_AUTO_LOGIN           : "ENABLE_LOADING_AUTO_LOGIN",
+        ENABLE_LOADING_GO_WELCOME           : "ENABLE_LOADING_GO_WELCOME",
 
         CONFIG_AUTO_FINISH_SETTINGS_UI_DELAY: "ENABLE_AUTO_FINISH_SETTINGS_UI_DELAY",
 ]

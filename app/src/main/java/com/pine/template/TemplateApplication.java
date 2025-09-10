@@ -51,6 +51,17 @@ public class TemplateApplication extends Application {
 
             BundleBaseApplication.initManager();
 
+            if (BuildConfig.BUILD_BIZ_BUNDLE != null) {
+                for (String bizBundle : BuildConfig.BUILD_BIZ_BUNDLE) {
+                    try {
+                        RouterManager.callOpCommandDirect(mApplication, bizBundle,
+                                "onMainProcessCreate", null);
+                    } catch (RouterException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
             BundleBaseApplication.attach();
             WelcomeApplication.attach();
             LoginApplication.attach();
@@ -60,15 +71,7 @@ public class TemplateApplication extends Application {
                 for (String bizBundle : BuildConfig.BUILD_BIZ_BUNDLE) {
                     try {
                         RouterManager.callOpCommandDirect(mApplication, bizBundle,
-                                "onAppCreate", null);
-                    } catch (RouterException e) {
-                        e.printStackTrace();
-                    }
-                }
-                for (String bizBundle : BuildConfig.BUILD_BIZ_BUNDLE) {
-                    try {
-                        RouterManager.callOpCommandDirect(mApplication, bizBundle,
-                                "onAppAttach", null);
+                                "onMainProcessAttach", null);
                     } catch (RouterException e) {
                         e.printStackTrace();
                     }

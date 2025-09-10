@@ -1,121 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="base_network_err">网络错误，请检查网络后重试</string>
-    <string name="base_server_err">服务器错误，请稍后重试</string>
-    <string name="base_json_data_err">服务器返回数据异常，请重试</string>
+    <string name="base_network_err">Network error, please check the network and try again</string>
+    <string name="base_server_err">Server error, please try again later</string>
+    <string name="base_json_data_err">The server returned abnormal data. Please try again</string>
 
-    <string name="base_new_version_no">当前为最新版本</string>
-    <string name="base_new_version_available">发现新版本(%s)，是否要更新?</string>
-    <string name="base_new_version_download_fail">更新下载失败</string>
-    <string name="base_new_version_download_extra_fail">更新下载失败(%s)</string>
-    <string name="base_new_version_install_fail">更新安装失败</string>
-    <string name="base_new_version_update_cancel">更新被取消</string>
+    <string name="base_new_version_no">Currently the latest version</string>
+    <string name="base_new_version_available">A new version (%s) has been detected. Do you want to update?</string>
+    <string name="base_new_version_download_fail">Update download failed</string>
+    <string name="base_new_version_download_extra_fail">Update download failed (%s)</string>
+    <string name="base_new_version_install_fail">Update installation failed</string>
+    <string name="base_new_version_update_cancel">Update canceled</string>
 
-    <string name="base_version_get_download_path_fail">获取下载目录%s失败</string>
+    <string name="base_version_get_download_path_fail">Failed to obtain the download directory %s</string>
 
-    <string name="base_loading">加载中...</string>
-    <string name="base_downloading">正在下载...</string>
-    <string name="base_upload_preparing">准备中...</string>
-    <string name="base_compressing">压缩中...</string>
-    <string name="base_uploading">正在上传...</string>
-    <string name="base_upload_fail">上传失败</string>
+    <string name="base_loading">Loading...</string>
+    <string name="base_downloading">Downloading...</string>
+    <string name="base_upload_preparing">Preparing...</string>
+    <string name="base_compressing">Compressing...</string>
+    <string name="base_uploading">Uploading...</string>
+    <string name="base_upload_fail">Upload failed</string>
 
-    <string name="base_no_item">暂无数据哦</string>
-    <string name="base_item_more">正在加载...</string>
-    <string name="base_item_complete">没有更多了</string>
-    <string name="base_item_init_loading">正在加载中...</string>
-    <string name="base_item_load_fail">加载失败</string>
+    <string name="base_no_item">No data available yet</string>
+    <string name="base_item_more">Loading...</string>
+    <string name="base_item_complete">No more</string>
+    <string name="base_item_init_loading">Loading...</string>
+    <string name="base_item_load_fail">Load failed</string>
 
-    <string name="base_fun_not_open">该功能暂不开放</string>
+    <string name="base_fun_not_open">This feature is not available yet</string>
 
-    <string name="base_share_to">分享至</string>
+    <string name="base_share_to">Share to</string>
 
-    <string name="base_true">正确</string>
-    <string name="base_false">错误</string>
-    <string name="base_cancel">取消</string>
-    <string name="base_clear">清空</string>
-    <string name="base_done">完成</string>
-    <string name="base_confirm">确定</string>
-    <string name="base_affirm">确认</string>
-    <string name="base_submit">提交</string>
-    <string name="base_update">升级</string>
-    <string name="base_agree">同意</string>
-    <string name="base_disagree">不同意</string>
+    <string name="base_true">Correct</string>
+    <string name="base_false">Error</string>
+    <string name="base_cancel">Cancel</string>
+    <string name="base_clear">Clear</string>
+    <string name="base_done">Done</string>
+    <string name="base_confirm">Confirm</string>
+    <string name="base_affirm">Confirm</string>
+    <string name="base_submit">Submit</string>
+    <string name="base_update">Upgrade</string>
+    <string name="base_go_back">Return</string>
+    <string name="base_newline">New line</string>
+    <string name="base_agree">Agree</string>
+    <string name="base_disagree">Disagree</string>
 
-    <string name="base_save_success">保存成功</string>
-    <string name="base_save_fail">保存失败</string>
-    <string name="base_add_success">添加成功</string>
-    <string name="base_add_fail">添加失败</string>
-    <string name="base_edit_success">编辑成功</string>
-    <string name="base_edit_fail">编辑失败</string>
-    <string name="base_delete_success">删除成功</string>
-    <string name="base_delete_fail">删除失败</string>
+    <string name="base_save_success">Saved successfully</string>
+    <string name="base_save_fail">Save failed</string>
+    <string name="base_add_success">Added successfully</string>
+    <string name="base_add_fail">Addition failed</string>
+    <string name="base_edit_success">Editing successful</string>
+    <string name="base_edit_fail">Editing failed</string>
+    <string name="base_delete_success">Deletion successful</string>
+    <string name="base_delete_fail">Deletion failed</string>
 
-    <string name="base_text">文字</string>
-    <string name="base_image">图片</string>
-    <string name="base_add_label">添加：</string>
-    <string name="base_delete_content_confirm_msg">是否确认删除此段内容？</string>
+    <string name="base_text">Text</string>
+    <string name="base_image">Image</string>
+    <string name="base_add_label">Add:</string>
+    <string name="base_delete_content_confirm_msg">Are you sure you want to delete this content?</string>
 
-    <string name="base_image_select">选择图片</string>
-    <string name="base_choose">选择</string>
-    <string name="base_all_image">所有图片</string>
-    <string name="base_preview">预览</string>
-    <string name="base_preview_format">预览(%1$d)</string>
-    <string name="base_upload_image_count_exceeding_msg">上传图片数量已超过%1$d张</string>
-    <string name="base_upload_file_count_exceeding_msg">上传文件数量已超过%1$d个</string>
-    <string name="base_error_no_permission">没有权限</string>
-    <string name="base_file_open_not_support_type">暂不支持打开该文件</string>
+    <string name="base_image_select">Select image</string>
+    <string name="base_choose">Select</string>
+    <string name="base_all_image">All images</string>
+    <string name="base_preview">Preview</string>
+    <string name="base_preview_format">Preview (%1$d)</string>
+    <string name="base_upload_image_count_exceeding_msg">The number of uploaded images has exceeded %1$d</string>
+    <string name="base_upload_file_count_exceeding_msg">The number of uploaded files has exceeded %1$d</string>
+    <string name="base_error_no_permission">No permission</string>
+    <string name="base_file_open_not_support_type">Opening this file is not supported at this time</string>
 
-    <string name="base_file_upload_file_is_uploading">文件正在上传中</string>
-    <string name="base_file_upload_file_null">文件不存在</string>
-    <string name="base_file_upload_compress_file_null">文件压缩失败</string>
+    <string name="base_file_upload_file_is_uploading">The file is currently being uploaded</string>
+    <string name="base_file_upload_file_null">File does not exist</string>
+    <string name="base_file_upload_compress_file_null">File compression failed</string>
 
-    <string name="base_media_selected_exceeding_msg">数量已超过%1$d个</string>
-    <string name="base_unit_zhang">张</string>
-    <string name="base_media_select">选择Media</string>>
-    <string name="base_all_media">所有</string>
-    <string name="base_media_root_dir">根目录:%s</string>
+    <string name="base_media_selected_exceeding_msg">The quantity has exceeded %1$d</string>
+    <string name="base_unit_zhang">Pics</string>
+    <string name="base_media_select">Select Media</string>>
+    <string name="base_all_media">All</string>
+    <string name="base_media_root_dir">Root directory: %s</string>
 
-    <string name="base_input_hint">点击输入</string>
-    <string name="base_text_max_length">最多允许输入%1d个字符</string>
-    <string name="base_number_max_length">最多允许输入%1d个非小数</string>
-    <string name="base_empty_or_format_err_msg">%s为空或者格式不正确</string>
-    <string name="base_url_format_err_msg">%s必须仪\'/\'结尾</string>
-    <string name="base_number_range_err_msg">%s必须大于等于%d小于等于%d</string>
-    <string name="base_number_range_err_msg_1">%s必须大于%s</string>
-    <string name="base_number_range_err_msg_2">%s必须小于%s</string>
-    <string name="base_str_range_err_msg">%s的长度必须大于等于%d小于等于%d</string>
+    <string name="base_input_hint">Click to input</string>
+    <string name="base_text_max_length">Up to %1d characters are allowed to be entered</string>
+    <string name="base_number_max_length">Up to %1d non-decimal characters are allowed to be entered</string>
+    <string name="base_empty_or_format_err_msg">%s is empty or has an incorrect format</string>
+    <string name="base_url_format_err_msg">%s must end with \'/\'</string>
+    <string name="base_number_range_err_msg">%s must be greater than or equal to %d and less than or equal to %d</string>
+    <string name="base_number_range_err_msg_1">%s must be greater than %s</string>
+    <string name="base_number_range_err_msg_2">%s must be less than %s</string>
+    <string name="base_str_range_err_msg">The length of %s must be greater than or equal to %d and less than or equal to %d</string>
 
-    <string name="base_date_hint">选择时间</string>
+    <string name="base_date_hint">Select a time</string>
 
-    <string name="base_date_year">%1$s年</string>
-    <string name="base_date_month">%1$s月</string>
-    <string name="base_date_day">%1$s日</string>
-    <string name="base_time_hour">%1$s时</string>
-    <string name="base_time_minute">%1$s分</string>
-    <string name="base_time_second">%1$s秒</string>
+    <string name="base_date_year">%1$s year</string>
+    <string name="base_date_month">%1$s month</string>
+    <string name="base_date_day">Day %1$s</string>
+    <string name="base_time_hour">%1$s hour</string>
+    <string name="base_time_minute">%1$s minutes</string>
+    <string name="base_time_second">%1$s seconds</string>
 
-    <string name="base_province_select_title">请选择省市区</string>
+    <string name="base_province_select_title">Please select province, city or district</string>
 
-    <string name="base_ui_access_login_forbidden">您需要登陆</string>
-    <string name="base_ui_access_vip_level_forbidden">您需要成为%s级会员</string>
+    <string name="base_ui_access_login_forbidden">You need to log in</string>
+    <string name="base_ui_access_vip_level_forbidden">You need to become a %s level member</string>
 
-    <string name="base_baidu_map_title">百度地图</string>
-    <string name="base_gaode_map_title">高德地图</string>
-    <string name="base_map_marker_need">请在地图上选择一个地点</string>
+    <string name="base_baidu_map_title">Baidu Map</string>
+    <string name="base_gaode_map_title">Gaode Map</string>
+    <string name="base_map_marker_need">Please select a buildLocation on the map</string>
 
-    <string name="base_scan_forbidden_result">无效的链接</string>
+    <string name="base_scan_forbidden_result">Invalid link</string>
 
-    <string name="base_main_tab_home">首页</string>
-    <string name="base_main_tab_mine">我的</string>
+    <string name="base_main_tab_home">Home</string>
+    <string name="base_main_tab_mine">Mine</string>
 
-    <string name="base_q_complete_d_title">完成答题</string>
-    <string name="base_q_complete_d_not_all_msg">您还有题目未答完，是否仍然完成答题？</string>
-    <string name="base_q_cancel_d_title">取消答题</string>
-    <string name="base_q_cancel_d_msg">未完成答题可能会影响后续操作，确定取消答题吗？</string>
+    <string name="base_q_complete_d_title">Complete the quiz</string>
+    <string name="base_q_complete_d_not_all_msg">You still have unanswered questions. Are you sure you want to complete the quiz?</string>
+    <string name="base_q_cancel_d_title">Cancel answering</string>
+    <string name="base_q_cancel_d_msg">Not completing the answer may affect subsequent operations. Are you sure you want to cancel the answer?</string>
 
-    <string name="base_q_cancel">退出</string>
-    <string name="base_q_pre">上一页</string>
-    <string name="base_q_next">下一页</string>
-    <string name="base_q_complete">完成</string>
+    <string name="base_q_cancel">Exit</string>
+    <string name="base_q_pre">Previous page</string>
+    <string name="base_q_next">Next page</string>
+    <string name="base_q_complete">Completed</string>
 </resources>

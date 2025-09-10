@@ -74,6 +74,11 @@ dependencies {
     annotationProcessor build_dependency["arouter_compiler"]
     // ARouter配置 end
 
+    // library project begin
+    api rootProject.ext.dependencyCustom("bundle_lib_input", "")
+    api rootProject.ext.dependencyCustom("bundle_lib_mqtt", "")
+    // library project end
+
     // 第三方 dependency begin
     // 第三方 dependency end
 

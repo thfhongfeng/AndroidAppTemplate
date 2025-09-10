@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/input_key_btn_bg_disable" android:state_enabled="false"></item>
+    <item android:drawable="@drawable/input_key_btn_bg1" android:state_enabled="true" android:state_pressed="false" android:state_selected="false"></item>
+    <item android:drawable="@drawable/input_key_btn_bg1_pressed" android:state_enabled="true" android:state_pressed="true" android:state_selected="false"></item>
+    <item android:drawable="@drawable/input_key_btn_bg1_selected" android:state_enabled="true" android:state_pressed="false" android:state_selected="true"></item>
+    <item android:drawable="@drawable/input_key_btn_bg1" android:state_enabled="true" android:state_pressed="true" android:state_selected="true"></item>
+    <item android:drawable="@drawable/input_key_btn_bg1"></item>
+</selector>

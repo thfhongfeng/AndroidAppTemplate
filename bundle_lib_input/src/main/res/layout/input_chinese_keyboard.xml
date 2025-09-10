@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="keyboard"
+            type="com.pine.app.lib.input.FlexibleKeyboard" />
+
+        <variable
+            name="shiftStyle"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="1" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="2" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="3" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="4" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="5" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="6" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="7" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="8" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="9" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('Q') : String.valueOf('q')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('W') : String.valueOf('w')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('E') : String.valueOf('e')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('R') : String.valueOf('r')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('T') : String.valueOf('t')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('Y') : String.valueOf('y')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('U') : String.valueOf('u')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('I') : String.valueOf('i')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('O') : String.valueOf('o')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('P') : String.valueOf('p')}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_1"
+                android:layout_weight="1"></View>
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('A') : String.valueOf('a')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('S') : String.valueOf('s')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('D') : String.valueOf('d')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('F') : String.valueOf('f')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('G') : String.valueOf('g')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('H') : String.valueOf('h')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('J') : String.valueOf('j')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('K') : String.valueOf('k')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('L') : String.valueOf('l')}" />
+
+            <View
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_1"
+                android:layout_weight="1"></View>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.pine.app.lib.input.KeyButton
+                android:id="@+id/shift_btn"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="3"
+                android:drawableTop="@drawable/input_selector_key_btn_shift"
+                android:gravity="center"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:paddingTop="@dimen/dp_10"
+                app:input_code="-105" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('Z') : String.valueOf('z')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('X') : String.valueOf('x')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('C') : String.valueOf('c')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('V') : String.valueOf('v')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('B') : String.valueOf('b')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('N') : String.valueOf('n')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@{shiftStyle ? String.valueOf('M') : String.valueOf('m')}" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="3"
+                android:drawableTop="@drawable/input_key_btn_delete"
+                android:gravity="center"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:paddingTop="@dimen/dp_10"
+                app:input_code="-101" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.pine.app.lib.input.KeyButton
+                android:id="@+id/interpunction_btn"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="\?!"
+                app:input_code="-106" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:id="@+id/lang_btn"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:drawableTop="@drawable/input_selector_key_btn_lang"
+                android:gravity="center"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:paddingTop="@dimen/dp_10"
+                app:input_code="-100" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="，" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="8"
+                android:drawableTop="@drawable/input_key_btn_space"
+                android:gravity="center"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:paddingTop="@dimen/dp_10"
+                app:input_code="-103" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="2"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="。" />
+
+            <com.pine.app.lib.input.KeyButton
+                android:id="@+id/enter_btn"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_36"
+                android:layout_margin="@dimen/dp_2"
+                android:layout_weight="4"
+                android:background="@drawable/input_selector_key_btn_bg1"
+                android:onClick="@{(view) -> keyboard.handleKeyPress(view)}"
+                android:text="@string/base_newline"
+                app:input_code="-102" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

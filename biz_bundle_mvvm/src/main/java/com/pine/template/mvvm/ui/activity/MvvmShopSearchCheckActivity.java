@@ -112,7 +112,7 @@ public class MvvmShopSearchCheckActivity extends
                 mViewModel.mInitBelongShopList);
         mShopCheckListPaginationAdapter.enableInitLoading(true);
         mShopCheckListPaginationAdapter.setOnScrollListener(mBinding.recycleView,
-                new BaseListAdapter.IOnScrollListener() {
+                new BaseListAdapter.OnScrollListener() {
                     @Override
                     public void onLoadMore() {
                         onLoadingMore();

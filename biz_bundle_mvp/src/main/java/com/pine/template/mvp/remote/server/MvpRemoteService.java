@@ -17,13 +17,13 @@ import com.pine.tool.router.annotation.RouterCommand;
  */
 
 public class MvpRemoteService {
-    @RouterCommand(CommandName = "onAppCreate")
-    public void onAppCreate(@NonNull Context context, Bundle args) {
+    @RouterCommand(CommandName = "onMainProcessCreate")
+    public void onMainProcessCreate(@NonNull Context context, Bundle args) {
         MvpApplication.onCreate();
     }
 
-    @RouterCommand(CommandName = "onAppAttach")
-    public void onAppAttach(@NonNull Context context, Bundle args) {
+    @RouterCommand(CommandName = "onMainProcessAttach")
+    public void onMainProcessAttach(@NonNull Context context, Bundle args) {
         MvpApplication.attach();
     }
 

@@ -93,7 +93,7 @@ public class RefreshOverWidthRv extends LinearLayout {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-        adapter.setOnScrollListener(recyclerView, new BaseListAdapter.IOnScrollListener() {
+        adapter.setOnScrollListener(recyclerView, new BaseListAdapter.OnScrollListener() {
             @Override
             public void onLoadMore() {
                 if (listener != null) {

@@ -290,6 +290,7 @@ public class BaseFileUploadRecycleView extends UploadRecyclerView implements IFi
 
         @Override
         protected List<BaseListAdapterItemEntity<FileUploadBean>> parseData(List<FileUploadBean> data,
+                                                                            int startIndex,
                                                                             boolean reset) {
             List<BaseListAdapterItemEntity<FileUploadBean>> adapterData = new ArrayList<>();
             BaseListAdapterItemEntity adapterEntity;

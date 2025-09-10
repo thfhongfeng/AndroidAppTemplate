@@ -83,7 +83,7 @@ public class MvvmTravelNoteDetailActivity extends
         mTravelNoteDetailAdapter = new MvvmTravelNoteDetailComplexAdapter();
         mTravelNoteDetailAdapter.enableInitLoading(true);
         mTravelNoteDetailAdapter.setOnScrollListener(mBinding.recycleView,
-                new BaseListAdapter.IOnScrollListener() {
+                new BaseListAdapter.OnScrollListener() {
                     @Override
                     public void onLoadMore() {
                         onLoadingMore();

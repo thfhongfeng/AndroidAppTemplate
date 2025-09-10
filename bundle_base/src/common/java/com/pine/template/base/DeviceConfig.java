@@ -4,6 +4,8 @@ import android.content.Context;
 import android.provider.Settings;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.pine.template.base.device_sdk.DeviceSdkException;
 import com.pine.template.base.device_sdk.DeviceSdkManager;
 import com.pine.template.base.helper.DefaultDeviceConfig;
@@ -30,6 +32,11 @@ public class DeviceConfig extends DefaultDeviceConfig {
             }
         }
         return TextUtils.isEmpty(deviceId) ? "020000000000" : deviceId;
+    }
+
+    public static boolean isMyDeviceId(@NonNull Context context, String deviceId) {
+        return TextUtils.isEmpty(deviceId) || TextUtils.equals(deviceId,
+                DeviceConfig.getDeviceUniqueNum(context));
     }
 
     public static String getDeviceModel(Context context) {

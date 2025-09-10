@@ -66,7 +66,7 @@ public class MvpTravelNoteListActivity extends
         View headView = LayoutInflater.from(this).inflate(R.layout.mvp_item_travle_note_list_head, null);
         adapter.setHeadView(headView);
         adapter.setOnScrollListener(recycle_view,
-                new BaseListAdapter.IOnScrollListener() {
+                new BaseListAdapter.OnScrollListener() {
                     @Override
                     public void onLoadMore() {
                         onLoadingMore();

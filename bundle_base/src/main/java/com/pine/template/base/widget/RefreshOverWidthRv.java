@@ -58,9 +58,25 @@ public class RefreshOverWidthRv extends LinearLayout {
         setup(activity, headView, headView, layoutManager, adapter, listener);
     }
 
+    public void setup(Activity activity, View headView,
+                      @NonNull RecyclerView.LayoutManager layoutManager,
+                      @NonNull BaseListAdapter adapter,
+                      boolean refreshImmediately,
+                      IRecycleViewListener listener) {
+        setup(activity, headView, headView, layoutManager, adapter, refreshImmediately, listener);
+    }
+
     public void setup(Activity activity, View testWidthView, View headView,
                       @NonNull RecyclerView.LayoutManager layoutManager,
                       @NonNull BaseListAdapter adapter,
+                      IRecycleViewListener listener) {
+        setup(activity, testWidthView, headView, layoutManager, adapter, true, listener);
+    }
+
+    public void setup(Activity activity, View testWidthView, View headView,
+                      @NonNull RecyclerView.LayoutManager layoutManager,
+                      @NonNull BaseListAdapter adapter,
+                      boolean refreshImmediately,
                       IRecycleViewListener listener) {
         removeAllViews();
         int calWidth = getWidthForView(activity, testWidthView);
@@ -93,7 +109,7 @@ public class RefreshOverWidthRv extends LinearLayout {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-        adapter.setOnScrollListener(recyclerView, new BaseListAdapter.IOnScrollListener() {
+        adapter.setOnScrollListener(recyclerView, new BaseListAdapter.OnScrollListener() {
             @Override
             public void onLoadMore() {
                 if (listener != null) {
@@ -116,19 +132,18 @@ public class RefreshOverWidthRv extends LinearLayout {
                 R.color.green
         );
         refreshLayout.setDistanceToTriggerSync(250);
-        if (refreshLayout != null) {
-            refreshLayout.setRefreshing(true);
-        }
         refreshLayout.setEnabled(true);
-        refreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.setRefreshing(true);
-                if (listener != null) {
-                    listener.onRefresh();
+        if (refreshImmediately) {
+            refreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLayout.setRefreshing(true);
+                    if (listener != null) {
+                        listener.onRefresh();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public RecyclerView getRecycleView() {

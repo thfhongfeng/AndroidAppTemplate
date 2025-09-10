@@ -146,17 +146,18 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
         return showErrorMoreView() && position != 0 && position == (mData.size() + getHeadViewCount());
     }
 
-    public final void setData(List<T> data) {
+    public void setData(List<T> data) {
         mOriginData = data;
-        mData = parseData(data, true);
+        mData = parseData(data, 0, true);
         resetAndGetPageNo();
         mHasMore = mData != null && mData.size() >= getPageSize();
         onDataSet();
         notifyDataSetChangedSafely();
     }
 
-    public final void addData(List<T> newData) {
-        List<BaseListAdapterItemEntity<T>> parseData = parseData(newData, false);
+    public void addData(List<T> newData) {
+        List<BaseListAdapterItemEntity<T>> parseData = parseData(newData,
+                mOriginData == null ? 0 : mOriginData.size(), false);
         if (parseData == null || parseData.size() == 0) {
             mHasMore = false;
             notifyDataSetChangedSafely();
@@ -181,7 +182,7 @@ public abstract class BasePaginationListAdapter<T> extends BaseListAdapter {
         notifyDataSetChangedSafely();
     }
 
-    protected List<BaseListAdapterItemEntity<T>> parseData(List<T> data, boolean reset) {
+    protected List<BaseListAdapterItemEntity<T>> parseData(List<T> data, int startIndex, boolean reset) {
         List<BaseListAdapterItemEntity<T>> adapterData = new ArrayList<>();
         if (data != null) {
             BaseListAdapterItemEntity adapterEntity;

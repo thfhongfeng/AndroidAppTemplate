@@ -114,6 +114,11 @@ def modulePkgConfig = [
         bundle_base          : [libDepend: false, libArtifactId: "bundle_base", libVersion: "1.0.0"],
 /** 基础模块end（注意顺序） **/
 
+/** 基于base的业务lib库模块begin（独立库不用注意顺序，非独立则要注意顺序） **/
+        bundle_lib_mqtt      : [libDepend: false, libArtifactId: "bundle_lib_mqtt", libVersion: "1.0.0"],
+        bundle_lib_input     : [libDepend: false, libArtifactId: "bundle_lib_input", libVersion: "1.0.0"],
+/** 基于base的业务lib库模块end（独立库不用注意顺序，非独立则要注意顺序） **/
+
 /** 业务模块begin（这里不用注意顺序） **/
         app_welcome          : [libDepend: false, libArtifactId: "app_welcome", libVersion: "1.0.0"],
 

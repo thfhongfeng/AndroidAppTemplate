@@ -99,7 +99,7 @@ public class MvpShopSearchCheckActivity extends
 
         MvpShopCheckListPaginationAdapter adapter = mPresenter.getListAdapter();
         adapter.setOnScrollListener(recycle_view,
-                new BaseListAdapter.IOnScrollListener() {
+                new BaseListAdapter.OnScrollListener() {
                     @Override
                     public void onLoadMore() {
                         onLoadingMore();

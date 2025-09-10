@@ -192,6 +192,9 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
                         }
                     });
                 }
+                if (listener != null) {
+                    listener.onScrolled(recyclerView, dx, dy);
+                }
             }
         });
     }
@@ -779,8 +782,15 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseListViewH
         }
     }
 
+    public static abstract class OnScrollListener implements IOnScrollListener {
+        public void onScrolled(final RecyclerView recyclerView, int dx, int dy) {
+        }
+    }
+
     public interface IOnScrollListener {
         void onLoadMore();
+
+        void onScrolled(final RecyclerView recyclerView, int dx, int dy);
     }
 
     public IOnItemClickListener mItemClickListener;

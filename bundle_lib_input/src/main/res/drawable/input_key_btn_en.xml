@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="@dimen/dp_15"
+        android:height="@dimen/dp_15"
+        android:drawable="@mipmap/input_ic_en"
+        android:gravity="center" />
+</layer-list>

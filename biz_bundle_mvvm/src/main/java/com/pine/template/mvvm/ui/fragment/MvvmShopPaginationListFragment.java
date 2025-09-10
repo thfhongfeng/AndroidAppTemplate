@@ -71,7 +71,7 @@ public class MvvmShopPaginationListFragment extends
         mMvvmHomeItemAdapter = new MvvmShopListPaginationAdapter();
         mMvvmHomeItemAdapter.enableInitLoading(true);
         mMvvmHomeItemAdapter.setOnScrollListener(mBinding.recycleView,
-                new BaseListAdapter.IOnScrollListener() {
+                new BaseListAdapter.OnScrollListener() {
                     @Override
                     public void onLoadMore() {
                         onLoadingMore();

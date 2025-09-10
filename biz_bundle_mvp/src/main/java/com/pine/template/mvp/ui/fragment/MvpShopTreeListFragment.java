@@ -71,7 +71,7 @@ public class MvpShopTreeListFragment extends MvpFragment<IMvpShopTreeListContrac
 
         MvpShopListPaginationTreeAdapter adapter = mPresenter.getListAdapter();
         adapter.setOnScrollListener(recycle_view,
-                new BaseListAdapter.IOnScrollListener() {
+                new BaseListAdapter.OnScrollListener() {
                     @Override
                     public void onLoadMore() {
                         onLoadingMore();

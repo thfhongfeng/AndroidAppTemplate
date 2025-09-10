@@ -58,7 +58,7 @@ public class MvpTravelNoteDetailActivity extends BaseMvpActionBarActivity<IMvpTr
 
         MvpTravelNoteDetailComplexAdapter adapter = mPresenter.getListAdapter();
         adapter.setOnScrollListener(recycle_view,
-                new BaseListAdapter.IOnScrollListener() {
+                new BaseListAdapter.OnScrollListener() {
                     @Override
                     public void onLoadMore() {
                         onLoadingMore();

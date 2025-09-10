@@ -27,6 +27,11 @@ public class DeviceConfig extends DefaultDeviceConfig {
         return TextUtils.isEmpty(deviceId) ? "020000000000" : deviceId;
     }
 
+    public static boolean isMyDeviceId(@NonNull Context context, String deviceId) {
+        return TextUtils.isEmpty(deviceId) || TextUtils.equals(deviceId,
+                DeviceConfig.getDeviceUniqueNum(context));
+    }
+
     public static String getDeviceModel(Context context) {
         return AppUtils.getDeviceModel();
     }
