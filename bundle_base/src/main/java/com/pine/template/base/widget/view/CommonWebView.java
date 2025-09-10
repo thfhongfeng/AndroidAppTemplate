@@ -22,6 +22,7 @@ import android.webkit.HttpAuthHandler;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -126,7 +127,11 @@ public class CommonWebView extends WebView {
                     mHeight = getHeight();
                     LogUtils.d(TAG, "onGlobalLayout w:" + mWidth + ", h:" + mHeight);
                     if (autoLoad && !TextUtils.isEmpty(startUrl)) {
-                        mUrl = startUrl + "&w=" + mWidth + "&h=" + mHeight;
+                        if (startUrl.contains("?")) {
+                            mUrl = startUrl + "&w=" + mWidth + "&h=" + mHeight;
+                        } else {
+                            mUrl = startUrl + "?w=" + mWidth + "&h=" + mHeight;
+                        }
                         setupUrlHistoryType();
                         loadUrl();
                     }
@@ -200,6 +205,9 @@ public class CommonWebView extends WebView {
                 mUrl = url;
                 setupUrlHistoryType();
                 super.onPageFinished(view, url);
+                if (mListener != null) {
+                    mListener.onPageFinish(CommonWebView.this, mUrl);
+                }
             }
 
             @Override
@@ -247,6 +255,20 @@ public class CommonWebView extends WebView {
         });
         mJsInterface = new JsInterface(this);
         addJavascriptInterface(mJsInterface, "appInterface");
+
+        mDefaultAgent = WebViewUtils.getUserAgent(this);
+    }
+
+    private String mDefaultAgent;
+
+    public void setForDesktopUserAgent() {
+        WebViewUtils.setForDesktopUserAgent(this);
+    }
+
+    public void resetForUserAgent() {
+        if (!TextUtils.isEmpty(mDefaultAgent)) {
+            WebViewUtils.setUserAgent(this, mDefaultAgent);
+        }
     }
 
     private void loadUrl() {
@@ -346,6 +368,44 @@ public class CommonWebView extends WebView {
         } else {
             callWebViewBack();
         }
+    }
+
+    public void callJsJavascript(String funcName, String jsonParams,
+                                 ValueCallback<String> callback) {
+        jsonParams = jsonParams == null ? "" : jsonParams;
+        String js = "javascript:" + funcName;
+        if (!TextUtils.isEmpty(jsonParams)) {
+            js += "('" + jsonParams + "')";
+        } else {
+            js += "()";
+        }
+        LogUtils.d(TAG, "javascript called " + js + ", view hash code:" + hashCode());
+        evaluateJavascript(js, callback);
+    }
+
+    public void callJsJavascript(int cmdCode, String funcName, String jsonParams,
+                                 final ICmdCallback callback) {
+        jsonParams = jsonParams == null ? "" : jsonParams;
+        String js = "javascript:" + funcName;
+        if (!TextUtils.isEmpty(jsonParams)) {
+            js += "('" + jsonParams + "')";
+        } else {
+            js += "()";
+        }
+        LogUtils.d(TAG, "javascript called " + js + ", view hash code:" + hashCode());
+        evaluateJavascript(js, new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String value) {
+                boolean success = !TextUtils.isEmpty(value) && !"null".equals(value.toLowerCase());
+                if (callback != null) {
+                    callback.onResponse(cmdCode, success, value);
+                }
+            }
+        });
+    }
+
+    public interface ICmdCallback {
+        void onResponse(int cmdCode, boolean success, String receiveValue);
     }
 
     private void goShare(ArrayList<ShareBean> shareList) {
@@ -693,6 +753,8 @@ public class CommonWebView extends WebView {
         void onProgressChange(WebView view, int newProgress);
 
         boolean onJsAlert(WebView view, String url, String message);
+
+        void onPageFinish(WebView view, String url);
     }
 
     public interface IWebViewInitListener {

@@ -187,9 +187,8 @@ public class SerialPortHelper {
      * @param flag 备用标识
      */
     public void addCommands(String hex, int flag) {
-        byte[] bytes = new byte[0];
         try {
-            bytes = DataConversion.decodeHexString(hex);
+            byte[] bytes = DataConversion.decodeHexString(hex);
             addCommands(bytes, flag);
         } catch (FormatException e) {
             e.printStackTrace();

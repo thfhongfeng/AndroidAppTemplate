@@ -1,6 +1,8 @@
 package com.pine.template.base;
 
 public interface BaseKeyConstants extends KeyConstants {
+    String APK_DOWNLOAD_FILE_PATH = "apk_download_file_path";
+
     String STARTUP_INTENT = "startup_intent";
     String REQUEST_CODE = "request_code";
 
@@ -12,6 +14,4 @@ public interface BaseKeyConstants extends KeyConstants {
     // list adapter key
     String PAGE_NO = "pageNo";
     String PAGE_SIZE = "pageSize";
-
-    String APK_DOWNLOAD_FILE_PATH = "apk_download_file_path";
 }

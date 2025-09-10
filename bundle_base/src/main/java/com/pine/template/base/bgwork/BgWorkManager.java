@@ -94,6 +94,31 @@ public class BgWorkManager {
         }
     }
 
+    public <T> void sendEventActionImpl(String tag, String actionType, T data) {
+        IBgWorkListener<T> listener = mBgWorkListenerMap.get(tag);
+        if (listener != null) {
+            listener.onBgWork(actionType, data);
+        }
+    }
+
+    public <T> void postEventActionImpl(String actionType, T data) {
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                sendEventActionImpl(actionType, data);
+            }
+        });
+    }
+
+    public <T> void postEventActionImpl(String tag, String actionType, T data) {
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                sendEventActionImpl(tag, actionType, data);
+            }
+        });
+    }
+
     /////////////////////////////////////////////////////////////////////////
 
     public static void listenTimeTick(String tag, TimeTickHolder listener) {
@@ -114,5 +139,17 @@ public class BgWorkManager {
 
     public static <T> void sendBgAction(String actionType, T data) {
         getInstance().sendEventActionImpl(actionType, data);
+    }
+
+    public static <T> void sendBgAction(String tag, String actionType, T data) {
+        getInstance().sendEventActionImpl(tag, actionType, data);
+    }
+
+    public static <T> void postBgAction(String actionType, T data) {
+        getInstance().postEventActionImpl(actionType, data);
+    }
+
+    public static <T> void postBgAction(String tag, String actionType, T data) {
+        getInstance().postEventActionImpl(tag, actionType, data);
     }
 }
