@@ -183,7 +183,6 @@ public class MqttManager {
         mInitCallback = null;
         mConnectCbMap.clear();
         mConfig = null;
-        mWorker = null;
     }
 
     public synchronized void registerActionAcceptor(Object actionAcceptor) {
