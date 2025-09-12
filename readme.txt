@@ -128,9 +128,15 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
 1. 如果没有发布所有模块的aar包到本地或者线上maven库（已发布则这跳过该步骤），则先发布
    发布步骤：
    a. 在dev_config.gradle中设置gradle.ext.compileMode="publishMode"
-   b. 执行allPublishToMavenLocal或者allPublish任务
+   b. 先执行publishModules任务
 2. 开发时，确保gradle.ext.compileMode="dev"
    在dev_config.gradle中设置非开发模块的"libDepend"的值为true，从而使用lib依赖方式进行编译，提高编译效率。
+
+
+如何发布最新APK：
+   a. 在dev_config.gradle中设置gradle.ext.compileMode="publishMode"
+   b. 先执行publishModules任务
+   c. 然后执行publish任务
 
 
 资源包覆盖原则：
