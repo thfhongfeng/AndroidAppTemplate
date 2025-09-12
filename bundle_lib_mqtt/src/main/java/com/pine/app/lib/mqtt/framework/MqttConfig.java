@@ -2,8 +2,6 @@ package com.pine.app.lib.mqtt.framework;
 
 import android.text.TextUtils;
 
-import com.pine.template.base.BuildConfig;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +27,12 @@ public class MqttConfig implements Serializable {
     private int subscribeMyQos;
 
     private BaseParams baseParams;
+
+    public boolean isValid() {
+        return !TextUtils.isEmpty(host) && !TextUtils.isEmpty(topicHead)
+                && !TextUtils.isEmpty(mySubject) && !TextUtils.isEmpty(myId)
+                && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(pwd);
+    }
 
     public String getHost() {
         return host;

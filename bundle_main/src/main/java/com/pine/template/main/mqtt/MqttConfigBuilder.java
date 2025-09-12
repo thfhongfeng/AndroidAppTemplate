@@ -56,8 +56,25 @@ public class MqttConfigBuilder {
         return config;
     }
 
+    public static Topic.SubjectEnum get2CSubject() {
+        return Topic.SubjectEnum.SERVER;
+    }
+
+    public static String get2CSubjectFlag() {
+        return "dcmrt";
+    }
+
     public static String getMqttTopicHead() {
-        String topicHead = ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_TOPIC_HEAD);
+        return getMqttTopicHead(false);
+    }
+
+    public static String getMqttTopicHead(boolean initConfig) {
+        String topicHead = "";
+        if (initConfig) {
+            topicHead = ConfigSwitcherServer.getInitConfig(BuildConfigKey.CONFIG_MQTT_TOPIC_HEAD);
+        } else {
+            topicHead = ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_TOPIC_HEAD);
+        }
         if (TextUtils.isEmpty(topicHead)) {
             try {
                 topicHead = DeviceSdkManager.getInstance().getProperty(MQTT_TOPIC_HEAD, "");
@@ -85,20 +102,20 @@ public class MqttConfigBuilder {
         return topicHead;
     }
 
-    public static Topic.SubjectEnum get2CSubject() {
-        return Topic.SubjectEnum.SERVER;
-    }
-
-    public static String get2CSubjectFlag() {
-        return "dcmrt";
-    }
-
     public static void setMqttTopicHead(String topicHead) {
         ConfigSwitcherServer.saveConfig(BuildConfigKey.CONFIG_MQTT_TOPIC_HEAD, topicHead);
     }
 
     public static String getMqttHost() {
-        return ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_HOST, "tcp:mqtt.minicreate.com:1883");
+        return getMqttHost(false);
+    }
+
+    public static String getMqttHost(boolean initConfig) {
+        if (initConfig) {
+            return ConfigSwitcherServer.getInitConfig(BuildConfigKey.CONFIG_MQTT_HOST, "tcp:mqtt.minicreate.com:1883");
+        } else {
+            return ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_HOST, "tcp:mqtt.minicreate.com:1883");
+        }
     }
 
     public static void setMqttHost(String hostUrl) {
@@ -106,7 +123,16 @@ public class MqttConfigBuilder {
     }
 
     public static String getMqttUsername() {
-        String username = ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_USERNAME);
+        return getMqttUsername(false);
+    }
+
+    public static String getMqttUsername(boolean initConfig) {
+        String username = "";
+        if (initConfig) {
+            username = ConfigSwitcherServer.getInitConfig(BuildConfigKey.CONFIG_MQTT_USERNAME);
+        } else {
+            username = ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_USERNAME);
+        }
         if (TextUtils.isEmpty(username)) {
             try {
                 username = DeviceSdkManager.getInstance().getProperty(MQTT_USERNAME, "");
@@ -128,7 +154,16 @@ public class MqttConfigBuilder {
     }
 
     public static String getMqttPwd() {
-        String pwd = ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_PWD);
+        return getMqttPwd(false);
+    }
+
+    public static String getMqttPwd(boolean initConfig) {
+        String pwd = "";
+        if (initConfig) {
+            pwd = ConfigSwitcherServer.getInitConfig(BuildConfigKey.CONFIG_MQTT_PWD);
+        } else {
+            pwd = ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_PWD);
+        }
         if (TextUtils.isEmpty(pwd)) {
             try {
                 pwd = DeviceSdkManager.getInstance().getProperty(MQTT_PWD, "");

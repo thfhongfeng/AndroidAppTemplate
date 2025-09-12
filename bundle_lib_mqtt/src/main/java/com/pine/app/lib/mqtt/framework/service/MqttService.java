@@ -196,8 +196,8 @@ public class MqttService extends Service {
 
     private void init() {
         LogUtils.d(TAG, "Mqtt service init...");
-        if (mConfig == null) {
-            LogUtils.w(TAG, "MqttClient connect fail for config is null");
+        if (mConfig == null || !mConfig.isValid()) {
+            LogUtils.w(TAG, "MqttClient connect fail for config is null or invalid, mConfig:" + mConfig);
             return;
         }
         if (mqttClient != null) {
