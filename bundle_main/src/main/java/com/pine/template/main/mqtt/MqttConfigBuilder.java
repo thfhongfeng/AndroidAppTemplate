@@ -120,6 +120,13 @@ public class MqttConfigBuilder {
         return username;
     }
 
+    public static void setMqttUsername(String username) {
+        if (TextUtils.isEmpty(username)) {
+            return;
+        }
+        ConfigSwitcherServer.saveConfig(BuildConfigKey.CONFIG_MQTT_USERNAME, username);
+    }
+
     public static String getMqttPwd() {
         String pwd = ConfigSwitcherServer.getConfig(BuildConfigKey.CONFIG_MQTT_PWD);
         if (TextUtils.isEmpty(pwd)) {
@@ -133,6 +140,13 @@ public class MqttConfigBuilder {
             pwd = "123qwe!@#";
         }
         return pwd;
+    }
+
+    public static void setMqttPwd(String pwd) {
+        if (TextUtils.isEmpty(pwd)) {
+            return;
+        }
+        ConfigSwitcherServer.saveConfig(BuildConfigKey.CONFIG_MQTT_PWD, pwd);
     }
 
     public static boolean isMyDeviceTypeGroup(String group) {
