@@ -11,6 +11,8 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
@@ -27,11 +29,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import com.pine.template.base.R;
-import com.pine.template.base.component.share.bean.ShareBean;
-import com.pine.template.base.component.share.manager.ShareManager;
 import com.pine.template.base.remote.BaseRouterClient;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.tool.BuildConfig;
@@ -408,12 +409,6 @@ public class CommonWebView extends WebView {
         void onResponse(int cmdCode, boolean success, String receiveValue);
     }
 
-    private void goShare(ArrayList<ShareBean> shareList) {
-        if (shareList != null && shareList.size() > 0) {
-            ShareManager.getInstance().createShareDialog(mActivity, shareList).show();
-        }
-    }
-
     private void setupUrlHistoryType() {
         if (!TextUtils.isEmpty(mUrl)) {
             String backTag = UrlUtils.getValueByNameFromUrl(mUrl, "isBlockPrBack");
@@ -489,8 +484,8 @@ public class CommonWebView extends WebView {
         }
     }
 
-    static class JsInterface {
-        private static CommonWebView mWebView;
+    class JsInterface {
+        private CommonWebView mWebView;
 
         public JsInterface(CommonWebView webView) {
             mWebView = webView;
@@ -503,82 +498,33 @@ public class CommonWebView extends WebView {
          * @param value
          */
         @JavascriptInterface
-        public static void onJsCallBack(String value) {
-            // Test code begin
-            try {
-                JSONObject jsonData = new JSONObject(value);
-                if (mWebView != null && !TextUtils.isEmpty(jsonData.optString("actionName"))) {
-                    String actionName = jsonData.optString("actionName");
-                    switch (actionName) {
-                        case "shareURL":
-                            mWebView.jsShareURL(jsonData);
-                            break;
-                        case "loginToApp":
-                            mWebView.jsLoginToApp(jsonData);
-                            break;
-                        case "shareImage":
-                            mWebView.jsShareImage(jsonData);
-                            break;
-                        case "captureScreen":   //保存图片到本地相册
-                            mWebView.jsCaptureScreen(jsonData);
-                            break;
-                        case "saveImageByProtoCapture":
-                            mWebView.jsSaveImageByProtoCapture(jsonData);
-                            break;
-                        case "shareImageByProtoCapture":
-                            mWebView.jsShareImageByProtoCapture(jsonData);
-                            break;
-                        case "redirectToApp":
-                            mWebView.jsRedirectToApp(jsonData);
-                            break;
-                        case "goBack":    //退回上一页  如果没有goback 则退出界面
-                            mWebView.jsGoBack(jsonData);
-                            break;
-                        case "goBackToTarget":  //退回指定页面
-                            mWebView.jsGoBackToTarget(jsonData);
-                            break;
-                        case "goBackToExit":  //关闭页面
-                            mWebView.jsGoBackToExit(jsonData);
-                            break;
-                        case "shareImageByHTML5Capture":
-                            mWebView.jsShareImageByHTML5Capture(jsonData);
-                            break;
-                        case "redirectToBrowser":
-                            mWebView.jsRedirectToBrowser(jsonData);
-                            break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        public void onJsCallback(String value) {
+            LogUtils.d(TAG, "onJsCallback value:" + value);
+            if (mWebView != null && !TextUtils.isEmpty(value)) {
+                mWebView.jsCallback(mWebView, value);
             }
         }
-        // Test code end
 
         public void clear() {
+            mJsCallbackHandler.removeCallbacksAndMessages(null);
             mWebView = null;
         }
     }
 
-    // Test code begin
-    private void jsShareURL(JSONObject jsonData) {
-        ArrayList<ShareBean> shareList = new ArrayList<>();
-        // make you share item list
-        goShare(shareList);
+    private Handler mJsCallbackHandler = new Handler(Looper.getMainLooper());
+
+    private void jsCallback(WebView webView, @NonNull String data) {
+        mJsCallbackHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mListener != null) {
+                    mListener.onJsCallback(webView, data);
+                }
+            }
+        });
     }
 
-    private void jsLoginToApp(JSONObject jsonData) {
-        ArrayList<ShareBean> shareList = new ArrayList<>();
-        // make you share item list
-        goShare(shareList);
-    }
-
-    private void jsShareImage(JSONObject jsonData) {
-        ArrayList<ShareBean> shareList = new ArrayList<>();
-        // make you share item list
-        goShare(shareList);
-    }
-
-    private void jsCaptureScreen(JSONObject jsonData) {
+    private void jsCaptureScreen() {
         getSnapshot(true, "CaptureScreen" +
                 new SimpleDateFormat("ddHHmmss").format(Calendar.getInstance().getTime()));
     }
@@ -627,10 +573,6 @@ public class CommonWebView extends WebView {
         String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 File.separator + name;
         ImageUtils.getBitmap(storePath);
-
-        ArrayList<ShareBean> shareList = new ArrayList<>();
-        // make you share item list
-        goShare(shareList);
     }
 
     private void jsRedirectToApp(JSONObject jsonData) {
@@ -721,9 +663,6 @@ public class CommonWebView extends WebView {
         ImageUtils.save(shareBitmap, storePath, Bitmap.CompressFormat.JPEG);
         final String sharePath = storePath + File.separator + name + ".jpg";
         final File pathFile = new File(sharePath);
-        ArrayList<ShareBean> shareList = new ArrayList<>();
-        // make you share item list
-        goShare(shareList);
     }
 
     private void jsRedirectToBrowser(JSONObject jsonData) {
@@ -744,15 +683,27 @@ public class CommonWebView extends WebView {
         return "javascript:mobileAppCallBack()";
     }
 
-    private String getGoBackUrlKeyFromPreUrl() {
-        return "pineUrlSource";
+    public static abstract class WebViewListener implements IWebViewListener {
+        public void onProgressChange(WebView view, int newProgress) {
+        }
+
+        public boolean onJsAlert(WebView view, String url, String message) {
+            return false;
+        }
+
+        public void onJsCallback(WebView view, @NonNull String value) {
+        }
+
+        public void onPageFinish(WebView view, String url) {
+        }
     }
-    // Test code end
 
     public interface IWebViewListener {
         void onProgressChange(WebView view, int newProgress);
 
         boolean onJsAlert(WebView view, String url, String message);
+
+        void onJsCallback(WebView view, @NonNull String value);
 
         void onPageFinish(WebView view, String url);
     }

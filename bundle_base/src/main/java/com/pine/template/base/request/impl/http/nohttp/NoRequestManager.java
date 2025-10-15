@@ -123,21 +123,22 @@ public class NoRequestManager implements IRequestManager {
             public void onSucceed(int what, com.yanzhenjie.nohttp.rest.Response response) {
                 Response httpResponse = new Response();
                 httpResponse.setSucceed(response.isSucceed());
-                httpResponse.setResponseCode(response.responseCode());
-                httpResponse.setTag(response.getTag());
-                httpResponse.setData(response.get());
-                httpResponse.setException(response.getException());
-                httpResponse.setHeaders(response.getHeaders().toResponseHeaders());
-                List<HttpCookie> list = response.getHeaders().getCookies();
-                HashMap<String, String> cookies = new HashMap<>();
-                for (int i = 0; i < list.size(); i++) {
-                    HttpCookie cookie = list.get(i);
-                    cookies.put(list.get(i).getName(), list.get(i).getValue());
-                    if (SESSION_ID.equals(cookie.getName().toUpperCase())) {
-                        setSessionId(requestBean.getSysTag(), cookie.getValue());
+                if (response.getHeaders() != null) {
+                    httpResponse.setResponseCode(response.responseCode());
+                    httpResponse.setHeaders(response.getHeaders().toResponseHeaders());
+                    List<HttpCookie> list = response.getHeaders().getCookies();
+                    HashMap<String, String> cookies = new HashMap<>();
+                    for (int i = 0; i < list.size(); i++) {
+                        HttpCookie cookie = list.get(i);
+                        cookies.put(list.get(i).getName(), list.get(i).getValue());
+                        if (SESSION_ID.equals(cookie.getName().toUpperCase())) {
+                            setSessionId(requestBean.getSysTag(), cookie.getValue());
+                        }
                     }
+                    httpResponse.setCookies(cookies);
+                } else {
+                    httpResponse.setResponseCode(505);
                 }
-                httpResponse.setCookies(cookies);
                 listener.onSucceed(what, httpResponse);
             }
 
@@ -149,22 +150,22 @@ public class NoRequestManager implements IRequestManager {
                 }
                 Response httpResponse = new Response();
                 httpResponse.setSucceed(response.isSucceed());
-                httpResponse.setResponseCode(response.responseCode());
-                httpResponse.setTag(response.getTag());
-                httpResponse.setData(response.get());
-                httpResponse.setException(response.getException() instanceof NetworkError ?
-                        new ConnectException(response.getException().getMessage()) : response.getException());
-                httpResponse.setHeaders(response.getHeaders().toResponseHeaders());
-                List<HttpCookie> list = response.getHeaders().getCookies();
-                HashMap<String, String> cookies = new HashMap<>();
-                for (int i = 0; i < list.size(); i++) {
-                    HttpCookie cookie = list.get(i);
-                    cookies.put(list.get(i).getName(), list.get(i).getValue());
-                    if (SESSION_ID.equals(cookie.getName().toUpperCase())) {
-                        setSessionId(requestBean.getSysTag(), cookie.getValue());
+                if (response.getHeaders() != null) {
+                    httpResponse.setResponseCode(response.responseCode());
+                    httpResponse.setHeaders(response.getHeaders().toResponseHeaders());
+                    List<HttpCookie> list = response.getHeaders().getCookies();
+                    HashMap<String, String> cookies = new HashMap<>();
+                    for (int i = 0; i < list.size(); i++) {
+                        HttpCookie cookie = list.get(i);
+                        cookies.put(list.get(i).getName(), list.get(i).getValue());
+                        if (SESSION_ID.equals(cookie.getName().toUpperCase())) {
+                            setSessionId(requestBean.getSysTag(), cookie.getValue());
+                        }
                     }
+                    httpResponse.setCookies(cookies);
+                } else {
+                    httpResponse.setResponseCode(505);
                 }
-                httpResponse.setCookies(cookies);
                 listener.onFailed(what, httpResponse);
             }
 
