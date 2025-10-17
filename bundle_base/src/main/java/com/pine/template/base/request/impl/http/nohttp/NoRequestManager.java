@@ -123,8 +123,11 @@ public class NoRequestManager implements IRequestManager {
             public void onSucceed(int what, com.yanzhenjie.nohttp.rest.Response response) {
                 Response httpResponse = new Response();
                 httpResponse.setSucceed(response.isSucceed());
+                httpResponse.setResponseCode(response.responseCode());
+                httpResponse.setTag(response.getTag());
+                httpResponse.setData(response.get());
+                httpResponse.setException(response.getException());
                 if (response.getHeaders() != null) {
-                    httpResponse.setResponseCode(response.responseCode());
                     httpResponse.setHeaders(response.getHeaders().toResponseHeaders());
                     List<HttpCookie> list = response.getHeaders().getCookies();
                     HashMap<String, String> cookies = new HashMap<>();
@@ -136,8 +139,6 @@ public class NoRequestManager implements IRequestManager {
                         }
                     }
                     httpResponse.setCookies(cookies);
-                } else {
-                    httpResponse.setResponseCode(505);
                 }
                 listener.onSucceed(what, httpResponse);
             }
@@ -150,8 +151,12 @@ public class NoRequestManager implements IRequestManager {
                 }
                 Response httpResponse = new Response();
                 httpResponse.setSucceed(response.isSucceed());
+                httpResponse.setResponseCode(response.responseCode());
+                httpResponse.setTag(response.getTag());
+                httpResponse.setData(response.get());
+                httpResponse.setException(response.getException() instanceof NetworkError ?
+                        new ConnectException(response.getException().getMessage()) : response.getException());
                 if (response.getHeaders() != null) {
-                    httpResponse.setResponseCode(response.responseCode());
                     httpResponse.setHeaders(response.getHeaders().toResponseHeaders());
                     List<HttpCookie> list = response.getHeaders().getCookies();
                     HashMap<String, String> cookies = new HashMap<>();
@@ -163,8 +168,6 @@ public class NoRequestManager implements IRequestManager {
                         }
                     }
                     httpResponse.setCookies(cookies);
-                } else {
-                    httpResponse.setResponseCode(505);
                 }
                 listener.onFailed(what, httpResponse);
             }
