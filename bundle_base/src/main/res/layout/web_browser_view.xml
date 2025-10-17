@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pine.template.base.browser.BrowserWebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.pine.template.base.browser.BrowserWebView>
+
+    <FrameLayout
+        android:id="@+id/hdmiin_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:visibility="gone"></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/err_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/base_iv_err_404"></ImageView>
+    </FrameLayout>
+
+    <com.pine.template.base.browser.WebLoadingView
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"></com.pine.template.base.browser.WebLoadingView>
+
+    <com.pine.template.base.browser.WebControllerView
+        android:id="@+id/controller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:visibility="gone"></com.pine.template.base.browser.WebControllerView>
+
+    <com.pine.template.base.browser.ScreenSaverView
+        android:id="@+id/screen_saver"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"></com.pine.template.base.browser.ScreenSaverView>
+</FrameLayout>

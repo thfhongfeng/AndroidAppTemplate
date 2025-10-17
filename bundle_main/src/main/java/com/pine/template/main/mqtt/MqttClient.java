@@ -39,17 +39,14 @@ public class MqttClient {
         return instance;
     }
 
-    public void register() {
-        MqttManager.getInstance().enable(FUN_MQTT);
-        MqttManager.getInstance().registerActionAcceptor(new MqttActionAcceptor());
-    }
-
     public void init(Context context) {
         mContext = context;
+        MqttManager.getInstance().enable(FUN_MQTT);
         MqttManager.getInstance().init(mContext, MqttConfigBuilder.buildConfig(),
                 null, new MqttManager.IServiceListener() {
                     @Override
                     public void onMqttServerInit() {
+                        MqttManager.getInstance().registerActionAcceptor(new MqttActionAcceptor());
                         mLastKeepLive = System.currentTimeMillis();
                         startKeepAliveTimer();
                         scheduleCheckState(75 * 1000, 5 * 60 * 1000);
@@ -141,7 +138,7 @@ public class MqttClient {
 
                             @Override
                             public void onFail(int errCode) {
-                                LogUtils.d(TAG, "keepLive onFail:" + errCode);
+                                LogUtils.d(TAG, "keepLive onFail errCode:" + errCode);
                             }
                         });
                     } else {

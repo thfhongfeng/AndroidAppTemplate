@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/base_ic_refresh_disable" android:state_enabled="false"></item>
+    <item android:drawable="@mipmap/base_ic_refresh_enable" android:state_enabled="true" android:state_pressed="false"></item>
+    <item android:drawable="@mipmap/base_ic_refresh_press" android:state_enabled="true" android:state_pressed="true"></item>
+    <item android:drawable="@mipmap/base_ic_refresh_enable"></item>
+</selector>

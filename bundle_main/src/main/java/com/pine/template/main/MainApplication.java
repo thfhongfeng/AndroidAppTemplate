@@ -52,8 +52,6 @@ public class MainApplication extends BaseApplication {
                 + ", VERSION_NAME:" + VERSION_NAME + ", VERSION_CODE:" + VERSION_CODE
                 + ", SDK_TYPE:" + SDK_TYPE);
 
-        MqttClient.getInstance().register();
-
         AppTrackManager.getInstance().init(mApplication, MainUrlConstants.APP_TRACK(), new DefaultAppTrackAdapter() {
             @Override
             public void setupBaseInfoAndIp(@NonNull Context context, AppTrack appTrack) {

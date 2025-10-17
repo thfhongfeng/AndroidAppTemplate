@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/base_ic_go_back_disable" android:state_enabled="false"></item>
+    <item android:drawable="@mipmap/base_ic_go_back_enable" android:state_enabled="true" android:state_pressed="false"></item>
+    <item android:drawable="@mipmap/base_ic_go_back_press" android:state_enabled="true" android:state_pressed="true"></item>
+    <item android:drawable="@mipmap/base_ic_go_back_enable"></item>
+</selector>

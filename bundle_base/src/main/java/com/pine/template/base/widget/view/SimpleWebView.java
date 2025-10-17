@@ -56,7 +56,7 @@ import java.util.Calendar;
 
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
 
-public class CommonWebView extends WebView {
+public class SimpleWebView extends WebView {
     private final String TAG = this.getClass().getSimpleName();
 
     private Activity mActivity;
@@ -76,15 +76,15 @@ public class CommonWebView extends WebView {
     private final int MAX_TRY_LOGIN_COUNT = 3;
     private int mTryLoginCount;
 
-    public CommonWebView(Context context) {
+    public SimpleWebView(Context context) {
         super(context);
     }
 
-    public CommonWebView(Context context, AttributeSet attrs) {
+    public SimpleWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CommonWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SimpleWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -137,7 +137,7 @@ public class CommonWebView extends WebView {
                         loadUrl();
                     }
                     if (mInitListener != null) {
-                        mInitListener.onInit(CommonWebView.this, mUrl);
+                        mInitListener.onInit(SimpleWebView.this, mUrl);
                     }
                 }
             });
@@ -148,7 +148,7 @@ public class CommonWebView extends WebView {
                 loadUrl();
             }
             if (mInitListener != null) {
-                mInitListener.onInit(CommonWebView.this, mUrl);
+                mInitListener.onInit(SimpleWebView.this, mUrl);
             }
         }
     }
@@ -207,7 +207,7 @@ public class CommonWebView extends WebView {
                 setupUrlHistoryType();
                 super.onPageFinished(view, url);
                 if (mListener != null) {
-                    mListener.onPageFinish(CommonWebView.this, mUrl);
+                    mListener.onPageFinish(SimpleWebView.this, mUrl);
                 }
             }
 
@@ -485,9 +485,9 @@ public class CommonWebView extends WebView {
     }
 
     class JsInterface {
-        private CommonWebView mWebView;
+        private SimpleWebView mWebView;
 
-        public JsInterface(CommonWebView webView) {
+        public JsInterface(SimpleWebView webView) {
             mWebView = webView;
         }
 
