@@ -21,6 +21,7 @@ import com.pine.template.base.manager.MainTtsManager;
 import com.pine.template.base.manager.tts.TtsManager;
 import com.pine.template.base.remote.BaseRouterClient;
 import com.pine.template.main.mqtt.MqttClient;
+import com.pine.template.main.track.TrackRecordHelper;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 import com.pine.tool.util.NetWorkUtils;
@@ -109,9 +110,9 @@ public class MainApplication extends BaseApplication {
             public void onAppCreated() {
                 BgWorkManager.getInstance().init();
 
-                AppTrackManager.getInstance().doStartJob();
-
                 BgCheckManager.getInstance().scheduleChecker();
+
+                TrackRecordHelper.getInstance().init(mApplication);
 
                 MqttClient.getInstance().init(mApplication);
             }
@@ -122,7 +123,7 @@ public class MainApplication extends BaseApplication {
 
                 BgCheckManager.getInstance().releaseChecker();
 
-                AppTrackManager.getInstance().doFinishJob();
+                TrackRecordHelper.getInstance().release(mApplication);
 
                 BgWorkManager.getInstance().release();
             }

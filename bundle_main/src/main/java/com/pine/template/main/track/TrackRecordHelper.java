@@ -82,6 +82,8 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
                     }
                 });
         mInit = true;
+
+        AppTrackManager.getInstance().doStartJob();
     }
 
     public void release(@NonNull Context context) {
@@ -90,6 +92,8 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
         AppBgManager.unRegNetworkChangedListener(this);
         MqttManager.getInstance().removeConnectListener(String.valueOf(context.hashCode()));
         mInit = false;
+
+        AppTrackManager.getInstance().doFinishJob();
     }
 
     private NetworkType mNetworkType;
