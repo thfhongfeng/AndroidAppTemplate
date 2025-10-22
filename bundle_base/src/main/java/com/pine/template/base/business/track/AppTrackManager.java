@@ -211,6 +211,17 @@ public class AppTrackManager {
         return descs;
     }
 
+    public int[] parseActionPos(List<String> actionNames) {
+        if (actionNames == null) {
+            actionNames = getAllActionList();
+        }
+        int[] select = new int[actionNames.size()];
+        for (int i = 0; i < actionNames.size(); i++) {
+            select[i] = i;
+        }
+        return select;
+    }
+
     public String parseActionDescTxt(List<String> actionNames) {
         if (actionNames == null) {
             actionNames = getAllActionList();

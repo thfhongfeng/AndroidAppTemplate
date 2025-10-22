@@ -29,7 +29,7 @@ public class AcceptActionRegistry {
 
     // 注册带注解的方法
     public void register(Object service) {
-        LogUtils.d(TAG, "Mqtt register all acceptAction in class:" + service);
+        LogUtils.d(TAG, "Mqtt register all acceptAction in class:" + service + ", config:" + mConfig);
         mHandlerMap.clear();
         for (Method method : service.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(AcceptAction.class)) {

@@ -14,8 +14,12 @@ public interface ITtsManager {
     boolean play(TtsEntity ttsEntity, final TtsPlayProgress listener);
 
     interface TtsPlayProgress {
-        void onDone();
+        void onStart(String utteranceId);
 
-        void onFail();
+        void onDone(String utteranceId);
+
+        void onCancel(String utteranceId);
+
+        void onFail(String utteranceId);
     }
 }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class MainTtsManager implements ITtsManager {
     private final String TAG = this.getClass().getSimpleName();
@@ -33,6 +34,15 @@ public class MainTtsManager implements ITtsManager {
 
     private HashMap<String, TtsPlayProgress> mListenerMap = new HashMap<>();
     private HashMap<String, TtsEntity> mPendingTtsMap = new HashMap<>();
+
+    private TtsPlayProgress getAndRemoveListener(String utteranceId) {
+        synchronized (mListenerMap) {
+            if (mListenerMap.containsKey(utteranceId)) {
+                return mListenerMap.remove(utteranceId);
+            }
+        }
+        return null;
+    }
 
     @Override
     public void init(Context context, final Locale locale) {
@@ -60,6 +70,20 @@ public class MainTtsManager implements ITtsManager {
             @Override
             public void onStart(String utteranceId) {
                 LogUtils.d(TAG, "onStart utteranceId:" + utteranceId);
+                synchronized (mPendingTtsMap) {
+                    mPendingTtsMap.remove(utteranceId);
+                }
+                TtsPlayProgress listener = getAndRemoveListener(utteranceId);
+                if (listener != null) {
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onStart(utteranceId);
+                            }
+                        }
+                    });
+                }
             }
 
             @Override
@@ -68,20 +92,37 @@ public class MainTtsManager implements ITtsManager {
                 synchronized (mPendingTtsMap) {
                     mPendingTtsMap.remove(utteranceId);
                 }
-                mMainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        TtsPlayProgress listener = null;
-                        synchronized (mListenerMap) {
-                            if (mListenerMap.containsKey(utteranceId)) {
-                                listener = mListenerMap.remove(utteranceId);
+                TtsPlayProgress listener = getAndRemoveListener(utteranceId);
+                if (listener != null) {
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onDone(utteranceId);
                             }
                         }
-                        if (listener != null) {
-                            listener.onDone();
+                    });
+                }
+            }
+
+            @Override
+            public void onStop(String utteranceId, boolean interrupted) {
+                // 没有被回调？
+                LogUtils.d(TAG, "onStop utteranceId:" + utteranceId);
+                synchronized (mPendingTtsMap) {
+                    mPendingTtsMap.remove(utteranceId);
+                }
+                TtsPlayProgress listener = getAndRemoveListener(utteranceId);
+                if (listener != null) {
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onCancel(utteranceId);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
 
             @Override
@@ -90,20 +131,17 @@ public class MainTtsManager implements ITtsManager {
                 synchronized (mPendingTtsMap) {
                     mPendingTtsMap.remove(utteranceId);
                 }
-                mMainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        TtsPlayProgress listener = null;
-                        synchronized (mListenerMap) {
-                            if (mListenerMap.containsKey(utteranceId)) {
-                                listener = mListenerMap.remove(utteranceId);
+                TtsPlayProgress listener = getAndRemoveListener(utteranceId);
+                if (listener != null) {
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onFail(utteranceId);
                             }
                         }
-                        if (listener != null) {
-                            listener.onFail();
-                        }
-                    }
-                });
+                    });
+                }
             }
         });
 
@@ -132,12 +170,15 @@ public class MainTtsManager implements ITtsManager {
     }
 
     private boolean check(TtsEntity ttsEntity, final TtsPlayProgress listener) {
-        if (mLocale == null || !mIsSupport || ttsEntity == null || !ttsEntity.isValid()) {
+        if (ttsEntity == null || !ttsEntity.isValid()) {
+            return false;
+        }
+        if (mLocale == null || !mIsSupport) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     if (listener != null) {
-                        listener.onFail();
+                        listener.onFail(ttsEntity.getUtteranceId());
                     }
                 }
             });
@@ -149,6 +190,19 @@ public class MainTtsManager implements ITtsManager {
     @Override
     public void stop() {
         mSpeech.stop();
+        synchronized (mPendingTtsMap) {
+            mPendingTtsMap.clear();
+        }
+        TtsPlayProgress listener = null;
+        synchronized (mListenerMap) {
+            for (Map.Entry<String, TtsPlayProgress> entity : mListenerMap.entrySet()) {
+                listener = entity.getValue();
+                if (listener != null) {
+                    listener.onCancel(entity.getKey());
+                }
+            }
+            mListenerMap.clear();
+        }
     }
 
     @Override
@@ -179,6 +233,7 @@ public class MainTtsManager implements ITtsManager {
             ttsEntity.setAddTime(SystemClock.uptimeMillis());
             mPendingTtsMap.put(ttsEntity.getUtteranceId(), ttsEntity);
         }
+        mSpeech.setSpeechRate(1.2f);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Bundle params = new Bundle();
             params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_NOTIFICATION);

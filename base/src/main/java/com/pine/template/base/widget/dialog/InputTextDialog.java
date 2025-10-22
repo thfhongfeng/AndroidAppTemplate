@@ -38,7 +38,7 @@ import java.util.TimerTask;
  * Created by tanghongfeng on 2018/2/12.
  */
 
-public class InputTextDialog extends BaseDialog {
+public class InputTextDialog<T> extends BaseDialog {
     private Builder mBuilder;
 
     protected InputTextDialog(Context context) {
@@ -98,6 +98,16 @@ public class InputTextDialog extends BaseDialog {
     public String getInputText() {
         return mBuilder.getInputEditText().getText() != null
                 ? mBuilder.getInputEditText().getText().toString() : "";
+    }
+
+    private T data;
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public T getData() {
+        return data;
     }
 
     public void show(boolean showKeyBoard, boolean fullScreenMode) {

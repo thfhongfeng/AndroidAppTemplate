@@ -80,15 +80,15 @@ public class ActionMultiClickBean {
     }
 
     public interface IOnMultiClickListener {
-        void onAccessCheck(ActionMultiClickBean bean);
+        boolean onAccessCheck(ActionMultiClickBean bean);
 
-        void onMultiAction(ActionMultiClickBean bean);
+        boolean onMultiAction(ActionMultiClickBean bean);
     }
 
     public static abstract class OnMultiClickListener implements IOnMultiClickListener {
         @Override
-        public void onAccessCheck(ActionMultiClickBean bean) {
-
+        public boolean onAccessCheck(ActionMultiClickBean bean) {
+            return false;
         }
     }
 }

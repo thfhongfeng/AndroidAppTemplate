@@ -113,19 +113,22 @@ public class ActionMultiClickHelper {
         if (bean == null) {
             return;
         }
-        switch (bean.getAccessType()) {
-            case ActionMultiClickBean.ACCESS_BY_PWD:
-                preformMultiClickByPwd(bean);
-                break;
-            case ActionMultiClickBean.ACCESS_BY_CUSTOM:
-                ActionMultiClickBean.IOnMultiClickListener listener = bean.getListener();
-                if (listener != null) {
-                    listener.onAccessCheck(bean);
-                }
-                break;
-            default:
-                performAction(bean);
-                break;
+        ActionMultiClickBean.IOnMultiClickListener listener = bean.getListener();
+        boolean consume = false;
+        if (listener != null) {
+            consume = listener.onAccessCheck(bean);
+        }
+        if (!consume) {
+            switch (bean.getAccessType()) {
+                case ActionMultiClickBean.ACCESS_BY_PWD:
+                    preformMultiClickByPwd(bean);
+                    break;
+                case ActionMultiClickBean.ACCESS_BY_CUSTOM:
+                    break;
+                default:
+                    performAction(bean);
+                    break;
+            }
         }
     }
 
@@ -149,28 +152,31 @@ public class ActionMultiClickHelper {
         if (mActivity == null || bean == null) {
             return;
         }
-        switch (bean.getActionType()) {
-            case ActionMultiClickBean.ACTION_CUSTOM:
-                ActionMultiClickBean.IOnMultiClickListener listener = bean.getListener();
-                if (listener != null) {
-                    listener.onMultiAction(bean);
-                }
-                break;
-            case ActionMultiClickBean.ACTION_FINISH:
-                try {
-                    DeviceSdkManager.getInstance().setForegroundAppKeepLive(
-                            mActivity.getPackageName(), 10 * 60);
-                } catch (DeviceSdkException e) {
-                }
-                mActivity.finish();
-                mActivity = null;
-                break;
-            case ActionMultiClickBean.ACTION_GO_BACK:
-                // 创建一个返回键按下事件
-                KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
-                // 分发事件
-                mActivity.dispatchKeyEvent(event);
-                break;
+        ActionMultiClickBean.IOnMultiClickListener listener = bean.getListener();
+        boolean consume = false;
+        if (listener != null) {
+            consume = listener.onMultiAction(bean);
+        }
+        if (!consume) {
+            switch (bean.getActionType()) {
+                case ActionMultiClickBean.ACTION_CUSTOM:
+                    break;
+                case ActionMultiClickBean.ACTION_FINISH:
+                    try {
+                        DeviceSdkManager.getInstance().setForegroundAppKeepLive(
+                                mActivity.getPackageName(), 10 * 60);
+                    } catch (DeviceSdkException e) {
+                    }
+                    mActivity.finish();
+                    mActivity = null;
+                    break;
+                case ActionMultiClickBean.ACTION_GO_BACK:
+                    // 创建一个返回键按下事件
+                    KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
+                    // 分发事件
+                    mActivity.dispatchKeyEvent(event);
+                    break;
+            }
         }
     }
 
