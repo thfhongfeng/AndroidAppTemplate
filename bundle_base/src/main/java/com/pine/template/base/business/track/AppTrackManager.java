@@ -63,30 +63,32 @@ public class AppTrackManager {
     }
 
     public void attachModule(TrackModuleInfo moduleInfo) {
-        if (moduleInfo == null || TextUtils.isEmpty(moduleInfo.getModuleName())) {
+        if (moduleInfo == null || moduleInfo.getActions() == null
+                || TextUtils.isEmpty(moduleInfo.getModuleName())) {
             return;
         }
         TrackModuleInfo exist = mModuleInfoMap.get(moduleInfo.getModuleName());
+        LogUtils.d(TAG, "attachModule new:" + moduleInfo);
+        LogUtils.d(TAG, "attachModule already exist:" + exist);
         if (exist != null) {
             exist.setModuleDesc(moduleInfo.getModuleDesc());
             List<TrackActionInfo> existList = exist.getActions();
-            if (existList != null && existList.size() > 0) {
-                List<TrackActionInfo> list = moduleInfo.getActions();
-                if (list != null && list.size() > 0) {
-                    HashMap<String, TrackActionInfo> existMap = new HashMap<>();
-                    for (TrackActionInfo action : existList) {
-                        existMap.put(action.getActionName(), action);
-                    }
-                    for (TrackActionInfo action : list) {
-                        if (!existMap.containsKey(action.getActionName())) {
-                            existList.add(action);
-                            mTrackActionInfoMap.put(action.getActionName(), action);
-                            mTrackActionList.add(action.getActionName());
-                        }
-                    }
+            if (existList == null) {
+                existList = new ArrayList<>();
+                exist.setActions(existList);
+            }
+            HashMap<String, TrackActionInfo> existMap = new HashMap<>();
+            for (TrackActionInfo action : existList) {
+                existMap.put(action.getActionName(), action);
+            }
+            List<TrackActionInfo> list = moduleInfo.getActions();
+            for (TrackActionInfo action : list) {
+                if (!existMap.containsKey(action.getActionName())) {
+                    LogUtils.d(TAG, "attachModule for action:" + action);
+                    existList.add(action);
+                    mTrackActionList.add(action.getActionName());
+                    mTrackActionInfoMap.put(action.getActionName(), action);
                 }
-            } else {
-                exist.setActions(moduleInfo.getActions());
             }
         } else {
             mModuleInfoMap.put(moduleInfo.getModuleName(), moduleInfo);
@@ -172,6 +174,27 @@ public class AppTrackManager {
         return list;
     }
 
+    public TrackModuleInfo getModuleInfo(String moduleName) {
+        if (TextUtils.isEmpty(moduleName)) {
+            return null;
+        }
+        return mModuleInfoMap.get(moduleName);
+    }
+
+    public List<TrackModuleInfo> getModuleInfoList(String... moduleNames) {
+        if (moduleNames == null || moduleNames.length < 1) {
+            return null;
+        }
+        List<TrackModuleInfo> list = new ArrayList<>();
+        for (String key : moduleNames) {
+            TrackModuleInfo value = mModuleInfoMap.get(key);
+            if (value != null) {
+                list.add(value);
+            }
+        }
+        return list;
+    }
+
     public List<TrackActionInfo> getAllActionInfoList() {
         List<TrackActionInfo> list = new ArrayList<>();
         Set<String> keys = mTrackActionInfoMap.keySet();
@@ -184,8 +207,43 @@ public class AppTrackManager {
         return list;
     }
 
+    public List<TrackActionInfo> getActionInfoListByModule(String... moduleNames) {
+        if (moduleNames == null || moduleNames.length < 1) {
+            return null;
+        }
+        List<TrackActionInfo> list = new ArrayList<>();
+        List<TrackModuleInfo> moduleInfoList = getModuleInfoList(moduleNames);
+        for (TrackModuleInfo moduleInfo : moduleInfoList) {
+            if (moduleInfo != null && moduleInfo.getActions() != null) {
+                list.addAll(moduleInfo.getActions());
+            }
+        }
+        return list;
+    }
+
     public List<String> getAllActionList() {
         return mTrackActionList;
+    }
+
+    public TrackActionInfo getActionInfo(String actionName) {
+        if (TextUtils.isEmpty(actionName)) {
+            return null;
+        }
+        return mTrackActionInfoMap.get(actionName);
+    }
+
+    public List<TrackActionInfo> getActionInfoList(String... actionNames) {
+        if (actionNames == null || actionNames.length < 1) {
+            return null;
+        }
+        List<TrackActionInfo> list = new ArrayList<>();
+        for (String key : actionNames) {
+            TrackActionInfo value = mTrackActionInfoMap.get(key);
+            if (value != null) {
+                list.add(value);
+            }
+        }
+        return list;
     }
 
     public List<String> parseActionNames(List<String> actionNames) {
@@ -236,8 +294,8 @@ public class AppTrackManager {
                 txt = txt + "," + actionInfo.getActionDesc();
             }
         }
-        if (!TextUtils.isEmpty(txt)) {
-            txt.substring(0, txt.length() - 1);
+        if (!TextUtils.isEmpty(txt) && txt.length() > 1) {
+            txt = txt.substring(1, txt.length());
         }
         return txt;
     }

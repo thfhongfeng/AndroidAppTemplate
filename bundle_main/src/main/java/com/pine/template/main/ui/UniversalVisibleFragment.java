@@ -27,7 +27,7 @@ public abstract class UniversalVisibleFragment<T extends ViewDataBinding, VM ext
     public void onResume() {
         super.onResume();
         LogUtils.d(TAG, "checkAndTrigger onResume");
-        checkAndTrigger();
+        checkAndTrigger(true);
     }
 
     // 隐藏状态校验（show/hide 场景）
@@ -35,7 +35,7 @@ public abstract class UniversalVisibleFragment<T extends ViewDataBinding, VM ext
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         LogUtils.d(TAG, "checkAndTrigger onHiddenChanged");
-        checkAndTrigger();
+        checkAndTrigger(false);
     }
 
     // 视图可见性校验（极端场景兜底）
@@ -45,7 +45,7 @@ public abstract class UniversalVisibleFragment<T extends ViewDataBinding, VM ext
                 public void onGlobalLayout() {
                     if (getView() != null && getView().getGlobalVisibleRect(new Rect())) {
                         LogUtils.d(TAG, "checkAndTrigger OnGlobalLayoutListener");
-                        checkAndTrigger();
+                        checkAndTrigger(false);
                         getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 }
@@ -58,9 +58,9 @@ public abstract class UniversalVisibleFragment<T extends ViewDataBinding, VM ext
     }
 
     // 核心触发逻辑
-    private void checkAndTrigger() {
-        boolean isReallyVisible = isReallyVisible();
-        LogUtils.d(TAG, "checkAndTrigger isReallyVisible:" + isReallyVisible);
+    private void checkAndTrigger(boolean resume) {
+        boolean isReallyVisible = isReallyVisible(resume);
+        LogUtils.d(TAG, "checkAndTrigger resume: " + resume + ", isReallyVisible:" + isReallyVisible);
         if (isReallyVisible) {
             if (!_isLastVisible) {
                 onFragmentVisible(_isFirstTime);
@@ -74,12 +74,16 @@ public abstract class UniversalVisibleFragment<T extends ViewDataBinding, VM ext
     }
 
     // 最终可见性校验
-    protected boolean isReallyVisible() {
-        return isAdded()
-                && !isDetached()
-                && !isHidden()
-                && getUserVisibleHint()
-                && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
+    protected boolean isReallyVisible(boolean resume) {
+        boolean isAdded = isAdded();
+        boolean isDetached = isDetached();
+        boolean isHidden = isHidden();
+        boolean getUserVisibleHint = getUserVisibleHint();
+        boolean isAtLeastRESUMED = getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
+        LogUtils.i(TAG, "isReallyVisible isAdded:" + isAdded + ", isDetached:" + isDetached
+                + ", isHidden:" + isHidden + ", getUserVisibleHint:" + getUserVisibleHint + ", resume:" + resume
+                + ", isAtLeastRESUMED:" + isAtLeastRESUMED + ", getLifecycle().getCurrentState():" + getLifecycle().getCurrentState());
+        return isAdded && !isDetached && !isHidden && getUserVisibleHint && (resume || isAtLeastRESUMED);
     }
 
     // 触发事件（带首次标记）

@@ -40,9 +40,15 @@ public class RecreateHelper {
         boolean recreate = mRecreateMap.containsKey(hashcode) && mRecreateMap.get(hashcode);
         LogUtils.d("ActivityLifecycle", activity + "calRecreateActivity recreate:" + recreate);
         if (recreate) {
-            mRecreateMap.remove(hashcode);
-            activity.recreate();
+            if (activity != null) {
+                activity.recreate();
+            }
         }
         return recreate;
+    }
+
+    public void clearRecreateData(int hashcode) {
+        LogUtils.d("ActivityLifecycle", "clearRecreateData hashcode:" + hashcode);
+        mRecreateMap.remove(hashcode);
     }
 }

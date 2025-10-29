@@ -616,14 +616,13 @@ public abstract class Activity extends AppCompatActivity
             recreate();
             return;
         }
-        if (RecreateHelper.getInstance().calRecreateActivity(this, hashCode())) {
-            return;
-        }
+        RecreateHelper.getInstance().calRecreateActivity(this, hashCode());
     }
 
     @Override
     public void recreate() {
         getViewModelStore().clear();
+        RecreateHelper.getInstance().clearRecreateData(hashCode());
         super.recreate();
         LogUtils.d("ActivityLifecycle", this + " recreate");
     }
