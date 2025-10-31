@@ -119,6 +119,16 @@ public class VersionEntity {
         return force == 2;
     }
 
+    private boolean bgIdleCheck;
+
+    public boolean isBgIdleCheck() {
+        return bgIdleCheck;
+    }
+
+    public void setBgIdleCheck(boolean bgIdleCheck) {
+        this.bgIdleCheck = bgIdleCheck;
+    }
+
     public boolean isFileDownloaded(File oldFile) {
         return oldFile != null && oldFile.exists() && getFileSize() > 0
                 && oldFile.length() == getFileSize();

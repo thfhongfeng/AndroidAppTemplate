@@ -101,23 +101,37 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
 
 
 
-新建业务模块注意事项：
+新建业务模块注意事项(如：bundle_demo_module)：
 1. 业务模块的Application类统一继承RootApplication类。
 2. 业务模块的Constants常量类统一继承bundle_base模块的BaseConstants类。
 3. 业务模块的UrlConstants常量类统一继承bundle_base模块的BaseUrlConstants类。
-4. 业务模块的SPKeyConstants常量类统一继承bundle_base模块的BaseSPKeyConstants类。
+4. 业务模块配置：
+   a. dev_config.gradle的modulePkgConfig中添加模块信息：
+        bundle_demo_module: [libDepend: false, libArtifactId: "bundle_demo_module", libVersion: "1.0.0"],
+      模块的名，即模块文件夹名（bundle_demo_module）；
+      其它模块依赖该模块时是lib还是源码（libDepend: false）；
+      模块打包artifactId属性（libArtifactId: "bundle_demo_module"）；
+      模块打包version属性（libVersion: "1.0.0"）。
+   b. config_key.gradle的bundleConfigKeyMap用来添加业务功能开关及配置项Key标识，
+      该步骤主要是生成BuildConfigKey类，方便调用者使用开关及配置标识，而不用记住常量内容（可选，可参考已有模块)。
 5. 业务模块arouter通信的搭建（结合arouter的通信方式说明文档来理解）：
-   a. ModuleBuildConfig.gradle中添加模块信息，包括模块的Key标识，模块的路由标识，模块打包信息（必需）。
-   b. 模块中编写XxxRemote（可参考已有模块，基本内容都差不多）和XxxRemoteService类（通信方法写在该类中，使用注解方式），用于向外部模块提供统一的跨模块服务。
-   c. 模块中编写XxxClientManager（可参考已有模块），用于统一调用外部模块的跨模块方法。
-   d. RouterMethodKey.gradle中添加通信命令信息（可选，可参考已有模块），
-      该步骤非必需，该步骤主要是生成RouterCommand类，方便调用者通过接口常量指定要调用的模块的方法，而不用记住常量内容。
-   e. 模块间通信使用方式：
+   a. dev_config.gradle的bundleRouterConfig中添加模块Router信息：
+        BUNDLE_DEMO_MODULE       : [
+                path  : "/demo/service",
+                name  : "RouterDemoCommand",
+                method: [
+                        goDemoActivity   : "goDemoActivity",
+                ]
+        ],
+      模块router标识（BUNDLE_DEMO_MODULE）；
+      模块router路由标识(path  : "/demo/service")；
+      模块router路由调用方法集合类名(name  : "RouterDemoCommand")，该类会在编译时自动生成；
+      模块router路由调用方法集合(method: [:])，该集合即为RouterDemoCommand的常量，提供给使用着进行跨模块方法调用；
+   b. 模块中编写DemoARouterRemote（可参考已有模块，基本内容都差不多）和DemoRemoteService类（通信方法写在该类中，使用注解方式），用于向外部模块提供统一的跨模块服务。
+   c. 模块中编写DemoRouterClient（可参考已有模块），用于统一调用外部模块的跨模块方法。
+   d. 模块间通信使用方式：
      RouterManager.callXxCommand(Context context, String bundleKey, String commandName, Bundle args, IRouterCallback callback)。
-     该调用统一写在XxxClientManager中
-6. 将业务模块信息添加到dev_config.gradle的modulePkgConfig参数中，如有路由需求则需要同时在bundleRouterConfig参数中添加相关信息。
-7. 业务功能开关及配置项Key标识统一添加到config_key.gradle，编译时会生成BuildConfigKey.java类，方便调用者使用开关及配置标识。
-
+     该调用统一写在DemoRouterClient中。commandName即为a步骤中的method集合成员。
 
 
 其它注意事项：
@@ -147,4 +161,3 @@ Xxx---各客制化渠道源文件夹，对应不同渠道。为common的拷贝�
 一般来说：资源替换效果只在生产包中产生效果：
 Gradle资源合并优先级：主模块资源 > 后声明的库模块（资源模块） > 先声明的库模块（功能模块） > 第三方依赖库
 生产时打包aar包形式下：后声明的依赖包 > 先声明的依赖包
-

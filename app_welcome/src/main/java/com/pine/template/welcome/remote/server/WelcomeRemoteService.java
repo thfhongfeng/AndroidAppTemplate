@@ -25,8 +25,16 @@ public class WelcomeRemoteService {
     @RouterCommand(CommandName = RouterWelcomeCommand.checkApkUpdate)
     public void checkApkUpdate(@NonNull final Context context, Bundle args,
                                @NonNull final IServiceCallback callback) {
+        boolean manualCheckUpdate = false;
+        boolean fullScreen = true;
+        boolean silentUpdate = true;
+        if (args != null) {
+            manualCheckUpdate = args.getBoolean("manualCheckUpdate", false);
+            fullScreen = args.getBoolean("fullScreen", true);
+            silentUpdate = args.getBoolean("silentUpdate", true);
+        }
         final Bundle responseBundle = new Bundle();
-        ApkVersionManager.getInstance().checkAndUpdateApk((Activity) context, true, true,
+        ApkVersionManager.getInstance().checkAndUpdateApk((Activity) context, manualCheckUpdate, fullScreen, silentUpdate,
                 new ApkVersionManager.IUpdateCallback() {
                     @Override
                     public void onNoNewVersion(String cause) {

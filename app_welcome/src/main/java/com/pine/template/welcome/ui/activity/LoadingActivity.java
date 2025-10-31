@@ -59,7 +59,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
                     autoLogin(-1);
                     return;
                 }
-                ApkVersionManager.getInstance().checkAndUpdateApk(LoadingActivity.this, true, true,
+                ApkVersionManager.getInstance().checkAndUpdateApk(LoadingActivity.this, false, true, true,
                         new ApkVersionManager.IUpdateCallback() {
                             @Override
                             public void onNoNewVersion(String cause) {
@@ -86,6 +86,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
                                                     VersionEntity versionEntity) {
                                 if (errCode == 0) {
                                     showShortToast(R.string.base_new_version_update_cancel);
+                                    ApkVersionManager.getInstance().scheduleBgUpdateCheckIfNeed();
                                 } else if (errCode == 1) {
                                     showShortToast(errMsg);
                                 } else if (errCode == 2) {

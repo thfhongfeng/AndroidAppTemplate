@@ -3,6 +3,8 @@ package com.pine.template.welcome.updater;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.CountDownTimer;
+import android.os.Looper;
+import android.os.MessageQueue;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.pine.app.template.app_welcome.BuildConfigKey;
+import com.pine.template.base.BaseApplication;
 import com.pine.template.base.BaseKeyConstants;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.util.DialogUtils;
@@ -30,6 +34,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by tanghongfeng on 2018/9/25
@@ -81,19 +86,72 @@ public class ApkVersionManager {
         }
     }
 
-    public void checkAndUpdateApk(final Activity activity,
-                                  boolean silentUpdate, final IUpdateCallback callback) {
-        checkAndUpdateApk(activity, false, silentUpdate, callback);
+    private VersionEntity mLastNewVersionEntity;
+    private long mLastCheckUpdate;
+
+    private long BG_IDLE_CHECK_INTERVAL = 3 * 60 * 60 * 1000;
+
+    private MessageQueue.IdleHandler mBgCheckUpdater = new MessageQueue.IdleHandler() {
+        @Override
+        public boolean queueIdle() {
+            long now = System.currentTimeMillis();
+            if (now - mLastCheckUpdate > BG_IDLE_CHECK_INTERVAL
+                    && BaseApplication.mCurResumedActivity != null) {
+                boolean keep = false;
+                long lastCheckUpdateCalTime = mLastCheckUpdate;
+                if (mLastNewVersionEntity != null && mLastNewVersionEntity.isForce()) {
+                    // 如果是强制更新，则过三十分钟后还要进行更新检查
+                    keep = true;
+                    lastCheckUpdateCalTime = mLastCheckUpdate + 30 * 60 * 1000;
+                }
+                checkAndUpdateApk(BaseApplication.mCurResumedActivity, false, true, true, true, null);
+                if (mLastNewVersionEntity != null && mLastNewVersionEntity.isForce()) {
+                    mLastCheckUpdate = lastCheckUpdateCalTime;
+                }
+                LogUtils.d(TAG, "idle bg check update work active now:" + now
+                        + ", lastCheckUpdateCalTime:" + lastCheckUpdateCalTime
+                        + ", BG_IDLE_CHECK_INTERVAL:" + BG_IDLE_CHECK_INTERVAL + ", keep idle work:" + keep
+                        + ", cur activity:" + BaseApplication.mCurResumedActivity);
+                return keep;
+            }
+            return true;
+        }
+    };
+
+    public void scheduleBgUpdateCheckIfNeed() {
+        boolean autoCheck = ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_AUTO_CHECK_UPDATE);
+        LogUtils.d(TAG, "scheduleBgUpdateCheckIfNeed autoCheck:" + autoCheck
+                + ", mLastNewVersionEntity:" + mLastNewVersionEntity);
+        if (mLastNewVersionEntity != null && autoCheck) {
+            Random rand = new Random();
+            int num = rand.nextInt(500); // [0, 500)的整数
+            BG_IDLE_CHECK_INTERVAL = 60 * 60 * 1000 + num * 60 * 1000;
+            LogUtils.d(TAG, "scheduleBgUpdateCheck BG_IDLE_CHECK_INTERVAL:" + BG_IDLE_CHECK_INTERVAL);
+            // idle队列中进行
+            Looper.getMainLooper().getQueue().removeIdleHandler(mBgCheckUpdater);
+            Looper.getMainLooper().getQueue().addIdleHandler(mBgCheckUpdater);
+        }
     }
 
-    public void checkAndUpdateApk(final Activity activity, boolean fullScreen,
+    public void checkAndUpdateApk(final Activity activity, boolean manualCheckUpdate, boolean fullScreen,
                                   boolean silentUpdate, final IUpdateCallback callback) {
+        checkAndUpdateApk(activity, manualCheckUpdate, false, fullScreen, silentUpdate, callback);
+    }
+
+    public void checkAndUpdateApk(final Activity activity, boolean manualCheckUpdate, boolean bgIdleCheckMode, boolean fullScreen,
+                                  boolean silentUpdate, final IUpdateCallback callback) {
+        mLastCheckUpdate = System.currentTimeMillis();
         mFullScreen = fullScreen;
         mSilentUpdate = silentUpdate;
         HashMap<String, String> params = new HashMap<>();
+        params.put("manualCheckUpdate", String.valueOf(manualCheckUpdate));
         mVersionModel.requestUpdateVersionData(params, new IAsyncResponse<VersionEntity>() {
             @Override
             public void onResponse(VersionEntity versionEntity) {
+                LogUtils.d(TAG, "checkAndUpdateApk bgIdleCheckMode:" + bgIdleCheckMode
+                        + ", manualCheckUpdate:" + manualCheckUpdate + ", versionEntity:" + versionEntity);
+                versionEntity.setBgIdleCheck(bgIdleCheckMode);
+                mLastNewVersionEntity = null;
                 if (versionEntity != null) {
                     if (versionEntity.getBaseConfigInfo() != null) {
                         ConfigSwitcherServer.updateRemoteConfig(versionEntity.getBaseConfigInfo(), null);
@@ -102,6 +160,7 @@ public class ApkVersionManager {
                         if (callback != null) {
                             callback.onNewVersionFound(versionEntity);
                         }
+                        mLastNewVersionEntity = versionEntity;
                         showVersionUpdateConfirmDialog(activity, versionEntity, callback);
                     } else {
                         if (callback != null) {
@@ -176,25 +235,36 @@ public class ApkVersionManager {
         } else {
             mUpdateConfirmDialog.show();
         }
-        int timeStamp = versionEntity.isForce() ? 3000 : 300000;
+        int timeStamp = 120000;
+        if (versionEntity.isForce()) {
+            timeStamp = 6000;
+        } else if (versionEntity.isBgIdleCheck()) {
+            timeStamp = 30000;
+        }
         mCountDownTimer = new CountDownTimer(timeStamp, 1000) {
 
             @Override
             public void onFinish() {
                 if (mUpdateConfirmDialog != null && mUpdateConfirmDialog.isShowing()) {
-                    if (versionEntity.isForce()) {
+                    if (versionEntity.isForce() || versionEntity.isBgIdleCheck()) {
                         mUpdateConfirmDialog.findViewById(R.id.confirm_ll).performClick();
+                        mUpdateConfirmDialog.findViewById(R.id.confirm_count_time_tv).setVisibility(View.VISIBLE);
+                        mUpdateConfirmDialog.findViewById(R.id.cancel_count_time_tv).setVisibility(View.GONE);
                     } else {
-                        mUpdateConfirmDialog.findViewById(R.id.cancel_btn_tv).performClick();
+                        mUpdateConfirmDialog.findViewById(R.id.cancel_ll).performClick();
+                        mUpdateConfirmDialog.findViewById(R.id.confirm_count_time_tv).setVisibility(View.GONE);
+                        mUpdateConfirmDialog.findViewById(R.id.cancel_count_time_tv).setVisibility(View.VISIBLE);
                     }
-                    mUpdateConfirmDialog.findViewById(R.id.count_time_tv).setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onTick(long millisUntilFinished) {
-                if (mUpdateConfirmDialog != null && mUpdateConfirmDialog.isShowing()) {
-                    ((TextView) mUpdateConfirmDialog.findViewById(R.id.count_time_tv))
+                if (versionEntity.isForce() || versionEntity.isBgIdleCheck()) {
+                    ((TextView) mUpdateConfirmDialog.findViewById(R.id.confirm_count_time_tv))
+                            .setText("(" + millisUntilFinished / 1000 + ")");
+                } else {
+                    ((TextView) mUpdateConfirmDialog.findViewById(R.id.cancel_count_time_tv))
                             .setText("(" + millisUntilFinished / 1000 + ")");
                 }
             }
