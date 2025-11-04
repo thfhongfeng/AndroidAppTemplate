@@ -86,7 +86,7 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
                                                     VersionEntity versionEntity) {
                                 if (errCode == 0) {
                                     showShortToast(R.string.base_new_version_update_cancel);
-                                    ApkVersionManager.getInstance().scheduleBgUpdateCheckIfNeed();
+                                    ApkVersionManager.getInstance().scheduleBgUpdateCheckIfNeed(versionEntity);
                                 } else if (errCode == 1) {
                                     showShortToast(errMsg);
                                 } else if (errCode == 2) {

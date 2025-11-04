@@ -106,7 +106,7 @@ public class LoginResponseInterceptor implements IResponseInterceptor {
             return;
         }
         bean.setActionType(IRequestManager.ActionType.RETRY_AFTER_RE_LOGIN);
-        RequestManager.setJsonRequest(bean, (JsonCallback) bean.getCallback());
+        RequestManager.setJsonRequest(bean, bean.getCallback() != null ? (JsonCallback) bean.getCallback() : null);
     }
 
     // 重新发起之前所有因401终止的请求

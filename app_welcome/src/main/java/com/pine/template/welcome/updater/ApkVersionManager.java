@@ -86,47 +86,40 @@ public class ApkVersionManager {
         }
     }
 
-    private VersionEntity mLastNewVersionEntity;
     private long mLastCheckUpdate;
+    private boolean mFirstIdleCheck = true;
 
-    private long BG_IDLE_CHECK_INTERVAL = 3 * 60 * 60 * 1000;
+    private long BG_IDLE_FIRST_CHECK_INTERVAL = 3 * 60 * 60 * 1000;
+    private long BG_IDLE_CHECK_INTERVAL = 45 * 60 * 1000;
 
     private MessageQueue.IdleHandler mBgCheckUpdater = new MessageQueue.IdleHandler() {
         @Override
         public boolean queueIdle() {
+            if (BaseApplication.mCurResumedActivity == null) {
+                return true;
+            }
             long now = System.currentTimeMillis();
-            if (now - mLastCheckUpdate > BG_IDLE_CHECK_INTERVAL
-                    && BaseApplication.mCurResumedActivity != null) {
-                boolean keep = false;
-                long lastCheckUpdateCalTime = mLastCheckUpdate;
-                if (mLastNewVersionEntity != null && mLastNewVersionEntity.isForce()) {
-                    // 如果是强制更新，则过三十分钟后还要进行更新检查
-                    keep = true;
-                    lastCheckUpdateCalTime = mLastCheckUpdate + 30 * 60 * 1000;
-                }
+            long interval = mFirstIdleCheck ? BG_IDLE_FIRST_CHECK_INTERVAL : BG_IDLE_CHECK_INTERVAL;
+            if (now - mLastCheckUpdate > interval) {
+                mFirstIdleCheck = false;
                 checkAndUpdateApk(BaseApplication.mCurResumedActivity, false, true, true, true, null);
-                if (mLastNewVersionEntity != null && mLastNewVersionEntity.isForce()) {
-                    mLastCheckUpdate = lastCheckUpdateCalTime;
-                }
                 LogUtils.d(TAG, "idle bg check update work active now:" + now
-                        + ", lastCheckUpdateCalTime:" + lastCheckUpdateCalTime
-                        + ", BG_IDLE_CHECK_INTERVAL:" + BG_IDLE_CHECK_INTERVAL + ", keep idle work:" + keep
+                        + ", first idle check:" + mFirstIdleCheck + ", interval:" + interval
                         + ", cur activity:" + BaseApplication.mCurResumedActivity);
-                return keep;
             }
             return true;
         }
     };
 
-    public void scheduleBgUpdateCheckIfNeed() {
+    public void scheduleBgUpdateCheckIfNeed(VersionEntity versionEntity) {
         boolean autoCheck = ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_AUTO_CHECK_UPDATE);
-        LogUtils.d(TAG, "scheduleBgUpdateCheckIfNeed autoCheck:" + autoCheck
-                + ", mLastNewVersionEntity:" + mLastNewVersionEntity);
-        if (mLastNewVersionEntity != null && autoCheck) {
+        LogUtils.d(TAG, "scheduleBgUpdateCheckIfNeed autoCheck:" + autoCheck + ", versionEntity:" + versionEntity);
+        if (autoCheck && (versionEntity != null && (versionEntity.isForce() || versionEntity.isNewVersionButLimit()))) {
             Random rand = new Random();
-            int num = rand.nextInt(500); // [0, 500)的整数
-            BG_IDLE_CHECK_INTERVAL = 60 * 60 * 1000 + num * 60 * 1000;
-            LogUtils.d(TAG, "scheduleBgUpdateCheck BG_IDLE_CHECK_INTERVAL:" + BG_IDLE_CHECK_INTERVAL);
+            int num = rand.nextInt(200); // [0, 200)的整数
+            BG_IDLE_FIRST_CHECK_INTERVAL = 60 * 60 * 1000 + num * 60 * 1000;
+            mFirstIdleCheck = true;
+            LogUtils.d(TAG, "scheduleBgUpdateCheck BG_IDLE_FIRST_CHECK_INTERVAL:" + BG_IDLE_FIRST_CHECK_INTERVAL);
             // idle队列中进行
             Looper.getMainLooper().getQueue().removeIdleHandler(mBgCheckUpdater);
             Looper.getMainLooper().getQueue().addIdleHandler(mBgCheckUpdater);
@@ -151,7 +144,6 @@ public class ApkVersionManager {
                 LogUtils.d(TAG, "checkAndUpdateApk bgIdleCheckMode:" + bgIdleCheckMode
                         + ", manualCheckUpdate:" + manualCheckUpdate + ", versionEntity:" + versionEntity);
                 versionEntity.setBgIdleCheck(bgIdleCheckMode);
-                mLastNewVersionEntity = null;
                 if (versionEntity != null) {
                     if (versionEntity.getBaseConfigInfo() != null) {
                         ConfigSwitcherServer.updateRemoteConfig(versionEntity.getBaseConfigInfo(), null);
@@ -160,8 +152,9 @@ public class ApkVersionManager {
                         if (callback != null) {
                             callback.onNewVersionFound(versionEntity);
                         }
-                        mLastNewVersionEntity = versionEntity;
                         showVersionUpdateConfirmDialog(activity, versionEntity, callback);
+                    } else if (versionEntity.isNewVersionButLimit()) {
+                        scheduleBgUpdateCheckIfNeed(versionEntity);
                     } else {
                         if (callback != null) {
                             callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_NO_FOUND);

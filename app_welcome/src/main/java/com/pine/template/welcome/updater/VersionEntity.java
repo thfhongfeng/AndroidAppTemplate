@@ -129,6 +129,16 @@ public class VersionEntity {
         this.bgIdleCheck = bgIdleCheck;
     }
 
+    private boolean newVersionButLimit;
+
+    public boolean isNewVersionButLimit() {
+        return newVersionButLimit;
+    }
+
+    public void setNewVersionButLimit(boolean newVersionButLimit) {
+        this.newVersionButLimit = newVersionButLimit;
+    }
+
     public boolean isFileDownloaded(File oldFile) {
         return oldFile != null && oldFile.exists() && getFileSize() > 0
                 && oldFile.length() == getFileSize();
@@ -152,6 +162,8 @@ public class VersionEntity {
                 ", force=" + force +
                 ", minSupportedVersion=" + minSupportedVersion +
                 ", remark='" + remark + '\'' +
+                ", bgIdleCheck=" + bgIdleCheck +
+                ", newVersionButLimit=" + newVersionButLimit +
                 ", baseConfigInfo=" + baseConfigInfo +
                 '}';
     }
