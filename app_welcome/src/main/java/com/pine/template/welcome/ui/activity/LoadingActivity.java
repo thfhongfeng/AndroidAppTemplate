@@ -11,14 +11,15 @@ import androidx.lifecycle.Observer;
 
 import com.pine.app.template.app_welcome.BuildConfigKey;
 import com.pine.app.template.app_welcome.router.RouterMainCommand;
-import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.base.business.track.AppTrackManager;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.welcome.R;
+import com.pine.template.welcome.WelBaseActivity;
 import com.pine.template.welcome.WelUrlConstants;
 import com.pine.template.welcome.WelcomeApplication;
 import com.pine.template.welcome.databinding.LoadingActivityBinding;
 import com.pine.template.welcome.remote.WelcomeRouterClient;
+import com.pine.template.welcome.track.TrackRecordHelper;
 import com.pine.template.welcome.updater.ApkVersionManager;
 import com.pine.template.welcome.updater.VersionEntity;
 import com.pine.template.welcome.vm.LoadingVm;
@@ -32,7 +33,12 @@ import java.io.File;
 @PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE})
-public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityBinding, LoadingVm> {
+public class LoadingActivity extends WelBaseActivity<LoadingActivityBinding, LoadingVm> {
+    @Override
+    public String makeUiName() {
+        return "Loading";
+    }
+
     private final static int LOADING_STAY_MIN_TIME = 1000;
 
     // 检查网络状态间隔
@@ -63,12 +69,13 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
                         new ApkVersionManager.IUpdateCallback() {
                             @Override
                             public void onNoNewVersion(String cause) {
+                                TrackRecordHelper.getInstance().recordAppUpdateCheck(null, cause);
                                 autoLogin(-1);
                             }
 
                             @Override
                             public void onNewVersionFound(VersionEntity versionEntity) {
-
+                                TrackRecordHelper.getInstance().recordAppUpdateCheck(versionEntity.getVersionName(), null);
                             }
 
                             @Override
@@ -78,12 +85,21 @@ public class LoadingActivity extends BaseMvvmFullScreenActivity<LoadingActivityB
 
                             @Override
                             public void onUpdateComplete(VersionEntity versionEntity) {
-                                finish();
+                                LogUtils.d(TAG, "onUpdateComplete versionEntity:" + versionEntity);
+                                TrackRecordHelper.getInstance().recordAppUpdateSuccess(versionEntity.getVersionName());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        finish();
+                                    }
+                                });
                             }
 
                             @Override
                             public void onUpdateErr(int errCode, String errMsg,
                                                     VersionEntity versionEntity) {
+                                LogUtils.d(TAG, "onUpdateErr errCode:" + errCode + ", errMsg:" + errMsg
+                                        + ", versionEntity:" + versionEntity);
                                 if (errCode == 0) {
                                     showShortToast(R.string.base_new_version_update_cancel);
                                     ApkVersionManager.getInstance().scheduleBgUpdateCheckIfNeed(versionEntity);

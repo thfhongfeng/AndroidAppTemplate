@@ -16,16 +16,20 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.pine.app.template.app_welcome.BuildConfigKey;
-import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.welcome.R;
+import com.pine.template.welcome.WelBaseActivity;
 import com.pine.template.welcome.WelcomeKeyConstants;
 import com.pine.template.welcome.databinding.UserPrivacyActivityBinding;
 import com.pine.template.welcome.vm.UserPrivacyVm;
 import com.pine.tool.util.SharePreferenceUtils;
 
-public class UserPrivacyActivity extends BaseMvvmFullScreenActivity<UserPrivacyActivityBinding, UserPrivacyVm> {
+public class UserPrivacyActivity extends WelBaseActivity<UserPrivacyActivityBinding, UserPrivacyVm> {
+    @Override
+    public String makeUiName() {
+        return "Privacy";
+    }
 
     private Dialog mTipDialog;
 

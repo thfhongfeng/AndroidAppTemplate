@@ -11,7 +11,6 @@ import com.pine.template.base.bgwork.network.NetworkType;
 import com.pine.template.base.bgwork.network.OnNetworkChangedListener;
 import com.pine.template.base.business.track.AppTrackManager;
 import com.pine.template.base.business.track.TrackDefaultBuilder;
-import com.pine.template.base.manager.StorageManager;
 import com.pine.template.main.R;
 import com.pine.tool.util.LogUtils;
 
@@ -188,18 +187,7 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
         AppTrackManager.getInstance().addLeftTrackImmediately();
     }
 
-    private boolean checkStorage() {
-        boolean enough = StorageManager.getInstance().checkDefaultDisk(true);
-        if (!enough) {
-            LogUtils.d(TAG, "storage not enough, ignore track job");
-        }
-        return enough;
-    }
-
     public void recordInfoAppStart() {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_app_start,
                 mSimpleDateFormat.format(recordDate));
@@ -209,9 +197,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoAppStop() {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_app_stop,
                 mSimpleDateFormat.format(recordDate));
@@ -221,9 +206,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoMqttConnect() {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_mqtt_state_connect,
                 mSimpleDateFormat.format(recordDate));
@@ -233,9 +215,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoMqttKeepLive(String sendCount, String replyCount) {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_mqtt_state_keep_live,
                 mSimpleDateFormat.format(recordDate), sendCount, replyCount,
@@ -246,9 +225,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoMqttKeepLiveFail(String reason) {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_mqtt_state_keep_live_fail,
                 mSimpleDateFormat.format(recordDate), reason);
@@ -258,9 +234,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoMqttReconnectByCheck() {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_mqtt_state_reconnect_by_check,
                 mSimpleDateFormat.format(recordDate));
@@ -270,9 +243,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoMqttDisconnect(String errMsg) {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_mqtt_state_disconnect,
                 mSimpleDateFormat.format(recordDate), errMsg);
@@ -282,9 +252,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoMqttService(String state) {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_mqtt_state_service,
                 mSimpleDateFormat.format(recordDate), state);
@@ -294,9 +261,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoNetConnect(String netType, String signal) {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_net_state_connect,
                 mSimpleDateFormat.format(recordDate), netType, signal);
@@ -306,9 +270,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoNetConnectSignal(String netType, String signal) {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_net_state_connect_signal,
                 mSimpleDateFormat.format(recordDate), netType, signal);
@@ -318,9 +279,6 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     }
 
     public void recordInfoNetDisconnect() {
-        if (!checkStorage()) {
-            return;
-        }
         Date recordDate = new Date();
         String actionData = mContext.getString(R.string.main_info_net_state_disconnect,
                 mSimpleDateFormat.format(recordDate));

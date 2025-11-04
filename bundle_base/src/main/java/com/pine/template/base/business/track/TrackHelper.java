@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.pine.template.base.business.track.entity.AppTrack;
+import com.pine.template.base.manager.StorageManager;
 import com.pine.tool.request.RequestBean;
 import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
@@ -77,10 +78,21 @@ public class TrackHelper {
         }
     }
 
+    private boolean checkStorage() {
+        boolean enough = StorageManager.getInstance().checkDefaultDisk(true);
+        if (!enough) {
+            LogUtils.d(TAG, "storage not enough, ignore track job");
+        }
+        return enough;
+    }
+
     /**
      * @param appTrack
      */
     public void track(@NonNull final AppTrack appTrack, boolean immediately) {
+        if (!checkStorage()) {
+            return;
+        }
         if (immediately) {
             AppTrackRepository.getInstance(mContext).insert(appTrack);
         } else {

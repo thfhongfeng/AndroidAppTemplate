@@ -1,0 +1,10 @@
+<resources>
+    <string name="wel_info_app_ui_enter">%s 应用状态:进入加载界面(%s)</string>
+    <string name="wel_info_app_ui_exit">%s 应用状态:退出加载界面(%s)</string>
+
+    <string name="wel_info_need_update">新版本【%s】</string>
+    <string name="wel_info_not_need_update">无需更新(%s)</string>
+    <string name="wel_info_check_update">%s 检查更新:%s</string>
+    <string name="wel_info_update_success">%s 应用更新:更新成功(%s)</string>
+    <string name="wel_info_update_fail">%s 应用更新:更新失败(%s)</string>
+</resources>

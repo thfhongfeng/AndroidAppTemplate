@@ -4,15 +4,20 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.pine.app.template.app_welcome.router.RouterMainCommand;
-import com.pine.template.base.architecture.mvvm.ui.activity.BaseMvvmFullScreenActivity;
 import com.pine.template.welcome.R;
+import com.pine.template.welcome.WelBaseActivity;
 import com.pine.template.welcome.databinding.WelcomeActivityBinding;
 import com.pine.template.welcome.remote.WelcomeRouterClient;
 import com.pine.template.welcome.vm.WelcomeVm;
 import com.pine.tool.router.IRouterCallback;
 import com.pine.tool.util.LogUtils;
 
-public class WelcomeActivity extends BaseMvvmFullScreenActivity<WelcomeActivityBinding, WelcomeVm> {
+public class WelcomeActivity extends WelBaseActivity<WelcomeActivityBinding, WelcomeVm> {
+    @Override
+    public String makeUiName() {
+        return "Welcome";
+    }
+
     private final static int WELCOME_STAY_MIN_TIME = 1000;
     private long mStartTimeMillis;
 
