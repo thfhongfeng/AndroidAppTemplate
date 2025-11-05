@@ -27,6 +27,10 @@ public class VersionModel {
     private final String TAG = LogUtils.makeLogTag(this.getClass());
     private static final int REQUEST_QUERY_VERSION_INFO = 1;
 
+    private static final int REQUEST_UPDATE_CANCEL = 2;
+
+    private static final int REQUEST_UPDATE_COMPLETE = 3;
+
     public boolean requestUpdateVersionData(final HashMap<String, String> params,
                                             @NonNull IAsyncResponse<VersionEntity> callback) {
         String url = BaseUrlConstants.APK_UPDATE();
@@ -35,6 +39,30 @@ public class VersionModel {
         requestBean.setRequestMethod(RequestMethod.GET);
         requestBean.setModuleTag(TAG);
         return RequestManager.setJsonRequest(requestBean, handleResponse(callback));
+    }
+
+    public boolean requestUpdateCancel() {
+        String url = BaseUrlConstants.APK_UPDATE();
+        HashMap<String, String> params = new HashMap<>();
+        // 1-取消了更新, 2-表示更新完成，空或者其它表示请求更新检查
+        params.put("updateState", "1");
+        RequestBean requestBean = new RequestBean(RequestManager.buildGetUrl(url, params),
+                REQUEST_UPDATE_CANCEL, new HashMap<String, String>());
+        requestBean.setRequestMethod(RequestMethod.GET);
+        requestBean.setModuleTag(TAG);
+        return RequestManager.setJsonRequest(requestBean, null);
+    }
+
+    public boolean requestUpdateComplete() {
+        String url = BaseUrlConstants.APK_UPDATE();
+        HashMap<String, String> params = new HashMap<>();
+        // 1-取消了更新, 2-表示更新完成，空或者其它表示请求更新检查
+        params.put("updateState", "2");
+        RequestBean requestBean = new RequestBean(RequestManager.buildGetUrl(url, params),
+                REQUEST_UPDATE_COMPLETE, new HashMap<String, String>());
+        requestBean.setRequestMethod(RequestMethod.GET);
+        requestBean.setModuleTag(TAG);
+        return RequestManager.setJsonRequest(requestBean, null);
     }
 
     private <T> JsonCallback handleResponse(final IAsyncResponse<T> callback) {

@@ -211,6 +211,7 @@ public class ApkVersionManager {
             @Override
             public void onClick(View v) {
                 onClear();
+                mVersionModel.requestUpdateCancel();
                 if (callback != null) {
                     callback.onUpdateErr(0, "", versionEntity);
                 }
@@ -295,6 +296,7 @@ public class ApkVersionManager {
                     @Override
                     public void onCancel() {
                         RequestManager.cancelBySign(ApkVersionManager.getInstance().CANCEL_SIGN);
+                        mVersionModel.requestUpdateCancel();
                         if (callback != null) {
                             callback.onUpdateErr(0, "", versionEntity);
                         }
