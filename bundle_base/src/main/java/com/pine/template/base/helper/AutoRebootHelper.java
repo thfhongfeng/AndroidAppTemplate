@@ -68,9 +68,8 @@ public class AutoRebootHelper {
         if (time < 0) {
             return -1;
         }
-        LogUtils.d(TAG, "scheduleAutoReboot time:" + time);
-
         cancelAutoReboot(context);
+        LogUtils.d(TAG, "scheduleAutoReboot time:" + time);
 
         Intent intent = new Intent(context, AutoPowerReceiver.class);
         intent.setAction(AutoPowerReceiver.ACTION_AUTO_REBOOT);

@@ -48,6 +48,8 @@ public class TrackDefaultBuilder {
     public static final String INFO_NET_STATE_DISCONNECT = "InfoNetDisconnect";
     public static final String INFO_STORAGE_NOT_ENOUGH = "InfoStorageNotEnough";
 
+    public static final String INFO_AUTO_REBOOT = "InfoAutoReboot";
+
     public static void buildDefaultModuleMap(@NonNull ConcurrentHashMap<String, TrackModuleInfo> map,
                                              @NonNull ConcurrentHashMap<String, TrackActionInfo> actionMap) {
         TrackModuleInfo info = new TrackModuleInfo(MODULE_DEFAULT, "默认模块", true);
@@ -149,6 +151,9 @@ public class TrackDefaultBuilder {
         actionMap.put(action.getActionName(), action);
         list.add(action);
         action = new TrackActionInfo(INFO_STORAGE_NOT_ENOUGH, "存储不足");
+        actionMap.put(action.getActionName(), action);
+        list.add(action);
+        action = new TrackActionInfo(INFO_AUTO_REBOOT, "自动重启");
         actionMap.put(action.getActionName(), action);
         list.add(action);
         return list;
