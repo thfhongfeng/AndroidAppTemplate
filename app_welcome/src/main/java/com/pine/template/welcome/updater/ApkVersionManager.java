@@ -154,6 +154,9 @@ public class ApkVersionManager {
                         }
                         showVersionUpdateConfirmDialog(activity, versionEntity, callback);
                     } else if (versionEntity.isNewVersionButLimit()) {
+                        if (callback != null) {
+                            callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_SERVER_LIMIT);
+                        }
                         scheduleBgUpdateCheckIfNeed(versionEntity);
                     } else {
                         if (callback != null) {
@@ -431,6 +434,7 @@ public class ApkVersionManager {
     }
 
     public interface IUpdateCallback {
+        String NO_NEW_CAUSE_SERVER_LIMIT = "NO_NEW_CAUSE_SERVER_LIMIT";
         String NO_NEW_CAUSE_NO_FOUND = "NO_NEW_CAUSE_NO_FOUND";
         String NO_NEW_CAUSE_REQUEST_FAIL = "NO_NEW_CAUSE_REQUEST_FAIL";
         String NO_NEW_CAUSE_REQUEST_CANCEL = "NO_NEW_CAUSE_REQUEST_CANCEL";
