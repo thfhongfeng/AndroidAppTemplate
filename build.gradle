@@ -6,23 +6,27 @@ buildscript {
     apply from: 'config_app.gradle'
     apply from: "${rootDir}/gradleWorker/init/gradle_worker_init.gradle"
     repositories {
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+        maven { url 'https://mirrors.tuna.tsinghua.edu.cn/maven/' }
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/releases' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://jitpack.io' }
 
         google()
         mavenCentral()
-//        mavenLocal()
-//        maven { url 'https://maven.google.com' }
-//        jcenter()
     }
     dependencies {
-        // Android Gradle Plugin 8.1.0 最高仅支持 Java 17，
-        // 无法直接使用 Java 21，若因为Android studio版本问题不能使用8.10.0，
-        // 还需要修改模块的compileOptions和kotlinOptions
-        classpath 'com.android.tools.build:gradle:8.1.0'
-        //classpath 'com.android.tools.build:gradle:8.10.0'
+        // Android Gradle Plugin 8.1.1 最高仅支持 Java 17，无法直接使用 Java 21，
+        // 若因为Android studio版本问题不能使用8.10.0而使用8.1.1，
+        // 则还需要修改模块的compileOptions和kotlinOptions的java版本
+//        classpath 'com.android.tools.build:gradle:8.1.1'
+        classpath 'com.android.tools.build:gradle:8.10.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -32,18 +36,24 @@ buildscript {
 allprojects {
     repositories {
         maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+        maven { url 'https://mirrors.tuna.tsinghua.edu.cn/maven/' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/releases' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://jitpack.io' }
+
         maven {
             url "${rootDir}/maven"
         }
 
         google()
         mavenCentral()
-//        mavenLocal()
-//        maven { url 'https://maven.google.com' }
-//        jcenter()
 
         flatDir {
             // 由于Library module中引用的 aar，在多 module 的情况下，
