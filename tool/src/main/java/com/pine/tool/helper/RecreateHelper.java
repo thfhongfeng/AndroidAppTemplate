@@ -38,7 +38,7 @@ public class RecreateHelper {
 
     public boolean calRecreateActivity(Activity activity, int hashcode) {
         boolean recreate = mRecreateMap.containsKey(hashcode) && mRecreateMap.get(hashcode);
-        LogUtils.d("ActivityLifecycle", activity + "calRecreateActivity recreate:" + recreate);
+        LogUtils.d("ActivityLifecycle", activity + " calRecreateActivity recreate:" + recreate);
         if (recreate) {
             if (activity != null) {
                 activity.recreate();

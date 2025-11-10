@@ -65,7 +65,7 @@ public class LoadingActivity extends WelBaseActivity<LoadingActivityBinding, Loa
                     autoLogin(-1);
                     return;
                 }
-                ApkVersionManager.getInstance().checkAndUpdateApk(LoadingActivity.this, false, true, true,
+                ApkVersionManager.getInstance().checkAndUpdateApk(false, true, true,
                         new ApkVersionManager.IUpdateCallback() {
                             @Override
                             public void onNoNewVersion(String cause) {

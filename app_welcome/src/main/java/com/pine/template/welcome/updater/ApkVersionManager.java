@@ -45,7 +45,6 @@ public class ApkVersionManager {
 
     private final static int HTTP_REQUEST_DOWNLOAD = 1;
     private static volatile ApkVersionManager mInstance;
-    public final Object CANCEL_SIGN = new Object();
     private String mDownloadDir = PathUtils.getExternalAppCachePath() + "/updateApk";
     private VersionModel mVersionModel;
 
@@ -88,9 +87,9 @@ public class ApkVersionManager {
 
     private long mLastCheckUpdate;
     private boolean mFirstIdleCheck = true;
-
     private long BG_IDLE_FIRST_CHECK_INTERVAL = 3 * 60 * 60 * 1000;
-    private long BG_IDLE_CHECK_INTERVAL = 45 * 60 * 1000;
+    private long BG_IDLE_CHECK_INTERVAL = 60 * 60 * 1000;
+    private boolean mCanIdleCheckState;
 
     private MessageQueue.IdleHandler mBgCheckUpdater = new MessageQueue.IdleHandler() {
         @Override
@@ -102,9 +101,14 @@ public class ApkVersionManager {
             long interval = mFirstIdleCheck ? BG_IDLE_FIRST_CHECK_INTERVAL : BG_IDLE_CHECK_INTERVAL;
             if (now - mLastCheckUpdate > interval) {
                 mFirstIdleCheck = false;
-                checkAndUpdateApk(BaseApplication.mCurResumedActivity, false, true, true, true, null);
+                if (mCanIdleCheckState) {
+                    checkAndUpdateApk(false, true, true, true, null);
+                } else {
+                    mLastCheckUpdate += 60 * 1000;
+                }
                 LogUtils.d(TAG, "idle bg check update work active now:" + now
                         + ", first idle check:" + mFirstIdleCheck + ", interval:" + interval
+                        + ", can idle check:" + mCanIdleCheckState
                         + ", cur activity:" + BaseApplication.mCurResumedActivity);
             }
             return true;
@@ -126,13 +130,14 @@ public class ApkVersionManager {
         }
     }
 
-    public void checkAndUpdateApk(final Activity activity, boolean manualCheckUpdate, boolean fullScreen,
+    public void checkAndUpdateApk(boolean manualCheckUpdate, boolean fullScreen,
                                   boolean silentUpdate, final IUpdateCallback callback) {
-        checkAndUpdateApk(activity, manualCheckUpdate, false, fullScreen, silentUpdate, callback);
+        checkAndUpdateApk(manualCheckUpdate, false, fullScreen, silentUpdate, callback);
     }
 
-    public void checkAndUpdateApk(final Activity activity, boolean manualCheckUpdate, boolean bgIdleCheckMode, boolean fullScreen,
+    public void checkAndUpdateApk(boolean manualCheckUpdate, boolean bgIdleCheckMode, boolean fullScreen,
                                   boolean silentUpdate, final IUpdateCallback callback) {
+        mCanIdleCheckState = false;
         mLastCheckUpdate = System.currentTimeMillis();
         mFullScreen = fullScreen;
         mSilentUpdate = silentUpdate;
@@ -152,21 +157,24 @@ public class ApkVersionManager {
                         if (callback != null) {
                             callback.onNewVersionFound(versionEntity);
                         }
-                        showVersionUpdateConfirmDialog(activity, versionEntity, callback);
+                        showVersionUpdateConfirmDialog(versionEntity, callback);
                     } else if (versionEntity.isNewVersionButLimit()) {
                         if (callback != null) {
                             callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_SERVER_LIMIT);
                         }
+                        mCanIdleCheckState = true;
                         scheduleBgUpdateCheckIfNeed(versionEntity);
                     } else {
                         if (callback != null) {
                             callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_NO_FOUND);
                         }
+                        mCanIdleCheckState = true;
                     }
                 } else {
                     if (callback != null) {
                         callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_NO_FOUND);
                     }
+                    mCanIdleCheckState = true;
                 }
             }
 
@@ -176,6 +184,7 @@ public class ApkVersionManager {
                 if (callback != null) {
                     callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_REQUEST_FAIL);
                 }
+                mCanIdleCheckState = true;
                 return true;
             }
 
@@ -185,14 +194,16 @@ public class ApkVersionManager {
                 if (callback != null) {
                     callback.onNoNewVersion(IUpdateCallback.NO_NEW_CAUSE_REQUEST_CANCEL);
                 }
+                mCanIdleCheckState = true;
             }
         });
     }
 
-    private void showVersionUpdateConfirmDialog(final Activity activity,
-                                                final @NonNull VersionEntity versionEntity,
+    private void showVersionUpdateConfirmDialog(final @NonNull VersionEntity versionEntity,
                                                 final IUpdateCallback callback) {
-        if (activity.isDestroyed()) {
+        Activity curResumeActivity = BaseApplication.mCurResumedActivity;
+        if (curResumeActivity != null) {
+            mCanIdleCheckState = true;
             return;
         }
         if (mUpdateConfirmDialog != null && mUpdateConfirmDialog.isShowing()) {
@@ -202,13 +213,13 @@ public class ApkVersionManager {
             mCountDownTimer.cancel();
             mCountDownTimer = null;
         }
-        mUpdateConfirmDialog = new Dialog(activity);
+        mUpdateConfirmDialog = new Dialog(curResumeActivity);
         mUpdateConfirmDialog.setContentView(R.layout.wel_dialog_version_update_confirm);
         mUpdateConfirmDialog.setCanceledOnTouchOutside(false);
         mUpdateConfirmDialog.setCancelable(false);
-        mUpdateConfirmDialog.setOwnerActivity(activity);
+        mUpdateConfirmDialog.setOwnerActivity(curResumeActivity);
         ((TextView) mUpdateConfirmDialog.findViewById(R.id.reason_tv))
-                .setText(String.format(activity.getString(R.string.base_new_version_available),
+                .setText(String.format(curResumeActivity.getString(R.string.base_new_version_available),
                         versionEntity.getVersionName()));
         mUpdateConfirmDialog.findViewById(R.id.cancel_btn_tv).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,13 +229,14 @@ public class ApkVersionManager {
                 if (callback != null) {
                     callback.onUpdateErr(0, "", versionEntity);
                 }
+                mCanIdleCheckState = true;
             }
         });
         mUpdateConfirmDialog.findViewById(R.id.confirm_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mUpdateConfirmDialog.dismiss();
-                startUpdate(activity, versionEntity, callback);
+                startUpdate(curResumeActivity, versionEntity, callback);
             }
         });
         if (mFullScreen) {
@@ -285,10 +297,11 @@ public class ApkVersionManager {
         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
     }
 
-    private void showVersionUpdateProgressDialog(final Activity activity,
+    private void showVersionUpdateProgressDialog(final Activity activity, Object CANCEL_SIGN,
                                                  final @NonNull VersionEntity versionEntity,
                                                  final IUpdateCallback callback) {
         if (activity.isDestroyed()) {
+            mCanIdleCheckState = true;
             return;
         }
         if (mUpdateProgressDialog != null && mUpdateProgressDialog.isShowing()) {
@@ -298,11 +311,12 @@ public class ApkVersionManager {
                 0, new ProgressDialog.IDialogActionListener() {
                     @Override
                     public void onCancel() {
-                        RequestManager.cancelBySign(ApkVersionManager.getInstance().CANCEL_SIGN);
+                        RequestManager.cancelBySign(CANCEL_SIGN);
                         mVersionModel.requestUpdateCancel();
                         if (callback != null) {
                             callback.onUpdateErr(0, "", versionEntity);
                         }
+                        mCanIdleCheckState = true;
                     }
                 });
         mUpdateProgressDialog.show(mFullScreen);
@@ -312,6 +326,7 @@ public class ApkVersionManager {
                              final @NonNull VersionEntity versionEntity,
                              final IUpdateCallback callback) {
         if (activity.isDestroyed()) {
+            mCanIdleCheckState = true;
             return;
         }
         if (TextUtils.isEmpty(mDownloadDir)) {
@@ -321,6 +336,7 @@ public class ApkVersionManager {
                         activity.getString(R.string.base_version_get_download_path_fail, mDownloadDir),
                         versionEntity);
             }
+            mCanIdleCheckState = true;
             return;
         }
         String fileName = versionEntity.getFileName();
@@ -331,6 +347,7 @@ public class ApkVersionManager {
                         activity.getString(R.string.base_new_version_download_fail),
                         versionEntity);
             }
+            mCanIdleCheckState = true;
             return;
         }
         File oldFile = new File(mDownloadDir, fileName);
@@ -342,12 +359,13 @@ public class ApkVersionManager {
         DownloadRequestBean requestBean = new DownloadRequestBean(versionEntity.getDownloadUrl(),
                 HTTP_REQUEST_DOWNLOAD, new HashMap<String, String>(), mDownloadDir, fileName);
         requestBean.setRequestMethod(RequestMethod.GET);
+        Object CANCEL_SIGN = new Object();
         requestBean.setSign(CANCEL_SIGN);
         RequestManager.setDownloadRequest(requestBean, new DownloadCallback() {
             @Override
             public void onStart(int what, boolean isResume, long rangeSize,
                                 Map<String, List<String>> responseHeaders, long allCount) {
-                showVersionUpdateProgressDialog(activity, versionEntity, callback);
+                showVersionUpdateProgressDialog(activity, CANCEL_SIGN, versionEntity, callback);
             }
 
             @Override
@@ -368,6 +386,7 @@ public class ApkVersionManager {
                 if (callback != null) {
                     callback.onUpdateErr(0, "", versionEntity);
                 }
+                mCanIdleCheckState = true;
             }
 
             @Override
@@ -380,6 +399,7 @@ public class ApkVersionManager {
                         callback.onUpdateErr(3, e.getMessage(), versionEntity);
                     }
                 }
+                mCanIdleCheckState = true;
                 return true;
             }
         });
@@ -397,6 +417,7 @@ public class ApkVersionManager {
                 callback.onUpdateComplete(versionEntity);
             } else {
                 callback.onUpdateErr(3, "", versionEntity);
+                mCanIdleCheckState = true;
             }
         }
     }
@@ -408,9 +429,14 @@ public class ApkVersionManager {
             if (callback != null && callback.installApk(versionEntity, file)) {
                 return true;
             }
-            return InstallUtil.installApk(activity, file.getPath(),
+            boolean success = InstallUtil.installApk(activity, file.getPath(),
                     versionEntity.isForce() || mSilentUpdate);
+            if (!success) {
+                mCanIdleCheckState = true;
+            }
+            return success;
         } else {
+            mCanIdleCheckState = true;
             return false;
         }
     }

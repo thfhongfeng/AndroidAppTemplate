@@ -1,6 +1,5 @@
 package com.pine.template.welcome.remote.server;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -34,7 +33,7 @@ public class WelcomeRemoteService {
             silentUpdate = args.getBoolean("silentUpdate", true);
         }
         final Bundle responseBundle = new Bundle();
-        ApkVersionManager.getInstance().checkAndUpdateApk((Activity) context, manualCheckUpdate, fullScreen, silentUpdate,
+        ApkVersionManager.getInstance().checkAndUpdateApk(manualCheckUpdate, fullScreen, silentUpdate,
                 new ApkVersionManager.IUpdateCallback() {
                     @Override
                     public void onNoNewVersion(String cause) {
