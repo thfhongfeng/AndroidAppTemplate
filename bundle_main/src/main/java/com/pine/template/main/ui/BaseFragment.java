@@ -24,12 +24,14 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
     public final static String TOP_HOME = "topHome";
     public final static String PARENT_HOME = "parentHome";
     public final static String BRO_HOME = "broHome";
+    public final static String CUSTOM_BRO = "customBro";
 
     /**
      * 返回标识
      * topHome:返回到最上层的Home界面；
      * parentHome：返回父级fragment的Home;
      * broHome：返回同级fragment的Home;
+     * customBro：返回同级指定fragment;
      */
     private volatile String _mGoBackTag = BRO_HOME;
     // 临时返回标识，只用于一次返回。
@@ -59,6 +61,20 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
     public void setGoBackTag(String goBackTag) {
         LogUtils.d(TAG, "setGoBackTag goBackTag:" + goBackTag + ", this:" + this);
         this._mGoBackTag = goBackTag;
+    }
+
+    private int _customBroGoBackFragIndex;
+
+    /**
+     * 设置默认返回标识
+     *
+     * @param broFragIndex
+     */
+    public void setGoBackTagForCustomBro(int broFragIndex) {
+        LogUtils.d(TAG, "setGoBackTagForCustomBro goBackTag:" + CUSTOM_BRO
+                + ", broFragIndex:" + broFragIndex + ", this:" + this);
+        this._mGoBackTag = CUSTOM_BRO;
+        this._customBroGoBackFragIndex = broFragIndex;
     }
 
     /**
@@ -95,6 +111,12 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
                 if (getParentFragment() instanceof BaseParentFragment) {
                     BaseParentFragment fragment = (BaseParentFragment) getParentFragment();
                     fragment.goFragment(fragment.getSubHomeIndex());
+                }
+                break;
+            case CUSTOM_BRO:
+                if (getParentFragment() instanceof BaseParentFragment) {
+                    BaseParentFragment fragment = (BaseParentFragment) getParentFragment();
+                    fragment.goFragment(_customBroGoBackFragIndex);
                 }
                 break;
         }
