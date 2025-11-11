@@ -58,12 +58,12 @@ public class DeviceConfig extends DefaultDeviceConfig {
         } catch (DeviceSdkException e) {
             LogUtils.w(TAG, "DeviceSdkException setProperty getProperty, ignore");
         }
-        return productCustomer;
+        return productCustomer == null ? "" : productCustomer.trim();
     }
 
     public static void setProductCustomer(String tag) {
         try {
-            DeviceSdkManager.getInstance().setProperty(PRODUCT_CUSTOMER, tag);
+            DeviceSdkManager.getInstance().setProperty(PRODUCT_CUSTOMER, tag == null ? "" : tag.trim());
         } catch (DeviceSdkException e) {
             LogUtils.w(TAG, "DeviceSdkException setProperty init, ignore");
         }
