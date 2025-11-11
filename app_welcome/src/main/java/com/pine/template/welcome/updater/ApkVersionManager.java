@@ -202,7 +202,7 @@ public class ApkVersionManager {
     private void showVersionUpdateConfirmDialog(final @NonNull VersionEntity versionEntity,
                                                 final IUpdateCallback callback) {
         Activity curResumeActivity = BaseApplication.mCurResumedActivity;
-        if (curResumeActivity != null) {
+        if (curResumeActivity == null) {
             mCanIdleCheckState = true;
             return;
         }
