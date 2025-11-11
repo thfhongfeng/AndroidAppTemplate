@@ -244,7 +244,7 @@ public class ApkVersionManager {
         } else {
             mUpdateConfirmDialog.show();
         }
-        int timeStamp = 120000;
+        int timeStamp = 90000;
         if (versionEntity.isForce()) {
             timeStamp = 6000;
         } else if (versionEntity.isBgIdleCheck()) {
