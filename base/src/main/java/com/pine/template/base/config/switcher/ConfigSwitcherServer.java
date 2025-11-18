@@ -483,8 +483,7 @@ public class ConfigSwitcherServer {
         boolean onSetupFail();
     }
 
-    // for test env
-    public static boolean switchToTestEnv(String configFileName) {
+    public static boolean switchToConfigFile(String configFileName) {
         if (TextUtils.isEmpty(configFileName)) {
             return false;
         }
