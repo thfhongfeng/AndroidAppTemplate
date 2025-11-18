@@ -40,6 +40,7 @@ import com.pine.tool.router.RouterManager;
 import com.pine.tool.router.impl.arouter.manager.ARouterManager;
 import com.pine.tool.util.LogUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -59,13 +60,19 @@ public class BundleBaseApplication extends RootApplication {
         initConfigSwitcherServer();
     }
 
-    private static void initConfigSwitcherServer() {
+    public static String getConfigFile() {
         String fileName = "config.ini";
         String productTag = DeviceConfig.getProductCustomer();
         if (!TextUtils.isEmpty(productTag)) {
             fileName = "config_" + productTag + ".ini";
         }
+        return fileName;
+    }
+
+    private static void initConfigSwitcherServer() {
+        String fileName = getConfigFile();
         ConfigSwitcherServer.init(fileName);
+        LogUtils.d(TAG, "APP_Info product customer names:" + Arrays.toString(BuildConfig.BUILD_PRODUCT_CUSTOMER_NAME));
     }
 
     public final static void initManager() {
