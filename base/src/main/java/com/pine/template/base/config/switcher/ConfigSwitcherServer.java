@@ -70,7 +70,7 @@ public class ConfigSwitcherServer {
     private synchronized void initLocalConfig(String configFileName) {
         AssetManager assetManager = AppUtils.getApplication().getResources().getAssets();
         if (TextUtils.isEmpty(configFileName) || !isAssertFileExists(assetManager, configFileName)) {
-            LogUtils.d(TAG, "use config file:" + configFileName
+            LogUtils.d(TAG, "config file:" + configFileName
                     + " not exist, use default config file:" + DEFAULT_CONFIG_FILE);
             configFileName = DEFAULT_CONFIG_FILE;
         }

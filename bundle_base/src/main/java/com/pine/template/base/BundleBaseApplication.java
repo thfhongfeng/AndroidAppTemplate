@@ -63,7 +63,7 @@ public class BundleBaseApplication extends RootApplication {
         String fileName = "config.ini";
         String productTag = DeviceConfig.getProductCustomer();
         if (!TextUtils.isEmpty(productTag)) {
-            fileName = "config_" + productTag;
+            fileName = "config_" + productTag + ".ini";
         }
         ConfigSwitcherServer.init(fileName);
     }
