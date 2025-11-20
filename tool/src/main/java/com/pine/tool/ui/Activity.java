@@ -631,16 +631,23 @@ public abstract class Activity extends AppCompatActivity
     private volatile long mLastUserOperateTime;
     private ConcurrentHashMap<String, OnUserNoOperateInfo> mUserNoOperateListenerMap = new ConcurrentHashMap<>();
 
+    /**
+     * @param tag
+     * @param listener
+     * @param outIdleTime 无操作指定超时时间，单位秒。
+     *                    超过该时间无操作会触发onNoOperateOutIdleTime，
+     *                    onNoOperateTime则是在每一秒都会触发，通知当前多久没有界面操作了
+     */
     public synchronized void listenUserNoOperate(@NonNull String tag,
                                                  @NonNull IOnUserNoOperateListener listener,
-                                                 long idleSecondTime) {
-        if (TextUtils.isEmpty(tag) || listener == null || idleSecondTime <= 0) {
+                                                 long outIdleTime) {
+        if (TextUtils.isEmpty(tag) || listener == null || outIdleTime <= 0) {
             return;
         }
         OnUserNoOperateInfo info = new OnUserNoOperateInfo();
         info.tag = tag;
         info.listener = listener;
-        info.idleSecondTime = idleSecondTime;
+        info.outIdleTime = outIdleTime;
         mUserNoOperateListenerMap.put(tag, info);
 
         if (mUserNoOperateHandler == null) {
@@ -652,12 +659,15 @@ public abstract class Activity extends AppCompatActivity
                         mUserNoOperateHandler.sendEmptyMessageDelayed(0, 1000);
                     }
                     long now = System.currentTimeMillis();
-                    long offset = (now - mLastUserOperateTime) / 1000;
+                    long idleTime = (now - mLastUserOperateTime) / 1000;
                     Set<String> keys = mUserNoOperateListenerMap.keySet();
                     for (String key : keys) {
                         OnUserNoOperateInfo item = mUserNoOperateListenerMap.get(key);
-                        if (item != null && item.idleSecondTime <= offset) {
-                            item.listener.OnUserNoOperate(offset);
+                        if (item != null) {
+                            item.listener.onNoOperateTime(idleTime);
+                            if (item.outIdleTime <= idleTime) {
+                                item.listener.onNoOperateOutIdleTime(idleTime);
+                            }
                         }
                     }
                 }
@@ -688,12 +698,19 @@ public abstract class Activity extends AppCompatActivity
     }
 
     public interface IOnUserNoOperateListener {
-        void OnUserNoOperate(long idleTime);
+        void onNoOperateOutIdleTime(long outIdleTime);
+
+        void onNoOperateTime(long idleTime);
+    }
+
+    public static abstract class OnUserNoOperateListener implements IOnUserNoOperateListener {
+        public void onNoOperateTime(long idleTime) {
+        }
     }
 
     public static class OnUserNoOperateInfo {
         public String tag;
-        public long idleSecondTime;
+        public long outIdleTime;
         public IOnUserNoOperateListener listener;
     }
 }

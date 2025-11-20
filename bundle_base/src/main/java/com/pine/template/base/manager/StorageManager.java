@@ -51,7 +51,7 @@ public class StorageManager {
 
     public synchronized boolean checkDefaultDisk(boolean onlyCheck) {
         DiskInfo defaultDiskInfo = getDefaultDiskInfo();
-        long threshold = 100 * 1024 * 1024L;
+        long threshold = 300 * 1024 * 1024L;
         if (defaultDiskInfo != null && defaultDiskInfo.leftSize < threshold) {
             if (!onlyCheck) {
                 LogUtils.d(TAG, "checkDefaultDisk TYPE_STORAGE_NOT_ENOUGH");
@@ -60,6 +60,8 @@ public class StorageManager {
                 if (del > 0) {
                     recordInfoDefaultStorageNotEnough(false, threshold, del);
                 }
+                LogUtils.w(TAG, "checkDefaultDisk TYPE_STORAGE_NOT_ENOUGH threshold:" + threshold
+                        + ",leftSize:" + defaultDiskInfo.leftSize + ", del track record count:" + del);
             }
             return false;
         }
@@ -71,10 +73,11 @@ public class StorageManager {
         if (externalDiskInfo == null) {
             return false;
         }
-        long threshold = 100 * 1024 * 1024L;
+        long threshold = 300 * 1024 * 1024L;
         if (externalDiskInfo != null && externalDiskInfo.leftSize < threshold) {
             if (!onlyCheck) {
-                LogUtils.d(TAG, "checkExternalDisk TYPE_EXTERNAL_STORAGE_NOT_ENOUGH");
+                LogUtils.w(TAG, "checkExternalDisk TYPE_EXTERNAL_STORAGE_NOT_ENOUGH threshold:" + threshold
+                        + ",leftSize:" + externalDiskInfo.leftSize);
                 BgWorkManager.sendBgAction(TYPE_EXTERNAL_STORAGE_NOT_ENOUGH, externalDiskInfo);
                 recordInfoExternalStorageNotEnough(true, threshold);
             }
