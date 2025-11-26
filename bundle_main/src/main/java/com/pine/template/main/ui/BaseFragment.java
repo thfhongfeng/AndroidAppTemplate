@@ -93,8 +93,11 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
     public void goBack() {
         String goBackTag = TextUtils.isEmpty(_mOnceOnlyGoBackTag) ? _mGoBackTag : _mOnceOnlyGoBackTag;
         LogUtils.d(TAG, "goBack _mOnceOnlyGoBackTag:" + _mOnceOnlyGoBackTag + ", _mGoBackTag:" + _mGoBackTag
-                + ", final goBackTag:" + goBackTag + ", this:" + this);
+                + ", _customBroGoBackFragIndex:" + _customBroGoBackFragIndex + ", final goBackTag:" + goBackTag + ", this:" + this);
         _mOnceOnlyGoBackTag = null;
+        if (!_isLastVisible) {
+            return;
+        }
         switch (goBackTag) {
             case TOP_HOME:
                 if (getActivity() != null) {
@@ -150,6 +153,18 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
     }
 
     /**
+     * 返回指定的兄弟fragment
+     *
+     * @param index
+     * @param args
+     */
+    public void goBroFragment(int index, Bundle args) {
+        if (getParentFragment() instanceof BaseParentFragment) {
+            ((BaseParentFragment) getParentFragment()).goFragment(index, args);
+        }
+    }
+
+    /**
      * 返回指定的父级fragment
      *
      * @param index
@@ -157,6 +172,18 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
     public void goParentFragment(int index) {
         if (getParentFragment().getParentFragment() instanceof BaseParentFragment) {
             ((BaseParentFragment) (getParentFragment().getParentFragment())).goFragment(index);
+        }
+    }
+
+    /**
+     * 返回指定的父级fragment
+     *
+     * @param index
+     * @param args
+     */
+    public void goParentFragment(int index, Bundle args) {
+        if (getParentFragment().getParentFragment() instanceof BaseParentFragment) {
+            ((BaseParentFragment) (getParentFragment().getParentFragment())).goFragment(index, args);
         }
     }
 

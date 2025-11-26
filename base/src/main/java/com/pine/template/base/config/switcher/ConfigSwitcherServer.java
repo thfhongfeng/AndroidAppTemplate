@@ -483,10 +483,13 @@ public class ConfigSwitcherServer {
         boolean onSetupFail();
     }
 
-    public static boolean switchToConfigFile(String configFileName) {
+    @NonNull
+    public static HashMap<String, String> switchToConfigFile(String configFileName) {
+        HashMap<String, String> changeMap = new HashMap<>();
         if (TextUtils.isEmpty(configFileName)) {
-            return false;
+            return changeMap;
         }
+        HashMap<String, String> saveMap = new HashMap<>();
         AssetManager assetManager = AppUtils.getApplication().getResources().getAssets();
         try {
             Properties properties = new Properties();
@@ -495,12 +498,20 @@ public class ConfigSwitcherServer {
             for (Object object : keySet) {
                 String propKey = object.toString();
                 String propValue = properties.getProperty(propKey);
-                saveConfig(propKey, propValue);
+                String oldValue = getConfig(propKey);
+                if (!TextUtils.equals(oldValue, propValue)) {
+                    saveMap.put(propKey, propValue);
+                    if (!TextUtils.isEmpty(oldValue)) {
+                        changeMap.put(propKey, oldValue);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        if (saveMap.size() > 0) {
+            saveConfigMap(saveMap);
+        }
+        return changeMap;
     }
 }

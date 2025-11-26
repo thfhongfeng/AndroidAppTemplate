@@ -56,7 +56,7 @@ public abstract class AutoFinishActivity<T extends ViewDataBinding, VM extends V
     private IOnUserNoOperateListener mOnUserNoOperateListener = new OnUserNoOperateListener() {
         @Override
         public void onNoOperateOutIdleTime(long outIdleTime) {
-            LogUtils.d(TAG, "OnUserNoOperate outIdleTime:" + outIdleTime);
+            LogUtils.d(TAG, "onNoOperateOutIdleTime outIdleTime:" + outIdleTime);
             unListenUserNoOperate(AUTO_FINISH_LISTENER_TAG);
             setResult(RESULT_AUTO_FINISH);
             finish();
