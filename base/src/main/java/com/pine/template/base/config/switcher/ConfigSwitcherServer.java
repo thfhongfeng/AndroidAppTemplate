@@ -484,8 +484,8 @@ public class ConfigSwitcherServer {
     }
 
     @NonNull
-    public static HashMap<String, String> switchToConfigFile(String configFileName) {
-        HashMap<String, String> changeMap = new HashMap<>();
+    public static HashMap<String, ConfigSwitcherEntity> switchEnvToConfigFile(String configFileName) {
+        HashMap<String, ConfigSwitcherEntity> changeMap = new HashMap<>();
         if (TextUtils.isEmpty(configFileName)) {
             return changeMap;
         }
@@ -498,20 +498,56 @@ public class ConfigSwitcherServer {
             for (Object object : keySet) {
                 String propKey = object.toString();
                 String propValue = properties.getProperty(propKey);
-                String oldValue = getConfig(propKey);
-                if (!TextUtils.equals(oldValue, propValue)) {
-                    saveMap.put(propKey, propValue);
-                    if (!TextUtils.isEmpty(oldValue)) {
-                        changeMap.put(propKey, oldValue);
+                ConfigSwitcherEntity entity = null;
+                if (BaseApplication.isLogin()) {
+                    entity = mInstance.mUserConfigStateMap.get(propKey);
+                } else {
+                    entity = mInstance.mGuestConfigStateMap.get(propKey);
+                }
+                if (entity != null) {
+                    String oldValue = entity.getValue();
+                    if (!TextUtils.equals(oldValue, propValue)) {
+                        saveMap.put(propKey, propValue);
+                        changeMap.put(propKey, entity);
                     }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (saveMap.size() > 0) {
-            saveConfigMap(saveMap);
+        if (changeMap.size() > 0) {
+            if (BaseApplication.isLogin()) {
+                if (!SharePreferenceUtils.isConfigContainsKey("Original_Config_When_Switch_Login")) {
+                    SharePreferenceUtils.saveToConfig("Original_Config_When_Switch_Login", mInstance.mUserConfigStateMap);
+                }
+            } else {
+                if (!SharePreferenceUtils.isConfigContainsKey("Original_Config_When_Switch")) {
+                    SharePreferenceUtils.saveToConfig("Original_Config_When_Switch", mInstance.mGuestConfigStateMap);
+                }
+            }
+            if (saveMap.size() > 0) {
+                saveConfigMap(saveMap);
+            }
         }
+
         return changeMap;
+    }
+
+    public static void restoreFromSwitchEnv() {
+        if (BaseApplication.isLogin()) {
+            Map<String, ConfigSwitcherEntity> originalConfigMap = SharePreferenceUtils
+                    .readMapFromConfig("Original_Config_When_Switch_Login", String.class, ConfigSwitcherEntity.class);
+            if (originalConfigMap != null && originalConfigMap.size() > 0) {
+                SharePreferenceUtils.saveToConfig(KeyConstants.USER_CONFIG_KEY, originalConfigMap);
+                SharePreferenceUtils.cleanConfigKey("Original_Config_When_Switch_Login");
+            }
+        } else {
+            Map<String, ConfigSwitcherEntity> originalConfigMap = SharePreferenceUtils
+                    .readMapFromConfig("Original_Config_When_Switch", String.class, ConfigSwitcherEntity.class);
+            if (originalConfigMap != null && originalConfigMap.size() > 0) {
+                SharePreferenceUtils.saveToConfig(KeyConstants.GUEST_CONFIG_KEY, originalConfigMap);
+                SharePreferenceUtils.cleanConfigKey("Original_Config_When_Switch");
+            }
+        }
     }
 }
