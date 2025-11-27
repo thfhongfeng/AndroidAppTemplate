@@ -255,10 +255,10 @@ public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends V
     /**
      * 从当前显示的子fragment的最底层的处于显示状态的子fragment返回
      */
-    public void goBackToPre() {
+    public void goBackToPre(Bundle args) {
         BaseFragment fragment = getBottomLayerFragment();
         if (fragment != null) {
-            fragment.goBack();
+            fragment.goBack(args);
         }
     }
 

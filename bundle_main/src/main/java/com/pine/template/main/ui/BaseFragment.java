@@ -90,7 +90,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
     /**
      * 根据返回标识进行界面返回
      */
-    public void goBack() {
+    public void goBack(Bundle args) {
         String goBackTag = TextUtils.isEmpty(_mOnceOnlyGoBackTag) ? _mGoBackTag : _mOnceOnlyGoBackTag;
         LogUtils.d(TAG, "goBack _mOnceOnlyGoBackTag:" + _mOnceOnlyGoBackTag + ", _mGoBackTag:" + _mGoBackTag
                 + ", _customBroGoBackFragIndex:" + _customBroGoBackFragIndex + ", final goBackTag:" + goBackTag + ", this:" + this);
@@ -101,25 +101,25 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
         switch (goBackTag) {
             case TOP_HOME:
                 if (getActivity() != null) {
-                    ((BaseFragmentActivity) getActivity()).switchHomeFragment();
+                    ((BaseFragmentActivity) getActivity()).switchHomeFragment(args);
                 }
                 break;
             case PARENT_HOME:
                 if (getParentFragment().getParentFragment() instanceof BaseParentFragment) {
                     BaseParentFragment fragment = (BaseParentFragment) getParentFragment().getParentFragment();
-                    fragment.goFragment(fragment.getSubHomeIndex());
+                    fragment.goFragment(fragment.getSubHomeIndex(), args);
                 }
                 break;
             case BRO_HOME:
                 if (getParentFragment() instanceof BaseParentFragment) {
                     BaseParentFragment fragment = (BaseParentFragment) getParentFragment();
-                    fragment.goFragment(fragment.getSubHomeIndex());
+                    fragment.goFragment(fragment.getSubHomeIndex(), args);
                 }
                 break;
             case CUSTOM_BRO:
                 if (getParentFragment() instanceof BaseParentFragment) {
                     BaseParentFragment fragment = (BaseParentFragment) getParentFragment();
-                    fragment.goFragment(_customBroGoBackFragIndex);
+                    fragment.goFragment(_customBroGoBackFragIndex, args);
                 }
                 break;
         }
@@ -129,16 +129,30 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
      * 返回最上层的Home界面
      */
     public void goTopHome() {
+        goTopHome(null);
+    }
+
+    /**
+     * 返回最上层的Home界面
+     */
+    public void goTopHome(Bundle args) {
         setOnceOnlyGoBackTag(TOP_HOME);
-        goBack();
+        goBack(args);
     }
 
     /**
      * 返回当前层级的Home界面
      */
     public void goBroHome() {
+        goBroHome(null);
+    }
+
+    /**
+     * 返回当前层级的Home界面
+     */
+    public void goBroHome(Bundle args) {
         setOnceOnlyGoBackTag(BRO_HOME);
-        goBack();
+        goBack(args);
     }
 
     /**

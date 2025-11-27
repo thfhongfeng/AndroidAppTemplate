@@ -8,15 +8,17 @@ import com.pine.tool.architecture.mvvm.vm.ViewModel;
 
 public abstract class BaseFragmentActivity<T extends ViewDataBinding, VM extends ViewModel>
         extends AppBaseActivity<T, VM> {
-    public abstract void switchHomeFragment();
+    public void switchHomeFragment() {
+        switchHomeFragment(null);
+    }
+
+    public abstract void switchHomeFragment(Bundle args);
 
     public abstract void switchFragment(int index, Bundle args);
 
     public abstract void switchFragment(int index, int subIndex, Bundle args);
 
     public abstract BaseFragment getSubShowFragment();
-
-    public abstract void goBack();
 
     public abstract void reloadUi(Bundle args);
 

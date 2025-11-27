@@ -1,5 +1,6 @@
 package com.pine.template.base.helper;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -13,7 +14,6 @@ import com.pine.template.base.device_sdk.DeviceSdkManager;
 import com.pine.template.base.util.DialogUtils;
 import com.pine.template.base.widget.dialog.InputTextDialog;
 import com.pine.template.bundle_base.R;
-import com.pine.tool.ui.Activity;
 
 import java.util.HashMap;
 import java.util.List;
