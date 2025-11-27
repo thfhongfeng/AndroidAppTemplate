@@ -1,6 +1,8 @@
 package com.pine.template.base.business.track;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -100,12 +102,20 @@ public class AppTrackManager {
         }
     }
 
-    public void doStartJob() {
-        uploadAllExistTrack();
-        startScheduleJob();
+    private Handler mScheduleStartJobH = new Handler(Looper.getMainLooper());
+
+    public void scheduleStartJob() {
+        mScheduleStartJobH.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                uploadAllExistTrack();
+                startScheduleJob();
+            }
+        }, 5000);
     }
 
     public void doFinishJob() {
+        mScheduleStartJobH.removeCallbacksAndMessages(null);
         stopLoopUploadTrack();
         clearAllWaitTrackTask();
     }

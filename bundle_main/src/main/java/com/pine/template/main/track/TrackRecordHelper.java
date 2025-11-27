@@ -82,7 +82,7 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
                 });
         mInit = true;
 
-        AppTrackManager.getInstance().doStartJob();
+        AppTrackManager.getInstance().scheduleStartJob();
     }
 
     public void release(@NonNull Context context) {
