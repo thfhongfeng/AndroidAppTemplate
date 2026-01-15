@@ -290,6 +290,19 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
+
+    public void recordDebug(String debugType, String data) {
+        Date recordDate = new Date();
+        String actionData = mSimpleDateFormat.format(recordDate) + " 应用调试:" + debugType + "。" + data + "";
+        AppTrackManager.getInstance().recordOperation(TrackDefaultBuilder.MODULE_DEBUG, DEFAULT_CUR_CLASS,
+                TrackDefaultBuilder.DEBUG, actionData,
+                recordDate.getTime(), true);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     private String parseDisConnectErrCode(int errCode, Throwable cause) {
         switch (errCode) {
             case MqttService.IConnectionCallback.REASON_DEFAULT:

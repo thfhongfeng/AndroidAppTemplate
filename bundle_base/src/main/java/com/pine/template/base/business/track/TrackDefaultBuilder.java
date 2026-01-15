@@ -15,6 +15,8 @@ public class TrackDefaultBuilder {
     public static final String MODULE_DEFAULT = "app_track_default";
     public static final String MODULE_BASE = "app_track_base";
 
+    public static final String MODULE_DEBUG = "app_track_debug";
+
     ///////////////////////////////////////////////////////////////////////////////
     public static final String MODULE_BUSINESS_RECORD = "module_business_record";
     public static final String MODULE_ADMIN_RECORD = "module_admin_record";
@@ -24,6 +26,8 @@ public class TrackDefaultBuilder {
     ////////////////////////////////////////////////////////////////////////////////
     // MODULE_BASE
     public static final String TEST = "OpTest";
+    // MODULE_DEBUG
+    public static final String DEBUG = "AppDebug";
     // MODULE_ADMIN_RECORD
     public static final String ADMIN_GO_SETTINGS = "OpAdminGoSettings";
     public static final String ADMIN_FINISH_APP = "OpAdminFinishApp";
@@ -58,6 +62,10 @@ public class TrackDefaultBuilder {
         List<TrackActionInfo> actionInfoList = getBaseActions(actionMap);
         info.setActions(actionInfoList);
         map.put(MODULE_BASE, info);
+        info = new TrackModuleInfo(MODULE_DEBUG, "调试模块", true);
+        actionInfoList = getDebugActions(actionMap);
+        info.setActions(actionInfoList);
+        map.put(MODULE_DEBUG, info);
 
         info = new TrackModuleInfo(MODULE_ADMIN_RECORD, "管理模块", true);
         actionInfoList = getAdminActions(actionMap);
@@ -77,6 +85,8 @@ public class TrackDefaultBuilder {
 
     public static List<String> buildDefaultTrackModuleList() {
         List<String> list = new ArrayList<>();
+        list.add(MODULE_DEBUG);
+
         list.add(MODULE_ADMIN_RECORD);
         list.add(MODULE_BUSINESS_RECORD);
         list.add(MODULE_REMOTE_RECORD);
@@ -88,6 +98,15 @@ public class TrackDefaultBuilder {
             @NonNull ConcurrentHashMap<String, TrackActionInfo> actionMap) {
         List<TrackActionInfo> list = new ArrayList<>();
         TrackActionInfo action = new TrackActionInfo(TEST, "测试");
+        actionMap.put(action.getActionName(), action);
+        list.add(action);
+        return list;
+    }
+
+    private static List<TrackActionInfo> getDebugActions(
+            @NonNull ConcurrentHashMap<String, TrackActionInfo> actionMap) {
+        List<TrackActionInfo> list = new ArrayList<>();
+        TrackActionInfo action = new TrackActionInfo(DEBUG, "应用调试");
         actionMap.put(action.getActionName(), action);
         list.add(action);
         return list;

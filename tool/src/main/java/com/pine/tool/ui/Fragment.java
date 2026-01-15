@@ -327,14 +327,17 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
         mToastList.add(toastEntity);
     }
 
-    public synchronized void showShortToast(String message) {
-        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+    public synchronized void showToast(String message, int duration) {
+        Toast toast = Toast.makeText(getContext(), message, duration);
         showToast(toast);
     }
 
+    public synchronized void showShortToast(String message) {
+        showToast(message, Toast.LENGTH_SHORT);
+    }
+
     public synchronized void showShortToast(@StringRes int resId) {
-        Toast toast = Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT);
-        showToast(toast);
+        showToast(getString(resId), Toast.LENGTH_SHORT);
     }
 
     public synchronized void showShortToast(@StringRes int resId, Integer... formatArgs) {
@@ -343,18 +346,15 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
             Object idObj = formatArgs[i];
             args[i] = getString((int) idObj);
         }
-        Toast toast = Toast.makeText(getContext(), getString(resId, args), Toast.LENGTH_SHORT);
-        showToast(toast);
+        showToast(getString(resId, args), Toast.LENGTH_SHORT);
     }
 
     public synchronized void showLongToast(String message) {
-        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-        showToast(toast);
+        showToast(message, Toast.LENGTH_LONG);
     }
 
     public synchronized void showLongToast(@StringRes int resId) {
-        Toast toast = Toast.makeText(getContext(), resId, Toast.LENGTH_LONG);
-        showToast(toast);
+        showToast(getString(resId), Toast.LENGTH_LONG);
     }
 
     public synchronized void showLongToast(@StringRes int resId, Integer... formatArgs) {
@@ -363,7 +363,6 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
             Object idObj = formatArgs[i];
             args[i] = getString((int) idObj);
         }
-        Toast toast = Toast.makeText(getContext(), getString(resId, args), Toast.LENGTH_LONG);
-        showToast(toast);
+        showToast(getString(resId, args), Toast.LENGTH_LONG);
     }
 }

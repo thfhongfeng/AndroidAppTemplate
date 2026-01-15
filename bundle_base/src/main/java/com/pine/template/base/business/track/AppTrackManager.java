@@ -174,11 +174,40 @@ public class AppTrackManager {
 
     public List<TrackModuleInfo> getAllModuleInfoList() {
         List<TrackModuleInfo> list = new ArrayList<>();
+        HashMap<String, TrackModuleInfo> map = new HashMap<>();
         Set<String> keys = mModuleInfoMap.keySet();
         for (String key : keys) {
             TrackModuleInfo value = mModuleInfoMap.get(key);
             if (value != null) {
-                list.add(value);
+                map.put(key, value);
+            }
+        }
+        if (map.containsKey(TrackDefaultBuilder.MODULE_BUSINESS_RECORD)) {
+            list.add(map.remove(TrackDefaultBuilder.MODULE_BUSINESS_RECORD));
+        }
+        if (map.containsKey(TrackDefaultBuilder.MODULE_ADMIN_RECORD)) {
+            list.add(map.remove(TrackDefaultBuilder.MODULE_ADMIN_RECORD));
+        }
+        if (map.containsKey(TrackDefaultBuilder.MODULE_REMOTE_RECORD)) {
+            list.add(map.remove(TrackDefaultBuilder.MODULE_REMOTE_RECORD));
+        }
+        if (map.containsKey(TrackDefaultBuilder.MODULE_STATE_INFO)) {
+            list.add(map.remove(TrackDefaultBuilder.MODULE_STATE_INFO));
+        }
+        if (map.containsKey(TrackDefaultBuilder.MODULE_DEBUG)) {
+            list.add(map.remove(TrackDefaultBuilder.MODULE_DEBUG));
+        }
+        if (map.containsKey(TrackDefaultBuilder.MODULE_BASE)) {
+            list.add(map.remove(TrackDefaultBuilder.MODULE_BASE));
+        }
+        if (map.containsKey(TrackDefaultBuilder.MODULE_DEFAULT)) {
+            list.add(map.remove(TrackDefaultBuilder.MODULE_DEFAULT));
+        }
+        keys = map.keySet();
+        for (String key : keys) {
+            TrackModuleInfo value = map.get(key);
+            if (value != null) {
+                list.add(0, value);
             }
         }
         return list;

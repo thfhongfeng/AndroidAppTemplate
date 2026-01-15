@@ -248,6 +248,16 @@ public class MqttManager {
         request(tag, action, targetSubject, targetFlag, null, callback);
     }
 
+    public void request(String tag, String action, String targetSubject, String targetFlag,
+                        int timeout, MqttRespond.IMqttRespond<String> callback) {
+        request(tag, action, targetSubject, targetFlag, null, timeout, callback);
+    }
+
+    public void request(String tag, String action, Topic.SubjectEnum targetSubject, String targetFlag,
+                        int timeout, MqttRespond.IMqttRespond<String> callback) {
+        request(tag, action, targetSubject.getContent(), targetFlag, null, timeout, callback);
+    }
+
     public void request(String tag, String action, Topic.SubjectEnum targetSubject, String targetFlag,
                         MqttRespond.IMqttRespond<String> callback) {
         request(tag, action, targetSubject.getContent(), targetFlag, null, callback);
@@ -258,9 +268,19 @@ public class MqttManager {
         request(tag, action, targetSubject.getContent(), targetFlag, data, callback);
     }
 
+    public <T> void request(String tag, String action, Topic.SubjectEnum targetSubject, String targetFlag, T data,
+                            int timeout, MqttRespond.IMqttRespond<String> callback) {
+        request(tag, action, targetSubject.getContent(), targetFlag, data, timeout, callback);
+    }
+
     public <T> void request(String tag, String action, String targetSubject, String targetFlag, T data,
                             MqttRespond.IMqttRespond<String> callback) {
         request(tag, action, targetSubject, targetFlag, data, 1, false, callback);
+    }
+
+    public <T> void request(String tag, String action, String targetSubject, String targetFlag, T data,
+                            int timeout, MqttRespond.IMqttRespond<String> callback) {
+        request(tag, action, targetSubject, targetFlag, data, 1, false, timeout, callback);
     }
 
     public <T> void request(String tag, String action, Topic.SubjectEnum targetSubject, String targetFlag,
@@ -268,13 +288,34 @@ public class MqttManager {
         request(tag, action, targetSubject.getContent(), targetFlag, data, qos, retained, callback);
     }
 
+    public <T> void request(String tag, String action, Topic.SubjectEnum targetSubject, String targetFlag,
+                            T data, int qos, boolean retained, int timeout, MqttRespond.IMqttRespond<String> callback) {
+        request(tag, action, targetSubject.getContent(), targetFlag, data, qos, retained, timeout, callback);
+    }
+
     public <T> void request(String tag, String action, String targetSubject, String targetFlag, T data,
                             int qos, boolean retained, MqttRespond.IMqttRespond<String> callback) {
+        request(tag, action, targetSubject, targetFlag, data, qos, retained, 0, callback);
+    }
+
+    /**
+     * @param tag           请求标识
+     * @param action        请求动作标识
+     * @param targetSubject 请求目标
+     * @param targetFlag    请求目标详细标识
+     * @param data          请求参数数据
+     * @param qos
+     * @param retained
+     * @param timeout       请求超时时间：单位秒
+     * @param callback
+     */
+    public <T> void request(String tag, String action, String targetSubject, String targetFlag, T data,
+                            int qos, boolean retained, int timeout, MqttRespond.IMqttRespond<String> callback) {
         if (!isMqttConnected()) {
             return;
         }
         if (callback != null) {
-            mWorker.addResponseCb(action, tag, callback);
+            mWorker.addResponseCb(action, tag, timeout, callback);
         }
         mWorker.request(action, targetSubject, targetFlag, data, qos, retained);
     }
