@@ -274,6 +274,10 @@ public class SimpleWebView extends WebView {
 
     private void loadUrl() {
         LogUtils.d(TAG, "loadUrl:" + mUrl);
+        if (TextUtils.isEmpty(mUrl)) {
+            LogUtils.w(TAG, "loadUrl skip for url is empty");
+            return;
+        }
         synCookies(mUrl);
         loadUrl(mUrl);
     }

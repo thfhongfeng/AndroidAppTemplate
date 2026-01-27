@@ -6,11 +6,13 @@ import androidx.annotation.NonNull;
 
 import com.pine.app.lib.mqtt.framework.MqttManager;
 import com.pine.app.lib.mqtt.framework.service.MqttService;
+import com.pine.app.template.bundle_main.BuildConfigKey;
 import com.pine.template.base.bgwork.AppBgManager;
 import com.pine.template.base.bgwork.network.NetworkType;
 import com.pine.template.base.bgwork.network.OnNetworkChangedListener;
 import com.pine.template.base.business.track.AppTrackManager;
 import com.pine.template.base.business.track.TrackDefaultBuilder;
+import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.main.R;
 import com.pine.tool.util.LogUtils;
 
@@ -49,7 +51,7 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
 
     public void init(@NonNull Context context) {
         mContext = context;
-
+        ENABLE_DEBUG_TRACK = ConfigSwitcherServer.isEnable(BuildConfigKey.ENABLE_DEBUG_TRACK);
         recordInfoAppStart();
         AppBgManager.regNetworkChangedListener(this);
         MqttManager.getInstance().addConnectListener(String.valueOf(context.hashCode()),
@@ -290,8 +292,12 @@ public class TrackRecordHelper implements OnNetworkChangedListener {
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
+    private boolean ENABLE_DEBUG_TRACK = false;
 
     public void recordDebug(String debugType, String data) {
+        if (!ENABLE_DEBUG_TRACK) {
+            return;
+        }
         Date recordDate = new Date();
         String actionData = mSimpleDateFormat.format(recordDate) + " 应用调试:" + debugType + "。" + data + "";
         AppTrackManager.getInstance().recordOperation(TrackDefaultBuilder.MODULE_DEBUG, DEFAULT_CUR_CLASS,

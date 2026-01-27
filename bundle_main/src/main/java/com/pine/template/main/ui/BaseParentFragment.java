@@ -96,14 +96,16 @@ public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends V
             if (args != null) {
                 _mFragmentArr[_mShowFragment].setArgs(args);
             }
+            onSubFragmentBind(_mShowFragment);
             return _mFragmentArr[_mShowFragment];
         }
         boolean newAdd = false;
         // 要显示的子fragment不存在，则创建
         if (_mFragmentArr[index] == null) {
-            _mFragmentArr[index] = getSubFragment(index);
+            _mFragmentArr[index] = createSubFragment(index);
             newAdd = true;
         }
+        onSubFragmentBind(index);
         if (newAdd || replace) {
             final boolean finalNewAdd = newAdd;
             mGoFragmentHandler.removeCallbacksAndMessages(null);
@@ -312,13 +314,25 @@ public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends V
         return false;
     }
 
+    public BaseFragment getSubFragment(int index) {
+        return _mFragmentArr[index];
+    }
+
     /**
-     * 获取或者创建对应index的子fragment
+     * 创建对应index的子fragment
      *
      * @param index
      * @return
      */
-    public abstract BaseFragment getSubFragment(int index);
+    public abstract BaseFragment createSubFragment(int index);
+
+    /**
+     * 跳转到对应index的子fragment前的绑定动作
+     *
+     * @param index
+     * @return
+     */
+    public abstract void onSubFragmentBind(int index);
 
     /**
      * 获取子fragment的容器id

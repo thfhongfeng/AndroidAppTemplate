@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
@@ -106,6 +107,28 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         }
     };
 
+//    public ViewModelProvider.Factory getViewModelProviderFactory() {
+//        return new ViewModelProvider.Factory() {
+//            @NonNull
+//            @Override
+//            public <T extends androidx.lifecycle.ViewModel> T create(@NonNull Class<T> modelClass) {
+//                try {
+//                    T viewModel = modelClass.newInstance();
+//                    // 覆盖默认的onCleared行为，确保配置变更时销毁
+//                    ((ViewModel) viewModel).onCleared();
+//                    return viewModel;
+//                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        };
+//    }
+
+    public ViewModelProvider.Factory getViewModelProviderFactory() {
+        ViewModelProvider.Factory factory = (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory();
+        return factory;
+    }
+
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,7 +137,7 @@ public abstract class MvvmFragment<T extends ViewDataBinding, VM extends ViewMod
         Type type = getClass().getGenericSuperclass();
         if (type instanceof ParameterizedType) {
             Class presenterClazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
-            mViewModel = (VM) ViewModelProviders.of(getActivity()).get(presenterClazz);
+            mViewModel = (VM) ViewModelProviders.of(getActivity(), getViewModelProviderFactory()).get(presenterClazz);
         }
         mViewModel.getObserveSyncLiveDataData().observe(this, mSyncLiveDataObserver);
         mViewModel.getResetUiData().observe(this, mResetUiDataObserver);

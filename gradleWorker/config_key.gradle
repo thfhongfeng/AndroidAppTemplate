@@ -40,6 +40,8 @@ def baseConfigKey = [
         CONFIG_APP_TRACK_URL                : "CONFIG_APP_TRACK_URL",
         CONFIG_APP_TRACK_LOOP_INTERVAL      : "CONFIG_APP_TRACK_LOOP_INTERVAL",
         CONFIG_APP_TRACK_MAX_COUNT          : "CONFIG_APP_TRACK_MAX_COUNT",
+        // 是否开启debug日志
+        ENABLE_DEBUG_TRACK                    : "ENABLE_DEBUG_TRACK",
         // app更新
         ENABLE_AUTO_CHECK_UPDATE            : "ENABLE_AUTO_CHECK_UPDATE",
         CONFIG_APK_UPDATE_URL               : "CONFIG_APK_UPDATE_URL",

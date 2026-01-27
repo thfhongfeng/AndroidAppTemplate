@@ -18,13 +18,14 @@ import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.util.KeyboardUtils;
 import com.pine.tool.util.LogUtils;
 
-public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewModel>
-        extends UniversalVisibleFragment<T, VM> {
+public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewModel> extends UniversalVisibleFragment<T, VM> {
 
     public final static String TOP_HOME = "topHome";
     public final static String PARENT_HOME = "parentHome";
     public final static String BRO_HOME = "broHome";
     public final static String CUSTOM_BRO = "customBro";
+
+    public final static String TOP_CUSTOM = "topCustom";
 
     /**
      * 返回标识
@@ -32,6 +33,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
      * parentHome：返回父级fragment的Home;
      * broHome：返回同级fragment的Home;
      * customBro：返回同级指定fragment;
+     * topCustom：返回FragmentActivity下指定fragment;
      */
     private volatile String _mGoBackTag = BRO_HOME;
     // 临时返回标识，只用于一次返回。
@@ -71,10 +73,26 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
      * @param broFragIndex
      */
     public void setGoBackTagForCustomBro(int broFragIndex) {
-        LogUtils.d(TAG, "setGoBackTagForCustomBro goBackTag:" + CUSTOM_BRO
-                + ", broFragIndex:" + broFragIndex + ", this:" + this);
+        LogUtils.d(TAG, "setGoBackTagForCustomBro goBackTag:" + CUSTOM_BRO + ", broFragIndex:" + broFragIndex + ", this:" + this);
         this._mGoBackTag = CUSTOM_BRO;
         this._customBroGoBackFragIndex = broFragIndex;
+    }
+
+    private int _customTopFragIndex;
+    private int _customTopFragSubIndex;
+
+    /**
+     * 设置默认返回标识
+     *
+     * @param topIndex
+     * @param subIndex
+     */
+    public void setGoBackTagForTopCustom(int topIndex, int subIndex) {
+        LogUtils.d(TAG, "setGoBackTagForTopCustom goBackTag:" + TOP_CUSTOM + ", topIndex:" + topIndex
+                + ", subIndex:" + subIndex + ", this:" + this);
+        this._mGoBackTag = TOP_CUSTOM;
+        this._customTopFragIndex = topIndex;
+        this._customTopFragSubIndex = subIndex;
     }
 
     /**
@@ -90,69 +108,74 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
     /**
      * 根据返回标识进行界面返回
      */
-    public void goBack(Bundle args) {
+    public BaseFragment goBack(Bundle args) {
         String goBackTag = TextUtils.isEmpty(_mOnceOnlyGoBackTag) ? _mGoBackTag : _mOnceOnlyGoBackTag;
-        LogUtils.d(TAG, "goBack _mOnceOnlyGoBackTag:" + _mOnceOnlyGoBackTag + ", _mGoBackTag:" + _mGoBackTag
-                + ", _customBroGoBackFragIndex:" + _customBroGoBackFragIndex + ", final goBackTag:" + goBackTag + ", this:" + this);
+        LogUtils.d(TAG, "goBack _mOnceOnlyGoBackTag:" + _mOnceOnlyGoBackTag + ", _mGoBackTag:" + _mGoBackTag + ", _customBroGoBackFragIndex:" + _customBroGoBackFragIndex + ", final goBackTag:" + goBackTag + ", this:" + this);
         _mOnceOnlyGoBackTag = null;
         if (!_isLastVisible) {
-            return;
+            return this;
         }
         switch (goBackTag) {
             case TOP_HOME:
                 if (getActivity() != null) {
-                    ((BaseFragmentActivity) getActivity()).switchHomeFragment(args);
+                    return ((BaseFragmentActivity) getActivity()).switchHomeFragment(args);
                 }
                 break;
             case PARENT_HOME:
                 if (getParentFragment().getParentFragment() instanceof BaseParentFragment) {
                     BaseParentFragment fragment = (BaseParentFragment) getParentFragment().getParentFragment();
-                    fragment.goFragment(fragment.getSubHomeIndex(), args);
+                    return fragment.goFragment(fragment.getSubHomeIndex(), args);
                 }
                 break;
             case BRO_HOME:
                 if (getParentFragment() instanceof BaseParentFragment) {
                     BaseParentFragment fragment = (BaseParentFragment) getParentFragment();
-                    fragment.goFragment(fragment.getSubHomeIndex(), args);
+                    return fragment.goFragment(fragment.getSubHomeIndex(), args);
                 }
                 break;
             case CUSTOM_BRO:
                 if (getParentFragment() instanceof BaseParentFragment) {
                     BaseParentFragment fragment = (BaseParentFragment) getParentFragment();
-                    fragment.goFragment(_customBroGoBackFragIndex, args);
+                    return fragment.goFragment(_customBroGoBackFragIndex, args);
+                }
+                break;
+            case TOP_CUSTOM:
+                if (getActivity() != null) {
+                    return ((BaseFragmentActivity) getActivity()).switchFragment(_customTopFragIndex, _customTopFragSubIndex, args);
                 }
                 break;
         }
+        return this;
     }
 
     /**
      * 返回最上层的Home界面
      */
-    public void goTopHome() {
-        goTopHome(null);
+    public BaseFragment goTopHome() {
+        return goTopHome(null);
     }
 
     /**
      * 返回最上层的Home界面
      */
-    public void goTopHome(Bundle args) {
+    public BaseFragment goTopHome(Bundle args) {
         setOnceOnlyGoBackTag(TOP_HOME);
-        goBack(args);
+        return goBack(args);
     }
 
     /**
      * 返回当前层级的Home界面
      */
-    public void goBroHome() {
-        goBroHome(null);
+    public BaseFragment goBroHome() {
+        return goBroHome(null);
     }
 
     /**
      * 返回当前层级的Home界面
      */
-    public void goBroHome(Bundle args) {
+    public BaseFragment goBroHome(Bundle args) {
         setOnceOnlyGoBackTag(BRO_HOME);
-        goBack(args);
+        return goBack(args);
     }
 
     /**
@@ -160,10 +183,11 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
      *
      * @param index
      */
-    public void goBroFragment(int index) {
+    public BaseFragment goBroFragment(int index) {
         if (getParentFragment() instanceof BaseParentFragment) {
-            ((BaseParentFragment) getParentFragment()).goFragment(index);
+            return ((BaseParentFragment) getParentFragment()).goFragment(index);
         }
+        return null;
     }
 
     /**
@@ -172,10 +196,11 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
      * @param index
      * @param args
      */
-    public void goBroFragment(int index, Bundle args) {
+    public BaseFragment goBroFragment(int index, Bundle args) {
         if (getParentFragment() instanceof BaseParentFragment) {
-            ((BaseParentFragment) getParentFragment()).goFragment(index, args);
+            return ((BaseParentFragment) getParentFragment()).goFragment(index, args);
         }
+        return null;
     }
 
     /**
@@ -183,10 +208,11 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
      *
      * @param index
      */
-    public void goParentFragment(int index) {
+    public BaseFragment goParentFragment(int index) {
         if (getParentFragment().getParentFragment() instanceof BaseParentFragment) {
-            ((BaseParentFragment) (getParentFragment().getParentFragment())).goFragment(index);
+            return ((BaseParentFragment) (getParentFragment().getParentFragment())).goFragment(index);
         }
+        return null;
     }
 
     /**
@@ -195,10 +221,11 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
      * @param index
      * @param args
      */
-    public void goParentFragment(int index, Bundle args) {
+    public BaseFragment goParentFragment(int index, Bundle args) {
         if (getParentFragment().getParentFragment() instanceof BaseParentFragment) {
-            ((BaseParentFragment) (getParentFragment().getParentFragment())).goFragment(index, args);
+            return ((BaseParentFragment) (getParentFragment().getParentFragment())).goFragment(index, args);
         }
+        return null;
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.pine.tool.util;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.pine.tool.BuildConfig;
 
 import java.lang.reflect.Method;
@@ -51,6 +53,17 @@ public class LogUtils {
             return LOG_PREFIX + str.substring(0, MAX_LOG_TAG_LENGTH - 1);
         }
         return LOG_PREFIX + str;
+    }
+
+    public static void printStackTraceLog(@NonNull String tag, @NonNull String caller) {
+        // 获取当前线程的堆栈跟踪数组
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        StringBuilder stringBuilder = new StringBuilder();
+        // 遍历并打印堆栈信息
+        for (StackTraceElement element : stackTrace) {
+            stringBuilder.append(element.toString() + "\n");
+        }
+        LogUtils.d(tag, caller + " called stackTrace:" + stringBuilder);
     }
 
     /**

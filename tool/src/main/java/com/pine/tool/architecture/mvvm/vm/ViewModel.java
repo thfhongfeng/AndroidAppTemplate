@@ -55,7 +55,7 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
     }
 
     public void onCleared() {
-
+        super.onCleared();
     }
 
     MutableLiveData<Integer> observeSyncLiveData = new MutableLiveData<>();

@@ -2,9 +2,6 @@ package com.pine.tool.binding.data;
 
 import androidx.lifecycle.MutableLiveData;
 
-/**
- * Created by tanghongfeng on 2019/3/1
- */
 
 /**
  * 让MutableLiveData携带额外参数数据

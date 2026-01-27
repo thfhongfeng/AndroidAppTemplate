@@ -105,6 +105,28 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     };
 
+//    public ViewModelProvider.Factory getViewModelProviderFactory() {
+//        return new ViewModelProvider.Factory() {
+//            @NonNull
+//            @Override
+//            public <T extends androidx.lifecycle.ViewModel> T create(@NonNull Class<T> modelClass) {
+//                try {
+//                    T viewModel = modelClass.newInstance();
+//                    // 覆盖默认的onCleared行为，确保配置变更时销毁
+//                    ((ViewModel) viewModel).onCleared();
+//                    return viewModel;
+//                } catch (Exception e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        };
+//    }
+
+    public ViewModelProvider.Factory getViewModelProviderFactory() {
+        ViewModelProvider.Factory factory = (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory();
+        return factory;
+    }
+
     @CallSuper
     @Override
     protected boolean beforeInitOnCreate(@Nullable Bundle savedInstanceState) {
@@ -139,7 +161,7 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
             VM vm = (VM) ViewModelProviders.of(this).get(presenterClazz);
             return vm;
         } else {
-            ViewModelProvider.Factory factory = new ViewModelProvider.NewInstanceFactory();
+            ViewModelProvider.Factory factory = getViewModelProviderFactory();
             VM vm = (VM) new ViewModelProvider(this, factory).get(presenterClazz);
             return vm;
         }

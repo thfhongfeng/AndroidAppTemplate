@@ -531,6 +531,9 @@ public class CameraHelper {
     public synchronized void takePicture(final boolean restartPreview,
                                          final ICameraCallback.TakePicListener listener) {
         if (isRecording) {
+            if (listener != null) {
+                listener.onFail();
+            }
             return;
         }
         if (mCamera != null) {
