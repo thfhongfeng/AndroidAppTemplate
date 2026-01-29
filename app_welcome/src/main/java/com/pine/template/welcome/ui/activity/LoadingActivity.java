@@ -31,8 +31,9 @@ import com.pine.tool.util.NetWorkUtils;
 import java.io.File;
 
 @PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE})
+        Manifest.permission.READ_MEDIA_IMAGES,
+        Manifest.permission.READ_MEDIA_VIDEO,
+        Manifest.permission.READ_MEDIA_AUDIO})
 public class LoadingActivity extends WelBaseActivity<LoadingActivityBinding, LoadingVm> {
     @Override
     public String makeUiName() {
