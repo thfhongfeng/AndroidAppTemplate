@@ -3,6 +3,7 @@ package com.pine.tool.camera;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -50,7 +51,21 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     }
 
     public void init(CameraConfig config, ICameraPreparedCallback listener) {
-        mCameraHelper = CameraHelper.getInstance(config.cameraIndex);
+        if (config.cameraIndex >= 0) {
+            mCameraHelper = CameraHelper.getInstance(config.cameraIndex);
+        } else {
+            switch (config.cameraType) {
+                case CameraConfig.FRONT:
+                    mCameraHelper = CameraHelper.getInstance(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                    break;
+                case CameraConfig.BACK:
+                    mCameraHelper = CameraHelper.getInstance(Camera.CameraInfo.CAMERA_FACING_BACK);
+                    break;
+                default:
+                    mCameraHelper = CameraHelper.getInstance();
+                    break;
+            }
+        }
         setConfig(config);
         setCameraPreparedListener(listener);
     }
@@ -79,17 +94,19 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
             mCameraHelper = CameraHelper.getInstance();
         }
         boolean needForce = force && mInnerFrameWidth != getWidth() && mInnerFrameHeight != getHeight();
-        Log.d(TAG, "initCamera force:" + force + ", needForce:" + needForce + ", config:" + config);
         if (!needForce && mCameraHelper.isCameraPrepared()) {
+            Log.i(TAG, "initCamera camera is already prepared");
             if (listener != null) {
                 listener.onCameraPrepared(true, mCameraHelper.getCameraSurfaceParams());
             }
             return;
         }
         if (!needForce && mCameraHelper.isCameraInit()) {
+            Log.i(TAG, "initCamera camera is already init");
             prepareCameraView(listener);
             return;
         }
+        Log.d(TAG, "initCamera force:" + force + ", needForce:" + needForce + ", config:" + config);
         mCameraHelper.initCamera(getContext(), getConfig(), new ICameraCallback.ICameraInitListener() {
             @Override
             public void onCameraInit(boolean success) {

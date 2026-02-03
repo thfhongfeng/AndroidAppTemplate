@@ -19,6 +19,8 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
+import com.pine.tool.util.LogUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -48,8 +50,7 @@ public class CameraHelper {
     }
 
     private String mCameraType = CameraConfig.DEFAULT;
-    private int mCameraIdIndex = 0;
-    private int mCameraFacing = -1;
+    private int mCameraIdIndex = -1;
     private CameraConfig mCameraConfig;
 
     private Camera mCamera;
@@ -121,9 +122,10 @@ public class CameraHelper {
 
     private void openCamera(@NonNull final CameraConfig config,
                             final ICameraCallback.ICameraInitListener listener) {
+        Log.d(TAG, "openCamera camera config:" + config);
         try {
             if (!isSupportCamera()) {
-                Log.d(TAG, "openCamera camera is not support");
+                Log.e(TAG, "openCamera camera is not support");
                 if (listener != null) {
                     listener.onCameraInit(false);
                 }
@@ -133,33 +135,33 @@ public class CameraHelper {
             if (config.cameraIndex >= 0) {
                 mCamera = openCamera(config.cameraIndex);
             } else {
-                if (TextUtils.equals(mCameraType, CameraConfig.DEFAULT)) {
-                    mCameraType = config.cameraType;
-                }
-                mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                switch (mCameraType) {
+                switch (config.cameraType) {
                     case CameraConfig.FRONT:
                         mCamera = openFrontCamera();
-                        mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
                         break;
-                    default:
+                    case CameraConfig.BACK:
                         mCamera = openBackCamera();
-                        mCameraFacing = Camera.CameraInfo.CAMERA_FACING_BACK;
                         break;
                 }
             }
             //如果都初始化失败了，不区别摄像头类型重新初始化一遍(默认情况下会打开后置摄像头)
             if (mCamera == null) {
-                Log.w(TAG, "openCamera ignore camera facing, some problem may happen for camera using");
-                mCamera = Camera.open();
-                if (mCamera != null) {
-                    mCameraFacing = Camera.CameraInfo.CAMERA_FACING_BACK;
-                    mCameraType = CameraConfig.BACK;
+                if (config.openBackFinallyWhenFail) {
+                    Log.w(TAG, "openCamera ignore camera facing, some problem may happen for camera using");
+                    mCamera = Camera.open();
+                    if (mCamera != null) {
+                        mCameraIdIndex = Camera.CameraInfo.CAMERA_FACING_BACK;
+                        mCameraType = CameraConfig.BACK;
+                    }
                 }
             }
-            mCameraInfo = getCameraInfo(mCameraFacing);
+            if (mCamera != null) {
+                mCameraInfo = getCameraInfo(mCameraIdIndex);
+            }
             boolean openSuccess = mCamera != null && mCameraInfo != null;
-            Log.d(TAG, "openCamera success:" + openSuccess + ", mCameraType:" + mCameraType);
+            Log.d(TAG, "openCamera success:" + openSuccess
+                    + ", mCameraIdIndex:" + mCameraIdIndex + ", mCameraType:" + mCameraType
+                    + ", mCamera:" + mCamera + ", mCameraInfo:" + mCameraInfo);
             if (openSuccess) {
                 mCameraParam = mCamera.getParameters();
             }
@@ -168,7 +170,6 @@ public class CameraHelper {
                 listener.onCameraInit(mCameraInit);
             }
             mCameraInitProcessing = false;
-            return;
         } catch (Exception e) {
             Log.e(TAG, "openCamera exception:" + e);
             e.printStackTrace();
@@ -178,6 +179,7 @@ public class CameraHelper {
 //            mCameraInitProcessing = false;
             mTryOpenCount = (mTryOpenCount + 1) % 100;
             release();
+            mTryOpenH.removeCallbacksAndMessages(null);
             mTryOpenH.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -548,6 +550,8 @@ public class CameraHelper {
                             Bitmap finalBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
                                     bitmap.getHeight(), m, true);
                             listener.onPictureTaken(finalBitmap);
+                        } else {
+                            listener.onFail();
                         }
                     }
                     if (restartPreview) {
@@ -555,6 +559,10 @@ public class CameraHelper {
                     }
                 }
             });
+        } else {
+            if (listener != null) {
+                listener.onFail();
+            }
         }
     }
 
@@ -569,19 +577,27 @@ public class CameraHelper {
 
     public synchronized Camera openCamera(int cameraIndex) {
         int numberOfCameras = Camera.getNumberOfCameras();
+        Log.d(TAG, "openCamera camera numberOfCameras:" + numberOfCameras);
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int index = 0; index < numberOfCameras; index++) {
             Camera.getCameraInfo(index, cameraInfo);
+            LogUtils.d(TAG, "openCamera cameraIndex:" + cameraIndex + ", getCameraInfo this index:" + index
+                    + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
             if (cameraIndex == index) {
-                mCameraFacing = cameraInfo.facing;
-                switch (mCameraFacing) {
+                mCameraIdIndex = index;
+                switch (mCameraIdIndex) {
                     case Camera.CameraInfo.CAMERA_FACING_FRONT:
                         mCameraType = CameraConfig.FRONT;
                         break;
                     case Camera.CameraInfo.CAMERA_FACING_BACK:
                         mCameraType = CameraConfig.BACK;
                         break;
+                    default:
+                        mCameraType = CameraConfig.EXTERNAL;
+                        break;
                 }
+                LogUtils.d(TAG, "openCamera cameraIndex:" + cameraIndex + ", find camera index:" + index
+                        + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
                 return Camera.open(index);
             }
         }
@@ -590,10 +606,17 @@ public class CameraHelper {
 
     public synchronized Camera openFrontCamera() {
         int numberOfCameras = Camera.getNumberOfCameras();
+        Log.d(TAG, "openFrontCamera camera numberOfCameras:" + numberOfCameras);
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int cameraId = 0; cameraId < numberOfCameras; cameraId++) {
             Camera.getCameraInfo(cameraId, cameraInfo);
+            LogUtils.d(TAG, "openFrontCamera getCameraInfo this index:" + cameraId
+                    + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                LogUtils.d(TAG, "openFrontCamera find front camera index:" + cameraId
+                        + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+                mCameraIdIndex = cameraId;
+                mCameraType = CameraConfig.FRONT;
                 return Camera.open(cameraId);
             }
         }
@@ -602,22 +625,31 @@ public class CameraHelper {
 
     public synchronized Camera openBackCamera() {
         int numberOfCameras = Camera.getNumberOfCameras();
+        Log.d(TAG, "openBackCamera camera numberOfCameras:" + numberOfCameras);
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int cameraId = 0; cameraId < numberOfCameras; cameraId++) {
             Camera.getCameraInfo(cameraId, cameraInfo);
+            LogUtils.d(TAG, "openBackCamera getCameraInfo this index:" + cameraId
+                    + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                LogUtils.d(TAG, "openBackCamera find back camera index:" + cameraId
+                        + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+                mCameraIdIndex = cameraId;
+                mCameraType = CameraConfig.BACK;
                 return Camera.open(cameraId);
             }
         }
         return null;
     }
 
-    public Camera.CameraInfo getCameraInfo(int cameraType) {
+    public Camera.CameraInfo getCameraInfo(int cameraIndex) {
         int numberOfCameras = Camera.getNumberOfCameras();
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int cameraId = 0; cameraId < numberOfCameras; cameraId++) {
             Camera.getCameraInfo(cameraId, cameraInfo);
-            if (cameraInfo.facing == cameraType) {
+            LogUtils.d(TAG, "getCameraInfo cameraIndex: " + cameraIndex + ", this index:" + cameraId
+                    + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+            if (cameraId == cameraIndex) {
                 return cameraInfo;
             }
         }

@@ -163,6 +163,10 @@ public class CameraView extends RelativeLayout implements IFaceDetectView {
     public void takePicture(final CameraTextureView.PicCallback callback) {
         if (textureView != null) {
             textureView.takePicture(callback);
+        } else {
+            if (callback != null) {
+                callback.onFail();
+            }
         }
     }
 

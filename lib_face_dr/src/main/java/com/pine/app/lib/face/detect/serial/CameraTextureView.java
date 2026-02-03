@@ -3,6 +3,7 @@ package com.pine.app.lib.face.detect.serial;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 
+import com.pine.app.lib.face.detect.CameraConfig;
 import com.pine.app.lib.face.detect.CameraHelper;
 import com.pine.app.lib.face.detect.CameraSurfaceParams;
 import com.pine.app.lib.face.detect.DetectConfig;
@@ -40,7 +42,7 @@ public class CameraTextureView extends TextureView implements View.OnLayoutChang
 
     private int mInnerFrameWidth, mInnerFrameHeight;
 
-    private CameraHelper mCameraHelper = CameraHelper.getInstance();
+    private CameraHelper mCameraHelper;
     private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
@@ -63,6 +65,21 @@ public class CameraTextureView extends TextureView implements View.OnLayoutChang
     }
 
     public void init(DetectConfig config, ICameraPreparedCallback listener) {
+        if (config.cameraIndex >= 0) {
+            mCameraHelper = CameraHelper.getInstance(config.cameraIndex);
+        } else {
+            switch (config.cameraType) {
+                case CameraConfig.FRONT:
+                    mCameraHelper = CameraHelper.getInstance(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                    break;
+                case CameraConfig.BACK:
+                    mCameraHelper = CameraHelper.getInstance(Camera.CameraInfo.CAMERA_FACING_BACK);
+                    break;
+                default:
+                    mCameraHelper = CameraHelper.getInstance();
+                    break;
+            }
+        }
         setConfig(config);
         setCameraPreparedListener(listener);
     }
@@ -87,18 +104,23 @@ public class CameraTextureView extends TextureView implements View.OnLayoutChang
 
     //初始化摄像头
     private void initCamera(boolean force, final ICameraPreparedCallback listener) {
+        if (mCameraHelper == null) {
+            mCameraHelper = CameraHelper.getInstance();
+        }
         boolean needForce = force && mInnerFrameWidth != getWidth() && mInnerFrameHeight != getHeight();
-        Log.d(TAG, "initCamera force:" + force + ", needForce:" + needForce);
         if (!needForce && mCameraHelper.isCameraPrepared()) {
+            Log.i(TAG, "initCamera camera is already prepared");
             if (listener != null) {
                 listener.onCameraPrepared(true, mCameraHelper.getCameraSurfaceParams());
             }
             return;
         }
         if (!needForce && mCameraHelper.isCameraInit()) {
+            Log.i(TAG, "initCamera camera is already init");
             prepareCameraView(listener);
             return;
         }
+        Log.d(TAG, "initCamera force:" + force + ", needForce:" + needForce + ", config:" + config);
         mCameraHelper.initCamera(getContext(), getConfig(), new ICameraCallback.ICameraInitListener() {
             @Override
             public void onCameraInit(boolean success) {

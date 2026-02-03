@@ -58,6 +58,10 @@ public class CameraView extends RelativeLayout {
     public void takePicture(final CameraTexture.PicCallback callback) {
         if (cameraTexture != null) {
             cameraTexture.takePicture(callback);
+        } else {
+            if (callback != null) {
+                callback.onFail();
+            }
         }
     }
 
