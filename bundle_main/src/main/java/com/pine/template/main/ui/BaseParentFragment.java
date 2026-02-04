@@ -194,7 +194,7 @@ public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends V
     public void onFragmentVisible(boolean first) {
         super.onFragmentVisible(first);
         BaseFragment subShowFragment = getSubShowFragment();
-        if (subShowFragment != null) {
+        if (subShowFragment != null && !subShowFragment.isNeverResume()) {
             subShowFragment.onFragmentVisible(subShowFragment._isFirstTime);
         }
     }
@@ -203,9 +203,9 @@ public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends V
     @CallSuper
     public void onFragmentHide() {
         super.onFragmentHide();
-        BaseFragment fragment = getSubShowFragment();
-        if (fragment != null) {
-            fragment.onFragmentHide();
+        BaseFragment subShowFragment = getSubShowFragment();
+        if (subShowFragment != null && !subShowFragment.isNeverResume()) {
+            subShowFragment.onFragmentHide();
         }
     }
 

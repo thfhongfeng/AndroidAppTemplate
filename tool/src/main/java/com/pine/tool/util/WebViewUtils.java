@@ -1,5 +1,6 @@
 package com.pine.tool.util;
 
+import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.webkit.DownloadListener;
@@ -7,6 +8,10 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.WebViewRenderProcess;
+import android.webkit.WebViewRenderProcessClient;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by tanghongfeng on 2018/10/10
@@ -52,7 +57,26 @@ public class WebViewUtils {
         webView.removeJavascriptInterface("searchBoxJavaBredge_");
     }
 
-    public static void setForDesktopUserAgent(WebView webView) {
+    public static void enableRenderProcessClient(@NonNull WebView webView, @NonNull Context context) {
+        // Android 10+ 开启WebView渲染进程隔离（准确版本判断），
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            webView.setWebViewRenderProcessClient(context.getMainExecutor(), new WebViewRenderProcessClient() {
+                // 渲染进程无响应（如摄像头锁阻塞）时，直接终止进程释放资源，避免主进程卡死（兜底）。
+                @Override
+                public void onRenderProcessUnresponsive(@NonNull WebView view, @NonNull WebViewRenderProcess renderer) {
+                    renderer.terminate();
+                }
+
+                // 渲染进程恢复响应，可选回调（无需处理可省略）
+                @Override
+                public void onRenderProcessResponsive(@NonNull WebView view, @NonNull WebViewRenderProcess renderer) {
+
+                }
+            });
+        }
+    }
+
+    public static void setForDesktopUserAgent(@NonNull WebView webView) {
         WebSettings webSettings = webView.getSettings();
         // 1. 获取桌面版 User-Agent（示例为 Chrome 的 PC 端标识）
         String desktopUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
@@ -63,12 +87,12 @@ public class WebViewUtils {
         webView.clearHistory();
     }
 
-    public static void setUserAgent(WebView webView, String agent) {
+    public static void setUserAgent(@NonNull WebView webView, @NonNull String agent) {
         WebSettings webSettings = webView.getSettings();
         webSettings.setUserAgentString(agent);
     }
 
-    public static String getUserAgent(WebView webView) {
+    public static String getUserAgent(@NonNull WebView webView) {
         WebSettings webSettings = webView.getSettings();
         return webSettings.getUserAgentString();
     }

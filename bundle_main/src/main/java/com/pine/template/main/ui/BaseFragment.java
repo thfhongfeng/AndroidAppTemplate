@@ -240,10 +240,17 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
         super.onStart();
     }
 
+    private boolean _isResumeNever = true;
+
+    public boolean isNeverResume() {
+        return _isResumeNever;
+    }
+
     @Override
     public void onResume() {
         LogUtils.d(TAG, "fragment_life onResume");
         super.onResume();
+        _isResumeNever = false;
     }
 
     @Override
@@ -264,6 +271,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
         super.onDestroyView();
         _mGoBackTag = BRO_HOME;
         _mOnceOnlyGoBackTag = null;
+        _isResumeNever = true;
     }
 
     @Override
@@ -271,7 +279,9 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
         LogUtils.d(TAG, "onHiddenChanged hidden:" + hidden);
         if (hidden) {
             _mOnceOnlyGoBackTag = null;
-            KeyboardUtils.closeSoftKeyboard(getActivity());
+            if (getActivity() != null) {
+                KeyboardUtils.closeSoftKeyboard(getActivity());
+            }
         }
         super.onHiddenChanged(hidden);
     }

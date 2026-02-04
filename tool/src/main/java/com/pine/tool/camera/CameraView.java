@@ -43,15 +43,27 @@ public class CameraView extends RelativeLayout {
         cameraTexture.init(config, listener);
     }
 
+    public void initAndOpenCamera(boolean force, final ICameraCallback.ICameraInitListener listener) {
+        if (cameraTexture != null) {
+            cameraTexture.initAndOpenCamera(force, listener);
+        }
+    }
+
+    public void releaseCamera() {
+        if (cameraTexture != null) {
+            cameraTexture.releaseCamera();
+        }
+    }
+
     public void startCameraPreview() {
         if (cameraTexture != null) {
             cameraTexture.startCameraPreview();
         }
     }
 
-    public void stopCameraPreview() {
+    public void stopCameraPreview(boolean releaseCamera) {
         if (cameraTexture != null) {
-            cameraTexture.stopCameraPreview();
+            cameraTexture.stopCameraPreview(releaseCamera);
         }
     }
 
@@ -94,10 +106,6 @@ public class CameraView extends RelativeLayout {
         if (cameraTexture != null) {
             cameraTexture.stopRecording(resumePreview);
         }
-    }
-
-    public void stop() {
-        stopCameraPreview();
     }
 
     public void release() {

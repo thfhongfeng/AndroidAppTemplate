@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 
+import com.pine.tool.util.LogUtils;
+
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -171,13 +173,13 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
             Log.d(TAG, "onSurfaceTextureSizeChanged, width:" + width + ",height:" + height);
-            startCameraPreview(true);
+            startCameraPreview(false);
         }
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
             Log.d(TAG, "onSurfaceTextureDestroyed");
-            stopCameraPreview();
+            stopCameraPreview(true);
             return true;
         }
 
@@ -186,6 +188,49 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
 
         }
     };
+
+    public void initAndOpenCamera(boolean force, final ICameraCallback.ICameraInitListener listener) {
+        if (mCameraHelper == null) {
+            mCameraHelper = CameraHelper.getInstance();
+        }
+        if (!force && mCameraHelper.isCameraPrepared()) {
+            Log.i(TAG, "initAndOpenCamera camera is already prepared");
+            if (listener != null) {
+                listener.onCameraInit(true);
+            }
+        }
+        if (!force && mCameraHelper.isCameraInit()) {
+            Log.i(TAG, "initAndOpenCamera camera is already init");
+            if (listener != null) {
+                listener.onCameraInit(true);
+            }
+            return;
+        }
+        Log.d(TAG, "initAndOpenCamera force:" + force + ", config:" + config);
+        mCameraHelper.initCamera(getContext(), getConfig(), new ICameraCallback.ICameraInitListener() {
+            @Override
+            public void onCameraInit(boolean success) {
+                Log.d(TAG, "initAndOpenCamera:" + success);
+                if (listener != null) {
+                    listener.onCameraInit(success);
+                }
+            }
+
+            @Override
+            public void onCameraInitProcessing() {
+                if (listener != null) {
+                    listener.onCameraInitProcessing();
+                }
+            }
+        });
+    }
+
+    public void releaseCamera() {
+        mMainHandler.removeCallbacksAndMessages(null);
+        if (mCameraHelper != null) {
+            mCameraHelper.release();
+        }
+    }
 
     public void startCameraPreview() {
         startCameraPreview(false);
@@ -211,10 +256,11 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
         });
     }
 
-    public void stopCameraPreview() {
-        mMainHandler.removeCallbacksAndMessages(null);
-        if (mCameraHelper != null) {
-            mCameraHelper.release();
+    public void stopCameraPreview(boolean releaseCamera) {
+        if (releaseCamera) {
+            releaseCamera();
+        } else {
+            mCameraHelper.stopCameraPreview();
         }
     }
 
@@ -252,8 +298,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     }
 
     public void release() {
-        stopRecording(false);
-        stopCameraPreview();
+        releaseCamera();
     }
 
     public interface PicCallback {
@@ -270,6 +315,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     public void takePicture(final PicCallback callback) {
         if (mCameraHelper == null) {
             if (callback != null) {
+                LogUtils.w(TAG, "takePicture onFail for camera not prepared");
                 callback.onFail();
             }
             return;
@@ -283,6 +329,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
 
             @Override
             public void onFail() {
+                LogUtils.w(TAG, "takePicture onFail");
                 if (callback != null) {
                     callback.onFail();
                 }
