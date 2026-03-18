@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
@@ -68,11 +70,11 @@ public class CameraHelper {
     private volatile boolean mMainSurfaceInit;
 
     public synchronized boolean isCameraInit() {
-        return mCamera != null && mCameraInfo != null && mCameraInit && mCameraParam != null;
+        return mCamera != null && mCameraInfo != null && mCameraInit;
     }
 
     public synchronized boolean isCameraPrepared() {
-        return isCameraInit() && mMainSurfaceInit;
+        return isCameraInit() && mCameraParam != null && mMainSurfaceInit;
     }
 
     public synchronized CameraSurfaceParams getCameraSurfaceParams() {
@@ -114,17 +116,17 @@ public class CameraHelper {
                 break;
         }
         mTryOpenCount = 0;
-        openCamera(config, listener);
+        openCamera(context, config, listener);
     }
 
     private int mTryOpenCount = 0;
     private Handler mTryOpenH = new Handler(Looper.getMainLooper());
 
-    private void openCamera(@NonNull final CameraConfig config,
+    private void openCamera(@NonNull Context context, @NonNull final CameraConfig config,
                             final ICameraCallback.ICameraInitListener listener) {
         Log.d(TAG, "openCamera camera config:" + config);
         try {
-            if (!isSupportCamera()) {
+            if (!isCameraManagerAccessible(context) || !isSupportCamera()) {
                 Log.e(TAG, "openCamera camera is not support");
                 if (listener != null) {
                     listener.onCameraInit(false);
@@ -183,7 +185,7 @@ public class CameraHelper {
             mTryOpenH.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    openCamera(config, listener);
+                    openCamera(context, config, listener);
                 }
             }, mTryOpenCount * 100);
         }
@@ -284,7 +286,7 @@ public class CameraHelper {
         if (picSize == null) {
             return false;
         }
-        Log.e(TAG, "setupMainSurfaceView cameraSurfaceParams:" + mCameraSurfaceParams);
+        Log.d(TAG, "setupMainSurfaceView cameraSurfaceParams:" + mCameraSurfaceParams);
 
         if (preSizeW > 0 && preSizeH > 0) {
             Log.i(TAG, "Camera Parameters preSize " + preSizeW + " - " + preSizeH);
@@ -459,12 +461,14 @@ public class CameraHelper {
         }
         mTryOpenH.removeCallbacksAndMessages(null);
         try {
+            boolean isCameraPrepared = isCameraPrepared();
+            Log.i(TAG, "startCameraPreview isCameraPrepared:" + isCameraPrepared + ", TextureView:" + mTextureView);
             if (isCameraPrepared() && mTextureView != null) {
                 mCamera.setPreviewTexture(mTextureView.getSurfaceTexture());
                 mCamera.startPreview();
-                Log.i(TAG, "startCameraPreview success for camera:" + mCamera);
             }
         } catch (Exception e) {
+            Log.e(TAG, "startCameraPreview fail:" + e);
             e.printStackTrace();
         }
     }
@@ -476,12 +480,13 @@ public class CameraHelper {
         }
         mTryOpenH.removeCallbacksAndMessages(null);
         try {
+            Log.i(TAG, "stopCameraPreview for camera:" + mCamera);
             if (mCamera != null) {
                 mCamera.stopPreview();
                 mCamera.setPreviewTexture(null);
-                Log.i(TAG, "stopCameraPreview success for camera:" + mCamera);
             }
         } catch (Exception e) {
+            Log.e(TAG, "stopCameraPreview fail:" + e);
             e.printStackTrace();
         }
     }
@@ -494,8 +499,12 @@ public class CameraHelper {
             mCamera.setPreviewCallback(new Camera.PreviewCallback() {
                 @Override
                 public void onPreviewFrame(byte[] data, Camera camera) {
+                    boolean addCallbackBuffer = false;
                     if (callback != null) {
-                        callback.onPreviewFrame(data);
+                        addCallbackBuffer = callback.onPreviewFrame(data);
+                    }
+                    if (addCallbackBuffer) {
+                        mCamera.addCallbackBuffer(data);
                     }
                 }
             });
@@ -522,8 +531,10 @@ public class CameraHelper {
         if (mCamera != null) {
             mCamera.release();
             mCamera = null;
-            mTextureView = null;
         }
+        mTextureView = null;
+        mCameraInit = false;
+        mMainSurfaceInit = false;
     }
 
     public synchronized void takePicture(final ICameraCallback.TakePicListener listener) {
@@ -563,6 +574,37 @@ public class CameraHelper {
             if (listener != null) {
                 listener.onFail();
             }
+        }
+    }
+
+    /**
+     * 检查系统相机服务是否存活（关键：解决Camera service unavailable）
+     */
+    public static boolean isCameraManagerAccessible(Context context) {
+        // Android 5.0+ 使用Camera2 API（公开API）
+        CameraManager cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+        if (cameraManager == null) {
+            Log.e(TAG, "Camera Service unavailable");
+            return false;
+        }
+        try {
+            // 尝试获取相机ID列表：若能获取则服务可用，抛异常则不可用
+            String[] cameraIds = cameraManager.getCameraIdList();
+            boolean isValid = cameraIds != null && cameraIds.length > 0;
+            if (isValid) {
+                Log.d(TAG, cameraIds.length + " camera found");
+            } else {
+                Log.e(TAG, "No camera found");
+            }
+            return isValid;
+        } catch (CameraAccessException e) {
+            // 捕获CameraAccessException，说明服务不可用
+            Log.e(TAG, "获取相机ID失败，相机服务不可用", e);
+            return false;
+        } catch (Exception e) {
+            // 其他异常（如NullPointerException）也判定为服务不可用
+            Log.e(TAG, "相机服务检查异常", e);
+            return false;
         }
     }
 

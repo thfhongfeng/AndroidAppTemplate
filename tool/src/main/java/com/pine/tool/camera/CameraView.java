@@ -67,6 +67,36 @@ public class CameraView extends RelativeLayout {
         }
     }
 
+    public void takePictureFromView(final CameraTexture.PicCallback callback) {
+        if (cameraTexture != null) {
+            cameraTexture.takePictureFromView(callback);
+        } else {
+            if (callback != null) {
+                callback.onFail();
+            }
+        }
+    }
+
+    public void takePictureFromView(String saveFilePath, final CameraTexture.PicCallback callback) {
+        if (cameraTexture != null) {
+            cameraTexture.takePictureFromView(saveFilePath, callback);
+        } else {
+            if (callback != null) {
+                callback.onFail();
+            }
+        }
+    }
+
+    public void takePicture(String saveFilePath, final CameraTexture.PicCallback callback) {
+        if (cameraTexture != null) {
+            cameraTexture.takePicture(saveFilePath, callback);
+        } else {
+            if (callback != null) {
+                callback.onFail();
+            }
+        }
+    }
+
     public void takePicture(final CameraTexture.PicCallback callback) {
         if (cameraTexture != null) {
             cameraTexture.takePicture(callback);
@@ -106,6 +136,20 @@ public class CameraView extends RelativeLayout {
         if (cameraTexture != null) {
             cameraTexture.stopRecording(resumePreview);
         }
+    }
+
+    public boolean isCameraInit() {
+        if (cameraTexture == null) {
+            return false;
+        }
+        return cameraTexture.isCameraInit();
+    }
+
+    public boolean isCameraPrepared() {
+        if (cameraTexture == null) {
+            return false;
+        }
+        return cameraTexture.isCameraPrepared();
     }
 
     public void release() {

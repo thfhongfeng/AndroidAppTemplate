@@ -16,7 +16,7 @@ public interface ICameraCallback {
     }
 
     interface PreviewCallback {
-        void onPreviewFrame(byte[] data);
+        boolean onPreviewFrame(byte[] data);
     }
 
     abstract class TakePicListener {

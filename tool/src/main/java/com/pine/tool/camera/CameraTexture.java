@@ -93,22 +93,27 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     //初始化摄像头
     private void initCamera(boolean force, final ICameraPreparedCallback listener) {
         if (mCameraHelper == null) {
-            mCameraHelper = CameraHelper.getInstance();
+            Log.e(TAG, "initCamera camera helper not init");
+            return;
         }
-        boolean needForce = force && mInnerFrameWidth != getWidth() && mInnerFrameHeight != getHeight();
-        if (!needForce && mCameraHelper.isCameraPrepared()) {
-            Log.i(TAG, "initCamera camera is already prepared");
-            if (listener != null) {
-                listener.onCameraPrepared(true, mCameraHelper.getCameraSurfaceParams());
+        if (!force && mCameraHelper.isCameraPrepared()) {
+            boolean needRePrepareCameraView = mInnerFrameWidth != getWidth() || mInnerFrameHeight != getHeight();
+            Log.i(TAG, "initCamera camera is already prepared needRePrepareCameraView:" + needRePrepareCameraView);
+            if (needRePrepareCameraView) {
+                prepareCameraView(listener);
+            } else {
+                if (listener != null) {
+                    listener.onCameraPrepared(true, mCameraHelper.getCameraSurfaceParams());
+                }
             }
             return;
         }
-        if (!needForce && mCameraHelper.isCameraInit()) {
+        if (!force && mCameraHelper.isCameraInit()) {
             Log.i(TAG, "initCamera camera is already init");
             prepareCameraView(listener);
             return;
         }
-        Log.d(TAG, "initCamera force:" + force + ", needForce:" + needForce + ", config:" + config);
+        Log.d(TAG, "initCamera force:" + force + ", config:" + config);
         mCameraHelper.initCamera(getContext(), getConfig(), new ICameraCallback.ICameraInitListener() {
             @Override
             public void onCameraInit(boolean success) {
@@ -132,6 +137,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     }
 
     private void prepareCameraView(final ICameraPreparedCallback listener) {
+        Log.d(TAG, "prepareCameraView");
         if (!mCameraHelper.isCameraInit()) {
             if (listener != null) {
                 listener.onCameraPrepared(false, null);
@@ -167,7 +173,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
             Log.d(TAG, "onSurfaceTextureAvailable, width:" + width + ",height:" + height);
-            startCameraPreview(true);
+            startCameraPreview(false);
         }
 
         @Override
@@ -191,7 +197,8 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
 
     public void initAndOpenCamera(boolean force, final ICameraCallback.ICameraInitListener listener) {
         if (mCameraHelper == null) {
-            mCameraHelper = CameraHelper.getInstance();
+            Log.e(TAG, "initAndOpenCamera camera helper not init");
+            return;
         }
         if (!force && mCameraHelper.isCameraPrepared()) {
             Log.i(TAG, "initAndOpenCamera camera is already prepared");
@@ -226,6 +233,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     }
 
     public void releaseCamera() {
+        Log.d(TAG, "releaseCamera");
         mMainHandler.removeCallbacksAndMessages(null);
         if (mCameraHelper != null) {
             mCameraHelper.release();
@@ -297,6 +305,20 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
         mCameraHelper.stopRecording(resumePreview);
     }
 
+    public boolean isCameraInit() {
+        if (mCameraHelper == null) {
+            return false;
+        }
+        return mCameraHelper.isCameraInit();
+    }
+
+    public boolean isCameraPrepared() {
+        if (mCameraHelper == null) {
+            return false;
+        }
+        return mCameraHelper.isCameraPrepared();
+    }
+
     public void release() {
         releaseCamera();
     }
@@ -307,12 +329,42 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
         void onFail();
     }
 
+    public void takePictureFromView(final PicCallback callback) {
+        takePictureFromView(null, callback);
+    }
+
+    public void takePictureFromView(String saveFilePath, final PicCallback callback) {
+        // 检查 TextureView 状态
+        if (!isAvailable() || getWidth() <= 0 || getHeight() <= 0) {
+            LogUtils.w(TAG, "takePictureFromView onFail");
+            if (callback != null) {
+                callback.onFail();
+            }
+            return;
+        }
+        try {
+            // 注意：getBitmap() 会创建新 Bitmap，需手动回收
+            Bitmap bitmap = getBitmap();
+            Log.d(TAG, "takePictureFromView bitmap:" + bitmap);
+            mExecutorService.submit(new SavePicRunnable(saveFilePath, bitmap, callback));
+        } catch (Exception e) {
+            LogUtils.w(TAG, "takePictureFromView onFail e:" + e);
+            if (callback != null) {
+                callback.onFail();
+            }
+        }
+    }
+
+    public void takePicture(final PicCallback callback) {
+        takePicture(null, callback);
+    }
+
     /**
      * 拍摄照片
      *
      * @param callback
      */
-    public void takePicture(final PicCallback callback) {
+    public void takePicture(String saveFilePath, final PicCallback callback) {
         if (mCameraHelper == null) {
             if (callback != null) {
                 LogUtils.w(TAG, "takePicture onFail for camera not prepared");
@@ -324,7 +376,7 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
             @Override
             public void onPictureTaken(Bitmap bitmap) {
                 Log.d(TAG, "takePicture bitmap:" + bitmap);
-                mExecutorService.submit(new SavePicRunnable(bitmap, callback));
+                mExecutorService.submit(new SavePicRunnable(saveFilePath, bitmap, callback));
             }
 
             @Override
@@ -338,10 +390,12 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
     }
 
     private class SavePicRunnable implements Runnable {
+        String savePicPath;
         Bitmap bitmap;
         PicCallback listener;
 
-        SavePicRunnable(Bitmap bitmap, PicCallback listener) {
+        SavePicRunnable(String savePicPath, Bitmap bitmap, PicCallback listener) {
+            this.savePicPath = savePicPath;
             this.bitmap = bitmap;
             this.listener = listener;
         }
@@ -350,7 +404,10 @@ public class CameraTexture extends TextureView implements View.OnLayoutChangeLis
         public void run() {
             try {
                 if (bitmap != null) {
-                    String picPath = getConfig().savePicFilePath;
+                    String picPath = savePicPath;
+                    if (TextUtils.isEmpty(picPath)) {
+                        picPath = getConfig().savePicFilePath;
+                    }
                     if (TextUtils.isEmpty(picPath)) {
                         picPath = getContext().getExternalCacheDir().getAbsolutePath()
                                 + File.separator + "pic_camera_taken.jpg";
