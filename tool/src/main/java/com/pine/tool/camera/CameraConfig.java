@@ -15,9 +15,11 @@ public class CameraConfig {
 
     public int preWidth = -1; // 固定预览宽度，preWidth和preHeight有一个小于等于0，则自动计算合适的预览尺寸
     public int preHeight = -1; // 固定预览高度，preWidth和preHeight有一个小于等于0，则自动计算合适的预览尺寸
+    public int preFormat = -1;
     public boolean takePicRlMirror = false;// 照片左右镜像
     public int picWidth = -1; // 固定照片宽度，picWidth和picHeight有一个小于等于0，则自动计算合适的预览尺寸
     public int picHeight = -1; // 固定照片高度，picWidth和picHeight有一个小于等于0，则自动计算合适的预览尺寸
+    public int picFormat = -1;
     public int takePicRotation = -1;// 照片方向：-1-自动；0，90，180，270对应旋转角度
 
     // 用于摄像头预览偏移修正。有些时候摄像头不是在设备的中间位置，而是有偏移。这种情况下，用户想要预览图像居中，
@@ -40,9 +42,11 @@ public class CameraConfig {
                 ", rlMirror=" + rlMirror +
                 ", preWidth=" + preWidth +
                 ", preHeight=" + preHeight +
+                ", preFormat=" + preFormat +
                 ", takePicRlMirror=" + takePicRlMirror +
                 ", picWidth=" + picWidth +
                 ", picHeight=" + picHeight +
+                ", picFormat=" + picFormat +
                 ", takePicRotation=" + takePicRotation +
                 ", displayFixTranslationX=" + displayFixTranslationX +
                 ", displayFixTranslationY=" + displayFixTranslationY +

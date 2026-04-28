@@ -83,17 +83,6 @@ public class TrackDefaultBuilder {
         map.put(MODULE_BUSINESS_RECORD, info);
     }
 
-    public static List<String> buildDefaultTrackModuleList() {
-        List<String> list = new ArrayList<>();
-        list.add(MODULE_DEBUG);
-
-        list.add(MODULE_ADMIN_RECORD);
-        list.add(MODULE_BUSINESS_RECORD);
-        list.add(MODULE_REMOTE_RECORD);
-        list.add(MODULE_STATE_INFO);
-        return list;
-    }
-
     private static List<TrackActionInfo> getBaseActions(
             @NonNull ConcurrentHashMap<String, TrackActionInfo> actionMap) {
         List<TrackActionInfo> list = new ArrayList<>();

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,11 +203,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        StringBuilder permsStr = new StringBuilder();
-        for (String perm: perms) {
-            permsStr.append("[").append(perm).append("]");
-        }
-        LogUtils.d(TAG, "onPermissionsGranted: requestCode(" + requestCode + "), perms:" + permsStr);
+        LogUtils.d(TAG, "onPermissionsGranted: requestCode(" + requestCode + "),size:" + perms.size());
         PermissionBean bean = mPermissionRequestMap.get(requestCode);
         if (bean != null && bean.getCallback() != null) {
             bean.getCallback().onPermissionsGranted(requestCode, perms);
@@ -215,11 +212,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        StringBuilder permsStr = new StringBuilder();
-        for (String perm: perms) {
-            permsStr.append("[").append(perm).append("]");
-        }
-        LogUtils.d(TAG, "onPermissionsDenied: requestCode(" + requestCode + "), perms:" + permsStr);
+        LogUtils.d(TAG, "onPermissionsDenied: requestCode(" + requestCode + "),size:" + perms.size());
         String[] permArr = new String[perms.size()];
         for (int i = 0; i < perms.size(); i++) {
             permArr[i] = perms.get(i);
@@ -335,42 +328,121 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
         mToastList.add(toastEntity);
     }
 
-    public synchronized void showToast(String message, int duration) {
-        Toast toast = Toast.makeText(getContext(), message, duration);
-        showToast(toast);
+    private synchronized void showToast(boolean immediately, boolean notAllowInterrupt, String message, int duration) {
+        ToastEntity toastEntity = new ToastEntity();
+        toastEntity.setContent(message);
+        toastEntity.setImmediately(immediately);
+        toastEntity.setNotAllowInterrupt(notAllowInterrupt);
+        toastEntity.setDuration(duration == Toast.LENGTH_LONG ? 5 * 1000 : 3 * 1000);
+        showToast(toastEntity);
+    }
+
+    public synchronized void showToast(@NonNull ToastEntity toastEntity) {
+        if (!TextUtils.isEmpty(toastEntity.getContent())) {
+            Toast toast = Toast.makeText(getContext(), toastEntity.getContent(),
+                    toastEntity.getDuration() > 3 * 1000 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+            showToast(toast);
+        } else if (toastEntity.getResId() > 0) {
+            if (toastEntity.getResFormId() != null && toastEntity.getResFormId().length > 0) {
+                Object[] args = new Object[toastEntity.getResFormId().length];
+                for (int i = 0; i < toastEntity.getResFormId().length; i++) {
+                    Object idObj = toastEntity.getResFormId()[i];
+                    args[i] = getString((int) idObj);
+                }
+                Toast toast = Toast.makeText(getContext(), getString(toastEntity.getResId(), args),
+                        toastEntity.getDuration() > 3 * 1000 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+                showToast(toast);
+            } else {
+                Toast toast = Toast.makeText(getContext(), toastEntity.getContent(),
+                        toastEntity.getDuration() > 3 * 1000 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+                showToast(toast);
+            }
+        }
+    }
+
+    public boolean getToastDefaultImmediately() {
+        return false;
     }
 
     public synchronized void showShortToast(String message) {
-        showToast(message, Toast.LENGTH_SHORT);
+        showShortToast(getToastDefaultImmediately(), message);
+    }
+
+    public synchronized void showShortToast(boolean immediately, String message) {
+        showShortToast(immediately, false, message);
+    }
+
+    public synchronized void showShortToast(boolean immediately, boolean notAllowInterrupt, String message) {
+        showToast(immediately, notAllowInterrupt, message, Toast.LENGTH_SHORT);
     }
 
     public synchronized void showShortToast(@StringRes int resId) {
-        showToast(getString(resId), Toast.LENGTH_SHORT);
+        showShortToast(getToastDefaultImmediately(), resId);
+    }
+
+    public synchronized void showShortToast(boolean immediately, @StringRes int resId) {
+        showShortToast(immediately, false, resId);
+    }
+
+    public synchronized void showShortToast(boolean immediately, boolean notAllowInterrupt, @StringRes int resId) {
+        showShortToast(immediately, notAllowInterrupt, getString(resId));
     }
 
     public synchronized void showShortToast(@StringRes int resId, Integer... formatArgs) {
+        showShortToast(getToastDefaultImmediately(), resId, formatArgs);
+    }
+
+    public synchronized void showShortToast(boolean immediately, @StringRes int resId, Integer... formatArgs) {
+        showShortToast(immediately, false, resId, formatArgs);
+    }
+
+    public synchronized void showShortToast(boolean immediately, boolean notAllowInterrupt, @StringRes int resId, Integer... formatArgs) {
         Object[] args = new Object[formatArgs.length];
         for (int i = 0; i < formatArgs.length; i++) {
             Object idObj = formatArgs[i];
             args[i] = getString((int) idObj);
         }
-        showToast(getString(resId, args), Toast.LENGTH_SHORT);
+        showShortToast(immediately, notAllowInterrupt, getString(resId, args));
     }
 
     public synchronized void showLongToast(String message) {
-        showToast(message, Toast.LENGTH_LONG);
+        showLongToast(getToastDefaultImmediately(), message);
+    }
+
+    public synchronized void showLongToast(boolean immediately, String message) {
+        showLongToast(immediately, false, message);
+    }
+
+    public synchronized void showLongToast(boolean immediately, boolean notAllowInterrupt, String message) {
+        showToast(immediately, notAllowInterrupt, message, Toast.LENGTH_LONG);
     }
 
     public synchronized void showLongToast(@StringRes int resId) {
-        showToast(getString(resId), Toast.LENGTH_LONG);
+        showLongToast(getToastDefaultImmediately(), resId);
+    }
+
+    public synchronized void showLongToast(boolean immediately, @StringRes int resId) {
+        showLongToast(immediately, false, resId);
+    }
+
+    public synchronized void showLongToast(boolean immediately, boolean notAllowInterrupt, @StringRes int resId) {
+        showLongToast(immediately, notAllowInterrupt, getString(resId));
     }
 
     public synchronized void showLongToast(@StringRes int resId, Integer... formatArgs) {
+        showLongToast(getToastDefaultImmediately(), resId, formatArgs);
+    }
+
+    public synchronized void showLongToast(boolean immediately, @StringRes int resId, Integer... formatArgs) {
+        showLongToast(immediately, false, resId, formatArgs);
+    }
+
+    public synchronized void showLongToast(boolean immediately, boolean notAllowInterrupt, @StringRes int resId, Integer... formatArgs) {
         Object[] args = new Object[formatArgs.length];
         for (int i = 0; i < formatArgs.length; i++) {
             Object idObj = formatArgs[i];
             args[i] = getString((int) idObj);
         }
-        showToast(getString(resId, args), Toast.LENGTH_LONG);
+        showLongToast(immediately, notAllowInterrupt, getString(resId, args));
     }
 }

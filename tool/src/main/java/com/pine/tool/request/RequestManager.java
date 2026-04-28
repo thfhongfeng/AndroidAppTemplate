@@ -20,6 +20,7 @@ import com.pine.tool.request.interceptor.IRequestInterceptor;
 import com.pine.tool.request.interceptor.IResponseInterceptor;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
+import com.yanzhenjie.nohttp.Headers;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public class RequestManager {
 
     // json请求
     public static boolean setJsonRequest(@NonNull RequestBean requestBean, JsonCallback callback) {
+        requestBean.setBodyContentType(Headers.HEAD_VALUE_CONTENT_TYPE_JSON);
         return setDataRequest(requestBean, callback, RequestType.JSON);
     }
 

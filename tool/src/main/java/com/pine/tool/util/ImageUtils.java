@@ -162,37 +162,52 @@ public class ImageUtils {
      * @return
      */
     public static Bitmap base64ToBitmap(String base64Data) {
-        byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
+        byte[] bytes = Base64.decode(base64Data, Base64.NO_WRAP);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     public static String imgFileToBase64(String imgFile) {
-        //将图片文件转化为字节数组字符串，并对其进行Base64编码处理
-        byte[] buffer = null;
-        InputStream inputStream = null;
-        //读取图片字节数组
-        try {
-            inputStream = new FileInputStream(imgFile);
-            int count = 0;
-            while (count == 0) {
-                count = inputStream.available();
+        // 自动关闭流，不用手动关闭
+        try (FileInputStream inputStream = new FileInputStream(imgFile)) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            byte[] temp = new byte[1024];
+            int len;
+            // 正确读取全部字节
+            while ((len = inputStream.read(temp)) != -1) {
+                buffer.write(temp, 0, len);
             }
-            buffer = new byte[count];
-            inputStream.read(buffer);
-            // 对字节数组Base64编码
-            return Base64.encodeToString(buffer, Base64.DEFAULT);
+
+            // 核心：Base64.DEFAULT 前端兼容
+            return Base64.encodeToString(buffer.toByteArray(), Base64.NO_WRAP);
+
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return "";
+    }
+
+    public static String imgFileToBase64(String imgFile, int quality) {
+        Bitmap bitmap = BitmapFactory.decodeFile(imgFile);
+        String base64 = ImageUtils.bitmapToBase64(bitmap, quality);
+        return base64;
+    }
+
+    /**
+     * Bitmap 转 Base64（可压缩）
+     * @param bitmap 图片对象
+     * @param quality 压缩质量 0-100（80 足够清晰）
+     * @return Base64 字符串
+     */
+    public static String bitmapToBase64(Bitmap bitmap, int quality) {
+        if (bitmap == null) return null;
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // 压缩格式：JPEG / PNG
+        bitmap.compress(CompressFormat.JPEG, quality, baos);
+        byte[] bytes = baos.toByteArray();
+
+        // 核心编码
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
 
     /**

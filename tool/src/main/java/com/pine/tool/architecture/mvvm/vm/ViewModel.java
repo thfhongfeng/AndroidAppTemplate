@@ -9,7 +9,8 @@ import androidx.annotation.StringRes;
 import androidx.lifecycle.MutableLiveData;
 
 import com.pine.tool.architecture.state.UiState;
-import com.pine.tool.binding.data.ParametricLiveData;
+import com.pine.tool.binding.data.ParametricNonStickyLiveData;
+import com.pine.tool.ui.ToastEntity;
 import com.pine.tool.util.AppUtils;
 import com.pine.tool.util.LogUtils;
 
@@ -98,9 +99,9 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
     }
 
     // 加载中ui显示状态
-    ParametricLiveData<Boolean, Integer> uiLoadingData = new ParametricLiveData<>();
+    ParametricNonStickyLiveData<Boolean, Integer> uiLoadingData = new ParametricNonStickyLiveData<>();
 
-    public ParametricLiveData<Boolean, Integer> getUiLoadingData() {
+    public ParametricNonStickyLiveData<Boolean, Integer> getUiLoadingData() {
         return uiLoadingData;
     }
 
@@ -117,64 +118,120 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
     }
 
     // Toast ui显示
-    MutableLiveData<String> toastMsgData = new MutableLiveData<>();
+    MutableLiveData<ToastEntity> toastMsgData = new MutableLiveData<>();
 
-    public MutableLiveData<String> getToastMsgData() {
+    public MutableLiveData<ToastEntity> getToastMsgData() {
         return toastMsgData;
     }
 
-    public void setToastMsg(String msg) {
-        toastMsgData.setValue(msg);
+    public void setToast(ToastEntity toast) {
+        toastMsgData.setValue(toast);
     }
 
-    MutableLiveData<Integer> toastResIdData = new MutableLiveData<>();
+    public boolean getToastDefaultImmediately() {
+        return false;
+    }
 
-    public MutableLiveData<Integer> getToastResIdData() {
-        return toastResIdData;
+    public void setToastMsg(String msg) {
+        setToastMsg(getToastDefaultImmediately(), msg);
+    }
+
+    public void setToastMsg(boolean immediately, String msg) {
+        setToastMsg(immediately, false, msg);
+    }
+
+    public void setToastMsg(boolean immediately, boolean notAllowInterrupt, String msg) {
+        ToastEntity toast = new ToastEntity();
+        toast.setContent(msg);
+        toast.setImmediately(immediately);
+        toast.setNotAllowInterrupt(notAllowInterrupt);
+        toast.setDuration(3 * 1000);
+        toastMsgData.setValue(toast);
     }
 
     public void setToastResId(@StringRes Integer id) {
-        toastResIdData.setValue(id);
+        setToastResId(getToastDefaultImmediately(), id);
+    }
+    public void setToastResId(boolean immediately, @StringRes Integer id) {
+        setToastResId(immediately, false, id);
     }
 
-    ParametricLiveData<Integer, Integer[]> toastResFormatData = new ParametricLiveData<>();
-
-    public ParametricLiveData<Integer, Integer[]> getToastResFormatData() {
-        return toastResFormatData;
+    public void setToastResId(boolean immediately, boolean notAllowInterrupt, @StringRes Integer id) {
+        ToastEntity toast = new ToastEntity();
+        toast.setResId(id);
+        toast.setImmediately(immediately);
+        toast.setNotAllowInterrupt(notAllowInterrupt);
+        toast.setDuration(3 * 1000);
+        toastMsgData.setValue(toast);
     }
 
     public void setToastResFormat(@StringRes Integer id, Integer... formatArgs) {
-        toastResFormatData.setValue(id, formatArgs);
+        setToastResFormat(getToastDefaultImmediately(), id, formatArgs);
     }
 
-    MutableLiveData<String> longToastMsgData = new MutableLiveData<>();
+    public void setToastResFormat(boolean immediately,  @StringRes Integer id, Integer... formatArgs) {
+        setToastResFormat(immediately, false, id, formatArgs);
+    }
 
-    public MutableLiveData<String> getLongToastMsgData() {
-        return longToastMsgData;
+    public void setToastResFormat(boolean immediately, boolean notAllowInterrupt, @StringRes Integer id, Integer... formatArgs) {
+        ToastEntity toast = new ToastEntity();
+        toast.setResId(id);
+        toast.setResFormId(formatArgs);
+        toast.setImmediately(immediately);
+        toast.setNotAllowInterrupt(notAllowInterrupt);
+        toast.setDuration(3 * 1000);
+        toastMsgData.setValue(toast);
     }
 
     public void setLongToastMsg(String msg) {
-        longToastMsgData.setValue(msg);
+        setLongToastMsg(getToastDefaultImmediately(), msg);
     }
 
-    MutableLiveData<Integer> longToastResIdData = new MutableLiveData<>();
+    public void setLongToastMsg(boolean immediately, String msg) {
+        setLongToastMsg(immediately, false, msg);
+    }
 
-    public MutableLiveData<Integer> getLongToastResIdData() {
-        return longToastResIdData;
+    public void setLongToastMsg(boolean immediately, boolean notAllowInterrupt, String msg) {
+        ToastEntity toast = new ToastEntity();
+        toast.setContent(msg);
+        toast.setImmediately(immediately);
+        toast.setNotAllowInterrupt(notAllowInterrupt);
+        toast.setDuration(5 * 1000);
+        toastMsgData.setValue(toast);
     }
 
     public void setLongToastResId(@StringRes Integer id) {
-        longToastResIdData.setValue(id);
+        setLongToastResId(getToastDefaultImmediately(), id);
+    }
+    public void setLongToastResId(boolean immediately, @StringRes Integer id) {
+        setLongToastResId(immediately, false, id);
     }
 
-    ParametricLiveData<Integer, Integer[]> longToastResFormatData = new ParametricLiveData<>();
-
-    public ParametricLiveData<Integer, Integer[]> getLongToastResFormatData() {
-        return longToastResFormatData;
+    public void setLongToastResId(boolean immediately, boolean notAllowInterrupt, @StringRes Integer id) {
+        ToastEntity toast = new ToastEntity();
+        toast.setResId(id);
+        toast.setImmediately(immediately);
+        toast.setNotAllowInterrupt(notAllowInterrupt);
+        toast.setDuration(5 * 1000);
+        toastMsgData.setValue(toast);
     }
 
     public void setLongToastResFormat(@StringRes Integer id, Integer... formatArgs) {
-        longToastResFormatData.setValue(id, formatArgs);
+        setLongToastResFormat(getToastDefaultImmediately(), id, formatArgs);
+    }
+
+    public void setLongToastResFormat(boolean immediately,  @StringRes Integer id, Integer... formatArgs) {
+        setLongToastResFormat(immediately, false, id, formatArgs);
+    }
+
+    public void setLongToastResFormat(boolean immediately, boolean notAllowInterrupt, @StringRes Integer id, Integer... formatArgs) {
+        ToastEntity toast = new ToastEntity();
+        toast.setResId(id);
+        toast.setResFormId(formatArgs);
+        toast.setImmediately(immediately);
+        toast.setNotAllowInterrupt(notAllowInterrupt);
+        toast.setDuration(5 * 1000);
+        toastMsgData.setValue(toast);
     }
 
     public final String getString(@StringRes int resId) {

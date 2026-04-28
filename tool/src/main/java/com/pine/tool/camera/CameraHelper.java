@@ -296,7 +296,15 @@ public class CameraHelper {
             Log.i(TAG, "Camera Parameters picSize " + picSizeW + " - " + picSizeH);
             mCameraParam.setPictureSize(picSizeW, picSizeH);
         }
-        mCameraParam.setPictureFormat(PixelFormat.JPEG);
+        if (config.preFormat != -1) {
+            mCameraParam.setPreviewFormat(config.preFormat);
+        }
+        if (config.picFormat != -1) {
+            mCameraParam.setPictureFormat(config.picFormat);
+        } else {
+            mCameraParam.setPictureFormat(PixelFormat.JPEG);
+        }
+
         mCameraParam.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
         if (mCameraParam.isZoomSupported()) {
             int maxZoom = mCameraParam.getMaxZoom();

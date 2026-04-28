@@ -17,7 +17,7 @@ import com.pine.template.base.business.track.entity.AppTrack;
 import com.pine.template.base.business.track.entity.AppTracksHeader;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.base.helper.AutoRebootHelper;
-import com.pine.template.base.manager.MainTtsManager;
+import com.pine.template.base.manager.BaseTtsManager;
 import com.pine.template.base.manager.tts.TtsManager;
 import com.pine.template.base.remote.BaseRouterClient;
 import com.pine.template.main.mqtt.MqttClient;
@@ -85,7 +85,7 @@ public class MainApplication extends BaseApplication {
                 return header;
             }
         });
-        TtsManager.getInstance().init(new MainTtsManager());
+        TtsManager.getInstance().init(new BaseTtsManager());
 
         AutoRebootHelper.setupAutoReboot(mApplication);
 

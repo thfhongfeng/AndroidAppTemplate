@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainTtsManager implements ITtsManager {
+public class BaseTtsManager implements ITtsManager {
     private final String TAG = this.getClass().getSimpleName();
 
     private Handler mMainHandler = new Handler(Looper.getMainLooper());

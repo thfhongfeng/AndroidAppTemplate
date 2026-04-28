@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.ui.Activity;
+import com.pine.tool.ui.ToastEntity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -63,45 +64,10 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     };
 
-    private Observer<String> mToastMsgDataObserver = new Observer<String>() {
+    private Observer<ToastEntity> mToastMsgDataObserver = new Observer<ToastEntity>() {
         @Override
-        public void onChanged(@Nullable String msg) {
-            showShortToast(msg);
-        }
-    };
-
-    private Observer<Integer> mToastResIdDataObserver = new Observer<Integer>() {
-        @Override
-        public void onChanged(@Nullable Integer resId) {
-            showShortToast(resId);
-        }
-    };
-
-    private Observer<Integer> mToastResFormatDataObserver = new Observer<Integer>() {
-        @Override
-        public void onChanged(@Nullable Integer resId) {
-            showShortToast(resId, mViewModel.getToastResFormatData().getCustomData());
-        }
-    };
-
-    private Observer<String> mLongToastMsgDataObserver = new Observer<String>() {
-        @Override
-        public void onChanged(@Nullable String msg) {
-            showLongToast(msg);
-        }
-    };
-
-    private Observer<Integer> mLongToastResIdDataObserver = new Observer<Integer>() {
-        @Override
-        public void onChanged(@Nullable Integer resId) {
-            showLongToast(resId);
-        }
-    };
-
-    private Observer<Integer> mLongToastResFormatDataObserver = new Observer<Integer>() {
-        @Override
-        public void onChanged(@Nullable Integer resId) {
-            showLongToast(resId, mViewModel.getToastResFormatData().getCustomData());
+        public void onChanged(@Nullable ToastEntity toast) {
+            showToast(toast);
         }
     };
 
@@ -140,11 +106,6 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         mViewModel.getFinishData().observe(this, mFinishDataObserver);
         mViewModel.getUiLoadingData().observe(this, mUiLoadingDataObserver);
         mViewModel.getToastMsgData().observe(this, mToastMsgDataObserver);
-        mViewModel.getToastResIdData().observe(this, mToastResIdDataObserver);
-        mViewModel.getToastResFormatData().observe(this, mToastResFormatDataObserver);
-        mViewModel.getLongToastMsgData().observe(this, mLongToastMsgDataObserver);
-        mViewModel.getLongToastResIdData().observe(this, mLongToastResIdDataObserver);
-        mViewModel.getLongToastResFormatData().observe(this, mLongToastResFormatDataObserver);
         observeInitLiveData(savedInstanceState);
         return false;
     }

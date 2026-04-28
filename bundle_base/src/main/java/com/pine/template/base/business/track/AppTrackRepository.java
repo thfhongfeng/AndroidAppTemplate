@@ -261,7 +261,7 @@ public class AppTrackRepository {
     public List<AppTrack> queryTrackListByEndTime(@NonNull List<String> moduleTags,
                                                   @NonNull List<String> actionNames, long endTime, int count) {
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
-            LogUtils.d(TAG, "queryTrackListByCount moduleTags: " + moduleTags + ", actionNames: " + actionNames +
+            LogUtils.d(TAG, "queryTrackListByEndTime moduleTags: " + moduleTags + ", actionNames: " + actionNames +
                     ", endTime: " + endTime + ", count: " + count);
             List<AppTrack> retList = null;
             retList = appTrackDao.queryTrackListByEndTime(moduleTags, actionNames, endTime, count);
@@ -279,7 +279,7 @@ public class AppTrackRepository {
     public List<AppTrack> queryTrackListByStartTime(@NonNull List<String> moduleTags,
                                                     @NonNull List<String> actionNames, long startTime, int count) {
         synchronized (DbRoomDatabase.DB_SYNC_LOCK) {
-            LogUtils.d(TAG, "queryTrackListByCount moduleTags: " + moduleTags + ", actionNames: " + actionNames +
+            LogUtils.d(TAG, "queryTrackListByStartTime moduleTags: " + moduleTags + ", actionNames: " + actionNames +
                     ", startTime: " + startTime + ", count: " + count);
             List<AppTrack> retList = null;
             retList = appTrackDao.queryTrackListByStartTime(moduleTags, actionNames, startTime, count);

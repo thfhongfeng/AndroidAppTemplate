@@ -206,7 +206,7 @@ public class NoRequestManager implements IRequestManager {
                 int msgWhat = requestBean.hashCode();
                 mCheckProgressHandler.removeMessages(msgWhat);
                 mCheckProgressHandler.sendMessageDelayed(Message.obtain(
-                        mCheckProgressHandler, msgWhat, requestBean),
+                                mCheckProgressHandler, msgWhat, requestBean),
                         requestBean.getProgressTimeout());
                 listener.onProgress(what, progress, fileCount, speed);
             }
@@ -253,7 +253,7 @@ public class NoRequestManager implements IRequestManager {
                 int msgWhat = requestBean.hashCode();
                 mCheckProgressHandler.removeMessages(msgWhat);
                 mCheckProgressHandler.sendMessageDelayed(Message.obtain(
-                        mCheckProgressHandler, msgWhat, requestBean.getSign()),
+                                mCheckProgressHandler, msgWhat, requestBean.getSign()),
                         requestBean.getProgressTimeout());
                 listener.onProgress(what, fileBean, progress);
             }
@@ -375,6 +375,13 @@ public class NoRequestManager implements IRequestManager {
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
         }
+        if (!TextUtils.isEmpty(requestBean.getBodyParams())) {
+            if (TextUtils.isEmpty(requestBean.getBodyContentType())) {
+                request.setDefineRequestBody(requestBean.getBodyParams(), Headers.HEAD_VALUE_CONTENT_TYPE_OCTET_STREAM);
+            } else {
+                request.setDefineRequestBody(requestBean.getBodyParams(), requestBean.getBodyContentType());
+            }
+        }
         insertExtraRequestParams(request, requestBean);
         mRequestQueue.add(requestBean.getWhat(), (Request) addParams(requestBean.getUrl(), request,
                 requestBean.getParams()), getResponseListener(listener, requestBean));
@@ -387,6 +394,13 @@ public class NoRequestManager implements IRequestManager {
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
         }
+        if (!TextUtils.isEmpty(requestBean.getBodyParams())) {
+            if (TextUtils.isEmpty(requestBean.getBodyContentType())) {
+                request.setDefineRequestBody(requestBean.getBodyParams(), "text/plain;charset=UTF-8");
+            } else {
+                request.setDefineRequestBody(requestBean.getBodyParams(), requestBean.getBodyContentType());
+            }
+        }
         insertExtraRequestParams(request, requestBean);
         mRequestQueue.add(requestBean.getWhat(), (Request) addParams(requestBean.getUrl(), request,
                 requestBean.getParams()), getResponseListener(listener, requestBean));
@@ -398,6 +412,13 @@ public class NoRequestManager implements IRequestManager {
                 transferToNoHttpHttpMethod(requestBean.getRequestMethod()));
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
+        }
+        if (!TextUtils.isEmpty(requestBean.getBodyParams())) {
+            if (TextUtils.isEmpty(requestBean.getBodyContentType())) {
+                request.setDefineRequestBody(requestBean.getBodyParams(), Headers.HEAD_VALUE_CONTENT_TYPE_OCTET_STREAM);
+            } else {
+                request.setDefineRequestBody(requestBean.getBodyParams(), requestBean.getBodyContentType());
+            }
         }
         insertExtraRequestParams(request, requestBean);
         mRequestQueue.add(requestBean.getWhat(), (Request) addParams(requestBean.getUrl(), request,
@@ -412,6 +433,13 @@ public class NoRequestManager implements IRequestManager {
                 requestBean.isContinue(), requestBean.isDeleteOld());
         if (requestBean.getSign() != null) {
             request.setCancelSign(requestBean.getSign());
+        }
+        if (!TextUtils.isEmpty(requestBean.getBodyParams())) {
+            if (TextUtils.isEmpty(requestBean.getBodyContentType())) {
+                request.setDefineRequestBody(requestBean.getBodyParams(), Headers.HEAD_VALUE_CONTENT_TYPE_URLENCODED);
+            } else {
+                request.setDefineRequestBody(requestBean.getBodyParams(), requestBean.getBodyContentType());
+            }
         }
         insertExtraRequestParams(request, requestBean);
         mDownloadQueue.add(requestBean.getWhat(), (DownloadRequest) addParams(requestBean.getUrl(), request,
@@ -451,6 +479,13 @@ public class NoRequestManager implements IRequestManager {
                 String entryKey = entry.getKey();
                 String entryValue = entry.getValue();
                 request = (Request<String>) request.add(entryKey, entryValue);
+            }
+        }
+        if (!TextUtils.isEmpty(requestBean.getBodyParams())) {
+            if (TextUtils.isEmpty(requestBean.getBodyContentType())) {
+                request.setDefineRequestBody(requestBean.getBodyParams(), Headers.HEAD_VALUE_CONTENT_TYPE_URLENCODED);
+            } else {
+                request.setDefineRequestBody(requestBean.getBodyParams(), requestBean.getBodyContentType());
             }
         }
         request.setCancelSign(requestBean.getSign());

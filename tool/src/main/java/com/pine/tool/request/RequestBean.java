@@ -21,8 +21,12 @@ public class RequestBean implements Serializable {
     private String url;
     // 请求标识code
     private int what;
-    // 请求参数
+    // 请求参数(url拼接)
     private Map<String, String> params;
+    // 请求参数content-type(body)，如果是setJsonRequest，则默认是application/json
+    private String bodyContentType;
+    // 请求参数(body)
+    private String bodyParams;
     // 该请求是否需要登陆
     private boolean needLogin;
     // cancel标识
@@ -120,6 +124,22 @@ public class RequestBean implements Serializable {
 
     public void setParams(Map<String, String> params) {
         this.params = params;
+    }
+
+    public String getBodyContentType() {
+        return bodyContentType;
+    }
+
+    public void setBodyContentType(String bodyContentType) {
+        this.bodyContentType = bodyContentType;
+    }
+
+    public String getBodyParams() {
+        return bodyParams;
+    }
+
+    public void setBodyParams(String bodyParams) {
+        this.bodyParams = bodyParams;
     }
 
     public boolean isNeedLogin() {

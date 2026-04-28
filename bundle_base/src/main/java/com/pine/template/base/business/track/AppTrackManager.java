@@ -27,18 +27,23 @@ public class AppTrackManager {
     private boolean mIsInit;
     // 总开关
     private boolean mEnable = false;
-    // 要进行app记录的模块信息
+    // 要进行app记录的所有模块信息Map
     private ConcurrentHashMap<String, TrackModuleInfo> mModuleInfoMap = new ConcurrentHashMap<>();
+    // 要进行app记录的所有Action信息Map
     private ConcurrentHashMap<String, TrackActionInfo> mTrackActionInfoMap = new ConcurrentHashMap<>();
+    // 要进行app记录的所有Action名List
     private List<String> mTrackActionList = new ArrayList<>();
-    private List<String> mTrackModuleList;
+    // 要进行app记录的所有模块name(标识)信息List
+    private List<String> mTrackModuleList = new ArrayList<>();
 
     private AppTrackManager() {
         TrackDefaultBuilder.buildDefaultModuleMap(mModuleInfoMap, mTrackActionInfoMap);
         for (TrackActionInfo actionInfo : mTrackActionInfoMap.values()) {
             mTrackActionList.add(actionInfo.getActionName());
         }
-        mTrackModuleList = TrackDefaultBuilder.buildDefaultTrackModuleList();
+        for (String module : mModuleInfoMap.keySet()) {
+            mTrackModuleList.add(module);
+        }
     }
 
     public synchronized static AppTrackManager getInstance() {
@@ -62,6 +67,24 @@ public class AppTrackManager {
         mIsInit = true;
 
         LogUtils.d(TAG, "init uploadUrl :" + uploadUrl + ", enable app track:" + mEnable);
+    }
+
+    public void attachModule(@NonNull String moduleTag, List<TrackActionInfo> list) {
+        attachModule(moduleTag, moduleTag, list);
+    }
+
+    public void attachModule(@NonNull String moduleTag, @NonNull String moduleDesc, List<TrackActionInfo> list) {
+        TrackModuleInfo moduleInfo = AppTrackManager.getInstance().getModuleInfo(moduleTag);
+        if (moduleInfo == null) {
+            moduleInfo = new TrackModuleInfo(moduleTag, moduleDesc, true);
+        }
+        List<TrackActionInfo> exist = moduleInfo.getActions();
+        if (exist == null) {
+            exist = new ArrayList<>();
+            moduleInfo.setActions(exist);
+        }
+        exist.addAll(list);
+        attachModule(moduleInfo);
     }
 
     public void attachModule(TrackModuleInfo moduleInfo) {
