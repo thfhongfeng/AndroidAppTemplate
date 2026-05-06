@@ -74,16 +74,8 @@ public class AppTrackManager {
     }
 
     public void attachModule(@NonNull String moduleTag, @NonNull String moduleDesc, List<TrackActionInfo> list) {
-        TrackModuleInfo moduleInfo = AppTrackManager.getInstance().getModuleInfo(moduleTag);
-        if (moduleInfo == null) {
-            moduleInfo = new TrackModuleInfo(moduleTag, moduleDesc, true);
-        }
-        List<TrackActionInfo> exist = moduleInfo.getActions();
-        if (exist == null) {
-            exist = new ArrayList<>();
-            moduleInfo.setActions(exist);
-        }
-        exist.addAll(list);
+        TrackModuleInfo moduleInfo = new TrackModuleInfo(moduleTag, moduleDesc, true);
+        moduleInfo.setActions(list);
         attachModule(moduleInfo);
     }
 
@@ -93,7 +85,7 @@ public class AppTrackManager {
             return;
         }
         TrackModuleInfo exist = mModuleInfoMap.get(moduleInfo.getModuleName());
-        LogUtils.d(TAG, "attachModule new:" + moduleInfo);
+        LogUtils.d(TAG, "attachModule:" + moduleInfo);
         LogUtils.d(TAG, "attachModule already exist:" + exist);
         if (exist != null) {
             exist.setModuleDesc(moduleInfo.getModuleDesc());
@@ -281,6 +273,22 @@ public class AppTrackManager {
             }
         }
         return list;
+    }
+
+    @NonNull
+    public ArrayList<String> getActionNamesByModule(String... modules) {
+        ArrayList<String> actions = new ArrayList<>();
+        if(modules != null && modules.length > 0) {
+            for (String module : modules) {
+                TrackModuleInfo moduleInfo = mModuleInfoMap.get(module);
+                if (moduleInfo != null && moduleInfo.getActions() != null) {
+                    for (TrackActionInfo actionInfo : moduleInfo.getActions()) {
+                        actions.add(actionInfo.getActionName());
+                    }
+                }
+            }
+        }
+        return actions;
     }
 
     public List<String> getAllActionList() {

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.LruCache;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +46,13 @@ public class CaptureViewHelper {
 
     // 修改后的完整截图方法
     public void captureAndSaveView(Context context, String fileName, @NonNull View view, ICaptureCallback callback) {
-        int visibilityTitle = view.getVisibility();
+        int visibility = view.getVisibility();
+        int parentVisibility = -1;
+        if (view.getParent() != null) {
+            parentVisibility = ((ViewGroup) view.getParent()).getVisibility();
+            ((ViewGroup) view.getParent()).setVisibility(View.VISIBLE);
+        }
+        int parentVisibilityF = parentVisibility;
         // 确保布局可见
         view.setVisibility(View.VISIBLE);
         int count = 0;
@@ -65,7 +72,10 @@ public class CaptureViewHelper {
             @Override
             public void onSuccess(String path) {
                 // 截图后恢复
-                view.setVisibility(visibilityTitle);
+                view.setVisibility(visibility);
+                if (view.getParent() != null) {
+                    ((ViewGroup) view.getParent()).setVisibility(parentVisibilityF);
+                }
                 if (callback != null) {
                     callback.onSuccess(path);
                 }
@@ -74,7 +84,10 @@ public class CaptureViewHelper {
             @Override
             public void onErr(int errCode, String msg) {
                 // 截图后恢复
-                view.setVisibility(visibilityTitle);
+                view.setVisibility(visibility);
+                if (view.getParent() != null) {
+                    ((ViewGroup) view.getParent()).setVisibility(parentVisibilityF);
+                }
                 if (callback != null) {
                     callback.onErr(errCode, msg);
                 }

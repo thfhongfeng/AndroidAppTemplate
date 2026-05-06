@@ -310,7 +310,9 @@ public class SimpleWebView extends WebView {
 
     @Override
     public void onDetachedFromWindow() {
-        mJsInterface.clear();
+        if (mJsInterface != null) {
+            mJsInterface.clear();
+        }
         mActivity = null;
         destroy();
         super.onDetachedFromWindow();
