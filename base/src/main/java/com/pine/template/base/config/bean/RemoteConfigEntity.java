@@ -1,5 +1,7 @@
 package com.pine.template.base.config.bean;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -50,6 +52,10 @@ public class RemoteConfigEntity {
         this.configKey = key;
         this.configValue = value;
         this.configName = name;
+    }
+
+    public boolean isValid() {
+        return !TextUtils.isEmpty(configKey) && (canEmpty || !TextUtils.isEmpty(configValue));
     }
 
     public String getConfigName() {

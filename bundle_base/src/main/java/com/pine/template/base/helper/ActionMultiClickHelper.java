@@ -37,7 +37,7 @@ public class ActionMultiClickHelper {
                 new InputTextDialog.IActionClickListener() {
                     @Override
                     public boolean onSubmitClick(Dialog dialog, List<String> textList) {
-                        if (!AdminUtils.checkAdminPwd(textList.get(0))) {
+                        if (!AuthorityPwdUtils.checkAdminPwd(textList.get(0))) {
                             Toast.makeText(mActivity, R.string.pwd_not_correct_msg, Toast.LENGTH_SHORT).show();
                         } else {
                             performAction(mPwdDialogAttachBean);
