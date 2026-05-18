@@ -183,6 +183,7 @@ public class MqttService extends Service {
     }
 
     private void releaseMqtt() {
+        mConnectOnce = false;
         mConnectHandler.removeCallbacksAndMessages(null);
         mCheckHandler.removeCallbacksAndMessages(null);
         mIsConnectOping = false;
@@ -212,7 +213,7 @@ public class MqttService extends Service {
             String host = mConfig.getHost();
             String serverURI = host;
             String clientId = mConfig.getMyId() + "_" + RandomUtils.getRandom(RandomUtils.NUMBERS, 8);
-            LogUtils.d(TAG, "Mqtt init:" + mConfig);
+            LogUtils.d(TAG, "Mqtt init:" + mConfig + ", clientId:" + clientId);
             mqttClient = new MqttAndroidClient(getApplicationContext(), serverURI, clientId);
             mqttClient.setCallback(new MqttCallbackExtended() {
                 @Override
@@ -281,6 +282,7 @@ public class MqttService extends Service {
     }
 
     private void onConnectSuccess() {
+        mConnectOnce = true;
         mIsConnectOping = false;
         subscribeTopic();
         if (mConnectCallback != null) {
@@ -295,7 +297,7 @@ public class MqttService extends Service {
         }
         mIsConnectOping = false;
         // 根据mqtt是否设置重连机制来决定是否需要主动重连
-        if (!mAutoReconnectBySdk) {
+        if (!mAutoReconnectBySdk || !mConnectOnce) {
             LogUtils.d(TAG, "schedule reconnect after 10 second for device_sdk not auto mode");
             //连接失败后延迟10秒重新连接
             mConnectHandler.postDelayed(new Runnable() {
@@ -308,21 +310,21 @@ public class MqttService extends Service {
     }
 
     private volatile boolean mIsConnectOping;
-    private volatile boolean mUserConnect;
+    private volatile boolean mUserConnect, mUserDisConnect, mConnectOnce;
 
     private synchronized void connect(boolean byUser) {
-        if (byUser) {
-            mUserConnect = true;
-        }
+        mUserConnect = byUser;
         if (mqttClient == null) {
+            LogUtils.w(TAG, "mqttClient is null, ignore");
             return;
         }
         if (mIsConnectOping) {
+            LogUtils.w(TAG, "connect is processing, ignore");
             return;
         }
         try {
             if (mqttClient.isConnected()) {
-                LogUtils.d(TAG, "Client is connected, can't connect repeat.");
+                LogUtils.w(TAG, "Client is connected, can't connect repeat.");
                 return;
             }
             LogUtils.d(TAG, "Connect start");
@@ -335,16 +337,24 @@ public class MqttService extends Service {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     LogUtils.d(TAG, "(connect) Connection success");
-                    // MqttCallbackExtended回调中处理，这里不用再处理
-//                    onConnectSuccess();
+                    mConnectOnce = true;
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable e) {
                     LogUtils.d(TAG, "(connect) Connection failure " + e
                             + " auto reconnect by mqtt sdk:" + mAutoReconnectBySdk);
-                    // MqttCallbackExtended回调中处理，这里不用再处理
-//                    onConnectFail();
+                    if (!mConnectOnce) {
+                        mIsConnectOping = false;
+                        LogUtils.d(TAG, "schedule connect after 10 second for never connect");
+                        //连接失败后延迟10秒重新连接
+                        mConnectHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                connect(false);
+                            }
+                        }, 10000);
+                    }
                 }
             });
         } catch (MqttException e) {
@@ -355,9 +365,7 @@ public class MqttService extends Service {
     }
 
     private synchronized void disconnect(boolean byUser) {
-        if (byUser) {
-            mUserConnect = false;
-        }
+        mUserDisConnect = byUser;
         if (mqttClient == null) {
             return;
         }
