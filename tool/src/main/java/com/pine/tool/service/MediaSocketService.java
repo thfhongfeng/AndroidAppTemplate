@@ -40,7 +40,9 @@ import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -464,6 +466,7 @@ public class MediaSocketService extends Service {
     }
 
     private void startVideoCapture() {
+        LogUtils.d(TAG, "startVideoCapture called");
         // 检查摄像头权限
         if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             LogUtils.e(TAG, "无摄像头权限，摄像头初始化失败");
@@ -647,7 +650,7 @@ public class MediaSocketService extends Service {
                     sendAvcCodecConfig(newFormat);
                 }
             } catch (Exception e) {
-                LogUtils.e(TAG, "视频编码processVideoEncoderOutput失败：", e);
+                LogUtils.w(TAG, "视频编码processVideoEncoderOutput失败：", e);
             }
         }
     }
@@ -684,6 +687,7 @@ public class MediaSocketService extends Service {
 
     /**
      * 应用音频增益放大(提高麦克风音量)
+     *
      * @param data 原始PCM数据
      * @param size 数据长度
      * @param gain 增益倍数(1.0为原音量,2.0为2倍音量)
@@ -737,11 +741,13 @@ public class MediaSocketService extends Service {
                     LogUtils.w(TAG, "未读到音频帧");
                     continue;
                 }
-                // 应用音频增益放大（假设增益倍数为2.0）
-                byte[] amplifiedData = applyAudioGain(audioData, readSize, 2.0f);
-                encodeAudioData(amplifiedData, readSize); // 编码并推流
-
-//                encodeAudioData(audioData, readSize); // 编码并推流
+                if (CONFIG.AUDIO_VOLUME_UP_FACTOR > 1) {
+                    // 应用音频增益放大（假设增益倍数为2.0）
+                    byte[] amplifiedData = applyAudioGain(audioData, readSize, CONFIG.AUDIO_VOLUME_UP_FACTOR);
+                    encodeAudioData(amplifiedData, readSize); // 编码并推流
+                } else {
+                    encodeAudioData(audioData, readSize); // 编码并推流
+                }
             }
             stopMicAndEncoder();
         });
@@ -855,64 +861,149 @@ public class MediaSocketService extends Service {
                 LogUtils.i(TAG, "sendWebSocketData audio frame count:" + logAudioFrameCount + ", 当前帧数据长度" + sendData.length);
             }
         }
-        // 封装 WebSocket 二进制帧（纯原生，按 RFC6455 标准）
-        byte[] wsFrame = wrapWebSocketBinaryFrame(sendData);
-        if (wsFrame != null) {
-            try {
-                synchronized (this) {
-                    if (clientOutputStream != null) {
-//                            LogUtils.i(TAG, "send video outputBufferId: " + outputBufferId + ", data size:" + wsFrame.length);
-                        // 发送到客户端（原生 OutputStream）
-                        clientOutputStream.write(wsFrame);
-                        clientOutputStream.flush();
-                        sendDataKickTime.set(System.currentTimeMillis());
+
+        // 使用分片封装（如果需要）
+        List<byte[]> frames = wrapWebSocketBinaryFrameWithFragmentation(sendData);
+
+        for (byte[] wsFrame : frames) {
+            if (wsFrame != null && wsFrame.length > 0) {
+                try {
+                    synchronized (this) {
+                        if (clientOutputStream != null && isClientConnected.get()) {
+                            if (clientSocket != null && !clientSocket.isClosed()) {
+                                clientOutputStream.write(wsFrame);
+                                clientOutputStream.flush();
+                                sendDataKickTime.set(System.currentTimeMillis());
+
+                                if (logVideoFrameCount % 50 == 0 && type == 10) {
+                                    LogUtils.d(TAG, "已发送第 " + logVideoFrameCount + " 帧视频数据");
+                                }
+                            } else {
+                                LogUtils.w(TAG, "Socket已关闭，停止发送");
+                                closeClientConnection();
+                                return; // 退出循环
+                            }
+                        }
                     }
+                } catch (java.net.SocketException e) {
+                    String errorMsg = e.getMessage();
+                    if (errorMsg != null && (errorMsg.contains("reset") || errorMsg.contains("broken"))) {
+                        LogUtils.e(TAG, "⚠️ Socket连接被重置（可能是路由器NAT超时或防火墙拦截）: " + errorMsg);
+                    } else {
+                        LogUtils.e(TAG, "Socket异常: " + errorMsg);
+                    }
+                    closeClientConnection();
+                    return; // 退出循环
+                } catch (IOException e) {
+                    LogUtils.w(TAG, "WebSocket写数据异常: " + e.getMessage());
+                    closeClientConnection();
+                    return; // 退出循环
                 }
-            } catch (IOException e) {
-                // WebSocket写异常，认为流已被关闭，停止推流和释放资源
-                LogUtils.w(TAG, "WebSocket写视频数据异常，认为流已被关闭，停止推流和释放资源：" + e);
-                closeClientConnection();
             }
         }
     }
 
     /**
-     * 封装 WebSocket 二进制帧（纯原生，符合 RFC6455 标准）
+     * 封装 WebSocket 二进制帧（支持自动分片）
      *
-     * @param payload 帧数据
-     * @return 完整的 WebSocket 帧
+     * @param payload 原始数据
+     * @return WebSocket帧数组（可能分片）
      */
-    private byte[] wrapWebSocketBinaryFrame(byte[] payload) {
+    private List<byte[]> wrapWebSocketBinaryFrameWithFragmentation(byte[] payload) {
+        List<byte[]> frames = new ArrayList<>();
+
+        // 设置最大分片大小（32KB，确保不超过路由器MTU限制）
+        final int MAX_FRAGMENT_SIZE = 32768;
+
+        if (payload.length <= MAX_FRAGMENT_SIZE) {
+            // 不需要分片，直接封装
+            frames.add(wrapSingleWebSocketFrame(payload, true, true));
+        } else {
+            // 需要分片
+            int offset = 0;
+            int fragmentIndex = 0;
+            int totalFragments = (payload.length + MAX_FRAGMENT_SIZE - 1) / MAX_FRAGMENT_SIZE;
+
+            LogUtils.d(TAG, "大数据帧分片: 总大小=" + payload.length +
+                    ", 分片数=" + totalFragments);
+
+            while (offset < payload.length) {
+                boolean isFirstFragment = (offset == 0);
+                boolean isLastFragment = (offset + MAX_FRAGMENT_SIZE >= payload.length);
+
+                int currentSize = Math.min(MAX_FRAGMENT_SIZE, payload.length - offset);
+                byte[] fragmentData = Arrays.copyOfRange(payload, offset, offset + currentSize);
+
+                byte[] frame = wrapSingleWebSocketFrame(fragmentData, isFirstFragment, isLastFragment);
+                frames.add(frame);
+
+                LogUtils.d(TAG, "分片 " + (fragmentIndex + 1) + "/" + totalFragments +
+                        ", 大小=" + currentSize);
+
+                offset += currentSize;
+                fragmentIndex++;
+            }
+        }
+
+        return frames;
+    }
+
+    /**
+     * 封装单个WebSocket帧（支持分片标志位）
+     *
+     * @param payload         分片数据
+     * @param isFirstFragment 是否为第一个分片
+     * @param isLastFragment  是否为最后一个分片
+     * @return WebSocket帧
+     */
+    private byte[] wrapSingleWebSocketFrame(byte[] payload, boolean isFirstFragment, boolean isLastFragment) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            // 1. 帧头第一个字节：FIN(1) + Opcode(2=二进制帧)
-            baos.write(0x82); // 10000010
-
-            // 2. 帧头第二个字节：MASK(0，服务端发送无需掩码) + 数据长度
-            int payloadLength = payload.length;
-            if (payloadLength <= 125) {
-                baos.write(payloadLength); // 长度 < 126，直接写
-            } else if (payloadLength <= 65535) {
-                baos.write(126); // 长度标记 126
-                // 写入 16 位长度（大端序）
-                baos.write((payloadLength >> 8) & 0xFF);
-                baos.write(payloadLength & 0xFF);
+            // 1. 第一个字节：FIN + Opcode
+            int firstByte;
+            if (isFirstFragment && isLastFragment) {
+                // 不分片的完整帧：FIN=1, Opcode=2
+                firstByte = 0x82;
+            } else if (isFirstFragment) {
+                // 第一个分片：FIN=0, Opcode=2
+                firstByte = 0x02;
+            } else if (isLastFragment) {
+                // 最后一个分片：FIN=1, Opcode=0（延续帧）
+                firstByte = 0x80;
             } else {
-                baos.write(127); // 长度标记 127
-                // 写入 64 位长度（本场景用不到，简化处理）
-                for (int i = 7; i >= 0; i--) {
-                    baos.write((payloadLength >> (8 * i)) & 0xFF);
-                }
+                // 中间分片：FIN=0, Opcode=0（延续帧）
+                firstByte = 0x00;
+            }
+            baos.write(firstByte);
+
+            // 2. 第二个字节：MASK + 长度
+            long payloadLength = payload.length;
+            if (payloadLength <= 125) {
+                baos.write((int) payloadLength);
+            } else if (payloadLength <= 65535) {
+                baos.write(126);
+                baos.write((int) ((payloadLength >> 8) & 0xFF));
+                baos.write((int) (payloadLength & 0xFF));
+            } else {
+                baos.write(127);
+                baos.write(0);
+                baos.write(0);
+                baos.write(0);
+                baos.write(0);
+                baos.write((int) ((payloadLength >> 24) & 0xFF));
+                baos.write((int) ((payloadLength >> 16) & 0xFF));
+                baos.write((int) ((payloadLength >> 8) & 0xFF));
+                baos.write((int) (payloadLength & 0xFF));
             }
 
-            // 3. 写入 payload 数据
+            // 3. 写入数据
             baos.write(payload);
 
             return baos.toByteArray();
 
         } catch (IOException e) {
-            LogUtils.e(TAG, "封装 WebSocket 帧失败：", e);
+            LogUtils.e(TAG, "封装WebSocket帧失败", e);
             return new byte[0];
         }
     }
@@ -921,6 +1012,7 @@ public class MediaSocketService extends Service {
      * 停止摄像头和编码器（纯原生资源释放）
      */
     private synchronized void stopCameraAndEncoder() {
+        LogUtils.d(TAG, "stopCameraAndEncoder called");
         // 停止编码器
         if (isVideoEncoderRunning.get() && videoCodec != null) {
             try {
@@ -947,6 +1039,7 @@ public class MediaSocketService extends Service {
      * 停止Mic和编码器（纯原生资源释放）
      */
     private synchronized void stopMicAndEncoder() {
+        LogUtils.d(TAG, "stopMicAndEncoder called");
         // 停止编码器
         if (isAudioEncoderRunning.get() && audioCodec != null) {
             try {
@@ -989,6 +1082,7 @@ public class MediaSocketService extends Service {
      * 关闭客户端连接（纯原生 Socket 操作）
      */
     private synchronized void closeClientConnection() {
+        LogUtils.d(TAG, "closeClientConnection called");
         // 关闭流和 Socket
         closeSocketStream();
 
@@ -1043,15 +1137,44 @@ public class MediaSocketService extends Service {
 
     public static class Config {
 
+        /**
+         * 是否开启详细调试日志
+         */
         public boolean DETAIL_DEBUG;
+        /**
+         * WebSocket/WSS 服务监听端口
+         */
         public int PORT = 18881;
 
+        /**
+         * 摄像头配置参数（分辨率、格式等）
+         */
         public CameraConfig CAMERA = new CameraConfig();
-        public int FRAME_RATE = 30;
+        /**
+         * 视频帧率 (FPS)
+         */
+        public int FRAME_RATE = 25;
+        /**
+         * 视频编码比特率 (bps)
+         */
         public int BIT_RATE = 1500000;
 
+        /**
+         * 音频音量增益倍数 (1.0为原音量, >1.0为放大)
+         */
+        public float AUDIO_VOLUME_UP_FACTOR = 1;
+
+        /**
+         * 音频采样率 (Hz)
+         */
         public int AUDIO_SAMPLE_RATE = 44100;
+        /**
+         * 音频声道数 (1: mono, 2: stereo)
+         */
         public int AUDIO_CHANNEL_COUNT = 1;
+        /**
+         * 音频编码比特率 (bps)
+         */
         public int AUDIO_BIT_RATE = 64000; // 64Kbps
 
         public Config() {
