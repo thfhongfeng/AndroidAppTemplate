@@ -85,9 +85,7 @@ public class CameraHelper {
         return mCameraSurfaceParams;
     }
 
-    public synchronized void initCamera(@NonNull Context context,
-                                        @NonNull final CameraConfig config,
-                                        ICameraCallback.ICameraInitListener listener) {
+    public synchronized void initCamera(@NonNull Context context, @NonNull final CameraConfig config, ICameraCallback.ICameraInitListener listener) {
         Log.d(TAG, "initCamera config: " + config);
         if (mCameraInitProcessing) {
             if (listener != null) {
@@ -122,8 +120,7 @@ public class CameraHelper {
     private int mTryOpenCount = 0;
     private Handler mTryOpenH = new Handler(Looper.getMainLooper());
 
-    private void openCamera(@NonNull Context context, @NonNull final CameraConfig config,
-                            final ICameraCallback.ICameraInitListener listener) {
+    private void openCamera(@NonNull Context context, @NonNull final CameraConfig config, final ICameraCallback.ICameraInitListener listener) {
         Log.d(TAG, "openCamera camera config:" + config);
         try {
             if (!isCameraManagerAccessible(context) || !isSupportCamera()) {
@@ -161,9 +158,7 @@ public class CameraHelper {
                 mCameraInfo = getCameraInfo(mCameraIdIndex);
             }
             boolean openSuccess = mCamera != null && mCameraInfo != null;
-            Log.d(TAG, "openCamera success:" + openSuccess
-                    + ", mCameraIdIndex:" + mCameraIdIndex + ", mCameraType:" + mCameraType
-                    + ", mCamera:" + mCamera + ", mCameraInfo:" + mCameraInfo);
+            Log.d(TAG, "openCamera success:" + openSuccess + ", mCameraIdIndex:" + mCameraIdIndex + ", mCameraType:" + mCameraType + ", mCamera:" + mCamera + ", mCameraInfo:" + mCameraInfo);
             if (openSuccess) {
                 mCameraParam = mCamera.getParameters();
             }
@@ -195,9 +190,7 @@ public class CameraHelper {
         if (config == null || mCameraInfo == null) {
             return false;
         }
-        Log.i(TAG, "judgeOrientation camera sensor orientation:" + mCameraInfo.orientation
-                + ", device rotation:" + mDeviceRotation
-                + ", config.deviceFixOrientation:" + config.deviceFixOrientation);
+        Log.i(TAG, "judgeOrientation camera sensor orientation:" + mCameraInfo.orientation + ", device rotation:" + mDeviceRotation + ", config.deviceFixOrientation:" + config.deviceFixOrientation);
         int cameraOrientation = mCameraInfo.orientation;
         int deviceRotation = config.deviceFixOrientation;
         if (deviceRotation == 0 || deviceRotation == 90 || deviceRotation == 180 || deviceRotation == 270) {
@@ -215,26 +208,35 @@ public class CameraHelper {
         return true;
     }
 
-    public boolean setupMainSurfaceView(@NonNull TextureView textureView,
-                                        @NonNull ViewGroup innerFrame,
-                                        CameraConfig config,
-                                        int containerW, int containerH,
-                                        ICameraCallback.ICameraSetListener listener) {
+    public boolean setupMainSurfaceView(@NonNull TextureView textureView, @NonNull ViewGroup innerFrame, CameraConfig config, int containerW, int containerH, ICameraCallback.ICameraSetListener listener) {
         Log.d(TAG, "setupMainSurfaceView mCameraInit:" + mCameraInit);
         if (config == null || !isCameraInit()) {
+            Log.w(TAG, "setupMainSurfaceView fail for config is null or camera not init");
             return false;
         }
         // 要以不变化的外部容器的宽高作为基准，而不能用会被放大的innerFrame宽高做为基准
         Log.d(TAG, "setupMainSurfaceView containerW:" + containerW + ",containerH:" + containerH);
         if (containerW <= 0 || containerH <= 0) {
+            Log.w(TAG, "setupMainSurfaceView fail for containerWH invalid");
             return false;
         }
-        Camera.Size preSize = getBestSize(mDisplayRotation, containerW, containerH,
-                mCameraParam.getSupportedPreviewSizes());
+        List<Camera.Size> supportPreSizeList = mCameraParam.getSupportedPreviewSizes();
+        if (supportPreSizeList == null) {
+            Log.w(TAG, "setupMainSurfaceView fail for supportPreSizeList is null");
+            return false;
+        }
+        Camera.Size preSize = getBestSize(mDisplayRotation, containerW, containerH, supportPreSizeList);
         if (preSize == null) {
+            Log.w(TAG, "setupMainSurfaceView fail for preSize getBestSize is null");
             return false;
         }
-
+        StringBuilder preSizeLogSb = new StringBuilder();
+        for (Camera.Size size : supportPreSizeList) {
+            preSizeLogSb.append("size:" + size.width + "*" + size.height).append(",");
+        }
+        Log.d(TAG, "preSize support sizes:" + (preSizeLogSb.length() > 0 ? preSizeLogSb.substring(0, preSizeLogSb.length() - 1) : ""));
+        Log.d(TAG, "preSize 目标尺寸:" + containerW + "*" + containerH);
+        Log.d(TAG, "preSize 最优尺寸:" + preSize.width + "*" + preSize.height + " for rotation:" + mDisplayRotation);
         if (mCameraSurfaceParams == null) {
             mCameraSurfaceParams = new CameraSurfaceParams(mCameraType, CameraSurfaceParams.MAIN_TAG);
         }
@@ -251,6 +253,7 @@ public class CameraHelper {
 
         boolean success = judgeSurfaceView(mCameraSurfaceParams, containerW, containerH);
         if (!success) {
+            Log.w(TAG, "setupMainSurfaceView fail for judgeSurfaceView fail");
             return false;
         }
 
@@ -270,10 +273,25 @@ public class CameraHelper {
         mCameraSurfaceParams.yuvDataRotate = yuvDataRotate;
         mCameraSurfaceParams.yuvDataRlMirror = yuvDataRlMirror;
 
-        Camera.Size picSize = getBestSize(mDisplayRotation,
-                mCameraSurfaceParams.frameWidth > 0 ? mCameraSurfaceParams.frameWidth : containerW,
-                mCameraSurfaceParams.frameHeight > 0 ? mCameraSurfaceParams.frameHeight : containerH,
-                mCameraParam.getSupportedPictureSizes());
+        List<Camera.Size> supportPicSizeList = mCameraParam.getSupportedPictureSizes();
+        if (supportPicSizeList == null) {
+            Log.w(TAG, "setupMainSurfaceView fail for supportPicSizeList is null");
+            return false;
+        }
+        int picTargetW = mCameraSurfaceParams.frameWidth > 0 ? mCameraSurfaceParams.frameWidth : containerW;
+        int picTargetH = mCameraSurfaceParams.frameHeight > 0 ? mCameraSurfaceParams.frameHeight : containerH;
+        Camera.Size picSize = getBestSize(mDisplayRotation, picTargetW, picTargetH, supportPicSizeList);
+        if (picSize == null) {
+            Log.w(TAG, "setupMainSurfaceView fail for picSize getBestSize is null");
+            return false;
+        }
+        StringBuilder picSizeLogSb = new StringBuilder();
+        for (Camera.Size size : supportPreSizeList) {
+            picSizeLogSb.append("size:" + size.width + "*" + size.height).append(",");
+        }
+        Log.d(TAG, "picSize support sizes:" + (picSizeLogSb.length() > 0 ? picSizeLogSb.substring(0, picSizeLogSb.length() - 1) : ""));
+        Log.d(TAG, "picSize 目标尺寸:" + picTargetW + "*" + picTargetH);
+        Log.d(TAG, "picSize 最优尺寸:" + picSize.width + "*" + picSize.height + " for rotation:" + mDisplayRotation);
         //设置Pic, 视频时可以忽略Pic尺寸
         int picSizeW = config.picWidth;
         int picSizeH = config.picHeight;
@@ -283,9 +301,6 @@ public class CameraHelper {
         }
         mCameraSurfaceParams.setPicWidth(picSizeW);
         mCameraSurfaceParams.setPicHeight(picSizeH);
-        if (picSize == null) {
-            return false;
-        }
         Log.d(TAG, "setupMainSurfaceView cameraSurfaceParams:" + mCameraSurfaceParams);
 
         if (preSizeW > 0 && preSizeH > 0) {
@@ -305,6 +320,10 @@ public class CameraHelper {
             mCameraParam.setPictureFormat(PixelFormat.JPEG);
         }
 
+        if (config.preFrameRate > 0) {
+            setPreviewFpsRange(config, mCameraParam);
+        }
+
         mCameraParam.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
         if (mCameraParam.isZoomSupported()) {
             int maxZoom = mCameraParam.getMaxZoom();
@@ -316,8 +335,7 @@ public class CameraHelper {
                 zoom = 1;
             }
             mCameraParam.setZoom(zoom);
-            Log.i(TAG, "Camera Parameters support zoom maxZoom: " + maxZoom
-                    + ", default zoom:" + defaultZoom + ", set zoom: " + zoom);
+            Log.i(TAG, "Camera Parameters support zoom maxZoom: " + maxZoom + ", default zoom:" + defaultZoom + ", set zoom: " + zoom);
         }
 //        cameraParam.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
         mCamera.setDisplayOrientation(mDisplayRotation);
@@ -337,6 +355,65 @@ public class CameraHelper {
             listener.onParamSet(mCameraSurfaceParams);
         }
         return true;
+    }
+
+    private void setPreviewFpsRange(CameraConfig config, Camera.Parameters cameraParam) {
+        if (config == null || cameraParam == null || config.preFrameRate <= 0) {
+            return;
+        }
+        // 获取支持的范围列表
+        List<int[]> fpsRanges = cameraParam.getSupportedPreviewFpsRange();
+        int fpsRange[] = new int[2];
+        cameraParam.getPreviewFpsRange(fpsRange);
+        if (fpsRanges != null && !fpsRanges.isEmpty()) {
+            StringBuilder supportedFPSRangeLog = new StringBuilder();
+            boolean setupRange = false;
+            for (int[] range : fpsRanges) {
+                if (range != null && range.length >= 2) {
+                    supportedFPSRangeLog.append(" ").append(range[0]).append("-").append(range[1]);
+                    if (range[0] <= config.preFrameRate * 1000 && range[1] >= config.preFrameRate * 1000) {
+                        fpsRange = range;
+                        setupRange = true;
+                        break;
+                    }
+                }
+            }
+            Log.d(TAG, "supportedFPSRangeLog:" + supportedFPSRangeLog);
+            if (setupRange) {
+                cameraParam.setPreviewFpsRange(fpsRange[0], fpsRange[1]);
+                Log.d(TAG, "use fps range:" + fpsRange[0] + "-" + fpsRange[1]);
+            } else {
+                Log.d(TAG, "use fps range:" + "default(" + fpsRange[0] + "-" + fpsRange[1] + ")");
+            }
+        } else {
+            setPreviewFrameRate(config, cameraParam);
+        }
+    }
+
+    private void setPreviewFrameRate(CameraConfig config, Camera.Parameters cameraParam) {
+        if (config == null || cameraParam == null || config.preFrameRate <= 0) {
+            return;
+        }
+        List<Integer> supportedFrameRates = cameraParam.getSupportedPreviewFrameRates();
+        int frameRate = cameraParam.getPreviewFrameRate();
+        if (supportedFrameRates != null) {
+            int offsetRate = Integer.MAX_VALUE;
+            StringBuilder supportedFrameRatesLog = new StringBuilder();
+            for (int rate : supportedFrameRates) {
+                supportedFrameRatesLog.append(" ").append(rate);
+                if (Math.abs(rate - config.preFrameRate) < offsetRate) {
+                    offsetRate = Math.abs(rate - config.preFrameRate);
+                    frameRate = rate;
+                }
+            }
+            if (frameRate > 0) {
+                cameraParam.setPreviewFrameRate(frameRate);
+            }
+            Log.d(TAG, "supportedFrameRates:" + supportedFrameRatesLog);
+            Log.d(TAG, "use frameRate:" + (frameRate > 0 ? frameRate : "default(" + frameRate + ")"));
+        } else {
+            Log.d(TAG, "use frameRate:" + "default(" + frameRate + ")");
+        }
     }
 
     // 用于获取照片数据的Matrix，以便对照片数据进行纠正。
@@ -423,8 +500,7 @@ public class CameraHelper {
         }
     }
 
-    private boolean judgeSurfaceView(@NonNull CameraSurfaceParams cameraSurfaceParams,
-                                     int containerW, int containerH) {
+    private boolean judgeSurfaceView(@NonNull CameraSurfaceParams cameraSurfaceParams, int containerW, int containerH) {
         float frameZoomRatio = 1.0f;
         int frameWidth = 0;
         int frameHeight = 0;
@@ -549,8 +625,7 @@ public class CameraHelper {
         takePicture(false, listener);
     }
 
-    public synchronized void takePicture(final boolean restartPreview,
-                                         final ICameraCallback.TakePicListener listener) {
+    public synchronized void takePicture(final boolean restartPreview, final ICameraCallback.TakePicListener listener) {
         if (isRecording) {
             if (listener != null) {
                 listener.onFail();
@@ -562,12 +637,10 @@ public class CameraHelper {
                 @Override
                 public void onPictureTaken(byte[] data, Camera camera) {
                     if (listener != null) {
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(
-                                data, 0, data.length);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                         if (bitmap != null) {
                             Matrix m = getCameraTakePicMatrix();
-                            Bitmap finalBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                                    bitmap.getHeight(), m, true);
+                            Bitmap finalBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
                             listener.onPictureTaken(finalBitmap);
                         } else {
                             listener.onFail();
@@ -631,8 +704,7 @@ public class CameraHelper {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int index = 0; index < numberOfCameras; index++) {
             Camera.getCameraInfo(index, cameraInfo);
-            LogUtils.d(TAG, "openCamera cameraIndex:" + cameraIndex + ", getCameraInfo this index:" + index
-                    + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+            LogUtils.d(TAG, "openCamera cameraIndex:" + cameraIndex + ", getCameraInfo this index:" + index + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
             if (cameraIndex == index) {
                 mCameraIdIndex = index;
                 switch (mCameraIdIndex) {
@@ -646,8 +718,7 @@ public class CameraHelper {
                         mCameraType = CameraConfig.EXTERNAL;
                         break;
                 }
-                LogUtils.d(TAG, "openCamera cameraIndex:" + cameraIndex + ", find camera index:" + index
-                        + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+                LogUtils.d(TAG, "openCamera cameraIndex:" + cameraIndex + ", find camera index:" + index + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
                 return Camera.open(index);
             }
         }
@@ -660,11 +731,9 @@ public class CameraHelper {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int cameraId = 0; cameraId < numberOfCameras; cameraId++) {
             Camera.getCameraInfo(cameraId, cameraInfo);
-            LogUtils.d(TAG, "openFrontCamera getCameraInfo this index:" + cameraId
-                    + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+            LogUtils.d(TAG, "openFrontCamera getCameraInfo this index:" + cameraId + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                LogUtils.d(TAG, "openFrontCamera find front camera index:" + cameraId
-                        + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+                LogUtils.d(TAG, "openFrontCamera find front camera index:" + cameraId + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
                 mCameraIdIndex = cameraId;
                 mCameraType = CameraConfig.FRONT;
                 return Camera.open(cameraId);
@@ -679,11 +748,9 @@ public class CameraHelper {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int cameraId = 0; cameraId < numberOfCameras; cameraId++) {
             Camera.getCameraInfo(cameraId, cameraInfo);
-            LogUtils.d(TAG, "openBackCamera getCameraInfo this index:" + cameraId
-                    + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+            LogUtils.d(TAG, "openBackCamera getCameraInfo this index:" + cameraId + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                LogUtils.d(TAG, "openBackCamera find back camera index:" + cameraId
-                        + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+                LogUtils.d(TAG, "openBackCamera find back camera index:" + cameraId + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
                 mCameraIdIndex = cameraId;
                 mCameraType = CameraConfig.BACK;
                 return Camera.open(cameraId);
@@ -697,8 +764,7 @@ public class CameraHelper {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int cameraId = 0; cameraId < numberOfCameras; cameraId++) {
             Camera.getCameraInfo(cameraId, cameraInfo);
-            LogUtils.d(TAG, "getCameraInfo cameraIndex: " + cameraIndex + ", this index:" + cameraId
-                    + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
+            LogUtils.d(TAG, "getCameraInfo cameraIndex: " + cameraIndex + ", this index:" + cameraId + ", facing:" + cameraInfo.facing + ", orientation:" + cameraInfo.orientation);
             if (cameraId == cameraIndex) {
                 return cameraInfo;
             }
@@ -709,31 +775,28 @@ public class CameraHelper {
     //获取与指定宽高相等或最接近的尺寸
     public static Camera.Size getBestSize(int rotation, int targetWidth, int targetHeight, List<Camera.Size> sizeList) {
         Camera.Size bestSize = null;
-        int minDiff = Integer.MAX_VALUE;
-        StringBuilder sizeLogSb = new StringBuilder();
-        for (Camera.Size size : sizeList) {
-            sizeLogSb.append("size:" + size.width + "*" + size.height).append(",");
-            if (size.width == targetHeight && size.height == targetWidth) {
-                bestSize = size;
-                break;
-            }
-            int supportW = size.width;
-            int supportH = size.height;
-            if (rotation == 90 || rotation == 270) {
-                supportW = size.height;
-                supportH = size.width;
-            }
-            int offsetW = Math.abs(targetWidth - supportW);
-            int offsetH = Math.abs(targetHeight - supportH);
-            int offset = offsetW * offsetW + offsetH * offsetH;
-            if (Math.abs(offset) < minDiff) {
-                minDiff = offset;
-                bestSize = size;
+        if (sizeList != null) {
+            int minDiff = Integer.MAX_VALUE;
+            for (Camera.Size size : sizeList) {
+                if (size.width == targetHeight && size.height == targetWidth) {
+                    bestSize = size;
+                    break;
+                }
+                int supportW = size.width;
+                int supportH = size.height;
+                if (rotation == 90 || rotation == 270) {
+                    supportW = size.height;
+                    supportH = size.width;
+                }
+                int offsetW = Math.abs(targetWidth - supportW);
+                int offsetH = Math.abs(targetHeight - supportH);
+                int offset = offsetW * offsetW + offsetH * offsetH;
+                if (Math.abs(offset) < minDiff) {
+                    minDiff = offset;
+                    bestSize = size;
+                }
             }
         }
-        Log.d(TAG, "support sizes:" + (sizeLogSb.length() > 0 ? sizeLogSb.substring(0, sizeLogSb.length() - 1) : ""));
-        Log.d(TAG, "目标尺寸:" + targetWidth + "*" + targetHeight);
-        Log.d(TAG, "最优尺寸:" + bestSize.width + "*" + bestSize.height + " for rotation:" + rotation);
         return bestSize;
     }
 
@@ -744,8 +807,7 @@ public class CameraHelper {
 
     private ICameraCallback.IRecordCallback mRecordCallback;
 
-    public synchronized boolean startRecording(RecordConfig config,
-                                               ICameraCallback.IRecordCallback callback) {
+    public synchronized boolean startRecording(RecordConfig config, ICameraCallback.IRecordCallback callback) {
         if (mTextureView == null) {
             Log.d(TAG, "startRecording mTextureView is null");
             if (callback != null) {
@@ -756,8 +818,7 @@ public class CameraHelper {
         return startRecording(config, new Surface(mTextureView.getSurfaceTexture()), callback);
     }
 
-    public synchronized boolean startRecording(RecordConfig config, Surface surface,
-                                               ICameraCallback.IRecordCallback callback) {
+    public synchronized boolean startRecording(RecordConfig config, Surface surface, ICameraCallback.IRecordCallback callback) {
         if (callback != null) {
             callback.onRecordPrepare();
         }
@@ -788,13 +849,13 @@ public class CameraHelper {
         if (supportedFrameRates != null) {
             int offsetRate = Integer.MAX_VALUE;
             for (int rate : supportedFrameRates) {
-                Log.d(TAG, "supportedFrameRates:" + rate);
+                Log.d(TAG, "startRecording supportedFrameRates:" + rate);
                 if (Math.abs(rate - config.videoFrameRate) < offsetRate) {
                     offsetRate = Math.abs(rate - config.videoFrameRate);
                     frameRate = rate;
                 }
             }
-            Log.d(TAG, "use frameRate:" + (frameRate > 0 ? frameRate : "default"));
+            Log.d(TAG, "startRecording use frameRate:" + (frameRate > 0 ? frameRate : "default"));
         }
 
         // 设置相机
@@ -853,10 +914,8 @@ public class CameraHelper {
         // 在这里定义输出文件的位置和格式
         // 这里使用外部存储目录示例
         if (TextUtils.isEmpty(filePath)) {
-            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(),
-                    "CameraRecord");
-            outputFile = new File(mediaStorageDir.getPath() + File.separator
-                    + "VID_" + System.currentTimeMillis() + ".mp4");
+            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "CameraRecord");
+            outputFile = new File(mediaStorageDir.getPath() + File.separator + "VID_" + System.currentTimeMillis() + ".mp4");
         } else {
             outputFile = new File(filePath);
         }

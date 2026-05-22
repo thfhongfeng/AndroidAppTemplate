@@ -161,6 +161,7 @@ public class MediaSocketService extends Service {
                 sslServerSocket.setWantClientAuth(false);
                 serverSocket = sslServerSocket;
                 LogUtils.d(TAG, "WSS服务端启动成功，监听端口：" + CONFIG.PORT);
+                LogUtils.d(TAG, "WSS服务端启动成功，media config：" + CONFIG);
 
                 // 3. 循环监听客户端连接
                 while (!Thread.currentThread().isInterrupted() && isServerRunning.get()) {
@@ -396,7 +397,7 @@ public class MediaSocketService extends Service {
         try {
             while (isClientConnected.get() && !clientSocket.isClosed()) {
                 long now = System.currentTimeMillis();
-                if (now - sendDataKickTime.get() > 5 * 1000) {
+                if (now - sendDataKickTime.get() > 10 * 1000) {
                     // 超过5秒没有推流了，则认为出现异常，停止推流 + 关闭摄像头 + 释放连接
                     LogUtils.w(TAG, "超过规定时间没有推流，停止连接功能。last:" + sendDataKickTime + ", cur:" + now);
                     break;
@@ -419,6 +420,7 @@ public class MediaSocketService extends Service {
             LogUtils.w(TAG, "没有客户端连接，摄像头和编码器初始化忽略");
             return;
         }
+        LogUtils.d(TAG, "initMediaAndEncoder for config:" + CONFIG);
         // 初始化 H.264 编码器（原生 MediaCodec）
         if (initVideoEncoder() && initAudioEncoder()) {
             startVideoCapture();
@@ -437,7 +439,7 @@ public class MediaSocketService extends Service {
         try {
             MediaFormat format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, CONFIG.CAMERA.preWidth, CONFIG.CAMERA.preHeight);
             format.setInteger(MediaFormat.KEY_BIT_RATE, CONFIG.BIT_RATE);
-            format.setInteger(MediaFormat.KEY_FRAME_RATE, CONFIG.FRAME_RATE);
+            format.setInteger(MediaFormat.KEY_FRAME_RATE, CONFIG.CAMERA.preFormat);
             format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
             format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar);
             format.setInteger(MediaFormat.KEY_PROFILE, MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline);
@@ -855,10 +857,10 @@ public class MediaSocketService extends Service {
             LogUtils.i(TAG, "sendWebSocketData type:" + typeStr + ", 帧数据长度" + sendData.length);
         } else {
             if (logVideoFrameCount % 100 == 1) {
-                LogUtils.i(TAG, "sendWebSocketData video frame count:" + logVideoFrameCount + ", 当前帧数据长度" + sendData.length);
+                LogUtils.i(TAG, "sendWebSocketData video frame cur count:" + logVideoFrameCount + ", 当前帧数据长度" + sendData.length);
             }
             if (logAudioFrameCount % 100 == 1) {
-                LogUtils.i(TAG, "sendWebSocketData audio frame count:" + logAudioFrameCount + ", 当前帧数据长度" + sendData.length);
+                LogUtils.i(TAG, "sendWebSocketData audio frame cur count:" + logAudioFrameCount + ", 当前帧数据长度" + sendData.length);
             }
         }
 
@@ -874,10 +876,6 @@ public class MediaSocketService extends Service {
                                 clientOutputStream.write(wsFrame);
                                 clientOutputStream.flush();
                                 sendDataKickTime.set(System.currentTimeMillis());
-
-                                if (logVideoFrameCount % 50 == 0 && type == 10) {
-                                    LogUtils.d(TAG, "已发送第 " + logVideoFrameCount + " 帧视频数据");
-                                }
                             } else {
                                 LogUtils.w(TAG, "Socket已关闭，停止发送");
                                 closeClientConnection();
@@ -888,7 +886,7 @@ public class MediaSocketService extends Service {
                 } catch (java.net.SocketException e) {
                     String errorMsg = e.getMessage();
                     if (errorMsg != null && (errorMsg.contains("reset") || errorMsg.contains("broken"))) {
-                        LogUtils.e(TAG, "⚠️ Socket连接被重置（可能是路由器NAT超时或防火墙拦截）: " + errorMsg);
+                        LogUtils.e(TAG, "Socket连接被重置（可能是路由器NAT超时或防火墙拦截）: " + errorMsg);
                     } else {
                         LogUtils.e(TAG, "Socket异常: " + errorMsg);
                     }
@@ -923,10 +921,7 @@ public class MediaSocketService extends Service {
             int offset = 0;
             int fragmentIndex = 0;
             int totalFragments = (payload.length + MAX_FRAGMENT_SIZE - 1) / MAX_FRAGMENT_SIZE;
-
-            LogUtils.d(TAG, "大数据帧分片: 总大小=" + payload.length +
-                    ", 分片数=" + totalFragments);
-
+            String fragmentLog = "";
             while (offset < payload.length) {
                 boolean isFirstFragment = (offset == 0);
                 boolean isLastFragment = (offset + MAX_FRAGMENT_SIZE >= payload.length);
@@ -937,12 +932,15 @@ public class MediaSocketService extends Service {
                 byte[] frame = wrapSingleWebSocketFrame(fragmentData, isFirstFragment, isLastFragment);
                 frames.add(frame);
 
-                LogUtils.d(TAG, "分片 " + (fragmentIndex + 1) + "/" + totalFragments +
-                        ", 大小=" + currentSize);
+                fragmentLog = fragmentLog + " |->分片" + (fragmentIndex + 1) + "/" + totalFragments +
+                        ",大小=" + currentSize;
 
                 offset += currentSize;
                 fragmentIndex++;
             }
+
+            LogUtils.i(TAG, "大数据帧分片: 总大小=" + payload.length +
+                    ", 分片数=" + totalFragments + " <-->" + fragmentLog);
         }
 
         return frames;
@@ -1151,10 +1149,6 @@ public class MediaSocketService extends Service {
          */
         public CameraConfig CAMERA = new CameraConfig();
         /**
-         * 视频帧率 (FPS)
-         */
-        public int FRAME_RATE = 25;
-        /**
          * 视频编码比特率 (bps)
          */
         public int BIT_RATE = 1500000;
@@ -1178,10 +1172,28 @@ public class MediaSocketService extends Service {
         public int AUDIO_BIT_RATE = 64000; // 64Kbps
 
         public Config() {
+            CAMERA.cameraType = CameraConfig.BACK;
             CAMERA.cameraIndex = 0;
             CAMERA.preWidth = 1024;
             CAMERA.preHeight = 768;
+            CAMERA.preFrameRate = 25;
+            CAMERA.picWidth = 1024;
+            CAMERA.picHeight = 768;
             CAMERA.preFormat = ImageFormat.NV21;
+        }
+
+        @Override
+        public String toString() {
+            return "Config{" +
+                    "DETAIL_DEBUG=" + DETAIL_DEBUG +
+                    ", PORT=" + PORT +
+                    ", CAMERA=" + CAMERA +
+                    ", BIT_RATE=" + BIT_RATE +
+                    ", AUDIO_VOLUME_UP_FACTOR=" + AUDIO_VOLUME_UP_FACTOR +
+                    ", AUDIO_SAMPLE_RATE=" + AUDIO_SAMPLE_RATE +
+                    ", AUDIO_CHANNEL_COUNT=" + AUDIO_CHANNEL_COUNT +
+                    ", AUDIO_BIT_RATE=" + AUDIO_BIT_RATE +
+                    '}';
         }
     }
 }
