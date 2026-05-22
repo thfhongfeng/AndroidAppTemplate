@@ -21,6 +21,7 @@ import com.pine.tool.util.LogUtils;
 public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends ViewModel> extends BaseFragment<T, VM> {
     // 当前显示的子fragment的index
     protected volatile int _mShowFragment = -1;
+    protected volatile int _mWillShowFragment = -1;
     // 子fragment列表
     private BaseFragment[] _mFragmentArr = null;
     //默认是否replace方式添加fragment
@@ -106,6 +107,7 @@ public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends V
             newAdd = true;
         }
         onSubFragmentBind(index);
+        _mWillShowFragment = index;
         if (newAdd || replace) {
             final boolean finalNewAdd = newAdd;
             mGoFragmentHandler.removeCallbacksAndMessages(null);
@@ -193,9 +195,12 @@ public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends V
     @CallSuper
     public void onFragmentVisible(boolean first) {
         super.onFragmentVisible(first);
-        BaseFragment subShowFragment = getSubShowFragment();
-        if (subShowFragment != null && !subShowFragment.isNeverResume()) {
-            subShowFragment.onFragmentVisible(subShowFragment._isFirstTime);
+        int curShowIndex = getSubShowFragmentIndex();
+        if (curShowIndex == _mWillShowFragment) {
+            BaseFragment subShowFragment = getSubShowFragment();
+            if (subShowFragment != null && !subShowFragment.isNeverResume()) {
+                subShowFragment.onFragmentVisible(subShowFragment._isFirstTime);
+            }
         }
     }
 
@@ -219,8 +224,9 @@ public abstract class BaseParentFragment<T extends ViewDataBinding, VM extends V
      * @return
      */
     public BaseFragment getSubShowFragment() {
-        if (_mFragmentArr != null && _mShowFragment >= 0 && _mShowFragment < _mFragmentArr.length) {
-            BaseFragment fragment = _mFragmentArr[_mShowFragment];
+        int showIndex = getSubShowFragmentIndex();
+        if (_mFragmentArr != null && showIndex >= 0 && showIndex < _mFragmentArr.length) {
+            BaseFragment fragment = _mFragmentArr[showIndex];
             return fragment;
         }
         return null;
