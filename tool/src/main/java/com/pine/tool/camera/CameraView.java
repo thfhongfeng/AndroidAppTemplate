@@ -39,6 +39,15 @@ public class CameraView extends RelativeLayout {
     }
 
     public void init(@NonNull CameraConfig config, final CameraTexture.ICameraPreparedCallback listener) {
+        // 根据CameraConfig的preWidth和preHeight设置CameraView的高度
+        if (config.usePreSizeForView && config.preWidth > 0 && config.preHeight > 0) {
+            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            if (layoutParams != null) {
+                layoutParams.width = config.preWidth;
+                layoutParams.height = config.preHeight;
+                setLayoutParams(layoutParams);
+            }
+        }
         initView();
         cameraTexture.init(config, listener);
     }

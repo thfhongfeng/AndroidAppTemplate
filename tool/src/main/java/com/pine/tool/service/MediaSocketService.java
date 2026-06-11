@@ -682,8 +682,24 @@ public class MediaSocketService extends Service {
                 }
                 audioCodec = null;
             }
-            isVideoEncoderRunning.set(false);
+            isAudioEncoderRunning.set(false);
             return false;
+        }
+    }
+
+    // RK3576 专用：高通200Hz，消除50/60Hz电流音、PGA底噪
+    private void rk3576HighPassFilter(byte[] pcm, int sampleRate) {
+        int len = pcm.length / 2;
+        double alpha = Math.exp(-2 * Math.PI * 200 / sampleRate);
+        int prev = 0;
+        for (int i = 0; i < len; i++) {
+            int sample = (pcm[2 * i + 1] << 8) | (pcm[2 * i] & 0xFF);
+            int filtered = (int) (alpha * prev + (1 - alpha) * sample);
+            // 限幅防爆音
+            filtered = Math.max(-32768, Math.min(32767, filtered));
+            pcm[2 * i] = (byte) (filtered & 0xFF);
+            pcm[2 * i + 1] = (byte) ((filtered >> 8) & 0xFF);
+            prev = filtered;
         }
     }
 
@@ -743,6 +759,8 @@ public class MediaSocketService extends Service {
                     LogUtils.w(TAG, "未读到音频帧");
                     continue;
                 }
+                // RK3576 必做：高通滤波去电流音
+                rk3576HighPassFilter(audioData, CONFIG.AUDIO_SAMPLE_RATE);
                 if (CONFIG.AUDIO_VOLUME_UP_FACTOR > 1) {
                     // 应用音频增益放大（假设增益倍数为2.0）
                     byte[] amplifiedData = applyAudioGain(audioData, readSize, CONFIG.AUDIO_VOLUME_UP_FACTOR);

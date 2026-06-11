@@ -15,6 +15,7 @@ public class CameraConfig {
 
     public int preWidth = -1; // 固定预览宽度，preWidth和preHeight有一个小于等于0，则自动计算合适的预览尺寸
     public int preHeight = -1; // 固定预览高度，preWidth和preHeight有一个小于等于0，则自动计算合适的预览尺寸
+    public boolean usePreSizeForView;   // 是否用preWidth和preHeight重新设置Camera的预览View窗口
     public int preFormat = -1;
     public int preFrameRate = 0;
     public boolean takePicRlMirror = false;// 照片左右镜像
@@ -43,6 +44,7 @@ public class CameraConfig {
                 ", rlMirror=" + rlMirror +
                 ", preWidth=" + preWidth +
                 ", preHeight=" + preHeight +
+                ", usePreSizeForView=" + usePreSizeForView +
                 ", preFormat=" + preFormat +
                 ", preFrameRate=" + preFrameRate +
                 ", takePicRlMirror=" + takePicRlMirror +

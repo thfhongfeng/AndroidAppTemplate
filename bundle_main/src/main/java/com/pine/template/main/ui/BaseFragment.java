@@ -105,6 +105,16 @@ public abstract class BaseFragment<T extends ViewDataBinding, VM extends ViewMod
         this._mOnceOnlyGoBackTag = goBackTag;
     }
 
+    private volatile boolean _isTopHomeFragment;
+
+    public void setupTopHome(boolean isTopHomeFragment) {
+        _isTopHomeFragment = isTopHomeFragment;
+    }
+
+    public boolean isTopHomeFragment() {
+        return _isTopHomeFragment;
+    }
+
     /**
      * 根据返回标识进行界面返回
      */

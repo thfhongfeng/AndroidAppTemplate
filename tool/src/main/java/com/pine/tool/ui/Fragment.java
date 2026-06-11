@@ -353,7 +353,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment
                         toastEntity.getDuration() > 3 * 1000 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
                 showToast(toast);
             } else {
-                Toast toast = Toast.makeText(getContext(), toastEntity.getContent(),
+                Toast toast = Toast.makeText(getContext(), getString(toastEntity.getResId()),
                         toastEntity.getDuration() > 3 * 1000 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
                 showToast(toast);
             }

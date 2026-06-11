@@ -579,7 +579,7 @@ public abstract class Activity extends AppCompatActivity
                         toastEntity.getDuration() > 3 * 1000 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
                 showToast(toast);
             } else {
-                Toast toast = Toast.makeText(this, toastEntity.getContent(),
+                Toast toast = Toast.makeText(this, getString(toastEntity.getResId()),
                         toastEntity.getDuration() > 3 * 1000 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
                 showToast(toast);
             }
