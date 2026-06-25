@@ -13,7 +13,7 @@ if (!destinationFile.exists()) {
  */
 def build_versions = [:]
 build_versions.compileSdkVersion = 34
-build_versions.minSdkVersion = 23
+build_versions.minSdkVersion = 26
 build_versions.targetSdkVersion = 34
 
 build_versions.apkHeadName = "PineAndroidTemplate"
