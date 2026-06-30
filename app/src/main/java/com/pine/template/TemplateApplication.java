@@ -7,6 +7,7 @@ import android.os.StrictMode;
 
 import com.pine.template.base.BaseApplication;
 import com.pine.template.base.BundleBaseApplication;
+import com.pine.template.base.business.track.CrashHandler;
 import com.pine.template.bundle_base.BuildConfig;
 import com.pine.template.login.LoginApplication;
 import com.pine.template.main.MainApplication;
@@ -37,11 +38,17 @@ public class TemplateApplication extends Application {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             builder.detectFileUriExposure();
         }
+        String processName = AppUtils.getCurProcessName(mApplication);
 
-        LogUtils.d(TAG, "APP SHA1:" + AppUtils.SHA1(this));
+        LogUtils.d(TAG, "APP_Info SHA1:" + AppUtils.SHA1(this));
+        LogUtils.d(TAG, "APP_Info Cur process name:" + processName);
 
         // 主进程初始化
-        if (mApplication.getPackageName().equals(AppUtils.getCurProcessName(mApplication))) {
+        if (mApplication.getPackageName().equals(processName)) {
+            LogUtils.d(TAG, "APP_Info do app flow for process name:" + processName);
+
+            CrashHandler.getInstance().init(mApplication);
+
             BaseApplication.init(this);
 
             BundleBaseApplication.onCreate();

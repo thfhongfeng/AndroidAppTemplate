@@ -2,13 +2,16 @@
  * 打包参数
  */
 ext.build_lib_groupId = "com.pine.app.template.libs"
+
+ext.global_product_versionCode = 10001
+ext.global_product_versionName = "1.0.001"
 def build_flavor_product = [:]
 build_flavor_product = [
         common : [
                 build_product_applicationId     : "com.pine.app.template",
                 build_product_groupId           : "com.pine.app.template.common",
-                build_product_versionCode       : 10001,
-                build_product_versionName       : "1.0.001",
+                build_product_versionCode       : global_product_versionCode,
+                build_product_versionName       : global_product_versionName,
                 build_product_appName           : "PineAppTemplate",
                 build_product_storeFile         : "../signapk/common/template.jks",
                 build_product_storePassword     : "pine123",
@@ -32,8 +35,8 @@ build_flavor_product = [
         special: [
                 build_product_applicationId     : "com.pine.app.template",
                 build_product_groupId           : "com.pine.app.template.special",
-                build_product_versionCode       : 10001,
-                build_product_versionName       : "1.0.001",
+                build_product_versionCode       : global_product_versionCode,
+                build_product_versionName       : global_product_versionName,
                 build_product_appName           : "PineAppTemplate",
                 build_product_storeFile         : "../signapk/special/template.jks",
                 build_product_storePassword     : "pine123",

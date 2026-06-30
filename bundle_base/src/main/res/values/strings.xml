@@ -15,6 +15,7 @@
     <string name="net_wifi">Wifi</string>
     <string name="net_eth">Eth</string>
 
+    <string name="info_crash_log">%s Crash：%s</string>
     <string name="info_storage_not_enough">%s 存储状态:内部存储不足%s，删除%d条日志</string>
     <string name="info_external_storage_not_enough">%s 存储状态:外部存储不足%s</string>
     <string name="info_auto_reboot">%s 自动重启:设备计划重启执行</string>

@@ -12,6 +12,7 @@ import com.pine.template.base.bgwork.BgWorkManager;
 import com.pine.template.base.bgwork.checker.BgCheckManager;
 import com.pine.template.base.business.bean.AccountBean;
 import com.pine.template.base.business.track.AppTrackManager;
+import com.pine.template.base.business.track.CrashHandler;
 import com.pine.template.base.business.track.DefaultAppTrackAdapter;
 import com.pine.template.base.business.track.entity.AppTrack;
 import com.pine.template.base.business.track.entity.AppTracksHeader;
@@ -108,6 +109,8 @@ public class MainApplication extends BaseApplication {
 
             @Override
             public void onAppCreated() {
+                CrashHandler.getInstance().recordCrashToDb(mApplication);
+
                 BgWorkManager.getInstance().init();
 
                 BgCheckManager.getInstance().scheduleChecker();
