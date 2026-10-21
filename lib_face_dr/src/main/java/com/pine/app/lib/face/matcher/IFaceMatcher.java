@@ -3,6 +3,8 @@ package com.pine.app.lib.face.matcher;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
 import com.pine.app.lib.face.FacePosDetail;
 
 import java.util.List;
@@ -10,10 +12,7 @@ import java.util.List;
 public interface IFaceMatcher {
     String TAG = "FaceMatcher";
 
-    int FEATURE_TYPE_SF = 0;
-    int FEATURE_TYPE_ORB = 1;
-
-    void initFaceMatcher(Context context);
+    void initFaceMatcher(@NonNull Context context);
 
     double compareImg(String checkFaceFilePath, String standardFaceFilePath);
 

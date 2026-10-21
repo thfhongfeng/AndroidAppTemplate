@@ -1,6 +1,7 @@
 package com.pine.template.face;
 
 import com.pine.app.lib.face.matcher.FaceMatcher;
+import com.pine.app.lib.face.matcher.opencv.OcvFaceMatcher;
 import com.pine.tool.RootApplication;
 import com.pine.tool.util.LogUtils;
 
@@ -17,6 +18,7 @@ public class FaceApplication extends RootApplication {
 
     public static void attach() {
         LogUtils.d(TAG, "attach");
-        FaceMatcher.getInstance().initFaceMatcher(mApplication);
+//        FaceMatcher.getInstance().initFaceMatcher(mApplication);
+        FaceMatcher.getInstance().initFaceMatcher(mApplication, new OcvFaceMatcher(OcvFaceMatcher.FEATURE_TYPE_ARC_NET));
     }
 }

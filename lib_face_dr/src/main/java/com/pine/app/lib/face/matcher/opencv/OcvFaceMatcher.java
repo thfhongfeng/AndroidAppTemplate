@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.pine.app.lib.face.FacePosDetail;
 import com.pine.app.lib.face.matcher.IFaceMatcher;
 import com.pine.app.lib.face.matcher.opencv.algorithm.MatchAlgorithm;
@@ -21,12 +23,18 @@ import org.opencv.imgcodecs.Imgcodecs;
 import java.util.List;
 
 public class OcvFaceMatcher implements IFaceMatcher {
+    public static final int FEATURE_TYPE_SF = 0;
+    public static final int FEATURE_TYPE_ORB = 1;
+
+    public static final int FEATURE_TYPE_ARC_NET = 2;
+
     private MatchAlgorithm mMatchAlgorithm;
     private BaseLoaderCallback mLoaderCallback;
-    private int mFeatureType = IFaceMatcher.FEATURE_TYPE_SF;
+    private int mFeatureType = FEATURE_TYPE_SF;
 
-    public OcvFaceMatcher() {
-        Log.d(TAG, "use opencv for face matcher");
+    public OcvFaceMatcher(int featureType) {
+        Log.d(TAG, "use opencv for face matcher featureType:" + featureType);
+        mFeatureType = featureType;
     }
 
     /**
@@ -35,7 +43,7 @@ public class OcvFaceMatcher implements IFaceMatcher {
      * @param context
      */
     @Override
-    public void initFaceMatcher(final Context context) {
+    public void initFaceMatcher(final @NonNull Context context) {
         mLoaderCallback = new BaseLoaderCallback(context) {
             @Override
             public void onManagerConnected(int status) {

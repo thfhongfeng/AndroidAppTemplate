@@ -3,18 +3,19 @@ package com.pine.app.lib.face.matcher;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
 import com.pine.app.lib.face.FacePosDetail;
 import com.pine.app.lib.face.matcher.opencv.OcvFaceMatcher;
 
 import java.util.List;
 
-public class FaceMatcher implements IFaceMatcher {
+public class FaceMatcher {
 
     private static FaceMatcher instance;
     private static IFaceMatcher mProxy;
 
     private FaceMatcher() {
-        mProxy = new OcvFaceMatcher();
     }
 
     public synchronized static FaceMatcher getInstance() {
@@ -24,37 +25,36 @@ public class FaceMatcher implements IFaceMatcher {
         return instance;
     }
 
-    @Override
-    public void initFaceMatcher(Context context) {
+    public void initFaceMatcher(@NonNull Context context) {
+        mProxy = new OcvFaceMatcher(OcvFaceMatcher.FEATURE_TYPE_SF);
         mProxy.initFaceMatcher(context);
     }
 
-    @Override
+    public void initFaceMatcher(@NonNull Context context, IFaceMatcher matcher) {
+        mProxy = matcher;
+        mProxy.initFaceMatcher(context);
+    }
+
     public double compareImg(String checkFaceFilePath, String standardFaceFilePath) {
         return mProxy.compareImg(checkFaceFilePath, standardFaceFilePath);
     }
 
-    @Override
     public double compareImg(String checkFaceFilePath, byte[] matBytes) {
         return mProxy.compareImg(checkFaceFilePath, matBytes);
     }
 
-    @Override
     public boolean prepareCheckCompare(String checkFilePath) {
         return mProxy.prepareCheckCompare(checkFilePath);
     }
 
-    @Override
     public double doCheckCompare(byte[] beCheckMatBytes) {
         return mProxy.doCheckCompare(beCheckMatBytes);
     }
 
-    @Override
     public double doCheckCompare(String beCheckFilePath) {
         return mProxy.doCheckCompare(beCheckFilePath);
     }
 
-    @Override
     public boolean completeCheckCompare() {
         return mProxy.completeCheckCompare();
     }
@@ -66,7 +66,6 @@ public class FaceMatcher implements IFaceMatcher {
      * @param degree           评价值（值与相似度关系由比较方式决定）
      * @return
      */
-    @Override
     public boolean maxSimilarChange(double maxSimilarDegree, double degree) {
         return mProxy.maxSimilarChange(maxSimilarDegree, degree);
     }
@@ -78,42 +77,34 @@ public class FaceMatcher implements IFaceMatcher {
      * @param confidence       0-100，数值越高越可信
      * @return
      */
-    @Override
     public boolean passConfidence(double maxSimilarDegree, float confidence) {
         return mProxy.passConfidence(maxSimilarDegree, confidence);
     }
 
-    @Override
     public List<FacePosDetail> toFacePosDetails(Bitmap imgBitmap) {
         return mProxy.toFacePosDetails(imgBitmap);
     }
 
-    @Override
     public byte[] toFaceFeatureBytes(String imgPath) {
         return mProxy.toFaceFeatureBytes(imgPath);
     }
 
-    @Override
     public byte[] toFaceFeatureBytes(Bitmap imgBitmap) {
         return mProxy.toFaceFeatureBytes(imgBitmap);
     }
 
-    @Override
     public byte[] toFaceBytes(String imgPath, String extFormat) {
         return mProxy.toFaceBytes(imgPath, extFormat);
     }
 
-    @Override
     public Bitmap toFaceBitmap(String imgPath, String extFormat) {
         return mProxy.toFaceBitmap(imgPath, extFormat);
     }
 
-    @Override
     public Bitmap toFaceBitmap(Bitmap imgBitmap) {
         return mProxy.toFaceBitmap(imgBitmap);
     }
 
-    @Override
     public Bitmap toFaceBitmap(byte[] faceMatData) {
         return mProxy.toFaceBitmap(faceMatData);
     }

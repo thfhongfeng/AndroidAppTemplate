@@ -2,6 +2,7 @@ package com.pine.template.welcome.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,10 +31,7 @@ import com.pine.tool.util.NetWorkUtils;
 
 import java.io.File;
 
-@PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE,
-        Manifest.permission.READ_MEDIA_IMAGES,
-        Manifest.permission.READ_MEDIA_VIDEO,
-        Manifest.permission.READ_MEDIA_AUDIO})
+@PermissionsAnnotation(Permissions = {Manifest.permission.READ_PHONE_STATE})
 public class LoadingActivity extends WelBaseActivity<LoadingActivityBinding, LoadingVm> {
     @Override
     public String makeUiName() {
@@ -168,6 +166,23 @@ public class LoadingActivity extends WelBaseActivity<LoadingActivityBinding, Loa
     private void doneAppStartTask() {
         mStartTimeMillis = System.currentTimeMillis();
         mViewModel.setupConfigSwitcher();
+    }
+
+    @Override
+    protected void onRealResume() {
+        super.onRealResume();
+        if (canUseFullMediaPermission()) {
+            requestPermission(1000, null,
+                    Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO);
+        }
+    }
+
+    private boolean canUseFullMediaPermission() {
+        String manufacturer = Build.MANUFACTURER.trim().toUpperCase();
+        if (manufacturer.equals("META") || manufacturer.equals("OCULUS")) {
+            return false;
+        }
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU;
     }
 
     @Override

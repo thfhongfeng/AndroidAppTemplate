@@ -17,6 +17,11 @@ public class ActionMultiClickBean {
     private int actionDescId;
     private IOnMultiClickListener listener;
 
+    public ActionMultiClickBean(int tag, int actionType) {
+        this.tag = tag;
+        this.actionType = actionType;
+    }
+
     public ActionMultiClickBean(int tag, int actionType, int accessType) {
         this.tag = tag;
         this.actionType = actionType;
@@ -80,14 +85,14 @@ public class ActionMultiClickBean {
     }
 
     public interface IOnMultiClickListener {
-        boolean onAccessCheck(ActionMultiClickBean bean);
-
         boolean onMultiAction(ActionMultiClickBean bean);
+
+        boolean onActionCheckPass(ActionMultiClickBean bean);
     }
 
     public static abstract class OnMultiClickListener implements IOnMultiClickListener {
         @Override
-        public boolean onAccessCheck(ActionMultiClickBean bean) {
+        public boolean onMultiAction(ActionMultiClickBean bean) {
             return false;
         }
     }

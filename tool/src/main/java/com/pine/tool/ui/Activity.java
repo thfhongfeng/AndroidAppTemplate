@@ -411,7 +411,7 @@ public abstract class Activity extends AppCompatActivity
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        LogUtils.d(TAG, "onPermissionsGranted: requestCode(" + requestCode + "),size:" + perms.size());
+        LogUtils.d(TAG, "onPermissionsGranted: requestCode(" + requestCode + "), permissions:" + TextUtils.join(",", perms));
         PermissionBean bean = mPermissionRequestMap.get(requestCode);
         if (bean != null && bean.getCallback() != null) {
             bean.getCallback().onPermissionsGranted(requestCode, perms);
@@ -420,7 +420,7 @@ public abstract class Activity extends AppCompatActivity
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        LogUtils.d(TAG, "onPermissionsDenied: requestCode(" + requestCode + "),size:" + perms.size());
+        LogUtils.d(TAG, "onPermissionsDenied: requestCode(" + requestCode + "), permissions:" + TextUtils.join(",", perms));
         String[] permArr = new String[perms.size()];
         for (int i = 0; i < perms.size(); i++) {
             permArr[i] = perms.get(i);

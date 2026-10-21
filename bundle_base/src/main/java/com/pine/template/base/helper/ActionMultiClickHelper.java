@@ -104,6 +104,36 @@ public class ActionMultiClickHelper {
         });
     }
 
+    public void regJustMultiClickAction(@NonNull View view, int intervalMs, final int clickCount,
+                                        @NonNull ActionMultiClickBean.IOnMultiClickListener listener) {
+        ActionMultiClickBean bean = new ActionMultiClickBean(view.getId(), ActionMultiClickBean.ACTION_CUSTOM);
+        bean.setIntervalMs(intervalMs);
+        bean.setClickCount(clickCount);
+        bean.setListener(listener);
+        view.setOnClickListener(new View.OnClickListener() {
+            private int curClickCount;
+            private long lastClickTime;
+
+            @Override
+            public void onClick(View v) {
+                if (lastClickTime == 0 || System.currentTimeMillis() - lastClickTime < intervalMs) {
+                    lastClickTime = System.currentTimeMillis();
+                    curClickCount++;
+                    if (curClickCount >= clickCount) {
+                        if (listener != null) {
+                            listener.onActionCheckPass(bean);
+                        }
+                        curClickCount = 0;
+                        lastClickTime = 0;
+                    }
+                } else {
+                    curClickCount = 0;
+                    lastClickTime = 0;
+                }
+            }
+        });
+    }
+
     public void unRegMultiClick(@NonNull View view) {
         mActionClickBeanMap.remove(view.getId());
         view.setOnClickListener(null);
@@ -116,7 +146,7 @@ public class ActionMultiClickHelper {
         ActionMultiClickBean.IOnMultiClickListener listener = bean.getListener();
         boolean consume = false;
         if (listener != null) {
-            consume = listener.onAccessCheck(bean);
+            consume = listener.onMultiAction(bean);
         }
         if (!consume) {
             switch (bean.getAccessType()) {
@@ -155,7 +185,7 @@ public class ActionMultiClickHelper {
         ActionMultiClickBean.IOnMultiClickListener listener = bean.getListener();
         boolean consume = false;
         if (listener != null) {
-            consume = listener.onMultiAction(bean);
+            consume = listener.onActionCheckPass(bean);
         }
         if (!consume) {
             switch (bean.getActionType()) {

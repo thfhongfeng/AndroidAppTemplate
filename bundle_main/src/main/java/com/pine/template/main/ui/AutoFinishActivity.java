@@ -71,6 +71,7 @@ public abstract class AutoFinishActivity<T extends ViewDataBinding, VM extends V
     @Override
     protected void onStart() {
         super.onStart();
+        refreshUserOperateTime();
         mAutoFinishTime = ConfigSwitcherServer
                 .getConfigInt(BuildConfigKey.CONFIG_AUTO_FINISH_SETTINGS_UI_DELAY);
         listenUserNoOperate(AUTO_FINISH_LISTENER_TAG, mOnUserNoOperateListener, mAutoFinishTime);
