@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import java.util.List;
 
@@ -112,7 +113,7 @@ public class QSubjectBean {
         QChoiceOptionS q = null;
         if (type == TYPE_CHOICE_OPTION && !TextUtils.isEmpty(content)) {
             try {
-                Gson sGson = new GsonBuilder().disableHtmlEscaping().create();
+                Gson sGson = GsonFactory.createGson();
                 q = sGson.fromJson(content, QChoiceOptionS.class);
             } catch (Exception e) {
                 LogUtils.e("QBean", "parseToChoiceOption content e:" + e);
@@ -125,7 +126,7 @@ public class QSubjectBean {
         QTrueOrFalseS q = null;
         if (type == TYPE_TRUE_OR_FALSE && !TextUtils.isEmpty(content)) {
             try {
-                Gson sGson = new GsonBuilder().disableHtmlEscaping().create();
+                Gson sGson = GsonFactory.createGson();
                 q = sGson.fromJson(content, QTrueOrFalseS.class);
             } catch (Exception e) {
                 LogUtils.e("QBean", "parseToTrueOrFalse content e:" + e);
@@ -138,7 +139,7 @@ public class QSubjectBean {
         QShortAnswerS q = null;
         if (type == TYPE_SHOR_ANSWER && !TextUtils.isEmpty(content)) {
             try {
-                Gson sGson = new GsonBuilder().disableHtmlEscaping().create();
+                Gson sGson = GsonFactory.createGson();
                 q = sGson.fromJson(content, QShortAnswerS.class);
             } catch (Exception e) {
                 LogUtils.e("QBean", "parseToShortAnswer content e:" + e);

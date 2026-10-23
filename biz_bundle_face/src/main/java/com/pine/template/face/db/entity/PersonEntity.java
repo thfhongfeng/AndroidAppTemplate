@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pine.tool.util.type.GsonFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -125,7 +126,7 @@ public class PersonEntity implements Serializable, Cloneable {
     }
 
     public HashMap<String, String> toMap() {
-        return new Gson().fromJson(new Gson().toJson(this), new TypeToken<HashMap<String, String>>() {
+        return GsonFactory.createGson().fromJson(GsonFactory.createGson().toJson(this), new TypeToken<HashMap<String, String>>() {
         }.getType());
     }
 

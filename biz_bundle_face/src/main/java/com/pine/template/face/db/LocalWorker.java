@@ -7,8 +7,6 @@ import android.os.HandlerThread;
 
 import androidx.documentfile.provider.DocumentFile;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.pine.app.lib.face.matcher.FaceMatcher;
 import com.pine.template.face.FaceUrlConstants;
 import com.pine.template.face.db.entity.PersonEntity;
@@ -40,8 +38,6 @@ public class LocalWorker {
         }
         return instance;
     }
-
-    private Gson sGson = new GsonBuilder().disableHtmlEscaping().create();
 
     public void requestPersonListData(IAsyncResponse<List<PersonEntity>> callback) {
         List<PersonEntity> list = PersonRepository.getInstance().queryAllList();

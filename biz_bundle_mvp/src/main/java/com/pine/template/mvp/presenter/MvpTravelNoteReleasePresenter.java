@@ -23,6 +23,7 @@ import com.pine.template.mvp.ui.activity.MvpShopSearchCheckActivity;
 import com.pine.tool.architecture.mvp.presenter.Presenter;
 import com.pine.tool.exception.MessageException;
 import com.pine.tool.request.response.IAsyncResponse;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -155,7 +156,7 @@ public class MvpTravelNoteReleasePresenter extends Presenter<IMvpTravelNoteRelea
         if (belongShops.checkIsEmpty(R.string.mvp_note_release_belong_shops_need)) {
             return;
         } else {
-            params.put(belongShops.getKey(), new Gson().toJson(belongShops.getValue()));
+            params.put(belongShops.getKey(), GsonFactory.createGson().toJson(belongShops.getValue()));
         }
 
         InputParam<String> preface = getUi().getNotePrefaceParam("preface");

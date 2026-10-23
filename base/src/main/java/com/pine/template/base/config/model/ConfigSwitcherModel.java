@@ -13,6 +13,7 @@ import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONObject;
 
@@ -40,7 +41,7 @@ public class ConfigSwitcherModel {
             public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (REQUEST_REQUEST_QUERY_BUNDLE_SWITCHER == what) {
                     if (jsonObject.optBoolean(KeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(KeyConstants.DATA),
+                        T retData = GsonFactory.createGson().fromJson(jsonObject.optString(KeyConstants.DATA),
                                 new TypeToken<ConfigSwitcherInfo>() {
                                 }.getType());
                         if (callback != null) {

@@ -11,6 +11,7 @@ import com.pine.template.welcome.updater.ApkVersionManager;
 import com.pine.template.welcome.updater.VersionEntity;
 import com.pine.tool.router.IServiceCallback;
 import com.pine.tool.router.annotation.RouterCommand;
+import com.pine.tool.util.type.GsonFactory;
 
 import java.io.File;
 
@@ -19,7 +20,7 @@ import java.io.File;
  */
 
 public class WelcomeRemoteService {
-    private Gson sGson = new Gson().newBuilder().disableHtmlEscaping().create();
+    private Gson sGson = GsonFactory.createGson();
 
     @RouterCommand(CommandName = RouterWelcomeCommand.checkApkUpdate)
     public void checkApkUpdate(@NonNull final Context context, Bundle args,

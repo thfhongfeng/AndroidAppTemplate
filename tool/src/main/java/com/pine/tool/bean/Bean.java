@@ -3,6 +3,7 @@ package com.pine.tool.bean;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.pine.tool.util.type.GsonFactory;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class Bean {
                 } else if (obj instanceof Map) {
                     map.putAll((Map) obj);
                 } else {
-                    map.put(field.getName(), new Gson().toJson(obj));
+                    map.put(field.getName(), GsonFactory.createGson().toJson(obj));
                 }
             }
         } catch (Exception e) {
@@ -63,7 +64,7 @@ public class Bean {
                 } else if (obj instanceof Map) {
                     map.putAll((Map) obj);
                 } else {
-                    map.put(field.getName(), new Gson().toJson(obj));
+                    map.put(field.getName(), GsonFactory.createGson().toJson(obj));
                 }
             }
         } catch (Exception e) {

@@ -2,7 +2,6 @@ package com.pine.template.mvp.model;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pine.template.bundle_base.BuildConfig;
 import com.pine.template.mvp.MvpKeyConstants;
@@ -20,6 +19,7 @@ import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.DecimalUtils;
 import com.pine.tool.util.GPSUtils;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,7 +98,7 @@ public class MvpShopModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -115,7 +115,7 @@ public class MvpShopModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpShopDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -132,7 +132,7 @@ public class MvpShopModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<List<MvpShopItemEntity>>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<List<MvpShopItemEntity>>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -149,7 +149,7 @@ public class MvpShopModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<List<MvpShopAndProductEntity>>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<List<MvpShopAndProductEntity>>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -170,7 +170,7 @@ public class MvpShopModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvpKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpProductDetailEntity>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvpKeyConstants.DATA), new TypeToken<MvpProductDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);

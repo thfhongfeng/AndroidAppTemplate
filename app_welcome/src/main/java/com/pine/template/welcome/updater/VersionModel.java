@@ -14,6 +14,7 @@ import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONObject;
 
@@ -71,7 +72,7 @@ public class VersionModel {
             public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (REQUEST_QUERY_VERSION_INFO == what) {
                     if (jsonObject.optBoolean(WelcomeKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(WelcomeKeyConstants.DATA),
+                        T retData = GsonFactory.createGson().fromJson(jsonObject.optString(WelcomeKeyConstants.DATA),
                                 new TypeToken<VersionEntity>() {
                                 }.getType());
                         if (callback != null) {

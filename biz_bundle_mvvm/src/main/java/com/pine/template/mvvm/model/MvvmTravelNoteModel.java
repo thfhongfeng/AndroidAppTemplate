@@ -19,6 +19,7 @@ import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,7 +85,7 @@ public class MvvmTravelNoteModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvvmKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvvmKeyConstants.DATA), new TypeToken<MvvmTravelNoteDetailEntity>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvvmKeyConstants.DATA), new TypeToken<MvvmTravelNoteDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -101,7 +102,7 @@ public class MvvmTravelNoteModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvvmKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvvmKeyConstants.DATA), new TypeToken<MvvmTravelNoteDetailEntity>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvvmKeyConstants.DATA), new TypeToken<MvvmTravelNoteDetailEntity>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -118,7 +119,7 @@ public class MvvmTravelNoteModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvvmKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvvmKeyConstants.DATA), new TypeToken<List<MvvmTravelNoteItemEntity>>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvvmKeyConstants.DATA), new TypeToken<List<MvvmTravelNoteItemEntity>>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);
@@ -135,7 +136,7 @@ public class MvvmTravelNoteModel {
                     }
                     // Test code end
                     if (jsonObject.optBoolean(MvvmKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(MvvmKeyConstants.DATA), new TypeToken<List<MvvmTravelNoteCommentEntity>>() {
+                        T retData = GsonFactory.createSimpleGson().fromJson(jsonObject.optString(MvvmKeyConstants.DATA), new TypeToken<List<MvvmTravelNoteCommentEntity>>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);

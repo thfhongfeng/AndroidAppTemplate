@@ -8,11 +8,12 @@ import com.pine.app.lib.mqtt.framework.listener.MqttRespond;
 import com.pine.app.template.bundle_main.BuildConfigKey;
 import com.pine.template.base.config.switcher.ConfigSwitcherServer;
 import com.pine.template.main.mqtt.mode.KeepAliveMode;
+import com.pine.tool.util.type.GsonFactory;
 
 public class MqttActionRequest {
     private final String TAG = this.getClass().getSimpleName();
 
-    protected Gson sGson = new GsonBuilder().disableHtmlEscaping().create();
+    protected Gson sGson = GsonFactory.createGson();
 
     private static MqttActionRequest instance;
 

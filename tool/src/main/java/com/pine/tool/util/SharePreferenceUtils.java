@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pine.tool.util.type.GsonFactory;
 import com.pine.tool.util.type.ParameterizedTypeImpl;
 
 import java.lang.reflect.Type;
@@ -632,7 +633,7 @@ public class SharePreferenceUtils {
         if (TextUtils.isEmpty(key)) {
             return;
         }
-        String json = new Gson().toJson(value, new TypeToken<Set<T>>() {
+        String json = GsonFactory.createGson().toJson(value, new TypeToken<Set<T>>() {
         }.getType());
         saveString(context, db, key, json);
     }
@@ -641,7 +642,7 @@ public class SharePreferenceUtils {
         if (TextUtils.isEmpty(key)) {
             return;
         }
-        String json = new Gson().toJson(list, new TypeToken<List<T>>() {
+        String json = GsonFactory.createGson().toJson(list, new TypeToken<List<T>>() {
         }.getType());
         saveString(context, db, key, json);
     }
@@ -650,7 +651,7 @@ public class SharePreferenceUtils {
         if (TextUtils.isEmpty(key)) {
             return;
         }
-        String json = new Gson().toJson(list, new TypeToken<Map<K, V>>() {
+        String json = GsonFactory.createGson().toJson(list, new TypeToken<Map<K, V>>() {
         }.getType());
         saveString(context, db, key, json);
     }
@@ -740,7 +741,7 @@ public class SharePreferenceUtils {
     public static Set<String> readStringSet(Context context, String db, String key, Set<String> def) {
         if (isContainsKey(db, key)) {
             Type type = new ParameterizedTypeImpl(Set.class, new Class[]{String.class});
-            return new Gson().fromJson(readString(context, db, key), type);
+            return GsonFactory.createGson().fromJson(readString(context, db, key), type);
         } else {
             return def;
         }
@@ -749,7 +750,7 @@ public class SharePreferenceUtils {
     public static <T> Set<T> readSet(Context context, String db, String key, Set<T> def, Class<T> clazz) {
         if (isContainsKey(db, key)) {
             Type type = new ParameterizedTypeImpl(Set.class, new Class[]{clazz});
-            return new Gson().fromJson(readString(context, db, key), type);
+            return GsonFactory.createGson().fromJson(readString(context, db, key), type);
         } else {
             return def;
         }
@@ -758,7 +759,7 @@ public class SharePreferenceUtils {
     public static <T> List<T> readList(Context context, String db, String key, List<T> def, Class<T> clazz) {
         if (isContainsKey(db, key)) {
             Type type = new ParameterizedTypeImpl(List.class, new Class[]{clazz});
-            return new Gson().fromJson(readString(context, db, key), type);
+            return GsonFactory.createGson().fromJson(readString(context, db, key), type);
         } else {
             return def;
         }
@@ -767,7 +768,7 @@ public class SharePreferenceUtils {
     public static <K, V> Map<K, V> readMap(Context context, String db, String key, Map<K, V> def, Class<K> clazzK, Class<V> clazzV) {
         if (isContainsKey(db, key)) {
             Type type = new ParameterizedTypeImpl(Map.class, new Class[]{clazzK, clazzV});
-            return new Gson().fromJson(readString(context, db, key), type);
+            return GsonFactory.createGson().fromJson(readString(context, db, key), type);
         } else {
             return def;
         }

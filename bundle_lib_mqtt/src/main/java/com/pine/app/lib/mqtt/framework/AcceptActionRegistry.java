@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pine.app.lib.mqtt.BuildConfig;
 import com.pine.app.lib.mqtt.framework.listener.MqttListener;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -122,7 +123,7 @@ public class AcceptActionRegistry {
         private Object parseDynamicType(String json, Type type) {
             // 非泛型类型直接反序列化
             if (!(type instanceof ParameterizedType)) {
-                return new Gson().fromJson(json, type);
+                return GsonFactory.createSimpleGson().fromJson(json, type);
             }
 
             // 处理泛型类型
@@ -141,7 +142,7 @@ public class AcceptActionRegistry {
                     resolvedArgs
             ).getType();
 
-            return new Gson().fromJson(json, resolvedType);
+            return GsonFactory.createSimpleGson().fromJson(json, resolvedType);
         }
     }
 }

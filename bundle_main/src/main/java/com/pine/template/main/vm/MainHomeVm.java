@@ -13,6 +13,7 @@ import com.pine.template.main.bean.MainBusinessItemEntity;
 import com.pine.template.main.model.MainHomeModel;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.router.RouterManager;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class MainHomeVm extends ViewModel {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ArrayList<MainBusinessItemEntity> entityList = new Gson().fromJson(jsonArray.toString(),
+        ArrayList<MainBusinessItemEntity> entityList = GsonFactory.createGson().fromJson(jsonArray.toString(),
                 new TypeToken<ArrayList<MainBusinessItemEntity>>() {
                 }.getType());
         setBusinessBundleList(entityList);

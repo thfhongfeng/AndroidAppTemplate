@@ -19,6 +19,7 @@ import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.AppUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONObject;
 
@@ -74,7 +75,7 @@ public class LoginCallback extends JsonCallback {
                 }
                 return;
             }
-            AccountBean responseAccount = new Gson().fromJson(jsonObject.optString(LoginKeyConstants.DATA), AccountBean.class);
+            AccountBean responseAccount = GsonFactory.createGson().fromJson(jsonObject.optString(LoginKeyConstants.DATA), AccountBean.class);
             final AccountBean accountBean = responseAccount;
             LoginManager.saveLoginInfo(accountBean);
             LoginApplication.setLogin(true);

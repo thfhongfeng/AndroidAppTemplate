@@ -15,6 +15,7 @@ import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.request.response.IAsyncResponse;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONObject;
 
@@ -54,7 +55,7 @@ public class LoginAccountModel {
             public void onResponse(int what, JSONObject jsonObject, Response response) {
                 if (what == REQUEST_REGISTER) {
                     if (jsonObject.optBoolean(LoginKeyConstants.SUCCESS)) {
-                        T retData = new Gson().fromJson(jsonObject.optString(LoginKeyConstants.DATA), new TypeToken<AccountBean>() {
+                        T retData = GsonFactory.createGson().fromJson(jsonObject.optString(LoginKeyConstants.DATA), new TypeToken<AccountBean>() {
                         }.getType());
                         if (callback != null) {
                             callback.onResponse(retData);

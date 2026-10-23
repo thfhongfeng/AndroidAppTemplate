@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pine.app.lib.mqtt.framework.listener.MqttListener;
 import com.pine.app.lib.mqtt.framework.listener.MqttRespond;
 import com.pine.app.lib.mqtt.framework.service.MqttService;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ public class MqttHelper {
     protected Context mContext;
     protected MqttService.MqttBinder mBinder;
     protected MqttConfig mConfig;
-    protected Gson sGson = new GsonBuilder().disableHtmlEscaping().create();
+    protected Gson sGson = GsonFactory.createGson();
 
     protected ConcurrentHashMap<String, LinkedHashMap<String, MqttRespond>> mResponseCbMap = new ConcurrentHashMap<>();
     protected ConcurrentHashMap<String, LinkedHashMap<String, MqttListener>> mListenersMap = new ConcurrentHashMap<>();

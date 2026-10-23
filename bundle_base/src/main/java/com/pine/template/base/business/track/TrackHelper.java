@@ -17,6 +17,7 @@ import com.pine.tool.request.RequestManager;
 import com.pine.tool.request.Response;
 import com.pine.tool.request.callback.JsonCallback;
 import com.pine.tool.util.LogUtils;
+import com.pine.tool.util.type.GsonFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -256,7 +257,7 @@ public class TrackHelper {
         }
         JSONObject dataObj = new JSONObject();
         JSONObject trackObj = new JSONObject();
-        Gson gson = new Gson();
+        Gson gson = GsonFactory.createSimpleGson();
         try {
             Set<String> keys = trackListMap.keySet();
             for (String key : keys) {
@@ -274,7 +275,7 @@ public class TrackHelper {
             }
             dataObj.put("trackData", trackObj);
             dataObj.put("deviceInfo", new JSONObject(
-                    new Gson().toJson(AppTrackManager.getInstance().getTrackAdapter().getTrackHeader(mContext))));
+                    GsonFactory.createSimpleGson().toJson(AppTrackManager.getInstance().getTrackAdapter().getTrackHeader(mContext))));
         } catch (JSONException e) {
             LogUtils.d(TAG, "update track, data format incorrect");
             return;

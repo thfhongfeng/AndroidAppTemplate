@@ -5,8 +5,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.pine.tool.service.TimerHelper;
 import com.pine.tool.util.AppUtils;
 
@@ -25,7 +23,6 @@ public class BgWorkManager {
     }
 
     private Context mContext;
-    private Gson sGson = new GsonBuilder().disableHtmlEscaping().create();
     private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     private BgWorkManager() {
