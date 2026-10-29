@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.MutableLiveData;
 
+import com.pine.tool.architecture.mvvm.EventData;
 import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.binding.data.ParametricNonStickyLiveData;
 import com.pine.tool.ui.ToastEntity;
@@ -77,25 +78,25 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
     }
 
     // 重置UI
-    MutableLiveData<Boolean> resetUiData = new MutableLiveData<>();
+    MutableLiveData<EventData<Boolean>> resetUiData = new MutableLiveData<>();
 
-    public MutableLiveData<Boolean> getResetUiData() {
+    public MutableLiveData<EventData<Boolean>> getResetUiData() {
         return resetUiData;
     }
 
     public void resetUi() {
-        resetUiData.setValue(true);
+        resetUiData.setValue(new EventData<>(true));
     }
 
     // 结束UI
-    MutableLiveData<Boolean> finishData = new MutableLiveData<>();
+    MutableLiveData<EventData<Boolean>> finishData = new MutableLiveData<>();
 
-    public MutableLiveData<Boolean> getFinishData() {
+    public MutableLiveData<EventData<Boolean>> getFinishData() {
         return finishData;
     }
 
     public void finishUi() {
-        finishData.setValue(true);
+        finishData.setValue(new EventData<>(true));
     }
 
     // 加载中ui显示状态
@@ -118,14 +119,14 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
     }
 
     // Toast ui显示
-    MutableLiveData<ToastEntity> toastMsgData = new MutableLiveData<>();
+    MutableLiveData<EventData<ToastEntity>> toastMsgData = new MutableLiveData<>();
 
-    public MutableLiveData<ToastEntity> getToastMsgData() {
+    public MutableLiveData<EventData<ToastEntity>> getToastMsgData() {
         return toastMsgData;
     }
 
     public void setToast(ToastEntity toast) {
-        toastMsgData.setValue(toast);
+        toastMsgData.setValue(new EventData<>(toast));
     }
 
     public boolean getToastDefaultImmediately() {
@@ -146,7 +147,7 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
         toast.setImmediately(immediately);
         toast.setNotAllowInterrupt(notAllowInterrupt);
         toast.setDuration(3 * 1000);
-        toastMsgData.setValue(toast);
+        setToast(toast);
     }
 
     public void setToastResId(@StringRes Integer id) {
@@ -162,7 +163,7 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
         toast.setImmediately(immediately);
         toast.setNotAllowInterrupt(notAllowInterrupt);
         toast.setDuration(3 * 1000);
-        toastMsgData.setValue(toast);
+        setToast(toast);
     }
 
     public void setToastResFormat(@StringRes Integer id, Integer... formatArgs) {
@@ -180,7 +181,7 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
         toast.setImmediately(immediately);
         toast.setNotAllowInterrupt(notAllowInterrupt);
         toast.setDuration(3 * 1000);
-        toastMsgData.setValue(toast);
+        setToast(toast);
     }
 
     public void setLongToastMsg(String msg) {
@@ -197,7 +198,7 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
         toast.setImmediately(immediately);
         toast.setNotAllowInterrupt(notAllowInterrupt);
         toast.setDuration(5 * 1000);
-        toastMsgData.setValue(toast);
+        setToast(toast);
     }
 
     public void setLongToastResId(@StringRes Integer id) {
@@ -213,7 +214,7 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
         toast.setImmediately(immediately);
         toast.setNotAllowInterrupt(notAllowInterrupt);
         toast.setDuration(5 * 1000);
-        toastMsgData.setValue(toast);
+        setToast(toast);
     }
 
     public void setLongToastResFormat(@StringRes Integer id, Integer... formatArgs) {
@@ -231,7 +232,7 @@ public abstract class ViewModel extends androidx.lifecycle.ViewModel {
         toast.setImmediately(immediately);
         toast.setNotAllowInterrupt(notAllowInterrupt);
         toast.setDuration(5 * 1000);
-        toastMsgData.setValue(toast);
+        setToast(toast);
     }
 
     public final String getString(@StringRes int resId) {

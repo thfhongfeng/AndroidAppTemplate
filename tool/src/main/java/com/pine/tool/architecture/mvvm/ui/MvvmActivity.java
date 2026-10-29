@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.pine.tool.architecture.mvvm.EventObserver;
 import com.pine.tool.architecture.mvvm.vm.ViewModel;
 import com.pine.tool.architecture.state.UiState;
 import com.pine.tool.ui.Activity;
@@ -33,9 +34,9 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     };
 
-    private Observer<Boolean> mResetUiDataObserver = new Observer<Boolean>() {
+    private EventObserver<Boolean> mResetUiDataObserver = new EventObserver<Boolean>() {
         @Override
-        public void onChanged(@Nullable Boolean aBoolean) {
+        public void accept(@Nullable Boolean aBoolean) {
             if (aBoolean) {
                 finish();
                 startActivity(getIntent());
@@ -43,9 +44,9 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     };
 
-    private Observer<Boolean> mFinishDataObserver = new Observer<Boolean>() {
+    private EventObserver<Boolean> mFinishDataObserver = new EventObserver<Boolean>() {
         @Override
-        public void onChanged(@Nullable Boolean aBoolean) {
+        public void accept(@Nullable Boolean aBoolean) {
             if (aBoolean) {
                 finish();
             }
@@ -64,9 +65,9 @@ public abstract class MvvmActivity<T extends ViewDataBinding, VM extends ViewMod
         }
     };
 
-    private Observer<ToastEntity> mToastMsgDataObserver = new Observer<ToastEntity>() {
+    private EventObserver<ToastEntity> mToastMsgDataObserver = new EventObserver<ToastEntity>() {
         @Override
-        public void onChanged(@Nullable ToastEntity toast) {
+        public void accept(@Nullable ToastEntity toast) {
             showToast(toast);
         }
     };
