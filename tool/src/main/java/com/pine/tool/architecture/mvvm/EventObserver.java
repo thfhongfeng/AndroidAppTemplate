@@ -2,7 +2,7 @@ package com.pine.tool.architecture.mvvm;
 
 import androidx.lifecycle.Observer;
 
-public abstract class EventObserver <T> implements Observer<EventData<T>> {
+public abstract class EventObserver<T> implements Observer<EventData<T>> {
     public abstract void accept(T t);
 
     @Override
